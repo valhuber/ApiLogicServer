@@ -42,8 +42,36 @@ def create_app(config_filename=None, host="localhost", port=5000):
         db.create_all()
         create_api(app, host, port)
 
-    rb_1 = LogicBank.activate(session=db.session, activator=declare_logic)
+    import safrs
 
+    # db: SQLAlchemy = SQLAlchemy()
+
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy import event, MetaData
+    from sqlalchemy.orm import Session, scoped_session
+    # from sqlalchemy.testing.suite.test_reflection import metadata
+
+    approach = "Achim"  # https://stackoverflow.com/questions/21322158/event-listener-on-scoped-session
+    if approach == "Achim":  # worked!
+        # session: Session = safrs.DB.session
+        session = safrs.DB.session
+    elif approach == "Thomas":
+        session = db.session
+    elif approach == "simple":
+        from sqlalchemy.orm import scoped_session, sessionmaker
+        session = scoped_session(sessionmaker())
+    else:
+        class SessionMakerAndBind(sqlalchemy.orm.sessionmaker):
+            def __call__(self, **kw):
+                if not metadata.is_bound():
+                    bind_metadata()
+                return super(SessionMakerAndBind, self).__call__(**kw)
+
+        sessionmaker = SessionMakerAndBind(autoflush=False,
+                                           autocommit=True, expire_on_commit=False)
+        session = sqlalchemy.orm.scoped_session(sessionmaker)
+
+    LogicBank.activate(session=session, activator=declare_logic)
     return app
 
 
@@ -54,10 +82,10 @@ def declare_logic():
 
     Rule.constraint(validate=User,
                     error_msg="can't change user",
-                    as_condition=test)
+                    calling=test)
 
 
-LogicBank.activate(session=db.session, activator=declare_logic)
+# LogicBank.activate(session=db.session, activator=declare_logic)
 
 host = "localhost"
 port = 5000
