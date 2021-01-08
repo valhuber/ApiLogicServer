@@ -33,9 +33,6 @@ def create_app(config_filename=None, host="localhost", port=5000):
     app = Flask("demo_app")
     app.config.update(SQLALCHEMY_DATABASE_URI="sqlite://", FLASK_DEBUG=True)
 
-    rb = RuleBank()
-    my_rules = rb.__str__()
-
     db.init_app(app)
 
     with app.app_context():
@@ -43,29 +40,8 @@ def create_app(config_filename=None, host="localhost", port=5000):
         create_api(app, host, port)
 
     import safrs
-    from sqlalchemy.orm import Session, scoped_session
-
-    approach = "Achim"  # https://stackoverflow.com/questions/21322158/event-listener-on-scoped-session
-    if approach == "Achim":  # worked!
-        # session: Session = safrs.DB.session
-        session = safrs.DB.session
-        db_session = db.session
-        pass
-    elif approach == "Thomas":
-        session = db.session
-    elif approach == "simple":
-        from sqlalchemy.orm import scoped_session, sessionmaker
-        session = scoped_session(sessionmaker())
-    else:
-        class SessionMakerAndBind(sqlalchemy.orm.sessionmaker):
-            def __call__(self, **kw):
-                if not metadata.is_bound():
-                    bind_metadata()
-                return super(SessionMakerAndBind, self).__call__(**kw)
-
-        sessionmaker = SessionMakerAndBind(autoflush=False,
-                                           autocommit=True, expire_on_commit=False)
-        session = sqlalchemy.orm.scoped_session(sessionmaker)
+    session = safrs.DB.session
+    db_session = db.session  # open question - why does this fail?
 
     LogicBank.activate(session=session, activator=declare_logic)
     return app
