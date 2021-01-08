@@ -49,6 +49,8 @@ def create_app(config_filename=None, host="localhost", port=5000):
     if approach == "Achim":  # worked!
         # session: Session = safrs.DB.session
         session = safrs.DB.session
+        db_session = db.session
+        pass
     elif approach == "Thomas":
         session = db.session
     elif approach == "simple":
