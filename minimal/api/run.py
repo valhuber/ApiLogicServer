@@ -43,13 +43,7 @@ def create_app(config_filename=None, host="localhost", port=5000):
         create_api(app, host, port)
 
     import safrs
-
-    # db: SQLAlchemy = SQLAlchemy()
-
-    from sqlalchemy.ext.declarative import declarative_base
-    from sqlalchemy import event, MetaData
     from sqlalchemy.orm import Session, scoped_session
-    # from sqlalchemy.testing.suite.test_reflection import metadata
 
     approach = "Achim"  # https://stackoverflow.com/questions/21322158/event-listener-on-scoped-session
     if approach == "Achim":  # worked!
