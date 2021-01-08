@@ -78,7 +78,7 @@ def create_app(config_filename=None, host="localhost", port=5000):
 def declare_logic():
     def test(row, old_row, logic_row):
         print('xx' * 2000)
-        return False
+        return False  # means we always fail
 
     Rule.constraint(validate=User,
                     error_msg="can't change user",
