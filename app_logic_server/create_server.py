@@ -680,10 +680,12 @@ def main(ctx):
 def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str):
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
     if db_url.startswith('sqlite:///'):
-        # make it relative
+        # relative vs absolute??
         pass
+
     clone_prototype_project(project_name)
     create_models(db_url, project_name)
+
     """
         Create views.py file from db, models.py
     """
@@ -691,10 +693,6 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     create_server.favorite_names = favorites
     create_server.non_favorite_names = non_favorites
     views = create_server.run()  # create views and api/create_api_models.py
-
-    with open(project_name + "/database/models.py", "wb") as f:
-        f.write(models)
-
     print("\n" + create_server._result)
 
 
