@@ -66,9 +66,11 @@ __version__ = "1.0.0"
 MetaDataTable = NewType('MetaDataTable', object)
 
 
-class CreateServer(object):
+class GenerateFromModel(object):
     """
-    Iterate over all tables, create view statements for each
+    Iterate over model
+
+    Create ui/basic_web_app/views.py and api/expose_api_models.py
     """
 
     _result = ""
@@ -95,7 +97,7 @@ class CreateServer(object):
 
     def run(self) -> str:
         """
-            Returns a string of views.py content
+            create ui/basic_web_app/views.py and api/expose_api_models.py
 
             This is the main entry.  Typical calling sequence:\r
                 qs = FabQuickStart()\r
@@ -110,7 +112,8 @@ class CreateServer(object):
 
         cwd = os.getcwd()
         self._result += '"""'
-        self._result += ("\nFab QuickStart " + __version__ + "\n\n"
+        self._result += ("\nGenerate From Model " + __version__ + "\n\n"
+                         + "Project Name: " + self.project_name + "\n\n"
                          + "Current Working Directory: " + cwd + "\n\n"
                          + "From: " + sys.argv[0] + "\n\n"
                          + "Using Python: " + sys.version + "\n\n"
@@ -120,32 +123,36 @@ class CreateServer(object):
                          + str(self._non_favorite_names_list) + "\n\n"
                          + "At: " + str(datetime.datetime.now()) + "\n\n")
         sys.path.append(cwd)  # for banking Command Line test
-        if ("fab-quick-start" in cwd and "nw" not in cwd and
-                "banking" not in cwd):
-            # sorry, this is just to enable run cli/base, *or" by python cli.py
-            # need to wind up at .... /nw-app, or /banking/db
-            # AND have that in sys.path
-            use_nw = True
-            if use_nw:
-                cwd = cwd.replace("fab-quick-start",
-                                  "fab-quick-start/nw-app", 1)
-                cwd = cwd.replace("/fab_quick_start_util","")
-                self._result += "Debug Mode fix for cwd: " + cwd + "\n\n"
-            else:
-                cwd = cwd.replace("fab-quick-start",
-                                  "fab-quick-start/banking/basic_web_app", 1)
-                cwd = cwd.replace("/fab_quick_start_util","")
-                python_path = os.getcwd()
-                python_path = python_path.replace('fab-quick-start',
-                                                  'banking', 1)
-                python_path = python_path.replace("/fab_quick_start_util","")
-                sys.path.append(python_path)
-                self._result += "Python Path includes: " + python_path + "\n\n"
-            self._result += "Debug cmd override: " + cwd + "\n\n"
-            #  print ("\n\n** debug path issues 2: \n\n" + self._result)
-        #  print ("\n\n** debug path issues 1: \n\n" + self._result)
+
+        enable_cli_hack = False  # awful stuff, want to remove, keep for now...
+        if enable_cli_hack:
+            if ("fab-quick-start" in cwd and "nw" not in cwd and
+                    "banking" not in cwd):
+                # sorry, this is just to enable run cli/base, *or" by python cli.py
+                # need to wind up at .... /nw-app, or /banking/db
+                # AND have that in sys.path
+                use_nw = True
+                if use_nw:
+                    cwd = cwd.replace("fab-quick-start",
+                                      "fab-quick-start/nw-app", 1)
+                    cwd = cwd.replace("/fab_quick_start_util","")
+                    self._result += "Debug Mode fix for cwd: " + cwd + "\n\n"
+                else:
+                    cwd = cwd.replace("fab-quick-start",
+                                      "fab-quick-start/banking/basic_web_app", 1)
+                    cwd = cwd.replace("/fab_quick_start_util","")
+                    python_path = os.getcwd()
+                    python_path = python_path.replace('fab-quick-start',
+                                                      'banking', 1)
+                    python_path = python_path.replace("/fab_quick_start_util","")
+                    sys.path.append(python_path)
+                    self._result += "Python Path includes: " + python_path + "\n\n"
+                self._result += "Debug cmd override: " + cwd + "\n\n"
+                #  print ("\n\n** debug path issues 2: \n\n" + self._result)
+            #  print ("\n\n** debug path issues 1: \n\n" + self._result)
+
         self._result += '"""\n\n'  # look into fstring - nicer to read TODO
-        metadata = self.find_meta_data(cwd)
+        metadata = self.find_meta_data(cwd, self.project_name)
         meta_tables = metadata.tables
         self._result += self.generate_module_imports()
         for each_table in meta_tables.items():
@@ -154,7 +161,7 @@ class CreateServer(object):
         self._result += self.process_module_end(meta_tables)
         return self._result
 
-    def find_meta_data(self, a_cwd: str) -> MetaData:
+    def find_meta_data(self, a_cwd: str, a_project_name: str) -> MetaData:
         """     Find Metadata from model, or (failing that), db
 
         a_cmd should be
@@ -178,14 +185,12 @@ class CreateServer(object):
 
         conn_string = None
         do_dynamic_load = True
+        from os.path import abspath
+        project_abs_path = abspath(a_project_name)
 
         if (do_dynamic_load):
             """
-                a_cwd -- not-this-project-dir (e.g., nw-app)
-                --app
-                --|--__init__.py
-                --|--models.py
-                --config.py
+                a_cwd -- see ApiLogicServerProto for structure
 
                 credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             """
@@ -193,22 +198,31 @@ class CreateServer(object):
             model_loaded = False
             try:
                 # models =
-                importlib.import_module('models')
+                importlib.import_module('database/models')
                 model_loaded = True
             except:
-                pass  # one more try...
+                pass  # keep looking...
             if not model_loaded:
-                sys.path.insert(0, a_cwd + '/app')
+                sys.path.insert(0, a_cwd + '/database')
                 #  e.g., adds /Users/val/python/vscode/fab-quickstart/nw-app/app
                 #  print("DEBUG find_meta sys.path: " + str(sys.path))
                 try:
                     # models =
                     importlib.import_module('models')
                 except:
-                    print("\n\nERROR - current result:\n" + self._result)
-                    raise Exception("Unable to open models from:\n" +
-                                    a_cwd + ", or\n" +
-                                    a_cwd + '/app')
+                    pass  # once more...
+                if not model_loaded:
+                    sys.path.insert(0, project_abs_path + "/database")
+                    #  e.g., adds /Users/val/python/vscode/fab-quickstart/nw-app/app
+                    #  print("DEBUG find_meta sys.path: " + str(sys.path))
+                    try:
+                        # models =
+                        importlib.import_module('models')
+                    except:
+                        print("\n\nERROR - current result:\n" + self._result)
+                        raise Exception("Unable to open models from:\n" +
+                                        a_cwd + ", or\n" +
+                                        a_cwd + '/app')
 
             sys.path.insert(0, a_cwd)
             config = importlib.import_module('config')
@@ -689,11 +703,12 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     """
         Create views.py file from db, models.py
     """
-    create_server = CreateServer()
-    create_server.favorite_names = favorites
-    create_server.non_favorite_names = non_favorites
-    views = create_server.run()  # create views and api/create_api_models.py
-    print("\n" + create_server._result)
+    generate_from_model = GenerateFromModel()
+    generate_from_model.project_name = project_name
+    generate_from_model.favorite_names = favorites
+    generate_from_model.non_favorite_names = non_favorites
+    views = generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
+    print("\n" + generate_from_model._result)
 
 
 @main.command("version")
