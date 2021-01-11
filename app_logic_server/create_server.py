@@ -592,13 +592,20 @@ def clone_prototype_project(project_name: str):
     :return: result of cmd
     """
     log.debug(f'Cloning at \n{sys_env_info}')
+    remove_git = run_command(('rm -rf ' + project_name + "*"))  # TODO DEBUG only - remove me!!
     cmd = 'git clone https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
     result = run_command(cmd)
     remove_git = run_command(('rm -rf test/.git*'))
     pass
 
 
-def create_models(db_url) -> str:
+def create_models(db_url: str, project: str) -> str:
+    # TODO call expose_existing, here, and write models to project/database folder
+    # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
+    cmd = 'python sqlacodegen/sqlacodegen/main.py'
+    cmd += ' db_url'
+    cmd += '  > ' + project + '/database/models.py'
+    result = run_command(cmd)
     pass
 
 
@@ -671,7 +678,7 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
         # make it relative
         pass
     clone_prototype_project(project_name)
-    create_models(db_url)
+    create_models(db_url, project_name)
     """
         Create views.py file from db, models.py
     """
