@@ -602,8 +602,8 @@ def clone_prototype_project(project_name: str):
 def create_models(db_url: str, project: str) -> str:
     # TODO call expose_existing, here, and write models to project/database folder
     # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
-    cmd = 'python sqlacodegen/sqlacodegen/main.py'
-    cmd += ' db_url'
+    cmd = 'python sqlacodegen/sqlacodegen/main.py '
+    cmd += db_url
     cmd += '  > ' + project + '/database/models.py'
     result = run_command(cmd)
     pass
