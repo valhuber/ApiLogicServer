@@ -605,6 +605,7 @@ def create_models(db_url: str, project: str) -> str:
     cmd = 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
     cmd += db_url
     cmd += '  > ' + project + '/database/models.py'
+    # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
     result = run_command(cmd)
     pass
 
