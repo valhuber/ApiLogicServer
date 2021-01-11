@@ -5,11 +5,11 @@ For Dev: Install, Run, Deploy Instructions to test Command Line
 
     https://github.com/valhuber/fab-quick-start/wiki/Explore-fab-quick-start
     cd nw-app
-    python ../fab_quick_start_util/fab_quick_start.py
-    python ../fab_quick_start_util/fab_quick_start.py run
+    python ../fab_quick_start_util/create_server.py
+    python ../fab_quick_start_util/create_server.py run
 
     cd banking/basic_web_app/
-    python ../../fab_quick_start_util/fab_quick_start.py run
+    python ../../fab_quick_start_util/create_server.py run
 
     cd nw-app
     virtualenv venv
@@ -36,6 +36,11 @@ New FAB Feature Suggestions:
     * Hide/show field (& caption)
     * Page (instruction) notes
 """
+import subprocess
+
+import logic_bank_utils.util as logic_bank_utils
+(did_fix_path, sys_env_info) = \
+    logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
 import logging
 import datetime
@@ -57,7 +62,7 @@ __version__ = "1.0.0"
 MetaDataTable = NewType('MetaDataTable', object)
 
 
-class FabQuickStart(object):
+class CreateServer(object):
     """
     Iterate over all tables, create view statements for each
     """
@@ -570,6 +575,33 @@ class FabQuickStart(object):
         return result
 
 
+def run_command(cmd: str) -> str:
+    result_b = subprocess.check_output(cmd, shell=True)
+    result = str(result_b)  # b'pyenv 1.2.21\n'
+    result = result[2: len(result) - 3]
+    tab_to = 20 - len(cmd)
+    spaces = ' ' * tab_to
+    print(f'{cmd}: {spaces}{result}')
+
+
+def clone_prototype_project(project_name: str):
+    """
+    clone prototype to create and remove git folder
+
+    :param project_name: name of project created
+    :return: result of cmd
+    """
+    log.debug(f'Cloning at \n{sys_env_info}')
+    cmd = 'git clone https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
+    result = run_command(cmd)
+    remove_git = run_command(('rm -rf test/.git*'))
+    pass
+
+
+def create_models(db_url) -> str:
+    pass
+
+
 '''
             CLI
 
@@ -615,8 +647,15 @@ def main(ctx):
             6. cd my_project; flask run
     """
 
-
 @main.command("run")
+@click.option('--project_name',
+              default="name description",
+              prompt="Name of Project to be created",
+              help="Will be new directory at current location")
+@click.option('--db_url',
+              default="sqlite:///db.sqlite",
+              prompt="Database URL",
+              help="Word(s) identifying 'favorite name' (displayed first)")
 @click.option('--favorites',
               default="name description",
               prompt="Favorite Column Names",
@@ -626,17 +665,25 @@ def main(ctx):
               prompt="Non Favorite Column Names",
               help="Word(s) used to identify last-shown fields")
 @click.pass_context
-def run(ctx, favorites: str, non_favorites: str):
-
+def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str):
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+    if db_url.startswith('sqlite:///'):
+        # make it relative
+        pass
+    clone_prototype_project(project_name)
+    create_models(db_url)
     """
         Create views.py file from db, models.py
     """
-    fab_quick_start = FabQuickStart()
-    fab_quick_start.favorite_names = favorites
-    fab_quick_start.non_favorite_names = non_favorites
-    fab_quick_start.run()
+    create_server = CreateServer()
+    create_server.favorite_names = favorites
+    create_server.non_favorite_names = non_favorites
+    views = create_server.run()
 
-    print("\n" + fab_quick_start._result)
+    with open(project_name + "/database/models.py", "wb") as f:
+        f.write(models)
+
+    print("\n" + create_server._result)
 
 
 @main.command("version")
@@ -656,13 +703,15 @@ log = logging.getLogger(__name__)
 
 
 def start():  # target of setup.py
-    sys.stderr.write("\n\nfab-quick-start " + __version__ + " here\n\n")
+    sys.stderr.write("\n\nAPI Logic Server Creation " + __version__ + " here\n\n")
     main(obj={})  # TODO - main(a,b) fails to work for --help
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # debugger starts here
     commands = (
         'run',
+        '--project_name=my_project',
+        '--db_url=sqlite:///db.sqlite',
         '--favorites=name description',
         '--non_favorites=id',
     )
