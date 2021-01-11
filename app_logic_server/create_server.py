@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 """Generates FAB views.py file from db model.
 
+CAREFUL!!
+    This is copy / alteration of fab-quick-start, but the comments etc are all out of date.
+    Don't believe anything you read (pretend it's the Internet).
+
 For Dev: Install, Run, Deploy Instructions to test Command Line
 
     https://github.com/valhuber/fab-quick-start/wiki/Explore-fab-quick-start
@@ -686,7 +690,7 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     create_server = CreateServer()
     create_server.favorite_names = favorites
     create_server.non_favorite_names = non_favorites
-    views = create_server.run()
+    views = create_server.run()  # create views and api/create_api_models.py
 
     with open(project_name + "/database/models.py", "wb") as f:
         f.write(models)
