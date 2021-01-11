@@ -1,0 +1,1029 @@
+#Failed to get col type for sqlite_sequence.name
+#Failed to get col type for sqlite_sequence.seq
+# Render Category
+# Render Customer
+# Render CustomerDemographic
+# Render Employee
+# Render EmployeeAudit
+# Render Product
+# Render Region
+# Render Shipper
+# Render Supplier
+# Render Territory
+# Render AbPermission
+# Render AbRegisterUser
+# Render AbRole
+# Render AbUser
+# Render AbViewMenu
+# Render CustomerCustomerDemo
+# Render EmployeeTerritory
+# Render Order
+# Render OrderZ
+# Render AbPermissionView
+# Render AbUserRole
+# Render OrderDetail
+# Render AbPermissionViewRole
+# coding: utf-8
+from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.sqltypes import NullType
+from sqlalchemy.ext.declarative import declarative_base
+
+
+########################################################################################################################
+# Manually Added for safrs, TODO: improve this crap
+#
+from safrs import SAFRSBase
+
+Base = db.Model
+metadata = Base.metadata
+
+NullType = db.String
+TIMESTAMP= db.TIMESTAMP
+
+if db.session.bind.dialect.name == "mysql":
+    from sqlalchemy.dialects.mysql import *
+
+def BIGINT(_):
+    return db.SMALLINT
+
+def SMALLINT(_):
+    return db.SMALLINT
+
+def INTEGER(_):
+    return db.INTEGER
+
+def TIME(**kwargs):
+    return db.TIME
+
+
+########################################################################################################################
+
+
+
+class Category(SAFRSBase, Base):
+    __tablename__ = 'Category'
+
+    Id = Column(Integer, primary_key=True)
+    CategoryName = Column(String(8000))
+    Description = Column(String(8000))
+
+
+class Customer(SAFRSBase, Base):
+    __tablename__ = 'Customer'
+
+    Id = Column(String(8000), primary_key=True)
+    CompanyName = Column(String(8000))
+    ContactName = Column(String(8000))
+    ContactTitle = Column(String(8000))
+    Address = Column(String(8000))
+    City = Column(String(8000))
+    Region = Column(String(8000))
+    PostalCode = Column(String(8000))
+    Country = Column(String(8000))
+    Phone = Column(String(8000))
+    Fax = Column(String(8000))
+    Balance = Column(DECIMAL)
+    CreditLimit = Column(DECIMAL)
+    OrderCount = Column(Integer, server_default=text("0"))
+    UnpaidOrderCount = Column(Integer, server_default=text("0"))
+
+
+class CustomerDemographic(SAFRSBase, Base):
+    __tablename__ = 'CustomerDemographic'
+
+    Id = Column(String(8000), primary_key=True)
+    CustomerDesc = Column(String(8000))
+
+
+class Employee(SAFRSBase, Base):
+    __tablename__ = 'Employee'
+
+    Id = Column(Integer, primary_key=True)
+    LastName = Column(String(8000))
+    FirstName = Column(String(8000))
+    Title = Column(String(8000))
+    TitleOfCourtesy = Column(String(8000))
+    BirthDate = Column(String(8000))
+    HireDate = Column(String(8000))
+    Address = Column(String(8000))
+    City = Column(String(8000))
+    Region = Column(String(8000))
+    PostalCode = Column(String(8000))
+    Country = Column(String(8000))
+    HomePhone = Column(String(8000))
+    Extension = Column(String(8000))
+    Photo = Column(LargeBinary)
+    Notes = Column(String(8000))
+    ReportsTo = Column(Integer)
+    PhotoPath = Column(String(8000))
+    IsCommissioned = Column(Integer)
+    Salary = Column(DECIMAL)
+
+
+class EmployeeAudit(SAFRSBase, Base):
+    __tablename__ = 'EmployeeAudit'
+
+    Id = Column(Integer, primary_key=True)
+    Title = Column(String)
+    Salary = Column(DECIMAL)
+    LastName = Column(String)
+    FirstName = Column(String)
+    EmployeeId = Column(Integer)
+    CreatedOn = Column(Text)
+
+
+class Product(SAFRSBase, Base):
+    __tablename__ = 'Product'
+
+    Id = Column(Integer, primary_key=True)
+    ProductName = Column(String(8000))
+    SupplierId = Column(Integer, nullable=False)
+    CategoryId = Column(Integer, nullable=False)
+    QuantityPerUnit = Column(String(8000))
+    UnitPrice = Column(DECIMAL, nullable=False)
+    UnitsInStock = Column(Integer, nullable=False)
+    UnitsOnOrder = Column(Integer, nullable=False)
+    ReorderLevel = Column(Integer, nullable=False)
+    Discontinued = Column(Integer, nullable=False)
+    UnitsShipped = Column(Integer)
+
+
+t_ProductDetails_V = Table(
+    'ProductDetails_V', metadata,
+    Column('Id', Integer),
+    Column('ProductName', String(8000)),
+    Column('SupplierId', Integer),
+    Column('CategoryId', Integer),
+    Column('QuantityPerUnit', String(8000)),
+    Column('UnitPrice', DECIMAL),
+    Column('UnitsInStock', Integer),
+    Column('UnitsOnOrder', Integer),
+    Column('ReorderLevel', Integer),
+    Column('Discontinued', Integer),
+    Column('UnitsShipped', Integer),
+    Column('CategoryName', String(8000)),
+    Column('CategoryDescription', String(8000)),
+    Column('SupplierName', String(8000)),
+    Column('SupplierRegion', String(8000))
+)
+
+
+class Region(SAFRSBase, Base):
+    __tablename__ = 'Region'
+
+    Id = Column(Integer, primary_key=True)
+    RegionDescription = Column(String(8000))
+
+
+class Shipper(SAFRSBase, Base):
+    __tablename__ = 'Shipper'
+
+    Id = Column(Integer, primary_key=True)
+    CompanyName = Column(String(8000))
+    Phone = Column(String(8000))
+
+
+class Supplier(SAFRSBase, Base):
+    __tablename__ = 'Supplier'
+
+    Id = Column(Integer, primary_key=True)
+    CompanyName = Column(String(8000))
+    ContactName = Column(String(8000))
+    ContactTitle = Column(String(8000))
+    Address = Column(String(8000))
+    City = Column(String(8000))
+    Region = Column(String(8000))
+    PostalCode = Column(String(8000))
+    Country = Column(String(8000))
+    Phone = Column(String(8000))
+    Fax = Column(String(8000))
+    HomePage = Column(String(8000))
+
+
+class Territory(SAFRSBase, Base):
+    __tablename__ = 'Territory'
+
+    Id = Column(String(8000), primary_key=True)
+    TerritoryDescription = Column(String(8000))
+    RegionId = Column(Integer, nullable=False)
+
+
+class AbPermission(SAFRSBase, Base):
+    __tablename__ = 'ab_permission'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False, unique=True)
+
+
+class AbRegisterUser(SAFRSBase, Base):
+    __tablename__ = 'ab_register_user'
+
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(64), nullable=False)
+    last_name = Column(String(64), nullable=False)
+    username = Column(String(64), nullable=False, unique=True)
+    password = Column(String(256))
+    email = Column(String(64), nullable=False)
+    registration_date = Column(DateTime)
+    registration_hash = Column(String(256))
+
+
+class AbRole(SAFRSBase, Base):
+    __tablename__ = 'ab_role'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64), nullable=False, unique=True)
+
+
+class AbUser(SAFRSBase, Base):
+    __tablename__ = 'ab_user'
+
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(64), nullable=False)
+    last_name = Column(String(64), nullable=False)
+    username = Column(String(64), nullable=False, unique=True)
+    password = Column(String(256))
+    active = Column(Boolean)
+    email = Column(String(64), nullable=False, unique=True)
+    last_login = Column(DateTime)
+    login_count = Column(Integer)
+    fail_login_count = Column(Integer)
+    created_on = Column(DateTime)
+    changed_on = Column(DateTime)
+    created_by_fk = Column(ForeignKey('ab_user.id'))
+    changed_by_fk = Column(ForeignKey('ab_user.id'))
+
+    parent = relationship('AbUser', remote_side=[id], primaryjoin='AbUser.changed_by_fk == AbUser.id')
+    parent1 = relationship('AbUser', remote_side=[id], primaryjoin='AbUser.created_by_fk == AbUser.id')
+
+
+class AbViewMenu(SAFRSBase, Base):
+    __tablename__ = 'ab_view_menu'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False, unique=True)
+
+
+t_sqlite_sequence = Table(
+    'sqlite_sequence', metadata,
+    Column('name', NullType),
+    Column('seq', NullType)
+)
+
+
+class CustomerCustomerDemo(SAFRSBase, Base):
+    __tablename__ = 'CustomerCustomerDemo'
+
+    Id = Column(String(8000), primary_key=True)
+    CustomerTypeId = Column(ForeignKey('Customer.Id'))
+
+    Customer = relationship('Customer')
+
+
+class EmployeeTerritory(SAFRSBase, Base):
+    __tablename__ = 'EmployeeTerritory'
+
+    Id = Column(String(8000), primary_key=True)
+    EmployeeId = Column(ForeignKey('Employee.Id'), nullable=False)
+    TerritoryId = Column(ForeignKey('Territory.Id'))
+
+    Employee = relationship('Employee')
+    Territory = relationship('Territory')
+
+
+class Order(SAFRSBase, Base):
+    __tablename__ = 'Order'
+
+    Id = Column(Integer, primary_key=True)
+    CustomerId = Column(ForeignKey('Customer.Id'))
+    EmployeeId = Column(ForeignKey('Employee.Id'), nullable=False)
+    OrderDate = Column(String(8000))
+    RequiredDate = Column(String(8000))
+    ShippedDate = Column(String(8000))
+    ShipVia = Column(Integer)
+    Freight = Column(DECIMAL, nullable=False)
+    ShipName = Column(String(8000))
+    ShipAddress = Column(String(8000))
+    ShipCity = Column(String(8000))
+    ShipRegion = Column(String(8000))
+    ShipPostalCode = Column(String(8000))
+    ShipCountry = Column(String(8000))
+    AmountTotal = Column(DECIMAL(10, 2))
+
+    Customer = relationship('Customer')
+    Employee = relationship('Employee')
+
+
+class OrderZ(SAFRSBase, Base):
+    __tablename__ = 'OrderZ'
+
+    Id = Column(Integer, primary_key=True)
+    CustomerId = Column(ForeignKey('Customer.Id'))
+    EmployeeId = Column(Integer, nullable=False)
+    OrderDate = Column(String(8000))
+    RequiredDate = Column(String(8000))
+    ShippedDate = Column(String(8000))
+    ShipVia = Column(Integer)
+    Freight = Column(DECIMAL, nullable=False)
+    ShipName = Column(String(8000))
+    ShipAddress = Column(String(8000))
+    ShipCity = Column(String(8000))
+    ShipRegion = Column(String(8000))
+    ShipPostalCode = Column(String(8000))
+    ShipCountry = Column(String(8000))
+    AmountTotal = Column(DECIMAL)
+
+    Customer = relationship('Customer')
+
+
+class AbPermissionView(SAFRSBase, Base):
+    __tablename__ = 'ab_permission_view'
+    __table_args__ = (
+        UniqueConstraint('permission_id', 'view_menu_id'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    permission_id = Column(ForeignKey('ab_permission.id'))
+    view_menu_id = Column(ForeignKey('ab_view_menu.id'))
+
+    permission = relationship('AbPermission')
+    view_menu = relationship('AbViewMenu')
+
+
+class AbUserRole(SAFRSBase, Base):
+    __tablename__ = 'ab_user_role'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'role_id'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(ForeignKey('ab_user.id'))
+    role_id = Column(ForeignKey('ab_role.id'))
+
+    role = relationship('AbRole')
+    user = relationship('AbUser')
+
+
+class OrderDetail(SAFRSBase, Base):
+    __tablename__ = 'OrderDetail'
+
+    Id = Column(Integer, primary_key=True)
+    OrderId = Column(ForeignKey('Order.Id'), nullable=False)
+    ProductId = Column(ForeignKey('Product.Id'), nullable=False)
+    UnitPrice = Column(DECIMAL, nullable=False)
+    Quantity = Column(Integer, nullable=False)
+    Discount = Column(Float, nullable=False)
+    Amount = Column(DECIMAL)
+    ShippedDate = Column(String(8000))
+
+    Order = relationship('Order')
+    Product = relationship('Product')
+
+
+class AbPermissionViewRole(SAFRSBase, Base):
+    __tablename__ = 'ab_permission_view_role'
+    __table_args__ = (
+        UniqueConstraint('permission_view_id', 'role_id'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    permission_view_id = Column(ForeignKey('ab_permission_view.id'))
+    role_id = Column(ForeignKey('ab_role.id'))
+
+    permission_view = relationship('AbPermissionView')
+    role = relationship('AbRole')
+
+[2021-01-02 21:26:45,843] INFO: Exposing method AbPermission.search on /ab_permission/search, endpoint: api.ab_permission.search
+[2021-01-02 21:26:45,863] INFO: Exposing ab_permission on /ab_permission/, endpoint: api.AbPermission
+[2021-01-02 21:26:45,865] INFO: Exposing AbPermission instances on /ab_permission/<string:AbPermissionId>/, endpoint: api.AbPermissionId
+[2021-01-02 21:26:45,898] INFO: Exposing method AbPermissionView.search on /ab_permission_view/search, endpoint: api.ab_permission_view.search
+[2021-01-02 21:26:45,920] INFO: Exposing ab_permission_view on /ab_permission_view/, endpoint: api.AbPermissionView
+[2021-01-02 21:26:45,922] INFO: Exposing AbPermissionView instances on /ab_permission_view/<string:AbPermissionViewId>/, endpoint: api.AbPermissionViewId
+[2021-01-02 21:26:45,967] INFO: Exposing relationship permission on /ab_permission_view/<string:AbPermissionViewId>/permission, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.permission
+[2021-01-02 21:26:45,969] INFO: Exposing AbPermissionView relationship permission on /ab_permission_view/<string:AbPermissionViewId>/permission/<string:AbPermissionId>, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.permissionId
+[2021-01-02 21:26:45,992] INFO: Exposing relationship view_menu on /ab_permission_view/<string:AbPermissionViewId>/view_menu, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.view_menu
+[2021-01-02 21:26:45,995] INFO: Exposing AbPermissionView relationship view_menu on /ab_permission_view/<string:AbPermissionViewId>/view_menu/<string:AbViewMenuId>, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.view_menuId
+[2021-01-02 21:26:46,005] INFO: Exposing method AbPermissionViewRole.search on /ab_permission_view_role/search, endpoint: api.ab_permission_view_role.search
+[2021-01-02 21:26:46,029] INFO: Exposing ab_permission_view_role on /ab_permission_view_role/, endpoint: api.AbPermissionViewRole
+[2021-01-02 21:26:46,032] INFO: Exposing AbPermissionViewRole instances on /ab_permission_view_role/<string:AbPermissionViewRoleId>/, endpoint: api.AbPermissionViewRoleId
+[2021-01-02 21:26:46,077] INFO: Exposing relationship permission_view on /ab_permission_view_role/<string:AbPermissionViewRoleId>/permission_view, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.permission_view
+[2021-01-02 21:26:46,080] INFO: Exposing AbPermissionViewRole relationship permission_view on /ab_permission_view_role/<string:AbPermissionViewRoleId>/permission_view/<string:AbPermissionViewId>, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.permission_viewId
+[2021-01-02 21:26:46,105] INFO: Exposing relationship role on /ab_permission_view_role/<string:AbPermissionViewRoleId>/role, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.role
+[2021-01-02 21:26:46,108] INFO: Exposing AbPermissionViewRole relationship role on /ab_permission_view_role/<string:AbPermissionViewRoleId>/role/<string:AbRoleId>, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.roleId
+[2021-01-02 21:26:46,118] INFO: Exposing method AbRegisterUser.search on /ab_register_user/search, endpoint: api.ab_register_user.search
+[2021-01-02 21:26:46,137] INFO: Exposing ab_register_user on /ab_register_user/, endpoint: api.AbRegisterUser
+[2021-01-02 21:26:46,140] INFO: Exposing AbRegisterUser instances on /ab_register_user/<string:AbRegisterUserId>/, endpoint: api.AbRegisterUserId
+[2021-01-02 21:26:46,167] INFO: Exposing method AbRole.search on /ab_role/search, endpoint: api.ab_role.search
+[2021-01-02 21:26:46,187] INFO: Exposing ab_role on /ab_role/, endpoint: api.AbRole
+[2021-01-02 21:26:46,189] INFO: Exposing AbRole instances on /ab_role/<string:AbRoleId>/, endpoint: api.AbRoleId
+[2021-01-02 21:26:46,225] INFO: Exposing method AbUser.search on /ab_user/search, endpoint: api.ab_user.search
+[2021-01-02 21:26:46,252] INFO: Exposing ab_user on /ab_user/, endpoint: api.AbUser
+[2021-01-02 21:26:46,255] INFO: Exposing AbUser instances on /ab_user/<string:AbUserId>/, endpoint: api.AbUserId
+[2021-01-02 21:26:46,314] INFO: Exposing relationship parent on /ab_user/<string:AbUserId>/parent, endpoint: /ab_user/<string:AbUserId>/api.parent
+[2021-01-02 21:26:46,317] INFO: Exposing AbUser relationship parent on /ab_user/<string:AbUserId>/parent/<string:AbUserId2>, endpoint: /ab_user/<string:AbUserId>/api.parentId
+[2021-01-02 21:26:46,346] INFO: Exposing relationship parent1 on /ab_user/<string:AbUserId>/parent1, endpoint: /ab_user/<string:AbUserId>/api.parent1
+[2021-01-02 21:26:46,349] INFO: Exposing AbUser relationship parent1 on /ab_user/<string:AbUserId>/parent1/<string:AbUserId2>, endpoint: /ab_user/<string:AbUserId>/api.parent1Id
+[2021-01-02 21:26:46,358] INFO: Exposing method AbUserRole.search on /ab_user_role/search, endpoint: api.ab_user_role.search
+[2021-01-02 21:26:46,381] INFO: Exposing ab_user_role on /ab_user_role/, endpoint: api.AbUserRole
+[2021-01-02 21:26:46,385] INFO: Exposing AbUserRole instances on /ab_user_role/<string:AbUserRoleId>/, endpoint: api.AbUserRoleId
+[2021-01-02 21:26:46,433] INFO: Exposing relationship role on /ab_user_role/<string:AbUserRoleId>/role, endpoint: /ab_user_role/<string:AbUserRoleId>/api.role
+[2021-01-02 21:26:46,437] INFO: Exposing AbUserRole relationship role on /ab_user_role/<string:AbUserRoleId>/role/<string:AbRoleId>, endpoint: /ab_user_role/<string:AbUserRoleId>/api.roleId
+[2021-01-02 21:26:46,463] INFO: Exposing relationship user on /ab_user_role/<string:AbUserRoleId>/user, endpoint: /ab_user_role/<string:AbUserRoleId>/api.user
+[2021-01-02 21:26:46,467] INFO: Exposing AbUserRole relationship user on /ab_user_role/<string:AbUserRoleId>/user/<string:AbUserId>, endpoint: /ab_user_role/<string:AbUserRoleId>/api.userId
+[2021-01-02 21:26:46,475] INFO: Exposing method AbViewMenu.search on /ab_view_menu/search, endpoint: api.ab_view_menu.search
+[2021-01-02 21:26:46,498] INFO: Exposing ab_view_menu on /ab_view_menu/, endpoint: api.AbViewMenu
+[2021-01-02 21:26:46,502] INFO: Exposing AbViewMenu instances on /ab_view_menu/<string:AbViewMenuId>/, endpoint: api.AbViewMenuId
+[2021-01-02 21:26:46,536] INFO: Exposing method Category.search on /Category/search, endpoint: api.Category.search
+[2021-01-02 21:26:46,557] INFO: Exposing Category on /Category/, endpoint: api.Category
+[2021-01-02 21:26:46,561] INFO: Exposing Category instances on /Category/<string:CategoryId>/, endpoint: api.CategoryId
+/Users/val/dev/safrs/expose_existing/tempenv/lib/python3.8/site-packages/sqlalchemy/sql/sqltypes.py:661: SAWarning: Dialect sqlite+pysqlite does *not* support Decimal objects natively, and SQLAlchemy must convert from floating point - rounding errors and other issues may occur. Please consider storing Decimal numbers as strings or integers on this platform for lossless storage.
+  util.warn(
+[2021-01-02 21:26:46,600] INFO: Exposing method Customer.search on /Customer/search, endpoint: api.Customer.search
+[2021-01-02 21:26:46,630] INFO: Exposing Customer on /Customer/, endpoint: api.Customer
+[2021-01-02 21:26:46,634] INFO: Exposing Customer instances on /Customer/<string:CustomerId>/, endpoint: api.CustomerId
+[2021-01-02 21:26:46,671] INFO: Exposing method CustomerCustomerDemo.search on /CustomerCustomerDemo/search, endpoint: api.CustomerCustomerDemo.search
+[2021-01-02 21:26:46,692] INFO: Exposing CustomerCustomerDemo on /CustomerCustomerDemo/, endpoint: api.CustomerCustomerDemo
+[2021-01-02 21:26:46,697] INFO: Exposing CustomerCustomerDemo instances on /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/, endpoint: api.CustomerCustomerDemoId
+[2021-01-02 21:26:46,748] INFO: Exposing relationship Customer on /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/Customer, endpoint: /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/api.Customer
+[2021-01-02 21:26:46,752] INFO: Exposing CustomerCustomerDemo relationship Customer on /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/Customer/<string:CustomerId>, endpoint: /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/api.CustomerId
+[2021-01-02 21:26:46,762] INFO: Exposing method CustomerDemographic.search on /CustomerDemographic/search, endpoint: api.CustomerDemographic.search
+[2021-01-02 21:26:46,786] INFO: Exposing CustomerDemographic on /CustomerDemographic/, endpoint: api.CustomerDemographic
+[2021-01-02 21:26:46,791] INFO: Exposing CustomerDemographic instances on /CustomerDemographic/<string:CustomerDemographicId>/, endpoint: api.CustomerDemographicId
+[2021-01-02 21:26:46,831] INFO: Exposing method Employee.search on /Employee/search, endpoint: api.Employee.search
+[2021-01-02 21:26:46,838] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,838] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,844] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,844] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,845] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,850] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,850] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,855] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,856] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,863] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,863] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,864] INFO: Exposing Employee on /Employee/, endpoint: api.Employee
+[2021-01-02 21:26:46,869] INFO: Exposing Employee instances on /Employee/<string:EmployeeId>/, endpoint: api.EmployeeId
+[2021-01-02 21:26:46,873] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,873] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,879] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,879] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,880] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,887] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,888] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,893] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,893] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,898] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,899] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:46,915] INFO: Exposing method EmployeeAudit.search on /EmployeeAudit/search, endpoint: api.EmployeeAudit.search
+[2021-01-02 21:26:46,936] INFO: Exposing EmployeeAudit on /EmployeeAudit/, endpoint: api.EmployeeAudit
+[2021-01-02 21:26:46,942] INFO: Exposing EmployeeAudit instances on /EmployeeAudit/<string:EmployeeAuditId>/, endpoint: api.EmployeeAuditId
+[2021-01-02 21:26:46,977] INFO: Exposing method EmployeeTerritory.search on /EmployeeTerritory/search, endpoint: api.EmployeeTerritory.search
+[2021-01-02 21:26:47,002] INFO: Exposing EmployeeTerritory on /EmployeeTerritory/, endpoint: api.EmployeeTerritory
+[2021-01-02 21:26:47,008] INFO: Exposing EmployeeTerritory instances on /EmployeeTerritory/<string:EmployeeTerritoryId>/, endpoint: api.EmployeeTerritoryId
+[2021-01-02 21:26:47,065] INFO: Exposing relationship Employee on /EmployeeTerritory/<string:EmployeeTerritoryId>/Employee, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.Employee
+[2021-01-02 21:26:47,070] INFO: Exposing EmployeeTerritory relationship Employee on /EmployeeTerritory/<string:EmployeeTerritoryId>/Employee/<string:EmployeeId>, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.EmployeeId
+[2021-01-02 21:26:47,095] INFO: Exposing relationship Territory on /EmployeeTerritory/<string:EmployeeTerritoryId>/Territory, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.Territory
+[2021-01-02 21:26:47,100] INFO: Exposing EmployeeTerritory relationship Territory on /EmployeeTerritory/<string:EmployeeTerritoryId>/Territory/<string:TerritoryId>, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.TerritoryId
+[2021-01-02 21:26:47,112] INFO: Exposing method Order.search on /Order/search, endpoint: api.Order.search
+[2021-01-02 21:26:47,144] INFO: Exposing Order on /Order/, endpoint: api.Order
+[2021-01-02 21:26:47,150] INFO: Exposing Order instances on /Order/<string:OrderId>/, endpoint: api.OrderId
+[2021-01-02 21:26:47,209] INFO: Exposing relationship Customer on /Order/<string:OrderId>/Customer, endpoint: /Order/<string:OrderId>/api.Customer
+[2021-01-02 21:26:47,214] INFO: Exposing Order relationship Customer on /Order/<string:OrderId>/Customer/<string:CustomerId>, endpoint: /Order/<string:OrderId>/api.CustomerId
+[2021-01-02 21:26:47,242] INFO: Exposing relationship Employee on /Order/<string:OrderId>/Employee, endpoint: /Order/<string:OrderId>/api.Employee
+[2021-01-02 21:26:47,248] INFO: Exposing Order relationship Employee on /Order/<string:OrderId>/Employee/<string:EmployeeId>, endpoint: /Order/<string:OrderId>/api.EmployeeId
+[2021-01-02 21:26:47,259] INFO: Exposing method OrderDetail.search on /OrderDetail/search, endpoint: api.OrderDetail.search
+[2021-01-02 21:26:47,290] INFO: Exposing OrderDetail on /OrderDetail/, endpoint: api.OrderDetail
+[2021-01-02 21:26:47,297] INFO: Exposing OrderDetail instances on /OrderDetail/<string:OrderDetailId>/, endpoint: api.OrderDetailId
+[2021-01-02 21:26:47,356] INFO: Exposing relationship Order on /OrderDetail/<string:OrderDetailId>/Order, endpoint: /OrderDetail/<string:OrderDetailId>/api.Order
+[2021-01-02 21:26:47,362] INFO: Exposing OrderDetail relationship Order on /OrderDetail/<string:OrderDetailId>/Order/<string:OrderId>, endpoint: /OrderDetail/<string:OrderDetailId>/api.OrderId
+[2021-01-02 21:26:47,391] INFO: Exposing relationship Product on /OrderDetail/<string:OrderDetailId>/Product, endpoint: /OrderDetail/<string:OrderDetailId>/api.Product
+[2021-01-02 21:26:47,398] INFO: Exposing OrderDetail relationship Product on /OrderDetail/<string:OrderDetailId>/Product/<string:ProductId>, endpoint: /OrderDetail/<string:OrderDetailId>/api.ProductId
+[2021-01-02 21:26:47,411] INFO: Exposing method OrderZ.search on /OrderZ/search, endpoint: api.OrderZ.search
+[2021-01-02 21:26:47,446] INFO: Exposing OrderZ on /OrderZ/, endpoint: api.OrderZ
+[2021-01-02 21:26:47,453] INFO: Exposing OrderZ instances on /OrderZ/<string:OrderZId>/, endpoint: api.OrderZId
+[2021-01-02 21:26:47,515] INFO: Exposing relationship Customer on /OrderZ/<string:OrderZId>/Customer, endpoint: /OrderZ/<string:OrderZId>/api.Customer
+[2021-01-02 21:26:47,521] INFO: Exposing OrderZ relationship Customer on /OrderZ/<string:OrderZId>/Customer/<string:CustomerId>, endpoint: /OrderZ/<string:OrderZId>/api.CustomerId
+[2021-01-02 21:26:47,534] INFO: Exposing method Product.search on /Product/search, endpoint: api.Product.search
+[2021-01-02 21:26:47,564] INFO: Exposing Product on /Product/, endpoint: api.Product
+[2021-01-02 21:26:47,571] INFO: Exposing Product instances on /Product/<string:ProductId>/, endpoint: api.ProductId
+[2021-01-02 21:26:47,610] INFO: Exposing method Region.search on /Region/search, endpoint: api.Region.search
+[2021-01-02 21:26:47,634] INFO: Exposing Region on /Region/, endpoint: api.Region
+[2021-01-02 21:26:47,641] INFO: Exposing Region instances on /Region/<string:RegionId>/, endpoint: api.RegionId
+[2021-01-02 21:26:47,678] INFO: Exposing method Shipper.search on /Shipper/search, endpoint: api.Shipper.search
+[2021-01-02 21:26:47,703] INFO: Exposing Shipper on /Shipper/, endpoint: api.Shipper
+[2021-01-02 21:26:47,710] INFO: Exposing Shipper instances on /Shipper/<string:ShipperId>/, endpoint: api.ShipperId
+[2021-01-02 21:26:47,752] INFO: Exposing method Supplier.search on /Supplier/search, endpoint: api.Supplier.search
+[2021-01-02 21:26:47,785] INFO: Exposing Supplier on /Supplier/, endpoint: api.Supplier
+[2021-01-02 21:26:47,791] INFO: Exposing Supplier instances on /Supplier/<string:SupplierId>/, endpoint: api.SupplierId
+[2021-01-02 21:26:47,832] INFO: Exposing method Territory.search on /Territory/search, endpoint: api.Territory.search
+[2021-01-02 21:26:47,856] INFO: Exposing Territory on /Territory/, endpoint: api.Territory
+[2021-01-02 21:26:47,865] INFO: Exposing Territory instances on /Territory/<string:TerritoryId>/, endpoint: api.TerritoryId
+API URL: http://localhost:5000/api , model dir: /var/folders/s0/zlp_nrdn52124n8czv6dwkvh0000gn/T/tmpc4qr_8bm
+ * Serving Flask app "DB App" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://localhost:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+#Failed to get col type for sqlite_sequence.name
+#Failed to get col type for sqlite_sequence.seq
+# Render Category
+# Render Customer
+# Render CustomerDemographic
+# Render Employee
+# Render EmployeeAudit
+# Render Product
+# Render Region
+# Render Shipper
+# Render Supplier
+# Render Territory
+# Render AbPermission
+# Render AbRegisterUser
+# Render AbRole
+# Render AbUser
+# Render AbViewMenu
+# Render CustomerCustomerDemo
+# Render EmployeeTerritory
+# Render Order
+# Render OrderZ
+# Render AbPermissionView
+# Render AbUserRole
+# Render OrderDetail
+# Render AbPermissionViewRole
+# coding: utf-8
+from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.sqltypes import NullType
+from sqlalchemy.ext.declarative import declarative_base
+
+
+########################################################################################################################
+# Manually Added for safrs, TODO: improve this crap
+#
+from safrs import SAFRSBase
+
+Base = db.Model
+metadata = Base.metadata
+
+NullType = db.String
+TIMESTAMP= db.TIMESTAMP
+
+if db.session.bind.dialect.name == "mysql":
+    from sqlalchemy.dialects.mysql import *
+
+def BIGINT(_):
+    return db.SMALLINT
+
+def SMALLINT(_):
+    return db.SMALLINT
+
+def INTEGER(_):
+    return db.INTEGER
+
+def TIME(**kwargs):
+    return db.TIME
+
+
+########################################################################################################################
+
+
+
+class Category(SAFRSBase, Base):
+    __tablename__ = 'Category'
+
+    Id = Column(Integer, primary_key=True)
+    CategoryName = Column(String(8000))
+    Description = Column(String(8000))
+
+
+class Customer(SAFRSBase, Base):
+    __tablename__ = 'Customer'
+
+    Id = Column(String(8000), primary_key=True)
+    CompanyName = Column(String(8000))
+    ContactName = Column(String(8000))
+    ContactTitle = Column(String(8000))
+    Address = Column(String(8000))
+    City = Column(String(8000))
+    Region = Column(String(8000))
+    PostalCode = Column(String(8000))
+    Country = Column(String(8000))
+    Phone = Column(String(8000))
+    Fax = Column(String(8000))
+    Balance = Column(DECIMAL)
+    CreditLimit = Column(DECIMAL)
+    OrderCount = Column(Integer, server_default=text("0"))
+    UnpaidOrderCount = Column(Integer, server_default=text("0"))
+
+
+class CustomerDemographic(SAFRSBase, Base):
+    __tablename__ = 'CustomerDemographic'
+
+    Id = Column(String(8000), primary_key=True)
+    CustomerDesc = Column(String(8000))
+
+
+class Employee(SAFRSBase, Base):
+    __tablename__ = 'Employee'
+
+    Id = Column(Integer, primary_key=True)
+    LastName = Column(String(8000))
+    FirstName = Column(String(8000))
+    Title = Column(String(8000))
+    TitleOfCourtesy = Column(String(8000))
+    BirthDate = Column(String(8000))
+    HireDate = Column(String(8000))
+    Address = Column(String(8000))
+    City = Column(String(8000))
+    Region = Column(String(8000))
+    PostalCode = Column(String(8000))
+    Country = Column(String(8000))
+    HomePhone = Column(String(8000))
+    Extension = Column(String(8000))
+    Photo = Column(LargeBinary)
+    Notes = Column(String(8000))
+    ReportsTo = Column(Integer)
+    PhotoPath = Column(String(8000))
+    IsCommissioned = Column(Integer)
+    Salary = Column(DECIMAL)
+
+
+class EmployeeAudit(SAFRSBase, Base):
+    __tablename__ = 'EmployeeAudit'
+
+    Id = Column(Integer, primary_key=True)
+    Title = Column(String)
+    Salary = Column(DECIMAL)
+    LastName = Column(String)
+    FirstName = Column(String)
+    EmployeeId = Column(Integer)
+    CreatedOn = Column(Text)
+
+
+class Product(SAFRSBase, Base):
+    __tablename__ = 'Product'
+
+    Id = Column(Integer, primary_key=True)
+    ProductName = Column(String(8000))
+    SupplierId = Column(Integer, nullable=False)
+    CategoryId = Column(Integer, nullable=False)
+    QuantityPerUnit = Column(String(8000))
+    UnitPrice = Column(DECIMAL, nullable=False)
+    UnitsInStock = Column(Integer, nullable=False)
+    UnitsOnOrder = Column(Integer, nullable=False)
+    ReorderLevel = Column(Integer, nullable=False)
+    Discontinued = Column(Integer, nullable=False)
+    UnitsShipped = Column(Integer)
+
+
+t_ProductDetails_V = Table(
+    'ProductDetails_V', metadata,
+    Column('Id', Integer),
+    Column('ProductName', String(8000)),
+    Column('SupplierId', Integer),
+    Column('CategoryId', Integer),
+    Column('QuantityPerUnit', String(8000)),
+    Column('UnitPrice', DECIMAL),
+    Column('UnitsInStock', Integer),
+    Column('UnitsOnOrder', Integer),
+    Column('ReorderLevel', Integer),
+    Column('Discontinued', Integer),
+    Column('UnitsShipped', Integer),
+    Column('CategoryName', String(8000)),
+    Column('CategoryDescription', String(8000)),
+    Column('SupplierName', String(8000)),
+    Column('SupplierRegion', String(8000))
+)
+
+
+class Region(SAFRSBase, Base):
+    __tablename__ = 'Region'
+
+    Id = Column(Integer, primary_key=True)
+    RegionDescription = Column(String(8000))
+
+
+class Shipper(SAFRSBase, Base):
+    __tablename__ = 'Shipper'
+
+    Id = Column(Integer, primary_key=True)
+    CompanyName = Column(String(8000))
+    Phone = Column(String(8000))
+
+
+class Supplier(SAFRSBase, Base):
+    __tablename__ = 'Supplier'
+
+    Id = Column(Integer, primary_key=True)
+    CompanyName = Column(String(8000))
+    ContactName = Column(String(8000))
+    ContactTitle = Column(String(8000))
+    Address = Column(String(8000))
+    City = Column(String(8000))
+    Region = Column(String(8000))
+    PostalCode = Column(String(8000))
+    Country = Column(String(8000))
+    Phone = Column(String(8000))
+    Fax = Column(String(8000))
+    HomePage = Column(String(8000))
+
+
+class Territory(SAFRSBase, Base):
+    __tablename__ = 'Territory'
+
+    Id = Column(String(8000), primary_key=True)
+    TerritoryDescription = Column(String(8000))
+    RegionId = Column(Integer, nullable=False)
+
+
+class AbPermission(SAFRSBase, Base):
+    __tablename__ = 'ab_permission'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False, unique=True)
+
+
+class AbRegisterUser(SAFRSBase, Base):
+    __tablename__ = 'ab_register_user'
+
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(64), nullable=False)
+    last_name = Column(String(64), nullable=False)
+    username = Column(String(64), nullable=False, unique=True)
+    password = Column(String(256))
+    email = Column(String(64), nullable=False)
+    registration_date = Column(DateTime)
+    registration_hash = Column(String(256))
+
+
+class AbRole(SAFRSBase, Base):
+    __tablename__ = 'ab_role'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64), nullable=False, unique=True)
+
+
+class AbUser(SAFRSBase, Base):
+    __tablename__ = 'ab_user'
+
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(64), nullable=False)
+    last_name = Column(String(64), nullable=False)
+    username = Column(String(64), nullable=False, unique=True)
+    password = Column(String(256))
+    active = Column(Boolean)
+    email = Column(String(64), nullable=False, unique=True)
+    last_login = Column(DateTime)
+    login_count = Column(Integer)
+    fail_login_count = Column(Integer)
+    created_on = Column(DateTime)
+    changed_on = Column(DateTime)
+    created_by_fk = Column(ForeignKey('ab_user.id'))
+    changed_by_fk = Column(ForeignKey('ab_user.id'))
+
+    parent = relationship('AbUser', remote_side=[id], primaryjoin='AbUser.changed_by_fk == AbUser.id')
+    parent1 = relationship('AbUser', remote_side=[id], primaryjoin='AbUser.created_by_fk == AbUser.id')
+
+
+class AbViewMenu(SAFRSBase, Base):
+    __tablename__ = 'ab_view_menu'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False, unique=True)
+
+
+t_sqlite_sequence = Table(
+    'sqlite_sequence', metadata,
+    Column('name', NullType),
+    Column('seq', NullType)
+)
+
+
+class CustomerCustomerDemo(SAFRSBase, Base):
+    __tablename__ = 'CustomerCustomerDemo'
+
+    Id = Column(String(8000), primary_key=True)
+    CustomerTypeId = Column(ForeignKey('Customer.Id'))
+
+    Customer = relationship('Customer')
+
+
+class EmployeeTerritory(SAFRSBase, Base):
+    __tablename__ = 'EmployeeTerritory'
+
+    Id = Column(String(8000), primary_key=True)
+    EmployeeId = Column(ForeignKey('Employee.Id'), nullable=False)
+    TerritoryId = Column(ForeignKey('Territory.Id'))
+
+    Employee = relationship('Employee')
+    Territory = relationship('Territory')
+
+
+class Order(SAFRSBase, Base):
+    __tablename__ = 'Order'
+
+    Id = Column(Integer, primary_key=True)
+    CustomerId = Column(ForeignKey('Customer.Id'))
+    EmployeeId = Column(ForeignKey('Employee.Id'), nullable=False)
+    OrderDate = Column(String(8000))
+    RequiredDate = Column(String(8000))
+    ShippedDate = Column(String(8000))
+    ShipVia = Column(Integer)
+    Freight = Column(DECIMAL, nullable=False)
+    ShipName = Column(String(8000))
+    ShipAddress = Column(String(8000))
+    ShipCity = Column(String(8000))
+    ShipRegion = Column(String(8000))
+    ShipPostalCode = Column(String(8000))
+    ShipCountry = Column(String(8000))
+    AmountTotal = Column(DECIMAL(10, 2))
+
+    Customer = relationship('Customer')
+    Employee = relationship('Employee')
+
+
+class OrderZ(SAFRSBase, Base):
+    __tablename__ = 'OrderZ'
+
+    Id = Column(Integer, primary_key=True)
+    CustomerId = Column(ForeignKey('Customer.Id'))
+    EmployeeId = Column(Integer, nullable=False)
+    OrderDate = Column(String(8000))
+    RequiredDate = Column(String(8000))
+    ShippedDate = Column(String(8000))
+    ShipVia = Column(Integer)
+    Freight = Column(DECIMAL, nullable=False)
+    ShipName = Column(String(8000))
+    ShipAddress = Column(String(8000))
+    ShipCity = Column(String(8000))
+    ShipRegion = Column(String(8000))
+    ShipPostalCode = Column(String(8000))
+    ShipCountry = Column(String(8000))
+    AmountTotal = Column(DECIMAL)
+
+    Customer = relationship('Customer')
+
+
+class AbPermissionView(SAFRSBase, Base):
+    __tablename__ = 'ab_permission_view'
+    __table_args__ = (
+        UniqueConstraint('permission_id', 'view_menu_id'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    permission_id = Column(ForeignKey('ab_permission.id'))
+    view_menu_id = Column(ForeignKey('ab_view_menu.id'))
+
+    permission = relationship('AbPermission')
+    view_menu = relationship('AbViewMenu')
+
+
+class AbUserRole(SAFRSBase, Base):
+    __tablename__ = 'ab_user_role'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'role_id'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(ForeignKey('ab_user.id'))
+    role_id = Column(ForeignKey('ab_role.id'))
+
+    role = relationship('AbRole')
+    user = relationship('AbUser')
+
+
+class OrderDetail(SAFRSBase, Base):
+    __tablename__ = 'OrderDetail'
+
+    Id = Column(Integer, primary_key=True)
+    OrderId = Column(ForeignKey('Order.Id'), nullable=False)
+    ProductId = Column(ForeignKey('Product.Id'), nullable=False)
+    UnitPrice = Column(DECIMAL, nullable=False)
+    Quantity = Column(Integer, nullable=False)
+    Discount = Column(Float, nullable=False)
+    Amount = Column(DECIMAL)
+    ShippedDate = Column(String(8000))
+
+    Order = relationship('Order')
+    Product = relationship('Product')
+
+
+class AbPermissionViewRole(SAFRSBase, Base):
+    __tablename__ = 'ab_permission_view_role'
+    __table_args__ = (
+        UniqueConstraint('permission_view_id', 'role_id'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    permission_view_id = Column(ForeignKey('ab_permission_view.id'))
+    role_id = Column(ForeignKey('ab_role.id'))
+
+    permission_view = relationship('AbPermissionView')
+    role = relationship('AbRole')
+
+[2021-01-02 21:26:48,327] INFO: Exposing method AbPermission.search on /ab_permission/search, endpoint: api.ab_permission.search
+[2021-01-02 21:26:48,343] INFO: Exposing ab_permission on /ab_permission/, endpoint: api.AbPermission
+[2021-01-02 21:26:48,345] INFO: Exposing AbPermission instances on /ab_permission/<string:AbPermissionId>/, endpoint: api.AbPermissionId
+[2021-01-02 21:26:48,371] INFO: Exposing method AbPermissionView.search on /ab_permission_view/search, endpoint: api.ab_permission_view.search
+[2021-01-02 21:26:48,393] INFO: Exposing ab_permission_view on /ab_permission_view/, endpoint: api.AbPermissionView
+[2021-01-02 21:26:48,396] INFO: Exposing AbPermissionView instances on /ab_permission_view/<string:AbPermissionViewId>/, endpoint: api.AbPermissionViewId
+[2021-01-02 21:26:48,436] INFO: Exposing relationship permission on /ab_permission_view/<string:AbPermissionViewId>/permission, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.permission
+[2021-01-02 21:26:48,438] INFO: Exposing AbPermissionView relationship permission on /ab_permission_view/<string:AbPermissionViewId>/permission/<string:AbPermissionId>, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.permissionId
+[2021-01-02 21:26:48,462] INFO: Exposing relationship view_menu on /ab_permission_view/<string:AbPermissionViewId>/view_menu, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.view_menu
+[2021-01-02 21:26:48,465] INFO: Exposing AbPermissionView relationship view_menu on /ab_permission_view/<string:AbPermissionViewId>/view_menu/<string:AbViewMenuId>, endpoint: /ab_permission_view/<string:AbPermissionViewId>/api.view_menuId
+[2021-01-02 21:26:48,476] INFO: Exposing method AbPermissionViewRole.search on /ab_permission_view_role/search, endpoint: api.ab_permission_view_role.search
+[2021-01-02 21:26:48,499] INFO: Exposing ab_permission_view_role on /ab_permission_view_role/, endpoint: api.AbPermissionViewRole
+[2021-01-02 21:26:48,502] INFO: Exposing AbPermissionViewRole instances on /ab_permission_view_role/<string:AbPermissionViewRoleId>/, endpoint: api.AbPermissionViewRoleId
+[2021-01-02 21:26:48,546] INFO: Exposing relationship permission_view on /ab_permission_view_role/<string:AbPermissionViewRoleId>/permission_view, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.permission_view
+[2021-01-02 21:26:48,549] INFO: Exposing AbPermissionViewRole relationship permission_view on /ab_permission_view_role/<string:AbPermissionViewRoleId>/permission_view/<string:AbPermissionViewId>, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.permission_viewId
+[2021-01-02 21:26:48,573] INFO: Exposing relationship role on /ab_permission_view_role/<string:AbPermissionViewRoleId>/role, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.role
+[2021-01-02 21:26:48,576] INFO: Exposing AbPermissionViewRole relationship role on /ab_permission_view_role/<string:AbPermissionViewRoleId>/role/<string:AbRoleId>, endpoint: /ab_permission_view_role/<string:AbPermissionViewRoleId>/api.roleId
+[2021-01-02 21:26:48,586] INFO: Exposing method AbRegisterUser.search on /ab_register_user/search, endpoint: api.ab_register_user.search
+[2021-01-02 21:26:48,603] INFO: Exposing ab_register_user on /ab_register_user/, endpoint: api.AbRegisterUser
+[2021-01-02 21:26:48,607] INFO: Exposing AbRegisterUser instances on /ab_register_user/<string:AbRegisterUserId>/, endpoint: api.AbRegisterUserId
+[2021-01-02 21:26:48,635] INFO: Exposing method AbRole.search on /ab_role/search, endpoint: api.ab_role.search
+[2021-01-02 21:26:48,656] INFO: Exposing ab_role on /ab_role/, endpoint: api.AbRole
+[2021-01-02 21:26:48,659] INFO: Exposing AbRole instances on /ab_role/<string:AbRoleId>/, endpoint: api.AbRoleId
+[2021-01-02 21:26:48,697] INFO: Exposing method AbUser.search on /ab_user/search, endpoint: api.ab_user.search
+[2021-01-02 21:26:48,726] INFO: Exposing ab_user on /ab_user/, endpoint: api.AbUser
+[2021-01-02 21:26:48,729] INFO: Exposing AbUser instances on /ab_user/<string:AbUserId>/, endpoint: api.AbUserId
+[2021-01-02 21:26:48,784] INFO: Exposing relationship parent on /ab_user/<string:AbUserId>/parent, endpoint: /ab_user/<string:AbUserId>/api.parent
+[2021-01-02 21:26:48,787] INFO: Exposing AbUser relationship parent on /ab_user/<string:AbUserId>/parent/<string:AbUserId2>, endpoint: /ab_user/<string:AbUserId>/api.parentId
+[2021-01-02 21:26:48,816] INFO: Exposing relationship parent1 on /ab_user/<string:AbUserId>/parent1, endpoint: /ab_user/<string:AbUserId>/api.parent1
+[2021-01-02 21:26:48,820] INFO: Exposing AbUser relationship parent1 on /ab_user/<string:AbUserId>/parent1/<string:AbUserId2>, endpoint: /ab_user/<string:AbUserId>/api.parent1Id
+[2021-01-02 21:26:48,830] INFO: Exposing method AbUserRole.search on /ab_user_role/search, endpoint: api.ab_user_role.search
+[2021-01-02 21:26:48,855] INFO: Exposing ab_user_role on /ab_user_role/, endpoint: api.AbUserRole
+[2021-01-02 21:26:48,859] INFO: Exposing AbUserRole instances on /ab_user_role/<string:AbUserRoleId>/, endpoint: api.AbUserRoleId
+[2021-01-02 21:26:48,906] INFO: Exposing relationship role on /ab_user_role/<string:AbUserRoleId>/role, endpoint: /ab_user_role/<string:AbUserRoleId>/api.role
+[2021-01-02 21:26:48,910] INFO: Exposing AbUserRole relationship role on /ab_user_role/<string:AbUserRoleId>/role/<string:AbRoleId>, endpoint: /ab_user_role/<string:AbUserRoleId>/api.roleId
+[2021-01-02 21:26:48,937] INFO: Exposing relationship user on /ab_user_role/<string:AbUserRoleId>/user, endpoint: /ab_user_role/<string:AbUserRoleId>/api.user
+[2021-01-02 21:26:48,941] INFO: Exposing AbUserRole relationship user on /ab_user_role/<string:AbUserRoleId>/user/<string:AbUserId>, endpoint: /ab_user_role/<string:AbUserRoleId>/api.userId
+[2021-01-02 21:26:48,948] INFO: Exposing method AbViewMenu.search on /ab_view_menu/search, endpoint: api.ab_view_menu.search
+[2021-01-02 21:26:48,971] INFO: Exposing ab_view_menu on /ab_view_menu/, endpoint: api.AbViewMenu
+[2021-01-02 21:26:48,976] INFO: Exposing AbViewMenu instances on /ab_view_menu/<string:AbViewMenuId>/, endpoint: api.AbViewMenuId
+[2021-01-02 21:26:49,009] INFO: Exposing method Category.search on /Category/search, endpoint: api.Category.search
+[2021-01-02 21:26:49,033] INFO: Exposing Category on /Category/, endpoint: api.Category
+[2021-01-02 21:26:49,037] INFO: Exposing Category instances on /Category/<string:CategoryId>/, endpoint: api.CategoryId
+/Users/val/dev/safrs/expose_existing/tempenv/lib/python3.8/site-packages/sqlalchemy/sql/sqltypes.py:661: SAWarning: Dialect sqlite+pysqlite does *not* support Decimal objects natively, and SQLAlchemy must convert from floating point - rounding errors and other issues may occur. Please consider storing Decimal numbers as strings or integers on this platform for lossless storage.
+  util.warn(
+[2021-01-02 21:26:49,076] INFO: Exposing method Customer.search on /Customer/search, endpoint: api.Customer.search
+[2021-01-02 21:26:49,107] INFO: Exposing Customer on /Customer/, endpoint: api.Customer
+[2021-01-02 21:26:49,113] INFO: Exposing Customer instances on /Customer/<string:CustomerId>/, endpoint: api.CustomerId
+[2021-01-02 21:26:49,151] INFO: Exposing method CustomerCustomerDemo.search on /CustomerCustomerDemo/search, endpoint: api.CustomerCustomerDemo.search
+[2021-01-02 21:26:49,174] INFO: Exposing CustomerCustomerDemo on /CustomerCustomerDemo/, endpoint: api.CustomerCustomerDemo
+[2021-01-02 21:26:49,179] INFO: Exposing CustomerCustomerDemo instances on /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/, endpoint: api.CustomerCustomerDemoId
+[2021-01-02 21:26:49,227] INFO: Exposing relationship Customer on /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/Customer, endpoint: /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/api.Customer
+[2021-01-02 21:26:49,231] INFO: Exposing CustomerCustomerDemo relationship Customer on /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/Customer/<string:CustomerId>, endpoint: /CustomerCustomerDemo/<string:CustomerCustomerDemoId>/api.CustomerId
+[2021-01-02 21:26:49,239] INFO: Exposing method CustomerDemographic.search on /CustomerDemographic/search, endpoint: api.CustomerDemographic.search
+[2021-01-02 21:26:49,261] INFO: Exposing CustomerDemographic on /CustomerDemographic/, endpoint: api.CustomerDemographic
+[2021-01-02 21:26:49,265] INFO: Exposing CustomerDemographic instances on /CustomerDemographic/<string:CustomerDemographicId>/, endpoint: api.CustomerDemographicId
+[2021-01-02 21:26:49,304] INFO: Exposing method Employee.search on /Employee/search, endpoint: api.Employee.search
+[2021-01-02 21:26:49,312] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,312] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,318] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,319] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,319] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,325] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,326] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,332] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,332] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,338] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,338] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,339] INFO: Exposing Employee on /Employee/, endpoint: api.Employee
+[2021-01-02 21:26:49,344] INFO: Exposing Employee instances on /Employee/<string:EmployeeId>/, endpoint: api.EmployeeId
+[2021-01-02 21:26:49,348] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,349] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,354] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,355] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,355] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,364] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,364] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,370] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,370] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,375] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,376] WARNING: bytes obj, override SAFRSJSONEncoder
+[2021-01-02 21:26:49,391] INFO: Exposing method EmployeeAudit.search on /EmployeeAudit/search, endpoint: api.EmployeeAudit.search
+[2021-01-02 21:26:49,412] INFO: Exposing EmployeeAudit on /EmployeeAudit/, endpoint: api.EmployeeAudit
+[2021-01-02 21:26:49,418] INFO: Exposing EmployeeAudit instances on /EmployeeAudit/<string:EmployeeAuditId>/, endpoint: api.EmployeeAuditId
+[2021-01-02 21:26:49,453] INFO: Exposing method EmployeeTerritory.search on /EmployeeTerritory/search, endpoint: api.EmployeeTerritory.search
+[2021-01-02 21:26:49,478] INFO: Exposing EmployeeTerritory on /EmployeeTerritory/, endpoint: api.EmployeeTerritory
+[2021-01-02 21:26:49,484] INFO: Exposing EmployeeTerritory instances on /EmployeeTerritory/<string:EmployeeTerritoryId>/, endpoint: api.EmployeeTerritoryId
+[2021-01-02 21:26:49,537] INFO: Exposing relationship Employee on /EmployeeTerritory/<string:EmployeeTerritoryId>/Employee, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.Employee
+[2021-01-02 21:26:49,542] INFO: Exposing EmployeeTerritory relationship Employee on /EmployeeTerritory/<string:EmployeeTerritoryId>/Employee/<string:EmployeeId>, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.EmployeeId
+[2021-01-02 21:26:49,566] INFO: Exposing relationship Territory on /EmployeeTerritory/<string:EmployeeTerritoryId>/Territory, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.Territory
+[2021-01-02 21:26:49,571] INFO: Exposing EmployeeTerritory relationship Territory on /EmployeeTerritory/<string:EmployeeTerritoryId>/Territory/<string:TerritoryId>, endpoint: /EmployeeTerritory/<string:EmployeeTerritoryId>/api.TerritoryId
+[2021-01-02 21:26:49,585] INFO: Exposing method Order.search on /Order/search, endpoint: api.Order.search
+[2021-01-02 21:26:49,619] INFO: Exposing Order on /Order/, endpoint: api.Order
+[2021-01-02 21:26:49,625] INFO: Exposing Order instances on /Order/<string:OrderId>/, endpoint: api.OrderId
+[2021-01-02 21:26:49,683] INFO: Exposing relationship Customer on /Order/<string:OrderId>/Customer, endpoint: /Order/<string:OrderId>/api.Customer
+[2021-01-02 21:26:49,689] INFO: Exposing Order relationship Customer on /Order/<string:OrderId>/Customer/<string:CustomerId>, endpoint: /Order/<string:OrderId>/api.CustomerId
+[2021-01-02 21:26:49,716] INFO: Exposing relationship Employee on /Order/<string:OrderId>/Employee, endpoint: /Order/<string:OrderId>/api.Employee
+[2021-01-02 21:26:49,721] INFO: Exposing Order relationship Employee on /Order/<string:OrderId>/Employee/<string:EmployeeId>, endpoint: /Order/<string:OrderId>/api.EmployeeId
+[2021-01-02 21:26:49,735] INFO: Exposing method OrderDetail.search on /OrderDetail/search, endpoint: api.OrderDetail.search
+[2021-01-02 21:26:49,764] INFO: Exposing OrderDetail on /OrderDetail/, endpoint: api.OrderDetail
+[2021-01-02 21:26:49,769] INFO: Exposing OrderDetail instances on /OrderDetail/<string:OrderDetailId>/, endpoint: api.OrderDetailId
+[2021-01-02 21:26:49,822] INFO: Exposing relationship Order on /OrderDetail/<string:OrderDetailId>/Order, endpoint: /OrderDetail/<string:OrderDetailId>/api.Order
+[2021-01-02 21:26:49,828] INFO: Exposing OrderDetail relationship Order on /OrderDetail/<string:OrderDetailId>/Order/<string:OrderId>, endpoint: /OrderDetail/<string:OrderDetailId>/api.OrderId
+[2021-01-02 21:26:49,856] INFO: Exposing relationship Product on /OrderDetail/<string:OrderDetailId>/Product, endpoint: /OrderDetail/<string:OrderDetailId>/api.Product
