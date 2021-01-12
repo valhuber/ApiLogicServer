@@ -217,7 +217,7 @@ class GenerateFromModel(object):
                 use_file = True
                 if use_file:  # this is a little obscure - can we bring inline?
                     pass
-                    # db.db.init_app(app)
+                    db.init_app(app)
                     # session = db.session
                 else:
                     # db: SQLAlchemy = SQLAlchemy()  REMOVE
