@@ -229,14 +229,14 @@ class GenerateFromModel(object):
 
             app = create_app()
             app.app_context().push()
-            model_loaded = False
+            model_imported = False
             try:
                 # models =
                 importlib.import_module('database/models')
-                model_loaded = True
+                model_imported = True
             except:
                 pass  # keep looking...
-            if not model_loaded:
+            if not model_imported:
                 sys.path.insert(0, project_abs_path + "/database")
                 #  e.g., adds /Users/val/python/vscode/fab-quickstart/nw-app/app
                 #  print("DEBUG find_meta sys.path: " + str(sys.path))
@@ -247,12 +247,12 @@ class GenerateFromModel(object):
                     pass  # once more...
                     print("\n\nERROR - current result:\n" + self._result)
                     # The sqlalchemy extension was not registered to the current application.  Please make sure to call init_app() first.
-                    raise Exception("Unable to open models from:\n" +
+                    raise Exception("Unable to import models from:\n" +
                                     project_abs_path + "/database, or" +
                                     a_cwd + ", or\n" +
                                     a_cwd + '/app')
 
-            sys.path.insert(0, a_cwd)
+            sys.path.insert(0, a_cwd)  # success - models open
             config = importlib.import_module('config')
             conn_string = config.SQLALCHEMY_DATABASE_URI
         else:  # TODO - use dynamic loading (above), remove this when stable
