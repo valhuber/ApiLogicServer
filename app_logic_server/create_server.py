@@ -216,7 +216,7 @@ class GenerateFromModel(object):
                 db = safrs.DB
                 use_file = True
                 if use_file:  # this is a little obscure - can we bring inline?
-                    pass
+                    pass  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
                     db.init_app(app)
                     # session = db.session
                 else:
