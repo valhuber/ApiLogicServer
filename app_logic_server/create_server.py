@@ -155,7 +155,7 @@ class GenerateFromModel(object):
             #  print ("\n\n** debug path issues 1: \n\n" + self._result)
 
         self._result += '"""\n\n'  # look into fstring - nicer to read TODO
-        metadata = self.find_meta_data(cwd, self.project_name)
+        metadata = self.find_meta_data(cwd, self.project_name, self.db_url)
         meta_tables = metadata.tables
         self._result += self.generate_module_imports()
         for each_table in meta_tables.items():
@@ -164,7 +164,7 @@ class GenerateFromModel(object):
         self._result += self.process_module_end(meta_tables)
         return self._result
 
-    def find_meta_data(self, a_cwd: str, a_project_name: str) -> MetaData:
+    def find_meta_data(self, a_cwd: str, a_project_name: str, a_db_url) -> MetaData:
         """     Find Metadata by importing model, or (failing that), db
 
         a_cmd should be
@@ -228,6 +228,7 @@ class GenerateFromModel(object):
                 return app
 
             app = create_app()
+            app.config.SQLALCHEMY_DATABASE_URI = a_db_url
             app.app_context().push()
             model_imported = False
             try:
@@ -252,9 +253,9 @@ class GenerateFromModel(object):
                                     a_cwd + ", or\n" +
                                     a_cwd + '/app')
 
-            sys.path.insert(0, a_cwd)  # success - models open
-            config = importlib.import_module('config')
-            conn_string = config.SQLALCHEMY_DATABASE_URI
+            # sys.path.insert(0, a_cwd)  # success - models open
+            # config = importlib.import_module('config')
+            conn_string = app.config.SQLALCHEMY_DATABASE_URI
         else:  # TODO - use dynamic loading (above), remove this when stable
             import models
             conn_string = "sqlite:///nw/nw.db"
@@ -735,6 +736,7 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     """
     generate_from_model = GenerateFromModel()
     generate_from_model.project_name = project_name
+    generate_from_model.db_url = db_url
     generate_from_model.favorite_names = favorites
     generate_from_model.non_favorite_names = non_favorites
     views = generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
