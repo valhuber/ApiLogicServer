@@ -646,6 +646,15 @@ def clone_prototype_project(project_name: str):
     pass
 
 
+def create_basic_web_app(db_url, project_name):
+    cmd = 'flask fab create-app --name ui/basic_web_app --engine SQLAlchemy'
+    # FIXME hmm... only created a few folders, no app
+    create_app = run_command(cmd)
+    # cmd = 'flask fab create-admin'
+    # create_admin = run_command(cmd)
+    # TODO - fix models.py (shared?), config.py
+
+
 def create_models(db_url: str, project: str) -> str:
     # TODO call expose_existing, here, and write models to project/database folder
     # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
@@ -731,6 +740,10 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
         clone_prototype_project(project_name)
         create_models(db_url, project_name)  # calls sqlacodegen
 
+    create_basic_web_app_debug = True
+    if create_basic_web_app_debug:
+        create_basic_web_app(db_url, project_name)
+
     """
         Create views.py file from db, models.py
     """
@@ -741,6 +754,9 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     generate_from_model.non_favorite_names = non_favorites
     views = generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
     print("\n" + generate_from_model._result)
+    textfile = open(project_name + '/ui/basic_web_app/app/views.py', 'x')
+    textfile.write(views)
+    textfile.close()
 
 
 @main.command("version")
