@@ -203,7 +203,7 @@ class GenerateFromModel(object):
             except:
                 pass  # keep looking...
             if not model_loaded:
-                sys.path.insert(0, a_cwd + '/database')
+                sys.path.insert(0, project_abs_path + "/database")
                 #  e.g., adds /Users/val/python/vscode/fab-quickstart/nw-app/app
                 #  print("DEBUG find_meta sys.path: " + str(sys.path))
                 try:
@@ -212,7 +212,7 @@ class GenerateFromModel(object):
                 except:
                     pass  # once more...
                 if not model_loaded:
-                    sys.path.insert(0, project_abs_path + "/database")
+                    sys.path.insert(0, a_cwd + '/database')
                     #  e.g., adds /Users/val/python/vscode/fab-quickstart/nw-app/app
                     #  print("DEBUG find_meta sys.path: " + str(sys.path))
                     try:
