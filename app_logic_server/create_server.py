@@ -40,9 +40,12 @@ New FAB Feature Suggestions:
     * Hide/show field (& caption)
     * Page (instruction) notes
 """
+import builtins
 import subprocess
 
 import logic_bank_utils.util as logic_bank_utils
+from flask import Flask
+
 (did_fix_path, sys_env_info) = \
     logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
@@ -162,7 +165,7 @@ class GenerateFromModel(object):
         return self._result
 
     def find_meta_data(self, a_cwd: str, a_project_name: str) -> MetaData:
-        """     Find Metadata from model, or (failing that), db
+        """     Find Metadata by importing model, or (failing that), db
 
         a_cmd should be
 
@@ -195,6 +198,37 @@ class GenerateFromModel(object):
                 credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             """
             sys_path = str(sys.path)
+            # db = SQLAlchemy()
+            # db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used models
+
+            # from app_logic_server.my_project.app import create_app  # FIXME no way this can work
+            def create_app(config_filename=None, host="localhost"):
+                from flask_sqlalchemy import SQLAlchemy
+                from sqlalchemy.orm import Session
+                from sqlalchemy.ext.declarative import declarative_base
+                import safrs
+
+                import safrs
+                app = Flask("API Logic Server")
+                app.config.from_object("config.Config")
+                #    app.config.update(SQLALCHEMY_DATABASE_URI="sqlite://")
+                # from database import db  # , session  FIXME eh?
+                db = safrs.DB
+                use_file = True
+                if use_file:  # this is a little obscure - can we bring inline?
+                    pass
+                    # db.db.init_app(app)
+                    # session = db.session
+                else:
+                    # db: SQLAlchemy = SQLAlchemy()  REMOVE
+                    db = safrs.DB  # opens (what?) database, returning session
+                    Base: declarative_base = db.Model
+                    session: Session = db.session
+                    print("got session: " + str(session))
+                return app
+
+            app = create_app()
+            app.app_context().push()
             model_loaded = False
             try:
                 # models =
@@ -211,18 +245,12 @@ class GenerateFromModel(object):
                     importlib.import_module('models')
                 except:
                     pass  # once more...
-                if not model_loaded:
-                    sys.path.insert(0, a_cwd + '/database')
-                    #  e.g., adds /Users/val/python/vscode/fab-quickstart/nw-app/app
-                    #  print("DEBUG find_meta sys.path: " + str(sys.path))
-                    try:
-                        # models =
-                        importlib.import_module('models')
-                    except:
-                        print("\n\nERROR - current result:\n" + self._result)
-                        raise Exception("Unable to open models from:\n" +
-                                        a_cwd + ", or\n" +
-                                        a_cwd + '/app')
+                    print("\n\nERROR - current result:\n" + self._result)
+                    # The sqlalchemy extension was not registered to the current application.  Please make sure to call init_app() first.
+                    raise Exception("Unable to open models from:\n" +
+                                    project_abs_path + "/database, or" +
+                                    a_cwd + ", or\n" +
+                                    a_cwd + '/app')
 
             sys.path.insert(0, a_cwd)
             config = importlib.import_module('config')
@@ -697,8 +725,10 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
         # relative vs absolute??
         pass
 
-    clone_prototype_project(project_name)
-    create_models(db_url, project_name)
+    create_project_debug = False
+    if create_project_debug:
+        clone_prototype_project(project_name)
+        create_models(db_url, project_name)
 
     """
         Create views.py file from db, models.py
