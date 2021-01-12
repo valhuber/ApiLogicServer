@@ -429,6 +429,12 @@ class CodeGenerator(object):
 ########################################################################################################################
 # Manually Added for safrs, TODO: improve this crap
 #
+
+import safrs  # val experiment (more crap??)
+db = safrs.DB
+
+Base: declarative_base = db.Model
+
 from safrs import SAFRSBase
 
 Base = db.Model
