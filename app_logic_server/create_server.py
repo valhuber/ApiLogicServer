@@ -748,6 +748,22 @@ def main(ctx):
               help="Word(s) used to identify last-shown fields")
 @click.pass_context
 def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str):
+    """
+    Main Driver - generates a Python Project, using Flask, SFRS, LogicBank and Flask AppBuilder
+
+        * create project git clone ApiLogicServerProto to <project_name>
+
+        * basic_web_app
+
+        * then generate views.py & expose_api_models.py
+
+    :param ctx:
+    :param project_name: name of project to create
+    :param db_url: from this database
+    :param favorites: in basic_web_app views, what fields should be at top
+    :param non_favorites: at bottom
+
+    """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
     if db_url.startswith('sqlite:///'):
         # relative vs absolute??

@@ -43,4 +43,4 @@ That will be via ```pip``` in the future, but for now:
 python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py project=my-project
 ```
 This fails since the pip requirements for codegen are
-not met.  Not sure how to resolve... advice?
+not met.  Not sure how to resolve... **advice?**
