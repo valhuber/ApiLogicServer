@@ -43,6 +43,8 @@ New FAB Feature Suggestions:
 import builtins
 import subprocess
 from os.path import abspath
+from pathlib import Path
+
 import logic_bank_utils.util as logic_bank_utils
 from flask import Flask
 
@@ -237,7 +239,7 @@ class GenerateFromModel(object):
 
             app = create_app()
             app.config.SQLALCHEMY_DATABASE_URI = a_db_url
-            app.app_context().push()
+            app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
             model_imported = False
             try:
                 # models =
@@ -667,13 +669,17 @@ def create_basic_web_app(db_url, project_name):
 
 
 def create_models(db_url: str, project: str) -> str:
-    # TODO call expose_existing, here, and write models to project/database folder
     # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
-    cmd = 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
+    cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
+    abs_cmd_debug = abspath(cmd_debug)
+    path = Path(__file__)
+    parent_path = path.parent
+    parent_path = parent_path.parent
+    cmd = f'python {parent_path}/expose_existing/sqlacodegen/sqlacodegen/main.py '
     cmd += db_url
     cmd += '  > ' + project + '/database/models.py'
     # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
-    result = run_command(cmd)
+    result = run_command(cmd)  # might fail per venv, looking for inflect
     pass
 
 

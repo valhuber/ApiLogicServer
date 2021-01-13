@@ -1,6 +1,8 @@
 # Operation
 Preliminary version, envisioned to be used:
 ```
+virtualenv venv
+pip install -r requireents.txt  -- from where??
 ApiLogicServer <project_name>
 ```
 Creates a server project at <project_name>.
@@ -24,7 +26,21 @@ Here, the default project is ```my_project```, within ```ApiLogicServer```.
     * ```views``` to ```ui/basic_web_app/app/views.py```
     * ```apis``` to ```api/expose_api_models``` (this is called by ```api/__init__.py```)
     
+
+    Important: for now, this is mac only.
+
 # Next Steps
+
+## Make Generated Project Work
 So, let's make the generated app run: run the debugger, and
 make required changes to ```my_project```, within ```ApiLogicServer```.
     
+## Command Line Operation
+And, this needs to run from the command line.
+That will be via ```pip``` in the future, but for now:
+
+```
+python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py project=my-project
+```
+This fails since the pip requirements for codegen are
+not met.  Not sure how to resolve... advice?
