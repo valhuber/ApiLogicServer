@@ -772,7 +772,7 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     create_project_debug = True
     if create_project_debug:
         clone_prototype_project(project_name)
-        create_models(db_url, project_name)  # calls sqlacodegen
+        create_models(db_url, project_name)  # exec's sqlacodegen
 
     create_basic_web_app_debug = True
     if create_basic_web_app_debug:
