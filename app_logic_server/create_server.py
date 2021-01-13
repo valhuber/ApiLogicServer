@@ -42,7 +42,7 @@ New FAB Feature Suggestions:
 """
 import builtins
 import subprocess
-
+from os.path import abspath
 import logic_bank_utils.util as logic_bank_utils
 from flask import Flask
 
@@ -197,7 +197,6 @@ class GenerateFromModel(object):
 
         conn_string = None
         do_dynamic_load = True
-        from os.path import abspath
         project_abs_path = abspath(a_project_name)
 
         if (do_dynamic_load):
@@ -657,7 +656,9 @@ def clone_prototype_project(project_name: str):
 
 
 def create_basic_web_app(db_url, project_name):
-    cmd = 'flask fab create-app --name ui/basic_web_app --engine SQLAlchemy'
+    project_abs_path = abspath(project_name)
+    fab_project = project_abs_path + "/ui/basic_web_app"
+    cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
     # FIXME hmm... only created a few folders, no app
     create_app = run_command(cmd)
     # cmd = 'flask fab create-admin'
@@ -766,7 +767,7 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
 
     print("\n" + generate_from_model._result_views)
 
-    text_file = open(project_name + '/ui/basic_web_app/app/views.py', 'x')
+    text_file = open(project_name + '/ui/basic_web_app/app/views.py', 'w')
     text_file.write(views)
     text_file.close()
 
