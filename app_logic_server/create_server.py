@@ -661,6 +661,7 @@ def create_basic_web_app(db_url, project_name):
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
+    pass
     # FIXME hmm... only created a few folders, no app
     create_app = run_command(cmd)
     # cmd = 'flask fab create-admin'
@@ -780,7 +781,6 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     text_file = open(project_name + '/api/expose_api_models.py', 'a')
     text_file.write(apis)
     text_file.close()
-
 
 
 @main.command("version")
