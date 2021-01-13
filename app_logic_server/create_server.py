@@ -76,7 +76,8 @@ class GenerateFromModel(object):
     Create ui/basic_web_app/views.py and api/expose_api_models.py
     """
 
-    _result = ""
+    _result_views = ""
+    _result_apis = ""
 
     _favorite_names_list = []  #: ["name", "description"]
     """
@@ -114,17 +115,25 @@ class GenerateFromModel(object):
         self._favorite_names_list = self.favorite_names.split()
 
         cwd = os.getcwd()
-        self._result += '"""'
-        self._result += ("\nGenerate From Model " + __version__ + "\n\n"
-                         + "Project Name: " + self.project_name + "\n\n"
-                         + "Current Working Directory: " + cwd + "\n\n"
-                         + "From: " + sys.argv[0] + "\n\n"
-                         + "Using Python: " + sys.version + "\n\n"
-                         + "Favorites: "
-                         + str(self._favorite_names_list) + "\n\n"
-                         + "Non Favorites: "
-                         + str(self._non_favorite_names_list) + "\n\n"
-                         + "At: " + str(datetime.datetime.now()) + "\n\n")
+        self._result_views += '"""'
+        self._result_apis += '"""'
+        self._result_views += ("\nGenerate From Model " + __version__ + "\n\n"
+                               + "Project Name: " + self.project_name + "\n\n"
+                               + "Current Working Directory: " + cwd + "\n\n"
+                               + "From: " + sys.argv[0] + "\n\n"
+                               + "Using Python: " + sys.version + "\n\n"
+                               + "Favorites: "
+                               + str(self._favorite_names_list) + "\n\n"
+                               + "Non Favorites: "
+                               + str(self._non_favorite_names_list) + "\n\n"
+                               + "At: " + str(datetime.datetime.now()) + "\n\n")
+        self._result_apis += ("\nGenerate From Model " + __version__ + "\n\n"
+                               + "Project Name: " + self.project_name + "\n\n"
+                               + "Current Working Directory: " + cwd + "\n\n"
+                               + "From: " + sys.argv[0] + "\n\n"
+                               + "Using Python: " + sys.version + "\n\n"
+                               + "At: " + str(datetime.datetime.now()) + "\n\n"
+                               + '"""\n\n')
         sys.path.append(cwd)  # for banking Command Line test
 
         enable_cli_hack = False  # awful stuff, want to remove, keep for now...
@@ -139,7 +148,7 @@ class GenerateFromModel(object):
                     cwd = cwd.replace("fab-quick-start",
                                       "fab-quick-start/nw-app", 1)
                     cwd = cwd.replace("/fab_quick_start_util","")
-                    self._result += "Debug Mode fix for cwd: " + cwd + "\n\n"
+                    self._result_views += "Debug Mode fix for cwd: " + cwd + "\n\n"
                 else:
                     cwd = cwd.replace("fab-quick-start",
                                       "fab-quick-start/banking/basic_web_app", 1)
@@ -149,20 +158,20 @@ class GenerateFromModel(object):
                                                       'banking', 1)
                     python_path = python_path.replace("/fab_quick_start_util","")
                     sys.path.append(python_path)
-                    self._result += "Python Path includes: " + python_path + "\n\n"
-                self._result += "Debug cmd override: " + cwd + "\n\n"
+                    self._result_views += "Python Path includes: " + python_path + "\n\n"
+                self._result_views += "Debug cmd override: " + cwd + "\n\n"
                 #  print ("\n\n** debug path issues 2: \n\n" + self._result)
             #  print ("\n\n** debug path issues 1: \n\n" + self._result)
 
-        self._result += '"""\n\n'  # look into fstring - nicer to read TODO
+        self._result_views += '"""\n\n'  # look into fstring - nicer to read TODO
         metadata = self.find_meta_data(cwd, self.project_name, self.db_url)
         meta_tables = metadata.tables
-        self._result += self.generate_module_imports()
+        self._result_views += self.generate_module_imports()
         for each_table in meta_tables.items():
             each_result = self.process_each_table(each_table[1])
-            self._result += each_result
-        self._result += self.process_module_end(meta_tables)
-        return self._result
+            self._result_views += each_result
+        self._result_views += self.process_module_end(meta_tables)
+        return self._result_views, self._result_apis
 
     def find_meta_data(self, a_cwd: str, a_project_name: str, a_db_url) -> MetaData:
         """     Find Metadata by importing model, or (failing that), db
@@ -246,7 +255,7 @@ class GenerateFromModel(object):
                     importlib.import_module('models')
                 except:
                     pass  # once more...
-                    print("\n\nERROR - current result:\n" + self._result)
+                    print("\n\nERROR - current result:\n" + self._result_views)
                     # The sqlalchemy extension was not registered to the current application.  Please make sure to call init_app() first.
                     raise Exception("Unable to import models from:\n" +
                                     project_abs_path + "/database, or" +
@@ -319,6 +328,7 @@ class GenerateFromModel(object):
         result = ""
         table_name = a_table_def.name
         log.debug("process_each_table: " + table_name)
+        self._result_apis += f'    api.expose_object(models.{table_name})\n'
         if "TRANSFERFUND" in table_name:
             log.debug("special table")  # debug stop here
         if "ProductDetails_V" in table_name:
@@ -752,11 +762,18 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     generate_from_model.db_url = db_url
     generate_from_model.favorite_names = favorites
     generate_from_model.non_favorite_names = non_favorites
-    views = generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
-    print("\n" + generate_from_model._result)
-    textfile = open(project_name + '/ui/basic_web_app/app/views.py', 'x')
-    textfile.write(views)
-    textfile.close()
+    views, apis = generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
+
+    print("\n" + generate_from_model._result_views)
+
+    text_file = open(project_name + '/ui/basic_web_app/app/views.py', 'x')
+    text_file.write(views)
+    text_file.close()
+
+    text_file = open(project_name + '/api/expose_api_models.py', 'a')
+    text_file.write(apis)
+    text_file.close()
+
 
 
 @main.command("version")
