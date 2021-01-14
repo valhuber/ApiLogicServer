@@ -853,11 +853,13 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
 
     # print("\n" + generate_from_model._result_views)
 
+    print("writing: /api/expose_api_models.py")
     text_file = open(project_name + '/api/expose_api_models.py', 'a')
     text_file.write(apis)
     text_file.close()
 
     if flask_appbuilder:
+        print("writing: /ui/basic_web_app/app/views.py")
         text_file = open(project_name + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(views)
         text_file.close()
