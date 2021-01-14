@@ -31,6 +31,7 @@ Here, the default project is ```my_project```, within ```ApiLogicServer```.
 
     Update: now working on windows
 
+<figure><img src="images/apilogicserver-ide.png"></figure>
 
 ## Basic Operation (Internals)
 

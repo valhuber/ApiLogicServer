@@ -652,14 +652,13 @@ def run_command(cmd: str, env=None) -> str:
         project_dir = get_project_dir()
         python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
         use_env = os.environ.copy()
-        print("\n\nFixing env for cmd: " + cmd)
-        # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
+        # print("\n\nFixing env for cmd: " + cmd)
         if hasattr(use_env, "PYTHONPATH"):
             use_env["PYTHONPATH"] = python_path + ":" + use_env["PYTHONPATH"]  # eg, /Users/val/dev/ApiLogicServer/venv/lib/python3.9
-            print("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+            # print("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
         else:
             use_env["PYTHONPATH"] = python_path
-            print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+            # print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
     use_env_debug = False  # not able to get this working
     if use_env_debug:
         result_b = subprocess.check_output(cmd, shell=True, env=use_env)
@@ -700,11 +699,8 @@ def create_basic_web_app(db_url, project_name):
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
+    result = run_command(cmd)
     pass
-    # FIXME hmm... only created a few folders, no app
-    create_app = run_command(cmd)
-    # cmd = 'flask fab create-admin'
-    # create_admin = run_command(cmd)
     # TODO - fix models.py (shared?), config.py
 
 
@@ -794,6 +790,9 @@ def main(ctx):
               default="sqlite:///db.sqlite",
               prompt="Database URL",
               help="Word(s) identifying 'favorite name' (displayed first)")
+@click.option('--flask_appbuilder/--no-flask_appbuilder',
+              prompt="Generate Flask AppBuilder",
+              help="Creates <project_name>/ui/basic_web_app")
 @click.option('--favorites',
               default="name description",
               prompt="Favorite Column Names",
@@ -803,7 +802,7 @@ def main(ctx):
               prompt="Non Favorite Column Names",
               help="Word(s) used to identify last-shown fields")
 @click.pass_context
-def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str):
+def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
     Main Driver - generates a Python Project, using Flask, SFRS, LogicBank and Flask AppBuilder
 
@@ -816,6 +815,7 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     :param ctx:
     :param project_name: name of project to create
     :param db_url: from this database
+    :param flask_appbuilder: create basic_web_app
     :param favorites: in basic_web_app views, what fields should be at top
     :param non_favorites: at bottom
 
@@ -838,8 +838,7 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
         clone_prototype_project(project_name)
         create_models(db_url, project_name)  # exec's sqlacodegen
 
-    create_basic_web_app_debug = True
-    if create_basic_web_app_debug:
+    if flask_appbuilder:
         create_basic_web_app(db_url, project_name)
 
     """
@@ -852,15 +851,16 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
     generate_from_model.non_favorite_names = non_favorites
     views, apis = generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
 
-    print("\n" + generate_from_model._result_views)
-
-    text_file = open(project_name + '/ui/basic_web_app/app/views.py', 'w')
-    text_file.write(views)
-    text_file.close()
+    # print("\n" + generate_from_model._result_views)
 
     text_file = open(project_name + '/api/expose_api_models.py', 'a')
     text_file.write(apis)
     text_file.close()
+
+    if flask_appbuilder:
+        text_file = open(project_name + '/ui/basic_web_app/app/views.py', 'w')
+        text_file.write(views)
+        text_file.close()
 
 
 @main.command("version")
@@ -889,6 +889,7 @@ if __name__ == '__main__':  # debugger starts here
     commands = (
         'run',
         '--project_name=my_project',
+        '--flask_appbuilder',
         '--db_url=sqlite:///db.sqlite',
         '--favorites=name description',
         '--non_favorites=id',
