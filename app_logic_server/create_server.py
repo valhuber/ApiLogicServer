@@ -634,16 +634,31 @@ class GenerateFromModel(object):
         return result
 
 
-def kill_windows_dir(dir_name):
-    # https://stackoverflow.com/questions/22948189/how-to-solve-the-directory-is-not-empty-error-when-running-rmdir-command-in-a
-    try:
-        remove_project = run_command(f'del /f /s /q {dir_name} 1>nul')
-    except:
-        pass
-    try:
-        remove_project = run_command(f'rmdir /s /q {dir_name}')  # no prompt, no complaints if non-exists
-    except:
-        pass
+def delete_dir(dir_path):
+    """
+    :param dir_path: delete this folder
+    :return:
+    """
+    use_shutil_debug = True
+    if use_shutil_debug:
+        # credit: https://linuxize.com/post/python-delete-files-and-directories/
+        print(f'delete dir: {dir_path}')
+        import shutil
+        try:
+            shutil.rmtree(dir_path)
+        except OSError as e:
+            pass
+            # print("Error: %s : %s" % (dir_path, e.strerror))
+    else:
+        # https://stackoverflow.com/questions/22948189/how-to-solve-the-directory-is-not-empty-error-when-running-rmdir-command-in-a
+        try:
+            remove_project = run_command(f'del /f /s /q {dir_path} 1>nul')
+        except:
+            pass
+        try:
+            remove_project = run_command(f'rmdir /s /q {dir_path}')  # no prompt, no complaints if non-exists
+        except:
+            pass
 
 
 def run_command(cmd: str, env=None) -> str:
@@ -682,16 +697,22 @@ def clone_prototype_project(project_name: str):
     global os_type
     remove_project_debug = True
     if remove_project_debug:
-        if os_type == "windows":
+        delete_dir(project_name)
+        """ TODO remove me
+        if os_type == "windows" or True:
             kill_windows_dir(project_name)
         else:
             remove_project = run_command(('rm -rf ' + project_name + "*"))
+        """
     cmd = 'git clone https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
     result = run_command(cmd)
+    delete_dir(f'{project_name}\.git')
+    """
     if os_type == "windows":
         kill_windows_dir(f'{project_name}\.git')
     else:
         remove_git = run_command(f'rm -rf {project_name}/.git*')
+    """
     pass
 
 
