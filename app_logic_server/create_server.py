@@ -647,7 +647,11 @@ def run_command(cmd: str, env=None) -> str:
         else:
             use_env["PYTHONPATH"] = python_path
             print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
-    result_b = subprocess.check_output(cmd, shell=True, env=use_env)
+    use_env_debug = False  # not able to get this working
+    if use_env_debug:
+        result_b = subprocess.check_output(cmd, shell=True, env=use_env)
+    else:
+        result_b = subprocess.check_output(cmd, shell=True)
     result = str(result_b)  # b'pyenv 1.2.21\n'
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)

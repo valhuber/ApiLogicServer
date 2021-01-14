@@ -2,7 +2,8 @@
 Preliminary version, *envisioned* to be used:
 ```
 virtualenv venv
-pip install -r requireents.txt  -- from where??
+pip install ApiLogicServer
+pip install -r requirements.txt  -- from where??
 ApiLogicServer <project_name>
 ```
 Creates a server project at <project_name>.
@@ -15,8 +16,16 @@ with default parameters.  cmd-line does not work yet.
 
 ## How to run it
 
-```git clone``` the project, set up your venv using requirements.txt,
-and run ```ApiLogicServer/create_server.py```.
+Install as any typical project (I do this is PyCharm):
+
+```
+git clone https://github.com/valhuber/ApiLogicServer.git
+cd ApiLogicServer
+virtualenv venv
+source venv/bin/activate
+cd app_logic_server
+python create_server.py  # or run from IDE
+```
 
 Here, the default project is ```my_project```, within ```ApiLogicServer```.
 
@@ -48,7 +57,17 @@ And, this needs to run from the command line.
 That will be via ```pip``` in the future, but for now:
 
 ```
-python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py project=my-project
+# usual project install (git clone, virtualenv... as above)
+
+cd some_folder
+cp <ApiLogicServer>/venv venv
+source venv/bin/activate
+
+python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project=my-project
 ```
-This fails since the pip requirements for codegen are
-not met.  Not sure how to resolve... **advice?**
+
+For now, the ```venv``` is required - I was unable to "push" PYTHONPATH to run ```expose_existing``` in ```run_command(cmd: str, env=None)```:
+```
+result_b = subprocess.check_output(cmd, shell=True, env=use_env)
+```
+
