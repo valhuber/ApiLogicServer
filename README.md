@@ -39,9 +39,9 @@ Here, the default project is ```my_project```, within ```ApiLogicServer```.
 1. Clones ```ApiLogicServerProto``` (subprocess.check_output(git clone))
 1. Create ```database/models.py``` (subprocess.check_output(modified sqlacodegen))
 1. Creates ```ui/basic_web_app``` (a secondary objective for now)
+1. Executes ```views, apis = generate_from_model.run()```
    * This is tricky - we _dynamically_ import ```database/models.py```
      (from previous step), so we can iterate through the metadata
-1. Executes ```views, apis = generate_from_model.run()```
 1. Appends into these files in the created project
     * ```views``` to ```ui/basic_web_app/app/views.py```
     * ```apis``` to ```api/expose_api_models``` (this is called by ```api/__init__.py```)

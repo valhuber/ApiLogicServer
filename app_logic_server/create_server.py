@@ -330,6 +330,10 @@ class GenerateFromModel(object):
         result = ""
         table_name = a_table_def.name
         log.debug("process_each_table: " + table_name)
+        if self.num_pages_generated == 0:
+            self._result_apis += \
+                'def expose_models(app, HOST="localhost", PORT=5000, API_PREFIX="/api"):\n'
+            self._result_apis += '    """this is called by api / __init__.py"""\n\n'
         self._result_apis += f'    api.expose_object(models.{table_name})\n'
         if "TRANSFERFUND" in table_name:
             log.debug("special table")  # debug stop here
@@ -755,6 +759,10 @@ def create_models(db_url: str, project: str) -> str:
     pass
 
 
+def write_expose_api_models(project_name, apis):
+    text_file = open(project_name + '/api/expose_api_models.py', 'a')
+    text_file.write(apis)
+    text_file.close()
 
 
 '''
@@ -875,9 +883,7 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
     # print("\n" + generate_from_model._result_views)
 
     print("writing: /api/expose_api_models.py")
-    text_file = open(project_name + '/api/expose_api_models.py', 'a')
-    text_file.write(apis)
-    text_file.close()
+    write_expose_api_models(project_name, apis)
 
     if flask_appbuilder:
         print("writing: /ui/basic_web_app/app/views.py")
