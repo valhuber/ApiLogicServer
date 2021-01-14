@@ -29,7 +29,7 @@ python create_server.py  # or run from IDE
 
 Here, the default project is ```my_project```, within ```ApiLogicServer```.
 
-    Important: for now, this is mac only.
+    Update: now working on windows
 
 
 ## Basic Operation (Internals)
