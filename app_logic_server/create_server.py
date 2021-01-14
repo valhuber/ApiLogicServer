@@ -55,6 +55,7 @@ import logging
 import datetime
 from typing import NewType
 import sys
+from sys import platform
 import os
 import sqlalchemy
 import sqlalchemy.ext
@@ -633,6 +634,18 @@ class GenerateFromModel(object):
         return result
 
 
+def kill_windows_dir(dir_name):
+    # https://stackoverflow.com/questions/22948189/how-to-solve-the-directory-is-not-empty-error-when-running-rmdir-command-in-a
+    try:
+        remove_project = run_command(f'del /f /s /q {dir_name} 1>nul')
+    except:
+        pass
+    try:
+        remove_project = run_command(f'rmdir /s /q {dir_name}')  # no prompt, no complaints if non-exists
+    except:
+        pass
+
+
 def run_command(cmd: str, env=None) -> str:
     use_env = env
     if env is None:
@@ -667,10 +680,19 @@ def clone_prototype_project(project_name: str):
     :return: result of cmd
     """
     log.debug(f'Cloning at \n{sys_env_info}')
-    remove_git = run_command(('rm -rf ' + project_name + "*"))  # TODO DEBUG only - remove me!!
+    global os_type
+    remove_project_debug = True
+    if remove_project_debug:
+        if os_type == "windows":
+            kill_windows_dir(project_name)
+        else:
+            remove_project = run_command(('rm -rf ' + project_name + "*"))
     cmd = 'git clone https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
     result = run_command(cmd)
-    remove_git = run_command(('rm -rf test/.git*'))
+    if os_type == "windows":
+        kill_windows_dir(f'{project_name}\.git')
+    else:
+        remove_git = run_command(f'rm -rf {project_name}/.git*')
     pass
 
 
@@ -714,6 +736,8 @@ def create_models(db_url: str, project: str) -> str:
     # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
     result = run_command(cmd)  # might fail per venv, looking for inflect
     pass
+
+
 
 
 '''
@@ -801,6 +825,14 @@ def run(ctx, project_name: str, db_url: str, favorites: str, non_favorites: str)
         # relative vs absolute??
         pass
 
+    global os_type
+    if platform == "linux" or platform == "linux2":
+        os_type = "linux"
+    elif platform == "darwin":
+        os_type = "mac"
+    elif platform == "win32":
+        os_type = "windows"
+
     create_project_debug = True
     if create_project_debug:
         clone_prototype_project(project_name)
@@ -845,6 +877,7 @@ def version(ctx):
 
 
 log = logging.getLogger(__name__)
+os_type = "not set"
 
 
 def start():  # target of setup.py
