@@ -633,8 +633,21 @@ class GenerateFromModel(object):
         return result
 
 
-def run_command(cmd: str) -> str:
-    result_b = subprocess.check_output(cmd, shell=True)
+def run_command(cmd: str, env=None) -> str:
+    use_env = env
+    if env is None:
+        project_dir = get_project_dir()
+        python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
+        use_env = os.environ.copy()
+        print("\n\nFixing env for cmd: " + cmd)
+        # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
+        if hasattr(use_env, "PYTHONPATH"):
+            use_env["PYTHONPATH"] = python_path + ":" + use_env["PYTHONPATH"]  # eg, /Users/val/dev/ApiLogicServer/venv/lib/python3.9
+            print("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+        else:
+            use_env["PYTHONPATH"] = python_path
+            print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+    result_b = subprocess.check_output(cmd, shell=True, env=use_env)
     result = str(result_b)  # b'pyenv 1.2.21\n'
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
@@ -669,16 +682,31 @@ def create_basic_web_app(db_url, project_name):
     # TODO - fix models.py (shared?), config.py
 
 
+def get_project_dir() -> str:
+    """
+    :return: ApiLogicServer dir, eg, /Users/val/dev/ApiLogicServer
+    """
+    path = Path(__file__)
+    parent_path = path.parent
+    parent_path = parent_path.parent
+    return parent_path
+
+
 def create_models(db_url: str, project: str) -> str:
     # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
     cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
     abs_cmd_debug = abspath(cmd_debug)
-    path = Path(__file__)
-    parent_path = path.parent
-    parent_path = parent_path.parent
-    cmd = f'python {parent_path}/expose_existing/sqlacodegen/sqlacodegen/main.py '
+    project_dir = get_project_dir()
+    python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
+    env_list = os.environ.copy()
+    # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
+    """
+    env_list["PYTHONPATH"] = python_path + ":" + env_list["PYTHONPATH"]  # python_path  # e.g., /Users/val/dev/ApiLogicServer/venv/lib/python3.9
+    """
+    cmd = f'python {project_dir}/expose_existing/sqlacodegen/sqlacodegen/main.py '
     cmd += db_url
     cmd += '  > ' + project + '/database/models.py'
+    # env_list = {}
     # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
     result = run_command(cmd)  # might fail per venv, looking for inflect
     pass
