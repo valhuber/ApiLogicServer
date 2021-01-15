@@ -14,7 +14,7 @@ PythonPath to make things easy).  The app is set up to run
 in debugger, or cmd-line.  In either case, we call ```main()```
 with default parameters.  cmd-line does not work yet.
 
-## How to run it
+## How to generate it
 
 Install as any typical project (I do this is PyCharm):
 
@@ -32,6 +32,20 @@ Here, the default project is ```my_project```, within ```ApiLogicServer```.
     Update: now working on windows
 
 <figure><img src="images/apilogicserver-ide.png"></figure>
+
+## How to run it
+
+The project does not run inside ApiLogicServer.  And that's not where it's going
+to be, so we perform the following procedure
+
+```
+# copy ApiLogicServer/my_project, ~/Desktop/my_project
+cd ~/Desktop/my_project
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python api_logic_server.py
+```
 
 ## Basic Operation (Internals)
 
