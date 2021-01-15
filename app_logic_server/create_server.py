@@ -334,6 +334,8 @@ class GenerateFromModel(object):
             self._result_apis += \
                 'def expose_models(app, HOST="localhost", PORT=5000, API_PREFIX="/api"):\n'
             self._result_apis += '    """this is called by api / __init__.py"""\n\n'
+            self._result_apis += \
+                '    api = SAFRSAPI(app, host=HOST, port=PORT)'
         self._result_apis += f'    api.expose_object(models.{table_name})\n'
         if "TRANSFERFUND" in table_name:
             log.debug("special table")  # debug stop here

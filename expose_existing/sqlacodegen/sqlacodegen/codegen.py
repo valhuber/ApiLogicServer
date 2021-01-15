@@ -443,8 +443,8 @@ metadata = Base.metadata
 NullType = db.String
 TIMESTAMP= db.TIMESTAMP
 
-if db.session.bind.dialect.name == "mysql":
-    from sqlalchemy.dialects.mysql import *
+# FIXME Req'd  if db.session.bind.dialect.name == "mysql":
+#    from sqlalchemy.dialects.mysql import *
 
 def BIGINT(_):
     return db.SMALLINT
