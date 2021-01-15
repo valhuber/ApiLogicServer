@@ -330,13 +330,6 @@ class GenerateFromModel(object):
         result = ""
         table_name = a_table_def.name
         log.debug("process_each_table: " + table_name)
-        if self.num_pages_generated == 0:
-            self._result_apis += \
-                'def expose_models(app, HOST="localhost", PORT=5000, API_PREFIX="/api"):\n'
-            self._result_apis += '    """this is called by api / __init__.py"""\n\n'
-            self._result_apis += \
-                '    api = SAFRSAPI(app, host=HOST, port=PORT)'
-        self._result_apis += f'    api.expose_object(models.{table_name})\n'
         if "TRANSFERFUND" in table_name:
             log.debug("special table")  # debug stop here
         if "ProductDetails_V" in table_name:
@@ -353,7 +346,17 @@ class GenerateFromModel(object):
                 log.debug(".. but children first: " + each_child.name)
                 result += self.process_each_table(each_child)
                 self._tables_generated.add(each_child.name)
+
+            if self.num_pages_generated == 0:
+                self._result_apis += \
+                    'def expose_models(app, HOST="localhost", PORT=5000, API_PREFIX="/api"):\n'
+                self._result_apis += '    """this is called by api / __init__.py"""\n\n'
+                self._result_apis += \
+                    '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
+            self._result_apis += f'    api.expose_object(models.{table_name})\n'
+
             self.num_pages_generated += 1
+
             model_name = self.model_name(table_name)
             class_name = a_table_def.name + model_name
             result += "\n\n\nclass " + class_name + "(" + model_name + "):\n"
