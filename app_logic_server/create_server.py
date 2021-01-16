@@ -339,6 +339,8 @@ class GenerateFromModel(object):
         elif table_name in self._tables_generated:
             log.debug("table already generated per recursion: " + table_name)
             return "# table already generated per recursion: " + table_name
+        elif 'sqlite_sequence' in table_name:
+            return "# skip sqlite_sequence table: " + table_name + "\n"
         else:
             self._tables_generated.add(table_name)
             child_list = self.find_child_list(a_table_def)
@@ -939,7 +941,7 @@ if __name__ == '__main__':  # debugger starts here
         'run',
         '--project_name=my_project',
         '--flask_appbuilder',
-        '--db_url=sqlite:///db.sqlite',
+        '--db_url=sqlite:///nw.sqlite',
         '--favorites=name description',
         '--non_favorites=id',
     )
