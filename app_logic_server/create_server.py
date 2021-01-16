@@ -713,21 +713,9 @@ def clone_prototype_project(project_name: str):
     remove_project_debug = True
     if remove_project_debug:
         delete_dir(realpath(project_name))
-        """ TODO remove me
-        if os_type == "windows" or True:
-            kill_windows_dir(project_name)
-        else:
-            remove_project = run_command(('rm -rf ' + project_name + "*"))
-        """
     cmd = 'git clone https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
     result = run_command(cmd)
-    delete_dir(f'{project_name}\.git')
-    """
-    if os_type == "windows":
-        kill_windows_dir(f'{project_name}\.git')
-    else:
-        remove_git = run_command(f'rm -rf {project_name}/.git*')
-    """
+    delete_dir(f'{project_name}/.git')
     pass
 
 
@@ -737,7 +725,6 @@ def create_basic_web_app(db_url, project_name):
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
     result = run_command(cmd)
     pass
-    # TODO - fix models.py (shared?), config.py
 
 
 def get_project_dir() -> str:
