@@ -356,7 +356,7 @@ class GenerateFromModel(object):
                 self.result_apis += '    """this is called by api / __init__.py"""\n\n'
                 self.result_apis += \
                     '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
-            if (table_name in self.not_exposed):
+            if (table_name + " " in self.not_exposed):
                 self.result_apis += f'    # api.expose_object(models.{table_name})\n'
             else:
                 self.result_apis += f'    api.expose_object(models.{table_name})\n'
@@ -908,7 +908,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     generate_from_model = GenerateFromModel()
     generate_from_model.project_name = abs_project_name
     generate_from_model.db_url = abs_db_url
-    generate_from_model.not_exposed = not_exposed
+    generate_from_model.not_exposed = not_exposed + " "
     generate_from_model.favorite_names = favorites
     generate_from_model.non_favorite_names = non_favorites
     generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
