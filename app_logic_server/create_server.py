@@ -941,7 +941,7 @@ if __name__ == '__main__':  # debugger starts here
         'run',
         '--project_name=my_project',
         '--flask_appbuilder',
-        '--db_url=sqlite:///nw.sqlite',
+        '--db_url=sqlite:///Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite',
         '--favorites=name description',
         '--non_favorites=id',
     )
