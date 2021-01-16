@@ -770,6 +770,14 @@ def write_expose_api_models(project_name, apis):
     text_file.close()
 
 
+def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
+    with open(in_file, 'r') as file:
+        file_data = file.read()
+        file_data = file_data.replace(search_for, replace_with)
+    with open(in_file, 'w') as file:
+        file.write(file_data)
+
+
 '''
             CLI
 
@@ -889,6 +897,10 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
 
     print("writing: /api/expose_api_models.py")
     write_expose_api_models(project_name, apis)
+
+    replace_string_in_file(search_for="replace_project_name",
+                           replace_with=project_name,
+                           in_file=f'{project_name}/app_logic_server_run.py')
 
     if flask_appbuilder:
         print("writing: /ui/basic_web_app/app/views.py")
