@@ -43,6 +43,7 @@ New FAB Feature Suggestions:
 import builtins
 import subprocess
 from os.path import abspath
+from os.path import realpath
 from pathlib import Path
 
 import logic_bank_utils.util as logic_bank_utils
@@ -79,8 +80,8 @@ class GenerateFromModel(object):
     Create ui/basic_web_app/views.py and api/expose_api_models.py
     """
 
-    _result_views = ""
-    _result_apis = ""
+    result_views = ""
+    result_apis = ""
 
     _favorite_names_list = []  #: ["name", "description"]
     """
@@ -102,7 +103,7 @@ class GenerateFromModel(object):
     num_pages_generated = 0
     num_related = 0
 
-    def run(self) -> str:
+    def run(self):
         """
             create ui/basic_web_app/views.py and api/expose_api_models.py
 
@@ -118,25 +119,25 @@ class GenerateFromModel(object):
         self._favorite_names_list = self.favorite_names.split()
 
         cwd = os.getcwd()
-        self._result_views += '"""'
-        self._result_apis += '"""'
-        self._result_views += ("\nGenerate From Model " + __version__ + "\n\n"
-                               + "Project Name: " + self.project_name + "\n\n"
-                               + "Current Working Directory: " + cwd + "\n\n"
-                               + "From: " + sys.argv[0] + "\n\n"
-                               + "Using Python: " + sys.version + "\n\n"
-                               + "Favorites: "
-                               + str(self._favorite_names_list) + "\n\n"
-                               + "Non Favorites: "
-                               + str(self._non_favorite_names_list) + "\n\n"
-                               + "At: " + str(datetime.datetime.now()) + "\n\n")
-        self._result_apis += ("\nGenerate From Model " + __version__ + "\n\n"
-                               + "Project Name: " + self.project_name + "\n\n"
-                               + "Current Working Directory: " + cwd + "\n\n"
-                               + "From: " + sys.argv[0] + "\n\n"
-                               + "Using Python: " + sys.version + "\n\n"
-                               + "At: " + str(datetime.datetime.now()) + "\n\n"
-                               + '"""\n\n')
+        self.result_views += '"""'
+        self.result_apis += '"""'
+        self.result_views += ("\nGenerate From Model " + __version__ + "\n\n"
+                              + "Project Name: " + self.project_name + "\n\n"
+                              + "Current Working Directory: " + cwd + "\n\n"
+                              + "From: " + sys.argv[0] + "\n\n"
+                              + "Using Python: " + sys.version + "\n\n"
+                              + "Favorites: "
+                              + str(self._favorite_names_list) + "\n\n"
+                              + "Non Favorites: "
+                              + str(self._non_favorite_names_list) + "\n\n"
+                              + "At: " + str(datetime.datetime.now()) + "\n\n")
+        self.result_apis += ("\nGenerate From Model " + __version__ + "\n\n"
+                             + "Project Name: " + self.project_name + "\n\n"
+                             + "Current Working Directory: " + cwd + "\n\n"
+                             + "From: " + sys.argv[0] + "\n\n"
+                             + "Using Python: " + sys.version + "\n\n"
+                             + "At: " + str(datetime.datetime.now()) + "\n\n"
+                             + '"""\n\n')
         sys.path.append(cwd)  # for banking Command Line test
 
         enable_cli_hack = False  # awful stuff, want to remove, keep for now...
@@ -151,7 +152,7 @@ class GenerateFromModel(object):
                     cwd = cwd.replace("fab-quick-start",
                                       "fab-quick-start/nw-app", 1)
                     cwd = cwd.replace("/fab_quick_start_util","")
-                    self._result_views += "Debug Mode fix for cwd: " + cwd + "\n\n"
+                    self.result_views += "Debug Mode fix for cwd: " + cwd + "\n\n"
                 else:
                     cwd = cwd.replace("fab-quick-start",
                                       "fab-quick-start/banking/basic_web_app", 1)
@@ -161,20 +162,20 @@ class GenerateFromModel(object):
                                                       'banking', 1)
                     python_path = python_path.replace("/fab_quick_start_util","")
                     sys.path.append(python_path)
-                    self._result_views += "Python Path includes: " + python_path + "\n\n"
-                self._result_views += "Debug cmd override: " + cwd + "\n\n"
+                    self.result_views += "Python Path includes: " + python_path + "\n\n"
+                self.result_views += "Debug cmd override: " + cwd + "\n\n"
                 #  print ("\n\n** debug path issues 2: \n\n" + self._result)
             #  print ("\n\n** debug path issues 1: \n\n" + self._result)
 
-        self._result_views += '"""\n\n'  # look into fstring - nicer to read TODO
+        self.result_views += '"""\n\n'  # look into fstring - nicer to read TODO
         metadata = self.find_meta_data(cwd, self.project_name, self.db_url)
         meta_tables = metadata.tables
-        self._result_views += self.generate_module_imports()
+        self.result_views += self.generate_module_imports()
         for each_table in meta_tables.items():
             each_result = self.process_each_table(each_table[1])
-            self._result_views += each_result
-        self._result_views += self.process_module_end(meta_tables)
-        return self._result_views, self._result_apis
+            self.result_views += each_result
+        self.result_views += self.process_module_end(meta_tables)
+        return
 
     def find_meta_data(self, a_cwd: str, a_project_name: str, a_db_url) -> MetaData:
         """     Find Metadata by importing model, or (failing that), db
@@ -257,7 +258,7 @@ class GenerateFromModel(object):
                     importlib.import_module('models')
                 except:
                     pass  # once more...
-                    print("\n\nERROR - current result:\n" + self._result_views)
+                    print("\n\nERROR - current result:\n" + self.result_views)
                     # The sqlalchemy extension was not registered to the current application.  Please make sure to call init_app() first.
                     raise Exception("Unable to import models from:\n" +
                                     project_abs_path + "/database, or" +
@@ -350,12 +351,12 @@ class GenerateFromModel(object):
                 self._tables_generated.add(each_child.name)
 
             if self.num_pages_generated == 0:
-                self._result_apis += \
+                self.result_apis += \
                     'def expose_models(app, HOST="localhost", PORT=5000, API_PREFIX="/api"):\n'
-                self._result_apis += '    """this is called by api / __init__.py"""\n\n'
-                self._result_apis += \
+                self.result_apis += '    """this is called by api / __init__.py"""\n\n'
+                self.result_apis += \
                     '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
-            self._result_apis += f'    api.expose_object(models.{table_name})\n'
+            self.result_apis += f'    api.expose_object(models.{table_name})\n'
 
             self.num_pages_generated += 1
 
@@ -708,7 +709,7 @@ def clone_prototype_project(project_name: str):
     global os_type
     remove_project_debug = True
     if remove_project_debug:
-        delete_dir(project_name)
+        delete_dir(realpath(project_name))
         """ TODO remove me
         if os_type == "windows" or True:
             kill_windows_dir(project_name)
@@ -865,9 +866,16 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
 
     """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+    abs_db_url = db_url
     if db_url.startswith('sqlite:///'):
-        # relative vs absolute??
+        url = db_url[10: len(db_url)]
+        abs_db_url = abspath(url)
+        abs_db_url = 'sqlite:///' + abs_db_url
         pass
+
+    abs_project_name = project_name
+    if abs_project_name.startswith("~"):
+        abs_project_name = str(Path.home()) + project_name[1:]
 
     global os_type
     if platform == "linux" or platform == "linux2":
@@ -879,38 +887,38 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
 
     create_project_debug = True
     if create_project_debug:
-        clone_prototype_project(project_name)
-        create_models(db_url, project_name)  # exec's sqlacodegen
+        clone_prototype_project(abs_project_name)
+        create_models(abs_db_url, abs_project_name)  # exec's sqlacodegen
 
     if flask_appbuilder:
-        create_basic_web_app(db_url, project_name)
+        create_basic_web_app(abs_db_url, abs_project_name)
 
     """
         Create views.py file from db, models.py
     """
     generate_from_model = GenerateFromModel()
-    generate_from_model.project_name = project_name
-    generate_from_model.db_url = db_url
+    generate_from_model.project_name = abs_project_name
+    generate_from_model.db_url = abs_db_url
     generate_from_model.favorite_names = favorites
     generate_from_model.non_favorite_names = non_favorites
-    views, apis = generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
+    generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
 
     # print("\n" + generate_from_model._result_views)
 
     print("writing: /api/expose_api_models.py")
-    write_expose_api_models(project_name, apis)
+    write_expose_api_models(abs_project_name, generate_from_model.result_apis)
 
     replace_string_in_file(search_for="replace_project_name",
-                           replace_with=project_name,
-                           in_file=f'{project_name}/api_logic_server_run.py')
+                           replace_with=os.path.basename(project_name),
+                           in_file=f'{abs_project_name}/api_logic_server_run.py')
     replace_string_in_file(search_for="replace_db_url",
-                           replace_with=db_url,
-                           in_file=f'{project_name}/config.py')
+                           replace_with=abs_db_url,
+                           in_file=f'{abs_project_name}/config.py')
 
     if flask_appbuilder:
         print("writing: /ui/basic_web_app/app/views.py")
-        text_file = open(project_name + '/ui/basic_web_app/app/views.py', 'w')
-        text_file.write(views)
+        text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
+        text_file.write(generate_from_model.result_views)
         text_file.close()
 
 
@@ -939,9 +947,9 @@ def start():  # target of setup.py
 if __name__ == '__main__':  # debugger starts here
     commands = (
         'run',
-        '--project_name=my_project',
+        '--project_name=~/Desktop/my_project',
         '--flask_appbuilder',
-        '--db_url=sqlite:///Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite',
+        '--db_url=sqlite:///nw.sqlite',
         '--favorites=name description',
         '--non_favorites=id',
     )
