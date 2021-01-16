@@ -900,7 +900,10 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
 
     replace_string_in_file(search_for="replace_project_name",
                            replace_with=project_name,
-                           in_file=f'{project_name}/app_logic_server_run.py')
+                           in_file=f'{project_name}/api_logic_server_run.py')
+    replace_string_in_file(search_for="replace_db_url",
+                           replace_with=db_url,
+                           in_file=f'{project_name}/config.py')
 
     if flask_appbuilder:
         print("writing: /ui/basic_web_app/app/views.py")
