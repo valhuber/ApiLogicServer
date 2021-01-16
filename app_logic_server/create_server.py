@@ -356,7 +356,10 @@ class GenerateFromModel(object):
                 self.result_apis += '    """this is called by api / __init__.py"""\n\n'
                 self.result_apis += \
                     '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
-            self.result_apis += f'    api.expose_object(models.{table_name})\n'
+            if (table_name in self.not_exposed):
+                self.result_apis += f'    # api.expose_object(models.{table_name})\n'
+            else:
+                self.result_apis += f'    api.expose_object(models.{table_name})\n'
 
             self.num_pages_generated += 1
 
@@ -835,6 +838,10 @@ def main(ctx):
               default="sqlite:///db.sqlite",
               prompt="Database URL",
               help="Word(s) identifying 'favorite name' (displayed first)")
+@click.option('--not_exposed',
+              default="ProductDetails_V bad_table",
+              prompt="Tables Not Exposed",
+              help="These tables are not written to api/expose_api_models.py")
 @click.option('--flask_appbuilder/--no-flask_appbuilder',
               prompt="Generate Flask AppBuilder",
               help="Creates <project_name>/ui/basic_web_app")
@@ -847,7 +854,8 @@ def main(ctx):
               prompt="Non Favorite Column Names",
               help="Word(s) used to identify last-shown fields")
 @click.pass_context
-def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: str, non_favorites: str):
+def run(ctx, project_name: str, db_url: str, not_exposed: str,
+        flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
     Main Driver - generates a Python Project, using Flask, SFRS, LogicBank and Flask AppBuilder
 
@@ -860,6 +868,7 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
     :param ctx:
     :param project_name: name of project to create
     :param db_url: from this database
+    :param not_exposed: tables are not written to api/expose_api_models.py
     :param flask_appbuilder: create basic_web_app
     :param favorites: in basic_web_app views, what fields should be at top
     :param non_favorites: at bottom
@@ -899,6 +908,7 @@ def run(ctx, project_name: str, db_url: str, flask_appbuilder: bool, favorites: 
     generate_from_model = GenerateFromModel()
     generate_from_model.project_name = abs_project_name
     generate_from_model.db_url = abs_db_url
+    generate_from_model.not_exposed = not_exposed
     generate_from_model.favorite_names = favorites
     generate_from_model.non_favorite_names = non_favorites
     generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
@@ -948,6 +958,7 @@ if __name__ == '__main__':  # debugger starts here
     commands = (
         'run',
         '--project_name=~/Desktop/my_project',
+        '--not_exposed=ProductDetails_V',
         '--flask_appbuilder',
         '--db_url=sqlite:///nw.sqlite',
         '--favorites=name description',
