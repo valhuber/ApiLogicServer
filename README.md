@@ -29,14 +29,19 @@ python create_server.py  # or run from IDE
 
 Here, the default project is ```my_project```, within ```ApiLogicServer```.
 
-    Update: now working on windows
+It's currently hard-coded to my machine, so change this line in ```create_server.py```:
+```
+        '--db_url=sqlite:///Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite',
+```
+
+    Update: now working on windows, generated server (nearly) runs
 
 <figure><img src="images/apilogicserver-ide.png"></figure>
 
 ## How to run it
 
 The project does not run inside ApiLogicServer.  And that's not where it's going
-to be, so we perform the following procedure
+to be, so we perform the following procedure:
 
 ```
 # copy ApiLogicServer/my_project, ~/Desktop/my_project
@@ -46,6 +51,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 python api_logic_server.py
 ```
+
+There is one current bug - it processes views, so you must comment out this line in 
+```expose_api_models.py```:
+
+```
+    # api.expose_object(models.ProductDetails_V)
+```
+
+This should now run, and return data.
 
 ## Basic Operation (Internals)
 
