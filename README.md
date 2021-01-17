@@ -4,7 +4,7 @@ Creates a server project at <project_name>.
 
 ## Current Status
 
-    Update 1/16 6PM
+    Update 1/17 9AM
         generating server, windows & mac
         server runs, mac (not windows)
         generated flask app builder runs (mac)
@@ -13,8 +13,7 @@ Creates a server project at <project_name>.
 This version has only been run under PyCharm (which recall sets
 PythonPath to make things easy).  The app is set up to run
 ```ApiLogicServer/create_server.py``` either
-in debugger, or cmd-line.  In either case, we call ```main()```
-with default parameters.  cmd-line does not work yet.
+in debugger, or cmd-line. 
 
 ## How to Install it
 Preliminary version - **run from IDE:**
@@ -47,6 +46,8 @@ cd app_logic_server
 Currently hard-coded to create default project: ```Desktop/my_project```.
 Expected log:
 ```
+API Logic Server Creation 1.0.0
+
 Delete dir: /Users/val/Desktop/my_project
 Create Project with command: git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git /Users/val/Desktop/my_project
 Delete dir: /Users/val/Desktop/my_project/.git
@@ -63,7 +64,30 @@ Process finished with exit code 0
 
 <figure><img src="images/apilogicserver-ide.png"></figure>
 
-## How to run the API Server
+### How to generate from the Command Line
+    
+This is the expected usage.
+It will be via ```pip``` in the future, but for now:
+
+```
+cd some_folder
+cp <ApiLogicServer>/venv venv  # see sub-section below
+source venv/bin/activate
+
+# from arbitrary folder:
+python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my-new-project
+
+cd app_logic_server  # or from project files
+python create_server.py --project_name=~/Desktop/test/my-new-project 
+```
+
+#### Issue setting PYTHONPATH
+For now, the ```venv``` copy is required - I was unable to "push" PYTHONPATH to run ```expose_existing``` in ```run_command(cmd: str, env=None)```:
+```
+result_b = subprocess.check_output(cmd, shell=True, env=use_env)
+```
+
+## How to run the API Logic Server
 
 ```
 cd ~/Desktop/my_project
@@ -90,31 +114,9 @@ cd ui/BasicWebApp
 Not tried yet
 
 ## Run outside IDE, via PIP
-As customers might run
+As customers will run
 
 ## Try with other DBs, non-sqlite
 These will probably fail in FAB, since the admin data is not being created.
-    
-## Command Line Operation
-And, this needs to run from the command line.
-That will be via ```pip``` in the future, but for now:
 
-```
-# usual project install (git clone, virtualenv... as above)
-
-cd some_folder
-cp <ApiLogicServer>/venv venv
-source venv/bin/activate
-
-python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my-new-project  # or
-
-cd app_logic_server
-python create_server.py --project_name=~/Desktop/test/my-new-project 
-
-```
-
-For now, the ```venv``` is required - I was unable to "push" PYTHONPATH to run ```expose_existing``` in ```run_command(cmd: str, env=None)```:
-```
-result_b = subprocess.check_output(cmd, shell=True, env=use_env)
-```
 
