@@ -655,13 +655,28 @@ def delete_dir(dir_path):
     use_shutil_debug = True
     if use_shutil_debug:
         # credit: https://linuxize.com/post/python-delete-files-and-directories/
+        # and https://stackoverflow.com/questions/1213706/what-user-do-python-scripts-run-as-in-windows
+        import errno, os, stat, shutil
+
+        def handleRemoveReadonly(func, path, exc):
+            excvalue = exc[1]
+            if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
+                os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)  # 0777
+                func(path)
+            else:
+                raise
+
         print(f'Delete dir: {dir_path}')
         import shutil
-        try:
-            shutil.rmtree(dir_path)
-        except OSError as e:
-            pass
-            # print("Error: %s : %s" % (dir_path, e.strerror))
+        use_callback = False
+        if use_callback:
+            shutil.rmtree(dir_path, ignore_errors=False, onerror=handleRemoveReadonly)
+        else:
+            try:
+                shutil.rmtree(dir_path)
+            except OSError as e:
+                pass
+                print("Error: %s : %s" % (dir_path, e.strerror))
     else:
         # https://stackoverflow.com/questions/22948189/how-to-solve-the-directory-is-not-empty-error-when-running-rmdir-command-in-a
         try:
