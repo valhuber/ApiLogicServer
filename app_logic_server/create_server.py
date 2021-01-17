@@ -954,16 +954,17 @@ def start():  # target of setup.py
     main(obj={})  # TODO - main(a,b) fails to work for --help
 
 
-if __name__ == '__main__':  # debugger starts here
-    print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
-    print('Number of arguments:', len(sys.argv), 'arguments.')
-    print('Argument List:', str(sys.argv))
+if __name__ == '__main__':  # debugger & cmd-line start here
+    # print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
+    # print('Number of arguments:', len(sys.argv), 'arguments.')
+    # print('Argument List:', str(sys.argv))
 
     if len(sys.argv) > 1:
+        print("\nAPI Logic Server Creation " + __version__ + " here\n")
         commands = sys.argv
         commands[0] = "run"
     else:
-        print("No arguments supplied, using default")
+        print("\nAPI Logic Server Creation " + __version__ + " (using debug default arguments)\n")
         commands = (
             'run',
             '--project_name=~/Desktop/my_project',
