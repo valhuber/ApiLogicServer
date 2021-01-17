@@ -32,6 +32,7 @@ class Config:
     DEBUG = environ.get("DEBUG")
 
     # Database
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"  # not used, but suppresses message
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #                          'sqlite:///' + os.path.join(basedir, 'app.db') + '?check_same_thread=False'
     """

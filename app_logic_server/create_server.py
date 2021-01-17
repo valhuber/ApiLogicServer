@@ -220,23 +220,10 @@ class GenerateFromModel(object):
                 from sqlalchemy.ext.declarative import declarative_base
                 import safrs
 
-                import safrs
                 app = Flask("API Logic Server")
                 app.config.from_object("config.Config")
-                #    app.config.update(SQLALCHEMY_DATABASE_URI="sqlite://")
-                # from database import db  # , session  FIXME eh?
                 db = safrs.DB
-                use_file = True
-                if use_file:  # this is a little obscure - can we bring inline?
-                    pass  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
-                    db.init_app(app)
-                    # session = db.session
-                else:
-                    # db: SQLAlchemy = SQLAlchemy()  REMOVE
-                    db = safrs.DB  # opens (what?) database, returning session
-                    Base: declarative_base = db.Model
-                    session: Session = db.session
-                    print("got session: " + str(session))
+                db.init_app(app)
                 return app
 
             app = create_app()
@@ -689,7 +676,19 @@ def delete_dir(dir_path):
             pass
 
 
-def run_command(cmd: str, env=None) -> str:
+def run_command(cmd: str, env=None, msg: str = "") -> str:
+    """ run shell command
+
+    :param cmd: string of command to execute
+    :param env:
+    :param msg: optional message
+    :return:
+    """
+    log_msg = ""
+    if msg != "Execute command:":
+        log_msg = msg + " with command:"
+    print(f'{log_msg} {cmd}')
+
     use_env = env
     if env is None:
         project_dir = get_project_dir()
@@ -711,7 +710,8 @@ def run_command(cmd: str, env=None) -> str:
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
     spaces = ' ' * tab_to
-    print(f'Execute: {cmd}: {spaces}{result}')
+    if result != "":
+        print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
 def clone_prototype_project(project_name: str):
@@ -724,8 +724,8 @@ def clone_prototype_project(project_name: str):
     remove_project_debug = True
     if remove_project_debug:
         delete_dir(realpath(project_name))
-    cmd = 'git clone https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
-    result = run_command(cmd)
+    cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
+    result = run_command(cmd, msg="Create Project")
     delete_dir(f'{project_name}/.git')
     pass
 
@@ -734,7 +734,7 @@ def create_basic_web_app(db_url, project_name):
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-    result = run_command(cmd)
+    result = run_command(cmd, msg="Create ui/basic_web_app")
     pass
 
 
@@ -764,7 +764,7 @@ def create_models(db_url: str, project: str) -> str:
     cmd += '  > ' + project + '/database/models.py'
     # env_list = {}
     # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
-    result = run_command(cmd)  # might fail per venv, looking for inflect
+    result = run_command(cmd, msg="Create database/models.py")  # might fail per venv, looking for inflect
     pass
 
 
@@ -902,7 +902,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         favorite_names=favorites,
         non_favorite_names=non_favorites
     )
-    print("Import / Iterate models to create ui/basic_web_app/app/views.py and api/expose_api_models.py")
+    print("Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)")
     generate_from_model.generate()
 
     # print("\n" + generate_from_model._result_views)

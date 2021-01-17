@@ -45,6 +45,21 @@ cd app_logic_server
 # run create_server.py from IDE
 ```
 Currently hard-coded to create default project: ```Desktop/my_project```.
+Expected log:
+```
+Delete dir: /Users/val/Desktop/my_project
+Create Project with command: git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git /Users/val/Desktop/my_project
+Delete dir: /Users/val/Desktop/my_project/.git
+Create database/models.py with command: python /Users/val/dev/ApiLogicServer/expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite  > /Users/val/Desktop/my_project/database/models.py
+Create ui/basic_web_app with command: flask fab create-app --name /Users/val/Desktop/my_project/ui/basic_web_app --engine SQLAlchemy
+Create ui/basic_web_app with command: flask fab create-app --name /Users/val/Desktop/my_project/ui/basic_web_app --engine SQLAlchemy result: Downloaded the skeleton app, good coding!
+Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)
+Writing: /api/expose_api_models.py
+Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url
+Writing: /ui/basic_web_app/app/views.py
+
+Process finished with exit code 0
+```
 
 
 <figure><img src="images/apilogicserver-ide.png"></figure>
