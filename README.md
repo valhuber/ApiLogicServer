@@ -1,12 +1,13 @@
-# ApiLogicServer Operation
-Preliminary version, *envisioned* to be used:
-```
-virtualenv venv
-pip install ApiLogicServer
-pip install -r requirements.txt  -- from where??
-ApiLogicServer <project_name>
-```
+# ApiLogicServer
+
 Creates a server project at <project_name>.
+
+## Current Status
+
+    Update 1/16 5PM
+        generated server runs, windows & mac
+        generated flask app builder runs (mac)
+
 
 This version has only been run under PyCharm (which recall sets
 PythonPath to make things easy).  The app is set up to run
@@ -14,8 +15,8 @@ PythonPath to make things easy).  The app is set up to run
 in debugger, or cmd-line.  In either case, we call ```main()```
 with default parameters.  cmd-line does not work yet.
 
-## How to generate it
-
+## How to Install it
+Preliminary version - **run from IDE:**
 Install as any typical project (I do this is PyCharm):
 
 ```
@@ -23,28 +24,33 @@ git clone https://github.com/valhuber/ApiLogicServer.git
 cd ApiLogicServer
 virtualenv venv
 source venv/bin/activate
+```
+
+*Envisioned* to be used:
+```
+virtualenv venv
+pip install ApiLogicServer
+pip install -r requirements.txt  -- from where??
+ApiLogicServer <project_name>
+```
+
+
+## How to generate the API Server
+
+Install as any typical project (I do this is PyCharm):
+
+```
 cd app_logic_server
-python create_server.py  # or run from IDE
+# run create_server.py from IDE
 ```
+Currently hard-coded to create default project: ```Desktop/my_project```.
 
-Here, the default project is ```my_project```, within ```ApiLogicServer```.
-
-It's currently hard-coded to my machine, so change this line in ```create_server.py```:
-```
-        '--db_url=sqlite:///Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite',
-```
-
-    Update: now working on windows, generated server (nearly) runs
 
 <figure><img src="images/apilogicserver-ide.png"></figure>
 
-## How to run it
-
-The project does not run inside ApiLogicServer.  And that's not where it's going
-to be, so we perform the following procedure:
+## How to run the API Server
 
 ```
-# copy ApiLogicServer/my_project, ~/Desktop/my_project
 cd ~/Desktop/my_project
 virtualenv venv
 source venv/bin/activate
@@ -52,14 +58,16 @@ pip install -r requirements.txt
 python api_logic_server.py
 ```
 
-There is one current bug - it processes views, so you must comment out this line in 
-```expose_api_models.py```:
-
-```
-    # api.expose_object(models.ProductDetails_V)
-```
-
 This should now run, and return data.
+
+## How to run Flask App Builder (FAB)
+This is also running (on mac at least):
+
+```
+cd ui/BasicWebApp
+# run run.py under IDE
+```
+
 
 ## Basic Operation (Internals)
 
@@ -77,9 +85,14 @@ This should now run, and return data.
     
 # Next Steps
 
-## Make Generated Project Work
-So, let's make the generated app run: run the debugger, and
-make required changes to ```my_project```, within ```ApiLogicServer```.
+## Engage Logic Bank
+Not tried yet
+
+## Run outside IDE, via PIP
+As customers might run
+
+## Try with other DBs, non-sqlite
+These will probably fail in FAB, since the admin data is not being created.
     
 ## Command Line Operation
 And, this needs to run from the command line.

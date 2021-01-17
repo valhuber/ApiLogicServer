@@ -308,8 +308,7 @@ class GenerateFromModel(object):
         result += "from flask_appbuilder.models.sqla.interface "\
             "import SQLAInterface\n"
         result += "from . import appbuilder, db\n"
-        result += "from .models import *\n"
-        result += "\n"
+        result += "from database.models import *\n"
         return result
 
     def process_each_table(self, a_table_def: MetaDataTable) -> str:
@@ -333,6 +332,8 @@ class GenerateFromModel(object):
         log.debug("process_each_table: " + table_name)
         if "TRANSFERFUND" in table_name:
             log.debug("special table")  # debug stop here
+        if (table_name + " " in self.not_exposed):
+            return "# not_exposed: api.expose_object(models.{table_name})"
         if "ProductDetails_V" in table_name:
             log.debug("special table")  # should not occur (--noviews)
         if table_name.startswith("ab_"):
@@ -356,10 +357,7 @@ class GenerateFromModel(object):
                 self.result_apis += '    """this is called by api / __init__.py"""\n\n'
                 self.result_apis += \
                     '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
-            if (table_name + " " in self.not_exposed):
-                self.result_apis += f'    # api.expose_object(models.{table_name})\n'
-            else:
-                self.result_apis += f'    api.expose_object(models.{table_name})\n'
+            self.result_apis += f'    api.expose_object(models.{table_name})\n'
 
             self.num_pages_generated += 1
 
@@ -911,6 +909,9 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     replace_string_in_file(search_for="replace_db_url",
                            replace_with=abs_db_url,
                            in_file=f'{abs_project_name}/config.py')
+    replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
+                           replace_with=f'"{abs_db_url}"',
+                           in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
 
     if flask_appbuilder:
         print("writing: /ui/basic_web_app/app/views.py")
