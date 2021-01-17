@@ -121,9 +121,7 @@ class GenerateFromModel(object):
         cwd = os.getcwd()
         self.result_views += '"""'
         self.result_apis += '"""'
-        self.result_views += ("\nGenerate From Model " + __version__ + "\n\n"
-                              + "Project Name: " + self.project_name + "\n\n"
-                              + "Current Working Directory: " + cwd + "\n\n"
+        self.result_views += ("\nApiLogicServer Generate From Model " + __version__ + "\n\n"
                               + "From: " + sys.argv[0] + "\n\n"
                               + "Using Python: " + sys.version + "\n\n"
                               + "Favorites: "
@@ -131,9 +129,7 @@ class GenerateFromModel(object):
                               + "Non Favorites: "
                               + str(self._non_favorite_names_list) + "\n\n"
                               + "At: " + str(datetime.datetime.now()) + "\n\n")
-        self.result_apis += ("\nGenerate From Model " + __version__ + "\n\n"
-                             + "Project Name: " + self.project_name + "\n\n"
-                             + "Current Working Directory: " + cwd + "\n\n"
+        self.result_apis += ("\nApiLogicServer Generate From Model " + __version__ + "\n\n"
                              + "From: " + sys.argv[0] + "\n\n"
                              + "Using Python: " + sys.version + "\n\n"
                              + "At: " + str(datetime.datetime.now()) + "\n\n"
@@ -915,8 +911,9 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     replace_string_in_file(search_for="replace_project_name",
                            replace_with=os.path.basename(project_name),
                            in_file=f'{abs_project_name}/api_logic_server_run.py')
+    os_url = abs_db_url.replace('\\', '\\\\')  # for windows, of course
     replace_string_in_file(search_for="replace_db_url",
-                           replace_with=abs_db_url,
+                           replace_with=os_url,
                            in_file=f'{abs_project_name}/config.py')
     # ApiLogicServer hello "At: " + str(datetime.datetime.now())
     replace_string_in_file(search_for="ApiLogicServer hello",
