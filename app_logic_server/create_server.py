@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Generates FAB views.py file from db model.
+"""
+Given a database url,
+create ApiLogicServer project by cloning ApiLogicServerProto,
+in particular create the ui/basic_web_app/app/views.py
+and api/expose_api_models.
 
 CAREFUL!!
     This is copy / alteration of fab-quick-start, but the comments etc are all out of date.
@@ -7,21 +11,16 @@ CAREFUL!!
 
 For Dev: Install, Run, Deploy Instructions to test Command Line
 
-    https://github.com/valhuber/fab-quick-start/wiki/Explore-fab-quick-start
-    cd nw-app
     python ../fab_quick_start_util/create_server.py
     python ../fab_quick_start_util/create_server.py run
 
-    cd banking/basic_web_app/
-    python ../../fab_quick_start_util/create_server.py run
-
     cd nw-app
     virtualenv venv
-    pip install ../../fab-quick-start
+    pip install ../../ApiLogicServer
 
 For Users: Usage
-    FAB Quick Start Guide: https://github.com/valhuber/fab-quick-start/wiki
-    FAB Quick Start Utility: https://github.com/valhuber/fab-quick-start
+    FAB Quick Start Guide: https://github.com/valhuber/ApiLogicServer
+    FAB Quick Start Guide: https://github.com/valhuber/ApiLogicServerProto
 
 Urgent
     None
@@ -93,8 +92,6 @@ class GenerateFromModel(object):
             name in English
             nom in French
     """
-    favorite_names = "name description"  #: e.g. "nom, description"
-
     _non_favorite_names_list = []
     non_favorite_names = "id"
 
@@ -103,18 +100,21 @@ class GenerateFromModel(object):
     num_pages_generated = 0
     num_related = 0
 
-    def run(self):
-        """
-            create ui/basic_web_app/views.py and api/expose_api_models.py
+    def __init__(self,
+                 project_name: str ="~/Desktop/my_project",
+                 db_url: str = "sqlite:///nw.sqlite",
+                 not_exposed: str = 'ProductDetails_V',
+                 favorite_names: str = "name description",
+                 non_favorite_names: str = "id"):
+        self.project_name = project_name
+        self.db_url = db_url
+        self.not_exposed = not_exposed
+        self.favorite_names = favorite_names
+        self.non_favorite_name = non_favorite_names
 
-            This is the main entry.  Typical calling sequence:\r
-                qs = FabQuickStart()\r
-                qs.favorite_names = "nom description"\r
-                qs.non_favorite_names = "id"\r
-                qs.run()\r
+    def generate(self):
+        """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
-            Parameters:
-        """
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
 
@@ -655,7 +655,7 @@ def delete_dir(dir_path):
     use_shutil_debug = True
     if use_shutil_debug:
         # credit: https://linuxize.com/post/python-delete-files-and-directories/
-        print(f'delete dir: {dir_path}')
+        print(f'Delete dir: {dir_path}')
         import shutil
         try:
             shutil.rmtree(dir_path)
@@ -696,7 +696,7 @@ def run_command(cmd: str, env=None) -> str:
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
     spaces = ' ' * tab_to
-    print(f'{cmd}: {spaces}{result}')
+    print(f'Execute: {cmd}: {spaces}{result}')
 
 
 def clone_prototype_project(project_name: str):
@@ -706,8 +706,6 @@ def clone_prototype_project(project_name: str):
     :param project_name: name of project created
     :return: result of cmd
     """
-    log.debug(f'Cloning at \n{sys_env_info}')
-    global os_type
     remove_project_debug = True
     if remove_project_debug:
         delete_dir(realpath(project_name))
@@ -871,14 +869,6 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     if abs_project_name.startswith("~"):
         abs_project_name = str(Path.home()) + project_name[1:]
 
-    global os_type
-    if platform == "linux" or platform == "linux2":
-        os_type = "linux"
-    elif platform == "darwin":
-        os_type = "mac"
-    elif platform == "win32":
-        os_type = "windows"
-
     create_project_debug = True
     if create_project_debug:
         clone_prototype_project(abs_project_name)
@@ -890,19 +880,22 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     """
         Create views.py file from db, models.py
     """
-    generate_from_model = GenerateFromModel()
-    generate_from_model.project_name = abs_project_name
-    generate_from_model.db_url = abs_db_url
-    generate_from_model.not_exposed = not_exposed + " "
-    generate_from_model.favorite_names = favorites
-    generate_from_model.non_favorite_names = non_favorites
-    generate_from_model.run()  # create ui/basic_web_app/views.py and api/expose_api_models.py
+    generate_from_model = GenerateFromModel(
+        project_name=abs_project_name,
+        db_url=abs_db_url,
+        not_exposed=not_exposed + " ",
+        favorite_names=favorites,
+        non_favorite_names=non_favorites
+    )
+    print("Import / Iterate models to create ui/basic_web_app/app/views.py and api/expose_api_models.py")
+    generate_from_model.generate()
 
     # print("\n" + generate_from_model._result_views)
 
-    print("writing: /api/expose_api_models.py")
+    print("Writing: /api/expose_api_models.py")
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
 
+    print("Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url")
     replace_string_in_file(search_for="replace_project_name",
                            replace_with=os.path.basename(project_name),
                            in_file=f'{abs_project_name}/api_logic_server_run.py')
@@ -914,7 +907,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
                            in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
 
     if flask_appbuilder:
-        print("writing: /ui/basic_web_app/app/views.py")
+        print("Writing: /ui/basic_web_app/app/views.py")
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(generate_from_model.result_views)
         text_file.close()
@@ -934,7 +927,6 @@ def version(ctx):
 
 
 log = logging.getLogger(__name__)
-os_type = "not set"
 
 
 def start():  # target of setup.py
