@@ -110,6 +110,29 @@ cd ui/BasicWebApp
     
 # Next Steps
 
+## Windows
+Delete is failing, so the target generation folder must
+not exist.
+
+More seriously, the generated app fails to run with very odd 
+[encoding](https://stackoverflow.com/questions/1347791/unicode-error-unicodeescape-codec-cant-decode-bytes-cannot-open-text-file)
+issues, on what appears to be a comment:
+```
+  File "C:\Users\val\dev\my_project\api\expose_api_models.py", line 6
+    """
+    ^
+SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 44-45: truncated \UXXXXXXXX escape
+```
+
+OK, understood.... temporary work-around:
+
+* remove the big comment in expose_api.... (it has file paths)
+* the db_url (in ```config.py```) needs to replace "\" with "\\" (don't know why)
+
+##  Cleanup
+
+I moved ```app``` module to ```api``` module... like?
+
 ## Engage Logic Bank
 Not tried yet.  Look out for missing back_ref relationships.
 
