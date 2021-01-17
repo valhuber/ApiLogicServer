@@ -111,12 +111,17 @@ cd ui/BasicWebApp
 # Next Steps
 
 ## Engage Logic Bank
-Not tried yet
+Not tried yet.  Look out for missing back_ref relationships.
 
-## Run outside IDE, via PIP
-As customers will run
+## PIP Install / Operation
+As customers will run.
 
 ## Try with other DBs, non-sqlite
-These will probably fail in FAB, since the admin data is not being created.
+These will probably fail in FAB,
+since the admin data is not being created.
+
+## Flask Admin
+This is required to create tables for Users and Roles,
+for FAB login.  Perhaps as an option.
 
 
