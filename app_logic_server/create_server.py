@@ -778,6 +778,12 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
         file.write(file_data)
 
 
+def get_os_url(url: str) -> str:
+    """ idiotic fix for windows (\ --> \\\\)
+
+    https://stackoverflow.com/questions/1347791/unicode-error-unicodeescape-codec-cant-decode-bytes-cannot-open-text-file"""
+    return url.replace('\\', '\\\\')
+
 '''
             CLI
 
@@ -911,9 +917,8 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     replace_string_in_file(search_for="replace_project_name",
                            replace_with=os.path.basename(project_name),
                            in_file=f'{abs_project_name}/api_logic_server_run.py')
-    os_url = abs_db_url.replace('\\', '\\\\')  # for windows, of course
     replace_string_in_file(search_for="replace_db_url",
-                           replace_with=os_url,
+                           replace_with=get_os_url(abs_db_url),
                            in_file=f'{abs_project_name}/config.py')
     # ApiLogicServer hello "At: " + str(datetime.datetime.now())
     replace_string_in_file(search_for="ApiLogicServer hello",
@@ -922,7 +927,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
 
     if flask_appbuilder:
         replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
-                               replace_with=f'"{abs_db_url}"',
+                               replace_with='"' + get_os_url(abs_db_url) + '"',
                                in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
         print("Writing: /ui/basic_web_app/app/views.py")
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
