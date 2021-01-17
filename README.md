@@ -52,7 +52,6 @@ Create Project with command: git clone --quiet https://github.com/valhuber/ApiLo
 Delete dir: /Users/val/Desktop/my_project/.git
 Create database/models.py with command: python /Users/val/dev/ApiLogicServer/expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite  > /Users/val/Desktop/my_project/database/models.py
 Create ui/basic_web_app with command: flask fab create-app --name /Users/val/Desktop/my_project/ui/basic_web_app --engine SQLAlchemy
-Create ui/basic_web_app with command: flask fab create-app --name /Users/val/Desktop/my_project/ui/basic_web_app --engine SQLAlchemy result: Downloaded the skeleton app, good coding!
 Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)
 Writing: /api/expose_api_models.py
 Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url
@@ -83,21 +82,7 @@ This is also running (on mac at least):
 cd ui/BasicWebApp
 # run run.py under IDE
 ```
-
-
-## Basic Operation (Internals)
-
-```main()``` executes ```run()```:
-1. Clones ```ApiLogicServerProto``` (subprocess.check_output(git clone))
-1. Create ```database/models.py``` (subprocess.check_output(modified sqlacodegen))
-1. Creates ```ui/basic_web_app``` (a secondary objective for now)
-1. Executes ```views, apis = generate_from_model.run()```
-   * This is tricky - we _dynamically_ import ```database/models.py```
-     (from previous step), so we can iterate through the metadata
-1. Appends into these files in the created project
-    * ```views``` to ```ui/basic_web_app/app/views.py```
-    * ```apis``` to ```api/expose_api_models``` (this is called by ```api/__init__.py```)
-    
+ 
     
 # Next Steps
 

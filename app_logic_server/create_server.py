@@ -710,7 +710,7 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
     spaces = ' ' * tab_to
-    if result != "":
+    if result != "" and result != "Downloaded the skeleton app, good coding!":
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
