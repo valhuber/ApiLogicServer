@@ -106,7 +106,11 @@ cd some_folder
 cp <ApiLogicServer>/venv venv
 source venv/bin/activate
 
-python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project=my-project
+python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my-new-project  # or
+
+cd app_logic_server
+python create_server.py --project_name=~/Desktop/test/my-new-project 
+
 ```
 
 For now, the ```venv``` is required - I was unable to "push" PYTHONPATH to run ```expose_existing``` in ```run_command(cmd: str, env=None)```:

@@ -829,18 +829,19 @@ def main(ctx):
 
 @main.command("run")
 @click.option('--project_name',
-              default="name description",
+              default="new_api_logic_server",
               prompt="Name of Project to be created",
               help="Will be new directory at current location")
 @click.option('--db_url',
-              default="sqlite:///db.sqlite",
+              default="sqlite:///nw.sqlite",
               prompt="Database URL",
-              help="Word(s) identifying 'favorite name' (displayed first)")
+              help="SQLAlchemy Database URL")
 @click.option('--not_exposed',
-              default="ProductDetails_V bad_table",
+              default="ProductDetails_V",
               prompt="Tables Not Exposed",
               help="These tables are not written to api/expose_api_models.py")
 @click.option('--flask_appbuilder/--no-flask_appbuilder',
+              default=True,
               prompt="Generate Flask AppBuilder",
               help="Creates <project_name>/ui/basic_web_app")
 @click.option('--favorites',
@@ -917,11 +918,11 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     replace_string_in_file(search_for="replace_db_url",
                            replace_with=abs_db_url,
                            in_file=f'{abs_project_name}/config.py')
-    replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
-                           replace_with=f'"{abs_db_url}"',
-                           in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
 
     if flask_appbuilder:
+        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
+                               replace_with=f'"{abs_db_url}"',
+                               in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
         print("Writing: /ui/basic_web_app/app/views.py")
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(generate_from_model.result_views)
@@ -945,19 +946,28 @@ log = logging.getLogger(__name__)
 
 
 def start():  # target of setup.py
-    sys.stderr.write("\n\nAPI Logic Server Creation " + __version__ + " here\n\n")
+    sys.stderr.write("\n\nAPI Logic Server Creation Utility" + __version__ + " here\n\n")
     main(obj={})  # TODO - main(a,b) fails to work for --help
 
 
 if __name__ == '__main__':  # debugger starts here
-    commands = (
-        'run',
-        '--project_name=~/Desktop/my_project',
-        '--not_exposed=ProductDetails_V',
-        '--flask_appbuilder',
-        '--db_url=sqlite:///nw.sqlite',
-        '--favorites=name description',
-        '--non_favorites=id',
-    )
+    print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
+    print('Number of arguments:', len(sys.argv), 'arguments.')
+    print('Argument List:', str(sys.argv))
+
+    if len(sys.argv) > 1:
+        commands = sys.argv
+        commands[0] = "run"
+    else:
+        print("No arguments supplied, using default")
+        commands = (
+            'run',
+            '--project_name=~/Desktop/my_project',
+            '--not_exposed=ProductDetails_V',
+            '--flask_appbuilder',
+            '--db_url=sqlite:///nw.sqlite',
+            '--favorites=name description',
+            '--non_favorites=id',
+        )
     main(commands)
     # start()
