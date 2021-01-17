@@ -5,7 +5,7 @@ Creates a server project at <project_name>.
 ## Current Status
 
     Update 1/17 9AM
-        generating server, windows & mac
+        generating server, windows & mac - IDE or Command Line
         server runs, mac (not windows)
         generated flask app builder runs (mac)
 
