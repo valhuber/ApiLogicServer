@@ -4,8 +4,9 @@ Creates a server project at <project_name>.
 
 ## Current Status
 
-    Update 1/16 5PM
-        generated server runs, windows & mac
+    Update 1/16 6PM
+        generating server, windows & mac
+        server runs, mac (not windows)
         generated flask app builder runs (mac)
 
 
