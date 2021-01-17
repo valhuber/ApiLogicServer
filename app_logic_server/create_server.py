@@ -918,6 +918,10 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     replace_string_in_file(search_for="replace_db_url",
                            replace_with=abs_db_url,
                            in_file=f'{abs_project_name}/config.py')
+    # ApiLogicServer hello "At: " + str(datetime.datetime.now())
+    replace_string_in_file(search_for="ApiLogicServer hello",
+                           replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
+                           in_file=f'{abs_project_name}/api_logic_server_run.py')
 
     if flask_appbuilder:
         replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
