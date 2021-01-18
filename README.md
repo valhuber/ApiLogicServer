@@ -120,20 +120,46 @@ python api_logic_server_run.py
 This should now run, and return data.
 
 ## How to run Flask App Builder (FAB)
-This is also running:
+This is also running (tho, see Flask Admin, below):
 
 ```
 python ui/basic_web_app/run.py
 ```
 Try http://localhost:8080/, http://0.0.0.0:8080/
+
+
+#### Flask Admin
+This is required to create tables for Users and Roles,
+for FAB login.  Not sure whether you can run fab without doing that.
+
+It's pre-installed for the nw (default) database.
+
+It creates tables in your database, so probably best
+not to have it automatic.
+
+```
+cd my_project
+echo $PYTHONPATH
+PYTHONPATH="/Users/val/dev/my_project:$PYTHONPATH"
+export PYTHONPATH
+
+cd ui/basic_web_app
+(venv)$ export FLASK_APP=app
+(venv)$ flask fab create-admin
+Username [admin]:
+User first name [admin]:
+User last name [user]:
+Email [admin@fab.org]:
+Password:
+Repeat for confirmation:
+```
+
     
 # Next Steps
 
-## Windows
-Delete is failing, so the target generation folder must
-not exist.  This also leaves the ```.git``` folder,
-but not fatal.
+## Project Installation
 
+Is everybody able to run?
 
 ##  Cleanup
 Let's review these items:
@@ -180,36 +206,19 @@ Logic Phase:		ROW LOGIC (sqlalchemy before_flush)			 - 2021-01-18 08:13:49,523 -
 [2021-01-18 08:14:19,776] INFO: Error in http://localhost:5000/Customer/ALFKI/
 ```
 
+    I understand this to be related to not-yet-published SAFRS?
 
-## PIP Install / Operation
-As customers will run.
 
 ## Try with other DBs, non-sqlite
 These will probably fail in FAB,
 since the admin data is not being created.
 
-## Flask Admin
-This is required to create tables for Users and Roles,
-for FAB login.  Not sure whether you can run fab without doing that.
 
-It creates tables in your database, so probably best
-not to have it automatic.
-
-```
-cd my_project
-echo $PYTHONPATH
-PYTHONPATH="/Users/val/dev/my_project:$PYTHONPATH"
-export PYTHONPATH
-
-cd ui/basic_web_app
-(venv)$ export FLASK_APP=app
-(venv)$ flask fab create-admin
-Username [admin]:
-User first name [admin]:
-User last name [user]:
-Email [admin@fab.org]:
-Password:
-Repeat for confirmation:
-```
+## Windows
+Delete is failing, so the target generation folder must
+not exist.  This also leaves the ```.git``` folder,
+but not fatal.
 
 
+## PIP Install / Operation
+As customers will run.
