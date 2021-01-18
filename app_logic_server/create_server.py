@@ -849,7 +849,7 @@ def main(ctx):
               prompt="Name of Project to be created",
               help="Will be new directory at current location")
 @click.option('--db_url',
-              default="sqlite:///nw.sqlite",
+              default="sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite",
               prompt="Database URL",
               help="SQLAlchemy Database URL")
 @click.option('--not_exposed',
@@ -982,6 +982,8 @@ if __name__ == '__main__':  # debugger & cmd-line start here
         commands[0] = "run"
     else:
         print("\nAPI Logic Server Creation " + __version__ + " (using debug default arguments)\n")
+        db_url = "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite"
+
         commands = (
             'run',
             '--project_name=~/Desktop/my_project',
