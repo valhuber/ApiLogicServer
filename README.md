@@ -168,11 +168,13 @@ Let's review these items:
 
 * Also, can we move ```admin``` under ```ui```?
 
+   * Compare to fab?
+
 * Generated code review (e.g., use of ```api``` module vs a ```def```)
 
 * expose_existing is generating garbage for the view
 
-## Engage Logic Bank
+## Logic Bank works... Constraint Messages?
 Trivial constraint works:
 ```
     Rule.constraint(validate=models.Customer,
@@ -214,11 +216,14 @@ These will probably fail in FAB,
 since the admin data is not being created.
 
 
+## PIP Install / Operation
+As customers will run.  (Bunch of work here).
+
+* Calling expose_existing is awkward,
+  unsure how it will work using ```pip```.
+
+
 ## Windows
 Delete is failing, so the target generation folder must
 not exist.  This also leaves the ```.git``` folder,
 but not fatal.
-
-
-## PIP Install / Operation
-As customers will run.
