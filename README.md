@@ -8,6 +8,7 @@ Creates a server project at ```<project_name>```.
         generating server, mac & windows - IDE or Command Line
         generated server runs, mac and windows
         generated flask app builder runs, mac and windows
+        minimal logic operation (server, fab not tested)
 
 ## How to Install it
 
