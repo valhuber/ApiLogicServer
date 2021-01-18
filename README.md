@@ -174,6 +174,12 @@ Let's review these items:
 
 * expose_existing is generating garbage for the view
 
+
+## Fab and Logic
+
+Not working yet.
+
+
 ## Logic Bank works... Constraint Messages?
 Trivial constraint works:
 ```
