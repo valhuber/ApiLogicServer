@@ -135,10 +135,15 @@ but not fatal.
 
 
 ##  Cleanup
+Let's review these items:
 
-I moved ```app``` module to ```api``` module... like?
+* I moved ```app``` module to ```api``` module... like?
 
-Also, can we move ```admin``` under ```ui```?
+* Also, can we move ```admin``` under ```ui```?
+
+* Generated code review (e.g., use of ```api``` module vs a ```def```)
+
+* expose_existing is generating garbage for the view
 
 ## Engage Logic Bank
 Not tried yet.  Look out for missing back_ref relationships.
