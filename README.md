@@ -4,9 +4,9 @@ Creates a server project at <project_name>.
 
 ## Current Status
 
-    Update 1/17 9AM
+    Update 1/17 7PM
         generating server, mac & windows - IDE or Command Line
-        server runs, mac and windows
+        generated server runs, mac and windows
         generated flask app builder runs, mac and windows
 
 
@@ -153,7 +153,10 @@ since the admin data is not being created.
 
 ## Flask Admin
 This is required to create tables for Users and Roles,
-for FAB login.  Perhaps as an option.
+for FAB login.  Not sure whether you can run fab without doing that.
+
+It creates tables in your database, so probably best
+not to have it automatic.
 
 ```
 cd my_project
