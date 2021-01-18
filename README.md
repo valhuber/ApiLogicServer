@@ -5,28 +5,27 @@ Creates a server project at <project_name>.
 ## Current Status
 
     Update 1/17 9AM
-        generating server, windows & mac - IDE or Command Line
-        server runs, mac (not windows)
-        generated flask app builder runs (mac)
+        generating server, mac & windows - IDE or Command Line
+        server runs, mac and windows
+        generated flask app builder runs, mac and windows
 
 
-This version has only been run under PyCharm (which recall sets
-PythonPath to make things easy).  The app is set up to run
+The generator is set up to run
 ```ApiLogicServer/create_server.py``` either
 in debugger, or cmd-line. 
 
 ## How to Install it
 Preliminary version - **run from IDE:**
-Install as any typical project (I do this is PyCharm):
+Install as any typical project (I do this in PyCharm):
 
 ```
 git clone https://github.com/valhuber/ApiLogicServer.git
 cd ApiLogicServer
 virtualenv venv
-source venv/bin/activate
+source venv/bin/activate  # windows venv\Scripts\activate
 ```
 
-*Envisioned* to be used:
+#### *Envisioned* to be used:
 ```
 virtualenv venv
 pip install ApiLogicServer
@@ -37,16 +36,16 @@ ApiLogicServer <project_name>
 
 ## How to generate the API Server
 
-Install as any typical project (I do this is PyCharm):
+Currently, it's easiest to run in the IDE (I do this in PyCharm):
 
 ```
-cd app_logic_server
 # run create_server.py from IDE
 ```
-Currently hard-coded to create default project: ```Desktop/my_project```.
-Expected log:
+Running that way is hard-coded to create default project: ```Desktop/my_project```.
+Expected console log:
+
 ```
-API Logic Server Creation 1.0.0
+API Logic Server Creation 1.0.0 (using debug default arguments)
 
 Delete dir: /Users/val/Desktop/my_project
 Create Project with command: git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git /Users/val/Desktop/my_project
@@ -71,14 +70,35 @@ It will be via ```pip``` in the future, but for now:
 
 ```
 cd some_folder
-cp <ApiLogicServer>/venv venv  # see sub-section below
-source venv/bin/activate
+cp <ApiLogicServer>/venv venv  # needs venv - see sub-section below
+source venv/bin/activate  # windows venv\Scripts\activate
 
 # from arbitrary folder:
 python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my-new-project
 
-cd app_logic_server  # or from project files
+cd app_logic_server  # or, you can run like this from project files
 python create_server.py --project_name=~/Desktop/test/my-new-project 
+
+(venv) val@Vals-MacBook-Pro-16 app_logic_server % python create_server.py --project_name=~/Desktop/test/my-new-project
+
+API Logic Server Creation 1.0.0 here
+
+Database URL [sqlite:///nw.sqlite]: 
+Tables Not Exposed [ProductDetails_V]: 
+Generate Flask AppBuilder [Y/n]: 
+Favorite Column Names [name description]: 
+Non Favorite Column Names [id]: 
+Delete dir: /Users/val/Desktop/test/my-new-project
+Error: /Users/val/Desktop/test/my-new-project : No such file or directory
+Create Project with command: git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git /Users/val/Desktop/test/my-new-project
+Delete dir: /Users/val/Desktop/test/my-new-project/.git
+Create database/models.py with command: python /Users/val/dev/ApiLogicServer/expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite  > /Users/val/Desktop/test/my-new-project/database/models.py
+Create ui/basic_web_app with command: flask fab create-app --name /Users/val/Desktop/test/my-new-project/ui/basic_web_app --engine SQLAlchemy
+Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)
+Writing: /api/expose_api_models.py
+Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url
+Writing: /ui/basic_web_app/app/views.py
+(venv) val@Vals-MacBook-Pro-16 app_logic_server % 
 ```
 
 #### Issue setting PYTHONPATH
@@ -90,7 +110,7 @@ result_b = subprocess.check_output(cmd, shell=True, env=use_env)
 ## How to run the API Logic Server
 
 ```
-cd ~/Desktop/my_project
+cd ~/Desktop/my_project  # or, cd ~/Desktop/test/my_new_project
 virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
