@@ -151,7 +151,6 @@ Trivial constraint works:
     Rule.constraint(validate=models.Customer,
                     as_condition=lambda row: row.Balance <= row.CreditLimit,
                     error_msg="Balance must be < Credit Limit")
-
 ```
 Patch this data:
 ```
@@ -167,8 +166,19 @@ Patch this data:
 }
 ```
 
-But not seeing any useful message in swagger, or even console....
-* Need to set up logic_logger?
+But not seeing any useful message in swagger, other than console (once logging set up)....
+```
+Logic Phase:		ROW LOGIC (sqlalchemy before_flush)			 - 2021-01-18 08:13:49,523 - logic_logger - DEBUG
+Logic Phase:		ROW LOGIC (sqlalchemy before_flush)			 - 2021-01-18 08:13:49,523 - logic_logger - DEBUG
+..Customer[ALFKI] {Update - client} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,524 - logic_logger - DEBUG
+..Customer[ALFKI] {Update - client} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,524 - logic_logger - DEBUG
+..Customer[ALFKI] {early_events} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,524 - engine_logger - DEBUG
+..Customer[ALFKI] {formula_rules} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,525 - engine_logger - DEBUG
+[2021-01-18 08:14:14,409] ERROR: ValidationError: Balance must be < Credit Limit
+[2021-01-18 08:14:19,776] ERROR: Generic Error: get_instance : 
+[2021-01-18 08:14:19,776] INFO: Error in http://localhost:5000/Customer/ALFKI/
+```
+
 
 ## PIP Install / Operation
 As customers will run.
