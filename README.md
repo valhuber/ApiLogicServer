@@ -73,10 +73,12 @@ mkdir test
 cd test
 cp -a <ApiLogicServer>/venv. venv
 # eg, cp -R /Users/val/dev/ApiLogicServer/venv venv
+# eg, Xcopy /E /I C:\Users\val\dev\ApiLogicServer\venv C:\Users\val\Desktop\test\venv >NUL
 source venv/bin/activate  # windows venv\Scripts\activate
 
 # from arbitrary folder:
-(venv) val@Vals-MacBook-Pro-16 test % python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my-new-project --db_url=sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite
+(venv) val@Vals-MacBook-Pro-16 test % python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my_new_project --db_url=sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite
+# (venv) C:\Users\val\Desktop\test> python C:\Users\val\dev\ApiLogicServer\app_logic_server\create_server.py --project_name=my_new_project
 
 API Logic Server Creation 1.0.0 here
 
@@ -109,7 +111,7 @@ result_b = subprocess.check_output(cmd, shell=True, env=use_env)
 # pwd - still in test
 cd my_new_project
 virtualenv venv
-source venv/bin/activate
+source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
 python api_logic_server_run.py
 ```
@@ -122,7 +124,7 @@ This is also running:
 ```
 python ui/basic_web_app/run.py
 ```
-
+Try http://localhost:8080/, http://0.0.0.0:8080/
     
 # Next Steps
 
