@@ -1,6 +1,6 @@
 # ApiLogicServer
 
-Creates a server project at <project_name>.
+Creates a server project at ```<project_name>```.
 
 ## Current Status
 
@@ -9,13 +9,8 @@ Creates a server project at <project_name>.
         generated server runs, mac and windows
         generated flask app builder runs, mac and windows
 
-
-The generator is set up to run
-```ApiLogicServer/create_server.py``` either
-in debugger, or cmd-line. 
-
 ## How to Install it
-Preliminary version - **run from IDE:**
+
 Install as any typical project (I do this in PyCharm):
 
 ```
@@ -25,18 +20,22 @@ virtualenv venv
 source venv/bin/activate  # windows venv\Scripts\activate
 ```
 
-#### *Envisioned* to be used:
+#### *In FUTURE, envisioned* to be installed and used like this:
 ```
 virtualenv venv
 pip install ApiLogicServer
-pip install -r requirements.txt  -- from where??
+pip install -r requirements.txt  -- from where??  (this is for calling expose_existing)
 ApiLogicServer <project_name>
 ```
 
 
 ## How to generate the API Server
+The generator is run via
+```ApiLogicServer/create_server.py```, either
+in the IDE, or cmd-line. 
 
-Currently, it's easiest to run in the IDE (I do this in PyCharm):
+Running from the IDE is not required, but ensures your parameters are correctly
+defaulted, and confirms a successful install:
 
 ```
 # run create_server.py from IDE
@@ -69,21 +68,18 @@ This is the expected usage.
 It will be via ```pip``` in the future, but for now:
 
 ```
-cd some_folder
-cp <ApiLogicServer>/venv venv  # needs venv - see sub-section below
+cd ~
+mkdir test
+cd test
+cp -a <ApiLogicServer>/venv. venv
+# eg, cp -R /Users/val/dev/ApiLogicServer/venv venv
 source venv/bin/activate  # windows venv\Scripts\activate
 
 # from arbitrary folder:
-python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my-new-project
-
-cd app_logic_server  # or, you can run like this from project files
-python create_server.py --project_name=~/Desktop/test/my-new-project 
-
-(venv) val@Vals-MacBook-Pro-16 app_logic_server % python create_server.py --project_name=~/Desktop/test/my-new-project
+(venv) val@Vals-MacBook-Pro-16 test % python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my-new-project --db_url=sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite
 
 API Logic Server Creation 1.0.0 here
 
-Database URL [sqlite:///nw.sqlite]: 
 Tables Not Exposed [ProductDetails_V]: 
 Generate Flask AppBuilder [Y/n]: 
 Favorite Column Names [name description]: 
@@ -98,7 +94,7 @@ Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iter
 Writing: /api/expose_api_models.py
 Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url
 Writing: /ui/basic_web_app/app/views.py
-(venv) val@Vals-MacBook-Pro-16 app_logic_server % 
+(venv) val@Vals-MacBook-Pro-16 test % 
 ```
 
 #### Issue setting PYTHONPATH
@@ -110,11 +106,12 @@ result_b = subprocess.check_output(cmd, shell=True, env=use_env)
 ## How to run the API Logic Server
 
 ```
-cd ~/Desktop/my_project  # or, cd ~/Desktop/test/my_new_project
+# pwd - still in test
+cd my_new_project
 virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python api_logic_server.py
+python api_logic_server_run.py
 ```
 
 This should now run, and return data.
