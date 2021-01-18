@@ -100,13 +100,12 @@ python api_logic_server.py
 This should now run, and return data.
 
 ## How to run Flask App Builder (FAB)
-This is also running (on mac at least):
+This is also running:
 
 ```
-cd ui/BasicWebApp
-# run run.py under IDE
+python ui/basic_web_app/run.py
 ```
- 
+
     
 # Next Steps
 
@@ -135,5 +134,22 @@ since the admin data is not being created.
 ## Flask Admin
 This is required to create tables for Users and Roles,
 for FAB login.  Perhaps as an option.
+
+```
+cd my_project
+echo $PYTHONPATH
+PYTHONPATH="/Users/val/dev/my_project:$PYTHONPATH"
+export PYTHONPATH
+
+cd ui/basic_web_app
+(venv)$ export FLASK_APP=app
+(venv)$ flask fab create-admin
+Username [admin]:
+User first name [admin]:
+User last name [user]:
+Email [admin@fab.org]:
+Password:
+Repeat for confirmation:
+```
 
 

@@ -784,6 +784,20 @@ def get_os_url(url: str) -> str:
     https://stackoverflow.com/questions/1347791/unicode-error-unicodeescape-codec-cant-decode-bytes-cannot-open-text-file"""
     return url.replace('\\', '\\\\')
 
+
+def fix_basic_web_app_python_path(abs_project_name):
+    """ prepend logic_bank_utils call to fixup python path """
+    file_name = f'{abs_project_name}/ui/basic_web_app/run.py'
+    proj = os.path.basename(abs_project_name)
+    insert_text = ("\nimport logic_bank_utils.util as logic_bank_utils\n"
+                   + f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n\n')
+    with open(file_name, 'r+') as fp:
+        lines = fp.readlines()  # lines is list of line, each element '...\n'
+        lines.insert(0, insert_text)  # you can use any index if you know the line index
+        fp.seek(0)  # file pointer locates at the beginning to write the whole file again
+        fp.writelines(lines)  # write whole lists again to the same file
+
+
 '''
             CLI
 
@@ -906,7 +920,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         non_favorite_names=non_favorites
     )
     print("Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)")
-    generate_from_model.generate()
+    generate_from_model.generate()  # sets generate_from_model.result_apis & result_views
 
     # print("\n" + generate_from_model._result_views)
 
@@ -933,6 +947,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(generate_from_model.result_views)
         text_file.close()
+        fix_basic_web_app_python_path(abs_project_name)
 
 
 @main.command("version")
