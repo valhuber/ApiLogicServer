@@ -146,7 +146,29 @@ Let's review these items:
 * expose_existing is generating garbage for the view
 
 ## Engage Logic Bank
-Not tried yet.  Look out for missing back_ref relationships.
+Trivial constraint works:
+```
+    Rule.constraint(validate=models.Customer,
+                    as_condition=lambda row: row.Balance <= row.CreditLimit,
+                    error_msg="Balance must be < Credit Limit")
+
+```
+Patch this data:
+```
+{
+  "data": {
+    "attributes": {
+      "Id": "ALFKI",
+      "CreditLimit": "10"
+    },
+    "type": "Customer",
+    "id": "ALFKI"
+  }
+}
+```
+
+But not seeing any useful message in swagger, or even console....
+* Need to set up logic_logger?
 
 ## PIP Install / Operation
 As customers will run.
