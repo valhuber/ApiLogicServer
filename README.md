@@ -10,6 +10,10 @@ Creates a server project at ```<project_name>```.
         generated flask app builder runs, mac and windows
         minimal logic operation (server, fab not tested)
 
+#### Change Log
+Key changes:
+* 1/18: better install instructions (verified mac & windows)
+
 ## How to Install it
 For reference, we will be creating this structure:
 
