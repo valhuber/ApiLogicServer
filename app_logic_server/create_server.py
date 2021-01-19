@@ -834,7 +834,7 @@ def main(ctx):
               prompt="Name of Project to be created",
               help="Will be new directory at current location")
 @click.option('--db_url',
-              default=f'sqlite:///{abspath(get_project_dir())}/nw.sqlite',  # "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite",
+              default=f'sqlite:///{abspath(get_project_dir())}/api_logic/server/nw.sqlite',  # "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite",
               prompt="Database URL",
               help="SQLAlchemy Database URL")
 @click.option('--not_exposed',
