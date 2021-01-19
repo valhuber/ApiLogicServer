@@ -33,7 +33,7 @@ ApiLogicServer> pip install -r requirements.txt
 ```
 
 
-## How to generate the API Server
+## How to Create the API Logic Server
 
 It will be via ```pip``` in the future, but for now:
 
@@ -74,7 +74,7 @@ For now, the ```venv``` copy is required - I was unable to "push" PYTHONPATH to 
 result_b = subprocess.check_output(cmd, shell=True, env=use_env)
 ```
 
-## How to run the API Logic Server
+## How to Run the API Logic Server
 
 ```
 test> deactivate
