@@ -23,8 +23,8 @@ Install as any typical project:
 
 ```
 cd ~/Desktop
-mkdir server
-$Desktop> cd server
+Desktop> mkdir server
+Desktop> cd server
 server> git clone https://github.com/valhuber/ApiLogicServer.git
 server> cd ApiLogicServer
 ApiLogicServer> virtualenv venv
