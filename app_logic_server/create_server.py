@@ -981,7 +981,7 @@ if __name__ == '__main__':  # debugger & cmd-line start here
         commands = sys.argv
         commands[0] = "run"
     else:
-        print("\nAPI Logic Server Creation " + __version__ + " (using debug default arguments)\n")
+        print("\nAPI Logic Server Creation " + __version__ + " (no args, using debug defaults)\n")
         db_url = "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite"
 
         commands = (
