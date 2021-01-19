@@ -11,74 +11,41 @@ Creates a server project at ```<project_name>```.
         minimal logic operation (server, fab not tested)
 
 ## How to Install it
+For reference, we will be creating this structure:
 
-Install as any typical project (I do this in PyCharm):
+<figure><img src="images/apilogicserver-ide.png"></figure>
+
+Install as any typical project:
 
 ```
+cd ~/Desktop
+mkdir server
+cd server
 git clone https://github.com/valhuber/ApiLogicServer.git
 cd ApiLogicServer
 virtualenv venv
 source venv/bin/activate  # windows venv\Scripts\activate
-```
-
-#### *In FUTURE, envisioned* to be installed and used like this:
-```
-virtualenv venv
-pip install ApiLogicServer
-pip install -r requirements.txt  -- from where??  (this is for calling expose_existing)
-ApiLogicServer <project_name>
+pip install -r requirements.txt
 ```
 
 
 ## How to generate the API Server
-The generator is run via
-```ApiLogicServer/create_server.py```, either
-in the IDE, or cmd-line. 
 
-Running from the IDE is not required, but ensures your parameters are correctly
-defaulted, and confirms a successful install:
-
-```
-# run create_server.py from IDE
-```
-Running that way is hard-coded to create default project: ```Desktop/my_project```.
-Expected console log:
-
-```
-API Logic Server Creation 1.0.0 (using debug default arguments)
-
-Delete dir: /Users/val/Desktop/my_project
-Create Project with command: git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git /Users/val/Desktop/my_project
-Delete dir: /Users/val/Desktop/my_project/.git
-Create database/models.py with command: python /Users/val/dev/ApiLogicServer/expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite  > /Users/val/Desktop/my_project/database/models.py
-Create ui/basic_web_app with command: flask fab create-app --name /Users/val/Desktop/my_project/ui/basic_web_app --engine SQLAlchemy
-Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)
-Writing: /api/expose_api_models.py
-Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url
-Writing: /ui/basic_web_app/app/views.py
-
-Process finished with exit code 0
-```
-
-
-<figure><img src="images/apilogicserver-ide.png"></figure>
-
-### How to generate from the Command Line
-    
-This is the expected usage.
 It will be via ```pip``` in the future, but for now:
 
 ```
-cd ~
+cd ..  # back to server
+deactivate
 mkdir test
 cd test
 cp -a <ApiLogicServer>/venv. venv
-# eg, cp -R /Users/val/dev/ApiLogicServer/venv venv
+# eg, cp -R ../ApiLogicServer/venv venv
+# eg, Xcopy /E /I ..\venv venv >NUL
 # eg, Xcopy /E /I C:\Users\val\dev\ApiLogicServer\venv C:\Users\val\Desktop\test\venv >NUL
 source venv/bin/activate  # windows venv\Scripts\activate
 
 # from arbitrary folder:
-(venv) val@Vals-MacBook-Pro-16 test % python /Users/val/dev/ApiLogicServer/app_logic_server/create_server.py --project_name=my_new_project --db_url=sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite
+(venv) val@Vals-MacBook-Pro-16 test % python ../ApiLogicServer/app_logic_server/create_server.py --project_name=my_new_project
 # (venv) C:\Users\val\Desktop\test> python C:\Users\val\dev\ApiLogicServer\app_logic_server\create_server.py --project_name=my_new_project
 
 API Logic Server Creation 1.0.0 here
@@ -110,6 +77,7 @@ result_b = subprocess.check_output(cmd, shell=True, env=use_env)
 
 ```
 # pwd - still in test
+deactivate
 cd my_new_project
 virtualenv venv
 source venv/bin/activate  # windows venv\Scripts\activate
@@ -224,6 +192,14 @@ since the admin data is not being created.
 
 ## PIP Install / Operation
 As customers will run.  (Bunch of work here).
+
+In FUTURE, envisioned* to be installed and used like this:
+```
+virtualenv venv
+pip install ApiLogicServer
+pip install -r requirements.txt  -- from where??  (this is for calling expose_existing)
+ApiLogicServer <project_name>
+```
 
 * Calling expose_existing is awkward,
   unsure how it will work using ```pip```.
