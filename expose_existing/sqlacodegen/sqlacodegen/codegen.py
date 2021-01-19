@@ -76,7 +76,8 @@ class Model(object):
                 column.type = self._get_adapted_type(column.type, column.table.bind)
             except:
                 # print('Failed to get col type for {}, {}'.format(column, column.type))
-                print("#Failed to get col type for {}".format(column))
+                if "sqlite_sequence" not in format(column):
+                    print("#Failed to get col type for {}".format(column))
 
     def _get_adapted_type(self, coltype, bind):
         compiled_type = coltype.compile(bind.dialect)
@@ -625,7 +626,7 @@ def TIME(**kwargs):
         return rendered.rstrip("\n,") + "\n)\n"
 
     def render_class(self, model):
-        print("# Render", model.name)
+        # print("# Render", model.name)
         rendered = "class {0}(SAFRSBase, {1}):\n".format(model.name, model.parent_name)
         rendered += "{0}__tablename__ = {1!r}\n".format(self.indentation, model.table.name)
 

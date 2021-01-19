@@ -745,23 +745,36 @@ def get_project_dir() -> str:
 
 
 def create_models(db_url: str, project: str) -> str:
-    # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
-    cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
-    abs_cmd_debug = abspath(cmd_debug)
-    project_dir = get_project_dir()
-    python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
-    env_list = os.environ.copy()
-    # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
-    """
-    env_list["PYTHONPATH"] = python_path + ":" + env_list["PYTHONPATH"]  # python_path  # e.g., /Users/val/dev/ApiLogicServer/venv/lib/python3.9
-    """
-    cmd = f'python {project_dir}/expose_existing/sqlacodegen/sqlacodegen/main.py '
-    cmd += db_url
-    cmd += '  > ' + project + '/database/models.py'
-    # env_list = {}
-    # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
-    result = run_command(cmd, msg="Create database/models.py")  # might fail per venv, looking for inflect
-    pass
+    use_direct_call = True
+    if use_direct_call:
+        import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
+        print(f'Create {project + "/database/models.py"} via sqlacodegen: {db_url}')
+        gen_models.sqlacodegen(db_url=db_url, models_file=project + '/database/models.py')
+        """
+        if __name__ == '__main__':
+            if __name__ == '__main__':
+                import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
+                gen_models.sqlacodegen(db_url=db_url, models_file=project + '/database/models.py')
+        pass
+        """
+    else:
+        # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
+        cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
+        abs_cmd_debug = abspath(cmd_debug)
+        project_dir = get_project_dir()
+        python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
+        env_list = os.environ.copy()
+        # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
+        """
+        env_list["PYTHONPATH"] = python_path + ":" + env_list["PYTHONPATH"]  # python_path  # e.g., /Users/val/dev/ApiLogicServer/venv/lib/python3.9
+        """
+        cmd = f'python {project_dir}/expose_existing/sqlacodegen/sqlacodegen/main.py '
+        cmd += db_url
+        cmd += '  > ' + project + '/database/models.py'
+        # env_list = {}
+        # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
+        result = run_command(cmd, msg="Create database/models.py")  # might fail per venv, looking for inflect
+        pass
 
 
 def write_expose_api_models(project_name, apis):
@@ -811,37 +824,9 @@ def fix_basic_web_app_python_path(abs_project_name):
 @click.pass_context
 def main(ctx):
     """
-
-        Creates instant web app - generates fab views contents.
-
-\b
-        fab is Flask Application Builder\r
-            Docs:        https://flask-appbuilder.readthedocs.io/en/latest/\r
-            Quick Start: https://github.com/valhuber/fab-quick-start/wiki
-
-\b
-        fab-quick-start\r
-            Docs:       https://github.com/valhuber/fab-quick-start
-
-\b
-        Usage\r
-        =====\r
-            1. Generate a fab project\r
-            2. Complete your models file (consider sqlacodegen)\r
-                https://pypi.org/project/sqlacodegen/\r
-                NB: Be sure to use the --noviews option\r
-                NB: Add relationships missing in db to get related_views\r
-            3. cd to directory containing your config.py file:\r
-                cd <my_project> \r
-                --app\r
-                --|--__init__.py\r
-                --|--models.py\r
-                __|--views.py\r
-                --config.py\r
-            4. fab_quickstart run\r
-            5. copy output over app/views.py
-            6. cd my_project; flask run
+    Creates ApiLogicServer project:\r
     """
+
 
 @main.command("run")
 @click.option('--project_name',
@@ -849,7 +834,7 @@ def main(ctx):
               prompt="Name of Project to be created",
               help="Will be new directory at current location")
 @click.option('--db_url',
-              default="sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite",
+              default=f'sqlite:///{abspath(get_project_dir())}/nw.sqlite',  # "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite",
               prompt="Database URL",
               help="SQLAlchemy Database URL")
 @click.option('--not_exposed',
@@ -972,9 +957,9 @@ def start():  # target of setup.py
 
 
 if __name__ == '__main__':  # debugger & cmd-line start here
-    # print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
-    # print('Number of arguments:', len(sys.argv), 'arguments.')
-    # print('Argument List:', str(sys.argv))
+    print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
+    print('Number of arguments:', len(sys.argv), 'arguments.')
+    print('Argument List:', str(sys.argv))
 
     if len(sys.argv) > 1:
         print("\nAPI Logic Server Creation " + __version__ + " here\n")
