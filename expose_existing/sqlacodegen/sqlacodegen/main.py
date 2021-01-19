@@ -4,9 +4,11 @@ import argparse
 import io
 import sys
 
+"""  FIXME remove
 import logic_bank_utils.util as logic_bank_utils
 (did_fix_path, sys_env_info) = \
     logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
+"""
 
 import pkg_resources
 from sqlalchemy.engine import create_engine

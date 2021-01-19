@@ -62,7 +62,8 @@ setup(
         "Flask-Cors>=3.0.0",
         "inflect>=5.0.2",
         "safrs>=2.10.7",
-        "logicbankutils>=0.6.0"
+        "logicbankutils>=0.6.0",
+        "Flask-AppBuilder>=3.1.1"
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",

@@ -48,9 +48,6 @@ from pathlib import Path
 import logic_bank_utils.util as logic_bank_utils
 from flask import Flask
 
-(did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
-
 import logging
 import datetime
 from typing import NewType
@@ -217,7 +214,9 @@ class GenerateFromModel(object):
                 import safrs
 
                 app = Flask("API Logic Server")
-                app.config.from_object("config.Config")
+                import app_logic_server.config as app_logic_server_config
+                app.config.from_object(app_logic_server_config.Config)
+                #  FIXME remove app.config.from_object("config.Config")
                 db = safrs.DB
                 db.init_app(app)
                 return app
@@ -842,7 +841,7 @@ def main(ctx):
               prompt="Name of Project to be created",
               help="Will be new directory at current location")
 @click.option('--db_url',
-              default=f'sqlite:///{abspath(get_project_dir())}/api_logic_server/nw.sqlite',  # "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite",
+              default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
               help="SQLAlchemy Database URL")
 @click.option('--not_exposed',
@@ -960,16 +959,24 @@ log = logging.getLogger(__name__)
 
 
 def start():  # target of setup.py
-    sys.stderr.write("\n\nAPI Logic Server Creation Utility" + __version__ + " here\n\n")
+    sys.stderr.write("\n\nAPI Logic Server Creation Utility " + __version__ + " here\n\n")
     main(obj={})  # TODO - main(a,b) fails to work for --help
 
 
 if __name__ == '__main__':  # debugger & cmd-line start here
+
+    (did_fix_path, sys_env_info) = \
+        logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
+
     print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
     print('Number of arguments:', len(sys.argv), 'arguments.')
     print('Argument List:', str(sys.argv))
 
     if len(sys.argv) > 1:
+        """ eg
+        cd app_logic_server
+        python create_server.py --project_name=~/Desktop/test_project
+        """
         print("\nAPI Logic Server Creation " + __version__ + " here\n")
         commands = sys.argv
         commands[0] = "run"
