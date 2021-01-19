@@ -726,10 +726,10 @@ def clone_prototype_project(project_name: str):
 
     replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
-                           in_file=f'{project_name}/api_logic_server_run.py')
+                           in_file=f'{project_name}/readme.md')
     replace_string_in_file(search_for="cloned-from",
                            replace_with="https://github.com/valhuber/ApiLogicServerProto.git",
-                           in_file=f'{project_name}/api_logic_server_run.py')
+                           in_file=f'{project_name}/readme.md')
 
     pass
 

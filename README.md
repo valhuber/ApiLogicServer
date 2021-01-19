@@ -131,12 +131,6 @@ Is everybody able to run?
 ##  Cleanup
 Let's review these items:
 
-* I moved ```app``` module to ```api``` module... like?
-
-* Also, can we move ```admin``` under ```ui```?
-
-   * Compare to fab?
-
 * Generated code review (e.g., use of ```api``` module vs a ```def```)
 
 * expose_existing is generating garbage for the view
