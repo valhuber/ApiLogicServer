@@ -20,12 +20,12 @@ Install as any typical project:
 ```
 cd ~/Desktop
 mkdir server
-cd server
-git clone https://github.com/valhuber/ApiLogicServer.git
-cd ApiLogicServer
-virtualenv venv
-source venv/bin/activate  # windows venv\Scripts\activate
-pip install -r requirements.txt
+$Desktop> cd server
+server> git clone https://github.com/valhuber/ApiLogicServer.git
+server> cd ApiLogicServer
+ApiLogicServer> virtualenv venv
+ApiLogicServer> source venv/bin/activate  # windows venv\Scripts\activate
+ApiLogicServer> pip install -r requirements.txt
 ```
 
 
@@ -34,19 +34,16 @@ pip install -r requirements.txt
 It will be via ```pip``` in the future, but for now:
 
 ```
-cd ..  # back to server
-deactivate
-mkdir test
-cd test
-cp -a <ApiLogicServer>/venv. venv
-# eg, cp -R ../ApiLogicServer/venv venv
-# eg, Xcopy /E /I ..\venv venv >NUL
-# eg, Xcopy /E /I C:\Users\val\dev\ApiLogicServer\venv C:\Users\val\Desktop\test\venv >NUL
-source venv/bin/activate  # windows venv\Scripts\activate
+ApiLogicServer> cd ..  # back to server
+server> deactivate
+server> mkdir test
+server> cd test
+test> cp -R ../ApiLogicServer/venv venv   # windows  Xcopy /E /I ..\ApiLogicServer\venv venv >NUL
+test> source venv/bin/activate  # windows venv\Scripts\activate
 
 # from arbitrary folder:
-(venv) val@Vals-MacBook-Pro-16 test % python ../ApiLogicServer/app_logic_server/create_server.py --project_name=my_new_project
-# (venv) C:\Users\val\Desktop\test> python C:\Users\val\dev\ApiLogicServer\app_logic_server\create_server.py --project_name=my_new_project
+(venv) test> % python ../ApiLogicServer/app_logic_server/create_server.py --project_name=my_new_project
+# (venv) test> python ..\ApiLogicServer\app_logic_server\create_server.py --project_name=my_new_project
 
 API Logic Server Creation 1.0.0 here
 
@@ -76,22 +73,21 @@ result_b = subprocess.check_output(cmd, shell=True, env=use_env)
 ## How to run the API Logic Server
 
 ```
-# pwd - still in test
-deactivate
-cd my_new_project
-virtualenv venv
-source venv/bin/activate  # windows venv\Scripts\activate
-pip install -r requirements.txt
-python api_logic_server_run.py
+test> deactivate
+test> cd my_new_project
+my_new_project> virtualenv venv
+my_new_project> source venv/bin/activate  # windows venv\Scripts\activate
+my_new_project> pip install -r requirements.txt
+my_new_project> python api_logic_server_run.py
 ```
 
-This should now run, and return data.
+This should now run [http://localhost:5000/](http://localhost:5000/), and return data.
 
 ## How to run Flask App Builder (FAB)
 This is also running (tho, see Flask Admin, below):
 
 ```
-python ui/basic_web_app/run.py
+my_new_project> python ui/basic_web_app/run.py
 ```
 Try http://localhost:8080/, http://0.0.0.0:8080/
 
@@ -100,7 +96,7 @@ Try http://localhost:8080/, http://0.0.0.0:8080/
 This is required to create tables for Users and Roles,
 for FAB login.  Not sure whether you can run fab without doing that.
 
-It's pre-installed for the nw (default) database.
+It's pre-installed for the nw (default) database: (user=```admin``, password=```p```)
 
 It creates tables in your database, so probably best
 not to have it automatic.
