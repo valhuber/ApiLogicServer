@@ -989,7 +989,7 @@ if __name__ == '__main__':  # debugger & cmd-line start here
             '--project_name=~/Desktop/my_project',
             '--not_exposed=ProductDetails_V',
             '--flask_appbuilder',
-            '--db_url=sqlite:///nw.sqlite',
+            f'--db_url={db_url}',  # FIXME verify
             '--favorites=name description',
             '--non_favorites=id',
         )
