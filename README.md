@@ -45,7 +45,6 @@ server> cd test
 test> cp -R ../ApiLogicServer/venv venv   # windows  Xcopy /E /I ..\ApiLogicServer\venv venv >NUL
 test> source venv/bin/activate  # windows venv\Scripts\activate
 
-# from arbitrary folder:
 (venv) test> % python ../ApiLogicServer/app_logic_server/create_server.py --project_name=my_new_project
 # (venv) test> python ..\ApiLogicServer\app_logic_server\create_server.py --project_name=my_new_project
 
