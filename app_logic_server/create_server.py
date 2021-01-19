@@ -723,6 +723,14 @@ def clone_prototype_project(project_name: str):
     cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
     result = run_command(cmd, msg="Create Project")
     delete_dir(f'{project_name}/.git')
+
+    replace_string_in_file(search_for="creation-date",
+                           replace_with=str(datetime.datetime.now()),
+                           in_file=f'{project_name}/api_logic_server_run.py')
+    replace_string_in_file(search_for="cloned-from",
+                           replace_with="https://github.com/valhuber/ApiLogicServerProto.git",
+                           in_file=f'{project_name}/api_logic_server_run.py')
+
     pass
 
 
