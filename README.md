@@ -10,6 +10,9 @@ Creates a server project at ```<project_name>```.
         generated flask app builder runs, mac and windows
         minimal logic operation (server, fab not tested)
 
+    Update 1/19 2PM
+        creates executable pip
+
 #### Change Log
 Key changes:
 * 1/18: better install instructions (verified mac & windows)
@@ -124,10 +127,6 @@ Repeat for confirmation:
     
 # Next Steps
 
-## Project Installation
-
-Is everybody able to run?
-
 ##  Cleanup
 Let's review these items:
 
@@ -184,18 +183,15 @@ since the admin data is not being created.
 
 
 ## PIP Install / Operation
-As customers will run.  (Bunch of work here).
 
 In FUTURE, envisioned* to be installed and used like this:
 ```
+cd ~/Desktop
+cd server
 virtualenv venv
 pip install ApiLogicServer
-pip install -r requirements.txt  -- from where??  (this is for calling expose_existing)
-ApiLogicServer <project_name>
+ApiLogicServer create --project_name=my_api_logic_server
 ```
-
-* Calling expose_existing is awkward,
-  unsure how it will work using ```pip```.
 
 
 ## Windows

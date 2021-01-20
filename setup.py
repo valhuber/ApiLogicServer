@@ -51,9 +51,9 @@ setup(
     # packages=find_packages(include=['logic_bank']),
     packages=['app_logic_server', 'expose_existing', 'expose_existing.sqlacodegen',
               'expose_existing.sqlacodegen.sqlacodegen'],
-    package_data={"": ["LICENSE"]},
+    package_data={"app_logic_server": ["nw.sqlite"]},
     entry_points={
-        "console_scripts": ["create_server=app_logic_server.create_server:start"]
+        "console_scripts": ["ApiLogicServer=app_logic_server.create_server:start"]
     },
     include_package_data=True,
     zip_safe=False,

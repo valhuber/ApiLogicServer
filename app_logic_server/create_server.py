@@ -818,6 +818,30 @@ def fix_basic_web_app_python_path(abs_project_name):
         fp.writelines(lines)  # write whole lists again to the same file
 
 
+def inject_logic(abs_project_name):
+    """ insert call LogicBank.activate """
+    file_name = f'{abs_project_name}/ui/basic_web_app/app/__init__.py'
+    insert_text = ("\nimport database.models as models\n"
+                   + "from logic import declare_logic\n"
+                   + "from logic_bank.logic_bank import LogicBank\n"
+                   + "LogicBank.activate(session=db.session, activator=declare_logic\n\n"
+                   )
+    with open(file_name, 'r+') as fp:
+        lines = fp.readlines()  # lines is list of line, each element '...\n'
+        found = False
+        insert_line = 0
+        for each_line in lines:
+            if "appbuilder = AppBuilder(app, db.session)" in each_line:
+                found = True
+                break
+            insert_line += 1
+        if not found:
+            raise Exception("Internal error - unable to find logic insert point")
+        lines.insert(insert_line, insert_text)  # you can use any index if you know the line index
+        fp.seek(0)  # file pointer locates at the beginning to write the whole file again
+        fp.writelines(lines)  # write whole lists again to the same file
+
+
 '''
             CLI
 
@@ -835,7 +859,7 @@ def main(ctx):
     """
 
 
-@main.command("run")
+@main.command("create")
 @click.option('--project_name',
               default="new_api_logic_server",
               prompt="Name of Project to be created",
@@ -861,24 +885,16 @@ def main(ctx):
               prompt="Non Favorite Column Names",
               help="Word(s) used to identify last-shown fields")
 @click.pass_context
-def run(ctx, project_name: str, db_url: str, not_exposed: str,
+def create(ctx, project_name: str, db_url: str, not_exposed: str,
         flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
-    Main Driver - generates a Python Project, using Flask, SFRS, LogicBank and Flask AppBuilder
+    Creates a Python Project from an existing database:
 
-        * create project git clone ApiLogicServerProto to <project_name>
+        * JSON:API, via SAFRS
 
-        * basic_web_app
+        * basic_web_app, via Flask AppBuilder and fab-quick-start
 
-        * then generate views.py & expose_api_models.py
-
-    :param ctx:
-    :param project_name: name of project to create
-    :param db_url: from this database
-    :param not_exposed: tables are not written to api/expose_api_models.py
-    :param flask_appbuilder: create basic_web_app
-    :param favorites: in basic_web_app views, what fields should be at top
-    :param non_favorites: at bottom
+        * add spreadsheet like rules for derivations and constraints, via LogicBank
 
     """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
@@ -940,6 +956,15 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         text_file.write(generate_from_model.result_views)
         text_file.close()
         fix_basic_web_app_python_path(abs_project_name)
+        inject_logic(abs_project_name)
+
+    print("\nCreation complete.  Next steps:")
+    print(f'..cd {project_name}')
+    print(f'..virtualenv venv')
+    print(f'..source venv/bin/activate  # windows: venv\Scripts\activate')
+    print(f'..pip install -r requirements.txt')
+    print(f'..python api_logic_server_run.py')
+    print(f'..python ui/basic_web_app/run.py')
 
 
 @main.command("version")
@@ -979,13 +1004,13 @@ if __name__ == '__main__':  # debugger & cmd-line start here
         """
         print("\nAPI Logic Server Creation " + __version__ + " here\n")
         commands = sys.argv
-        commands[0] = "run"
+        commands[0] = "create"
     else:
         print("\nAPI Logic Server Creation " + __version__ + " (no args, using debug defaults)\n")
         db_url = "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite"
 
         commands = (
-            'run',
+            'create',
             '--project_name=~/Desktop/my_project',
             '--not_exposed=ProductDetails_V',
             '--flask_appbuilder',
