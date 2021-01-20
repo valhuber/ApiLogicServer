@@ -1,6 +1,6 @@
 # ApiLogicServer
 
-Creates a server project at ```<project_name>```.
+Creates a server project at ```<project_name>``` from a ```db_url```..
 
 ## Current Status
 
@@ -8,14 +8,14 @@ Creates a server project at ```<project_name>```.
         generating server, mac & windows - IDE or Command Line
         generated server runs, mac and windows
         generated flask app builder runs, mac and windows
-        minimal logic operation (server, fab not tested)
+        logic operation (server, fab)
+        creates executable pip (installs locally, not uploaded to PyPi - probably tomorrow)
 
-    Update 1/19 2PM
-        creates executable pip
 
 #### Change Log
 Key changes:
 * 1/18: better install instructions (verified mac & windows)
+* 1/19: logic running, installable pip (not uploaded), 
 
 ## How to Install it
 For reference, we will be creating this structure:
