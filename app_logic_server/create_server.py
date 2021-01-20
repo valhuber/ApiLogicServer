@@ -216,7 +216,6 @@ class GenerateFromModel(object):
                 app = Flask("API Logic Server")
                 import app_logic_server.config as app_logic_server_config
                 app.config.from_object(app_logic_server_config.Config)
-                #  FIXME remove app.config.from_object("config.Config")
                 db = safrs.DB
                 db.init_app(app)
                 return app
@@ -233,8 +232,8 @@ class GenerateFromModel(object):
                 pass  # keep looking...
             if not model_imported:
                 sys.path.insert(0, project_abs_path + "/database")
-                #  e.g., adds /Users/val/python/vscode/fab-quickstart/nw-app/app
-                #  print("DEBUG find_meta sys.path: " + str(sys.path))
+                #  e.g., adds /Users/val/Desktop/my_project/database
+                print(f'..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
                 try:
                     # models =
                     importlib.import_module('models')
@@ -929,8 +928,6 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     )
     print("Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)")
     generate_from_model.generate()  # sets generate_from_model.result_apis & result_views
-
-    # print("\n" + generate_from_model._result_views)
 
     print("Writing: /api/expose_api_models.py")
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
