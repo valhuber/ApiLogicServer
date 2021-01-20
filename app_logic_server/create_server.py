@@ -824,7 +824,7 @@ def inject_logic(abs_project_name):
     insert_text = ("\nimport database.models as models\n"
                    + "from logic import declare_logic\n"
                    + "from logic_bank.logic_bank import LogicBank\n"
-                   + "LogicBank.activate(session=db.session, activator=declare_logic\n\n"
+                   + "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
                    )
     with open(file_name, 'r+') as fp:
         lines = fp.readlines()  # lines is list of line, each element '...\n'
