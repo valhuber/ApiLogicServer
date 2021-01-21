@@ -70,15 +70,15 @@ Your API is available in swagger:
 
 Generated fab pages look as shown below:
 
-#. **Multi-page:** apps include 1 page per table
+1. **Multi-page:** apps include 1 page per table
 
-#. **Multi-table:** pages include ``related_views`` for each related child table, and join in parent data
+2. **Multi-table:** pages include ``related_views`` for each related child table, and join in parent data
 
-#. **Favorite field first:** first-displayed field is "name", or `contains` "name" (configurable)
+3. **Favorite field first:** first-displayed field is "name", or `contains` "name" (configurable)
 
-#. **Predictive joins:** favorite field of each parent is shown (product *name* - not product *id*)
+4. **Predictive joins:** favorite field of each parent is shown (product *name* - not product *id*)
 
-#. **Ids last:** such boring fields are not shown on lists, and at the end on other pages
+5. **Ids last:** such boring fields are not shown on lists, and at the end on other pages
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
 
