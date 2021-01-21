@@ -9,9 +9,11 @@ Creates an executable API from a database:
 
 - **Logic:** spreadsheet-like rules for multi-table derivations and constraint that reduce transaction logic by 40X, using `Logic Bank <https://pypi.org/project/logicbank//>`_.
 
+Usage
+-----
 
 Installation
-------------
+************
 Install with pip:
 
 .. code-block:: Python
@@ -20,11 +22,15 @@ Install with pip:
     mkdir server
     cd server
     virtualenv venv
+    source venv/bin/activate
+    # windows venv\Scripts\activate
     pip install ApiLogicServer
 
 
 Generation
-----------
+**********
+This verifies proper install:
+
 .. code-block:: Python
 
     ApiLogicServer create --project_name=my_api_logic_server
@@ -32,18 +38,27 @@ Generation
     virtualenv venv
     source venv/bin/activate
     # windows venv\Scripts\activate
+    pip install -r requirements.txt
 
+More commonly, you would include the ``db_url`` parameter,
+a SQLAlchemy url designating the database used for creation.
 
 Execution
----------
+*********
 
 .. code-block:: Python
 
     python api_logic_server_run.py
     python ui/basic_web_app/run.py
 
+
+
+Features
+--------
+
 API: SAFRS JSON:API and Swagger
--------------------------------
+*******************************
+
 Your API is available in swagger:
 
 .. image:: https://github.com/valhuber/ApiLogicServer/blob/main/images/swagger.png?raw=true
@@ -52,7 +67,7 @@ Your API is available in swagger:
 
 
 Basic Web App - Flask Appbuilder
---------------------------------
+********************************
 Generated fab pages look as shown below:
 
 #. **Multi-page:** apps include 1 page per table
@@ -69,10 +84,10 @@ Generated fab pages look as shown below:
     :width: 800px
     :align: center
 
-Customize your app by editing `ui/basic_web_app/app/views.py`.
+Customize your app by editing ``ui/basic_web_app/app/views.py``.
 
 Logic:
-------
+******
 Logic is declared in Python (example below), and is:
 
 - **Extensible:** logic consists of rules (see below), plus standard Python code
@@ -90,7 +105,7 @@ of Python:
     :width: 800px
     :align: center
 
-Declare your logic by editing `logic/rules_bank.py`
+Declare your logic by editing ``logic/rules_bank.py``
 
 
 More information:
@@ -103,11 +118,11 @@ Acknowledgements
 Many thanks to
 
 - Thomas Pollet, for SAFRS
-- Daniel Gaspar
+- Daniel Gaspar, for Flask AppBuilder
 - Achim Götz, for design collaboration
 
 
 Change Log
 ----------
 
-0.0.6 - Initial Version
+1.0.7 - Initial Version

@@ -31,11 +31,11 @@ def desc():
 
 
 project_urls = {
-  'Docs': 'https://github.com/valhuber/logicbank/wiki'
+  'Docs': 'https://github.com/valhuber/ApiLogicServer/wiki'
 }
 
 setup(
-    name="apilogicserver",
+    name="ApiLogicServer",
     version=version,
     url="https://github.com/valhuber/ApiLogicServer",
     license="BSD",
@@ -48,7 +48,6 @@ setup(
     ),
     long_description=desc(),
     long_description_content_type="text/x-rst",
-    # packages=find_packages(include=['logic_bank']),
     packages=['app_logic_server', 'expose_existing', 'expose_existing.sqlacodegen',
               'expose_existing.sqlacodegen.sqlacodegen'],
     package_data={"app_logic_server": ["nw.sqlite"]},
@@ -59,11 +58,17 @@ setup(
     zip_safe=False,
     platforms="any",
     install_requires=[
-        "Flask-Cors>=3.0.0",
-        "inflect>=5.0.2",
-        "safrs>=2.10.7",
-        "logicbankutils>=0.6.0",
-        "Flask-AppBuilder>=3.1.1"
+        "PyJWT==1.7.1",
+        "python-dateutil==2.8.1",
+        "six==1.15.0",
+        "SQLAlchemy==1.3.20",
+        "SQLAlchemy-Utils==0.36.8",
+        "Flask-AppBuilder==3.1.1",
+        "logicbankutils==0.6.0",
+        "inflect==5.0.2",
+        "safrs==2.10.7",
+        "Flask-Admin==1.5.7",
+        "Flask-Cors==3.0.0"
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",

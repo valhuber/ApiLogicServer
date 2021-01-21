@@ -63,7 +63,7 @@ import click
 # import fab_quick_start_util.__init__  TODO
 # __version__ = __init__.__version__
 # fails 'method-wrapper' object has no attribute '__version__'.. work-around:
-__version__ = "1.0.0"
+__version__ = "1.0.6"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)

@@ -1,200 +1,122 @@
-# ApiLogicServer
+# API Logic Server
 
-Creates a server project at ```<project_name>``` from a ```db_url```..
+Creates an executable API from a database:
 
-## Current Status
-
-    Update 1/17 7PM
-        generating server, mac & windows - IDE or Command Line
-        generated server runs, mac and windows
-        generated flask app builder runs, mac and windows
-        logic operation (server, fab)
-        creates executable pip (installs locally, not uploaded to PyPi - probably tomorrow)
+- **API:** [swagger/OpenAPI](https://swagger.io/)
+  and [JSON:API](https://jsonapi.org) compliant.
+  Uses [SAFRS](https://pypi.org/project/safrs/), a modern approach that enables client applications to configure their own API to reduce network traffic.
 
 
-#### Change Log
-Key changes:
-* 1/18: better install instructions (verified mac & windows)
-* 1/19: logic running, installable pip (not uploaded), 
+- **Web App:** a multi-page, multi-table web app;
+  uses [fab-quickstart](https://pypi.org/project/fab-quick-start).
 
-## How to Install it
-For reference, we will be creating this structure:
 
-<figure><img src="images/apilogicserver-ide.png"></figure>
+- **Logic:** spreadsheet-like rules for multi-table derivations and constraint
+  that reduce transaction logic by 40X,
+  using [Logic Bank](https://pypi.org/project/logicbank).
 
-Install as any typical project:
+## Usage
+
+### Installation
+
+Install with pip:
 
 ```
 cd ~/Desktop
-Desktop> mkdir server
-Desktop> cd server
-server> git clone https://github.com/valhuber/ApiLogicServer.git
-server> cd ApiLogicServer
-ApiLogicServer> virtualenv venv
-ApiLogicServer> source venv/bin/activate  # windows venv\Scripts\activate
-ApiLogicServer> pip install -r requirements.txt
-```
-
-
-## How to Create the API Logic Server
-
-It will be via ```pip``` in the future, but for now:
-
-```
-ApiLogicServer> cd ..  # back to server
-server> deactivate
-server> mkdir test
-server> cd test
-test> cp -R ../ApiLogicServer/venv venv   # windows  Xcopy /E /I ..\ApiLogicServer\venv venv >NUL
-test> source venv/bin/activate  # windows venv\Scripts\activate
-
-(venv) test> % python ../ApiLogicServer/app_logic_server/create_server.py --project_name=my_new_project
-# (venv) test> python ..\ApiLogicServer\app_logic_server\create_server.py --project_name=my_new_project
-
-API Logic Server Creation 1.0.0 here
-
-Tables Not Exposed [ProductDetails_V]: 
-Generate Flask AppBuilder [Y/n]: 
-Favorite Column Names [name description]: 
-Non Favorite Column Names [id]: 
-Delete dir: /Users/val/Desktop/test/my-new-project
-Error: /Users/val/Desktop/test/my-new-project : No such file or directory
-Create Project with command: git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git /Users/val/Desktop/test/my-new-project
-Delete dir: /Users/val/Desktop/test/my-new-project/.git
-Create database/models.py with command: python /Users/val/dev/ApiLogicServer/expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:////Users/val/dev/ApiLogicServer/app_logic_server/nw.sqlite  > /Users/val/Desktop/test/my-new-project/database/models.py
-Create ui/basic_web_app with command: flask fab create-app --name /Users/val/Desktop/test/my-new-project/ui/basic_web_app --engine SQLAlchemy
-Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)
-Writing: /api/expose_api_models.py
-Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url
-Writing: /ui/basic_web_app/app/views.py
-(venv) val@Vals-MacBook-Pro-16 test % 
-```
-
-#### Issue setting PYTHONPATH
-For now, the ```venv``` copy is required - I was unable to "push" PYTHONPATH to run ```expose_existing``` in ```run_command(cmd: str, env=None)```:
-```
-result_b = subprocess.check_output(cmd, shell=True, env=use_env)
-```
-
-## How to Run the API Logic Server
-
-```
-test> deactivate
-test> cd my_new_project
-my_new_project> virtualenv venv
-my_new_project> source venv/bin/activate  # windows venv\Scripts\activate
-my_new_project> pip install -r requirements.txt
-my_new_project> python api_logic_server_run.py
-```
-
-This should now run [http://localhost:5000/](http://localhost:5000/), and return data.
-
-## How to run Flask App Builder (FAB)
-This is also running (tho, see Flask Admin, below):
-
-```
-my_new_project> python ui/basic_web_app/run.py
-```
-Try http://localhost:8080/, http://0.0.0.0:8080/
-
-
-#### Flask Admin
-This is required to create tables for Users and Roles,
-for FAB login.  Not sure whether you can run fab without doing that.
-
-It's pre-installed for the nw (default) database: (user=```admin``, password=```p```)
-
-It creates tables in your database, so probably best
-not to have it automatic.
-
-```
-cd my_project
-echo $PYTHONPATH
-PYTHONPATH="/Users/val/dev/my_project:$PYTHONPATH"
-export PYTHONPATH
-
-cd ui/basic_web_app
-(venv)$ export FLASK_APP=app
-(venv)$ flask fab create-admin
-Username [admin]:
-User first name [admin]:
-User last name [user]:
-Email [admin@fab.org]:
-Password:
-Repeat for confirmation:
-```
-
-    
-# Next Steps
-
-##  Cleanup
-Let's review these items:
-
-* Generated code review (e.g., use of ```api``` module vs a ```def```)
-
-* expose_existing is generating garbage for the view
-
-
-## Fab and Logic
-
-Not working yet.
-
-
-## Logic Bank works... Constraint Messages?
-Trivial constraint works:
-```
-    Rule.constraint(validate=models.Customer,
-                    as_condition=lambda row: row.Balance <= row.CreditLimit,
-                    error_msg="Balance must be < Credit Limit")
-```
-Patch this data:
-```
-{
-  "data": {
-    "attributes": {
-      "Id": "ALFKI",
-      "CreditLimit": "10"
-    },
-    "type": "Customer",
-    "id": "ALFKI"
-  }
-}
-```
-
-But not seeing any useful message in swagger, other than console (once logging set up)....
-```
-Logic Phase:		ROW LOGIC (sqlalchemy before_flush)			 - 2021-01-18 08:13:49,523 - logic_logger - DEBUG
-Logic Phase:		ROW LOGIC (sqlalchemy before_flush)			 - 2021-01-18 08:13:49,523 - logic_logger - DEBUG
-..Customer[ALFKI] {Update - client} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,524 - logic_logger - DEBUG
-..Customer[ALFKI] {Update - client} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,524 - logic_logger - DEBUG
-..Customer[ALFKI] {early_events} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,524 - engine_logger - DEBUG
-..Customer[ALFKI] {formula_rules} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance: 1016.0000000000, CreditLimit:  [2000.0000000000-->] 10, OrderCount: 9, UnpaidOrderCount: 4  row@: 0x106409d90 - 2021-01-18 08:13:49,525 - engine_logger - DEBUG
-[2021-01-18 08:14:14,409] ERROR: ValidationError: Balance must be < Credit Limit
-[2021-01-18 08:14:19,776] ERROR: Generic Error: get_instance : 
-[2021-01-18 08:14:19,776] INFO: Error in http://localhost:5000/Customer/ALFKI/
-```
-
-    I understand this to be related to not-yet-published SAFRS?
-
-
-## Try with other DBs, non-sqlite
-These will probably fail in FAB,
-since the admin data is not being created.
-
-
-## PIP Install / Operation
-
-In FUTURE, envisioned* to be installed and used like this:
-```
-cd ~/Desktop
+mkdir server
 cd server
 virtualenv venv
+source venv/bin/activate
+# windows venv\Scripts\activate
 pip install ApiLogicServer
+```
+
+### Generation
+
+This verifies proper install:
+
+```
 ApiLogicServer create --project_name=my_api_logic_server
+cd my_api_logic_server
+virtualenv venv
+source venv/bin/activate
+# windows venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+More commonly, you would include the ``db_url`` parameter,
+a SQLAlchemy url designating the database used for creation.
+
+### Execution
+
+```
+python api_logic_server_run.py
+python ui/basic_web_app/run.py
 ```
 
 
-## Windows
-Delete is failing, so the target generation folder must
-not exist.  This also leaves the ```.git``` folder,
-but not fatal.
+## Features
+
+
+### API: SAFRS JSON:API and Swagger
+
+
+Your API is available in swagger:
+
+<figure><img src="images/swagger.png"></figure>
+
+
+### Basic Web App - Flask Appbuilder
+
+Generated fab pages look as shown below:
+
+#. **Multi-page:** apps include 1 page per table
+
+#. **Multi-table:** pages include ``related_views`` for each related child table, and join in parent data
+
+#. **Favorite field first:** first-displayed field is "name", or `contains` "name" (configurable)
+
+#. **Predictive joins:** favorite field of each parent is shown (product *name* - not product *id*)
+
+#. **Ids last:** such boring fields are not shown on lists, and at the end on other pages
+
+<figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
+
+Customize your app by editing ``ui/basic_web_app/app/views.py``.
+
+### Logic
+
+Logic is declared in Python (example below), and is:
+
+- **Extensible:** logic consists of rules (see below), plus standard Python code
+
+- **Multi-table:** rules like ``sum`` automate multi-table transactions
+
+- **Scalable:** rules are pruned and optimized; for example, sums are processed as *1 row adjustment updates,* rather than expensive SQL aggregate queries
+
+- **Manageable:** develop and debug your rules in IDEs, manage it in SCS systems (such as `git`) using existing procedures
+
+The following 5 rules represent the same logic as 200 lines
+of Python:
+<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/example.png"></figure>
+
+Declare your logic by editing ``logic/rules_bank.py``
+
+
+## More information
+
+The github project includes documentation and examples.
+
+
+## Acknowledgements
+
+Many thanks to
+
+- Thomas Pollet, for SAFRS
+- Daniel Gaspar, for Flask AppBuilder
+- Achim Götz, for design collaboration
+
+
+## Change Log
+
+1.0.7 - Initial Version
