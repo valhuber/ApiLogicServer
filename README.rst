@@ -28,13 +28,17 @@ Generation
 .. code-block:: Python
 
     ApiLogicServer create --project_name=my_api_logic_server
+    cd my_api_logic_server
+    virtualenv venv
+    source venv/bin/activate
+    # windows venv\Scripts\activate
 
 
 Execution
 ---------
+
 .. code-block:: Python
 
-    cd my_api_logic_server
     python api_logic_server_run.py
     python ui/basic_web_app/run.py
 
