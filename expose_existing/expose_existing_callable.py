@@ -1,12 +1,5 @@
-"""
-import logic_bank_utils.util as logic_bank_utils
-
-(did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir="safrs", my_file=__file__)
-"""
-
 #
-# This script exposes an existing database as a webservice.
+# This script exposes an existing database as a webservice.  (Callable version - no on-import code, rated R)
 # A lot of dirty things going on here because we have to handle all sorts of edge cases
 #
 import sys, logging, inspect, builtins, os, argparse, tempfile, atexit, shutil, io
@@ -25,6 +18,7 @@ from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 from flask_cors import CORS
 MODEL_DIR = tempfile.mkdtemp()  # directory where the generated models.py will be saved
+on_import = False
 
 sqlacodegen_dir = os.path.join(os.path.dirname(__file__), "sqlacodegen")
 if not os.path.isdir(sqlacodegen_dir):
@@ -67,10 +61,10 @@ def get_args():
     return args
 
 
-def fix_generated(code):  # FIXME Thomas fixes req'd
-    if db.session.bind.dialect.name == "sqlite":
+def fix_generated(code, args):
+    if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         code = code.replace("Numeric", "String")
-    if db.session.bind.dialect.name == "mysql":
+    if "mysql" in args.url:
         code = code.replace("Numeric", "String")
         code = code.replace(", 'utf8_bin'","")
     return code
@@ -84,7 +78,7 @@ def codegen(args):
     metadata = MetaData(engine)
     tables = args.tables.split(",") if args.tables else None
     metadata.reflect(engine, args.schema, not args.noviews, tables)
-    if db.session.bind.dialect.name == "sqlite":
+    if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite
         engine.execute("""PRAGMA journal_mode = OFF""")
 
@@ -95,42 +89,42 @@ def codegen(args):
     generator = CodeGenerator(metadata, args.noindexes, args.noconstraints, args.nojoined, args.noinflect, args.noclasses)
     generator.render(capture)
     generated = capture.getvalue()
-    generated = fix_generated(generated)
+    generated = fix_generated(generated, args)
     if args.outfile:
         outfile = io.open(args.outfile, "w", encoding="utf-8")
         outfile.write(generated)
     return generated
 
+if on_import:
+    args = get_args()
+    app = Flask("DB App")
+    CORS(app, origins=["*"])
 
-args = get_args()
-app = Flask("DB App")
-CORS(app, origins=["*"])
+    app.config.update(
+        SQLALCHEMY_TRACK_MODIFICATIONS=0,
+        MAX_PAGE_LIMIT=args.maxpagelimit
 
-app.config.update(
-    SQLALCHEMY_TRACK_MODIFICATIONS=0,
-    MAX_PAGE_LIMIT=args.maxpagelimit
+    )
 
-)
+    app.config.update(SQLALCHEMY_DATABASE_URI=args.url, DEBUG=True, JSON_AS_ASCII=False)
+    SAFRSBase.db_commit = False
+    db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used in employees.py
+    models = codegen(args)
+    print(models)
 
-app.config.update(SQLALCHEMY_DATABASE_URI=args.url, DEBUG=True, JSON_AS_ASCII=False)
-SAFRSBase.db_commit = False
-db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used in employees.py
-models = codegen(args)
-print(models)
+    #
+    # Write the models to file, we could try to exec() but this makes our code more complicated
+    # Also, we can modify models.py in case things go awry
+    #
+    if args.models:
+        model_dir = os.path.dirname(args.models)
+        sys.path.insert(0, model_dir)
+    else:
+        with open(os.path.join(MODEL_DIR, "models.py"), "w+") as models_f:
+            models_f.write(models)
+        # atexit.register(lambda : shutil.rmtree(MODEL_DIR))
 
-#
-# Write the models to file, we could try to exec() but this makes our code more complicated
-# Also, we can modify models.py in case things go awry
-#
-if args.models:
-    model_dir = os.path.dirname(args.models)
-    sys.path.insert(0, model_dir)
-else:
-    with open(os.path.join(MODEL_DIR, "models.py"), "w+") as models_f:
-        models_f.write(models)
-    # atexit.register(lambda : shutil.rmtree(MODEL_DIR))
-
-import models
+    import models
 
 
 def start_api(HOST="0.0.0.0", PORT=5000):

@@ -751,18 +751,34 @@ def get_project_dir() -> str:
 
 
 def create_models(db_url: str, project: str) -> str:
-    use_direct_call = True
-    if use_direct_call:
+
+    class DotDict(dict):
+        """dot.notation access to dictionary attributes"""
+        # thanks: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary/28463329
+        __getattr__ = dict.get
+        __setattr__ = dict.__setitem__
+        __delattr__ = dict.__delitem__
+
+    def get_codegen_args():
+        codegen_args = DotDict({})
+        codegen_args.url = db_url
+        # codegen_args.outfile = models_file
+        codegen_args.outfile = project + '/database/models.py'
+        codegen_args.version = False
+        return codegen_args
+
+    use_approach = "expose_existing"
+    if use_approach == "sqlacodeGen_main":
         import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
         print(f'Create {project + "/database/models.py"} via sqlacodegen: {db_url}')
-        gen_models.sqlacodegen(db_url=db_url, models_file=project + '/database/models.py')
-        """
-        if __name__ == '__main__':
-            if __name__ == '__main__':
-                import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
-                gen_models.sqlacodegen(db_url=db_url, models_file=project + '/database/models.py')
+        code_gen_args = get_codegen_args()
+        gen_models.main(code_gen_args)
+    elif use_approach == "expose_existing":  # preferred version - Thomas' model fixup (etc)
+        import expose_existing.expose_existing_callable as expose_existing
+        print(f'Create {project + "/database/models.py"} via expose_existing / sqlacodegen: {db_url}')
+        code_gen_args = get_codegen_args()
+        expose_existing.codegen(code_gen_args)
         pass
-        """
     else:
         # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
         cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
