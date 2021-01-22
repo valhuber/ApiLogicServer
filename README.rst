@@ -5,7 +5,7 @@ Creates an executable API from a database:
 
 - **API:** `swagger/OpenAPI <https://swagger.io/>`_ and `JSON:API <jsonapi.org>`_ compliant.  Uses `SAFRS <https://pypi.org/project/safrs/>`_ , a modern approach that enables client applications to configure their own API to reduce network traffic.
 
-- **Web App:** a multi-page, multi-table web app; incorporates `fab-quickstart <https://pypi.org/project/fab-quick-start/>`_.
+- **Web App:** a multi-page, multi-table web app; incorporates `Flask AppBuilder <https://flask-appbuilder.readthedocs.io/en/latest/>`_ and `fab-quickstart <https://pypi.org/project/fab-quick-start/>`_.
 
 - **Logic:** spreadsheet-like rules for multi-table derivations and constraint that reduce transaction logic by 40X, using `Logic Bank <https://pypi.org/project/logicbank//>`_.
 
@@ -34,7 +34,7 @@ This verifies proper install:
 .. code-block:: Python
 
     ApiLogicServer create --project_name=my_api_logic_server
-    cd my_api_logic_server
+    cd my_api_logic_server  # create / initialize the venv
     virtualenv venv
     source venv/bin/activate
     # windows venv\Scripts\activate
@@ -42,6 +42,16 @@ This verifies proper install:
 
 More commonly, you would include the ``db_url`` parameter,
 a SQLAlchemy url designating the database used for creation.
+
+You may also wish to include the ``open_with`` parameter,
+to open an IDE or Editor on the created project.  For example,
+PyCharm (``charm``) will open the project and create / initialize the ``venv``
+automatically (some PyCharm configuration may be required):
+
+.. code-block:: Python
+
+    ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sqlite --open_with=charm
+
 
 Execution
 *********
@@ -126,3 +136,5 @@ Change Log
 ----------
 
 1.0.7 - Initial Version
+
+1.0.8 - Fix windows bug, options to specify clone-from and open-with

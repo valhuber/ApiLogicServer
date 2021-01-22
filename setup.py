@@ -31,7 +31,7 @@ def desc():
 
 
 project_urls = {
-  'Docs': 'https://github.com/valhuber/ApiLogicServer/wiki'
+  'Docs': 'https://github.com/valhuber/ApiLogicServer#readme'
 }
 
 setup(
@@ -71,7 +71,7 @@ setup(
         "Flask-Cors==3.0.0"
     ],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 2 - Pre-Alpha",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
