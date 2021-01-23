@@ -108,8 +108,12 @@ class GenerateFromModel(object):
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_name = non_favorite_names
+        self.engine = None
+        self.session = None
+        self.connection = None
+        self.app = None
 
-    def generate(self):
+    def generate_api_expose_and_ui_views(self):
         """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
         self._non_favorite_names_list = self.non_favorite_names.split()
@@ -169,6 +173,9 @@ class GenerateFromModel(object):
             each_result = self.process_each_table(each_table[1])
             self.result_views += each_result
         self.result_views += self.process_module_end(meta_tables)
+        # self.session.close()
+        self.app.teardown_appcontext(None)
+        self.engine.dispose()
         return
 
     def find_meta_data(self, a_cwd: str, a_project_name: str, a_db_url) -> MetaData:
@@ -221,9 +228,9 @@ class GenerateFromModel(object):
                 db.init_app(app)
                 return app
 
-            app = create_app()
-            app.config.SQLALCHEMY_DATABASE_URI = a_db_url
-            app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
+            self.app = create_app()
+            self.app.config.SQLALCHEMY_DATABASE_URI = a_db_url
+            self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
             model_imported = False
             try:
                 # models =
@@ -234,7 +241,7 @@ class GenerateFromModel(object):
             if not model_imported:
                 sys.path.insert(0, project_abs_path + "/database")
                 #  e.g., adds /Users/val/Desktop/my_project/database
-                print(f'..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
+                print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
                 try:
                     # models =
                     importlib.import_module('models')
@@ -249,15 +256,14 @@ class GenerateFromModel(object):
 
             # sys.path.insert(0, a_cwd)  # success - models open
             # config = importlib.import_module('config')
-            conn_string = app.config.SQLALCHEMY_DATABASE_URI
+            conn_string = self.app.config.SQLALCHEMY_DATABASE_URI
         else:  # TODO - use dynamic loading (above), remove this when stable
             import models
             conn_string = "sqlite:///nw/nw.db"
 
         orm_class = None
         metadata = None
-        cls_members = inspect.getmembers(sys.modules["models"],
-                                         inspect.isclass)
+        cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
         for each_cls_member in cls_members:
             each_class_def_str = str(each_cls_member)
             #  such as ('Category', <class 'models.Category'>)
@@ -270,14 +276,14 @@ class GenerateFromModel(object):
             metadata = orm_class[1].metadata
         # metadata = None  # enable to explore db with no fKeys
 
-        engine = sqlalchemy.create_engine(conn_string)
+        self.engine = sqlalchemy.create_engine(conn_string)
 
         # connection =
-        engine.connect()
+        self.connection = self.engine.connect()
         if (metadata is None):
             log.debug("using db for meta (models not found")
             metadata = MetaData()
-        metadata.reflect(bind=engine, resolve_fks=True)
+        metadata.reflect(bind=self.engine, resolve_fks=True)
         return metadata
 
     def generate_module_imports(self) -> str:
@@ -629,7 +635,7 @@ class GenerateFromModel(object):
         return result
 
 
-def delete_dir(dir_path):
+def delete_dir(dir_path, msg):
     """
     :param dir_path: delete this folder
     :return:
@@ -647,8 +653,7 @@ def delete_dir(dir_path):
                 func(path)
             else:
                 raise
-
-        print(f'Delete dir: {dir_path}')
+        print(f'{msg} Delete dir: {dir_path}')
         import shutil
         use_callback = False
         if use_callback:
@@ -657,8 +662,10 @@ def delete_dir(dir_path):
             try:
                 shutil.rmtree(dir_path)
             except OSError as e:
-                pass
-                print("Error: %s : %s" % (dir_path, e.strerror))
+                if "No such file" in e.strerror:
+                    pass
+                else:
+                    print("Error: %s : %s" % (dir_path, e.strerror))
     else:
         # https://stackoverflow.com/questions/22948189/how-to-solve-the-directory-is-not-empty-error-when-running-rmdir-command-in-a
         try:
@@ -719,11 +726,11 @@ def clone_prototype_project(project_name: str, from_git: str):
     """
     remove_project_debug = True
     if remove_project_debug:
-        delete_dir(realpath(project_name))
+        delete_dir(realpath(project_name), "1.")
     cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
     cmd = f'git clone --quiet {from_git} {project_name}'
-    result = run_command(cmd, msg="Create Project")
-    delete_dir(f'{project_name}/.git')
+    result = run_command(cmd, msg="2. Create Project")
+    delete_dir(f'{project_name}/.git', "3.")
 
     replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
@@ -739,7 +746,7 @@ def create_basic_web_app(db_url, project_name):
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-    result = run_command(cmd, msg="Create ui/basic_web_app")
+    result = run_command(cmd, msg="5. Create ui/basic_web_app")
     pass
 
 
@@ -773,12 +780,12 @@ def create_models(db_url: str, project: str) -> str:
     use_approach = "expose_existing"
     if use_approach == "sqlacodeGen_main":
         import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
-        print(f'Create {project + "/database/models.py"} via sqlacodegen: {db_url}')
+        print(f'4. Create {project + "/database/models.py"} via sqlacodegen: {db_url}')
         code_gen_args = get_codegen_args()
         gen_models.main(code_gen_args)
     elif use_approach == "expose_existing":  # preferred version - Thomas' model fixup (etc)
         import expose_existing.expose_existing_callable as expose_existing
-        print(f'Create {project + "/database/models.py"} via expose_existing / sqlacodegen: {db_url}')
+        print(f'4. Create {project + "/database/models.py"} via expose_existing / sqlacodegen: {db_url}')
         code_gen_args = get_codegen_args()
         expose_existing.codegen(code_gen_args)
         pass
@@ -798,7 +805,7 @@ def create_models(db_url: str, project: str) -> str:
         cmd += '  > ' + project + '/database/models.py'
         # env_list = {}
         # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
-        result = run_command(cmd, msg="Create database/models.py")  # might fail per venv, looking for inflect
+        result = run_command(cmd, msg="4. Create database/models.py")  # might fail per venv, looking for inflect
         pass
 
 
@@ -861,13 +868,98 @@ def inject_logic(abs_project_name):
         fp.writelines(lines)  # write whole lists again to the same file
 
 
-'''
-            CLI
+def api_logic_server(project_name: str, db_url: str, not_exposed: str,
+           from_git: str, open_with: str, run:bool,
+           flask_appbuilder: bool, favorites: str, non_favorites: str):
+    """
+    Creates logic-enabled Python JSON_API project, options for FAB and execution
+    """
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+    print("\nApiLogicServer Creation Log")
+    abs_db_url = db_url
+    if db_url.startswith('sqlite:///'):
+        url = db_url[10: len(db_url)]
+        abs_db_url = abspath(url)
+        abs_db_url = 'sqlite:///' + abs_db_url
+        pass
 
-            fab-quick-start --help
-            fab-quick-start version
-            fab-quick-start run [--favorites=string] [--non_favorites=string]
-'''
+    abs_project_name = project_name
+    if abs_project_name.startswith("~"):
+        abs_project_name = str(Path.home()) + project_name[1:]
+
+    create_project_debug = True
+    if create_project_debug:
+        clone_prototype_project(abs_project_name, from_git)
+        create_models(abs_db_url, abs_project_name)  # exec's sqlacodegen
+
+    if flask_appbuilder:
+        create_basic_web_app(abs_db_url, abs_project_name)
+    else:
+        print("4. ui/basic/web_app creation declined")
+
+    """
+        Create views.py file from db, models.py
+    """
+    generate_from_model = GenerateFromModel(
+        project_name=abs_project_name,
+        db_url=abs_db_url,
+        not_exposed=not_exposed + " ",
+        favorite_names=favorites,
+        non_favorite_names=non_favorites
+    )
+    print("6. Create api/expose_api_models.py and ui/basic_web_app/app/views.py (import / iterate models)")
+    generate_from_model.generate_api_expose_and_ui_views()  # sets generate_from_model.result_apis & result_views
+
+    print("7. Writing: /api/expose_api_models.py")
+    write_expose_api_models(abs_project_name, generate_from_model.result_apis)
+
+    print("8. Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url")
+    replace_string_in_file(search_for="replace_project_name",
+                           replace_with=os.path.basename(project_name),
+                           in_file=f'{abs_project_name}/api_logic_server_run.py')
+    replace_string_in_file(search_for="replace_db_url",
+                           replace_with=get_os_url(abs_db_url),
+                           in_file=f'{abs_project_name}/config.py')
+    # ApiLogicServer hello "At: " + str(datetime.datetime.now())
+    replace_string_in_file(search_for="ApiLogicServer hello",
+                           replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
+                           in_file=f'{abs_project_name}/api_logic_server_run.py')
+
+    if flask_appbuilder:
+        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
+                               replace_with='"' + get_os_url(abs_db_url) + '"',
+                               in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
+        print("9. Writing: /ui/basic_web_app/app/views.py")
+        text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
+        text_file.write(generate_from_model.result_views)
+        text_file.close()
+        fix_basic_web_app_python_path(abs_project_name)
+        inject_logic(abs_project_name)
+
+
+    if open_with != "":
+        print(f'\nCreation complete.  Starting ApiLogicServer at {project_name}\n')
+        print("You can run it again later, as follows:")
+        print(f'..cd {project_name}')
+        print(f'..virtualenv venv')
+        print(f'..source venv/bin/activate  # windows: venv\\Scripts\\activate')
+        print(f'..pip install -r requirements.txt')
+        print(f'..python api_logic_server_run.py')
+        print(f'..python ui/basic_web_app/run.py')
+        print(f'Opening with: {open_with}')
+        print("")
+        run_command(f'{open_with} {project_name}', msg="Open with IDE/Editor")
+
+    if run:
+        run_command(f'python {abs_project_name}/api_logic_server_run.py', msg="\nRun created ApiLogicServer")
+    else:
+        print("\nCreation complete.  Next steps:")
+        print(f'..cd {project_name}')
+        print(f'..virtualenv venv')
+        print(f'..source venv/bin/activate  # windows: venv\\Scripts\\activate')
+        print(f'..pip install -r requirements.txt')
+        print(f'..python api_logic_server_run.py')
+        print(f'..python ui/basic_web_app/run.py')
 
 
 @click.group()
@@ -876,11 +968,12 @@ def main(ctx):
     """
     Creates ApiLogicServer project:\r
     """
+    # print("group")
 
 
 @main.command("create")
 @click.option('--project_name',
-              default="new_api_logic_server",
+              default="create_api_logic_server",
               prompt="Name of Project to be created",
               help="Create new directory here")
 @click.option('--db_url',
@@ -891,6 +984,10 @@ def main(ctx):
               default="https://github.com/valhuber/ApiLogicServerProto.git",
               prompt="Clone from git url",
               help="Template clone-from project")
+@click.option('--run',
+              default=False,
+              prompt="Run Created ApiLogicServer",
+              help="python <project>api_logic_server.py")
 @click.option('--open_with',
               default='',
               prompt="Open Project With",
@@ -913,7 +1010,7 @@ def main(ctx):
               help="Columns named like this displayed last")
 @click.pass_context
 def create(ctx, project_name: str, db_url: str, not_exposed: str,
-           from_git: str, open_with: str,
+           from_git: str, open_with: str, run: bool,
            flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
     Creates a logic-enabled Python project from an existing database: JSON:API, basic_web_app
@@ -930,75 +1027,10 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
     """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
-    abs_db_url = db_url
-    if db_url.startswith('sqlite:///'):
-        url = db_url[10: len(db_url)]
-        abs_db_url = abspath(url)
-        abs_db_url = 'sqlite:///' + abs_db_url
-        pass
-
-    abs_project_name = project_name
-    if abs_project_name.startswith("~"):
-        abs_project_name = str(Path.home()) + project_name[1:]
-
-    create_project_debug = True
-    if create_project_debug:
-        clone_prototype_project(abs_project_name, from_git)
-        create_models(abs_db_url, abs_project_name)  # exec's sqlacodegen
-
-    if flask_appbuilder:
-        create_basic_web_app(abs_db_url, abs_project_name)
-
-    """
-        Create views.py file from db, models.py
-    """
-    generate_from_model = GenerateFromModel(
-        project_name=abs_project_name,
-        db_url=abs_db_url,
-        not_exposed=not_exposed + " ",
-        favorite_names=favorites,
-        non_favorite_names=non_favorites
-    )
-    print("Create ui/basic_web_app/app/views.py and api/expose_api_models.py (import / iterate models)")
-    generate_from_model.generate()  # sets generate_from_model.result_apis & result_views
-
-    print("Writing: /api/expose_api_models.py")
-    write_expose_api_models(abs_project_name, generate_from_model.result_apis)
-
-    print("Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url")
-    replace_string_in_file(search_for="replace_project_name",
-                           replace_with=os.path.basename(project_name),
-                           in_file=f'{abs_project_name}/api_logic_server_run.py')
-    replace_string_in_file(search_for="replace_db_url",
-                           replace_with=get_os_url(abs_db_url),
-                           in_file=f'{abs_project_name}/config.py')
-    # ApiLogicServer hello "At: " + str(datetime.datetime.now())
-    replace_string_in_file(search_for="ApiLogicServer hello",
-                           replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
-                           in_file=f'{abs_project_name}/api_logic_server_run.py')
-
-    if flask_appbuilder:
-        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
-                               replace_with='"' + get_os_url(abs_db_url) + '"',
-                               in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
-        print("Writing: /ui/basic_web_app/app/views.py")
-        text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
-        text_file.write(generate_from_model.result_views)
-        text_file.close()
-        fix_basic_web_app_python_path(abs_project_name)
-        inject_logic(abs_project_name)
-
-    print("\nCreation complete.  Next steps:")
-    print(f'..cd {project_name}')
-    print(f'..virtualenv venv')
-    print(f'..source venv/bin/activate  # windows: venv\Scripts\activate')
-    print(f'..pip install -r requirements.txt')
-    print(f'..python api_logic_server_run.py')
-    print(f'..python ui/basic_web_app/run.py')
-
-    if open_with != "":
-        print(f'Opening with: {open_with}')
-        run_command(f'{open_with} {project_name}', msg="Open with IDE/Editor")
+    api_logic_server(project_name=project_name, db_url=db_url,
+                            not_exposed="--ProductDetails_V", run=run,
+                            from_git="https://github.com/valhuber/ApiLogicServerProto.git",
+                            flask_appbuilder=True, favorites="name description", non_favorites="id", open_with=open_with)
 
 
 @main.command("version")
@@ -1009,55 +1041,101 @@ def version(ctx):
     """
     click.echo(
         click.style(
-            "\nInitial Version\n\n"
+            "Recent Changes:"
+            "\n\t2021-01-22: Add run command\n\n"
         )
     )
 
 
+@main.command("run")
+@click.option('--project_name',
+              default="run_api_logic_server",
+              prompt="Name of Project to be created",
+              help="Create new directory here")
+@click.option('--db_url',
+              default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
+              prompt="Database URL",
+              help="SQLAlchemy Database URL")
+@click.pass_context
+def run(ctx, db_url: str, project_name: str):
+    """
+    Creates and runs logic-enabled Python project from an existing database: JSON:API, basic_web_app
+
+        Examples:
+
+            ApiLogicServer run  # use defaults (verify install)
+
+            ApiLogicServer run db_url=sqlite:///nw.sqlite
+
+        Doc:
+
+            https://github.com/valhuber/ApiLogicServer#readme
+
+    """
+    api_logic_server(project_name = project_name, db_url=db_url,
+           not_exposed="ProductDetails_V", run=True,
+           from_git="https://github.com/valhuber/ApiLogicServerProto.git",
+           flask_appbuilder=True, favorites="name description", non_favorites="id", open_with="")
+
+
 log = logging.getLogger(__name__)
 
+
+def print_args(args, msg):
+    print(msg)
+    for each_arg in args:
+        print(f'  {each_arg}')
+    print(" ")
 
 def start():  # target of setup.py
     sys.stderr.write("\n\nAPI Logic Server Creation Utility " + __version__ + " here\n\n")
     main(obj={})
 
 
-if __name__ == '__main__':  # debugger & cmd-line start here
+if __name__ == '__main__':  # debugger & 'create_server.py --project_name=~/Desktop/test_project' start here
 
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
-    print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
-    # print('Number of arguments:', len(sys.argv), 'arguments.')
-    print('Arguments:', str(sys.argv))
-
-    if len(sys.argv) > 1:
-        """ eg
-        cd app_logic_server
-        python create_server.py --project_name=~/Desktop/test_project
-        """
-        print("\nAPI Logic Server Creation " + __version__ + " here\n")
+    use_direct_commands = True
+    if use_direct_commands:
+        print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
         commands = sys.argv
-        commands[0] = "create"
-    else:
-        print("\nAPI Logic Server Creation " + __version__ + " (no args, using debug defaults)\n")
-        db_url = "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite"
+        print_args(commands, "Command Arguments")
+        main()
+    else:  # FIXME dead code - delete
+        print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
+        # print('Number of arguments:', len(sys.argv), 'arguments.')
+        print('Arguments:', str(sys.argv))
 
-        commands = (  # using this will create prompts...
-            'create'
-            , '--project_name=~/Desktop/my_project'
-            , f'--db_url={db_url}'
-        )
-        commands = (  # supply all the args for silent debug runs
-            'create',
-            '--project_name=~/Desktop/my_project',
-            '--from_git=https://github.com/valhuber/ApiLogicServerProto.git',
-            '--open_with=',
-            '--not_exposed=ProductDetails_V',
-            '--flask_appbuilder',
-            f'--db_url={db_url}',
-            '--favorites=name description',
-            '--non_favorites=id',
-        )
-    main(commands)
-    # start()
+        if len(sys.argv) > 1:
+            """ eg
+            cd app_logic_server
+            python create_server.py --project_name=~/Desktop/test_project
+            """
+            print("\nAPI Logic Server Creation " + __version__ + " here\n")
+            commands = sys.argv
+            print_args(commands, "before")
+            commands[0] = "create"
+            print_args(commands, "after")
+        else:
+            print("\nAPI Logic Server Creation " + __version__ + " (no args, using debug defaults)\n")
+            db_url = "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite"
+
+            commands = (  # using this will create prompts...
+                'create'
+                , '--project_name=~/Desktop/my_project'
+                , f'--db_url={db_url}'
+            )
+            commands = (  # supply all the args for silent debug runs
+                'create',
+                '--project_name=~/Desktop/my_project',
+                '--from_git=https://github.com/valhuber/ApiLogicServerProto.git',
+                '--open_with=',
+                '--not_exposed=ProductDetails_V',
+                '--flask_appbuilder',
+                f'--db_url={db_url}',
+                '--favorites=name description',
+                '--non_favorites=id',
+            )
+        main(commands)

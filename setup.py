@@ -68,7 +68,12 @@ setup(
         "inflect==5.0.2",
         "safrs==2.10.7",
         "Flask-Admin==1.5.7",
-        "Flask-Cors==3.0.0"
+        "Flask-Cors==3.0.0",
+        "Flask==1.1.2",
+        "Flask-Admin==1.5.7",
+        "python-dotenv==0.15.0",
+        "email-validator==1.1.1",
+        "LogicBank==0.8.0"
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
