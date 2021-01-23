@@ -150,11 +150,8 @@ applications as shown below:
 
     Customize your app by editing: ui/basic_web_app/app/views.py
 
-
-## More information
-
-The github project includes documentation and examples.
-
+## Status
+Pre-Alpha / Technology Preview - just entering test.
 
 ## Acknowledgements
 
