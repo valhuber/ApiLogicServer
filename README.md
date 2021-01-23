@@ -44,7 +44,7 @@ Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
 
-### Project Creation
+### Create (only)
 
 You can also create the project, without execution.
 As above, this verifies proper install:
@@ -68,6 +68,7 @@ ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sql
 ```
 
 ### Execution
+With a proper [environment](../../wiki/Created-Project#environment):
 
 ```
 python api_logic_server_run.py
