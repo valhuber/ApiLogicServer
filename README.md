@@ -33,13 +33,13 @@ pip install ApiLogicServer
 
 ### Quick Start - Create and Execute
 This verifies proper install - it will
-create and run an [ApiLogicServer Project](wiki/Created-Project):
+create and run an [ApiLogicServer Project](../../wiki/Created-Project):
 
 ```
 ApiLogicServer run --project_name=my_api_logic_server
 ```
 
-The ``db_url`` parameter defaults to a supplied [sample database](wiki/Sample-Database).
+The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
