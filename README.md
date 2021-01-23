@@ -4,7 +4,7 @@ Creates an executable API from a database:
 
 - **API:** [swagger/OpenAPI](https://swagger.io/)
   and [JSON:API](https://jsonapi.org) compliant.
-  Uses [SAFRS](https://github.com/thomaxxl/safrs#readme), a modern approach that enables client applications to configure their own API to reduce network traffic.
+  Uses [SAFRS](https://github.com/thomaxxl/safrs/wiki), a modern approach that enables client applications to configure their own API to reduce network traffic.
 
 
 - **Web App:** a multi-page, multi-table web app;
