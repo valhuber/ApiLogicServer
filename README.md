@@ -81,10 +81,11 @@ python ui/basic_web_app/run.py
 
 ### API: SAFRS JSON:API and Swagger
 
-
 Your API is available in swagger:
 
 <figure><img src="images/swagger.png"></figure>
+
+    Customize your API: https://github.com/thomaxxl/safrs/wiki/Customization
 
 
 ### Basic Web App - Flask Appbuilder
@@ -103,7 +104,7 @@ Generated fab pages look as shown below:
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
 
-Customize your app by editing ``ui/basic_web_app/app/views.py``.
+    Customize your app by editing ``ui/basic_web_app/app/views.py``.
 
 ### Logic
 
@@ -121,7 +122,7 @@ The following 5 rules represent the same logic as 200 lines
 of Python:
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/example.png"></figure>
 
-Declare your logic by editing ``logic/rules_bank.py``
+    Declare your logic by editing ``logic/rules_bank.py``
 
 
 ## More information
