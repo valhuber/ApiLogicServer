@@ -138,3 +138,5 @@ Change Log
 1.0.7 - Initial Version
 
 1.0.8 - Fix windows bug, options to specify clone-from and open-with
+
+1.0.9 - ``Run`` command (experimental)

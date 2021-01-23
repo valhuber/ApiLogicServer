@@ -55,7 +55,7 @@ automatically (some PyCharm configuration may be required):
 ```
 ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sqlite --open_with=charm
 ```
-
+For more on information on the created project, [click here](wiki/Created-Project)
 
 ### Execution
 
@@ -132,3 +132,5 @@ Many thanks to
 1.0.7 - Initial Version
 
 1.0.8 - Fix windows bug, options to specify clone-from and open-with
+
+1.0.9 - ``Run`` command (experimental)
