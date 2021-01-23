@@ -979,7 +979,7 @@ def main(ctx):
 @click.option('--db_url',
               default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
-              help="SQLAlchemy Database URL")
+              help="SQLAlchemy Database URL - see above")
 @click.option('--from_git',
               default="https://github.com/valhuber/ApiLogicServerProto.git",
               prompt="Clone from git url",
@@ -1023,7 +1023,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
         Doc:
 
-            https://github.com/valhuber/ApiLogicServer#readme
+            ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
+
+            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
 
     """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
@@ -1055,7 +1057,7 @@ def version(ctx):
 @click.option('--db_url',
               default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
-              help="SQLAlchemy Database URL")
+              help="SQLAlchemy Database URL - see above")
 @click.pass_context
 def run(ctx, db_url: str, project_name: str):
     """
@@ -1069,7 +1071,9 @@ def run(ctx, db_url: str, project_name: str):
 
         Doc:
 
-            https://github.com/valhuber/ApiLogicServer#readme
+            ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
+
+            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
 
     """
     api_logic_server(project_name = project_name, db_url=db_url,

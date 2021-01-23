@@ -31,9 +31,23 @@ source venv/bin/activate
 pip install ApiLogicServer
 ```
 
-### Generation
+### Quick Start - Create and Execute
+This verifies proper install - it will
+create and run an [ApiLogicServer Project](wiki/Created-Project):
 
-This verifies proper install:
+```
+ApiLogicServer run --project_name=my_api_logic_server
+```
+
+The ``db_url`` parameter defaults to a supplied [sample database](wiki/Sample-Database).
+Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
+to use your own database.
+
+
+### Project Creation
+
+You can also create the project, without execution.
+As above, this verifies proper install:
 
 ```
 ApiLogicServer create --project_name=my_api_logic_server
@@ -44,9 +58,6 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-More commonly, you would include the ``db_url`` parameter,
-a SQLAlchemy url designating the database used for creation.
-
 You may also wish to include the ``open_with`` parameter,
 to open an IDE or Editor on the created project.  For example,
 PyCharm (``charm``) will open the project and create / initialize the ``venv``
@@ -55,7 +66,6 @@ automatically (some PyCharm configuration may be required):
 ```
 ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sqlite --open_with=charm
 ```
-For more on information on the created project, [click here](wiki/Created-Project)
 
 ### Execution
 
