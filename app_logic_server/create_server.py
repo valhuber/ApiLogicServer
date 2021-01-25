@@ -110,6 +110,7 @@ class GenerateFromModel(object):
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_name = non_favorite_names
+        self.metadata = None
         self.engine = None
         self.session = None
         self.connection = None
@@ -168,8 +169,8 @@ class GenerateFromModel(object):
             #  print ("\n\n** debug path issues 1: \n\n" + self._result)
 
         self.result_views += '"""\n\n'  # look into fstring - nicer to read TODO
-        metadata = self.find_meta_data(cwd, self.project_name, self.db_url)
-        meta_tables = metadata.tables
+        self.find_meta_data(cwd, self.project_name, self.db_url)  # sets self.metadata
+        meta_tables = self.metadata.tables
         self.result_views += self.generate_module_imports()
         for each_table in meta_tables.items():
             each_result = self.process_each_table(each_table[1])
@@ -268,7 +269,6 @@ class GenerateFromModel(object):
         if not model_imported:
             print(f'.. ..SEVERE WARNING - Dynamic model import not successful')
         else:
-            print(f'.. ..Dynamic model import successful - introspecting model classes')
             cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
             for each_cls_member in cls_members:
                 each_class_def_str = str(each_cls_member)
@@ -276,6 +276,7 @@ class GenerateFromModel(object):
                 if ("'models." in str(each_class_def_str) and
                         "Ab" not in str(each_class_def_str)):
                     orm_class = each_cls_member
+                    print(f'.. ..Dynamic model import successful - introspecting model classes per {str(orm_class)}')
                     break
             if (orm_class is not None):
                 log.debug("using sql for meta, from model: " + str(orm_class))
@@ -290,7 +291,7 @@ class GenerateFromModel(object):
             metadata = MetaData()
         else:
             metadata.reflect(bind=self.engine, resolve_fks=True)
-        return metadata
+        self.metadata = metadata  # bug - presumes table-name == class-name.  Find table-name in orm_class[1].query?
 
     def generate_module_imports(self) -> str:
         """

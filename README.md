@@ -156,6 +156,8 @@ applications as shown below:
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
 
+Serious bug - presumes class name == table name.  Expected fix: Mon, Jan 24, 2021.
+
 ## Acknowledgements
 
 Many thanks to
