@@ -29,6 +29,9 @@ and can be customized with standard approaches as described below.
 ## Usage
 
 ### Install with ```pip```
+Caution: Python install is rather more than running an installer.
+Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
+Then:
 
 ```
 cd ~/Desktop
@@ -161,6 +164,16 @@ Many thanks to
 - Daniel Gaspar, for Flask AppBuilder
 - Achim Götz, for design collaboration
 
+
+
+### Articles
+There a few articles that provide some orientation to Logic Bank and Flask App Builder.
+These technologies are automatically created when you use ApiLogicServer:
+* [Extensible Rules](https://dzone.com/articles/logic-bank-now-extensible-drive-95-automation-even) - defining new rule types, using Python
+* [Declarative](https://dzone.com/articles/agile-design-automation-how-are-rules-different-fr) - exploring _multi-statement_ declarative technology
+* [Automate Business Logic With Logic Bank](https://dzone.com/articles/automate-business-logic-with-logic-bank) - general introduction, discussions of extensibility, manageability and scalability
+* [Agile Design Automation With Logic Bank](https://dzone.com/articles/logical-data-indendence) - focuses on automation, design flexibility and agile iterations
+* [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ## Change Log
 
