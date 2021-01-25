@@ -249,10 +249,10 @@ class GenerateFromModel(object):
                     # models =
                     importlib.import_module('models')
                 except:
-                    print("\n\nERROR - Dynamic model import failed\n")
+                    print("\n===> ERROR - Dynamic model import failed")
                     traceback.print_exc()
-                    print('\n\n Creation proceeding, may required manual fixup')
-                    print('.. see https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
+                    print('.. Creation proceeding, may require manual fixup')
+                    print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
                     # return None
                 model_imported = True
 
@@ -265,7 +265,10 @@ class GenerateFromModel(object):
 
         orm_class = None
         metadata = None
-        if model_imported:
+        if not model_imported:
+            print(f'.. ..SEVERE WARNING - Dynamic model import not successful')
+        else:
+            print(f'.. ..Dynamic model import successful - introspecting model classes')
             cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
             for each_cls_member in cls_members:
                 each_class_def_str = str(each_cls_member)
@@ -745,11 +748,11 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
     pass
 
 
-def create_basic_web_app(db_url, project_name):
+def create_basic_web_app(db_url, project_name, msg):
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-    result = run_command(cmd, msg="5. Create ui/basic_web_app")
+    result = run_command(cmd, msg=msg)
     pass
 
 
@@ -908,9 +911,9 @@ def api_logic_server(project_name: str, db_url: str, not_exposed: str,
     create_models(abs_db_url, abs_project_name, use_model)  # exec's sqlacodegen
 
     if flask_appbuilder:
-        create_basic_web_app(abs_db_url, abs_project_name)
+        create_basic_web_app(abs_db_url, abs_project_name, "5. Create ui/basic_web_app")
     else:
-        print("4. ui/basic/web_app creation declined")
+        print("5. ui/basic/web_app creation declined")
 
     """
         Create views.py file from db, models.py

@@ -427,41 +427,41 @@ class CodeGenerator(object):
     def render_metadata_declarations(self):
         if "sqlalchemy.ext.declarative" in self.collector:
             return """
-            ########################################################################################################################
-            # Manually Added for safrs, TODO: improve this crap
-            #
-            
-            import safrs  # val experiment (more crap??)
-            db = safrs.DB
-            
-            Base: declarative_base = db.Model
-            
-            from safrs import SAFRSBase
-            
-            Base = db.Model
-            metadata = Base.metadata
-            
-            NullType = db.String
-            TIMESTAMP= db.TIMESTAMP
-            
-            # FIXME Req'd  if db.session.bind.dialect.name == "mysql":
-            #    from sqlalchemy.dialects.mysql import *
-            
-            def BIGINT(_):
-                return db.SMALLINT
-            
-            def SMALLINT(_):
-                return db.SMALLINT
-            
-            def INTEGER(_):
-                return db.INTEGER
-            
-            def TIME(**kwargs):
-                return db.TIME
-            
-            
-            ########################################################################################################################
-            """
+########################################################################################################################
+# Manually Added for safrs, TODO: improve this crap
+#
+
+import safrs  # val experiment (more crap??)
+db = safrs.DB
+
+Base: declarative_base = db.Model
+
+from safrs import SAFRSBase
+
+Base = db.Model
+metadata = Base.metadata
+
+NullType = db.String
+TIMESTAMP= db.TIMESTAMP
+
+# FIXME Req'd  if db.session.bind.dialect.name == "mysql":
+#    from sqlalchemy.dialects.mysql import *
+
+def BIGINT(_):
+    return db.SMALLINT
+
+def SMALLINT(_):
+    return db.SMALLINT
+
+def INTEGER(_):
+    return db.INTEGER
+
+def TIME(**kwargs):
+    return db.TIME
+
+
+########################################################################################################################
+"""
             # return 'Base = declarative_base()\nmetadata = Base.metadata'
         return "metadata = MetaData()"
 

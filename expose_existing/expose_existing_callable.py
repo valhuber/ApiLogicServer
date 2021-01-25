@@ -57,7 +57,7 @@ def get_args():
         print("You must supply a url\n", file=sys.stderr)
         parser.print_help()
         exit(1)
-
+    print(f'.. ..Dynamic model import successful')
     return args
 
 
