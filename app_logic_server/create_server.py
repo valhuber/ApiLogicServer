@@ -41,9 +41,11 @@ New FAB Feature Suggestions:
 """
 import builtins
 import subprocess
+import traceback
 from os.path import abspath
 from os.path import realpath
 from pathlib import Path
+from shutil import copyfile
 
 import logic_bank_utils.util as logic_bank_utils
 from flask import Flask
@@ -63,7 +65,7 @@ import click
 # import fab_quick_start_util.__init__  TODO
 # __version__ = __init__.__version__
 # fails 'method-wrapper' object has no attribute '__version__'.. work-around:
-__version__ = "1.0.9"
+__version__ = "1.01.00"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -175,7 +177,8 @@ class GenerateFromModel(object):
         self.result_views += self.process_module_end(meta_tables)
         # self.session.close()
         self.app.teardown_appcontext(None)
-        self.engine.dispose()
+        if self.engine:
+            self.engine.dispose()
         return
 
     def find_meta_data(self, a_cwd: str, a_project_name: str, a_db_url) -> MetaData:
@@ -231,6 +234,7 @@ class GenerateFromModel(object):
             self.app = create_app()
             self.app.config.SQLALCHEMY_DATABASE_URI = a_db_url
             self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
+            print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
             model_imported = False
             try:
                 # models =
@@ -241,18 +245,16 @@ class GenerateFromModel(object):
             if not model_imported:
                 sys.path.insert(0, project_abs_path + "/database")
                 #  e.g., adds /Users/val/Desktop/my_project/database
-                print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
                 try:
                     # models =
                     importlib.import_module('models')
                 except:
-                    pass  # once more...
-                    print("\n\nERROR - current result:\n" + self.result_views)
-                    # The sqlalchemy extension was not registered to the current application.  Please make sure to call init_app() first.
-                    raise Exception("Unable to import models from:\n" +
-                                    project_abs_path + "/database, or" +
-                                    a_cwd + ", or\n" +
-                                    a_cwd + '/app')
+                    print("\n\nERROR - Dynamic model import failed\n")
+                    traceback.print_exc()
+                    print('\n\n Creation proceeding, may required manual fixup')
+                    print('.. see https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
+                    # return None
+                model_imported = True
 
             # sys.path.insert(0, a_cwd)  # success - models open
             # config = importlib.import_module('config')
@@ -263,27 +265,28 @@ class GenerateFromModel(object):
 
         orm_class = None
         metadata = None
-        cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
-        for each_cls_member in cls_members:
-            each_class_def_str = str(each_cls_member)
-            #  such as ('Category', <class 'models.Category'>)
-            if ("'models." in str(each_class_def_str) and
-                    "Ab" not in str(each_class_def_str)):
-                orm_class = each_cls_member
-                break
-        if (orm_class is not None):
-            log.debug("using sql for meta, from model: " + str(orm_class))
-            metadata = orm_class[1].metadata
-        # metadata = None  # enable to explore db with no fKeys
+        if model_imported:
+            cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
+            for each_cls_member in cls_members:
+                each_class_def_str = str(each_cls_member)
+                #  such as ('Category', <class 'models.Category'>)
+                if ("'models." in str(each_class_def_str) and
+                        "Ab" not in str(each_class_def_str)):
+                    orm_class = each_cls_member
+                    break
+            if (orm_class is not None):
+                log.debug("using sql for meta, from model: " + str(orm_class))
+                metadata = orm_class[1].metadata
+            # metadata = None  # enable to explore db with no fKeys
 
-        self.engine = sqlalchemy.create_engine(conn_string)
+            self.engine = sqlalchemy.create_engine(conn_string)
+            self.connection = self.engine.connect()
 
-        # connection =
-        self.connection = self.engine.connect()
         if (metadata is None):
             log.debug("using db for meta (models not found")
             metadata = MetaData()
-        metadata.reflect(bind=self.engine, resolve_fks=True)
+        else:
+            metadata.reflect(bind=self.engine, resolve_fks=True)
         return metadata
 
     def generate_module_imports(self) -> str:
@@ -716,7 +719,7 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
-def clone_prototype_project(project_name: str, from_git: str):
+def clone_prototype_project(project_name: str, from_git: str, msg: str):
     """
     clone prototype to create and remove git folder
 
@@ -729,7 +732,7 @@ def clone_prototype_project(project_name: str, from_git: str):
         delete_dir(realpath(project_name), "1.")
     cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
     cmd = f'git clone --quiet {from_git} {project_name}'
-    result = run_command(cmd, msg="2. Create Project")
+    result = run_command(cmd, msg=msg)  # "2. Create Project")
     delete_dir(f'{project_name}/.git', "3.")
 
     replace_string_in_file(search_for="creation-date",
@@ -760,7 +763,7 @@ def get_project_dir() -> str:
     return parent_path
 
 
-def create_models(db_url: str, project: str) -> str:
+def create_models(db_url: str, project: str, use_model: str) -> str:
 
     class DotDict(dict):
         """dot.notation access to dictionary attributes"""
@@ -777,36 +780,39 @@ def create_models(db_url: str, project: str) -> str:
         codegen_args.version = False
         return codegen_args
 
-    use_approach = "expose_existing"
-    if use_approach == "sqlacodeGen_main":
-        import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
-        print(f'4. Create {project + "/database/models.py"} via sqlacodegen: {db_url}')
-        code_gen_args = get_codegen_args()
-        gen_models.main(code_gen_args)
-    elif use_approach == "expose_existing":  # preferred version - Thomas' model fixup (etc)
-        import expose_existing.expose_existing_callable as expose_existing
-        print(f'4. Create {project + "/database/models.py"} via expose_existing / sqlacodegen: {db_url}')
-        code_gen_args = get_codegen_args()
-        expose_existing.codegen(code_gen_args)
-        pass
+    if use_model != "":
+        model_file = resolve_home(use_model)
+        print(f'.. ..Copy {model_file} to {project + "/database/models.py"}')
+        copyfile(model_file, project + '/database/models.py')
     else:
-        # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
-        cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
-        abs_cmd_debug = abspath(cmd_debug)
-        project_dir = get_project_dir()
-        python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
-        env_list = os.environ.copy()
-        # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
-        """
-        env_list["PYTHONPATH"] = python_path + ":" + env_list["PYTHONPATH"]  # python_path  # e.g., /Users/val/dev/ApiLogicServer/venv/lib/python3.9
-        """
-        cmd = f'python {project_dir}/expose_existing/sqlacodegen/sqlacodegen/main.py '
-        cmd += db_url
-        cmd += '  > ' + project + '/database/models.py'
-        # env_list = {}
-        # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
-        result = run_command(cmd, msg="4. Create database/models.py")  # might fail per venv, looking for inflect
-        pass
+        use_approach = "expose_existing"
+        if use_approach == "expose_existing":  # preferred version - Thomas' model fixup (etc)
+            import expose_existing.expose_existing_callable as expose_existing
+            code_gen_args = get_codegen_args()
+            expose_existing.codegen(code_gen_args)
+            pass
+        elif use_approach == "sqlacodeGen_main":
+            import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
+            code_gen_args = get_codegen_args()
+            gen_models.main(code_gen_args)
+        else:
+            # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
+            cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
+            abs_cmd_debug = abspath(cmd_debug)
+            project_dir = get_project_dir()
+            python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
+            env_list = os.environ.copy()
+            # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
+            """
+            env_list["PYTHONPATH"] = python_path + ":" + env_list["PYTHONPATH"]  # python_path  # e.g., /Users/val/dev/ApiLogicServer/venv/lib/python3.9
+            """
+            cmd = f'python {project_dir}/expose_existing/sqlacodegen/sqlacodegen/main.py '
+            cmd += db_url
+            cmd += '  > ' + project + '/database/models.py'
+            # env_list = {}
+            # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
+            result = run_command(cmd, msg="4. Create database/models.py")  # might fail per venv, looking for inflect
+            pass
 
 
 def write_expose_api_models(project_name, apis):
@@ -828,6 +834,17 @@ def get_os_url(url: str) -> str:
 
     https://stackoverflow.com/questions/1347791/unicode-error-unicodeescape-codec-cant-decode-bytes-cannot-open-text-file"""
     return url.replace('\\', '\\\\')
+
+
+def resolve_home(name: str) -> str:
+    """
+    :param name: a file name, eg, ~/Desktop/a.b
+    :return: /users/you/Desktop/a.b
+    """
+    result = name
+    if result.startswith("~"):
+        result = str(Path.home()) + result[1:]
+    return result
 
 
 def fix_basic_web_app_python_path(abs_project_name):
@@ -869,7 +886,7 @@ def inject_logic(abs_project_name):
 
 
 def api_logic_server(project_name: str, db_url: str, not_exposed: str,
-           from_git: str, open_with: str, run:bool,
+           from_git: str, open_with: str, run:bool, use_model: str,
            flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
     Creates logic-enabled Python JSON_API project, options for FAB and execution
@@ -883,14 +900,12 @@ def api_logic_server(project_name: str, db_url: str, not_exposed: str,
         abs_db_url = 'sqlite:///' + abs_db_url
         pass
 
-    abs_project_name = project_name
-    if abs_project_name.startswith("~"):
-        abs_project_name = str(Path.home()) + project_name[1:]
+    abs_project_name = resolve_home(project_name)
 
-    create_project_debug = True
-    if create_project_debug:
-        clone_prototype_project(abs_project_name, from_git)
-        create_models(abs_db_url, abs_project_name)  # exec's sqlacodegen
+    clone_prototype_project(abs_project_name, from_git, "2. Create Project")
+
+    print(f'4. Create {abs_project_name + "/database/models.py"} via expose_existing / sqlacodegen: {db_url}')
+    create_models(abs_db_url, abs_project_name, use_model)  # exec's sqlacodegen
 
     if flask_appbuilder:
         create_basic_web_app(abs_db_url, abs_project_name)
@@ -1008,10 +1023,18 @@ def main(ctx):
               default="id",
               prompt="Non Favorite Column Names",
               help="Columns named like this displayed last")
+@click.option('--use_model',
+              default="",
+              prompt="Manually corrected model file",
+              help="See ApiLogicServer/wiki/Troubleshooting")
 @click.pass_context
 def create(ctx, project_name: str, db_url: str, not_exposed: str,
-           from_git: str, open_with: str, run: bool,
-           flask_appbuilder: bool, favorites: str, non_favorites: str):
+           from_git: str,
+           open_with: str,
+           run: click.BOOL,
+           flask_appbuilder: bool,
+           use_model: str,
+           favorites: str, non_favorites: str):
     """
     Creates a logic-enabled Python project from an existing database: JSON:API, basic_web_app
 
@@ -1029,10 +1052,16 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
     """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+    run_arg = False  # click booleans somehow come through as strings, so just fix
+    if run == "True":
+        run_arg = True
+    fab_arg = False
+    if flask_appbuilder == "True":
+        fab_arg = True
     api_logic_server(project_name=project_name, db_url=db_url,
-                            not_exposed="--ProductDetails_V", run=run,
+                            not_exposed="--ProductDetails_V", run=run_arg, use_model=use_model,
                             from_git="https://github.com/valhuber/ApiLogicServerProto.git",
-                            flask_appbuilder=True, favorites="name description", non_favorites="id", open_with=open_with)
+                            flask_appbuilder=fab_arg, favorites="name description", non_favorites="id", open_with=open_with)
 
 
 @main.command("version")
@@ -1077,7 +1106,7 @@ def run(ctx, db_url: str, project_name: str):
 
     """
     api_logic_server(project_name = project_name, db_url=db_url,
-           not_exposed="ProductDetails_V", run=True,
+           not_exposed="ProductDetails_V", run=True, use_model="",
            from_git="https://github.com/valhuber/ApiLogicServerProto.git",
            flask_appbuilder=True, favorites="name description", non_favorites="id", open_with="")
 
