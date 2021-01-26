@@ -124,7 +124,7 @@ The following 5 rules represent the
 as 200 lines of Python:
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/example.png"></figure>
 
-    Declare your logic by editing: logic/rules_bank.py
+> Declare your logic by editing: logic/rules_bank.py
 
 
 ### Basic Web App - Flask Appbuilder
@@ -151,12 +151,11 @@ applications as shown below:
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
 
-    Customize your app by editing: ui/basic_web_app/app/views.py
+> Customize your app by editing: ui/basic_web_app/app/views.py
 
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
 
-Serious bug - presumes class name == table name.  Expected fix: Mon, Jan 24, 2021.
 
 ## Acknowledgements
 
