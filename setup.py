@@ -73,7 +73,9 @@ setup(
         "Flask-Admin==1.5.7",
         "python-dotenv==0.15.0",
         "email-validator==1.1.1",
-        "LogicBank==0.8.0"
+        "LogicBank==0.8.0",
+        "PyMySQL>=1.0.2",
+        "cryptography>=3.3.1"
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",

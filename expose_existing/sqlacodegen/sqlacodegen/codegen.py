@@ -428,15 +428,12 @@ class CodeGenerator(object):
         if "sqlalchemy.ext.declarative" in self.collector:
             return """
 ########################################################################################################################
-# Manually Added for safrs, TODO: improve this crap
+# Manually Added for safrs (ApiLogicVersion), TODO: improve this crap
 #
-
-import safrs  # val experiment (more crap??)
-db = safrs.DB
-
-Base: declarative_base = db.Model
-
 from safrs import SAFRSBase
+
+import safrs
+db = safrs.DB
 
 Base = db.Model
 metadata = Base.metadata
@@ -444,21 +441,7 @@ metadata = Base.metadata
 NullType = db.String
 TIMESTAMP= db.TIMESTAMP
 
-# FIXME Req'd  if db.session.bind.dialect.name == "mysql":
-#    from sqlalchemy.dialects.mysql import *
-
-def BIGINT(_):
-    return db.SMALLINT
-
-def SMALLINT(_):
-    return db.SMALLINT
-
-def INTEGER(_):
-    return db.INTEGER
-
-def TIME(**kwargs):
-    return db.TIME
-
+from sqlalchemy.dialects.mysql import *
 
 ########################################################################################################################
 """

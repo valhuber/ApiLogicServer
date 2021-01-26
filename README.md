@@ -15,13 +15,13 @@ by creating executable APIs from a database, instantly:
   Uses [SAFRS](https://github.com/thomaxxl/safrs/wiki), a modern approach that enables client applications to configure their own API to reduce network traffic.
 
 
-- **Web App:** a multi-page, multi-table web app;
-  uses [fab-quickstart](https://pypi.org/project/fab-quick-start).
-
-
 - **Logic:** spreadsheet-like rules for multi-table derivations and constraint
   that reduce transaction logic by 40X,
   using [Logic Bank](https://pypi.org/project/logicbank).
+
+
+- **Web App:** a multi-page, multi-table web app;
+  uses [fab-quickstart](https://pypi.org/project/fab-quick-start).
   
 This declarative approach is based on standard Python tooling,
 and can be customized with standard approaches as described below.
@@ -187,3 +187,5 @@ These technologies are automatically created when you use ApiLogicServer:
 
 1.01.00 - ``use_model`` option, to use existing (manually repaired) model --
 see [Troubleshooting](../../wiki/Troubleshooting)
+
+1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet

@@ -65,7 +65,7 @@ import click
 # import fab_quick_start_util.__init__  TODO
 # __version__ = __init__.__version__
 # fails 'method-wrapper' object has no attribute '__version__'.. work-around:
-__version__ = "1.01.00"
+__version__ = "1.01.01"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -110,6 +110,9 @@ class GenerateFromModel(object):
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_name = non_favorite_names
+
+        self.table_to_class_map = {}
+        """ keys are table[.column], values are class / attribute """
         self.metadata = None
         self.engine = None
         self.session = None
@@ -181,6 +184,23 @@ class GenerateFromModel(object):
         if self.engine:
             self.engine.dispose()
         return
+
+    def add_table_to_class_map(self, orm_class):
+        """ given class, find table (hide your eyes), add table/class to table_to_class_map """
+        orm_class_info = orm_class[1]
+        query = str(orm_class_info.query)[7:]
+        table_name = query.split('.')[0]
+        table_name = table_name.strip('\"')
+        self.table_to_class_map.update({table_name: orm_class[0]})
+        pass  # for debug
+
+    def get_class_for_table(self, table_name) -> str:
+        """ given table_name, return its class_name from table_to_class_map """
+        if table_name in self.table_to_class_map:
+            return self.table_to_class_map[table_name]
+        else:
+            log.debug("skipping view: " + table_name)
+            return None
 
     def find_meta_data(self, a_cwd: str, a_project_name: str, a_db_url) -> MetaData:
         """     Find Metadata by importing model, or (failing that), db
@@ -276,12 +296,11 @@ class GenerateFromModel(object):
                 if ("'models." in str(each_class_def_str) and
                         "Ab" not in str(each_class_def_str)):
                     orm_class = each_cls_member
-                    print(f'.. ..Dynamic model import successful - introspecting model classes per {str(orm_class)}')
-                    break
+                    self.add_table_to_class_map(orm_class)
             if (orm_class is not None):
-                log.debug("using sql for meta, from model: " + str(orm_class))
+                print(f'.. ..Dynamic model import successful ({len(self.table_to_class_map)} classes) -'
+                      f' getting metadata from {str(orm_class)}')
                 metadata = orm_class[1].metadata
-            # metadata = None  # enable to explore db with no fKeys
 
             self.engine = sqlalchemy.create_engine(conn_string)
             self.connection = self.engine.connect()
@@ -339,6 +358,9 @@ class GenerateFromModel(object):
         elif 'sqlite_sequence' in table_name:
             return "# skip sqlite_sequence table: " + table_name + "\n"
         else:
+            class_name = self.get_class_for_table(table_name)
+            if class_name is None:
+                return "# skip view: " + table_name
             self._tables_generated.add(table_name)
             child_list = self.find_child_list(a_table_def)
             for each_child in child_list:  # recurse to ensure children first
@@ -352,16 +374,16 @@ class GenerateFromModel(object):
                 self.result_apis += '    """this is called by api / __init__.py"""\n\n'
                 self.result_apis += \
                     '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
-            self.result_apis += f'    api.expose_object(models.{table_name})\n'
+            self.result_apis += f'    api.expose_object(models.{class_name})\n'
 
             self.num_pages_generated += 1
 
-            model_name = self.model_name(table_name)
-            class_name = a_table_def.name + model_name
-            result += "\n\n\nclass " + class_name + "(" + model_name + "):\n"
+            model_name = self.model_name(class_name)
+            view_class_name = class_name + model_name
+            result += "\n\n\nclass " + view_class_name + "(" + model_name + "):\n"
             result += (
                 self._indent + "datamodel = SQLAInterface(" +
-                a_table_def.name + ")\n"
+                class_name + ")\n"
             )
             result += self._indent + self.list_columns(a_table_def)
             result += self._indent + self.show_columns(a_table_def)
@@ -372,10 +394,10 @@ class GenerateFromModel(object):
                 "\nappbuilder.add_view(\n"
                 + self._indent
                 + self._indent
-                + class_name
+                + view_class_name
                 + ", "
                 + '"'
-                + table_name
+                + class_name
                 + ' List", '
                 + 'icon="fa-folder-open-o", category="Menu")\n'
             )
@@ -1076,8 +1098,9 @@ def version(ctx):
     """
     click.echo(
         click.style(
-            "Recent Changes:"
-            "\n\t2021-01-22: Add run command\n\n"
+            "Recent Changes:\n"
+            "\t2021-01-22: Add run command\n"
+            "\t2021-01-25: MySQL fixes\n"
         )
     )
 
