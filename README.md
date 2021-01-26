@@ -45,7 +45,7 @@ pip install ApiLogicServer
 
 ### Quick Start - Create and Execute
 This verifies proper install - it will
-create and run an [ApiLogicServer Project](../../wiki/Created-Project):
+create and run an [ApiLogicServer Project](../../wiki/ApiLogicServer-Guide):
 
 ```
 ApiLogicServer run --project_name=my_api_logic_server
@@ -80,7 +80,7 @@ ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sql
 ```
 
 ### Execution
-With a proper [environment](../../wiki/Created-Project#environment):
+With a proper [environment](../../wiki/ApiLogicServer-Guide#environment):
 
 ```
 python api_logic_server_run.py
