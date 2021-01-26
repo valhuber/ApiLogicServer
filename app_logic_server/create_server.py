@@ -71,6 +71,19 @@ __version__ = "1.01.01"
 MetaDataTable = NewType('MetaDataTable', object)
 
 
+def create_app(config_filename=None, host="localhost"):
+    from flask_sqlalchemy import SQLAlchemy
+    from sqlalchemy.orm import Session
+    from sqlalchemy.ext.declarative import declarative_base
+    import safrs
+
+    app = Flask("API Logic Server")
+    import app_logic_server.config as app_logic_server_config
+    app.config.from_object(app_logic_server_config.Config)
+    db = safrs.DB
+    db.init_app(app)
+    return app
+
 class GenerateFromModel(object):
     """
     Iterate over model
@@ -102,11 +115,13 @@ class GenerateFromModel(object):
     def __init__(self,
                  project_name: str ="~/Desktop/my_project",
                  db_url: str = "sqlite:///nw.sqlite",
+                 host: str = "localhost",
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):
         self.project_name = project_name
         self.db_url = db_url
+        self.host = host
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_name = non_favorite_names
@@ -239,20 +254,9 @@ class GenerateFromModel(object):
             # db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used models
 
             # from app_logic_server.my_project.app import create_app  # FIXME no way this can work
-            def create_app(config_filename=None, host="localhost"):
-                from flask_sqlalchemy import SQLAlchemy
-                from sqlalchemy.orm import Session
-                from sqlalchemy.ext.declarative import declarative_base
-                import safrs
 
-                app = Flask("API Logic Server")
-                import app_logic_server.config as app_logic_server_config
-                app.config.from_object(app_logic_server_config.Config)
-                db = safrs.DB
-                db.init_app(app)
-                return app
 
-            self.app = create_app()
+            self.app = create_app(host=self.host)
             self.app.config.SQLALCHEMY_DATABASE_URI = a_db_url
             self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
             print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
@@ -370,7 +374,7 @@ class GenerateFromModel(object):
 
             if self.num_pages_generated == 0:
                 self.result_apis += \
-                    'def expose_models(app, HOST="localhost", PORT=5000, API_PREFIX="/api"):\n'
+                    f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
                 self.result_apis += '    """this is called by api / __init__.py"""\n\n'
                 self.result_apis += \
                     '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
@@ -911,7 +915,7 @@ def inject_logic(abs_project_name):
         fp.writelines(lines)  # write whole lists again to the same file
 
 
-def api_logic_server(project_name: str, db_url: str, not_exposed: str,
+def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str,
            from_git: str, open_with: str, run:bool, use_model: str,
            flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
@@ -944,6 +948,7 @@ def api_logic_server(project_name: str, db_url: str, not_exposed: str,
     generate_from_model = GenerateFromModel(
         project_name=abs_project_name,
         db_url=abs_db_url,
+        host=host,
         not_exposed=not_exposed + " ",
         favorite_names=favorites,
         non_favorite_names=non_favorites
@@ -967,7 +972,7 @@ def api_logic_server(project_name: str, db_url: str, not_exposed: str,
                            in_file=f'{abs_project_name}/api_logic_server_run.py')
 
     if flask_appbuilder:
-        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',  # odd extra paren...
+        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.app.db")',  # odd extra paren...
                                replace_with='"' + get_os_url(abs_db_url) + '"',
                                in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
         print("9. Writing: /ui/basic_web_app/app/views.py")
@@ -992,7 +997,7 @@ def api_logic_server(project_name: str, db_url: str, not_exposed: str,
         run_command(f'{open_with} {project_name}', msg="Open with IDE/Editor")
 
     if run:
-        run_command(f'python {abs_project_name}/api_logic_server_run.py', msg="\nRun created ApiLogicServer")
+        run_command(f'python {abs_project_name}/api_logic_server_run.py {host}', msg="\nRun created ApiLogicServer")
     else:
         print("\nCreation complete.  Next steps:")
         print(f'..cd {project_name}')
@@ -1114,8 +1119,11 @@ def version(ctx):
               default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
               help="SQLAlchemy Database URL - see above")
+@click.option('--host',
+              default=f'localhost',
+              help="Server hostname")
 @click.pass_context
-def run(ctx, db_url: str, project_name: str):
+def run(ctx, db_url: str, project_name: str, host: str):
     """
     Creates and runs logic-enabled Python project from an existing database: JSON:API, basic_web_app
 
@@ -1132,7 +1140,7 @@ def run(ctx, db_url: str, project_name: str):
             SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
 
     """
-    api_logic_server(project_name = project_name, db_url=db_url,
+    api_logic_server(project_name = project_name, db_url=db_url, host=host,
            not_exposed="ProductDetails_V", run=True, use_model="",
            from_git="https://github.com/valhuber/ApiLogicServerProto.git",
            flask_appbuilder=True, favorites="name description", non_favorites="id", open_with="")
