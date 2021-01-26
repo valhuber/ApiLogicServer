@@ -98,7 +98,7 @@ development, available in swagger:
 
 <figure><img src="images/swagger.png"></figure>
 
-> Customize your API: edit ```api_logic_server_run.py```, and see[Customizing](../../wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
+> Customize your API: edit ```api_logic_server_run.py```, and see [Customizing](../../wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
 
 ### Logic
 
