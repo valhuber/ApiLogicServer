@@ -761,7 +761,7 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
     if remove_project_debug:
         delete_dir(realpath(project_name), "1.")
     cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
-    cmd = f'git clone --quiet {from_git} {project_name}'
+    cmd = f'git clone --quiet  --depth 1 {from_git} {project_name}'
     result = run_command(cmd, msg=msg)  # "2. Create Project")
     delete_dir(f'{project_name}/.git', "3.")
 
@@ -1026,6 +1026,9 @@ def main(ctx):
               default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
               help="SQLAlchemy Database URL - see above")
+@click.option('--host',
+              default=f'localhost',
+              help="Server hostname")
 @click.option('--from_git',
               default="https://github.com/valhuber/ApiLogicServerProto.git",
               prompt="Clone from git url",
@@ -1059,7 +1062,7 @@ def main(ctx):
               prompt="Manually corrected model file",
               help="See ApiLogicServer/wiki/Troubleshooting")
 @click.pass_context
-def create(ctx, project_name: str, db_url: str, not_exposed: str,
+def create(ctx, project_name: str, db_url: str, host:str, not_exposed: str,
            from_git: str,
            open_with: str,
            run: click.BOOL,
@@ -1089,9 +1092,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     fab_arg = False
     if flask_appbuilder == "True":
         fab_arg = True
-    api_logic_server(project_name=project_name, db_url=db_url,
+    api_logic_server(project_name=project_name, db_url=db_url, host=host,
                             not_exposed="--ProductDetails_V", run=run_arg, use_model=use_model,
-                            from_git="https://github.com/valhuber/ApiLogicServerProto.git",
+                            from_git=from_git,
                             flask_appbuilder=fab_arg, favorites="name description", non_favorites="id", open_with=open_with)
 
 
