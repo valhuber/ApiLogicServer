@@ -768,7 +768,7 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
         delete_dir(f'{project_name}/.git', "3.")
     else:
         from_dir = from_git
-        if from_dir == "proto":
+        if from_dir == "proto":  # shortcut for (lazy) Val
             from_dir = "/Users/val/dev/ApiLogicServerProto"
         print(f'{msg} copy {from_dir} -> {project_name}')
         shutil.copytree(from_dir, project_name)
