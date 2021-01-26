@@ -46,6 +46,7 @@ from os.path import abspath
 from os.path import realpath
 from pathlib import Path
 from shutil import copyfile
+import shutil
 
 import logic_bank_utils.util as logic_bank_utils
 from flask import Flask
@@ -65,7 +66,7 @@ import click
 # import fab_quick_start_util.__init__  TODO
 # __version__ = __init__.__version__
 # fails 'method-wrapper' object has no attribute '__version__'.. work-around:
-__version__ = "1.01.01"
+__version__ = "1.01.02"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -687,7 +688,6 @@ def delete_dir(dir_path, msg):
             else:
                 raise
         print(f'{msg} Delete dir: {dir_path}')
-        import shutil
         use_callback = False
         if use_callback:
             shutil.rmtree(dir_path, ignore_errors=False, onerror=handleRemoveReadonly)
@@ -760,10 +760,18 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
     remove_project_debug = True
     if remove_project_debug:
         delete_dir(realpath(project_name), "1.")
-    cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
-    cmd = f'git clone --quiet {from_git} {project_name}'
-    result = run_command(cmd, msg=msg)  # "2. Create Project")
-    delete_dir(f'{project_name}/.git', "3.")
+
+    if from_git.startswith("https://"):
+        cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
+        cmd = f'git clone --quiet {from_git} {project_name}'
+        result = run_command(cmd, msg=msg)  # "2. Create Project")
+        delete_dir(f'{project_name}/.git', "3.")
+    else:
+        from_dir = from_git
+        if from_dir == "proto":
+            from_dir = "/Users/val/dev/ApiLogicServerProto"
+        print(f'{msg} copy {from_dir} -> {project_name}')
+        shutil.copytree(from_dir, project_name)
 
     replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
@@ -771,7 +779,6 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
     replace_string_in_file(search_for="cloned-from",
                            replace_with=from_git,
                            in_file=f'{project_name}/readme.md')
-
     pass
 
 
@@ -1028,8 +1035,8 @@ def main(ctx):
               help="SQLAlchemy Database URL - see above")
 @click.option('--from_git',
               default="https://github.com/valhuber/ApiLogicServerProto.git",
-              prompt="Clone from git url",
-              help="Template clone-from project")
+              prompt="Clone from git url (or directory)",
+              help="Template clone-from project (or directory)")
 @click.option('--run',
               default=False,
               prompt="Run Created ApiLogicServer",
@@ -1058,6 +1065,9 @@ def main(ctx):
               default="",
               prompt="Manually corrected model file",
               help="See ApiLogicServer/wiki/Troubleshooting")
+@click.option('--host',
+              default=f'localhost',
+              help="Server hostname")
 @click.pass_context
 def create(ctx, project_name: str, db_url: str, not_exposed: str,
            from_git: str,
@@ -1065,6 +1075,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            run: click.BOOL,
            flask_appbuilder: bool,
            use_model: str,
+           host: str,
            favorites: str, non_favorites: str):
     """
     Creates a logic-enabled Python project from an existing database: JSON:API, basic_web_app
@@ -1091,7 +1102,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
         fab_arg = True
     api_logic_server(project_name=project_name, db_url=db_url,
                             not_exposed="--ProductDetails_V", run=run_arg, use_model=use_model,
-                            from_git="https://github.com/valhuber/ApiLogicServerProto.git",
+                            from_git=from_git, host=host,
                             flask_appbuilder=fab_arg, favorites="name description", non_favorites="id", open_with=open_with)
 
 
@@ -1106,6 +1117,7 @@ def version(ctx):
             "Recent Changes:\n"
             "\t2021-01-22: Add run command\n"
             "\t2021-01-25: MySQL fixes\n"
+            "\t2021-01-26: host option, from_git supports local directory, hello world example\n"
         )
     )
 
@@ -1165,45 +1177,7 @@ if __name__ == '__main__':  # debugger & 'create_server.py --project_name=~/Desk
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
-    use_direct_commands = True
-    if use_direct_commands:
-        print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
-        commands = sys.argv
-        print_args(commands, "Command Arguments")
-        main()
-    else:  # FIXME dead code - delete
-        print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
-        # print('Number of arguments:', len(sys.argv), 'arguments.')
-        print('Arguments:', str(sys.argv))
-
-        if len(sys.argv) > 1:
-            """ eg
-            cd app_logic_server
-            python create_server.py --project_name=~/Desktop/test_project
-            """
-            print("\nAPI Logic Server Creation " + __version__ + " here\n")
-            commands = sys.argv
-            print_args(commands, "before")
-            commands[0] = "create"
-            print_args(commands, "after")
-        else:
-            print("\nAPI Logic Server Creation " + __version__ + " (no args, using debug defaults)\n")
-            db_url = "sqlite:///" + os.path.dirname(__file__) + "/nw.sqlite"
-
-            commands = (  # using this will create prompts...
-                'create'
-                , '--project_name=~/Desktop/my_project'
-                , f'--db_url={db_url}'
-            )
-            commands = (  # supply all the args for silent debug runs
-                'create',
-                '--project_name=~/Desktop/my_project',
-                '--from_git=https://github.com/valhuber/ApiLogicServerProto.git',
-                '--open_with=',
-                '--not_exposed=ProductDetails_V',
-                '--flask_appbuilder',
-                f'--db_url={db_url}',
-                '--favorites=name description',
-                '--non_favorites=id',
-            )
-        main(commands)
+    print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
+    commands = sys.argv
+    print_args(commands, "Command Arguments")
+    main()

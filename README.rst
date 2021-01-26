@@ -144,3 +144,5 @@ Change Log
 1.01.00 - ``use_model`` option, to use existing (manually repaired) model
 
 1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet
+
+1.01.02 - --host option, from_git supports local directory, hello world example
