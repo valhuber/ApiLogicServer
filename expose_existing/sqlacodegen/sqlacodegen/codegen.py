@@ -661,7 +661,6 @@ from sqlalchemy.dialects.mysql import *
                     parent1 = relationship('AbUser', remote_side=[id],  <== goofy - should be AbUser
                         primaryjoin='AbUser.created_by_fk == AbUser.id',
                         cascade_backrefs=True, backref='AbUserList1')   <== need to append that "1"
-                    TODO - doc that you need to create FKs, or edit the models and --use_model
                 """
                 unique_name = relationship.target_cls + '.' + backref_name
                 if unique_name in backrefs:  # disambiguate

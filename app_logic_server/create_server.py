@@ -636,6 +636,8 @@ class GenerateFromModel(object):
             result += " since foreign keys missing\n"
             result += "#  .. add them to your models.py (see nw example)\n"
             result += "#  .. or better, add them to your database"
+            print(".. ..WARNING - no relationships detected - add them to your database or model")
+            print(".. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
         return result
 
 
