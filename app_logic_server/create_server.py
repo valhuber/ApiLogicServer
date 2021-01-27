@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "1.01.03"
+__version__ = "1.02.00"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -972,7 +972,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         fix_basic_web_app_python_path(abs_project_name)
         inject_logic(abs_project_name)
 
-    if url.endswith("nw.sqlite"):
+    if db_url.endswith("nw.sqlite"):
         print("10. Append logic/logic_bank.py with pre-defined nw_logic")
         append_logic_with_nw_logic(abs_project_name)
 

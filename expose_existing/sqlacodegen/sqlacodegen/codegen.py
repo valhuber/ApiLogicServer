@@ -648,24 +648,26 @@ from sqlalchemy.dialects.mysql import *
                 show_name = attr != column.name
                 rendered += "{0}{1} = {2}\n".format(self.indentation, attr, self.render_column(column, show_name))
 
-        # Render relationships
+        # Render relationships (declared in child class, backref to parent)
         if any(isinstance(value, Relationship) for value in model.attributes.values()):
             rendered += "\n"
+        backrefs = {}
         for attr, relationship in model.attributes.items():
             if isinstance(relationship, Relationship):  # val changed to insert backref
                 rel_render = "{0}{1} = {2}\n".format(self.indentation, attr, self.render_relationship(relationship))
                 rel_parts = rel_render.split(")")
-                suffix = "List"
-                """ check multi-relns, eg,
+                backref_name = model.name + "List"
+                """ disambiguate multi-relns, eg,
                     parent1 = relationship('AbUser', remote_side=[id],  <== goofy - should be AbUser
                         primaryjoin='AbUser.created_by_fk == AbUser.id',
                         cascade_backrefs=True, backref='AbUserList1')   <== need to append that "1"
                     TODO - doc that you need to create FKs, or edit the models and --use_model
                 """
-                if 'remote_side' in rel_render:
-                    if attr.endswith("1"):  # FIXME - temp kludge
-                        suffix = "List1"
-                back_ref = f', cascade_backrefs=True, backref=\'{model.name}{suffix}\''
+                unique_name = relationship.target_cls + '.' + backref_name
+                if unique_name in backrefs:  # disambiguate
+                    backref_name += "_" + attr
+                backrefs[unique_name] = backref_name
+                back_ref = f', cascade_backrefs=True, backref=\'{backref_name}\''
                 rel_render_with_backref = rel_parts[0] + \
                                           back_ref + \
                                           ")" + rel_parts[1]

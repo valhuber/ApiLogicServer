@@ -147,4 +147,12 @@ Change Log
 
 1.01.02 - --host option, from_git supports local directory, hello world example
 
-1.01.03 - renamed rules_bank to logic_bank, improved error handling on introspection failures
+1.02.00 - Many:
+
+* renamed logic/rules_bank to logic/logic_bank
+
+* improved error handling on introspection failures
+
+* building backrefs for relationships (with disambiguation)
+
+* project creation defaults to copy (vs git clone)

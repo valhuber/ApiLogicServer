@@ -180,17 +180,27 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ## Change Log
 
-1.0.7   - Initial Version
+1.02.00 - Many:
 
-1.0.8   - Fix windows bug, options to specify clone-from and open-with
+1. Renamed logic/rules_bank to logic/logic_bank
 
-1.0.9   - ``Run`` command (experimental)
+1. Improved error handling on introspection failures
+
+1. Building backrefs for relationships (with disambiguation)
+
+1. Project creation defaults to copy (vs git clone)
+
+1. Rules are pre-populated for the default (Northwind) database
+
+1.01.02 - --host option, from_git supports local directory, hello world example
+
+1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet
 
 1.01.00 - ``use_model`` option, to use existing (manually repaired) model --
 see [Troubleshooting](../../wiki/Troubleshooting)
 
-1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet
+1.0.9   - ``Run`` command
 
-1.01.02 - --host option, from_git supports local directory, hello world example
+1.0.8   - Fix windows bug, options to specify clone-from and open-with
 
-1.01.03 - renamed rules_bank to logic_bank, improved error handling on introspection failures
+1.0.7   - Initial Version
