@@ -741,10 +741,9 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
         if from_dir == "":
             code_loc = str(get_project_dir())
             if "\\" in code_loc:
-                from_dir = code_loc + "\\\\prototype"
+                from_dir = code_loc + "\\prototype"
             else:
                 from_dir = code_loc + "/prototype"
-            from_dir = "/Users/val/dev/ApiLogicServerProto"
         print(f'{msg} copy {from_dir} -> {project_name}')
         shutil.copytree(from_dir, project_name)
 
