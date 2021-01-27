@@ -124,7 +124,7 @@ The following 5 rules represent the
 as 200 lines of Python:
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/example.png"></figure>
 
-> Declare your logic by editing: **```logic/rules_bank.py```**
+> Declare your logic by editing: **```logic/logic_bank.py```**
 
 
 ### Basic Web App - Flask Appbuilder
@@ -192,3 +192,5 @@ see [Troubleshooting](../../wiki/Troubleshooting)
 1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet
 
 1.01.02 - --host option, from_git supports local directory, hello world example
+
+1.01.03 - renamed rules_bank to logic_bank, improved error handling on introspection failures

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Flask Intro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="container">
+        <h1>RBJAS Rule Based Json Api Server</h1>
+      <h2>SARFS Api Server </h2>
+        <a href="https://github.com/thomaxxl/safrs">SAFRS: Python OpenAPI & JSON:API Framework</a>
+       <p> SAFRS is an acronym for SqlAlchemy Flask-Restful Swagger. The purpose of this framework is to help python developers create a self-documenting JSON API for sqlalchemy database objects and relationships.
+           These objects can be serialized to JSON and can be created, retrieved, updated and deleted through the JSON API.
+           Optionally, custom resource object methods can be exposed and invoked using JSON.
+           Class and method descriptions and examples can be provided in yaml syntax in the code comments.
+           The description is parsed and shown in the swagger web interface.
+
+           The result is an easy-to-use swagger/OpenAPI and JSON:API compliant API implementation</p>
+        <h2>LogicBank</h2>
+        <a href="https://github.com/valhuber/logicbank">Transaction Rules for SQLAlchemy Object Models</a>
+        <p>Use Logic Bank to govern SQLAlchemy
+            update transaction logic - multi-table derivations, constraints,
+            and actions such as sending mail or messages. Logic consists of <em>both:</em></p>
+            <ul>
+            <li>
+            <p><strong>Rules - 40X</strong> more concise
+            using a spreadsheet-like paradigm, and</p>
+            </li>
+            <li>
+            <p><strong>Python - control and extensibility,</strong>
+            using standard tools and techniques</p>
+            </li>
+            </ul>
+            <p>Logic Bank is based on SQLAlchemy - it handles <code>before_flush</code> events
+            to enforce your logic.</p>
+        <h2>Check it out</h2>
+        <p><strong><a href="/api"> Open API (Swagger)</a></strong></p>
+        <p><strong><a href="/admin"> Quick Admin</a></strong></p>
+        <p> <strong>Source</strong>
+            <ul>
+                <li> Rules: logic/logic_bank.py</li>
+                <li> Enhanced Json Decoder: api/json_encode.py</li>
+                <li> SQLAlchemy Models: models(StoreModel: Custom endpoint)</li>
+                <li> Custom Column Types: models/types</li>
+                <li> Flask App: app</li>
+                <li> Enhanced Flask-Admin View: admin/admin_view_ext (Display Validation Errors/ LogicBank Constraints)</li>
+                <li> Flask Admin Custom Types: admin/admin_model_converter_ext.py</li>
+                <li> Rules Exception Handler: logic/_init_.py</li>
+            </ul>
+        </p>
+        <p><strong>User Email Validation:</strong>
+        <pre>
+        if "@" not in value:  raise ValidationError("Email Validation Error {}".format(value))</pre></p>
+        <p><strong> Rules:</strong>
+        <pre>
+        Rule.constraint(validate=StoreModel,as_condition=lambda row: 'X' not in row.name,
+                                                error_msg="Store Names({row.name}) should not  contain X")
+        Rule.count(StoreModel.item_count, as_count_of=ItemModel)
+        Rule.parent_check(validate=ItemModel, error_msg="no parent", enable=True)</pre>
+        </p>
+    </div>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

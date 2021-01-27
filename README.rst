@@ -146,3 +146,5 @@ Change Log
 1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet
 
 1.01.02 - --host option, from_git supports local directory, hello world example
+
+1.01.03 - renamed rules_bank to logic_bank, improved error handling on introspection failures

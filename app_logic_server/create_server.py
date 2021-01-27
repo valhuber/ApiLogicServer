@@ -1,44 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 Given a database url,
-create ApiLogicServer project by cloning ApiLogicServerProto,
+create ApiLogicServer project by cloning prototype,
 in particular create the ui/basic_web_app/app/views.py
 and api/expose_api_models.
 
-CAREFUL!!
-    This is copy / alteration of fab-quick-start, but the comments etc are all out of date.
-    Don't believe anything you read (pretend it's the Internet).
-
-For Dev: Install, Run, Deploy Instructions to test Command Line
-
-    python ../fab_quick_start_util/create_server.py
-    python ../fab_quick_start_util/create_server.py run
-
-    cd nw-app
-    virtualenv venv
-    pip install ../../ApiLogicServer
-
-For Users: Usage
-    FAB Quick Start Guide: https://github.com/valhuber/ApiLogicServer
-    FAB Quick Start Guide: https://github.com/valhuber/ApiLogicServerProto
-
-Urgent
-    None
-
-New Quick Start Features:
-    * Some minor relationships may be missing in models.py
-    * Recognize other views, such as Maps
-    * Suppress Master on Child (no Order# on each Order Detail)
-        ** Big deal, since can't re-use child on multiple different parents.
-        ** Ugh
-
-New FAB Feature Suggestions:
-    * Lookups (find/choose Product for Order Detail)
-    * Better col/field captions
-    * Updatable list (=> multi-row save)
-    * Hide/show field (& caption)
-    * Page (instruction) notes
 """
+
 import builtins
 import subprocess
 import traceback
@@ -63,10 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-# import fab_quick_start_util.__init__  TODO
-# __version__ = __init__.__version__
-# fails 'method-wrapper' object has no attribute '__version__'.. work-around:
-__version__ = "1.01.02"
+__version__ = "1.01.03"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -84,6 +49,7 @@ def create_app(config_filename=None, host="localhost"):
     db = safrs.DB
     db.init_app(app)
     return app
+
 
 class GenerateFromModel(object):
     """
@@ -277,9 +243,7 @@ class GenerateFromModel(object):
                 except:
                     print("\n===> ERROR - Dynamic model import failed")
                     traceback.print_exc()
-                    print('.. Creation proceeding, may require manual fixup')
-                    print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
-                    # return None
+                    pass  # try to continue to enable manual fixup
                 model_imported = True
 
             # sys.path.insert(0, a_cwd)  # success - models open
@@ -292,30 +256,36 @@ class GenerateFromModel(object):
         orm_class = None
         metadata = None
         if not model_imported:
-            print(f'.. ..SEVERE WARNING - Dynamic model import not successful')
+            print('.. Creation proceeding, may require manual fixup')
+            print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
         else:
-            cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
-            for each_cls_member in cls_members:
-                each_class_def_str = str(each_cls_member)
-                #  such as ('Category', <class 'models.Category'>)
-                if ("'models." in str(each_class_def_str) and
-                        "Ab" not in str(each_class_def_str)):
-                    orm_class = each_cls_member
-                    self.add_table_to_class_map(orm_class)
-            if (orm_class is not None):
-                print(f'.. ..Dynamic model import successful ({len(self.table_to_class_map)} classes) -'
-                      f' getting metadata from {str(orm_class)}')
-                metadata = orm_class[1].metadata
+            try:
+                cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
+                for each_cls_member in cls_members:
+                    each_class_def_str = str(each_cls_member)
+                    #  such as ('Category', <class 'models.Category'>)
+                    if ("'models." in str(each_class_def_str) and
+                            "Ab" not in str(each_class_def_str)):
+                        orm_class = each_cls_member
+                        self.add_table_to_class_map(orm_class)
+                if (orm_class is not None):
+                    print(f'.. ..Dynamic model import successful ({len(self.table_to_class_map)} classes) -'
+                          f' getting metadata from {str(orm_class)}')
+                    metadata = orm_class[1].metadata
 
-            self.engine = sqlalchemy.create_engine(conn_string)
-            self.connection = self.engine.connect()
+                self.engine = sqlalchemy.create_engine(conn_string)
+                self.connection = self.engine.connect()
+            except:
+                print("\n===> ERROR - Unable to introspect model classes")
+                traceback.print_exc()
+                pass
 
         if (metadata is None):
-            log.debug("using db for meta (models not found")
+            print('.. Using db for meta (models not found)')
             metadata = MetaData()
         else:
             metadata.reflect(bind=self.engine, resolve_fks=True)
-        self.metadata = metadata  # bug - presumes table-name == class-name.  Find table-name in orm_class[1].query?
+        self.metadata = metadata
 
     def generate_module_imports(self) -> str:
         """
@@ -754,7 +724,7 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
     clone prototype to create and remove git folder
 
     :param project_name: name of project created
-    :param from_git: name of git project to clone
+    :param from_git: name of git project to clone (blank for default)
     :return: result of cmd
     """
     remove_project_debug = True
@@ -768,7 +738,12 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
         delete_dir(f'{project_name}/.git', "3.")
     else:
         from_dir = from_git
-        if from_dir == "proto":  # shortcut for (lazy) Val
+        if from_dir == "":
+            code_loc = str(get_project_dir())
+            if "\\" in code_loc:
+                from_dir = code_loc + "\\\\prototype"
+            else:
+                from_dir = code_loc + "/prototype"
             from_dir = "/Users/val/dev/ApiLogicServerProto"
         print(f'{msg} copy {from_dir} -> {project_name}')
         shutil.copytree(from_dir, project_name)
@@ -856,6 +831,15 @@ def write_expose_api_models(project_name, apis):
     text_file = open(project_name + '/api/expose_api_models.py', 'a')
     text_file.write(apis)
     text_file.close()
+
+
+def append_logic_with_nw_logic(project_name):
+    """ Append logic/logic_bank.py with pre-defined nw_logic """
+    logic_file = open(project_name + '/logic/logic_bank.py', 'a')
+    nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_logic.txt")
+    nw_logic = nw_logic_file.read()
+    logic_file.write(nw_logic)
+    logic_file.close()
 
 
 def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
@@ -989,6 +973,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         fix_basic_web_app_python_path(abs_project_name)
         inject_logic(abs_project_name)
 
+    if url.endswith("nw.sqlite"):
+        print("10. Append logic/logic_bank.py with pre-defined nw_logic")
+        append_logic_with_nw_logic(abs_project_name)
 
     if open_with != "":
         print(f'\nCreation complete.  Starting ApiLogicServer at {project_name}\n')
@@ -1024,6 +1011,22 @@ def main(ctx):
     # print("group")
 
 
+@main.command("version")
+@click.pass_context
+def version(ctx):
+    """
+        Recent Changes
+    """
+    click.echo(
+        click.style(
+            "Recent Changes:\n"
+            "\t2021-01-22: Add run command\n"
+            "\t2021-01-25: MySQL fixes\n"
+            "\t2021-01-27: host option, from_git supports local directory, hello world example, nw rules pre-created\n"
+        )
+    )
+
+
 @main.command("create")
 @click.option('--project_name',
               default="create_api_logic_server",
@@ -1034,7 +1037,7 @@ def main(ctx):
               prompt="Database URL",
               help="SQLAlchemy Database URL - see above")
 @click.option('--from_git',
-              default="https://github.com/valhuber/ApiLogicServerProto.git",
+              default="",
               prompt="Clone from git url (or directory)",
               help="Template clone-from project (or directory)")
 @click.option('--run',
@@ -1101,25 +1104,10 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     if flask_appbuilder == "True":
         fab_arg = True
     api_logic_server(project_name=project_name, db_url=db_url,
-                            not_exposed="--ProductDetails_V", run=run_arg, use_model=use_model,
-                            from_git=from_git, host=host,
-                            flask_appbuilder=fab_arg, favorites="name description", non_favorites="id", open_with=open_with)
-
-
-@main.command("version")
-@click.pass_context
-def version(ctx):
-    """
-        Recent Changes
-    """
-    click.echo(
-        click.style(
-            "Recent Changes:\n"
-            "\t2021-01-22: Add run command\n"
-            "\t2021-01-25: MySQL fixes\n"
-            "\t2021-01-26: host option, from_git supports local directory, hello world example\n"
-        )
-    )
+                     not_exposed="--ProductDetails_V",
+                     run=run_arg, use_model=use_model, from_git=from_git, host=host,
+                     flask_appbuilder=fab_arg,
+                     favorites="name description", non_favorites="id", open_with=open_with)
 
 
 @main.command("run")
@@ -1131,11 +1119,14 @@ def version(ctx):
               default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
               help="SQLAlchemy Database URL - see above")
+@click.option('--from_git',
+              default=f'',
+              help="Template clone-from project (or directory)")
 @click.option('--host',
               default=f'localhost',
               help="Server hostname")
 @click.pass_context
-def run(ctx, db_url: str, project_name: str, host: str):
+def run(ctx, db_url: str, project_name: str, host: str, from_git: str):
     """
     Creates and runs logic-enabled Python project from an existing database: JSON:API, basic_web_app
 
@@ -1153,9 +1144,8 @@ def run(ctx, db_url: str, project_name: str, host: str):
 
     """
     api_logic_server(project_name = project_name, db_url=db_url, host=host,
-           not_exposed="ProductDetails_V", run=True, use_model="",
-           from_git="https://github.com/valhuber/ApiLogicServerProto.git",
-           flask_appbuilder=True, favorites="name description", non_favorites="id", open_with="")
+                     not_exposed="ProductDetails_V", run=True, use_model="", from_git=from_git,
+                     flask_appbuilder=True, favorites="name description", non_favorites="id", open_with="")
 
 
 log = logging.getLogger(__name__)
@@ -1167,7 +1157,8 @@ def print_args(args, msg):
         print(f'  {each_arg}')
     print(" ")
 
-def start():  # target of setup.py
+
+def start():               # target of setup.py
     sys.stderr.write("\n\nAPI Logic Server Creation Utility " + __version__ + " here\n\n")
     main(obj={})
 

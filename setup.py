@@ -50,7 +50,7 @@ setup(
     long_description_content_type="text/x-rst",
     packages=['app_logic_server', 'expose_existing', 'expose_existing.sqlacodegen',
               'expose_existing.sqlacodegen.sqlacodegen'],
-    package_data={"app_logic_server": ["nw.sqlite"]},
+    package_data={"app_logic_server": ["nw.sqlite", "nw_logic.txt"]},
     entry_points={
         "console_scripts": ["ApiLogicServer=app_logic_server.create_server:start"]
     },
