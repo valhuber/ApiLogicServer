@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "1.02.00"
+__version__ = "1.02.01"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -964,7 +964,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
                            in_file=f'{abs_project_name}/api_logic_server_run.py')
 
     if flask_appbuilder:
-        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.app.db")',  # odd extra paren...
+        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
                                replace_with='"' + get_os_url(abs_db_url) + '"',
                                in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
         print("9. Writing: /ui/basic_web_app/app/views.py")
