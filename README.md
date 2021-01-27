@@ -156,6 +156,8 @@ applications as shown below:
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
 
+Serious bug: not building relationship ```backref```, affecting multi-table rules (e.g., ```sum```).  Working on it.
+
 
 ## Acknowledgements
 
