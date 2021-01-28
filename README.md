@@ -45,7 +45,7 @@ pip install ApiLogicServer
 
 ### Quick Start - Create and Execute
 This verifies proper install - it will
-create and run an [ApiLogicServer Project](../../wiki/ApiLogicServer-Guide):
+create and run a [*customizable* ApiLogicServer Project](../../wiki/ApiLogicServer-Guide):
 
 ```
 ApiLogicServer run
