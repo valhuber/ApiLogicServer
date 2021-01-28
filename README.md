@@ -156,8 +156,11 @@ applications as shown below:
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
 
-Serious bug: not building relationship ```backref```, affecting multi-table rules (e.g., ```sum```).  Working on it.
+Initially released 1/19/2021, the project is beginning to stablize.  We have tested several sqlite databases, and several MySQL databases.  These are both successfully creating the API and the web app.
 
+The default project pre-creates logic, which is working with both the API and the web app.
+
+We tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
 ## Acknowledgements
 
