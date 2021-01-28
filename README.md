@@ -8,7 +8,8 @@ The problem is that they are time-consuming and costly to develop.
 This reduces strategic business agility.
 
 API Logic Server provides strategic business agility,
-by creating an executable server for a database, instantly:
+by creating an executable server for a database, instantly.
+An **API Logic Server** consists of 3 features:
 
 
 | Feature | Using   | Providing  |
