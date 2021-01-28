@@ -45,8 +45,11 @@ create and run a [*customizable* ApiLogicServer Project](../../wiki/ApiLogicServ
 1. Run the ApiLogicServer utility
 1. It creates a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
 1. It also runs the ```api_server_project```, consisting of
+
     a. Your API, available in Swagger
+    
     b. With underlying logic
+    
     c. And a ```basic_web_app```
 
 ```
