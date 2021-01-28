@@ -8,22 +8,16 @@ The problem is that they are time-consuming and costly to develop.
 This reduces strategic business agility.
 
 API Logic Server provides strategic business agility,
-by creating executable APIs from a database, instantly:
-
-- **API:** [swagger/OpenAPI](https://swagger.io/)
-  and [JSON:API](https://jsonapi.org) compliant.
-  Uses [SAFRS](https://github.com/thomaxxl/safrs/wiki), a modern approach that enables client applications to configure their own API to reduce network traffic.
+by creating an executable server for a database, instantly:
 
 
-- **Logic:** spreadsheet-like rules for multi-table derivations and constraint
-  that reduce transaction logic by 40X,
-  using [Logic Bank](https://pypi.org/project/logicbank).
-
-
-- **Web App:** a multi-page, multi-table web app;
-  uses [fab-quickstart](https://pypi.org/project/fab-quick-start).
-  
-This declarative approach is based on standard Python tooling,
+| Feature | Using   | Providing  |
+| :-------------: |:-------------:| :-----:| 
+| JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
+| Transactional **Logic**| [Logic Bank](https://pypi.org/project/logicbank) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](Check-Credit) with [legacy code](by-code)  |
+| Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://pypi.org/project/fab-quick-start) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
+ 
+This **declarative approach** is based on standard Python tooling,
 and can be customized with standard approaches as described below.
 
 ## Usage
