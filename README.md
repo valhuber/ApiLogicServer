@@ -15,7 +15,7 @@ by creating an executable server for a database, instantly:
 | :-------------: |:-------------:| :-----:| 
 | JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
 | Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
-| Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://pypi.org/project/fab-quick-start) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
+| Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
  
 This **declarative approach** is based on standard Python tooling,
 and can be customized with standard approaches as described below.
