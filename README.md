@@ -40,9 +40,18 @@ pip install ApiLogicServer
 ```
 
 ### Quick Start - Create and Execute
-This verifies proper install - it will
-create and run a [*customizable* ApiLogicServer Project](../../wiki/ApiLogicServer-Guide):
-1. Run the ApiLogicServer utility
+Run the ApiLogicServer command line utility:
+
+```
+ApiLogicServer run  # you can also create, without execution
+```
+
+The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
+Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
+to use your own database.
+
+The system operates as follows:
+1. You run the ApiLogicServer utility
 1. It creates a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
 1. It also runs the ```api_server_project```, consisting of
 
@@ -52,27 +61,15 @@ create and run a [*customizable* ApiLogicServer Project](../../wiki/ApiLogicServ
     
     c. And a ```basic_web_app```
 
-```
-ApiLogicServer run
-```
-
-The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
-Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
-to use your own database.
+<figure><img src="images/123-creation.png"></figure>
 
 
 ### Create (only)
 
-You can also create the project, without execution.
-As above, this verifies proper install:
+You can also create the project, without execution:
 
 ```
 ApiLogicServer create --project_name=my_api_logic_server
-cd my_api_logic_server
-virtualenv venv
-source venv/bin/activate
-# windows venv\Scripts\activate
-pip install -r requirements.txt
 ```
 
 You may also wish to include the ``open_with`` parameter,
@@ -85,6 +82,8 @@ ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sql
 ```
 
 ### Execution
+Once created, your ```api_logic_server``` project can be executed without creating.
+
 With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
 
 ```
