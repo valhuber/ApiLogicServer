@@ -48,7 +48,7 @@ This verifies proper install - it will
 create and run an [ApiLogicServer Project](../../wiki/ApiLogicServer-Guide):
 
 ```
-ApiLogicServer run --project_name=my_api_logic_server
+ApiLogicServer run
 ```
 
 The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
@@ -80,7 +80,7 @@ ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sql
 ```
 
 ### Execution
-With a proper [environment](../../wiki/ApiLogicServer-Guide#environment):
+With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
 
 ```
 python api_logic_server_run.py
