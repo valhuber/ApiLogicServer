@@ -1046,24 +1046,24 @@ def version(ctx):
 @click.option('--db_url',
               default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
-              help="SQLAlchemy Database URL - see above")
+              help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
               default="api_logic_server",
               help="Create new directory here")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
-@click.option('--run',
+@click.option('--run', is_flag=True,
               default=False,
-              help="python <project>api_logic_server.py")
+              help="Run created project")
 @click.option('--open_with',
               default='',
-              help="After creation, open IDE or text editor")
+              help="Open created project (eg, charm, atom)")
 @click.option('--not_exposed',
               default="ProductDetails_V",
-              help="Tables not written to expose_api_models")
-@click.option('--flask_appbuilder',  #/--no-flask_appbuilder',
-              default=True,
+              help="Tables not written to api/expose_api_models")
+@click.option('--flask_appbuilder/--no-flask_appbuilder',
+              default=True, is_flag=True,
               help="Creates ui/basic_web_app")
 @click.option('--favorites',
               default="name description",
@@ -1082,7 +1082,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            from_git: str,
            open_with: str,
            run: click.BOOL,
-           flask_appbuilder: bool,
+           flask_appbuilder: click.BOOL,
            use_model: str,
            host: str,
            favorites: str, non_favorites: str):
@@ -1099,20 +1099,14 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
             ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
 
-            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
+            SQLAlchemy:     https://docs.sqlalchemy.org/en/14/core/engines.html
 
     """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
-    run_arg = False  # click booleans somehow come through as strings, so just fix
-    if run or run == "True":
-        run_arg = True
-    fab_arg = False
-    if flask_appbuilder or flask_appbuilder == "True":
-        fab_arg = True
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed="--ProductDetails_V",
-                     run=run_arg, use_model=use_model, from_git=from_git, host=host,
-                     flask_appbuilder=fab_arg,
+                     run=run, use_model=use_model, from_git=from_git, host=host,
+                     flask_appbuilder=flask_appbuilder,
                      favorites="name description", non_favorites="id", open_with=open_with)
 
 
@@ -1145,7 +1139,7 @@ def run(ctx, db_url: str, project_name: str, host: str, from_git: str):
 
             ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
 
-            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
+            SQLAlchemy:     https://docs.sqlalchemy.org/en/14/core/engines.html
 
     """
     api_logic_server(project_name = project_name, db_url=db_url, host=host,
@@ -1168,8 +1162,8 @@ def start():               # target of setup.py
     main(obj={})
 
 
-if __name__ == '__main__':  # debugger & 'create_server.py --project_name=~/Desktop/test_project' start here
-
+if __name__ == '__main__':  # debugger & python command line start here
+    # eg:                     python app_logic_server/create_server.py create --project_name=~/Desktop/test_project
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
