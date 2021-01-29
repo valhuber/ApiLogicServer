@@ -34,13 +34,11 @@ cd ~/Desktop
 mkdir server
 cd server
 virtualenv venv
-source venv/bin/activate
-# windows venv\Scripts\activate
+source venv/bin/activate.   # windows venv\Scripts\activate
 pip install ApiLogicServer
 ```
 
 ### Quick Start - Create and Execute
-The system operates as follows, further described below:
 
 <figure><img src="images/123-creation.png"></figure>
 
