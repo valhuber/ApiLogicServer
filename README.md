@@ -49,12 +49,12 @@ The system operates as follows:
 ```
 ApiLogicServer run  # you can also create, without execution
 ```
-    a. The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
+    * The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
-1. It creates a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
-1. It also runs the ```api_server_project```, consisting of
+2. It creates a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
+3. It also runs the ```api_server_project```, consisting of
 
     a. Your API, available in Swagger
     
