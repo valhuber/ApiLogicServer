@@ -49,7 +49,7 @@ ApiLogicServer run  # you can also create, without execution
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
-* It creates and __runs__ an ```api_server_project```, which consists of:
+* The CLI introspects your database to create and __run__ an ```api_server_project```, which consists of:
 
     1. Your ___API___, available in Swagger
     
