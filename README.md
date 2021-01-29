@@ -10,14 +10,14 @@ This reduces strategic business agility.
 API Logic Server provides strategic business agility,
 by creating an executable server for a database, instantly.
 
-An **API Logic Server** consists of 3 features:
+As illustrated below (box 3), the ```ApiLogicServer``` command line utility creates an **API Logic Server,** which consists of these features:
 
 
 | Feature | Using   | Providing  |
 | :-------------: |:-------------:| :-----:| 
-| JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
-| Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
-| Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
+| a. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
+| b. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
+| c. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
  
 This **declarative approach** is based on standard Python tooling,
 and can be customized with standard approaches as described below.
@@ -27,62 +27,39 @@ and can be customized with standard approaches as described below.
 ### Install with ```pip```
 Caution: Python install is rather more than running an installer.
 Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
-Then:
+Then, install the ApiLogicServer command line utility in the usual manner:
 
 ```
-cd ~/Desktop
-mkdir server
-cd server
 virtualenv venv
-source venv/bin/activate
-# windows venv\Scripts\activate
+source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer
 ```
 
 ### Quick Start - Create and Execute
-Run the ApiLogicServer command line utility:
-
-```
-ApiLogicServer run  # you can also create, without execution
-```
-
-The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
-Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
-to use your own database.
-
-The system operates as follows:
-1. You run the ApiLogicServer utility
-1. It creates a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
-1. It also runs the ```api_server_project```, consisting of
-
-    a. Your API, available in Swagger
-    
-    b. With underlying logic
-    
-    c. And a ```basic_web_app```
 
 <figure><img src="images/123-creation.png"></figure>
 
-
-### Create (only)
-
-You can also create the project, without execution:
-
+As illustrated above, the system operates as follows:
+1. You run the ApiLogicServer command line utility
 ```
-ApiLogicServer create --project_name=my_api_logic_server
+ApiLogicServer run  # you can also create, without execution
 ```
+> The ```db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
+Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
+to use your own database.
 
-You may also wish to include the ``open_with`` parameter,
-to open an IDE or Editor on the created project.  For example,
-PyCharm (``charm``) will open the project and create / initialize the ``venv``
-automatically (some PyCharm configuration may be required):
+2. It __creates__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
+3. It also __runs__ the ```api_server_project```, which consists of:
 
-```
-ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sqlite --open_with=charm
-```
+    a. Your ___API___, available in Swagger
+    
+    b. With underlying ___logic___
+    
+    c. And a ```basic_web_app```
+
 
 ### Execution
-Once created, your ```api_logic_server``` project can be executed without creating.
+Once created, your ```api_logic_server``` project can be re-executed (without creating).
 
 With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
 
