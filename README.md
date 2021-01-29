@@ -40,7 +40,7 @@ pip install ApiLogicServer
 <figure><img src="images/123-creation.png"></figure>
 
 As illustrated above, the system operates as follows:
-1. You run the ApiLogicServer command line utility
+* You run the ApiLogicServer command line utility
 ```
 ApiLogicServer run  # you can also create, without execution
 ```
@@ -48,17 +48,16 @@ ApiLogicServer run  # you can also create, without execution
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
-2. It __creates__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
-3. It also __runs__ the ```api_server_project```, which consists of:
+* It creates and __runs__ an ```api_server_project```, which consists of:
 
-    a. Your ___API___, available in Swagger
+    1. Your ___API___, available in Swagger
     
-    b. With underlying ___logic___
+    2. With underlying ___logic___
     
-    c. And a ```basic_web_app```
+    3. And a ```basic_web_app```
 
 
-### Execution
+### Customizable Project
 Once created, your ```api_logic_server``` project can be re-executed (without creating).
 
 With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
