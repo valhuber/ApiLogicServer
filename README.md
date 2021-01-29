@@ -42,7 +42,7 @@ pip install ApiLogicServer
 
 <figure><img src="images/123-creation.png"></figure>
 
-The system operates as follows:
+As illustrated above, the system operates as follows:
 1. You run the ApiLogicServer command line utility
 ```
 ApiLogicServer run  # you can also create, without execution
