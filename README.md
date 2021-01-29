@@ -15,9 +15,9 @@ As illustrated below (box 3), the ```ApiLogicServer``` command line utility crea
 
 | Feature | Using   | Providing  |
 | :-------------: |:-------------:| :-----:| 
-| a. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
-| b. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
-| c. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
+| 1. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
+| 2. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
+| 3. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
  
 This **declarative approach** is based on standard Python tooling,
 and can be customized with standard approaches as described below.
@@ -27,6 +27,7 @@ and can be customized with standard approaches as described below.
 ### Install with ```pip```
 Caution: Python install is rather more than running an installer.
 Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
+
 Then, install the ApiLogicServer command line utility in the usual manner:
 
 ```
@@ -37,10 +38,10 @@ pip install ApiLogicServer
 
 ### Quick Start - Create and Execute
 
-<figure><img src="images/123-creation.png"></figure>
+<figure><img src="images/123-run.png"></figure>
 
 As illustrated above, the system operates as follows:
-1. You run the ApiLogicServer command line utility
+* You run the ApiLogicServer command line utility
 ```
 ApiLogicServer run  # you can also create, without execution
 ```
@@ -48,18 +49,18 @@ ApiLogicServer run  # you can also create, without execution
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
-2. It __creates__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide)
-3. It also __runs__ the ```api_server_project```, which consists of:
+* It creates and __runs__ an ```api_server_project```, which consists of:
 
-    a. Your ___API___, available in Swagger
+    1. Your ___API___, available in Swagger
     
-    b. With underlying ___logic___
+    2. With underlying ___logic___
     
-    c. And a ```basic_web_app```
+    3. And a ```basic_web_app```
 
 
-### Execution
-Once created, your ```api_logic_server``` project can be re-executed (without creating).
+### Customizable Project
+The ApiLogicServer also __created__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
+After customization, your ```api_logic_server``` project can be re-executed (without creating).
 
 With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
 
