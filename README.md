@@ -27,6 +27,7 @@ and can be customized with standard approaches as described below.
 ### Install with ```pip```
 Caution: Python install is rather more than running an installer.
 Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
+
 Then, install the ApiLogicServer command line utility in the usual manner:
 
 ```
