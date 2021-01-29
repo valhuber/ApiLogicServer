@@ -134,6 +134,10 @@ applications as shown below:
 
 > Customize your app by editing: **```ui/basic_web_app/app/views.py```**
 
+You must also [Create Admin Data](../../wiki/ApiLogicServer-Guide#create-admin] for Flask App Builder (except for Northwind, which is pre-created).
+
+> 1/29/2021: this functionality is currently not working, and is under investigation.
+
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
 
