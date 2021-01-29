@@ -134,9 +134,9 @@ applications as shown below:
 
 > Customize your app by editing: **```ui/basic_web_app/app/views.py```**
 
-You must also [Create Admin Data](../../wiki/ApiLogicServer-Guide#create-admin] for Flask App Builder (except for Northwind, which is pre-created).
+You must also [Create Admin Data](../../wiki/ApiLogicServer-Guide#create-admi) for Flask App Builder (except for Northwind, which is pre-created).
 
-> 1/29/2021: this functionality is currently not working, and is under investigation.
+> 1/29/2021: see status, below.
 
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
@@ -144,6 +144,9 @@ Pre-Alpha / Technology Preview - just entering test.
 Initially released 1/19/2021, the project is beginning to stablize.  We have tested several sqlite databases, and several MySQL databases.  These are both successfully creating the API and the web app.
 
 The [default Northwind project](../../wiki/Sample-Database) pre-creates logic, which is working with both the API and the web app.
+
+Issues:
+* Flask AppBuilder Admin creation is not working, and under investigation.
 
 We tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
