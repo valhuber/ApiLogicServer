@@ -64,25 +64,8 @@ The system operates as follows:
 <figure><img src="images/123-creation.png"></figure>
 
 
-### Create (only)
-
-You can also create the project, without execution:
-
-```
-ApiLogicServer create --project_name=my_api_logic_server
-```
-
-You may also wish to include the ``open_with`` parameter,
-to open an IDE or Editor on the created project.  For example,
-PyCharm (``charm``) will open the project and create / initialize the ``venv``
-automatically (some PyCharm configuration may be required):
-
-```
-ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sqlite --open_with=charm
-```
-
 ### Execution
-Once created, your ```api_logic_server``` project can be executed without creating.
+Once created, your ```api_logic_server``` project can be re-executed (without creating).
 
 With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
 
