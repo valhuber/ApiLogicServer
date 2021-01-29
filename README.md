@@ -37,7 +37,7 @@ pip install ApiLogicServer
 
 ### Quick Start - Create and Execute
 
-<figure><img src="images/123-creation.png"></figure>
+<figure><img src="images/123-run.png"></figure>
 
 As illustrated above, the system operates as follows:
 * You run the ApiLogicServer command line utility
@@ -58,7 +58,8 @@ to use your own database.
 
 
 ### Customizable Project
-Once created, your ```api_logic_server``` project can be re-executed (without creating).
+The ApiLogicServer also __created__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
+After customization, your ```api_logic_server``` project can be re-executed (without creating).
 
 With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
 
