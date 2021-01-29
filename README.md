@@ -10,7 +10,7 @@ This reduces strategic business agility.
 API Logic Server provides strategic business agility,
 by creating an executable server for a database, instantly.
 
-As illustrated below (box 3), the ```ApiLogicServer``` command line utility creates an **API Logic Server,** which consists of these features:
+As illustrated below, the ```ApiLogicServer CLI``` (command line interface) creates an **API Logic Server,** which consists of these features:
 
 
 | Feature | Using   | Providing  |
@@ -28,7 +28,7 @@ and can be customized with standard approaches as described below.
 Caution: Python install is rather more than running an installer.
 Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
 
-Then, install the ApiLogicServer command line utility in the usual manner:
+Then, install the ApiLogicServer CLI in the usual manner:
 
 ```
 virtualenv venv
@@ -41,7 +41,7 @@ pip install ApiLogicServer
 <figure><img src="images/123-run.png"></figure>
 
 As illustrated above, the system operates as follows:
-* You run the ApiLogicServer command line utility
+* You run the ApiLogicServer CLI:
 ```
 ApiLogicServer run  # you can also create, without execution
 ```
@@ -59,7 +59,7 @@ to use your own database.
 
 
 ### Customizable Project
-The ApiLogicServer also __created__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
+The ApiLogicServer CLI also __created__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
 
 With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
