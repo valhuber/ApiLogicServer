@@ -10,14 +10,14 @@ This reduces strategic business agility.
 API Logic Server provides strategic business agility,
 by creating an executable server for a database, instantly.
 
-An **API Logic Server** consists of 3 features:
+As illusrated below, an **API Logic Server** consists of 3 features:
 
 
 | Feature | Using   | Providing  |
 | :-------------: |:-------------:| :-----:| 
-| JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
-| Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
-| Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
+| a. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | Clients configure their own APIs<br>to reduce network traffic |
+| b. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | ***Spreadsheet-like Rules*** are 40X more concise <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
+| c. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant multi-page, multi-table web app<br>for back-office admin, and prototyping |
  
 This **declarative approach** is based on standard Python tooling,
 and can be customized with standard approaches as described below.
@@ -27,12 +27,9 @@ and can be customized with standard approaches as described below.
 ### Install with ```pip```
 Caution: Python install is rather more than running an installer.
 Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
-Then:
+Then, install the ApiLogicServer command line utility in the usual manner:
 
 ```
-cd ~/Desktop
-mkdir server
-cd server
 virtualenv venv
 source venv/bin/activate.   # windows venv\Scripts\activate
 pip install ApiLogicServer
