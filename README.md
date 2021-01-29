@@ -31,7 +31,7 @@ Then, install the ApiLogicServer command line utility in the usual manner:
 
 ```
 virtualenv venv
-source venv/bin/activate.   # windows venv\Scripts\activate
+source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer
 ```
 
@@ -44,7 +44,7 @@ As illustrated above, the system operates as follows:
 ```
 ApiLogicServer run  # you can also create, without execution
 ```
-> The ``db_url`` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
+> The ```db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
