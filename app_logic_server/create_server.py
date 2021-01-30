@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "1.02.02"
+__version__ = "1.02.04"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -249,7 +249,7 @@ class GenerateFromModel(object):
             # sys.path.insert(0, a_cwd)  # success - models open
             # config = importlib.import_module('config')
             conn_string = self.app.config.SQLALCHEMY_DATABASE_URI
-        else:  # TODO - use dynamic loading (above), remove this when stable
+        else:  # using dynamic loading (above), remove this when stable (TODO)
             import models
             conn_string = "sqlite:///nw/nw.db"
 
@@ -269,7 +269,9 @@ class GenerateFromModel(object):
                         orm_class = each_cls_member
                         self.add_table_to_class_map(orm_class)
                 if (orm_class is not None):
-                    print(f'.. ..Dynamic model import successful ({len(self.table_to_class_map)} classes) -'
+                    print(f'.. ..Dynamic model import successful '
+                          f'({len(self.table_to_class_map)} classes'
+                          f') -'
                           f' getting metadata from {str(orm_class)}')
                     metadata = orm_class[1].metadata
 
@@ -329,7 +331,7 @@ class GenerateFromModel(object):
             return "# skip admin table: " + table_name + "\n"
         elif table_name in self._tables_generated:
             log.debug("table already generated per recursion: " + table_name)
-            return "# table already generated per recursion: " + table_name
+            return "# table already generated per recursion: " + table_name + "\n"
         elif 'sqlite_sequence' in table_name:
             return "# skip sqlite_sequence table: " + table_name + "\n"
         else:
@@ -541,7 +543,12 @@ class GenerateFromModel(object):
                 result += ", "
             else:
                 self.num_related += 1
-            result += each_child.fullname + self.model_name(each_child)
+            class_name = self.get_class_for_table(each_child.fullname)
+            if class_name is None:
+                print(f'.. .. .. Warning - Skipping {self.model_name(each_child)}->'
+                      f'{each_child.fullname} - no database/models.py class')
+            else:
+                result += class_name + self.model_name(each_child)
         result += "]\n"
         return result
 
@@ -575,9 +582,11 @@ class GenerateFromModel(object):
                     child_list.append(each_possible_child)
         return child_list
 
-    def model_name(self, a_table_name: str):  # override as req'd
+    def model_name(self, a_class_name: str):  # override as req'd
         """
-            returns view model_name for a_table_name, defaulted to "ModelView"
+            returns "ModelView"
+
+            default suffix for view corresponding to model
 
             intended for subclass override, for custom views
 
@@ -869,11 +878,12 @@ def resolve_home(name: str) -> str:
     return result
 
 
-def fix_basic_web_app_python_path(abs_project_name):
-    """ prepend logic_bank_utils call to fixup python path """
+def fix_basic_web_app_run__python_path(abs_project_name):
+    """ prepend logic_bank_utils call to fixup python path in ui/basic_web_app/run.py (enables run.py) """
     file_name = f'{abs_project_name}/ui/basic_web_app/run.py'
     proj = os.path.basename(abs_project_name)
-    insert_text = ("\nimport logic_bank_utils.util as logic_bank_utils\n"
+    insert_text = ("\n# ApiLogicServer - enable flask run\n"
+                   "import logic_bank_utils.util as logic_bank_utils\n"
                    + f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n\n')
     with open(file_name, 'r+') as fp:
         lines = fp.readlines()  # lines is list of line, each element '...\n'
@@ -882,10 +892,16 @@ def fix_basic_web_app_python_path(abs_project_name):
         fp.writelines(lines)  # write whole lists again to the same file
 
 
-def inject_logic(abs_project_name):
-    """ insert call LogicBank.activate """
+def fix_basic_web_app_app_init__inject_logic(abs_project_name):
+    """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
     file_name = f'{abs_project_name}/ui/basic_web_app/app/__init__.py'
-    insert_text = ("\nimport database.models as models\n"
+    proj = os.path.basename(abs_project_name)  # enable flask run
+    import_fix = f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n'
+
+    insert_text = ("\n# ApiLogicServer - enable flask fab create-admin\n"
+                   "import logic_bank_utils.util as logic_bank_utils\n"
+                   + import_fix +
+                   "\nimport database.models as models\n"
                    + "from logic import declare_logic\n"
                    + "from logic_bank.logic_bank import LogicBank\n"
                    + "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
@@ -984,8 +1000,11 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(generate_from_model.result_views)
         text_file.close()
-        fix_basic_web_app_python_path(abs_project_name)
-        inject_logic(abs_project_name)
+        print(".. ..Fix run.py and app/init - Python path, logic")
+        if not db_url.endswith("nw.sqlite"):
+            print(".. ..Note: you will need to run flask fab create-admin")
+        fix_basic_web_app_run__python_path(abs_project_name)
+        fix_basic_web_app_app_init__inject_logic(abs_project_name)
 
     if db_url.endswith("nw.sqlite"):
         print("10. Append logic/logic_bank.py with pre-defined nw_logic")
@@ -1034,10 +1053,12 @@ def version(ctx):
     click.echo(
         click.style(
             "Recent Changes:\n"
-            "\t2021-01-28: Command line cleanup\n"
-            "\t2021-01-27: Host option, from_git defaults to local directory, hello world example, nw rules pre-created\n"
-            "\t2021-01-25: MySQL fixes\n"
-            "\t2021-01-22: Add run command\n"
+            "\t01/29/2021 - 01.02.04: \n"
+            "\t01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)\n"
+            "\t01/28/2021 - 01.02.02: Command line cleanup\n"
+            "\t01/27/2021 - 01.02.00: "
+            "Host option, from_git defaults to local directory, hello world example, nw rules pre-created\n"
+            "\t01/25/2021 - 01.01.01: MySQL fixes\n"
         )
     )
 
@@ -1087,19 +1108,23 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            host: str,
            favorites: str, non_favorites: str):
     """
-    Creates a logic-enabled Python project from an existing database: JSON:API, basic_web_app
+    Creates a logic-enabled Python project.
 
         Examples:
 
             ApiLogicServer create  # use defaults (verify install)
 
-            ApiLogicServer create project_name=my_project, db_url=sqlite:///nw.sqlite
+            ApiLogicServer create --project_name=my_project, --db_url=sqlite:///nw.sqlite
 
         Doc:
 
             ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
 
-            SQLAlchemy:     https://docs.sqlalchemy.org/en/14/core/engines.html
+            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
+
+            SAFRS: https://github.com/thomaxxl/safrs/wiki
+
+            FAB: https://flask-appbuilder.readthedocs.io/en/latest/
 
     """
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
@@ -1127,19 +1152,23 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 @click.pass_context
 def run(ctx, db_url: str, project_name: str, host: str, from_git: str):
     """
-    Creates and runs logic-enabled Python project from an existing database: JSON:API, basic_web_app
+    Creates and runs logic-enabled Python project.
 
         Examples:
 
             ApiLogicServer run  # use defaults (verify install)
 
-            ApiLogicServer run db_url=sqlite:///nw.sqlite
+            ApiLogicServer run --db_url=sqlite:///nw.sqlite
 
         Doc:
 
             ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
 
-            SQLAlchemy:     https://docs.sqlalchemy.org/en/14/core/engines.html
+            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
+
+            SAFRS: https://github.com/thomaxxl/safrs/wiki
+
+            FAB: https://flask-appbuilder.readthedocs.io/en/latest/
 
     """
     api_logic_server(project_name = project_name, db_url=db_url, host=host,

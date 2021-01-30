@@ -653,7 +653,7 @@ from sqlalchemy.dialects.mysql import *
             rendered += "\n"
         backrefs = {}
         for attr, relationship in model.attributes.items():
-            if isinstance(relationship, Relationship):  # val changed to insert backref
+            if isinstance(relationship, Relationship):  # ApiLogicServer changed to insert backref
                 rel_render = "{0}{1} = {2}\n".format(self.indentation, attr, self.render_relationship(relationship))
                 rel_parts = rel_render.split(")")
                 backref_name = model.name + "List"

@@ -62,7 +62,7 @@ def main(calling_args=None):
 
 
 class DotDict(dict):
-    """dot.notation access to dictionary attributes"""
+    """ APiLogicServer dot.notation access to dictionary attributes """
     # thanks: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary/28463329
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
@@ -70,6 +70,7 @@ class DotDict(dict):
 
 
 def sqlacodegen(db_url: str, models_file: str):
+    """ ApiLogicServer entry for in-process invocation """
     calling_args = DotDict({})
     calling_args.url = db_url
     calling_args.outfile = models_file
