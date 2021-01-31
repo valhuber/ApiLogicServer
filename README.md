@@ -146,8 +146,8 @@ Initially released 1/19/2021, the project is beginning to stablize.  We have tes
 The [default Northwind project](../../wiki/Sample-Database) pre-creates logic, which is working with both the API and the web app.
 
 Issues:
-* Flask AppBuilder Admin creation [requires a work-around](../../wiki/Working-with-Flask-AppBuilder#important-create-admin-work-around-required), and is under investigation.
-* These also appear to be related to n:m relationships (tables consisting of exactly 2 foreign keys).
+* Flask AppBuilder Admin creation [requires a **work-around**](../../wiki/Working-with-Flask-AppBuilder#important-create-admin-work-around-required), and is under investigation.
+* These also appear to be issues related to **n:m relationships** (tables consisting of exactly 2 foreign keys).  These are under investigation.
 
 We tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
