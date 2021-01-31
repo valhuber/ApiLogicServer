@@ -146,7 +146,7 @@ Initially released 1/19/2021, the project is beginning to stablize:
 *   We have tested several sqlite databases, and several MySQL databases.  These are both successfully creating the API and the web app.  The APIs operate; there are some issues noted below in running the web app.
 
 Issues:
-* These also appear to be issues related to **n:m relationships** (tables consisting of exactly 2 foreign keys).  These are under investigation.
+* These are issues related to **n:m relationships** (tables consisting of exactly 2 foreign keys) that may affect fab or the API.  These are under investigation.
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
