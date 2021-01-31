@@ -134,7 +134,7 @@ applications as shown below:
 
 > Customize your app by editing: **```ui/basic_web_app/app/views.py```**
 
-You must also [Create Admin Data](../../wiki/Working-with-Flask-AppBuilder#create-flask-appbuilder-admin) for Flask App Builder (except for Northwind, which is pre-created).
+You must also [Create Admin Data](../../wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
 
 > 1/29/2021: see status, below.
 
@@ -146,10 +146,9 @@ Initially released 1/19/2021, the project is beginning to stablize:
 *   We have tested several sqlite databases, and several MySQL databases.  These are both successfully creating the API and the web app.  The APIs operate; there are some issues noted below in running the web app.
 
 Issues:
-* Flask AppBuilder Admin creation [requires a **work-around**](../../wiki/Working-with-Flask-AppBuilder#important-create-admin-work-around-required), and is under investigation.
 * These also appear to be issues related to **n:m relationships** (tables consisting of exactly 2 foreign keys).  These are under investigation.
 
-We tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
+We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
 ## Acknowledgements
 
