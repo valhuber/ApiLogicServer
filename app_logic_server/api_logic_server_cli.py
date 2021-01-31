@@ -1053,7 +1053,7 @@ def version(ctx):
     click.echo(
         click.style(
             "Recent Changes:\n"
-            "\t01/29/2021 - 01.02.04: \n"
+            "\t01/29/2021 - 01.02.04: Minor cleanup\n"
             "\t01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)\n"
             "\t01/28/2021 - 01.02.02: Command line cleanup\n"
             "\t01/27/2021 - 01.02.00: "
@@ -1192,7 +1192,7 @@ def start():               # target of setup.py
 
 
 if __name__ == '__main__':  # debugger & python command line start here
-    # eg:                     python app_logic_server/create_server.py create --project_name=~/Desktop/test_project
+    # eg:                     python app_logic_server/api_logic_server_cli.py create --project_name=~/Desktop/test_project
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 

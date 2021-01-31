@@ -12,7 +12,7 @@ from setuptools import find_packages, setup
 
 find_version = True
 if find_version:
-    with io.open("app_logic_server/create_server.py", "rt", encoding="utf8") as f:
+    with io.open("app_logic_server/api_logic_server_cli.py", "rt", encoding="utf8") as f:
         version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 else:
     version = 0.0
@@ -51,13 +51,13 @@ setup(
     packages=['app_logic_server',
               'expose_existing', 'expose_existing.sqlacodegen', 'expose_existing.sqlacodegen.sqlacodegen',
               'prototype', 'prototype.api', 'prototype.database', 'prototype.logic',
-              'prototype.templates', 'prototype.ui', 'prototype.test'],
+              'prototype.templates', 'prototype.ui'],
     package_data={"app_logic_server": ["nw.sqlite", "nw_logic.txt"],
                   "prototype": ["requirements.txt", "default.env", "EXAMPLE.env", "readme.md"],
                   'prototype.templates': ["index.html"]
                   },
     entry_points={
-        "console_scripts": ["ApiLogicServer=app_logic_server.create_server:start"]
+        "console_scripts": ["ApiLogicServer=app_logic_server.api_logic_server_cli:start"]
     },
     include_package_data=True,
     zip_safe=False,
