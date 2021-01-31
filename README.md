@@ -141,9 +141,9 @@ You must also [Create Admin Data](../../wiki/Working-with-Flask-AppBuilder#creat
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
 
-Initially released 1/19/2021, the project is beginning to stablize.  We have tested several sqlite databases, and several MySQL databases.  These are both successfully creating the API and the web app.
-
-The [default Northwind project](../../wiki/Sample-Database) pre-creates logic, which is working with both the API and the web app.
+Initially released 1/19/2021, the project is beginning to stablize:
+* The [default Northwind project](../../wiki/Sample-Database) is working with for both the API and the web app, with pre-created logic (good to explore for examples)
+*   We have tested several sqlite databases, and several MySQL databases.  These are both successfully creating the API and the web app.  The APIs operate; there are some issues noted below in running the web app.
 
 Issues:
 * Flask AppBuilder Admin creation [requires a **work-around**](../../wiki/Working-with-Flask-AppBuilder#important-create-admin-work-around-required), and is under investigation.
