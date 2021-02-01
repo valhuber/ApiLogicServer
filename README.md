@@ -60,9 +60,16 @@ to use your own database.
 
 
 ### Customizable Project
-The ApiLogicServer CLI also __created__ a [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
+The ApiLogicServer CLI also __created__ a
+[*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
-With a proper [virtual environment](../../wiki/ApiLogicServer-Guide#environment):
+To run it:
+1. Specify proper ```venv``` (virtual environment)
+   
+   * The one used for ApiLogicServer install is fine, or you can use a project-specific
+    [virtual environment](../../wiki/ApiLogicServer-Guide#environment)
+    
+2. Then:
 
 ```
 python api_logic_server_run.py
@@ -161,7 +168,7 @@ Many thanks to
 - Gloria Huber and Denny McKinney, for doc review
 
 ### Articles
-There a few articles that provide some orientation to Logic Bank and Flask App Builder.
+There are a few articles that provide some orientation to Logic Bank and Flask App Builder.
 These technologies are automatically created when you use ApiLogicServer:
 * [Extensible Rules](https://dzone.com/articles/logic-bank-now-extensible-drive-95-automation-even) - defining new rule types, using Python
 * [Declarative](https://dzone.com/articles/agile-design-automation-how-are-rules-different-fr) - exploring _multi-statement_ declarative technology
