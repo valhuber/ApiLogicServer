@@ -135,24 +135,18 @@ Many thanks to
 Change Log
 ----------
 
-1.0.7   - Initial Version
+01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)
 
-1.0.8   - Fix windows bug, options to specify clone-from and open-with
+01/29/2021 - 01.02.04: Minor cleanup
 
-1.0.9   - ``Run`` command (experimental)
+01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)
 
-1.01.00 - ``use_model`` option, to use existing (manually repaired) model
+01/28/2021 - 01.02.02: Command line cleanup
 
-1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet
+01/27/2021 - 01.02.00: Many
+* Host option
+* --from_git defaults to local directory
+* hello world example
+* nw rules pre-created
 
-1.01.02 - --host option, from_git supports local directory, hello world example
-
-1.02.00 - Many:
-
-* renamed logic/rules_bank to logic/logic_bank
-
-* improved error handling on introspection failures
-
-* building backrefs for relationships (with disambiguation)
-
-* project creation defaults to copy (vs git clone)
+01/25/2021 - 01.01.01: MySQL fixes

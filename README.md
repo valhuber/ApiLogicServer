@@ -134,19 +134,19 @@ applications as shown below:
 
 > Customize your app by editing: **```ui/basic_web_app/app/views.py```**
 
-You must also [Create Admin Data](../../wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
-
-> 1/29/2021: see status, below.
+> Before running, you must [Create Admin Data](../../wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
 
 ## Status
 Pre-Alpha / Technology Preview - just entering test.
 
 Initially released 1/19/2021, the project is beginning to stablize:
-* The [default Northwind project](../../wiki/Sample-Database) is working with for both the API and the web app, with pre-created logic (good to explore for examples)
-*   We have tested several sqlite databases, and several MySQL databases.  These are both successfully creating the API and the web app.  The APIs operate; there are some issues noted below in running the web app.
 
-Issues:
-* These are issues related to **n:m relationships** (tables consisting of exactly 2 foreign keys) that may affect fab or the API.  These are under investigation.
+* The [default Northwind project](../../wiki/Sample-Database) is working with for both the API and the web app,
+  with pre-created logic (good to explore for examples)
+  
+
+*   We have tested several sqlite databases, and several MySQL databases.
+    These are successfully creating / executing the API and the web app.
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
@@ -157,8 +157,7 @@ Many thanks to
 - Thomas Pollet, for SAFRS
 - Daniel Gaspar, for Flask AppBuilder
 - Achim Götz, for design collaboration
-
-
+- Gloria Huber and Denny McKinney, for doc review
 
 ### Articles
 There a few articles that provide some orientation to Logic Bank and Flask App Builder.
@@ -171,27 +170,19 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ## Change Log
 
-1.02.00 - Many:
 
-1. Renamed logic/rules_bank to logic/logic_bank
+01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)
 
-1. Improved error handling on introspection failures
+01/29/2021 - 01.02.04: Minor cleanup
 
-1. Building backrefs for relationships (with disambiguation)
+01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)
 
-1. Project creation defaults to copy (vs git clone)
+01/28/2021 - 01.02.02: Command line cleanup
 
-1. Rules are pre-populated for the default (Northwind) database
+01/27/2021 - 01.02.00: Many
+* Host option
+* --from_git defaults to local directory
+* hello world example
+* nw rules pre-created
 
-1.01.02 - --host option, from_git supports local directory, hello world example
-
-1.01.01 - Preliminary fixes for MySQL - acknowledgements (and thanks!) to Thomas Pollet
-
-1.01.00 - ``use_model`` option, to use existing (manually repaired) model --
-see [Troubleshooting](../../wiki/Troubleshooting)
-
-1.0.9   - ``Run`` command
-
-1.0.8   - Fix windows bug, options to specify clone-from and open-with
-
-1.0.7   - Initial Version
+01/25/2021 - 01.01.01: MySQL fixes

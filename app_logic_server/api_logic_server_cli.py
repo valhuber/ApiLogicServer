@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "1.02.04"
+__version__ = "1.03.00"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -1039,7 +1039,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 @click.pass_context
 def main(ctx):
     """
-    Creates ApiLogicServer project:\r
+    Creates ApiLogicServer project.\r
     """
     # print("group")
 
@@ -1048,11 +1048,12 @@ def main(ctx):
 @click.pass_context
 def version(ctx):
     """
-        Recent Changes
+        Recent Changes.
     """
     click.echo(
         click.style(
             "Recent Changes:\n"
+            "\t01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)\n"
             "\t01/29/2021 - 01.02.04: Minor cleanup\n"
             "\t01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)\n"
             "\t01/28/2021 - 01.02.02: Command line cleanup\n"
@@ -1120,6 +1121,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
             ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
 
+            Logic Bank: https://github.com/valhuber/logicbank#readme
+
             SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
 
             SAFRS: https://github.com/thomaxxl/safrs/wiki
@@ -1163,6 +1166,8 @@ def run(ctx, db_url: str, project_name: str, host: str, from_git: str):
         Doc:
 
             ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
+
+            Logic Bank: https://github.com/valhuber/logicbank#readme
 
             SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
 
