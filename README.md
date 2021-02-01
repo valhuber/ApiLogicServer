@@ -92,7 +92,7 @@ development, available in swagger:
 ### Logic
 
 Transactional business logic - multi-table derivations and
-constraints - are a significant portion of database systems,
+constraints - is a significant portion of database systems,
 often nearly half.  Procedural coding is time-consuming
 to develop and maintain, reducing business agility.
 
@@ -125,14 +125,14 @@ and
 * [Agile approaches](https://agilemanifesto.org) depend on getting _working
 software_ soon, to drive _collaboration and iteration_.
 
-ApiLogicServers therefore generate multi-page, multi-table
-applications as shown below:
+ApiLogicServer CLI therefore creates working software _now:_
+multi-page, multi-table applications as shown below:
 
 1. **Multi-page:** apps include 1 page per table
 
 2. **Multi-table:** pages include ``related_views`` for each related child table, and join in parent data
 
-3. **Favorite field first:** first-displayed field is "name", or `contains` "name" (configurable)
+3. **Favorite fields first:** first-displayed field is "name", or `contains` "name" (configurable)
 
 4. **Predictive joins:** favorite field of each parent is shown (product *name* - not product *id*)
 
