@@ -10,7 +10,8 @@ This reduces strategic business agility.
 API Logic Server provides strategic business agility,
 by creating an executable server for a database, instantly.
 
-As illustrated below, the ```ApiLogicServer CLI``` (command line interface) creates an **API Logic Server,** which consists of these features:
+As illustrated below, the ```ApiLogicServer CLI``` (command line interface) creates an **API Logic Server,**
+from your database.  An Api Logic Server consists of these features:
 
 
 | Feature | Using   | Providing  |
