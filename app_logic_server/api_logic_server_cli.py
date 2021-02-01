@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "1.03.00"
+__version__ = "1.03.01"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -1053,6 +1053,7 @@ def version(ctx):
     click.echo(
         click.style(
             "Recent Changes:\n"
+            "\t02/01/2021 - 01.03.00: Fix logic logging, nw rules\n"
             "\t01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)\n"
             "\t01/29/2021 - 01.02.04: Minor cleanup\n"
             "\t01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)\n"
@@ -1192,12 +1193,12 @@ def print_args(args, msg):
 
 
 def start():               # target of setup.py
-    sys.stderr.write("\n\nAPI Logic Server Creation Utility " + __version__ + " here\n\n")
+    sys.stderr.write("\n\nAPI Logic Server CLI " + __version__ + " here\n\n")
     main(obj={})
 
 
 if __name__ == '__main__':  # debugger & python command line start here
-    # eg:                     python app_logic_server/api_logic_server_cli.py create --project_name=~/Desktop/test_project
+    # eg: python app_logic_server/api_logic_server_cli.py create --project_name=~/Desktop/test_project
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 

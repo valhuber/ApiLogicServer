@@ -24,13 +24,12 @@ def setup_logging():
     import logging
     import sys
 
-    logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
+    logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
     logic_logger.setLevel(logging.DEBUG)
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
     handler.setFormatter(formatter)
-    logic_logger.addHandler(handler)
 
     do_engine_logging = False
     engine_logger = logging.getLogger('engine_logger')  # for internals

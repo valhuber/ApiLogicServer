@@ -43,7 +43,7 @@
 
     Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 
-    Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.OrderHeader.ShippedDate")
+    Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")
 
     def units_in_stock(row: models.Product, old_row: models.Product, logic_row: LogicRow):
         result = row.UnitsInStock - (row.UnitsShipped - old_row.UnitsShipped)
