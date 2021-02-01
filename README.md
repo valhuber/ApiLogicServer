@@ -38,7 +38,7 @@ pip install ApiLogicServer
 ```
 
 ### Quick Start - Create and Execute
-With a single command, create a logic-enabled JSON:API and web app for your database:
+With a single command, create and run a logic-enabled JSON:API and web app for your database:
 
 <figure><img src="images/123-run.png"></figure>
 
