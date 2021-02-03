@@ -21,24 +21,11 @@ from your database.  An Api Logic Server consists of these features:
 | 3. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant **multi-page, multi-table** web app<br>for back-office admin, and prototyping |
  
 This **declarative approach** is based on standard Python tooling,
-and can be customized with standard approaches as described below.
+and can be [installed](#Installation) and customized with standard approaches as described below.
 
-## Usage
-
-### Install with ```pip```
-Caution: Python install is rather more than running an installer.
-Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
-
-Then, install the ApiLogicServer CLI in the usual manner:
-
-```
-virtualenv venv
-source venv/bin/activate   # windows venv\Scripts\activate
-pip install ApiLogicServer
-```
-
-### Quick Start - Create and Execute
-With a single command, create and run a logic-enabled JSON:API and web app for your database:
+# Quick Start - Create and Execute
+With a single command, create and run a logic-enabled
+JSON:API and web app for your database:
 
 <figure><img src="images/123-run.png"></figure>
 
@@ -60,7 +47,7 @@ to use your own database.
     3. And a ```basic_web_app```
 
 
-### Customizable Project
+## Customizable Project
 The ApiLogicServer CLI also __created__ a
 [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
@@ -78,7 +65,7 @@ python ui/basic_web_app/run.py
 ```
 
 
-## Features
+# Features
 
 
 ### API: SAFRS JSON:API and Swagger
@@ -145,7 +132,22 @@ multi-page, multi-table applications as shown below:
 
 > Before running, you must [Create Admin Data](../../wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
 
-## Status
+
+# Installation
+Caution: Python install is rather more than running an installer.
+Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
+
+Then, install the ApiLogicServer CLI in the usual manner:
+
+```
+virtualenv venv
+source venv/bin/activate   # windows venv\Scripts\activate
+pip install ApiLogicServer
+```
+
+# Project Information
+
+### Status
 Pre-Alpha / Technology Preview - just entering test.
 
 Initially released 1/19/2021, the project is beginning to stablize:
@@ -160,7 +162,7 @@ Initially released 1/19/2021, the project is beginning to stablize:
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
-## Acknowledgements
+### Acknowledgements
 
 Many thanks to
 
@@ -179,8 +181,7 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Agile Design Automation With Logic Bank](https://dzone.com/articles/logical-data-indendence) - focuses on automation, design flexibility and agile iterations
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
-## Change Log
-
+### Change Log
 
 02/01/2021 - 01.03.00: Fix logic logging, nw rules
 
