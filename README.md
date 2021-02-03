@@ -26,7 +26,7 @@ and can be [installed](#Installation) and customized with standard approaches as
 # Quick Start - Create and Execute
 With a single command, create and run a
 [logic](#logic)-enabled
-[JSON:API](##api-safrs-jsonapi-and-swagger) and
+[JSON:API](#api-safrs-jsonapi-and-swagger) and
 [web app](#basic-web-app---flask-appbuilder) for your database:
 
 <figure><img src="images/123-run.png"></figure>
