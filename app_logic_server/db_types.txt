@@ -1,0 +1,2 @@
+# from db_types -- Postgres type provisions
+bpcar = db.String

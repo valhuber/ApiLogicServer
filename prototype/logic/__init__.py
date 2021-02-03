@@ -16,7 +16,7 @@ from logic.logic_bank import declare_logic
 2 - Register listeners (either hand-coded ones above, or the logic-engine listeners).
 """
 
-util.log("BEGIN - setup logging, connect to db, register listeners FIXME verify usage")
+util.log("BEGIN - setup logging, connect to db, register listeners")
 
 logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
 logic_logger.setLevel(logging.DEBUG)

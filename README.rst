@@ -135,7 +135,9 @@ Many thanks to
 Change Log
 ----------
 
-02/01/2021 - 01.03.00: Fix logic logging, nw rules
+02/02/2021 - 01.04.00: TBD
+
+02/01/2021 - 01.03.01: Fix logic logging, nw rules
 
 01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)
 

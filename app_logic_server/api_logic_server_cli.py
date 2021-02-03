@@ -892,6 +892,24 @@ def fix_basic_web_app_run__python_path(abs_project_name):
         fp.writelines(lines)  # write whole lists again to the same file
 
 
+def insert_lines_at(lines: str, at: str, file_name: str):
+    """ insert <lines> into file_name after line with <str> """
+    with open(file_name, 'r+') as fp:
+        file_lines = fp.readlines()  # lines is list of lines, each element '...\n'
+        found = False
+        insert_line = 0
+        for each_line in file_lines:
+            if at in each_line:
+                found = True
+                break
+            insert_line += 1
+        if not found:
+            raise Exception(f'Internal error - unable to find insert: {at}')
+        file_lines.insert(insert_line, lines)  # you can use any index if you know the line index
+        fp.seek(0)  # file pointer locates at the beginning to write the whole file again
+        fp.writelines(file_lines)  # write whole list again to the same file
+
+
 def fix_basic_web_app_app_init__inject_logic(abs_project_name):
     """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
     file_name = f'{abs_project_name}/ui/basic_web_app/app/__init__.py'
@@ -906,26 +924,22 @@ def fix_basic_web_app_app_init__inject_logic(abs_project_name):
                    + "from logic_bank.logic_bank import LogicBank\n"
                    + "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
                    )
-    with open(file_name, 'r+') as fp:
-        lines = fp.readlines()  # lines is list of line, each element '...\n'
-        found = False
-        insert_line = 0
+    insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
 
-        for each_line in lines:
-            if "appbuilder = AppBuilder(app, db.session)" in each_line:
-                found = True
-                break
-            insert_line += 1
-        if not found:
-            raise Exception("Internal error - unable to find logic insert point")
-        lines.insert(insert_line, insert_text)  # you can use any index if you know the line index
-        fp.seek(0)  # file pointer locates at the beginning to write the whole file again
-        fp.writelines(lines)  # write whole lists again to the same file
+
+def fix_database_models__inject_db_types(abs_project_name: str, db_types: str):
+    """ insert <db_types file> into database/models.py """
+    file_name = f'{abs_project_name}/database/models.py'
+    if db_types != "":
+        print(f'.. ..Injecting file {db_types} into database/models.py')
+        with open(db_types, 'r') as file:
+            db_types_data = file.read()
+        insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=file_name)
 
 
 def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str,
-           from_git: str, open_with: str, run:bool, use_model: str,
-           flask_appbuilder: bool, favorites: str, non_favorites: str):
+                     from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
+                     flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
     Creates logic-enabled Python JSON_API project, options for FAB and execution
     """
@@ -936,6 +950,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         print(f'  --db_url={db_url}')
         print(f'  --project_name={project_name}')
         print(f'  --flask_appbuilder={flask_appbuilder}')
+        print(f'  --from_git={from_git}')
+#        print(f'  --db_types={db_types}')
         print(f'  --run={run}')
         print(f'  --host={host}')
         print(f'  --not_exposed={not_exposed}')
@@ -957,6 +973,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 
     print(f'4. Create {abs_project_name + "/database/models.py"} via expose_existing / sqlacodegen: {db_url}')
     create_models(abs_db_url, abs_project_name, use_model)  # exec's sqlacodegen
+    fix_database_models__inject_db_types(abs_project_name, db_types)
 
     if flask_appbuilder:
         create_basic_web_app(abs_db_url, abs_project_name, "5. Create ui/basic_web_app")
@@ -1053,6 +1070,7 @@ def version(ctx):
     click.echo(
         click.style(
             "Recent Changes:\n"
+            "\t02/02/2021 - 01.04.00: \n"
             "\t02/01/2021 - 01.03.00: Fix logic logging, nw rules\n"
             "\t01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)\n"
             "\t01/29/2021 - 01.02.04: Minor cleanup\n"
@@ -1103,6 +1121,7 @@ def version(ctx):
 @click.pass_context
 def create(ctx, project_name: str, db_url: str, not_exposed: str,
            from_git: str,
+           # db_types: str,
            open_with: str,
            run: click.BOOL,
            flask_appbuilder: click.BOOL,
@@ -1131,30 +1150,59 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
             FAB: https://flask-appbuilder.readthedocs.io/en/latest/
 
     """
-    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+    db_types = ""
     api_logic_server(project_name=project_name, db_url=db_url,
-                     not_exposed="--ProductDetails_V",
-                     run=run, use_model=use_model, from_git=from_git, host=host,
-                     flask_appbuilder=flask_appbuilder,
-                     favorites="name description", non_favorites="id", open_with=open_with)
+                     not_exposed=not_exposed,
+                     run=run, use_model=use_model, from_git=from_git, db_types = db_types,
+                     flask_appbuilder=flask_appbuilder,  host=host,
+                     favorites=favorites, non_favorites=non_favorites, open_with=open_with)
 
 
 @main.command("run")
 @click.option('--db_url',
               default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
               prompt="Database URL",
-              help="SQLAlchemy Database URL - see above")
+              help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
               default="api_logic_server",
               help="Create new directory here")
 @click.option('--from_git',
-              default=f'',
+              default="",
               help="Template clone-from project (or directory)")
+@click.option('--run', is_flag=True,
+              default=True,
+              help="Run created project")
+@click.option('--open_with',
+              default='',
+              help="Open created project (eg, charm, atom)")
+@click.option('--not_exposed',
+              default="ProductDetails_V",
+              help="Tables not written to api/expose_api_models")
+@click.option('--flask_appbuilder/--no-flask_appbuilder',
+              default=True, is_flag=True,
+              help="Creates ui/basic_web_app")
+@click.option('--favorites',
+              default="name description",
+              help="Columns named like this displayed first")
+@click.option('--non_favorites',
+              default="id",
+              help="Columns named like this displayed last")
+@click.option('--use_model',
+              default="",
+              help="See ApiLogicServer/wiki/Troubleshooting")
 @click.option('--host',
               default=f'localhost',
               help="Server hostname")
 @click.pass_context
-def run(ctx, db_url: str, project_name: str, host: str, from_git: str):
+def run(ctx, project_name: str, db_url: str, not_exposed: str,
+        from_git: str,
+        # db_types: str,
+        open_with: str,
+        run: click.BOOL,
+        flask_appbuilder: click.BOOL,
+        use_model: str,
+        host: str,
+        favorites: str, non_favorites: str):
     """
     Creates and runs logic-enabled Python project.
 
@@ -1177,9 +1225,12 @@ def run(ctx, db_url: str, project_name: str, host: str, from_git: str):
             FAB: https://flask-appbuilder.readthedocs.io/en/latest/
 
     """
-    api_logic_server(project_name = project_name, db_url=db_url, host=host,
-                     not_exposed="ProductDetails_V", run=True, use_model="", from_git=from_git,
-                     flask_appbuilder=True, favorites="name description", non_favorites="id", open_with="")
+    db_types = ""
+    api_logic_server(project_name=project_name, db_url=db_url,
+                     not_exposed=not_exposed,
+                     run=run, use_model=use_model, from_git=from_git, db_types=db_types,
+                     flask_appbuilder=flask_appbuilder,  host=host,
+                     favorites=favorites, non_favorites=non_favorites, open_with=open_with)
 
 
 log = logging.getLogger(__name__)
