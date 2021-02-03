@@ -154,7 +154,8 @@ Initially released 1/19/2021, the project is beginning to stablize:
   with pre-created logic (good to explore for examples)
   
 
-*   We have tested several sqlite databases, and several MySQL databases.
+*   We have tested several sqlite databases, and several MySQL databases -
+    see [status here.](../../wiki/Testing)
     These are successfully creating / executing the API and the web app.
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
