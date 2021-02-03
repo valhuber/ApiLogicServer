@@ -24,8 +24,10 @@ This **declarative approach** is based on standard Python tooling,
 and can be [installed](#Installation) and customized with standard approaches as described below.
 
 # Quick Start - Create and Execute
-With a single command, create and run a logic-enabled
-JSON:API and web app for your database:
+With a single command, create and run a
+[logic](#logic)-enabled
+[JSON:API](##api-safrs-jsonapi-and-swagger) and
+[web app](#basic-web-app---flask-appbuilder) for your database:
 
 <figure><img src="images/123-run.png"></figure>
 
@@ -47,7 +49,7 @@ to use your own database.
     3. And a ```basic_web_app```
 
 
-## Customizable Project
+### Customizable Project
 The ApiLogicServer CLI also __created__ a
 [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
@@ -66,7 +68,6 @@ python ui/basic_web_app/run.py
 
 
 # Features
-
 
 ### API: SAFRS JSON:API and Swagger
 
