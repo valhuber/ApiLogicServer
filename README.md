@@ -51,7 +51,10 @@ to use your own database.
 
 ### Customizable Project
 The ApiLogicServer CLI also __created__ a
-[*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide).
+[*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide):
+
+<figure><img src="images/customizable-project.png"></figure>
+
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
 To run it:
 1. Specify proper ```venv``` (virtual environment)
