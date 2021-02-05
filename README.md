@@ -17,7 +17,7 @@ from your database.  An Api Logic Server consists of these features:
 | Feature | Using   | Providing  |
 | :-------------- |:--------------| :------| 
 | 1. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | APIs that clients can configure<br>to **reduce network traffic** |
-| 2. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | *Spreadsheet-like Rules* are **40X more concise** <br>Compare [Check Credit](https://github.com/valhuber/LogicBank/wiki/Check-Credit) with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
+| 2. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | *Spreadsheet-like Rules* are **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
 | 3. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant **multi-page, multi-table** web app<br>for back-office admin, and prototyping |
  
 This **declarative approach** is based on standard Python tooling,
