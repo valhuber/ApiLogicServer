@@ -57,7 +57,7 @@ The ApiLogicServer CLI also __created__ a
 
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
 To run it:
-1. Specify proper ```venv``` (virtual environment)
+1. Specify a proper ```venv``` (virtual environment)
    
    * The one used for ApiLogicServer install is fine, or you can use a project-specific
     [virtual environment](../../wiki/ApiLogicServer-Guide#environment)
