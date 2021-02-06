@@ -1,3 +1,5 @@
+from typing import TypedDict
+
 import safrs
 from logic_bank.logic_bank import LogicBank
 from logic_bank.exec_row_logic.logic_row import LogicRow
@@ -42,6 +44,21 @@ def setup_logging():
         engine_logger.addHandler(handler)
 
 
+class ValidationErrorExt(ValidationError):  # Achim code, not Thomas code
+    """
+    This exception is raised when invalid input has been detected (client side input)
+    Always send back the message to the client in the response
+    """
+
+    def __init__(self, message="", status_code=400, api_code=2001, detail=None, error_attributes=None):
+        Exception.__init__(self)
+        self.error_attributes = error_attributes
+        self.status_code = status_code
+        self.message = message
+        self.api_code = api_code
+        self.detail: TypedDict = detail
+
+
 def create_app(config_filename=None, host="localhost"):
     setup_logging()
     app = Flask("API Logic Server")
@@ -51,9 +68,9 @@ def create_app(config_filename=None, host="localhost"):
     session: Session = db.session
     print("app/__init__#create_app - got session: " + str(session))
 
-    def constraint_handler(message: str, constraint: object,
-                           logic_row: LogicRow):  # message: str, constr: constraint, row: logic_row):
-        raise ValidationError(message)
+    def constraint_handler(message: str, constraint: object, logic_row: LogicRow): # message: str, constr: constraint, row: logic_row):
+        theDetail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
+        raise ValidationErrorExt(message= message, detail=theDetail)
 
     LogicBank.activate(session=session, activator=logic_bank.declare_logic, constraint_event=constraint_handler)
 
