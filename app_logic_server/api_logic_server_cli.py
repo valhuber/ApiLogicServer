@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "1.04.01"
+__version__ = "01.04.01"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -1043,11 +1043,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
     if run:
         run_command(f'python {abs_project_name}/api_logic_server_run.py {host}', msg="\nRun created ApiLogicServer")
     else:
-        print("\nCreation complete.  Next steps:")
+        print("\nApiLogicServer project created.  Next steps:")
         print(f'..cd {project_name}')
-        print(f'..virtualenv venv')
-        print(f'..source venv/bin/activate  # windows: venv\\Scripts\\activate')
-        print(f'..pip install -r requirements.txt')
         print(f'..python api_logic_server_run.py')
         print(f'..python ui/basic_web_app/run.py')
 
@@ -1067,10 +1064,11 @@ def version(ctx):
     """
         Recent Changes.
     """
+    print_args(commands, "Command Line Arguments")
     click.echo(
         click.style(
-            "Recent Changes:\n"
-            "\t02/02/2021 - 01.04.00: \n"
+            f'ApiLogicServer CLI {__version__} Recent Changes:\n'
+            "\t02/02/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)\n"
             "\t02/01/2021 - 01.03.00: Fix logic logging, nw rules\n"
             "\t01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)\n"
             "\t01/29/2021 - 01.02.04: Minor cleanup\n"
@@ -1253,7 +1251,8 @@ if __name__ == '__main__':  # debugger & python command line start here
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
-    print("\n\nAPI Logic Server Creation " + __version__ + " here\n")
+    print(f'\n\nAPI Logic Server CLI Utility {__version__} here\n')
     commands = sys.argv
-    print_args(commands, "Command Line Arguments")
+    if len(sys.argv) > 1 and sys.argv[1] != "version":
+        print_args(commands, "Main - Command Line Arguments")
     main()
