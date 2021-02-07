@@ -135,6 +135,8 @@ Many thanks to
 Change Log
 ----------
 
+02/06/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)
+
 02/02/2021 - 01.04.00: TBD
 
 02/01/2021 - 01.03.01: Fix logic logging, nw rules

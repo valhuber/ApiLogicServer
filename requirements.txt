@@ -6,13 +6,13 @@ SQLAlchemy-Utils==0.36.8
 Flask-AppBuilder==3.1.1
 LogicBankUtils
 inflect==5.0.2
-safrs
+safrs>=2.11.1
 flask-admin
 flask-cors
 Flask
 Flask-Admin
 python-dotenv
 email-validator
-LogicBank
+LogicBank>=0.9.0
 PyMySQL
 cryptography

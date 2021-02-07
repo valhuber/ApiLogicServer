@@ -44,7 +44,7 @@ def setup_logging():
         engine_logger.addHandler(handler)
 
 
-class ValidationErrorExt(ValidationError):  # Achim code, not Thomas code
+class ValidationErrorExt(ValidationError):
     """
     This exception is raised when invalid input has been detected (client side input)
     Always send back the message to the client in the response
@@ -68,7 +68,7 @@ def create_app(config_filename=None, host="localhost"):
     session: Session = db.session
     print("app/__init__#create_app - got session: " + str(session))
 
-    def constraint_handler(message: str, constraint: object, logic_row: LogicRow): # message: str, constr: constraint, row: logic_row):
+    def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         theDetail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
         raise ValidationErrorExt(message= message, detail=theDetail)
 

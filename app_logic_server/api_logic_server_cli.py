@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "1.03.01"
+__version__ = "1.04.00"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)

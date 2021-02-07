@@ -187,7 +187,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-02/01/2021 - 01.03.01: Fix logic logging, nw rules
+02/06/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)
 
 01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)
 
