@@ -135,6 +135,12 @@ Many thanks to
 Change Log
 ----------
 
+02/07/2021 - 01.04.04: fix default project name
+
+02/07/2021 - 01.04.03: db_url default (for Jupyter)
+
+02/07/2021 - 01.04.02: Internal Renaming
+
 02/06/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)
 
 02/02/2021 - 01.04.00: TBD

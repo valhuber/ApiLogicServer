@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.01"
+__version__ = "01.04.04"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -44,7 +44,7 @@ def create_app(config_filename=None, host="localhost"):
     import safrs
 
     app = Flask("API Logic Server")
-    import app_logic_server.config as app_logic_server_config
+    import api_logic_server_cli.config as app_logic_server_config
     app.config.from_object(app_logic_server_config.Config)
     db = safrs.DB
     db.init_app(app)
@@ -220,8 +220,7 @@ class GenerateFromModel(object):
             # db = SQLAlchemy()
             # db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used models
 
-            # from app_logic_server.my_project.app import create_app  # FIXME no way this can work
-
+            # from api_logic_server_cli.my_project.app import create_app  # FIXME no way this can work
 
             self.app = create_app(host=self.host)
             self.app.config.SQLALCHEMY_DATABASE_URI = a_db_url
@@ -961,6 +960,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         print(f'  --non_favorites={non_favorites}')
     print(f"\nApiLogicServer {__version__} Creation Log:")
     abs_db_url = db_url
+    if abs_db_url == "":
+        print(f'0. Using demo default db_url: sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite')
+        abs_db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
     if db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         abs_db_url = abspath(url)
@@ -1064,11 +1066,14 @@ def version(ctx):
     """
         Recent Changes.
     """
-    print_args(commands, "Command Line Arguments")
+    print(f'\tInstalled at {abspath(__file__)}\n')
     click.echo(
         click.style(
-            f'ApiLogicServer CLI {__version__} Recent Changes:\n'
-            "\t02/02/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)\n"
+            f'Recent Changes:\n'
+            "\t02/07/2021 - 01.04.04: fix default project name\n"
+            "\t02/07/2021 - 01.04.03: db_url default (for Jupyter)\n"
+            "\t02/07/2021 - 01.04.02: Internal Renaming\n"
+            "\t02/06/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)\n"
             "\t02/01/2021 - 01.03.00: Fix logic logging, nw rules\n"
             "\t01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)\n"
             "\t01/29/2021 - 01.02.04: Minor cleanup\n"
@@ -1083,7 +1088,7 @@ def version(ctx):
 
 @main.command("create")
 @click.option('--db_url',
-              default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
+              default=f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite',
               prompt="Database URL",
               help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
@@ -1158,7 +1163,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
 @main.command("run")
 @click.option('--db_url',
-              default=f'sqlite:///{abspath(get_project_dir())}/app_logic_server/nw.sqlite',
+              default=f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite',
               prompt="Database URL",
               help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
@@ -1247,7 +1252,7 @@ def start():               # target of setup.py
 
 
 if __name__ == '__main__':  # debugger & python command line start here
-    # eg: python app_logic_server/api_logic_server_cli.py create --project_name=~/Desktop/test_project
+    # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 

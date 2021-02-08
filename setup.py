@@ -12,7 +12,7 @@ from setuptools import find_packages, setup
 
 find_version = True
 if find_version:
-    with io.open("app_logic_server/api_logic_server_cli.py", "rt", encoding="utf8") as f:
+    with io.open("api_logic_server_cli/cli.py", "rt", encoding="utf8") as f:
         version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 else:
     version = 0.0
@@ -48,16 +48,16 @@ setup(
     ),
     long_description=desc(),
     long_description_content_type="text/x-rst",
-    packages=['app_logic_server',
+    packages=['api_logic_server_cli',
               'expose_existing', 'expose_existing.sqlacodegen', 'expose_existing.sqlacodegen.sqlacodegen',
               'prototype', 'prototype.api', 'prototype.database', 'prototype.logic',
               'prototype.templates', 'prototype.ui'],
-    package_data={"app_logic_server": ["nw.sqlite", "nw_logic.txt"],
+    package_data={"api_logic_server_cli": ["nw.sqlite", "nw_logic.txt"],
                   "prototype": ["requirements.txt", "default.env", "EXAMPLE.env", "readme.md"],
                   'prototype.templates': ["index.html"]
                   },
     entry_points={
-        "console_scripts": ["ApiLogicServer=app_logic_server.api_logic_server_cli:start"]
+        "console_scripts": ["ApiLogicServer=api_logic_server_cli.cli:start"]
     },
     include_package_data=True,
     zip_safe=False,
