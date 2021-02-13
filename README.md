@@ -187,6 +187,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite
+
 02/07/2021 - 01.04.04: fix default project name
 
 02/07/2021 - 01.04.03: db_url default (for Jupyter)

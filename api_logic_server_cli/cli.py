@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.04"
+__version__ = "01.04.05"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -1070,6 +1070,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite\n"
             "\t02/07/2021 - 01.04.04: fix default project name\n"
             "\t02/07/2021 - 01.04.03: db_url default (for Jupyter)\n"
             "\t02/07/2021 - 01.04.02: Internal Renaming\n"
