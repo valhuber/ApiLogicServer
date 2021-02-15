@@ -32,7 +32,8 @@ def hello_world():  # test it with: http://localhost:5000/hello_world?user=ApiLo
     See: https://github.com/thomaxxl/safrs/wiki/Customization
     """
     user = request.args.get('user')
-    return jsonify({"result": f'hello, {user}'})
+    return jsonify({"result": f'hello, {user}',
+                    "notice": f'add your own endpoints with python'})
 
 
 @app.route('/')
