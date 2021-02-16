@@ -149,6 +149,11 @@ source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer
 ```
 
+# Learning
+Take the [tutorial](../../wiki/Tutorial) to run your locally installed software.
+
+If you'd like to try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme).
+
 # Project Information
 
 ### Status
