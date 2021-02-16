@@ -24,11 +24,11 @@
 
     def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         if logic_row.ins_upd_dlt == "ins":  # logic engine fills parents for insert
-            sales_rep = row.SalesRep  # type : Employee
+            sales_rep = row.Employee
             if sales_rep is None:
                 logic_row.log("no salesrep for this order")
             else:
-                logic_row.log(f'Hi, {sales_rep.Manager.FirstName}, congratulate {sales_rep.FirstName} on their new order')
+                 logic_row.log(f'Congratulations to {sales_rep.FirstName} on their new order')
 
     Rule.constraint(validate=models.Customer,
                     as_condition=lambda row: row.Balance <= row.CreditLimit,
