@@ -117,6 +117,10 @@ of Python:
 
 Declare your logic by editing ``logic/rules_bank.py``
 
+Demo / Tutorial (no install)
+----------------------------
+See the `Tutorial. <https://github.com/valhuber/ApiLogicServerTutorial/>`_
+
 
 More information:
 -----------------
@@ -134,6 +138,8 @@ Many thanks to
 
 Change Log
 ----------
+
+02/15/2021 - 01.04.06: Tutorial
 
 02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite
 

@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.05"
+__version__ = "01.04.06"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -1055,7 +1055,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 @click.pass_context
 def main(ctx):
     """
-    Creates ApiLogicServer project.\r
+    Creates ApiLogicServer project.
+
+    https://github.com/valhuber/ApiLogicServer/wiki/Tutorial
     """
     # print("group")
 
@@ -1067,9 +1069,11 @@ def version(ctx):
         Recent Changes.
     """
     print(f'\tInstalled at {abspath(__file__)}\n')
+    print(f'\thttps://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t02/15/2021 - 01.04.06: Tutorial\n"
             "\t02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite\n"
             "\t02/07/2021 - 01.04.04: fix default project name\n"
             "\t02/07/2021 - 01.04.03: db_url default (for Jupyter)\n"
