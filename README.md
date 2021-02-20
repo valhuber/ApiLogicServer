@@ -178,6 +178,7 @@ Many thanks to
 - Mike Bayer, for SQLAlchemy
 - Thomas Pollet, for SAFRS
 - Daniel Gaspar, for Flask AppBuilder
+- Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration
 - Gloria Huber and Denny McKinney, for doc review
 
