@@ -131,13 +131,18 @@ Acknowledgements
 ----------------
 Many thanks to
 
+- Mike Bayer, for SQLAlchemy
 - Thomas Pollet, for SAFRS
 - Daniel Gaspar, for Flask AppBuilder
+- Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration
+- Gloria Huber and Denny McKinney, for doc review
 
 
 Change Log
 ----------
+
+02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)
 
 02/15/2021 - 01.04.06: Tutorial
 

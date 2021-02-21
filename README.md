@@ -192,6 +192,7 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)
 
 02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite
 

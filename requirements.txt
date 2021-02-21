@@ -13,6 +13,6 @@ Flask
 Flask-Admin
 python-dotenv
 email-validator
-LogicBank>=0.9.3
+LogicBank>=0.9.4
 PyMySQL
 cryptography
