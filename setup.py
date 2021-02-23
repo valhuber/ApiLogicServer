@@ -78,7 +78,7 @@ setup(
         "Flask-Admin==1.5.7",
         "python-dotenv==0.15.0",
         "email-validator==1.1.1",
-        "LogicBank>=0.9.0",
+        "LogicBank>=0.9.3",
         "PyMySQL>=1.0.2",
         "cryptography>=3.3.1"
     ],

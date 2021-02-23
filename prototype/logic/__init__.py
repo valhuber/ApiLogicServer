@@ -26,7 +26,7 @@ formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelnam
 handler.setFormatter(formatter)
 logic_logger.addHandler(handler)
 
-do_engine_logging = True
+do_engine_logging = False
 engine_logger = logging.getLogger('engine_logger')  # for internals
 if do_engine_logging:
     engine_logger.setLevel(logging.DEBUG)

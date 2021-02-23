@@ -141,6 +141,7 @@ Many thanks to
 
 Change Log
 ----------
+02/23/2021 - 01.04.08: Minor - proper log level for APIs
 
 02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)
 

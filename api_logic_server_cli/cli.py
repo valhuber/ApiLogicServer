@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.07"
+__version__ = "01.04.08"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -1073,6 +1073,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"
             "\t02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)\n"
             "\t02/15/2021 - 01.04.06: Tutorial\n"
             "\t02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite\n"
