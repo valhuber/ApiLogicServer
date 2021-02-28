@@ -24,7 +24,7 @@ from logic import logic_bank
     logic_bank_utils.add_python_path(project_dir="replace_project_name", my_file=__file__)
 
 from flask import render_template, request, jsonify, Flask
-from safrs import ValidationError
+from safrs import ValidationError, SAFRSBase
 
 
 def setup_logging():
@@ -84,6 +84,7 @@ def create_app(config_filename=None, host="localhost"):
         db.init_app(flask_app)
         safrs_api = expose_api_models.expose_models(flask_app, host)
         expose_rpcs.expose_rpcs(flask_app, safrs_api)
+        SAFRSBase._s_auto_commit = False
         session.close()
 
     return flask_app, safrs_api

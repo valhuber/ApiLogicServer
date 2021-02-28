@@ -27,7 +27,9 @@ def expose_rpcs(app, api):
 
 
 def get_attr_name(mapper, attr)-> str:
+    """ returns name, type of attr metadata object """
     attr_name = None
+    attr_type = "attr"
     if hasattr(attr, "key"):
         attr_name = attr.key
     elif isinstance(attr, hybrid_property):
@@ -36,41 +38,39 @@ def get_attr_name(mapper, attr)-> str:
         attr_name = attr.__name__
     elif hasattr(attr, "name"):
         attr_name = attr.name
-    if attr_name == "Customerxx":
+    if attr_name == "OrderDetailList" or attr_name == "Customer":
         print("Debug Stop")
-    if hasattr(attr, "impl"):
-        if attr.impl.collection:
-            attr_name = None
-        if isinstance(attr.impl, sqlalchemy.orm.attributes.ScalarObjectAttributeImpl):
-            attr_name = None
-    return attr_name
+    if isinstance(attr, sqlalchemy.orm.relationships.RelationshipProperty):   # hasattr(attr, "impl"):   # sqlalchemy.orm.relationships.RelationshipProperty
+        if attr.uselist:
+            attr_type = "list"
+        else: # if isinstance(attr.impl, sqlalchemy.orm.attributes.ScalarObjectAttributeImpl):
+            attr_type = "object"
+    return attr_name, attr_type
 
 
 def copy_like_named_attrs(from_row: object, to_row: safrs.DB.Model):
     row_mapper = object_mapper(to_row)
     for each_attr_name in from_row:
-        each_attr_name = get_attr_name(mapper=row_mapper, attr=each_attr_name)
+        # each_attr_name = get_attr_name(mapper=row_mapper, attr=each_attr_name)
         if each_attr_name is None:  # parent or child-list
-            pass
+            raise RuntimeError("System error - copy_like_named_attrs/from_row has empty attr_name")
         if hasattr(to_row, each_attr_name):
-            attr = row_mapper.column_attrs
-            if hasattr(attr, "impl"):
-                if attr.impl.collection:
-                    attr_name = None
-                if isinstance(attr.impl, sqlalchemy.orm.attributes.ScalarObjectAttributeImpl):
-                    attr_name = None
-
-            if isinstance(getattr(to_row,each_attr_name), safrs.DB.Model):
-                pass
-            elif isinstance(getattr(to_row,each_attr_name), List):
-                pass
-            else:
-                value = from_row[each_attr_name]
-                setattr(to_row, each_attr_name, value)
+            for each_attr in row_mapper.attrs:  # TODO - check use of LogicRow (using row_mapper.column_attrs??)
+                mapped_attr_name, mapped_attr_type = get_attr_name(row_mapper, each_attr)
+                if mapped_attr_name == each_attr_name:
+                    if mapped_attr_type == "attr":
+                        value = from_row[each_attr_name]
+                        setattr(to_row, each_attr_name, value)
+                    elif mapped_attr_type == "list":
+                        print("a child list - TBD - create/attach child instances")
+                        # e.g., eachItem = Item(); order.OrderDetailList.append(eachItem)
+                    elif mapped_attr_type == "object":
+                        print("a parent object - skip")
+                    break
 
 
 class OrderRPC(models.Order):
-    """ attempting to create rpc in class, without altering class (per recreate objective) """
+    """ goal: create rpc in class, without altering class (per recreate objective) """
     @classmethod
     @jsonapi_rpc(http_methods=["POST"])
     def add_order(self, *args, **kwargs):
@@ -85,6 +85,7 @@ class OrderRPC(models.Order):
             "meta": {
                 "method": "add_order",
                 "args": {
+                  "CustomerId": "ALFKI",
                   "EmployeeId": 6,
                   "Freight": 10,
                   "OrderDetailList": [
@@ -94,24 +95,17 @@ class OrderRPC(models.Order):
                 }
             }
         }
+
+        curl -X POST "http://localhost:5000/Order/add_order" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "               {            \"meta\": {                \"method\": \"add_order\",                \"args\": {                  \"CustomerId\": \"ALFKI\",                  \"EmployeeId\": 6,                  \"Freight\": 10,                  \"OrderDetailList\": [                     {\"ProductId\": 1, \"qty\": 2},                     {\"ProductId\": 2, \"qty\": 3}                  ]                }            }        }"
         """
 
         print("adding order")  # POST /Order/add_order
         print(kwargs)
 
         db = safrs.DB                       # Use the safrs.DB, not db!
-        session = db.session                # sqlalchemy.orm.scoping.scoped_session
-        assert session.autocommit == False  # evidently *not* autocommit
-        # session.begin()                     # ERROR: A transaction is already begun.
-        new_order = models.Order()          # immediately commits (blank order, fails)
+        session = db.session  # sqlalchemy.orm.scoping.scoped_session
+        new_order = models.Order()          # api_logic_server_run - SAFRSBase._s_auto_commit = False
         session.add(new_order)
 
-        """  like this in LogicBank (not flask)
-        session_maker = sqlalchemy.orm.sessionmaker()
-        session_maker.configure(bind=engine)
-        session = session_maker()
-        """
-
         copy_like_named_attrs(kwargs, new_order)
-        pass
         return {}
