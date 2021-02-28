@@ -853,8 +853,12 @@ def append_logic_with_nw_logic(project_name):
 
 
 def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
-    """ replace apo/expose_rpcs with nw version """
-    copyfile("nw_expose_rpcs.py", project_name + '/api/expose_rpcs.py')
+    """ replace api/expose_rpcs with nw version """
+    rpcs_file = open(project_name + '/api/expose_rpcs.py', 'w')
+    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_expose_rpcs.txt")
+    nw_expose_rpcs = nw_expose_rpcs_file.read()
+    rpcs_file.write(nw_expose_rpcs)
+    rpcs_file.close()
 
 
 def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
