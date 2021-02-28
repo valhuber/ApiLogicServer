@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.08"
+__version__ = "01.04.09"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -161,6 +161,7 @@ class GenerateFromModel(object):
             each_result = self.process_each_table(each_table[1])
             self.result_views += each_result
         self.result_views += self.process_module_end(meta_tables)
+        self.result_apis += f'    return api\n'
         # self.session.close()
         self.app.teardown_appcontext(None)
         if self.engine:
@@ -851,6 +852,11 @@ def append_logic_with_nw_logic(project_name):
     logic_file.close()
 
 
+def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
+    """ replace apo/expose_rpcs with nw version """
+    copyfile("nw_expose_rpcs.py", project_name + '/api/expose_rpcs.py')
+
+
 def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
     with open(in_file, 'r') as file:
         file_data = file.read()
@@ -1026,8 +1032,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         fix_basic_web_app_app_init__inject_logic(abs_project_name)
 
     if db_url.endswith("nw.sqlite"):
-        print("10. Append logic/logic_bank.py with pre-defined nw_logic")
+        print("10. Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
         append_logic_with_nw_logic(abs_project_name)
+        replace_expose_rpcs_with_nw_expose_rpcs(abs_project_name)
 
     if open_with != "":
         print(f'\nCreation complete.  Starting ApiLogicServer at {project_name}\n')
@@ -1073,6 +1080,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t02/27/2021 - 01.04.09: Cleanup main api_run, prelim RPCs\n"
             "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"
             "\t02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)\n"
             "\t02/15/2021 - 01.04.06: Tutorial\n"
