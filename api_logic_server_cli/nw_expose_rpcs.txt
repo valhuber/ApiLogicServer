@@ -1,14 +1,14 @@
 from typing import List
-
 import safrs
 import sqlalchemy
 from flask import request, jsonify
 from safrs import jsonapi_rpc, SAFRSAPI
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper
-
 from database import models
 from database.db import Base
+
+# recreate objective: using separate file preserves customizations, so can recreate models, endpoints, etc
 
 
 def expose_rpcs(app, api):
@@ -25,10 +25,8 @@ def expose_rpcs(app, api):
     api.expose_object(OrderRPC)
     print("RPCs exposed")
 
+
 def get_attr_name(mapper, attr)-> str:
-    """polymorhpism is for wimps - find the name
-        returns None if bad name, or is collection, or is object
-    """
     attr_name = None
     if hasattr(attr, "key"):
         attr_name = attr.key
@@ -71,8 +69,8 @@ def copy_like_named_attrs(from_row: object, to_row: safrs.DB.Model):
                 setattr(to_row, each_attr_name, value)
 
 
-class OrderRPC(models.Order):   # was experimenting with inheriting attrs - I see it's the args :
-
+class OrderRPC(models.Order):
+    """ attempting to create rpc in class, without altering class (per recreate objective) """
     @classmethod
     @jsonapi_rpc(http_methods=["POST"])
     def add_order(self, *args, **kwargs):
@@ -97,15 +95,17 @@ class OrderRPC(models.Order):   # was experimenting with inheriting attrs - I se
             }
         }
         """
-        # ok, can pass custom args, but what about a *list* of OrderDetails (5 hammers, 2 shovels)   <========
-        print("adding ")  # POST /Order/add_order
+
+        print("adding order")  # POST /Order/add_order
         print(kwargs)
-        db = safrs.DB  # User the safrs.DB, not db!
-        session = db.session  # sqlalchemy.orm.scoping.scoped_session
-        assert session.autocommit == False
-        session.begin()       # ERROR: A transaction is already begun.
-        new_order = models.Order()  # immediately commits
+
+        db = safrs.DB                       # Use the safrs.DB, not db!
+        session = db.session                # sqlalchemy.orm.scoping.scoped_session
+        assert session.autocommit == False  # evidently *not* autocommit
+        # session.begin()                     # ERROR: A transaction is already begun.
+        new_order = models.Order()          # immediately commits (blank order, fails)
         session.add(new_order)
+
         """  like this in LogicBank (not flask)
         session_maker = sqlalchemy.orm.sessionmaker()
         session_maker.configure(bind=engine)
@@ -114,5 +114,4 @@ class OrderRPC(models.Order):   # was experimenting with inheriting attrs - I se
 
         copy_like_named_attrs(kwargs, new_order)
         pass
-        # ... add the order
         return {}
