@@ -2,7 +2,8 @@ from typing import List
 import safrs
 import sqlalchemy
 from flask import request, jsonify
-from safrs import jsonapi_rpc, SAFRSAPI
+from safrs import jsonapi_rpc, SAFRSAPI, SAFRSBase
+from sqlalchemy import Column, Integer, select, text
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper
 from database import models
@@ -22,7 +23,7 @@ def expose_rpcs(app, api):
         user = request.args.get('user')
         return jsonify({"result": f'hello, {user}'})
 
-    api.expose_object(OrderRPC)
+    api.expose_object(ServicesEndPoint)
     print("RPCs exposed")
 
 
@@ -49,11 +50,13 @@ def get_attr_name(mapper, attr)-> str:
 
 
 def copy_like_named_attrs(from_row: object, to_row: safrs.DB.Model):
+    """
+    :param from_row: service payload: dict - e.g., Order and OrderDetailsList
+    :param to_row: instantiated mapped object (e.g., Order)
+    :return: updates to_row with contents of from_row (recursively for lists)
+    """
     row_mapper = object_mapper(to_row)
     for each_attr_name in from_row:
-        # each_attr_name = get_attr_name(mapper=row_mapper, attr=each_attr_name)
-        if each_attr_name is None:  # parent or child-list
-            raise RuntimeError("System error - copy_like_named_attrs/from_row has empty attr_name")
         if hasattr(to_row, each_attr_name):
             for each_attr in row_mapper.attrs:  # TODO - check use of LogicRow (using row_mapper.column_attrs??)
                 mapped_attr_name, mapped_attr_type = get_attr_name(row_mapper, each_attr)
@@ -72,39 +75,32 @@ def copy_like_named_attrs(from_row: object, to_row: safrs.DB.Model):
                             child_list.append(child_to)
                             pass
                     elif mapped_attr_type == "object":
-                        print("a parent object - skip")
+                        print("a parent object - skip (maybe do lookups here)")
                     break
 
 
-class OrderRPC(models.Order):
+class ServicesEndPoint(SAFRSBase, Base):
+    """ this class is *not* a table, but defines an endpoint for the services below """
+    __tablename__ = "Services"
+
+    Id = Column(Integer, primary_key=True)
+
     """ goal: create rpc in class, without altering class (per recreate objective) """
     @classmethod
     @jsonapi_rpc(http_methods=["POST"])
     def add_order(self, *args, **kwargs):
         """
             args :
-                product_id : 1
-                test_arg: 2
-        """
-
-        """ test: POST to Order/add_order
-        {
-            "meta": {
-                "method": "add_order",
-                "args": {
-                  "CustomerId": "ALFKI",
-                  "EmployeeId": 6,
-                  "Freight": 10,
-                  "AmountTotal": 0,
-                  "OrderDetailList": [
-                     {"ProductId": 1, "Quantity": 1, "Discount": 0},
-                     {"ProductId": 2, "Quantity": 2, "Discount": 0}
-                  ]
-                }
-            }
-        }
-
-        curl -X POST "http://localhost:5000/Order/add_order" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "        {            \"meta\": {                \"method\": \"add_order\",                \"args\": {                  \"CustomerId\": \"ALFKI\",                  \"EmployeeId\": 6,                  \"Freight\": 10,                  \"AmountTotal\": 0,                  \"OrderDetailList\": [                     {\"ProductId\": 1, \"Quantity\": 1, \"Discount\": 0},                     {\"ProductId\": 2, \"Quantity\": 2, \"Discount\": 0}                  ]                }            }        }"
+                CustomerId: ALFKI
+                EmployeeId: 1
+                Freight: 10
+                OrderDetailList :
+                  - ProductId: 1
+                    Quantity: 1
+                    Discount: 0
+                  - ProductId: 2
+                    Quantity: 2
+                    Discount: 0
         """
 
         print("adding order")  # POST /Order/add_order
@@ -116,4 +112,23 @@ class OrderRPC(models.Order):
         session.add(new_order)
 
         copy_like_named_attrs(kwargs, new_order)
+
+        """ test: POST to Services/add_order
+        {
+            "meta": {
+                "method": "add_order",
+                "args": {
+                  "CustomerId": "ALFKI",
+                  "EmployeeId": 6,
+                  "Freight": 10,
+                  "OrderDetailList": [
+                     {"ProductId": 1, "Quantity": 1, "Discount": 0},
+                     {"ProductId": 2, "Quantity": 2, "Discount": 0}
+                  ]
+                }
+            }
+        }
+
+        curl -X POST "http://localhost:5000/Services/add_order" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "        {            \"meta\": {                \"method\": \"add_order\",                \"args\": {                  \"CustomerId\": \"ALFKI\",                  \"EmployeeId\": 6,                  \"Freight\": 10,                  \"OrderDetailList\": [                     {\"ProductId\": 1, \"Quantity\": 1, \"Discount\": 0},                     {\"ProductId\": 2, \"Quantity\": 2, \"Discount\": 0}                  ]                }            }        }"
+        """
         return {}
