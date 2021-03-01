@@ -62,11 +62,10 @@ def copy_like_named_attrs(from_row: object, to_row: safrs.DB.Model):
                         value = from_row[each_attr_name]
                         setattr(to_row, each_attr_name, value)
                     elif mapped_attr_type == "list":
-                        # print("a child list - TBD - create/attach child instances")
-                        # e.g., eachItem = Item(); order.OrderDetailList.append(eachItem)
                         child_from = from_row[each_attr_name]
                         for each_child_from in child_from:
                             child_class = each_attr.entity.class_
+                            # eachOrderDetail = OrderDetail(); order.OrderDetailList.append(eachOrderDetail)
                             child_to = child_class()  # instance of child (e.g., OrderDetail)
                             copy_like_named_attrs(each_child_from, child_to)
                             child_list = getattr(to_row, each_attr_name)
@@ -96,15 +95,16 @@ class OrderRPC(models.Order):
                   "CustomerId": "ALFKI",
                   "EmployeeId": 6,
                   "Freight": 10,
+                  "AmountTotal": 0,
                   "OrderDetailList": [
-                     {"ProductId": 1, "Quantity": 1},
-                     {"ProductId": 2, "Quantity": 2}
+                     {"ProductId": 1, "Quantity": 1, "Discount": 0},
+                     {"ProductId": 2, "Quantity": 2, "Discount": 0}
                   ]
                 }
             }
         }
 
-        curl -X POST "http://localhost:5000/Order/add_order" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "               {            \"meta\": {                \"method\": \"add_order\",                \"args\": {                  \"CustomerId\": \"ALFKI\",                  \"EmployeeId\": 6,                  \"Freight\": 10,                  \"OrderDetailList\": [                     {\"ProductId\": 1, \"Quantity\": 2},                     {\"ProductId\": 2, \"Quantity\": 3}                  ]                }            }        }"
+        curl -X POST "http://localhost:5000/Order/add_order" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "        {            \"meta\": {                \"method\": \"add_order\",                \"args\": {                  \"CustomerId\": \"ALFKI\",                  \"EmployeeId\": 6,                  \"Freight\": 10,                  \"AmountTotal\": 0,                  \"OrderDetailList\": [                     {\"ProductId\": 1, \"Quantity\": 1, \"Discount\": 0},                     {\"ProductId\": 2, \"Quantity\": 2, \"Discount\": 0}                  ]                }            }        }"
         """
 
         print("adding order")  # POST /Order/add_order
