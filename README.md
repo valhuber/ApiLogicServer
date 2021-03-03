@@ -7,7 +7,7 @@ to the business, required for mobile apps and internal
 The problem is that they are time-consuming and costly to develop.
 This reduces strategic business agility.
 
-API Logic Server provides strategic business agility,
+API Logic Server provides exceptional strategic business agility,
 by creating an executable server for a database, instantly.
 
 As illustrated below, the ```ApiLogicServer CLI``` (command line interface) creates an **API Logic Server,**
