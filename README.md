@@ -1,3 +1,5 @@
+[![Downloads](https://static.pepy.tech/personalized-badge/apilogicserver?period=month&units=international_system&left_color=black&right_color=orange&left_text=Downloads)](https://pepy.tech/project/apilogicserver)
+
 # API Logic Server
 
 There is widespread agreement that APIs are strategic
