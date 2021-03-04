@@ -6,7 +6,7 @@ SQLAlchemy
 SQLAlchemy-Utils
 six
 email-validator
-LogicBank>=0.9.0
+LogicBank>=0.9.5
 safrs>=2.11.1
 logicbankutils
 flask-appbuilder
