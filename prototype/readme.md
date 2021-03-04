@@ -2,10 +2,12 @@
 
 Created: creation-date
 
-From Prototype: 1.0 (Jan 19, 2021)
+From Prototype: 1.1 (Mar 3, 2021)
 
 Clone from: cloned-from
 
+API Logic Server is based on the projects shown below.
+Consult their documentation for important information.
 
 ## SARFS JSON:Api Server
 
@@ -37,8 +39,24 @@ Use Logic Bank to govern SQLAlchemy update transaction logic - multi-table deriv
 *   **Python - control and extensibility,** using standard tools and techniques
 
 Logic Bank is based on SQLAlchemy - it handles `before_flush` events to enforce your logic.
+Your logic therefore applies to any SQLAlchemy-based access - JSON:Api, Flask App Builder, etc.
 
-    Edit your logic in: logic/logic_bank.py
+    Declare your logic in: logic/logic_bank.py
+
+
+## SQLAlchemy
+
+[Object Relational Mapping for Python](https://docs.sqlalchemy.org/en/13/).
+
+SQLAlchemy provides Python-friendly database access for Python.
+
+It is used by JSON:Api, Logic Bank, and Flask App Builder.
+
+SQLAlchemy processing is based on Python `model` classes,
+created automatically by API Logic Server from your database,
+and saved in the `database` directory.
+
+
 
 ## Basic Web App - Flask App Builder
 
@@ -50,7 +68,7 @@ This generated project also contains a basic web app
     Edit your pages in: ui/basic_web_app/app/view.py
 
 
-## Check it out
+# Check it out
 Install your projects' environment:
 ```
 cd <your project>
@@ -65,25 +83,9 @@ Then, run:
 
 * **Basic Web App -** [localhost:8080](/localhost:8080)
 
-## Source
+# Project Structure
 
->*Rules: [/logic/logic_bank.py](/logic/logic_bank.py)*  
-*Enhanced Json Decoder: [api/json_encode.py](api/json_encode.py)*  
-*SQLAlchemy Models: [/models](/database/models) (StoreModel: Custom endpoint)*  
-*Custom Column Types: [models/types](database/models/types)*  
-*Flask App: [/app](/app)*  
-*Enhanced Flask-Admin View: [/admin/admin_view_ext.py](/admin/admin_view_ext.py) (Display Validation Errors/ LogicBank Constraints)*  
-*Flask Admin Custom Types:[/admin/admin_model_converter_ext.py](/admin/admin_model_converter_ext.py)*  
-*Rules Exception Handler: [/logic/_init_.py](/logic/__init__.py)*  
-
-
-**User Email Validation:**
-
-<pre>        if "@" not in value:  raise ValidationError("Email Validation Error {}".format(value))</pre>
-
-**Rules:**
-
-<pre>        Rule.constraint(validate=StoreModel,as_condition=lambda row: 'X' not in row.name,
-                                                error_msg="Store Names({row.name}) should not  contain X")
-        Rule.count(StoreModel.item_count, as_count_of=ItemModel)
-        Rule.parent_check(validate=ItemModel, error_msg="no parent", enable=True)</pre>
+>*Logic: [/logic/logic_bank.py](/logic/logic_bank.py)*  
+*SQLAlchemy Models: [/database](/database/models.py)*  
+*Services: [/api](/api/expose_services.py)*  
+*Flask App: [/ui](/ui/basic_web_app/run.py)*  

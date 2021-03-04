@@ -738,6 +738,7 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
     :param from_git: name of git project to clone (blank for default)
     :return: result of cmd
     """
+    cloned_from = from_git
     remove_project_debug = True
     if remove_project_debug:
         delete_dir(realpath(project_name), "1.")
@@ -756,13 +757,14 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
             else:
                 from_dir = code_loc + "/prototype"
         print(f'{msg} copy {from_dir} -> {project_name}')
+        cloned_from = from_dir
         shutil.copytree(from_dir, project_name)
 
     replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
                            in_file=f'{project_name}/readme.md')
     replace_string_in_file(search_for="cloned-from",
-                           replace_with=from_git,
+                           replace_with=cloned_from,
                            in_file=f'{project_name}/readme.md')
     pass
 
@@ -854,8 +856,8 @@ def append_logic_with_nw_logic(project_name):
 
 def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
     """ replace api/expose_rpcs with nw version """
-    rpcs_file = open(project_name + '/api/expose_rpcs.py', 'w')
-    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_expose_rpcs.txt")
+    rpcs_file = open(project_name + '/api/expose_services.py', 'w')
+    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_expose_services.txt")
     nw_expose_rpcs = nw_expose_rpcs_file.read()
     rpcs_file.write(nw_expose_rpcs)
     rpcs_file.close()
@@ -1010,8 +1012,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
 
     print("8. Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url")
-    replace_string_in_file(search_for="replace_project_name",
-                           replace_with=os.path.basename(project_name),
+    replace_string_in_file(search_for="\"api_logic_server\"",
+                           replace_with='"' + os.path.basename(project_name) + '"',
                            in_file=f'{abs_project_name}/api_logic_server_run.py')
     replace_string_in_file(search_for="replace_db_url",
                            replace_with=get_os_url(abs_db_url),
@@ -1084,7 +1086,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t02/27/2021 - 01.04.09: Cleanup main api_run, prelim RPCs\n"
+            "\t02/27/2021 - 01.04.09: Services, cleanup main api_run\n"
             "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"
             "\t02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)\n"
             "\t02/15/2021 - 01.04.06: Tutorial\n"

@@ -52,7 +52,7 @@ setup(
               'expose_existing', 'expose_existing.sqlacodegen', 'expose_existing.sqlacodegen.sqlacodegen',
               'prototype', 'prototype.api', 'prototype.database', 'prototype.logic',
               'prototype.templates', 'prototype.ui'],
-    package_data={"api_logic_server_cli": ["nw.sqlite", "nw-gold.sqlite", "nw_logic.txt", "nw_expose_rpcs.txt"],
+    package_data={"api_logic_server_cli": ["nw.sqlite", "nw-gold.sqlite", "nw_logic.txt", "nw_expose_services.txt"],
                   "prototype": ["requirements.txt", "default.env", "EXAMPLE.env", "readme.md"],
                   'prototype.templates': ["index.html"]
                   },
@@ -88,7 +88,8 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     python_requires="~=3.8"

@@ -11,7 +11,7 @@ from database import models
 from database.db import Base
 
 
-def expose_rpcs(app, api):
+def expose_services(app, api):
     @app.route('/hello_world')
     def hello_world():  # test it with: http://localhost:5000/hello_world?user=ApiLogicServer
         """

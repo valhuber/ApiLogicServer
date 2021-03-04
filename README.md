@@ -1,4 +1,7 @@
-[![Downloads](https://static.pepy.tech/personalized-badge/apilogicserver?period=month&units=international_system&left_color=black&right_color=orange&left_text=Downloads)](https://pepy.tech/project/apilogicserver)
+[![Downloads](https://pepy.tech/badge/apilogicserver)](https://pepy.tech/project/apilogicserver)
+[![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # API Logic Server
 
@@ -194,7 +197,7 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
-02/27/2021 - 01.04.09: Cleanup main api_run, prelim RPCs
+02/27/2021 - 01.04.09: Services, cleanup main api_run
 
 02/23/2021 - 01.04.08: Minor - proper log level for APIs
 

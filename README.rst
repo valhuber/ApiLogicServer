@@ -141,7 +141,7 @@ Many thanks to
 
 Change Log
 ----------
-02/27/2021 - 01.04.09: Cleanup main api_run, prelim RPCs
+02/27/2021 - 01.04.09: Services, cleanup main api_run
 
 02/23/2021 - 01.04.08: Minor - proper log level for APIs
 

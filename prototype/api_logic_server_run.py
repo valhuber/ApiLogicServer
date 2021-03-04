@@ -17,11 +17,11 @@ from logic_bank.exec_row_logic.logic_row import LogicRow
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
-from api import expose_api_models, expose_rpcs
+from api import expose_api_models, expose_services
 from logic import logic_bank
 
 (did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir="replace_project_name", my_file=__file__)
+    logic_bank_utils.add_python_path(project_dir="api_logic_server", my_file=__file__)
 
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
@@ -75,7 +75,10 @@ def create_app(config_filename=None, host="localhost"):
     print("app/__init__#create_app - got session: " + str(session))
 
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
-        detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
+        if constraint.error_attributes:
+            detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
+        else:
+            detail = {"model": logic_row.name}
         raise ValidationErrorExt(message= message, detail=detail)
 
     LogicBank.activate(session=session, activator=logic_bank.declare_logic, constraint_event=constraint_handler)
@@ -83,11 +86,12 @@ def create_app(config_filename=None, host="localhost"):
     with flask_app.app_context():
         db.init_app(flask_app)
         safrs_api = expose_api_models.expose_models(flask_app, host)
-        expose_rpcs.expose_rpcs(flask_app, safrs_api)
+        expose_services.expose_services(flask_app, safrs_api)
         SAFRSBase._s_auto_commit = False
         session.close()
 
     return flask_app, safrs_api
+
 
 # import api as api  # database opened here, models & rpc's exposed (TBD)
 
@@ -112,6 +116,7 @@ def handle_exception(e: ValidationError):
 #        res['errorMessage'] = e.message if hasattr(e, 'message') else f'{e}'
 
     return res, 400
+
 
 @flask_app.after_request
 def after_request(response):
