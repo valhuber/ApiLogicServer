@@ -27,6 +27,13 @@ from your database.  An Api Logic Server consists of these features:
 This **declarative approach** is based on standard Python tooling,
 and can be [installed](#Installation) and customized with standard approaches as described below.
 
+### Tutorials
+There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
+* [Tutorial](../../wiki/Tutorial)
+* [Video](https://www.youtube.com/watch?v=gbRaJr-daRs) is a walk-through of creating a system
+* [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud (MyBinder) based install
+
+
 # Quick Start - Create and Execute
 With a single command, create and run a
 [logic](#logic)-enabled
