@@ -160,10 +160,9 @@ If you'd like to try it with no install on the Cloud, use [this version of the T
 
 # Project Information
 
-### Status
-Pre-Alpha / Technology Preview - just entering test.
+### Status: Alpha
 
-Initially released 1/19/2021, the project is beginning to stablize:
+Initially released 1/19/2021, the project has stabilized:
 
 * The [default Northwind project](../../wiki/Sample-Database) is working with for both the API and the web app,
   with pre-created logic (good to explore for examples)
