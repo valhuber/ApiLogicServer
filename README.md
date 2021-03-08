@@ -29,9 +29,9 @@ and can be [installed](#Installation) and customized with standard approaches as
 
 ### Tutorials
 There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
-* [Tutorial](../../wiki/Tutorial)
-* [Video](https://www.youtube.com/watch?v=gbRaJr-daRs) is a walk-through of creating a system
-* [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud (MyBinder) based install
+* [Tutorial](../../wiki/Tutorial) walks you through the steps of creating a server
+* [Video](https://www.youtube.com/watch?v=gbRaJr-daRs) shows the steps of creating a server
+* [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
 
 
 # Quick Start - Create and Execute
