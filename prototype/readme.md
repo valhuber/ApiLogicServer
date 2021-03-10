@@ -65,7 +65,13 @@ This generated project also contains a basic web app
 * Multi-table - master / details (with tab sheets)
 * Intelligent layout - favorite fields first, predictive joins, etc
 
+
     Edit your pages in: ui/basic_web_app/app/view.py
+
+### Preparing Flask AppBuilder
+Before you run your app, you must create admin data,
+and address certain restrictions.  For more information, see
+[Working with Flask AppBuilder](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder).
 
 
 # Check it out

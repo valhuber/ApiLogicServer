@@ -202,7 +202,9 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
-02/27/2021 - 01.04.09: Services, cleanup main api_run
+03/10/2021 - 01.04.10: Fix issues in creating Basic Web App
+
+03/03/2021 - 01.04.09: Services, cleanup main api_run
 
 02/23/2021 - 01.04.08: Minor - proper log level for APIs
 

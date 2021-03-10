@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.09"
+__version__ = "01.04.10"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -321,7 +321,7 @@ class GenerateFromModel(object):
         result = ""
         table_name = a_table_def.name
         log.debug("process_each_table: " + table_name)
-        if "TRANSFERFUND" in table_name:
+        if "TRANSFERFUNDx" in table_name:
             log.debug("special table")  # debug stop here
         if (table_name + " " in self.not_exposed):
             return "# not_exposed: api.expose_object(models.{table_name})"
@@ -537,19 +537,25 @@ class GenerateFromModel(object):
         result = "related_views = ["
         related_count = 0
         child_list = self.find_child_list(a_table_def)
+        self_relns = ""
         for each_child in child_list:
-            related_count += 1
-            if related_count > 1:
-                result += ", "
+            if a_table_def.fullname == each_child.fullname:
+                self_relns += a_table_def.fullname + " "
             else:
-                self.num_related += 1
-            class_name = self.get_class_for_table(each_child.fullname)
-            if class_name is None:
-                print(f'.. .. .. Warning - Skipping {self.model_name(each_child)}->'
-                      f'{each_child.fullname} - no database/models.py class')
-            else:
-                result += class_name + self.model_name(each_child)
-        result += "]\n"
+                related_count += 1
+                if related_count > 1:
+                    result += ", "
+                else:
+                    self.num_related += 1
+                class_name = self.get_class_for_table(each_child.fullname)
+                if class_name is None:
+                    print(f'.. .. .. Warning - Skipping {self.model_name(each_child)}->'
+                          f'{each_child.fullname} - no database/models.py class')
+                else:
+                    each_entry = class_name + self.model_name(each_child)
+                    result += each_entry
+        omitted = "  # omitted self relationships: " + self_relns if self_relns != "" else ""
+        result += "]" + omitted + "\n"
         return result
 
     def find_child_list(self, a_table_def: MetaDataTable) -> list:
@@ -797,6 +803,7 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
         __delattr__ = dict.__delitem__
 
     def get_codegen_args():
+        """ DotDict of url, outfile, version """
         codegen_args = DotDict({})
         codegen_args.url = db_url
         # codegen_args.outfile = models_file
@@ -804,7 +811,7 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
         codegen_args.version = False
         return codegen_args
 
-    if use_model != "":
+    if use_model != "":  # use this hand-edited model (e.g., added relns)
         model_file = resolve_home(use_model)
         print(f'.. ..Copy {model_file} to {project + "/database/models.py"}')
         copyfile(model_file, project + '/database/models.py')
@@ -921,7 +928,7 @@ def insert_lines_at(lines: str, at: str, file_name: str):
         fp.writelines(file_lines)  # write whole list again to the same file
 
 
-def fix_basic_web_app_app_init__inject_logic(abs_project_name):
+def fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url):
     """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
     file_name = f'{abs_project_name}/ui/basic_web_app/app/__init__.py'
     proj = os.path.basename(abs_project_name)  # enable flask run
@@ -933,8 +940,12 @@ def fix_basic_web_app_app_init__inject_logic(abs_project_name):
                    "\nimport database.models as models\n"
                    + "from logic import declare_logic\n"
                    + "from logic_bank.logic_bank import LogicBank\n"
-                   + "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
                    )
+    if db_url.endswith("nw.sqlite"):
+        insert_text += "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
+    else:
+        insert_text += "# *** Enable the following after creating Flask AppBuilder Admin ***\n"
+        insert_text += "# LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
     insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
 
 
@@ -1035,7 +1046,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         if not db_url.endswith("nw.sqlite"):
             print(".. ..Note: you will need to run flask fab create-admin")
         fix_basic_web_app_run__python_path(abs_project_name)
-        fix_basic_web_app_app_init__inject_logic(abs_project_name)
+        fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url)
 
     if db_url.endswith("nw.sqlite"):
         print("10. Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
@@ -1086,7 +1097,8 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t02/27/2021 - 01.04.09: Services, cleanup main api_run\n"
+            "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
+            "\t03/03/2021 - 01.04.09: Services, cleanup main api_run\n"
             "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"
             "\t02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)\n"
             "\t02/15/2021 - 01.04.06: Tutorial\n"
@@ -1268,7 +1280,8 @@ def print_args(args, msg):
 
 
 def start():               # target of setup.py
-    sys.stderr.write("\n\nAPI Logic Server CLI " + __version__ + " here\n\n")
+    sys.stdout.write("\nAPI Logic Server CLI " + __version__ + " here\n")
+    sys.stdout.write("    SQLAlchemy URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n\n")
     main(obj={})
 
 
@@ -1277,7 +1290,8 @@ if __name__ == '__main__':  # debugger & python command line start here
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
-    print(f'\n\nAPI Logic Server CLI Utility {__version__} here\n')
+    print(f'\nAPI Logic Server CLI Utility {__version__} here')
+    print("    SQLAlchemy URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
         print_args(commands, "Main - Command Line Arguments")

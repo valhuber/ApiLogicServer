@@ -1,13 +1,25 @@
 API Logic Server
 ================
 
-Creates an executable API from a database:
+API-enabled backend development takes time.  This can block Mobile App Dev projects, and
+strategic business initiatives for internal / external (B2B) integration.
 
-- **API:** `swagger/OpenAPI <https://swagger.io/>`_ and `JSON:API <jsonapi.org>`_ compliant.  Uses `SAFRS <https://pypi.org/project/safrs/>`_ , a modern approach that enables client applications to configure their own API to reduce network traffic.
+API Logic Server creates an **executable JSON:API backend**, *instantly*,
+with crud support (including filtering, sorting, pagination), and
+related data retrieval for every table.  With Swagger.
 
-- **Web App:** a multi-page, multi-table web app; incorporates `Flask AppBuilder <https://flask-appbuilder.readthedocs.io/en/latest/>`_ and `fab-quickstart <https://pypi.org/project/fab-quick-start/>`_.
+It also creates a **multi-page, multi-table web app**, *instantly*,
+so developers can engage with business users - early in the project - for agile iterations.
 
-- **Logic:** spreadsheet-like rules for multi-table derivations and constraint that reduce transaction logic by 40X, using `Logic Bank <https://pypi.org/project/logicbank//>`_.
+Finally, it provides a logic engine that executes **spreadsheet-like rules**
+for multi-table derivations and constraints
+- *40X* more concise than legacy code, extensible with Python.
+
+This `video <https://www.youtube.com/watch?v=gbRaJr-daRs/>`_ shows the creation of a backend - in minutes -  that would typically require weeks.
+
+With over 12k downloads in its first 2 months, API Logic Server is
+`Open Source on GitHub <https://github.com/valhuber/ApiLogicServer#readme/>`_.
+
 
 Usage
 -----
@@ -117,7 +129,7 @@ of Python:
 
 Declare your logic by editing ``logic/rules_bank.py``
 
-Demo / Tutorial (no install)
+Demo / Tutorial (no database install)
 ----------------------------
 See the `Tutorial. <https://github.com/valhuber/ApiLogicServerTutorial/>`_
 
@@ -141,7 +153,9 @@ Many thanks to
 
 Change Log
 ----------
-02/27/2021 - 01.04.09: Services, cleanup main api_run
+03/10/2021 - 01.04.10: Fix issues in creating Basic Web App
+
+03/03/2021 - 01.04.09: Services, cleanup main api_run
 
 02/23/2021 - 01.04.08: Minor - proper log level for APIs
 
