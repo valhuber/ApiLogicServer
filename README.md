@@ -145,7 +145,7 @@ multi-page, multi-table applications as shown below:
 
 > Customize your app by editing: **```ui/basic_web_app/app/views.py```**
 
-> Before running, you must [Create Admin Data](../../wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
+> Before running, [some setup is required](../../wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
 
 
 # Installation
