@@ -130,7 +130,7 @@ of Python:
 Declare your logic by editing ``logic/rules_bank.py``
 
 Demo / Tutorial (no database install)
-----------------------------
+-------------------------------------
 See the `Tutorial. <https://github.com/valhuber/ApiLogicServerTutorial/>`_
 
 
@@ -153,6 +153,8 @@ Many thanks to
 
 Change Log
 ----------
+03/11/2021 - 01.04.11: Create create_admin.sh
+
 03/10/2021 - 01.04.10: Fix issues in creating Basic Web App
 
 03/03/2021 - 01.04.09: Services, cleanup main api_run

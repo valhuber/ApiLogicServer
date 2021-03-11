@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.10"
+__version__ = "01.04.11"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -76,6 +76,8 @@ class GenerateFromModel(object):
 
     _indent = "   "
     _tables_generated = set()  # to address "generate children first"
+    """ table names of all created views """
+
     num_pages_generated = 0
     num_related = 0
 
@@ -345,7 +347,7 @@ class GenerateFromModel(object):
                 result += self.process_each_table(each_child)
                 self._tables_generated.add(each_child.name)
 
-            if self.num_pages_generated == 0:
+            if self.num_pages_generated == 0:  # first few lines of expose_api_models.py
                 self.result_apis += \
                     f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
                 self.result_apis += '    """this is called by api / __init__.py"""\n\n'
@@ -539,7 +541,9 @@ class GenerateFromModel(object):
         child_list = self.find_child_list(a_table_def)
         self_relns = ""
         for each_child in child_list:
-            if a_table_def.fullname == each_child.fullname:
+            if a_table_def not in self._tables_generated:
+                pass
+            if a_table_def.fullname == each_child.fullname or a_table_def not in self._tables_generated:
                 self_relns += a_table_def.fullname + " "
             else:
                 related_count += 1
@@ -554,7 +558,7 @@ class GenerateFromModel(object):
                 else:
                     each_entry = class_name + self.model_name(each_child)
                     result += each_entry
-        omitted = "  # omitted self relationships: " + self_relns if self_relns != "" else ""
+        omitted = "  # omitted mutually referring relationships: " + self_relns if self_relns != "" else ""
         result += "]" + omitted + "\n"
         return result
 
@@ -910,6 +914,20 @@ def fix_basic_web_app_run__python_path(abs_project_name):
         fp.writelines(lines)  # write whole lists again to the same file
 
 
+def fix_basic_web_app_run__create_admin(abs_project_name):
+    """ update create_admin.sh with abs_project_name """
+
+    target_create_admin_sh_file = open(f'{abs_project_name}/ui/basic_web_app/create_admin.sh', 'x')
+    source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.txt")
+    create_admin_commands = source_create_admin_sh_file.read()
+    target_create_admin_sh_file.write(create_admin_commands)
+    target_create_admin_sh_file.close()
+
+    replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
+                           replace_with=abs_project_name,
+                           in_file=f'{abs_project_name}/ui/basic_web_app/create_admin.sh')
+
+
 def insert_lines_at(lines: str, at: str, file_name: str):
     """ insert <lines> into file_name after line with <str> """
     with open(file_name, 'r+') as fp:
@@ -1046,6 +1064,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         if not db_url.endswith("nw.sqlite"):
             print(".. ..Note: you will need to run flask fab create-admin")
         fix_basic_web_app_run__python_path(abs_project_name)
+        fix_basic_web_app_run__create_admin(abs_project_name)
         fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url)
 
     if db_url.endswith("nw.sqlite"):
@@ -1097,6 +1116,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t03/11/2021 - 01.04.11: Create create_admin.sh\n"
             "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
             "\t03/03/2021 - 01.04.09: Services, cleanup main api_run\n"
             "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"
