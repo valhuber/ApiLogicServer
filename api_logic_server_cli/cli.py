@@ -917,15 +917,16 @@ def fix_basic_web_app_run__python_path(abs_project_name):
 def fix_basic_web_app_run__create_admin(abs_project_name):
     """ update create_admin.sh with abs_project_name """
 
-    target_create_admin_sh_file = open(f'{abs_project_name}/ui/basic_web_app/create_admin.sh', 'x')
+    unix_project_name = abs_project_name.replace('\\', "/")
+    target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
     source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.txt")
     create_admin_commands = source_create_admin_sh_file.read()
     target_create_admin_sh_file.write(create_admin_commands)
     target_create_admin_sh_file.close()
 
     replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
-                           replace_with=abs_project_name,
-                           in_file=f'{abs_project_name}/ui/basic_web_app/create_admin.sh')
+                           replace_with=unix_project_name,
+                           in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
 
 def insert_lines_at(lines: str, at: str, file_name: str):
