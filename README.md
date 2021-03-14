@@ -45,7 +45,7 @@ With a single command, create and run a
 As illustrated above, the system operates as follows:
 * You run the ApiLogicServer CLI:
 ```
-ApiLogicServer run  # you can also create, without execution
+ApiLogicServer run  # you can also create (without execution)
 ```
 > The ```db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
