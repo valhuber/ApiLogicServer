@@ -856,6 +856,35 @@ def write_expose_api_models(project_name, apis):
     text_file.close()
 
 
+def update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url) -> str:
+    replace_string_in_file(search_for="\"api_logic_server\"",  # fix logic_bank_utils.add_python_path
+                           replace_with='"' + os.path.basename(project_name) + '"',
+                           in_file=f'{abs_project_name}/api_logic_server_run.py')
+    replace_string_in_file(search_for="ApiLogicServer hello",
+                           replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
+                           in_file=f'{abs_project_name}/api_logic_server_run.py')
+    copy_sqlite = False
+    if copy_sqlite == False or "sqlite" not in abs_db_url:
+        db_uri = get_os_url(abs_db_url)
+        replace_string_in_file(search_for="replace_db_url",
+                               replace_with=db_uri,
+                               in_file=f'{abs_project_name}/config.py')
+    else:
+        """ sqlite - copy the db, and make relative (https://gist.github.com/ekiara/7676136)
+                e.g., SQLALCHEMY_DATABASE_URI = "sqlite:///database/nw.sqlite"
+                e.g., SQLALCHEMY_DATABASE_URI = "sqlite:///database\\nw.sqlite"
+        """
+        uri = "sqlite:///database/db.sqlite"
+        # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
+        db_loc = abs_db_url.replace("sqlite:///", "")
+        copyfile(db_loc, abs_project_name + '/database/db.sqlite')
+        db_uri = "sqlite:///database/db.sqlite"
+        replace_string_in_file(search_for="replace_db_url",
+                               replace_with=db_uri,
+                               in_file=f'{abs_project_name}/config.py')
+    return db_uri
+
+
 def append_logic_with_nw_logic(project_name):
     """ Append logic/logic_bank.py with pre-defined nw_logic """
     logic_file = open(project_name + '/logic/logic_bank.py', 'a')
@@ -1041,17 +1070,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
     print("7. Writing: /api/expose_api_models.py")
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
 
-    print("8. Update api_logic_server_run.py, config.py and ui/basic_web_app/config.py with project_name and db_url")
-    replace_string_in_file(search_for="\"api_logic_server\"",
-                           replace_with='"' + os.path.basename(project_name) + '"',
-                           in_file=f'{abs_project_name}/api_logic_server_run.py')
-    replace_string_in_file(search_for="replace_db_url",
-                           replace_with=get_os_url(abs_db_url),
-                           in_file=f'{abs_project_name}/config.py')
-    # ApiLogicServer hello "At: " + str(datetime.datetime.now())
-    replace_string_in_file(search_for="ApiLogicServer hello",
-                           replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
-                           in_file=f'{abs_project_name}/api_logic_server_run.py')
+    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
+    db_loc = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url)
 
     if flask_appbuilder:
         replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
@@ -1117,7 +1137,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t03/11/2021 - 01.04.11: Create create_admin.sh\n"
+            "\t03/11/2021 - 01.04.11: Create create_admin.sh, copy sqlite3 DBs locally\n"
             "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
             "\t03/03/2021 - 01.04.09: Services, cleanup main api_run\n"
             "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"

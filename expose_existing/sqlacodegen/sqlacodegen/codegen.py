@@ -485,7 +485,7 @@ class CodeGenerator(object):
         if "sqlalchemy.ext.declarative" in self.collector:
             return """
 ########################################################################################################################
-# Manually Added for safrs (ApiLogicServer), TODO: improve this crap 
+# Manually Added for safrs (ApiLogicServer) 
 #
 from safrs import SAFRSBase
 
@@ -495,7 +495,7 @@ db = safrs.DB
 Base = db.Model
 metadata = Base.metadata
 
-NullType = db.String
+NullType = db.String  # datatype fixup
 TIMESTAMP= db.TIMESTAMP
 
 from sqlalchemy.dialects.mysql import *

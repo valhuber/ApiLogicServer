@@ -3,7 +3,7 @@ from os import environ, path
 import util
 from dotenv import load_dotenv
 
-#  for complete flask_sqlachemy config parameters,session handling,
+#  for complete flask_sqlachemy config parameters and session handling,
 #  read: file flask_sqlalchemy/__init__.py AND flask/config.py
 '''
 app.config.setdefault('SQLALCHEMY_DATABASE_URI', 'sqlite:///:memory:')
@@ -35,15 +35,10 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #                          'sqlite:///' + os.path.join(basedir, 'app.db') + '?check_same_thread=False'
     SQLALCHEMY_DATABASE_URI = "replace_db_url"
-    """ FIXME what is this
-    if 'sqlite' in SQLALCHEMY_DATABASE_URI:
-        util.log('Basedir: '+basedir)
-        SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
-    """
 
     util.log(SQLALCHEMY_DATABASE_URI)
 
-#    SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
+    # SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = False
 
