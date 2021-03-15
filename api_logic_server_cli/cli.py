@@ -877,7 +877,7 @@ def update_api_logic_server_run__and__config(project_name, abs_project_name, abs
         copyfile(db_loc, abs_project_name + '/database/db.sqlite')
         db_uri = f'sqlite:///{abs_project_name}/database/db.sqlite'
         if os.name == "nt":  # windows
-            db_uri = f'sqlite:///{abs_project_name}\\database\\db.sqlite'
+            db_uri = get_os_url(f'sqlite:///{abs_project_name}\\database\\db.sqlite')
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{abs_project_name}/config.py')
