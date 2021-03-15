@@ -863,7 +863,7 @@ def update_api_logic_server_run__and__config(project_name, abs_project_name, abs
     replace_string_in_file(search_for="ApiLogicServer hello",
                            replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
                            in_file=f'{abs_project_name}/api_logic_server_run.py')
-    copy_sqlite = False
+    copy_sqlite = True
     if copy_sqlite == False or "sqlite" not in abs_db_url:
         db_uri = get_os_url(abs_db_url)
         replace_string_in_file(search_for="replace_db_url",
@@ -879,6 +879,8 @@ def update_api_logic_server_run__and__config(project_name, abs_project_name, abs
         db_loc = abs_db_url.replace("sqlite:///", "")
         copyfile(db_loc, abs_project_name + '/database/db.sqlite')
         db_uri = "sqlite:///database/db.sqlite"
+        if os.name != "posix":
+            db_uri = "sqlite:///database\\db.sqlite"
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{abs_project_name}/config.py')
