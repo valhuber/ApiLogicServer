@@ -870,17 +870,14 @@ def update_api_logic_server_run__and__config(project_name, abs_project_name, abs
                                replace_with=db_uri,
                                in_file=f'{abs_project_name}/config.py')
     else:
-        """ sqlite - copy the db, and make relative (https://gist.github.com/ekiara/7676136)
-                e.g., SQLALCHEMY_DATABASE_URI = "sqlite:///database/nw.sqlite"
-                e.g., SQLALCHEMY_DATABASE_URI = "sqlite:///database\\nw.sqlite"
+        """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
         """
-        uri = "sqlite:///database/db.sqlite"
         # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
         db_loc = abs_db_url.replace("sqlite:///", "")
         copyfile(db_loc, abs_project_name + '/database/db.sqlite')
-        db_uri = "sqlite:///database/db.sqlite"
-        if os.name != "posix":
-            db_uri = "sqlite:///database\\db.sqlite"
+        db_uri = f'sqlite:///{abs_project_name}/database/db.sqlite'
+        if os.name == "nt":  # windows
+            db_uri = f'sqlite:///{abs_project_name}\\database\\db.sqlite'
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{abs_project_name}/config.py')
@@ -1073,11 +1070,11 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
 
     print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
-    db_loc = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url)
+    db_uri = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url)
 
     if flask_appbuilder:
         replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
-                               replace_with='"' + get_os_url(abs_db_url) + '"',
+                               replace_with='"' + db_uri + '"',
                                in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
         print("9. Writing: /ui/basic_web_app/app/views.py")
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
