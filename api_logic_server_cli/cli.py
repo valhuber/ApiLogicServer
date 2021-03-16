@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "01.04.11"
+__version__ = "02.00.00"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -543,7 +543,8 @@ class GenerateFromModel(object):
         for each_child in child_list:
             if a_table_def not in self._tables_generated:
                 pass
-            if a_table_def.fullname == each_child.fullname or a_table_def not in self._tables_generated:
+            if a_table_def.fullname == each_child.fullname or \
+                    each_child.fullname not in self._tables_generated:
                 self_relns += a_table_def.fullname + " "
             else:
                 related_count += 1
@@ -893,6 +894,15 @@ def append_logic_with_nw_logic(project_name):
     logic_file.close()
 
 
+def replace_models_ext_with_nw_models_ext(project_name):
+    """ Replace models/models_ext.py with pre-defined nw_models_ext """
+    models_ext_file = open(project_name + '/database/models_ext.py', 'w')
+    nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_models_ext.txt")
+    nw_models_ext = nw_models_ext_file.read()
+    models_ext_file.write(nw_models_ext)
+    models_ext_file.close()
+
+
 def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
     """ replace api/expose_rpcs with nw version """
     rpcs_file = open(project_name + '/api/expose_services.py', 'w')
@@ -998,12 +1008,21 @@ def fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url):
 
 def fix_database_models__inject_db_types(abs_project_name: str, db_types: str):
     """ insert <db_types file> into database/models.py """
-    file_name = f'{abs_project_name}/database/models.py'
+    models_file_name = f'{abs_project_name}/database/models.py'
     if db_types != "":
         print(f'.. ..Injecting file {db_types} into database/models.py')
         with open(db_types, 'r') as file:
             db_types_data = file.read()
-        insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=file_name)
+        insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
+
+
+def fix_database_models__import_models_ext(abs_project_name: str):
+    """ insert <db_types file> into database/models.py """
+    models_file_name = f'{abs_project_name}/database/models.py'
+    print(f'.. ..appending "from database import models_ext" to database/models.py')
+    models_file = open(models_file_name, 'a')
+    models_file.write("\n\nfrom database import models_ext\n")
+    models_file.close()
 
 
 def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str,
@@ -1068,6 +1087,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 
     print("7. Writing: /api/expose_api_models.py")
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
+    fix_database_models__import_models_ext(abs_project_name)
 
     print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
     db_uri = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url)
@@ -1090,6 +1110,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
     if db_url.endswith("nw.sqlite"):
         print("10. Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
         append_logic_with_nw_logic(abs_project_name)
+        replace_models_ext_with_nw_models_ext(abs_project_name)
         replace_expose_rpcs_with_nw_expose_rpcs(abs_project_name)
 
     if open_with != "":
@@ -1136,7 +1157,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t03/11/2021 - 01.04.11: Create create_admin.sh, copy sqlite3 DBs locally\n"
+            "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext\n"
             "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
             "\t03/03/2021 - 01.04.09: Services, cleanup main api_run\n"
             "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"

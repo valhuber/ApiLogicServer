@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-  ApiLogicServer v 1.03.01
+  ApiLogicServer v 02.00.00
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
@@ -70,9 +70,14 @@ def create_app(config_filename=None, host="localhost"):
     flask_app = Flask("API Logic Server")
     flask_app.config.from_object("config.Config")
     db = safrs.DB  # opens database per config, setting session
+    detail_logging = False  # True will log SQLAlchemy SQLs
+    if detail_logging:
+        import logging
+        logging.basicConfig()
+        logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
     Base: declarative_base = db.Model
     session: Session = db.session
-    print("app/__init__#create_app - got session: " + str(session))
+    print("api_logic_server_run#create_app - got session: " + str(session))
 
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
@@ -93,13 +98,13 @@ def create_app(config_filename=None, host="localhost"):
     return flask_app, safrs_api
 
 
-# import api as api  # database opened here, models & rpc's exposed (TBD)
-
 # address where the api will be hosted, change this if you're not running the app on localhost!
-host = sys.argv[1] if sys.argv[
-                      1:] else "localhost"  # 127.0.0.1 check in swagger or your lient what is used you wight need cors support
+host = sys.argv[1] if sys.argv[1:] \
+    else "localhost"  # 127.0.0.1 check in swagger or your lient what is used you wight need cors support
+
 flask_app, safrs_api = create_app(host=host)
-print(f'api_logic_server {type(flask_app)} created with safrs_api {type(safrs_api)}')
+print(f'api_logic_server_run {type(flask_app)} created with safrs_api {type(safrs_api)}')
+
 
 @flask_app.route('/')
 def welcome():

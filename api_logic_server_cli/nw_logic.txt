@@ -28,7 +28,8 @@
             if sales_rep is None:
                 logic_row.log("no salesrep for this order")
             else:
-                 logic_row.log(f'Congratulations to {sales_rep.FirstName} on their new order')
+                logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
+                              f'Congratulate {sales_rep.FirstName} on their new order')
 
     Rule.constraint(validate=models.Customer,
                     as_condition=lambda row: row.Balance <= row.CreditLimit,

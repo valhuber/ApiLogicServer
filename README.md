@@ -202,7 +202,7 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
-03/11/2021 - 01.04.11: Create create_admin.sh
+03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext
 
 03/10/2021 - 01.04.10: Fix issues in creating Basic Web App
 
