@@ -887,6 +887,8 @@ def update_api_logic_server_run__and__config(project_name, abs_project_name, abs
         db_loc = abs_db_url.replace("sqlite:///", "")
         copyfile(db_loc, abs_project_name + '/database/db.sqlite')
         db_uri = abs_db_url
+        if os.name == "nt":  # windows
+            db_uri = get_os_url(f'sqlite:///{get_os_url(db_loc)}')
         """
         relative makes run too hard: 
         db_uri = f'sqlite:///{abs_project_name}/database/db.sqlite'
