@@ -75,8 +75,10 @@ class GenerateFromModel(object):
     non_favorite_names = "id"
 
     _indent = "   "
-    _tables_generated = set()  # to address "generate children first"
-    """ table names of all created views """
+    tables_visited = set()  # to address "generate children first"
+    """ table names of all visited views """
+    tables_generated = set()  # to address "generate children first"
+    """ table names of all fully generated views """
 
     num_pages_generated = 0
     num_related = 0
@@ -331,7 +333,7 @@ class GenerateFromModel(object):
             log.debug("special table")  # should not occur (--noviews)
         if table_name.startswith("ab_"):
             return "# skip admin table: " + table_name + "\n"
-        elif table_name in self._tables_generated:
+        elif table_name in self.tables_visited:
             log.debug("table already generated per recursion: " + table_name)
             return "# table already generated per recursion: " + table_name + "\n"
         elif 'sqlite_sequence' in table_name:
@@ -340,13 +342,14 @@ class GenerateFromModel(object):
             class_name = self.get_class_for_table(table_name)
             if class_name is None:
                 return "# skip view: " + table_name
-            self._tables_generated.add(table_name)
+            self.tables_visited.add(table_name)
             child_list = self.find_child_list(a_table_def)
             for each_child in child_list:  # recurse to ensure children first
                 log.debug(".. but children first: " + each_child.name)
                 result += self.process_each_table(each_child)
-                self._tables_generated.add(each_child.name)
+                self.tables_visited.add(each_child.name)
 
+            self.tables_generated.add(a_table_def.fullname)
             if self.num_pages_generated == 0:  # first few lines of expose_api_models.py
                 self.result_apis += \
                     f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
@@ -491,15 +494,19 @@ class GenerateFromModel(object):
         """
         result = set()
         foreign_keys = a_table_def.foreign_keys
-        if a_table_def.name == "OrderDetail":  # for debug
+        if a_table_def.name == "orderdetails":  # for debug
             log.debug("predictive_joins for: " + a_table_def.name)
         for each_foreign_key in foreign_keys:
             each_parent_name = each_foreign_key.target_fullname
             loc_dot = each_parent_name.index(".")
             each_parent_name = each_parent_name[0:loc_dot]
+            parent_getter = each_parent_name
+            if parent_getter[-1] == "s":  # plural parent table names have singular lower case accessors
+                class_name = self.get_class_for_table(each_parent_name)  # eg, Product
+                parent_getter = class_name[0].lower() + class_name[1:]
             each_parent = a_table_def.metadata.tables[each_parent_name]
             favorite_column_name = self.favorite_column_name(each_parent)
-            result.add(each_parent_name + "." + favorite_column_name)
+            result.add(parent_getter + "." + favorite_column_name)
         return result
 
     def is_non_favorite_name(self, a_name: str) -> bool:
@@ -540,11 +547,13 @@ class GenerateFromModel(object):
         related_count = 0
         child_list = self.find_child_list(a_table_def)
         self_relns = ""
+        if a_table_def.fullname == "store":
+            log.debug(f'related_views for {a_table_def.fullname}')
         for each_child in child_list:
-            if a_table_def not in self._tables_generated:
-                pass
+            if a_table_def.fullname not in self.tables_generated:
+                log.debug(f'must omit: {a_table_def.fullname}')
             if a_table_def.fullname == each_child.fullname or \
-                    each_child.fullname not in self._tables_generated:
+                    each_child.fullname not in self.tables_generated:
                 self_relns += a_table_def.fullname + " "
             else:
                 related_count += 1
@@ -556,6 +565,7 @@ class GenerateFromModel(object):
                 if class_name is None:
                     print(f'.. .. .. Warning - Skipping {self.model_name(each_child)}->'
                           f'{each_child.fullname} - no database/models.py class')
+                    related_count -= 1
                 else:
                     each_entry = class_name + self.model_name(each_child)
                     result += each_entry
