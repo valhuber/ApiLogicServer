@@ -52,7 +52,8 @@ setup(
               'expose_existing', 'expose_existing.sqlacodegen', 'expose_existing.sqlacodegen.sqlacodegen',
               'prototype', 'prototype.api', 'prototype.database', 'prototype.logic',
               'prototype.templates', 'prototype.ui'],
-    package_data={"api_logic_server_cli": ["nw.sqlite", "nw-gold.sqlite", "nw_logic.txt", "nw_expose_services.txt"],
+    package_data={"api_logic_server_cli": ["nw.sqlite", "nw-gold.sqlite", "nw_logic.txt", "nw_expose_services.txt",
+                                           "create_admin.txt", "nw_models_ext.txt"],
                   "prototype": ["requirements.txt", "default.env", "EXAMPLE.env", "readme.md"],
                   'prototype.templates': ["index.html"]
                   },
