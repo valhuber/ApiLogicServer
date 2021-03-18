@@ -190,6 +190,8 @@ Many thanks to
 - Daniel Gaspar, for Flask AppBuilder
 - Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration
+- Michael Holleran, for design collaboration and testing
+- Nishanth Shyamsundar, for review and testing
 - Gloria Huber and Denny McKinney, for doc review
 
 ### Articles

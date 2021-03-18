@@ -39,8 +39,8 @@ Install with pip:
     pip install ApiLogicServer
 
 
-Generation
-**********
+Creation
+********
 This verifies proper install:
 
 .. code-block:: Python
@@ -54,16 +54,6 @@ This verifies proper install:
 
 More commonly, you would include the ``db_url`` parameter,
 a SQLAlchemy url designating the database used for creation.
-
-You may also wish to include the ``open_with`` parameter,
-to open an IDE or Editor on the created project.  For example,
-PyCharm (``charm``) will open the project and create / initialize the ``venv``
-automatically (some PyCharm configuration may be required):
-
-.. code-block:: Python
-
-    ApiLogicServer create --project_name=my_api_logic_server db_url=sqlite:///nw.sqlite --open_with=charm
-
 
 Execution
 *********
@@ -148,6 +138,8 @@ Many thanks to
 - Daniel Gaspar, for Flask AppBuilder
 - Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration
+- Michael Holleran, for design collaboration and testing
+- Nishanth Shyamsundar, for review and testing
 - Gloria Huber and Denny McKinney, for doc review
 
 
