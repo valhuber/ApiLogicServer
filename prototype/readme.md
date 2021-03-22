@@ -6,10 +6,12 @@ From Prototype: 1.1 (Mar 3, 2021)
 
 Clone from: cloned-from
 
+# Key Technologies
+
 API Logic Server is based on the projects shown below.
 Consult their documentation for important information.
 
-## SARFS JSON:Api Server
+### SARFS JSON:API Server
 
 [SAFRS: Python OpenAPI & JSON:API Framework](https://github.com/thomaxxl/safrs)
 
@@ -28,7 +30,7 @@ The description is parsed and shown in the swagger web interface.
 The result is an easy-to-use
 swagger/OpenAPI and JSON:API compliant API implementation.
 
-## LogicBank
+### LogicBank
 
 [Transaction Rules for SQLAlchemy Object Models](https://github.com/valhuber/logicbank)
 
@@ -41,10 +43,8 @@ Use Logic Bank to govern SQLAlchemy update transaction logic - multi-table deriv
 Logic Bank is based on SQLAlchemy - it handles `before_flush` events to enforce your logic.
 Your logic therefore applies to any SQLAlchemy-based access - JSON:Api, Flask App Builder, etc.
 
-    Declare your logic in: logic/logic_bank.py
 
-
-## SQLAlchemy
+### SQLAlchemy
 
 [Object Relational Mapping for Python](https://docs.sqlalchemy.org/en/13/).
 
@@ -58,40 +58,59 @@ and saved in the `database` directory.
 
 
 
-## Basic Web App - Flask App Builder
+### Basic Web App - Flask App Builder
 
 This generated project also contains a basic web app
 * Multi-page - including page transitions to "drill down"
 * Multi-table - master / details (with tab sheets)
 * Intelligent layout - favorite fields first, predictive joins, etc
 
-
-    Edit your pages in: ui/basic_web_app/app/view.py
-
-### Preparing Flask AppBuilder
+#### Preparing Flask AppBuilder
 Before you run your app, you must create admin data,
 and address certain restrictions.  For more information, see
 [Working with Flask AppBuilder](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder).
 
 
-# Check it out
-Install your projects' environment:
+# Project Structure
+This project was created with the following directory structure:
+
+| Directory | Usage | Key Customization File   - Typical Customization  |
+| :-------------- |:--------|:--------------| 
+| ```api``` | JSON:API | ```api/expose_services.py``` - add new end points / services |
+| ```database``` | SQLAlchemy Data Model Classes | ```database/models_ext.py``` - add derived attributes, and relationships missing in the schema |
+| ```logic``` | Transactional Logic | ```logic/logic_bank.py``` - declare multi-table derivations, constraints, and events such as send mail / messages  |
+| ```ui``` | Basic Web App  | ```ui/basic_web_app/app/view.py``` - control field display, and add interfaces like graphs and charts |
+
+### Key Customization File - Typical Customization
+
+In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
+the created API, Logic and Web App.  Since they are separate files, the project can be
+recreated (e.g., synchronized with a revised schema), and these files can be easily copied
+into the new project, without line-by-line merges.
+
+Please see the ```nw``` sample for examples of typical customizations.
+
+
+# Installation and Execution
+Install your projects' virtual environment:
 ```
 cd <your project>
-test> cd my_new_project
 virtualenv venv
 source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+Then, start the API:
+```
 python api_logic_server_run.py
 ```
-Then, run:
 * **Open API (Swagger) -** [localhost:5000/api](localhost:5000/api)
+
+
+Or, start the web app:
+```
+python ui/basic_web_app/run.py
+```
 
 * **Basic Web App -** [localhost:8080](/localhost:8080)
 
-# Project Structure
-
->*Logic: [/logic/logic_bank.py](/logic/logic_bank.py)*  
-*SQLAlchemy Models: [/database](/database/models.py)*  
-*Services: [/api](/api/expose_services.py)*  
-*Flask App: [/ui](/ui/basic_web_app/run.py)*  
