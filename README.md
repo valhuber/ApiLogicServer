@@ -30,7 +30,7 @@ and can be [installed](#Installation) and customized with standard approaches as
 ### Tutorials
 There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
 * [Tutorial](../../wiki/Tutorial) walks you through the steps of creating a server
-* [Video](https://www.youtube.com/watch?v=gbRaJr-daRs) shows the steps of creating a server
+* [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
 * [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
 
 
@@ -204,6 +204,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url
+
 03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext
 
 03/10/2021 - 01.04.10: Fix issues in creating Basic Web App

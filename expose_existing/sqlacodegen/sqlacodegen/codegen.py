@@ -482,10 +482,10 @@ class CodeGenerator(object):
                          for package, names in self.collector.items())
 
     def render_metadata_declarations(self):
-        if "sqlalchemy.ext.declarative" in self.collector:
+        if "sqlalchemy.ext.declarative" in self.collector:  # Manually Added for safrs (ApiLogicServer)
             return """
 ########################################################################################################################
-# Manually Added for safrs (ApiLogicServer) 
+# Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
 #
 from safrs import SAFRSBase
 

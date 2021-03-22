@@ -9,7 +9,8 @@ from sqlalchemy.orm import object_mapper
 from database import models
 from database.db import Base
 
-# recreate objective: using separate file preserves customizations, so can recreate models, endpoints, etc
+# called by expose_api_models.py, to customize api (new end points, services).
+# separate file, to simplify merge if project recreated
 
 
 def expose_services(app, api):

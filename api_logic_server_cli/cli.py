@@ -31,7 +31,8 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.00"
+__version__ = "02.00.01"
+default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -353,7 +354,7 @@ class GenerateFromModel(object):
             if self.num_pages_generated == 0:  # first few lines of expose_api_models.py
                 self.result_apis += \
                     f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
-                self.result_apis += '    """this is called by api / __init__.py"""\n\n'
+                self.result_apis += '    """ called by api_logic_server_run.py """\n\n'
                 self.result_apis += \
                     '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
             self.result_apis += f'    api.expose_object(models.{class_name})\n'
@@ -1173,33 +1174,18 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url\n"
             "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext\n"
             "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
             "\t03/03/2021 - 01.04.09: Services, cleanup main api_run\n"
-            "\t02/23/2021 - 01.04.08: Minor - proper log level for APIs\n"
-            "\t02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)\n"
-            "\t02/15/2021 - 01.04.06: Tutorial\n"
-            "\t02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite\n"
-            "\t02/07/2021 - 01.04.04: fix default project name\n"
-            "\t02/07/2021 - 01.04.03: db_url default (for Jupyter)\n"
-            "\t02/07/2021 - 01.04.02: Internal Renaming\n"
-            "\t02/06/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)\n"
-            "\t02/01/2021 - 01.03.00: Fix logic logging, nw rules\n"
-            "\t01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)\n"
-            "\t01/29/2021 - 01.02.04: Minor cleanup\n"
-            "\t01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)\n"
-            "\t01/28/2021 - 01.02.02: Command line cleanup\n"
-            "\t01/27/2021 - 01.02.00: "
-            "Host option, from_git defaults to local directory, hello world example, nw rules pre-created\n"
-            "\t01/25/2021 - 01.01.01: MySQL fixes\n"
         )
     )
 
 
 @main.command("create")
 @click.option('--db_url',
-              default=f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite',
-              prompt="Database URL",
+              default=f'{default_db}',
+              prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
               default="api_logic_server",
@@ -1264,6 +1250,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
     """
     db_types = ""
+    if db_url == default_db:
+        db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
@@ -1273,8 +1261,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
 @main.command("run")
 @click.option('--db_url',
-              default=f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite',
-              prompt="Database URL",
+              default=f'{default_db}',
+              prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
               default="api_logic_server",
@@ -1339,6 +1327,8 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
 
     """
     db_types = ""
+    if db_url == default_db:
+        db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
@@ -1358,7 +1348,7 @@ def print_args(args, msg):
 
 def start():               # target of setup.py
     sys.stdout.write("\nAPI Logic Server CLI " + __version__ + " here\n")
-    sys.stdout.write("    SQLAlchemy URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n\n")
+    sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n\n")
     main(obj={})
 
 
@@ -1368,7 +1358,7 @@ if __name__ == '__main__':  # debugger & python command line start here
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
     print(f'\nAPI Logic Server CLI Utility {__version__} here')
-    print("    SQLAlchemy URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
+    print("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
         print_args(commands, "Main - Command Line Arguments")

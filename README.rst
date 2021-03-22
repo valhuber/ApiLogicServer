@@ -15,7 +15,7 @@ Finally, it provides a logic engine that executes **spreadsheet-like rules**
 for multi-table derivations and constraints
 - *40X* more concise than legacy code, extensible with Python.
 
-This `video <https://www.youtube.com/watch?v=gbRaJr-daRs/>`_ shows the creation of a backend - in minutes -  that would typically require weeks.
+This `video <https://www.youtube.com/watch?v=gVTdu6c0iSI/>`_ shows the creation of a backend - in minutes -  that would typically require weeks.
 
 With over 12k downloads in its first 2 months, API Logic Server is
 `Open Source on GitHub <https://github.com/valhuber/ApiLogicServer#readme/>`_.
@@ -145,6 +145,8 @@ Many thanks to
 
 Change Log
 ----------
+03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url
+
 03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext
 
 03/10/2021 - 01.04.10: Fix issues in creating Basic Web App
