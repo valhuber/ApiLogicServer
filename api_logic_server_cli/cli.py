@@ -31,7 +31,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.01"
+__version__ = "02.00.02"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1174,6 +1174,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t03/30/2021 - 02.00.02: Create Services table to avoid startup issues\n"
             "\t03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url\n"
             "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext\n"
             "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"

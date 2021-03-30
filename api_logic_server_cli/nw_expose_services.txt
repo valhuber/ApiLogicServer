@@ -83,14 +83,10 @@ def json_to_entities(from_row: object, to_row: safrs.DB.Model):
                     break
 
 
-class ServicesEndPoint(SAFRSBase, Base):
-    """ this class is *not* a table, but defines an endpoint for the services below
-        it will likely disappear and be incorporated into safrs, so ignore for now
+class ServicesEndPoint(models.Service):
     """
-    __tablename__ = "Services"
-
-    Id = Column(Integer, primary_key=True)
-    News = Column(String(8000))
+    future safrs release will eliminate need to back services with physical tables
+    """
 
     @classmethod
     @jsonapi_rpc(http_methods=["POST"])
