@@ -8,6 +8,7 @@ and api/expose_api_models.
 """
 
 import builtins
+import pathlib
 import subprocess
 import traceback
 from os.path import abspath
@@ -31,7 +32,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.02"
+__version__ = "02.00.05"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -869,12 +870,24 @@ def write_expose_api_models(project_name, apis):
 
 
 def update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url) -> str:
-    replace_string_in_file(search_for="\"api_logic_server\"",  # fix logic_bank_utils.add_python_path
+    """
+    Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
+
+    Note abs_project_name is from user, and may be relative (and same as project_name)
+    """
+    api_logic_server_run_py = f'{abs_project_name}/api_logic_server_run.py'
+    replace_string_in_file(search_for="\"project_name\"",  # fix logic_bank_utils.add_python_path
                            replace_with='"' + os.path.basename(project_name) + '"',
-                           in_file=f'{abs_project_name}/api_logic_server_run.py')
+                           in_file=api_logic_server_run_py)
     replace_string_in_file(search_for="ApiLogicServer hello",
                            replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
-                           in_file=f'{abs_project_name}/api_logic_server_run.py')
+                           in_file=api_logic_server_run_py)
+    actual_path = pathlib.Path(abs_project_name).absolute()
+    if os.name == "nt":  # windows
+        actual_path = get_os_url(str(actual_path))
+    replace_string_in_file(search_for="\"project_dir\"",  # for logging project location
+                           replace_with='"' + str(actual_path) + '"',
+                           in_file=api_logic_server_run_py)
     copy_sqlite = True
     if copy_sqlite == False or "sqlite" not in abs_db_url:
         db_uri = get_os_url(abs_db_url)
@@ -948,6 +961,8 @@ def resolve_home(name: str) -> str:
     """
     :param name: a file name, eg, ~/Desktop/a.b
     :return: /users/you/Desktop/a.b
+
+    This just removes the ~, the path may still be relative to run location
     """
     result = name
     if result.startswith("~"):
@@ -1036,7 +1051,7 @@ def fix_database_models__inject_db_types(abs_project_name: str, db_types: str):
 def fix_database_models__import_models_ext(abs_project_name: str):
     """ insert <db_types file> into database/models.py """
     models_file_name = f'{abs_project_name}/database/models.py'
-    print(f'.. ..appending "from database import models_ext" to database/models.py')
+    print(f'.. ..Appending "from database import models_ext" to database/models.py')
     models_file = open(models_file_name, 'a')
     models_file.write("\n\nfrom database import models_ext\n")
     models_file.close()
@@ -1117,7 +1132,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(generate_from_model.result_views)
         text_file.close()
-        print(".. ..Fix run.py and app/init - Python path, logic")
+        print(".. ..Fixing run.py and app/init for Python path, logic")
         if not db_url.endswith("nw.sqlite"):
             print(".. ..Note: you will need to run flask fab create-admin")
         fix_basic_web_app_run__python_path(abs_project_name)
@@ -1146,7 +1161,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
     if run:
         run_command(f'python {abs_project_name}/api_logic_server_run.py {host}', msg="\nRun created ApiLogicServer")
     else:
-        print("\nApiLogicServer project created.  Next steps:")
+        print("\nApiLogicServer customizable project created.  Next steps:")
         print(f'..cd {project_name}')
         print(f'..python api_logic_server_run.py')
         print(f'..python ui/basic_web_app/run.py')
@@ -1174,6 +1189,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
             "\t03/30/2021 - 02.00.02: Create Services table to avoid startup issues\n"
             "\t03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url\n"
             "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext\n"
@@ -1349,7 +1365,8 @@ def print_args(args, msg):
 
 def start():               # target of setup.py
     sys.stdout.write("\nAPI Logic Server CLI " + __version__ + " here\n")
-    sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n\n")
+    sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
+    sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
 
 
@@ -1359,7 +1376,8 @@ if __name__ == '__main__':  # debugger & python command line start here
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
     print(f'\nAPI Logic Server CLI Utility {__version__} here')
-    print("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
+    print("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html")
+    print("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n")
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
         print_args(commands, "Main - Command Line Arguments")

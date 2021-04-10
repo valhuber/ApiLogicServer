@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-  ApiLogicServer v 02.00.00
+  ApiLogicServer v 02.00.03
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
@@ -20,16 +20,18 @@ from sqlalchemy.orm import Session
 from api import expose_api_models, expose_services
 from logic import logic_bank
 
+project_name = "project_name"
+project_dir = "project_dir"
 (did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir="api_logic_server", my_file=__file__)
+    logic_bank_utils.add_python_path(project_dir=project_name, my_file=__file__)
 
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
+import logging
 
 
 def setup_logging():
     # Initialize Logging
-    import logging
     import sys
 
     logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
@@ -90,8 +92,8 @@ def create_app(config_filename=None, host="localhost"):
 
     with flask_app.app_context():
         db.init_app(flask_app)
-        safrs_api = expose_api_models.expose_models(flask_app, host)
-        expose_services.expose_services(flask_app, safrs_api)
+        safrs_api = expose_api_models.expose_models(flask_app, host)  # services from models
+        expose_services.expose_services(flask_app, safrs_api, project_dir)  # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
 
@@ -103,7 +105,6 @@ host = sys.argv[1] if sys.argv[1:] \
     else "localhost"  # 127.0.0.1 verify in swagger or your client.  You wight need cors support.
 
 flask_app, safrs_api = create_app(host=host)
-print(f'api_logic_server_run {type(flask_app)} created with safrs_api {type(safrs_api)}')
 
 
 @flask_app.route('/')

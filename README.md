@@ -204,6 +204,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+04/39/2021 - 02.00.05: Bug Fix - View names with spaces
+
 03/30/2021 - 02.00.02: Create Services table to avoid startup issues
 
 03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url

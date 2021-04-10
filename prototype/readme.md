@@ -2,7 +2,7 @@
 
 Created: creation-date
 
-From Prototype: 1.1 (Mar 3, 2021)
+From Prototype: 1.2 (Apr 9, 2021)
 
 Clone from: cloned-from
 
@@ -74,12 +74,12 @@ and address certain restrictions.  For more information, see
 # Project Structure
 This project was created with the following directory structure:
 
-| Directory | Usage | Key Customization File   - Typical Customization  |
-| :-------------- |:--------|:--------------| 
-| ```api``` | JSON:API | ```api/expose_services.py``` - add new end points / services |
-| ```database``` | SQLAlchemy Data Model Classes | ```database/models_ext.py``` - add derived attributes, and relationships missing in the schema |
-| ```logic``` | Transactional Logic | ```logic/logic_bank.py``` - declare multi-table derivations, constraints, and events such as send mail / messages  |
-| ```ui``` | Basic Web App  | ```ui/basic_web_app/app/view.py``` - control field display, and add interfaces like graphs and charts |
+| Directory | Usage | Key Customization File | Typical Customization  |
+|:-------------- |:--------|:--------------|:--------------|
+| ```api``` | JSON:API | ```api/expose_services.py``` | Add new end points / services |
+| ```database``` | SQLAlchemy Data Model Classes | ```database/models_ext.py``` | Add derived attributes, and relationships missing in the schema |
+| ```logic``` | Transactional Logic | ```logic/logic_bank.py``` | Declare multi-table derivations, constraints, and events such as send mail / messages  |
+| ```ui``` | Basic Web App  | ```ui/basic_web_app/app/view.py``` | Control field display, and add interfaces like graphs and charts |
 
 ### Key Customization File - Typical Customization
 
