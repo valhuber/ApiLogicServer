@@ -86,16 +86,16 @@ you can open it in any IDE or Editor - here it is in PyCharm:
 Typical [customizations](../../wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
 
-* **Adding logic:** edit ```models/logic_bank.py``` (initially empty) to declare logic;
+* **Customize Logic:** edit ```models/logic_bank.py``` (initially empty) to declare logic;
   The default sample database project contains some simple rules you can review;
   learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
   
   
-* **Creating custom services:** edit ```api/expose_services.py``` to define your own endpoints,
+* **Customize API:** edit ```api/expose_services.py``` to define your own endpoints,
   complementing those created from the model
   
 
-* **Customize the model:** edit ```models_ext.py```, for example
+* **Customize Model:** edit ```models_ext.py```, for example
     * to define [relationships](https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design), critical for multi-table logic, APIs, and web apps
     * to describe derived attributes, so that your API, logic and apps are not limited to the physical data model
 
