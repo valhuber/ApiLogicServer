@@ -46,19 +46,29 @@ As illustrated above, you run the ApiLogicServer CLI:
 ```
 ApiLogicServer run        # note: you can also create (without execution)
 ```
-> The ```db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
-Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
+
+The CLI provides a number of options you can discover with ```ApiLogicServer --help```.
+In particular:
+1. The ```db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
+
+   * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
+   
+
+2. Discover other options with ```ApiLogicServer run --help```
 
 
-### Creates Project
-The CLI introspects your database, and creates a project.  You can open
-this in your IDE and customize it as described later.
+### Creates Customizable Project
+The CLI introspects your database, and creates a project.  By default,
+the project name is ```api_logic_server```, which you can override using the
+```-project_name``` option.
 
-### Runs Project
+You can open
+this in your IDE and customize it as described below.
 
-The CLI then starts the API. 
-As illustrated aobve, the project implements:
+### Runs Project - Working Software Now
+
+The CLI then starts the API. As illustrated above, the project implements:
 
 1. Your ___API___, available in Swagger
 
@@ -67,9 +77,8 @@ As illustrated aobve, the project implements:
 3. And a ```basic_web_app```
 
 
-### Customizable Project
-Here is the 
-[*customizable* Project](../../wiki/ApiLogicServer-Guide);
+### Project Customization
+Here is the created project;
 you can open it in any IDE or Editor - here it is in PyCharm:
 
 <figure><img src="images/generated-project.png"></figure>
@@ -77,7 +86,7 @@ you can open it in any IDE or Editor - here it is in PyCharm:
 Typical [customizations](../../wiki/ApiLogicServer-Guide) include:
 
 * **Adding logic:** the logic file is initially empty - edit it to declare rules.
-  The default ```nw``` project contains some simple rules you can review;
+  The default sample database project contains some simple rules you can review;
   learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
   
   
