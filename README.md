@@ -13,9 +13,10 @@ This reduces strategic business agility.
 
 API Logic Server provides exceptional strategic business agility,
 by creating an executable server for a database, instantly.
+Working Software, now.
 
 As illustrated below, the ```ApiLogicServer CLI``` (command line interface) creates an **API Logic Server,**
-from your database.  An Api Logic Server consists of these features:
+from your database.  An Api Logic Server implements these features:
 
 
 | Feature | Using   | Providing  |
@@ -42,6 +43,7 @@ With a single command, create and run a
 
 <figure><img src="images/creates-and-runs.png"></figure>
 
+### Run ApiLogicServer CLI
 As illustrated above, you run the ApiLogicServer CLI:
 ```
 ApiLogicServer run        # note: you can also create (without execution)
@@ -49,22 +51,22 @@ ApiLogicServer run        # note: you can also create (without execution)
 
 The CLI provides a number of options you can discover with ```ApiLogicServer --help```.
 In particular:
-1. The ```db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
+1. The ```-db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
 
    * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
    
 
-2. Discover other options with ```ApiLogicServer run --help```
+2. By default, the project name (directory) is ```api_logic_server```; override it with the
+```-project_name``` option.
+
+
+3. Discover other options with ```ApiLogicServer run --help```
 
 
 ### Creates Customizable Project
-The CLI introspects your database, and creates a project.  By default,
-the project name is ```api_logic_server```, which you can override using the
-```-project_name``` option.
-
-You can open
-this in your IDE and customize it as described below.
+The CLI introspects your database, and creates a project.
+You can open this in your IDE and customize it as shown below.
 
 ### Runs Project - Working Software Now
 
@@ -77,7 +79,7 @@ The CLI then starts the API. As illustrated above, the project implements:
 3. And a ```basic_web_app```
 
 
-### Project Customization
+### Customize the Created Project
 Here is the created project;
 you can open it in any IDE or Editor - here it is in PyCharm:
 
@@ -86,11 +88,6 @@ you can open it in any IDE or Editor - here it is in PyCharm:
 Typical [customizations](../../wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
 
-* **Customize Logic:** edit ```models/logic_bank.py``` (initially empty) to declare logic;
-  The default sample database project contains some simple rules you can review;
-  learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
-  
-  
 * **Customize API:** edit ```api/expose_services.py``` to define your own endpoints,
   complementing those created from the model
   
@@ -98,6 +95,11 @@ Typical [customizations](../../wiki/ApiLogicServer-Guide) include
 * **Customize Model:** edit ```models_ext.py```, for example
     * to define [relationships](https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design), critical for multi-table logic, APIs, and web apps
     * to describe derived attributes, so that your API, logic and apps are not limited to the physical data model
+
+
+* **Customize Logic:** edit ```models/logic_bank.py``` (initially empty) to declare logic
+    * The default sample database project contains some simple rules you can review;
+  learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
 
 
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
