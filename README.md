@@ -34,7 +34,7 @@ There are a number of facilities that will quickly enable you to get familiar wi
 * [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
 
 
-# Quick Start - Create and Execute
+# Quick Start - Create and Run
 With a single command, create and run a
 [logic](#logic)-enabled
 [JSON:API](#api-safrs-jsonapi-and-swagger) and
@@ -42,27 +42,35 @@ With a single command, create and run a
 
 <figure><img src="images/creates-and-runs.png"></figure>
 
-As illustrated above, the system operates as follows:
-* You run the ApiLogicServer CLI:
+As illustrated above, you run the ApiLogicServer CLI:
 ```
-ApiLogicServer run  # you can also create (without execution)
+ApiLogicServer run        # note: you can also create (without execution)
 ```
 > The ```db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
 Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
 
-* The CLI introspects your database to create and __run__ an ```api_server_project```, which consists of:
 
-    1. Your ___API___, available in Swagger
-    
-    2. With underlying ___logic___
-    
-    3. And a ```basic_web_app```
+### Creates Project
+The CLI introspects your database, and creates a project.  You can open
+this in your IDE and customize it as described later.
+
+### Runs Project
+
+The CLI then starts the API. 
+As illustrated aobve, the project implements:
+
+1. Your ___API___, available in Swagger
+
+2. With underlying ___logic___
+
+3. And a ```basic_web_app```
 
 
 ### Customizable Project
-The ApiLogicServer CLI also __created__ a
-[*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide):
+Here is the 
+[*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide);
+you can open it in any IDE or Editor - here it is in PyCharm:
 
 <figure><img src="images/customizable-project.png"></figure>
 
