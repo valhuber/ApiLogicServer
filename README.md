@@ -83,7 +83,8 @@ you can open it in any IDE or Editor - here it is in PyCharm:
 
 <figure><img src="images/generated-project.png"></figure>
 
-Typical [customizations](../../wiki/ApiLogicServer-Guide) include:
+Typical [customizations](../../wiki/ApiLogicServer-Guide) include
+(explore the default sample database to see examples):
 
 * **Adding logic:** the logic file is initially empty - edit it to declare rules.
   The default sample database project contains some simple rules you can review;
@@ -92,6 +93,12 @@ Typical [customizations](../../wiki/ApiLogicServer-Guide) include:
   
 * **Creating custom services:** you can define your own endpoints to complement those
 created from the model
+  
+
+* **Customize the model:** edit ```models_ext.py```, for example
+    * to define [relationships](https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design), critical for multi-table logic, APIs, and web apps
+    * to describe derived attributes, so that your API, logic and apps are not limited to the physical data model
+
 
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
 To run it:
