@@ -40,7 +40,7 @@ With a single command, create and run a
 [JSON:API](#api-safrs-jsonapi-and-swagger) and
 [web app](#basic-web-app---flask-appbuilder) for your database:
 
-<figure><img src="images/123-run.png"></figure>
+<figure><img src="images/creates-and-runs.png"></figure>
 
 As illustrated above, the system operates as follows:
 * You run the ApiLogicServer CLI:
