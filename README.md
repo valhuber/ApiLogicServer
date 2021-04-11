@@ -72,7 +72,7 @@ Here is the
 [*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide);
 you can open it in any IDE or Editor - here it is in PyCharm:
 
-<figure><img src="images/customizable-project.png"></figure>
+<figure><img src="images/generated-project.png"></figure>
 
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
 To run it:
