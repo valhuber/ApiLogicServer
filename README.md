@@ -69,10 +69,20 @@ As illustrated aobve, the project implements:
 
 ### Customizable Project
 Here is the 
-[*customizable* ```api_server_project``` Project](../../wiki/ApiLogicServer-Guide);
+[*customizable* Project](../../wiki/ApiLogicServer-Guide);
 you can open it in any IDE or Editor - here it is in PyCharm:
 
 <figure><img src="images/generated-project.png"></figure>
+
+Typical [customizations](../../wiki/ApiLogicServer-Guide) include:
+
+* **Adding logic:** the logic file is initially empty - edit it to declare rules.
+  The default ```nw``` project contains some simple rules you can review;
+  learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
+  
+  
+* **Creating custom services:** you can define your own endpoints to complement those
+created from the model
 
 After customization, your ```api_logic_server``` project can be re-executed (without creating).
 To run it:
