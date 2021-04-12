@@ -197,6 +197,9 @@ source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer
 ```
 
+### Important News - Certificate Issues
+We are starting to see Python / Flask AppBuilder Certificate issues - see [Troubleshooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#certificate-failures).
+
 # Learning
 Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to run your locally installed software.
 
