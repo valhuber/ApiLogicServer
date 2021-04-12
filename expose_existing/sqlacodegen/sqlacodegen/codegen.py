@@ -559,7 +559,8 @@ from sqlalchemy.dialects.mysql import *
         rendered = coltype.__class__.__name__
         if args:
             rendered += '({0})'.format(', '.join(args))
-
+        if rendered == "CHAR(1, 'SQL_Latin1_General_CP1_CI_AS')":  # temp fix
+            rendered = "CHAR('SQL_Latin1_General_CP1_CI_AS')"
         return rendered
 
     def render_constraint(self, constraint):
@@ -610,6 +611,8 @@ from sqlalchemy.dialects.mysql import *
         # Render the column type if there are no foreign keys on it or any of them points back to
         # itself
         render_coltype = not dedicated_fks or any(fk.column is column for fk in dedicated_fks)
+        if 'DataTypes.char_type' == str(column):
+            print("Debug Stop: Column")  # char_type = Column(CHAR(1, 'SQL_Latin1_General_CP1_CI_AS'))
 
         if column.key != column.name:
             kwarg.append('key')
@@ -676,6 +679,8 @@ from sqlalchemy.dialects.mysql import *
         rendered = "t_{0} = Table(\n{1}{0!r}, metadata,\n".format(table_name, self.indentation)
 
         for column in model.table.columns:
+            if column.name == "char_type":
+                print("Debug Stop - column")
             rendered += '{0}{1},\n'.format(self.indentation, self.render_column(column, True))
 
         for constraint in sorted(model.table.constraints, key=_get_constraint_sort_key):
