@@ -27,7 +27,7 @@ def read(fname):
 
 
 def desc():
-    return read("README.rst")
+    return read("README.md")
 
 
 project_urls = {
@@ -47,7 +47,7 @@ setup(
         "40X more concise, Python for extensibility."
     ),
     long_description=desc(),
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     packages=['api_logic_server_cli',
               'expose_existing', 'expose_existing.sqlacodegen', 'expose_existing.sqlacodegen.sqlacodegen',
               'prototype', 'prototype.api', 'prototype.database', 'prototype.logic',
@@ -84,7 +84,7 @@ setup(
         "cryptography>=3.3.1"
     ],
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",

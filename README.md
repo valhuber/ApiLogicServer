@@ -19,18 +19,19 @@ As illustrated below, the ```ApiLogicServer CLI``` (command line interface) crea
 from your database.  An Api Logic Server implements these features:
 
 
-| Feature | Using   | Providing  |
-| :-------------- |:--------------| :------| 
-| 1. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | APIs that clients can configure<br>to **reduce network traffic** |
-| 2. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | *Spreadsheet-like Rules* are **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  |
-| 3. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant **multi-page, multi-table** web app<br>for back-office admin, and prototyping |
+| Feature | Using   | Providing  | Why it Matters
+| :-------------- |:--------------| :------|  :------|
+| 1. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | APIs that clients can configure<br>to **reduce network traffic** | Unblock Client App Dev |
+| 2. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | *Spreadsheet-like Rules* are **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility |
+| 3. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin |
+| 4. Model Creation | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App |
  
 This **declarative approach** is based on standard Python tooling,
 and can be [installed](#Installation) and customized with standard approaches as described below.
 
 ### Tutorials
 There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
-* [Tutorial](../../wiki/Tutorial) walks you through the steps of creating a server
+* [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
 * [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
 * [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
 
@@ -41,7 +42,7 @@ With a single command, create and run a
 [JSON:API](#api-safrs-jsonapi-and-swagger) and
 [web app](#basic-web-app---flask-appbuilder) for your database:
 
-<figure><img src="images/creates-and-runs.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/creates-and-runs.png"></figure>
 
 ### Run ApiLogicServer CLI
 As illustrated above, you run the ApiLogicServer CLI:
@@ -51,13 +52,13 @@ ApiLogicServer run        # note: you can also create (without execution)
 
 The CLI provides a number of options you can discover with ```ApiLogicServer --help```.
 In particular:
-1. The ```-db_url``` parameter defaults to a supplied [sample database](../../wiki/Sample-Database).
+1. The ```-db_url``` parameter defaults to a supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database).
 
    * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
 to use your own database.
    
 
-2. By default, the project name (directory) is ```api_logic_server```; override it with the
+2. By default, the project name (directory) is ```api_logic_server```- override it with the
 ```-project_name``` option.
 
 
@@ -83,9 +84,9 @@ The CLI then starts the API. As illustrated above, the project implements:
 Here is the created project;
 you can open it in any IDE or Editor - here it is in PyCharm:
 
-<figure><img src="images/generated-project.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/generated-project.png"></figure>
 
-Typical [customizations](../../wiki/ApiLogicServer-Guide) include
+Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
 
 * **Customize API:** edit ```api/expose_services.py``` to define your own endpoints,
@@ -107,7 +108,7 @@ To run it:
 1. Specify a proper ```venv``` (virtual environment)
    
    * The one used for ApiLogicServer install is fine, or you can use a project-specific
-    [virtual environment](../../wiki/ApiLogicServer-Guide#environment)
+    [virtual environment](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#environment)
     
 2. Then:
 
@@ -124,9 +125,9 @@ python ui/basic_web_app/run.py
 Your API is instantly ready to support ui and integration
 development, available in swagger:
 
-<figure><img src="images/swagger.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/swagger.png"></figure>
 
-> Customize your API by editing ```api/expose_services.py```, and see [Customizing](../../wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
+> Customize your API by editing ```api/expose_services.py```, and see [Customizing](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
 
 ### Logic
 
@@ -181,12 +182,12 @@ multi-page, multi-table applications as shown below:
 
 > Customize your app by editing: **```ui/basic_web_app/app/views.py```**
 
-> Before running, [some setup is required](../../wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
+> Before running, [some setup is required](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
 
 
 # Installation
 Caution: Python install is rather more than running an installer.
-Use this page to [Verify / Install Python](../../wiki/Python-Verify-and-Install).
+Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicServer/wiki/Python-Verify-and-Install).
 
 Then, install the ApiLogicServer CLI in the usual manner:
 
@@ -197,22 +198,22 @@ pip install ApiLogicServer
 ```
 
 # Learning
-Take the [tutorial](../../wiki/Tutorial) to run your locally installed software.
+Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to run your locally installed software.
 
 If you'd like to try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme).
 
 # Project Information
 
-### Status: Alpha
+### Status
 
 Initially released 1/19/2021, the project has stabilized:
 
-* The [default Northwind project](../../wiki/Sample-Database) is working with for both the API and the web app,
+* The [default Northwind project](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) is working with for both the API and the web app,
   with pre-created logic (good to explore for examples)
   
 
 *   We have tested several sqlite databases, and several MySQL databases -
-    see [status here.](../../wiki/Testing)
+    see [status here.](https://github.com/valhuber/ApiLogicServer/wiki/Testing)
     These are successfully creating / executing the API and the web app.
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
@@ -225,14 +226,16 @@ Many thanks to
 - Thomas Pollet, for SAFRS
 - Daniel Gaspar, for Flask AppBuilder
 - Denny McKinney, for Tutorial review
-- Achim Götz, for design collaboration
+- Achim Götz, for design collaboration and testing
 - Michael Holleran, for design collaboration and testing
 - Nishanth Shyamsundar, for review and testing
+- Thomas Peters, for review and testing
 - Gloria Huber and Denny McKinney, for doc review
 
 ### Articles
 There are a few articles that provide some orientation to Logic Bank and Flask App Builder.
 These technologies are automatically created when you use ApiLogicServer:
+* [Instant Database Backends](https://dzone.com/articles/instant-api-backends)
 * [Extensible Rules](https://dzone.com/articles/logic-bank-now-extensible-drive-95-automation-even) - defining new rule types, using Python
 * [Declarative](https://dzone.com/articles/agile-design-automation-how-are-rules-different-fr) - exploring _multi-statement_ declarative technology
 * [Automate Business Logic With Logic Bank](https://dzone.com/articles/automate-business-logic-with-logic-bank) - general introduction, discussions of extensibility, manageability and scalability
@@ -240,6 +243,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+04/11/2021 - 02.00.06: Minor - additional CLI info
+
 04/09/2021 - 02.00.05: Bug Fix - View names with spaces
 
 03/30/2021 - 02.00.02: Create Services table to avoid startup issues

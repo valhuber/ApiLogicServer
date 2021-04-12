@@ -32,7 +32,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.05"
+__version__ = "02.00.06"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1171,11 +1171,28 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 @click.pass_context
 def main(ctx):
     """
-    Creates ApiLogicServer project.
+    Creates and runs logic-enabled Python project.
+
+        Examples:
+
+            ApiLogicServer run  # use defaults (verify install)
+
+            ApiLogicServer run --db_url=sqlite:///nw.sqlite
+
+        Doc:
+
+            ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
+
+            Logic Bank: https://github.com/valhuber/logicbank#readme
+
+            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
+
+            SAFRS: https://github.com/thomaxxl/safrs/wiki
+
+            FAB: https://flask-appbuilder.readthedocs.io/en/latest/
 
     https://github.com/valhuber/ApiLogicServer/wiki/Tutorial
     """
-    # print("group")
 
 
 @main.command("version")
@@ -1189,6 +1206,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
             "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
             "\t03/30/2021 - 02.00.02: Create Services table to avoid startup issues\n"
             "\t03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url\n"
@@ -1244,28 +1262,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            use_model: str,
            host: str,
            favorites: str, non_favorites: str):
-    """
-    Creates a logic-enabled Python project.
 
-        Examples:
-
-            ApiLogicServer create  # use defaults (verify install)
-
-            ApiLogicServer create --project_name=my_project, --db_url=sqlite:///nw.sqlite
-
-        Doc:
-
-            ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
-
-            Logic Bank: https://github.com/valhuber/logicbank#readme
-
-            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
-
-            SAFRS: https://github.com/thomaxxl/safrs/wiki
-
-            FAB: https://flask-appbuilder.readthedocs.io/en/latest/
-
-    """
     db_types = ""
     if db_url == default_db:
         db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
@@ -1321,28 +1318,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         use_model: str,
         host: str,
         favorites: str, non_favorites: str):
-    """
-    Creates and runs logic-enabled Python project.
 
-        Examples:
-
-            ApiLogicServer run  # use defaults (verify install)
-
-            ApiLogicServer run --db_url=sqlite:///nw.sqlite
-
-        Doc:
-
-            ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
-
-            Logic Bank: https://github.com/valhuber/logicbank#readme
-
-            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
-
-            SAFRS: https://github.com/thomaxxl/safrs/wiki
-
-            FAB: https://flask-appbuilder.readthedocs.io/en/latest/
-
-    """
     db_types = ""
     if db_url == default_db:
         db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
@@ -1356,6 +1332,30 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
 log = logging.getLogger(__name__)
 
 
+def print_info():
+    """
+    Creates and optionally runs a customizable ApiLogicServer project, Example
+
+    URI examples, Docs URL
+    """
+    info = [
+        '',
+        'Creates and optionally runs a customizable ApiLogicServer project',
+        '',
+        'Example:',
+        '  ApiLogicServer run [--db_url=mysql+pymysql://root:p@localhost/classicmodels]',
+        '',
+        'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
+        '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
+        '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
+        ' ',
+        'Docs: https://github.com/valhuber/ApiLogicServer#readme'
+    ]
+    for each_line in info:
+        sys.stdout.write(each_line + '\n')
+    sys.stdout.write('\n')
+
+
 def print_args(args, msg):
     print(msg)
     for each_arg in args:
@@ -1365,8 +1365,9 @@ def print_args(args, msg):
 
 def start():               # target of setup.py
     sys.stdout.write("\nAPI Logic Server CLI " + __version__ + " here\n")
-    sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
-    sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
+    print_info()
+    # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
+    # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
 
 
@@ -1376,9 +1377,8 @@ if __name__ == '__main__':  # debugger & python command line start here
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
     print(f'\nAPI Logic Server CLI Utility {__version__} here')
-    print("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html")
-    print("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n")
+    print_info()
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
-        print_args(commands, "Main - Command Line Arguments")
+        print_args(commands, "Utility / Main - Command Line Arguments:")
     main()
