@@ -559,8 +559,8 @@ from sqlalchemy.dialects.mysql import *
         rendered = coltype.__class__.__name__
         if args:
             rendered += '({0})'.format(', '.join(args))
-        if rendered == "CHAR(1, 'SQL_Latin1_General_CP1_CI_AS')":  # temp fix
-            rendered = "CHAR('SQL_Latin1_General_CP1_CI_AS')"
+        if rendered.startswith("CHAR("):  # temp fix for non-double byte chars
+            rendered = rendered.replace("CHAR(", "String(")
         return rendered
 
     def render_constraint(self, constraint):
