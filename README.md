@@ -246,6 +246,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)
+
 04/11/2021 - 02.00.06: Minor - additional CLI info
 
 04/09/2021 - 02.00.05: Bug Fix - View names with spaces
