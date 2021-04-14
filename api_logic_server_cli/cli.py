@@ -32,7 +32,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.09"
+__version__ = "02.00.10"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -129,6 +129,11 @@ class GenerateFromModel(object):
                              + "Using Python: " + sys.version + "\n\n"
                              + "At: " + str(datetime.datetime.now()) + "\n\n"
                              + '"""\n\n')
+        self.result_apis += \
+            f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
+        self.result_apis += '    """ called by api_logic_server_run.py """\n\n'
+        self.result_apis += \
+            '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
 
         sys.path.append(cwd)  # for banking Command Line test
 
@@ -290,6 +295,7 @@ class GenerateFromModel(object):
 
         if (metadata is None):
             print('.. Using db for meta (models not found)')
+            print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
             metadata = MetaData()
         else:
             metadata.reflect(bind=self.engine, resolve_fks=True)
@@ -352,7 +358,7 @@ class GenerateFromModel(object):
                 self.tables_visited.add(each_child.name)
 
             self.tables_generated.add(a_table_def.fullname)
-            if self.num_pages_generated == 0:  # first few lines of expose_api_models.py
+            if self.num_pages_generated == 0 and False:  # first few lines of expose_api_models.py  FIXME XXX
                 self.result_apis += \
                     f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
                 self.result_apis += '    """ called by api_logic_server_run.py """\n\n'
@@ -839,11 +845,11 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
             code_gen_args = get_codegen_args()
             expose_existing.codegen(code_gen_args)
             pass
-        elif use_approach == "sqlacodeGen_main":
+        elif use_approach == "sqlacodeGen_main":  # unused - delete
             import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
             code_gen_args = get_codegen_args()
             gen_models.main(code_gen_args)
-        else:
+        else:  # unused - delete
             # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
             cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
             abs_cmd_debug = abspath(cmd_debug)
@@ -1049,7 +1055,7 @@ def fix_database_models__inject_db_types(abs_project_name: str, db_types: str):
 
 
 def fix_database_models__import_models_ext(abs_project_name: str):
-    """ insert <db_types file> into database/models.py """
+    """ Append "from database import models_ext" to database/models.py """
     models_file_name = f'{abs_project_name}/database/models.py'
     print(f'.. ..Appending "from database import models_ext" to database/models.py')
     models_file = open(models_file_name, 'a')
@@ -1119,7 +1125,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 
     print("7. Writing: /api/expose_api_models.py")
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
-    fix_database_models__import_models_ext(abs_project_name)
+    if use_model == "":  # append
+        fix_database_models__import_models_ext(abs_project_name)
 
     print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
     db_uri = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url)
@@ -1206,7 +1213,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t04/11/2021 - 02.00.08: fix sql/server char type (issues # 13)\n"
+            "\t04/11/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
             "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
             "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
             "\t03/30/2021 - 02.00.02: Create Services table to avoid startup issues\n"

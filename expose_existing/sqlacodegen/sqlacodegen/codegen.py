@@ -611,7 +611,7 @@ from sqlalchemy.dialects.mysql import *
         # Render the column type if there are no foreign keys on it or any of them points back to
         # itself
         render_coltype = not dedicated_fks or any(fk.column is column for fk in dedicated_fks)
-        if 'DataTypes.char_type' == str(column):
+        if 'DataTypes.char_type DEBUG ONLY' == str(column):
             print("Debug Stop: Column")  # char_type = Column(CHAR(1, 'SQL_Latin1_General_CP1_CI_AS'))
 
         if column.key != column.name:
@@ -679,7 +679,7 @@ from sqlalchemy.dialects.mysql import *
         rendered = "t_{0} = Table(\n{1}{0!r}, metadata,\n".format(table_name, self.indentation)
 
         for column in model.table.columns:
-            if column.name == "char_type":
+            if column.name == "char_type DEBUG ONLY":
                 print("Debug Stop - column")
             rendered += '{0}{1},\n'.format(self.indentation, self.render_column(column, True))
 
