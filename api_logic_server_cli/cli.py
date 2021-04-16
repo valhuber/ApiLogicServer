@@ -222,7 +222,7 @@ class GenerateFromModel(object):
         do_dynamic_load = True
         project_abs_path = abspath(a_project_name)
 
-        if (do_dynamic_load):
+        if do_dynamic_load:
             """
                 a_cwd -- see ApiLogicServerProto for structure
 
@@ -293,7 +293,7 @@ class GenerateFromModel(object):
                 traceback.print_exc()
                 pass
 
-        if (metadata is None):
+        if metadata is None:
             print('.. Using db for meta (models not found)')
             print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
             metadata = MetaData()
@@ -817,6 +817,11 @@ def get_project_dir() -> str:
 
 
 def create_models(db_url: str, project: str, use_model: str) -> str:
+    """
+    create model.py, normally via expose_existing.expose_existing_callable
+
+    or, use_model -- then just copy
+    """
 
     class DotDict(dict):
         """dot.notation access to dictionary attributes"""
@@ -839,34 +844,10 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
         print(f'.. ..Copy {model_file} to {project + "/database/models.py"}')
         copyfile(model_file, project + '/database/models.py')
     else:
-        use_approach = "expose_existing"
-        if use_approach == "expose_existing":  # preferred version - Thomas' model fixup (etc)
-            import expose_existing.expose_existing_callable as expose_existing
-            code_gen_args = get_codegen_args()
-            expose_existing.codegen(code_gen_args)
-            pass
-        elif use_approach == "sqlacodeGen_main":  # unused - delete
-            import expose_existing.sqlacodegen.sqlacodegen.main as gen_models
-            code_gen_args = get_codegen_args()
-            gen_models.main(code_gen_args)
-        else:  # unused - delete
-            # PYTHONPATH=sqlacodegen/ python3 sqlacodegen/sqlacodegen/main.py mysql+pymysql://root:password@localhost/mysql > examples/models.py
-            cmd_debug = f'python ../expose_existing/sqlacodegen/sqlacodegen/main.py '
-            abs_cmd_debug = abspath(cmd_debug)
-            project_dir = get_project_dir()
-            python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
-            env_list = os.environ.copy()
-            # env_list["PATH"] = "/usr/sbin:/sbin:" + env_list["PATH"]
-            """
-            env_list["PYTHONPATH"] = python_path + ":" + env_list["PYTHONPATH"]  # python_path  # e.g., /Users/val/dev/ApiLogicServer/venv/lib/python3.9
-            """
-            cmd = f'python {project_dir}/expose_existing/sqlacodegen/sqlacodegen/main.py '
-            cmd += db_url
-            cmd += '  > ' + project + '/database/models.py'
-            # env_list = {}
-            # 'python ../expose_existing/sqlacodegen/sqlacodegen/main.py sqlite:///db.sqlite  > my_project/database/models.py'
-            result = run_command(cmd, msg="4. Create database/models.py")  # might fail per venv, looking for inflect
-            pass
+        import expose_existing.expose_existing_callable as expose_existing_callable
+        code_gen_args = get_codegen_args()
+        expose_existing_callable.codegen(code_gen_args)
+        pass
 
 
 def write_expose_api_models(project_name, apis):
@@ -1100,14 +1081,14 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 
     clone_prototype_project(abs_project_name, from_git, "2. Create Project")
 
-    print(f'4. Create {abs_project_name + "/database/models.py"} via expose_existing / sqlacodegen: {db_url}')
+    print(f'3. Create {abs_project_name + "/database/models.py"} via expose_existing_callable / sqlacodegen: {db_url}')
     create_models(abs_db_url, abs_project_name, use_model)  # exec's sqlacodegen
     fix_database_models__inject_db_types(abs_project_name, db_types)
 
     if flask_appbuilder:
-        create_basic_web_app(abs_db_url, abs_project_name, "5. Create ui/basic_web_app")
+        create_basic_web_app(abs_db_url, abs_project_name, "4. Create ui/basic_web_app")
     else:
-        print("5. ui/basic/web_app creation declined")
+        print("4. ui/basic/web_app creation declined")
 
     """
         Create views.py file from db, models.py
@@ -1120,22 +1101,22 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         favorite_names=favorites,
         non_favorite_names=non_favorites
     )
-    print("6. Create api/expose_api_models.py and ui/basic_web_app/app/views.py (import / iterate models)")
+    print("5. Create api/expose_api_models.py and ui/basic_web_app/app/views.py (import / iterate models)")
     generate_from_model.generate_api_expose_and_ui_views()  # sets generate_from_model.result_apis & result_views
 
-    print("7. Writing: /api/expose_api_models.py")
+    print("6. Writing: /api/expose_api_models.py")
     write_expose_api_models(abs_project_name, generate_from_model.result_apis)
-    if use_model == "":  # append
+    if use_model == "":
         fix_database_models__import_models_ext(abs_project_name)
 
-    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
+    print("7. Update api_logic_server_run.py and config.py with project_name and db_url")
     db_uri = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url)
 
     if flask_appbuilder:
         replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
                                replace_with='"' + db_uri + '"',
                                in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
-        print("9. Writing: /ui/basic_web_app/app/views.py")
+        print("8. Writing: /ui/basic_web_app/app/views.py")
         text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(generate_from_model.result_views)
         text_file.close()
@@ -1147,7 +1128,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url)
 
     if db_url.endswith("nw.sqlite"):
-        print("10. Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
+        print("9. Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
         append_logic_with_nw_logic(abs_project_name)
         replace_models_ext_with_nw_models_ext(abs_project_name)
         replace_expose_rpcs_with_nw_expose_rpcs(abs_project_name)
