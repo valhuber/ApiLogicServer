@@ -225,6 +225,7 @@ We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issue
 
 Many thanks to
 
+- Armin Ronacher, for Flask
 - Mike Bayer, for SQLAlchemy
 - Thomas Pollet, for SAFRS
 - Daniel Gaspar, for Flask AppBuilder
