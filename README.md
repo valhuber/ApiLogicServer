@@ -200,6 +200,11 @@ pip install ApiLogicServer
 ### Important News - Certificate Issues
 We are starting to see Python / Flask AppBuilder Certificate issues - see [Troubleshooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#certificate-failures).
 
+### Default Python version
+In some cases, your computer may have multiple Python versions, such as ```python3```.  ```ApiLogicServer run``` relies on the default Python being 3.8 or higher.  You can resolve this by:
+* making this the default
+* using ```ApiLogicServer create```, and running ```python3 api_logic_server_run.py```
+
 # Learning
 Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to run your locally installed software.
 
