@@ -192,7 +192,7 @@ Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicS
 Then, install the ApiLogicServer CLI in the usual manner:
 
 ```
-virtualenv venv
+virtualenv venv            # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer
 ```
