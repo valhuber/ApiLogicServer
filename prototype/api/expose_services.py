@@ -12,7 +12,7 @@ from database import models
 from database.db import Base
 
 # called by expose_api_models.py, to customize api (new end points, services).
-# separate file, to simplify merge if project recreated
+# separate from expose_api_models.py, to simplify merge if project recreated
 
 
 def expose_services(app, api, project_dir):

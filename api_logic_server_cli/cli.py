@@ -32,7 +32,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.10"
+__version__ = "02.00.11"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -89,12 +89,14 @@ class GenerateFromModel(object):
                  project_name: str ="~/Desktop/my_project",
                  db_url: str = "sqlite:///nw.sqlite",
                  host: str = "localhost",
+                 port: str = "5000",
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):
         self.project_name = project_name
         self.db_url = db_url
         self.host = host
+        self.port = port
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_name = non_favorite_names
@@ -130,7 +132,7 @@ class GenerateFromModel(object):
                              + "At: " + str(datetime.datetime.now()) + "\n\n"
                              + '"""\n\n')
         self.result_apis += \
-            f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
+            f'def expose_models(app, HOST="{self.host}", PORT={self.port}, API_PREFIX="/api"):\n'
         self.result_apis += '    """ called by api_logic_server_run.py """\n\n'
         self.result_apis += \
             '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
@@ -1004,6 +1006,21 @@ def insert_lines_at(lines: str, at: str, file_name: str):
         fp.writelines(file_lines)  # write whole list again to the same file
 
 
+def fix_host_and_ports(project_name, host, port):
+    """ update server, port in /api/expose_services.py """
+    replace_port = f':{port}' if port else ""
+    replace_with = host + replace_port
+    in_file = f'{project_name}/api/expose_services.py'
+    replace_string_in_file(search_for="localhost:5000",
+                           replace_with=replace_with,
+                           in_file=in_file)
+    print(f'.. .. Updated expose_services_py with port={port} and host={host}')
+    replace_string_in_file(search_for="python_anywhere_path",
+                           replace_with=project_name,
+                           in_file=f'{project_name}/python_anywhere_wsgi.py')
+    print(f'.. .. Updated python_anywhere_wsgi.py with {project_name}')
+
+
 def fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url):
     """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
     file_name = f'{abs_project_name}/ui/basic_web_app/app/__init__.py'
@@ -1044,7 +1061,7 @@ def fix_database_models__import_models_ext(abs_project_name: str):
     models_file.close()
 
 
-def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str,
+def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
                      flask_appbuilder: bool, favorites: str, non_favorites: str):
     """
@@ -1061,6 +1078,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
 #        print(f'  --db_types={db_types}')
         print(f'  --run={run}')
         print(f'  --host={host}')
+        print(f'  --port={port}')
         print(f'  --not_exposed={not_exposed}')
         print(f'  --open_with={open_with}')
         print(f'  --use_model={use_model}')
@@ -1097,6 +1115,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         project_name=abs_project_name,
         db_url=abs_db_url,
         host=host,
+        port=port,
         not_exposed=not_exposed + " ",
         favorite_names=favorites,
         non_favorite_names=non_favorites
@@ -1132,6 +1151,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, not_exposed: str
         append_logic_with_nw_logic(abs_project_name)
         replace_models_ext_with_nw_models_ext(abs_project_name)
         replace_expose_rpcs_with_nw_expose_rpcs(abs_project_name)
+
+    fix_host_and_ports(abs_project_name, host, port)
 
     if open_with != "":
         print(f'\nCreation complete.  Starting ApiLogicServer at {project_name}\n')
@@ -1194,6 +1215,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t04/20/2021 - 02.00.11: pythonanywhere - port option, wsgi creation\n"
             "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
             "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
             "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
@@ -1240,7 +1262,10 @@ def version(ctx):
               help="See ApiLogicServer/wiki/Troubleshooting")
 @click.option('--host',
               default=f'localhost',
-              help="Server hostname")
+              help="Server hostname (default is localhost)")
+@click.option('--port',
+              default=f'5000',
+              help="Port (default 5000, or leave empty)")
 @click.pass_context
 def create(ctx, project_name: str, db_url: str, not_exposed: str,
            from_git: str,
@@ -1250,6 +1275,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            flask_appbuilder: click.BOOL,
            use_model: str,
            host: str,
+           port: str,
            favorites: str, non_favorites: str):
 
     db_types = ""
@@ -1258,7 +1284,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with)
 
 
@@ -1296,7 +1322,10 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               help="See ApiLogicServer/wiki/Troubleshooting")
 @click.option('--host',
               default=f'localhost',
-              help="Server hostname")
+              help="Server hostname (default is localhost)")
+@click.option('--port',
+              default=f'5000',
+              help="Port (default 5000, or leave empty)")
 @click.pass_context
 def run(ctx, project_name: str, db_url: str, not_exposed: str,
         from_git: str,
@@ -1306,6 +1335,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         flask_appbuilder: click.BOOL,
         use_model: str,
         host: str,
+        port: str,
         favorites: str, non_favorites: str):
 
     db_types = ""
@@ -1314,7 +1344,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with)
 
 
@@ -1362,6 +1392,7 @@ def start():               # target of setup.py
 
 if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
+    # unix: python api_logic_server_cli/cli.py create --project_name=/home/api_logic_server
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
