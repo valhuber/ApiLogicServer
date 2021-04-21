@@ -32,7 +32,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.11"
+__version__ = "02.00.13"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -131,8 +131,9 @@ class GenerateFromModel(object):
                              + "Using Python: " + sys.version + "\n\n"
                              + "At: " + str(datetime.datetime.now()) + "\n\n"
                              + '"""\n\n')
+        port_replace = self.port if self.port else "None"
         self.result_apis += \
-            f'def expose_models(app, HOST="{self.host}", PORT={self.port}, API_PREFIX="/api"):\n'
+            f'def expose_models(app, HOST="{self.host}", PORT={port_replace}, API_PREFIX="/api"):\n'
         self.result_apis += '    """ called by api_logic_server_run.py """\n\n'
         self.result_apis += \
             '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
@@ -360,12 +361,6 @@ class GenerateFromModel(object):
                 self.tables_visited.add(each_child.name)
 
             self.tables_generated.add(a_table_def.fullname)
-            if self.num_pages_generated == 0 and False:  # first few lines of expose_api_models.py  FIXME XXX
-                self.result_apis += \
-                    f'def expose_models(app, HOST="{self.host}", PORT=5000, API_PREFIX="/api"):\n'
-                self.result_apis += '    """ called by api_logic_server_run.py """\n\n'
-                self.result_apis += \
-                    '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
             self.result_apis += f'    api.expose_object(models.{class_name})\n'
 
             self.num_pages_generated += 1
@@ -738,7 +733,7 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
 
     use_env = env
     if env is None:
-        project_dir = get_project_dir()
+        project_dir = get_api_logic_server_dir()
         python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
         use_env = os.environ.copy()
         # print("\n\nFixing env for cmd: " + cmd)
@@ -782,7 +777,7 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
     else:
         from_dir = from_git
         if from_dir == "":
-            code_loc = str(get_project_dir())
+            code_loc = str(get_api_logic_server_dir())
             if "\\" in code_loc:
                 from_dir = code_loc + "\\prototype"
             else:
@@ -808,7 +803,7 @@ def create_basic_web_app(db_url, project_name, msg):
     pass
 
 
-def get_project_dir() -> str:
+def get_api_logic_server_dir() -> str:
     """
     :return: ApiLogicServer dir, eg, /Users/val/dev/ApiLogicServer
     """
@@ -858,14 +853,14 @@ def write_expose_api_models(project_name, apis):
     text_file.close()
 
 
-def update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url) -> str:
+def update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url, host, port) -> str:
     """
     Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
 
     Note abs_project_name is from user, and may be relative (and same as project_name)
     """
     api_logic_server_run_py = f'{abs_project_name}/api_logic_server_run.py'
-    replace_string_in_file(search_for="\"project_name\"",  # fix logic_bank_utils.add_python_path
+    replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
                            replace_with='"' + os.path.basename(project_name) + '"',
                            in_file=api_logic_server_run_py)
     replace_string_in_file(search_for="ApiLogicServer hello",
@@ -874,8 +869,11 @@ def update_api_logic_server_run__and__config(project_name, abs_project_name, abs
     actual_path = pathlib.Path(abs_project_name).absolute()
     if os.name == "nt":  # windows
         actual_path = get_os_url(str(actual_path))
-    replace_string_in_file(search_for="\"project_dir\"",  # for logging project location
+    replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
                            replace_with='"' + str(actual_path) + '"',
+                           in_file=api_logic_server_run_py)
+    replace_string_in_file(search_for="api_logic_server_host",  # server host
+                           replace_with=host,
                            in_file=api_logic_server_run_py)
     copy_sqlite = True
     if copy_sqlite == False or "sqlite" not in abs_db_url:
@@ -1015,9 +1013,10 @@ def fix_host_and_ports(project_name, host, port):
                            replace_with=replace_with,
                            in_file=in_file)
     print(f'.. .. Updated expose_services_py with port={port} and host={host}')
+    full_path = os.path.abspath(project_name)
     replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=project_name,
-                           in_file=f'{project_name}/python_anywhere_wsgi.py')
+                           in_file=f'{full_path}/python_anywhere_wsgi.py')
     print(f'.. .. Updated python_anywhere_wsgi.py with {project_name}')
 
 
@@ -1087,15 +1086,15 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     print(f"\nApiLogicServer {__version__} Creation Log:")
     abs_db_url = db_url
     if abs_db_url == "":
-        print(f'0. Using demo default db_url: sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite')
-        abs_db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
+        print(f'0. Using demo default db_url: sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite')
+        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite'
     if db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         abs_db_url = abspath(url)
         abs_db_url = 'sqlite:///' + abs_db_url
         pass
 
-    abs_project_name = resolve_home(project_name)
+    abs_project_name = resolve_home(project_name)  # FIXME rename to project_directory
 
     clone_prototype_project(abs_project_name, from_git, "2. Create Project")
 
@@ -1129,7 +1128,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         fix_database_models__import_models_ext(abs_project_name)
 
     print("7. Update api_logic_server_run.py and config.py with project_name and db_url")
-    db_uri = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url)
+    db_uri = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url, host, port)
 
     if flask_appbuilder:
         replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
@@ -1215,7 +1214,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t04/20/2021 - 02.00.11: pythonanywhere - port option, wsgi creation\n"
+            "\t04/20/2021 - 02.00.12: pythonanywhere - port option, wsgi creation\n"
             "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
             "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
             "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
@@ -1280,7 +1279,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
     db_types = ""
     if db_url == default_db:
-        db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
@@ -1340,7 +1339,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
 
     db_types = ""
     if db_url == default_db:
-        db_url = f'sqlite:///{abspath(get_project_dir())}/api_logic_server_cli/nw.sqlite'
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
@@ -1363,6 +1362,7 @@ def print_info():
         '',
         'Example:',
         '  ApiLogicServer run [--db_url=mysql+pymysql://root:p@localhost/classicmodels]',
+        '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
         '',
         'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
         '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',

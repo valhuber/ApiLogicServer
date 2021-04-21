@@ -20,8 +20,8 @@ from sqlalchemy.orm import Session
 from api import expose_api_models, expose_services
 from logic import logic_bank
 
-project_name = "project_name"
-project_dir = "project_dir"
+project_name = "api_logic_server_project_name"
+project_dir = "api_logic_server_project_dir"
 (did_fix_path, sys_env_info) = \
     logic_bank_utils.add_python_path(project_dir=project_name, my_file=__file__)
 
@@ -102,7 +102,7 @@ def create_app(config_filename=None, host="localhost"):
 
 # address where the api will be hosted, change this if you're not running the app on localhost!
 host = sys.argv[1] if sys.argv[1:] \
-    else "localhost"  # 127.0.0.1 verify in swagger or your client.  You wight need cors support.
+    else "api_logic_server_host"  # 127.0.0.1 verify in swagger or your client.  You wight need cors support.
 
 flask_app, safrs_api = create_app(host=host)
 
