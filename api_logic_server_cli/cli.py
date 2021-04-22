@@ -1104,7 +1104,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         pass
 
     project_directory = resolve_home(project_name)
-    """user-supplied project_name, less the twiddle"""
+    """user-supplied project_name, less the twiddle. Typically relative to cwd. """
 
     clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", db_url)
 
@@ -1336,7 +1336,7 @@ def print_info():
         '',
         'Creates and optionally runs a customizable ApiLogicServer project',
         '',
-        'Example:',
+        'Examples:',
         '  ApiLogicServer run [--db_url=mysql+pymysql://root:p@localhost/classicmodels]',
         '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
         '',
