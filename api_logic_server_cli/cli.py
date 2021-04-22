@@ -32,7 +32,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.13"
+__version__ = "02.00.14"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1015,9 +1015,9 @@ def fix_host_and_ports(project_name, host, port):
     print(f'.. .. Updated expose_services_py with port={port} and host={host}')
     full_path = os.path.abspath(project_name)
     replace_string_in_file(search_for="python_anywhere_path",
-                           replace_with=project_name,
-                           in_file=f'{full_path}/python_anywhere_wsgi.py')
-    print(f'.. .. Updated python_anywhere_wsgi.py with {project_name}')
+                           replace_with=full_path,
+                           in_file=f'{project_name}/python_anywhere_wsgi.py')
+    print(f'.. .. Updated python_anywhere_wsgi.py with {full_path}')
 
 
 def fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url):
@@ -1214,7 +1214,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t04/20/2021 - 02.00.12: pythonanywhere - port option, wsgi creation\n"
+            "\t04/21/2021 - 02.00.14: pythonanywhere - port option, wsgi creation\n"
             "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
             "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
             "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
@@ -1383,7 +1383,7 @@ def print_args(args, msg):
 
 
 def start():               # target of setup.py
-    sys.stdout.write("\nAPI Logic Server CLI " + __version__ + " here\n")
+    sys.stdout.write("\nWelcome to API Logic Server CLI, " + __version__ + "\n")
     print_info()
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
@@ -1396,7 +1396,7 @@ if __name__ == '__main__':  # debugger & python command line start here
     (did_fix_path, sys_env_info) = \
         logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
-    print(f'\nAPI Logic Server CLI Utility {__version__} here')
+    print(f'\nWelcome to API Logic Server CLI Utility, {__version__}')
     print_info()
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
