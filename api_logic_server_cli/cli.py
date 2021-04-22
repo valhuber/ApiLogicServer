@@ -140,33 +140,6 @@ class GenerateFromModel(object):
 
         sys.path.append(cwd)  # for banking Command Line test
 
-        enable_cli_hack = False  # awful stuff, want to remove, keep for now...
-        if enable_cli_hack:
-            if ("fab-quick-start" in cwd and "nw" not in cwd and
-                    "banking" not in cwd):
-                # sorry, this is just to enable run cli/base, *or" by python cli.py
-                # need to wind up at .... /nw-app, or /banking/db
-                # AND have that in sys.path
-                use_nw = True
-                if use_nw:
-                    cwd = cwd.replace("fab-quick-start",
-                                      "fab-quick-start/nw-app", 1)
-                    cwd = cwd.replace("/fab_quick_start_util","")
-                    self.result_views += "Debug Mode fix for cwd: " + cwd + "\n\n"
-                else:
-                    cwd = cwd.replace("fab-quick-start",
-                                      "fab-quick-start/banking/basic_web_app", 1)
-                    cwd = cwd.replace("/fab_quick_start_util","")
-                    python_path = os.getcwd()
-                    python_path = python_path.replace('fab-quick-start',
-                                                      'banking', 1)
-                    python_path = python_path.replace("/fab_quick_start_util","")
-                    sys.path.append(python_path)
-                    self.result_views += "Python Path includes: " + python_path + "\n\n"
-                self.result_views += "Debug cmd override: " + cwd + "\n\n"
-                #  print ("\n\n** debug path issues 2: \n\n" + self._result)
-            #  print ("\n\n** debug path issues 1: \n\n" + self._result)
-
         self.result_views += '"""\n\n'
         self.find_meta_data(cwd, self.project_name, self.db_url)  # sets self.metadata
         meta_tables = self.metadata.tables
@@ -202,7 +175,7 @@ class GenerateFromModel(object):
     def find_meta_data(self, a_cwd: str, a_project_name: str, a_db_url) -> MetaData:
         """     Find Metadata by importing model, or (failing that), db
 
-        a_cmd should be
+        a_cmd should be cli folder, e.g. '/Users/val/dev/ApiLogicServer/api_logic_server_cli'
 
             Metadata contains definition of tables, cols & fKeys (show_related)
             It can be obtained from db, *or* models.py; important because...
@@ -210,14 +183,14 @@ class GenerateFromModel(object):
                 Instead, they define "Virtual Keys" in their model files
                 To find these, we need to get Metadata from models, not db
             So, we need to
-                1. Import the models, via a location-relative dynamic import
+                1. Import the models, via a location-relative dynamic import (warning - not trivial)
                 2. Find the Metadata from the imported models:
                     a. Find cls_members in models module
                     b. Locate first user model, use its metadata property
             #  view_metadata = models.Order().metadata  # class var, non ab_
 
             All this is doing is:
-                    from <cwd>/app import models(.py) as models
+                    from <cwd>/database import models(.py) as models
 
         """
 
@@ -227,38 +200,27 @@ class GenerateFromModel(object):
 
         if do_dynamic_load:
             """
-                a_cwd -- see ApiLogicServerProto for structure
+                a_cwd -- see ApiLogicServer/prototype for structure
 
                 credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             """
             sys_path = str(sys.path)
-            # db = SQLAlchemy()
-            # db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used models
-
-            # from api_logic_server_cli.my_project.app import create_app  # FIXME no way this can work
 
             self.app = create_app(host=self.host)
             self.app.config.SQLALCHEMY_DATABASE_URI = a_db_url
             self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
+
             print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
             model_imported = False
+            sys.path.insert(0, project_abs_path + "/database")  #  e.g., adds /Users/val/Desktop/my_project/database
             try:
                 # models =
-                importlib.import_module('database/models')
+                importlib.import_module('models')
                 model_imported = True
             except:
-                pass  # keep looking...
-            if not model_imported:
-                sys.path.insert(0, project_abs_path + "/database")
-                #  e.g., adds /Users/val/Desktop/my_project/database
-                try:
-                    # models =
-                    importlib.import_module('models')
-                except:
-                    print("\n===> ERROR - Dynamic model import failed")
-                    traceback.print_exc()
-                    pass  # try to continue to enable manual fixup
-                model_imported = True
+                print("\n===> ERROR - Dynamic model import failed - project run will fail")
+                traceback.print_exc()
+                pass  # try to continue to enable manual fixup
 
             # sys.path.insert(0, a_cwd)  # success - models open
             # config = importlib.import_module('config')
@@ -270,8 +232,8 @@ class GenerateFromModel(object):
         orm_class = None
         metadata = None
         if not model_imported:
-            print('.. Creation proceeding, may require manual fixup')
-            print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
+            print('.. ..Creation proceeding to enable manual database/models.py fixup')
+            print('.. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
         else:
             try:
                 cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
@@ -296,9 +258,9 @@ class GenerateFromModel(object):
                 traceback.print_exc()
                 pass
 
-        if metadata is None:
-            print('.. Using db for meta (models not found)')
-            print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
+        if metadata is None:  # this recovery fails to find meta, but should continue to enable model repair
+            # print('.. Using db for meta (models not found)')
+            # print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
             metadata = MetaData()
         else:
             metadata.reflect(bind=self.engine, resolve_fks=True)
