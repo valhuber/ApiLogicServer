@@ -167,7 +167,7 @@ class GenerateFromModel(object):
                 #  print ("\n\n** debug path issues 2: \n\n" + self._result)
             #  print ("\n\n** debug path issues 1: \n\n" + self._result)
 
-        self.result_views += '"""\n\n'  # look into fstring - nicer to read TODO
+        self.result_views += '"""\n\n'
         self.find_meta_data(cwd, self.project_name, self.db_url)  # sets self.metadata
         meta_tables = self.metadata.tables
         self.result_views += self.generate_module_imports()
@@ -470,7 +470,7 @@ class GenerateFromModel(object):
                 id_column_names.add(each_column.name)
                 continue  # ids are boring - do at end
             column_count += 1
-            if column_count > a_max_columns:  # - Todo - maybe cmd arg?
+            if column_count > a_max_columns:
                 break
             if column_count > 1:
                 result += ", "
@@ -853,20 +853,20 @@ def write_expose_api_models(project_name, apis):
     text_file.close()
 
 
-def update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url, host, port) -> str:
+def update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port) -> str:
     """
     Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
 
-    Note abs_project_name is from user, and may be relative (and same as project_name)
+    Note project_directory is from user, and may be relative (and same as project_name)
     """
-    api_logic_server_run_py = f'{abs_project_name}/api_logic_server_run.py'
+    api_logic_server_run_py = f'{project_directory}/api_logic_server_run.py'
     replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
                            replace_with='"' + os.path.basename(project_name) + '"',
                            in_file=api_logic_server_run_py)
     replace_string_in_file(search_for="ApiLogicServer hello",
                            replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
                            in_file=api_logic_server_run_py)
-    actual_path = pathlib.Path(abs_project_name).absolute()
+    actual_path = pathlib.Path(project_directory).absolute()
     if os.name == "nt":  # windows
         actual_path = get_os_url(str(actual_path))
     replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
@@ -880,25 +880,25 @@ def update_api_logic_server_run__and__config(project_name, abs_project_name, abs
         db_uri = get_os_url(abs_db_url)
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
-                               in_file=f'{abs_project_name}/config.py')
+                               in_file=f'{project_directory}/config.py')
     else:
         """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
         """
         # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
         db_loc = abs_db_url.replace("sqlite:///", "")
-        copyfile(db_loc, abs_project_name + '/database/db.sqlite')
+        copyfile(db_loc, project_directory + '/database/db.sqlite')
         db_uri = abs_db_url
         if os.name == "nt":  # windows
             db_uri = get_os_url(f'sqlite:///{get_os_url(db_loc)}')
-        """
+        f"""
         relative makes run too hard: 
-        db_uri = f'sqlite:///{abs_project_name}/database/db.sqlite'
+        db_uri = f'sqlite:///{project_directory}/database/db.sqlite'
         if os.name == "nt":  # windows
-            db_uri = get_os_url(f'sqlite:///{abs_project_name}\\database\\db.sqlite')
+            db_uri = get_os_url(f'sqlite:///{project_directory}\\database\\db.sqlite')
         """
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
-                               in_file=f'{abs_project_name}/config.py')
+                               in_file=f'{project_directory}/config.py')
     return db_uri
 
 
@@ -957,10 +957,10 @@ def resolve_home(name: str) -> str:
     return result
 
 
-def fix_basic_web_app_run__python_path(abs_project_name):
+def fix_basic_web_app_run__python_path(project_directory):
     """ prepend logic_bank_utils call to fixup python path in ui/basic_web_app/run.py (enables run.py) """
-    file_name = f'{abs_project_name}/ui/basic_web_app/run.py'
-    proj = os.path.basename(abs_project_name)
+    file_name = f'{project_directory}/ui/basic_web_app/run.py'
+    proj = os.path.basename(project_directory)
     insert_text = ("\n# ApiLogicServer - enable flask run\n"
                    "import logic_bank_utils.util as logic_bank_utils\n"
                    + f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n\n')
@@ -971,10 +971,10 @@ def fix_basic_web_app_run__python_path(abs_project_name):
         fp.writelines(lines)  # write whole lists again to the same file
 
 
-def fix_basic_web_app_run__create_admin(abs_project_name):
-    """ update create_admin.sh with abs_project_name """
+def fix_basic_web_app_run__create_admin(project_directory):
+    """ update create_admin.sh with project_directory """
 
-    unix_project_name = abs_project_name.replace('\\', "/")
+    unix_project_name = project_directory.replace('\\', "/")
     target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
     source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.txt")
     create_admin_commands = source_create_admin_sh_file.read()
@@ -1020,10 +1020,10 @@ def fix_host_and_ports(project_name, host, port):
     print(f'.. .. Updated python_anywhere_wsgi.py with {full_path}')
 
 
-def fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url):
+def fix_basic_web_app_app_init__inject_logic(project_directory, db_url):
     """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
-    file_name = f'{abs_project_name}/ui/basic_web_app/app/__init__.py'
-    proj = os.path.basename(abs_project_name)  # enable flask run
+    file_name = f'{project_directory}/ui/basic_web_app/app/__init__.py'
+    proj = os.path.basename(project_directory)  # enable flask run
     import_fix = f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n'
 
     insert_text = ("\n# ApiLogicServer - enable flask fab create-admin\n"
@@ -1041,9 +1041,9 @@ def fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url):
     insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
 
 
-def fix_database_models__inject_db_types(abs_project_name: str, db_types: str):
+def fix_database_models__inject_db_types(project_directory: str, db_types: str):
     """ insert <db_types file> into database/models.py """
-    models_file_name = f'{abs_project_name}/database/models.py'
+    models_file_name = f'{project_directory}/database/models.py'
     if db_types != "":
         print(f'.. ..Injecting file {db_types} into database/models.py')
         with open(db_types, 'r') as file:
@@ -1051,9 +1051,9 @@ def fix_database_models__inject_db_types(abs_project_name: str, db_types: str):
         insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
 
 
-def fix_database_models__import_models_ext(abs_project_name: str):
+def fix_database_models__import_models_ext(project_directory: str):
     """ Append "from database import models_ext" to database/models.py """
-    models_file_name = f'{abs_project_name}/database/models.py'
+    models_file_name = f'{project_directory}/database/models.py'
     print(f'.. ..Appending "from database import models_ext" to database/models.py')
     models_file = open(models_file_name, 'a')
     models_file.write("\n\nfrom database import models_ext\n")
@@ -1094,16 +1094,17 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         abs_db_url = 'sqlite:///' + abs_db_url
         pass
 
-    abs_project_name = resolve_home(project_name)  # FIXME rename to project_directory
+    project_directory = resolve_home(project_name)
+    """user-supplied project_name, less the twiddle"""
 
-    clone_prototype_project(abs_project_name, from_git, "2. Create Project")
+    clone_prototype_project(project_directory, from_git, "2. Create Project")
 
-    print(f'3. Create {abs_project_name + "/database/models.py"} via expose_existing_callable / sqlacodegen: {db_url}')
-    create_models(abs_db_url, abs_project_name, use_model)  # exec's sqlacodegen
-    fix_database_models__inject_db_types(abs_project_name, db_types)
+    print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {db_url}')
+    create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
+    fix_database_models__inject_db_types(project_directory, db_types)
 
     if flask_appbuilder:
-        create_basic_web_app(abs_db_url, abs_project_name, "4. Create ui/basic_web_app")
+        create_basic_web_app(abs_db_url, project_directory, "4. Create ui/basic_web_app")
     else:
         print("4. ui/basic/web_app creation declined")
 
@@ -1111,7 +1112,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         Create views.py file from db, models.py
     """
     generate_from_model = GenerateFromModel(
-        project_name=abs_project_name,
+        project_name=project_directory,
         db_url=abs_db_url,
         host=host,
         port=port,
@@ -1123,35 +1124,35 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     generate_from_model.generate_api_expose_and_ui_views()  # sets generate_from_model.result_apis & result_views
 
     print("6. Writing: /api/expose_api_models.py")
-    write_expose_api_models(abs_project_name, generate_from_model.result_apis)
+    write_expose_api_models(project_directory, generate_from_model.result_apis)
     if use_model == "":
-        fix_database_models__import_models_ext(abs_project_name)
+        fix_database_models__import_models_ext(project_directory)
 
     print("7. Update api_logic_server_run.py and config.py with project_name and db_url")
-    db_uri = update_api_logic_server_run__and__config(project_name, abs_project_name, abs_db_url, host, port)
+    db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
 
     if flask_appbuilder:
         replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
                                replace_with='"' + db_uri + '"',
-                               in_file=f'{abs_project_name}/ui/basic_web_app/config.py')
+                               in_file=f'{project_directory}/ui/basic_web_app/config.py')
         print("8. Writing: /ui/basic_web_app/app/views.py")
-        text_file = open(abs_project_name + '/ui/basic_web_app/app/views.py', 'w')
+        text_file = open(project_directory + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(generate_from_model.result_views)
         text_file.close()
         print(".. ..Fixing run.py and app/init for Python path, logic")
         if not db_url.endswith("nw.sqlite"):
             print(".. ..Note: you will need to run flask fab create-admin")
-        fix_basic_web_app_run__python_path(abs_project_name)
-        fix_basic_web_app_run__create_admin(abs_project_name)
-        fix_basic_web_app_app_init__inject_logic(abs_project_name, db_url)
+        fix_basic_web_app_run__python_path(project_directory)
+        fix_basic_web_app_run__create_admin(project_directory)
+        fix_basic_web_app_app_init__inject_logic(project_directory, db_url)
 
     if db_url.endswith("nw.sqlite"):
         print("9. Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
-        append_logic_with_nw_logic(abs_project_name)
-        replace_models_ext_with_nw_models_ext(abs_project_name)
-        replace_expose_rpcs_with_nw_expose_rpcs(abs_project_name)
+        append_logic_with_nw_logic(project_directory)
+        replace_models_ext_with_nw_models_ext(project_directory)
+        replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
 
-    fix_host_and_ports(abs_project_name, host, port)
+    fix_host_and_ports(project_directory, host, port)
 
     if open_with != "":
         print(f'\nCreation complete.  Starting ApiLogicServer at {project_name}\n')
@@ -1167,7 +1168,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         run_command(f'{open_with} {project_name}', msg="Open with IDE/Editor")
 
     if run:
-        run_command(f'python {abs_project_name}/api_logic_server_run.py {host}', msg="\nRun created ApiLogicServer")
+        run_command(f'python {project_directory}/api_logic_server_run.py {host}', msg="\nRun created ApiLogicServer")
     else:
         print("\nApiLogicServer customizable project created.  Next steps:")
         print(f'..cd {project_name}')
