@@ -721,7 +721,7 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
-def clone_prototype_project(project_directory: str, from_git: str, msg: str, db_url: str):
+def clone_prototype_project_with_nw_samples(project_directory: str, from_git: str, msg: str, db_url: str):
     """
     clone prototype to create and remove git folder
 
@@ -1106,7 +1106,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     project_directory = resolve_home(project_name)
     """user-supplied project_name, less the twiddle"""
 
-    clone_prototype_project(project_directory, from_git, "2. Create Project", db_url)
+    clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", db_url)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {db_url}')
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
@@ -1117,16 +1117,10 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     else:
         print("4. ui/basic/web_app creation declined")
 
-    generate_from_model = GenerateFromModel(  # Create views.py file from db, models.py
-        project_name=project_directory,
-        db_url=abs_db_url,
-        host=host,
-        port=port,
-        not_exposed=not_exposed + " ",
-        favorite_names=favorites,
-        non_favorite_names=non_favorites
-    )
     print("5. Create api/expose_api_models.py and ui/basic_web_app/app/views.py (import / iterate models)")
+    generate_from_model = GenerateFromModel(  # Create views.py file from db, models.py
+        project_name=project_directory, db_url=abs_db_url, host=host, port=port,
+        not_exposed=not_exposed + " ", favorite_names=favorites, non_favorite_names=non_favorites)
     generate_from_model.generate_api_expose_and_ui_views()  # sets generate_from_model.result_apis & result_views
 
     print("6. Writing: /api/expose_api_models.py")
