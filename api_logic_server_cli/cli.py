@@ -5,6 +5,8 @@ create ApiLogicServer project by cloning prototype,
 in particular create the ui/basic_web_app/app/views.py
 and api/expose_api_models.
 
+See: main driver
+
 """
 
 import builtins
@@ -300,7 +302,7 @@ class GenerateFromModel(object):
         log.debug("process_each_table: " + table_name)
         if "TRANSFERFUNDx" in table_name:
             log.debug("special table")  # debug stop here
-        if (table_name + " " in self.not_exposed):
+        if table_name + " " in self.not_exposed:
             return "# not_exposed: api.expose_object(models.{table_name})"
         if "ProductDetails_V" in table_name:
             log.debug("special table")  # should not occur (--noviews)
@@ -407,7 +409,7 @@ class GenerateFromModel(object):
         id_column_names = set()
         processed_column_names = set()
         result += ""
-        if (a_table_def.name == "OrderDetail"):
+        if a_table_def.name == "OrderDetail":
             result += "\n"  # just for debug stop
 
         favorite_column_name = self.favorite_column_name(a_table_def)
@@ -428,7 +430,7 @@ class GenerateFromModel(object):
         for each_column in columns:
             if each_column.name in processed_column_names:
                 continue
-            if (self.is_non_favorite_name(each_column.name.lower())):
+            if self.is_non_favorite_name(each_column.name.lower()):
                 id_column_names.add(each_column.name)
                 continue  # ids are boring - do at end
             column_count += 1
@@ -439,7 +441,7 @@ class GenerateFromModel(object):
             result += '"' + each_column.name + '"'
         for each_id_column_name in id_column_names:
             column_count += 1
-            if (column_count > a_max_id_columns):
+            if column_count > a_max_id_columns:
                 break
             if column_count > 1:
                 result += ", "
@@ -487,7 +489,7 @@ class GenerateFromModel(object):
                 bool
         """
         for each_non_favorite_name in self._non_favorite_names_list:
-            if (each_non_favorite_name in a_name):
+            if each_non_favorite_name in a_name:
                 return True
         return False
 
@@ -628,7 +630,7 @@ class GenerateFromModel(object):
             + str(self.num_related)
             + " related_view(s).\n\n"
         )
-        if (self.num_related == 0):
+        if self.num_related == 0:
             result += "#  Warning - no related_views,"
             result += " since foreign keys missing\n"
             result += "#  .. add them to your models.py (see nw example)\n"
@@ -685,13 +687,14 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
 
     :param cmd: string of command to execute
     :param env:
-    :param msg: optional message
+    :param msg: optional message (no-msg to suppress)
     :return:
     """
     log_msg = ""
     if msg != "Execute command:":
         log_msg = msg + " with command:"
-    print(f'{log_msg} {cmd}')
+    if msg != "no-msg":
+        print(f'{log_msg} {cmd}')
 
     use_env = env
     if env is None:
@@ -718,24 +721,26 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
-def clone_prototype_project(project_name: str, from_git: str, msg: str):
+def clone_prototype_project(project_directory: str, from_git: str, msg: str, db_url: str):
     """
     clone prototype to create and remove git folder
 
-    :param project_name: name of project created
+    if nw, Append logic/logic_bank.py with pre-defined...
+
+    :param project_directory: name of project created
     :param from_git: name of git project to clone (blank for default)
     :return: result of cmd
     """
     cloned_from = from_git
     remove_project_debug = True
     if remove_project_debug:
-        delete_dir(realpath(project_name), "1.")
+        delete_dir(realpath(project_directory), "1.")
 
     if from_git.startswith("https://"):
-        cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_name
-        cmd = f'git clone --quiet {from_git} {project_name}'
+        cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
+        cmd = f'git clone --quiet {from_git} {project_directory}'
         result = run_command(cmd, msg=msg)  # "2. Create Project")
-        delete_dir(f'{project_name}/.git', "3.")
+        delete_dir(f'{project_directory}/.git', "3.")
     else:
         from_dir = from_git
         if from_dir == "":
@@ -744,17 +749,22 @@ def clone_prototype_project(project_name: str, from_git: str, msg: str):
                 from_dir = code_loc + "\\prototype"
             else:
                 from_dir = code_loc + "/prototype"
-        print(f'{msg} copy {from_dir} -> {project_name}')
+        print(f'{msg} copy {from_dir} -> {project_directory}')
         cloned_from = from_dir
-        shutil.copytree(from_dir, project_name)
+        shutil.copytree(from_dir, project_directory)
 
     replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
-                           in_file=f'{project_name}/readme.md')
+                           in_file=f'{project_directory}/readme.md')
     replace_string_in_file(search_for="cloned-from",
                            replace_with=cloned_from,
-                           in_file=f'{project_name}/readme.md')
-    pass
+                           in_file=f'{project_directory}/readme.md')
+
+    if db_url.endswith("nw.sqlite"):
+        print(".. ..Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
+        append_logic_with_nw_logic(project_directory)
+        replace_models_ext_with_nw_models_ext(project_directory)
+        replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
 
 
 def create_basic_web_app(db_url, project_name, msg):
@@ -966,20 +976,21 @@ def insert_lines_at(lines: str, at: str, file_name: str):
         fp.writelines(file_lines)  # write whole list again to the same file
 
 
-def fix_host_and_ports(project_name, host, port):
-    """ update server, port in /api/expose_services.py """
+def fix_host_and_ports(msg, project_name, host, port):
+    """ 9. Fixing port / host -- update server, port in /api/expose_services.py """
+    print(msg)  # 9. Fixing port / host
     replace_port = f':{port}' if port else ""
     replace_with = host + replace_port
     in_file = f'{project_name}/api/expose_services.py'
     replace_string_in_file(search_for="localhost:5000",
                            replace_with=replace_with,
                            in_file=in_file)
-    print(f'.. .. Updated expose_services_py with port={port} and host={host}')
+    print(f'.. ..Updated expose_services_py with port={port} and host={host}')
     full_path = os.path.abspath(project_name)
     replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
                            in_file=f'{project_name}/python_anywhere_wsgi.py')
-    print(f'.. .. Updated python_anywhere_wsgi.py with {full_path}')
+    print(f'.. ..Updated python_anywhere_wsgi.py with {full_path}')
 
 
 def fix_basic_web_app_app_init__inject_logic(project_directory, db_url):
@@ -1022,13 +1033,36 @@ def fix_database_models__import_models_ext(project_directory: str):
     models_file.close()
 
 
-def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
+def start_open_with(open_with: str, project_name: str):
+    """ Creation complete.  Opening {open_with} at {project_name} """
+    print(f'\nCreation complete - Opening {open_with} at {project_name}')
+    print(".. See the readme for install / run instructions")
+    run_command(f'{open_with} {project_name}', None, "no-msg")
+
+
+def prepare_flask_appbuilder(msg: str,
+                             project_directory: str, db_uri: str, db_url: str,
+                             generate_from_model: GenerateFromModel):
+    """ 8. Writing: /ui/basic_web_app/app/views.py """
+    replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
+                           replace_with='"' + db_uri + '"',
+                           in_file=f'{project_directory}/ui/basic_web_app/config.py')
+    print(msg)  # 8. Writing: /ui/basic_web_app/app/views.py
+    text_file = open(project_directory + '/ui/basic_web_app/app/views.py', 'w')
+    text_file.write(generate_from_model.result_views)
+    text_file.close()
+    print(".. ..Fixing run.py and app/init for Python path, logic")
+    if not db_url.endswith("nw.sqlite"):
+        print(".. ..Important: you will need to run flask fab create-admin")
+    fix_basic_web_app_run__python_path(project_directory)
+    fix_basic_web_app_run__create_admin(project_directory)
+    fix_basic_web_app_app_init__inject_logic(project_directory, db_url)
+
+
+def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
                      flask_appbuilder: bool, favorites: str, non_favorites: str):
-    """
-    Creates logic-enabled Python JSON_API project, options for FAB and execution
-    """
-    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+    """ Creating ApiLogicServer with options:"""
     print_options = True
     if print_options:
         print(f'\n\nCreating ApiLogicServer with options:')
@@ -1036,7 +1070,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         print(f'  --project_name={project_name}')
         print(f'  --flask_appbuilder={flask_appbuilder}')
         print(f'  --from_git={from_git}')
-#        print(f'  --db_types={db_types}')
+        #        print(f'  --db_types={db_types}')
         print(f'  --run={run}')
         print(f'  --host={host}')
         print(f'  --port={port}')
@@ -1045,7 +1079,20 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         print(f'  --use_model={use_model}')
         print(f'  --favorites={favorites}')
         print(f'  --non_favorites={non_favorites}')
+
+
+def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
+                     from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
+                     flask_appbuilder: bool, favorites: str, non_favorites: str):
+
+    """ Creates logic-enabled Python JSON_API project, options for FAB and execution - main driver """
+
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+    print_options(project_name = project_name, db_url=db_url, host=host, port=port, not_exposed=not_exposed,
+        from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
+        flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites)
     print(f"\nApiLogicServer {__version__} Creation Log:")
+
     abs_db_url = db_url
     if abs_db_url == "":
         print(f'0. Using demo default db_url: sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite')
@@ -1059,7 +1106,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     project_directory = resolve_home(project_name)
     """user-supplied project_name, less the twiddle"""
 
-    clone_prototype_project(project_directory, from_git, "2. Create Project")
+    clone_prototype_project(project_directory, from_git, "2. Create Project", db_url)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {db_url}')
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
@@ -1070,10 +1117,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     else:
         print("4. ui/basic/web_app creation declined")
 
-    """
-        Create views.py file from db, models.py
-    """
-    generate_from_model = GenerateFromModel(
+    generate_from_model = GenerateFromModel(  # Create views.py file from db, models.py
         project_name=project_directory,
         db_url=abs_db_url,
         host=host,
@@ -1094,43 +1138,18 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
 
     if flask_appbuilder:
-        replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
-                               replace_with='"' + db_uri + '"',
-                               in_file=f'{project_directory}/ui/basic_web_app/config.py')
-        print("8. Writing: /ui/basic_web_app/app/views.py")
-        text_file = open(project_directory + '/ui/basic_web_app/app/views.py', 'w')
-        text_file.write(generate_from_model.result_views)
-        text_file.close()
-        print(".. ..Fixing run.py and app/init for Python path, logic")
-        if not db_url.endswith("nw.sqlite"):
-            print(".. ..Note: you will need to run flask fab create-admin")
-        fix_basic_web_app_run__python_path(project_directory)
-        fix_basic_web_app_run__create_admin(project_directory)
-        fix_basic_web_app_app_init__inject_logic(project_directory, db_url)
+        prepare_flask_appbuilder(msg="8. Writing: /ui/basic_web_app/app/views.py",
+                                 project_directory=project_directory,
+                                 db_uri=db_uri, db_url=db_url, generate_from_model=generate_from_model)
 
-    if db_url.endswith("nw.sqlite"):
-        print("9. Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
-        append_logic_with_nw_logic(project_directory)
-        replace_models_ext_with_nw_models_ext(project_directory)
-        replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
-
-    fix_host_and_ports(project_directory, host, port)
+    fix_host_and_ports("9. Fixing port / host", project_directory, host, port)
 
     if open_with != "":
-        print(f'\nCreation complete.  Starting ApiLogicServer at {project_name}\n')
-        print("You can run it again later, as follows:")
-        print(f'..cd {project_name}')
-        print(f'..virtualenv venv')
-        print(f'..source venv/bin/activate  # windows: venv\\Scripts\\activate')
-        print(f'..pip install -r requirements.txt')
-        print(f'..python api_logic_server_run.py')
-        print(f'..python ui/basic_web_app/run.py')
-        print(f'Opening with: {open_with}')
-        print("")
-        run_command(f'{open_with} {project_name}', msg="Open with IDE/Editor")
+        start_open_with(open_with=open_with, project_name=project_name)
 
     if run:
-        run_command(f'python {project_directory}/api_logic_server_run.py {host}', msg="\nRun created ApiLogicServer")
+        run_command(f'python {project_directory}/api_logic_server_run.py {host}',
+                    msg="\nRun created ApiLogicServer project")
     else:
         print("\nApiLogicServer customizable project created.  Next steps:")
         print(f'..cd {project_name}')
