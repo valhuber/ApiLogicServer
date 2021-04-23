@@ -103,7 +103,7 @@ def create_app(config_filename=None, host="localhost"):
 # address where the api will be hosted, change this if you're not running the app on localhost!
 host = sys.argv[1] if sys.argv[1:] \
     else "api_logic_server_host"  # 127.0.0.1 verify in swagger or your client.  You wight need cors support.
-
+port = "api_logic_server_port"
 flask_app, safrs_api = create_app(host=host)
 
 
@@ -140,4 +140,4 @@ def after_request(response):
 
 
 if __name__ == "__main__":
-    flask_app.run(host=host, threaded=False)
+    flask_app.run(host=host, threaded=False, port=port)

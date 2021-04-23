@@ -253,6 +253,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+04/24/2021 - 02.00.15: bug fix - server port
+
 04/20/2021 - 02.00.12: pythonanywhere - port option, wsgi creation
 
 04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)
