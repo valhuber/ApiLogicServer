@@ -851,6 +851,9 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
     replace_string_in_file(search_for=", port=port",   # server port
                            replace_with=replace_port,
                            in_file=api_logic_server_run_py)
+    replace_string_in_file(search_for="api_logic_server_port",   # server port
+                           replace_with=port,
+                           in_file=api_logic_server_run_py)
     copy_sqlite = True
     if copy_sqlite == False or "sqlite" not in abs_db_url:
         db_uri = get_os_url(abs_db_url)
@@ -1194,7 +1197,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t04/24/2021 - 02.00.15: bug fix - server port\n"
+            "\t04/23/2021 - 02.00.15: bug fix - SQLAlchemy version, server port\n"
             "\t04/21/2021 - 02.00.14: pythonanywhere - port option, wsgi creation\n"
             "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
             "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
