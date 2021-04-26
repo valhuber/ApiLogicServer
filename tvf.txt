@@ -1,0 +1,33 @@
+# coding: utf-8
+from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.sqltypes import NullType
+from sqlalchemy.ext.declarative import declarative_base
+
+
+t_udfEmployeeInLocation = Table(  # define result for udfEmployeeInLocation
+	"udfEmployeeInLocation", metadata,
+	Column(udfEmployeeInLocation, Integer),
+	Column(udfEmployeeInLocation, String(50)),
+	Column(udfEmployeeInLocation, String(50)))
+
+
+class udfEmployeeInLocation(object):
+	''' define service for udfEmployeeInLocation '''
+	@staticmethod
+	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
+	def udfEmployeeInLocation(arg):
+		"""
+		description: rpc example
+		args:
+			@location
+		"""
+		sql_query = db.text("SELECT * FROM udfEmployeeInLocation(:arg)")
+		query_result = db.engine.execute(sql_query, arg=arg)
+		result = query_result.fetchall()
+		return {"result" : list(result[0])}
+
+
+
+
+#  1 services created.
