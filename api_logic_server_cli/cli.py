@@ -34,7 +34,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.00.15"
+__version__ = "02.00.16"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1068,7 +1068,7 @@ def prepare_flask_appbuilder(msg: str,
 
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
-                     flask_appbuilder: bool, favorites: str, non_favorites: str):
+                     flask_appbuilder: bool, favorites: str, non_favorites: str, extended_builder: str):
     """ Creating ApiLogicServer with options:"""
     print_options = True
     if print_options:
@@ -1086,18 +1086,29 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
         print(f'  --use_model={use_model}')
         print(f'  --favorites={favorites}')
         print(f'  --non_favorites={non_favorites}')
+        print(f'  --extended_builder={extended_builder}')
+
+
+def invoke_extended_builder(builder_path, db_url, project_directory):
+    import importlib.util
+    # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
+    spec = importlib.util.spec_from_file_location("module.name", builder_path)
+    extended_builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(extended_builder)  # runs "bare" module code (e.g., initialization)
+    extended_builder.extended_builder(db_url, project_directory)  # extended_builder.MyClass()
 
 
 def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
-                     flask_appbuilder: bool, favorites: str, non_favorites: str):
+                     flask_appbuilder: bool, favorites: str, non_favorites: str, extended_builder: str):
 
     """ Creates logic-enabled Python JSON_API project, options for FAB and execution - main driver """
 
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
     print_options(project_name = project_name, db_url=db_url, host=host, port=port, not_exposed=not_exposed,
-        from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
-        flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites)
+                  from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
+                  flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
+                  extended_builder=extended_builder)
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
     abs_db_url = db_url
@@ -1144,6 +1155,10 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                                  db_uri=db_uri, db_url=db_url, generate_from_model=generate_from_model)
 
     fix_host_and_ports("9. Fixing port / host", project_directory, host, port)
+
+    if extended_builder is not None and extended_builder !="":
+        print(f'10. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
+        invoke_extended_builder(extended_builder, db_url, project_directory)
 
     if open_with != "":
         start_open_with(open_with=open_with, project_name=project_name)
@@ -1197,6 +1212,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t04/23/2021 - 02.00.16: --extended_builder (e.g., restify Table Value Functions)\n"
             "\t04/23/2021 - 02.00.15: bug fix - SQLAlchemy version, server port\n"
             "\t04/21/2021 - 02.00.14: pythonanywhere - port option, wsgi creation\n"
             "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
@@ -1249,6 +1265,9 @@ def version(ctx):
 @click.option('--port',
               default=f'5000',
               help="Port (default 5000, or leave empty)")
+@click.option('--extended_builder',
+              default=f'',
+              help="your_code.py for additional build automation")
 @click.pass_context
 def create(ctx, project_name: str, db_url: str, not_exposed: str,
            from_git: str,
@@ -1259,7 +1278,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            use_model: str,
            host: str,
            port: str,
-           favorites: str, non_favorites: str):
+           favorites: str, non_favorites: str,
+           extended_builder: str):
 
     db_types = ""
     if db_url == default_db:
@@ -1268,7 +1288,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
-                     favorites=favorites, non_favorites=non_favorites, open_with=open_with)
+                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                     extendded_builder=extended_builder)
 
 
 @main.command("run")
@@ -1309,6 +1330,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 @click.option('--port',
               default=f'5000',
               help="Port (default 5000, or leave empty)")
+@click.option('--extended_builder',
+              default=f'',
+              help="your_code.py for additional build automation")
 @click.pass_context
 def run(ctx, project_name: str, db_url: str, not_exposed: str,
         from_git: str,
@@ -1319,7 +1343,8 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         use_model: str,
         host: str,
         port: str,
-        favorites: str, non_favorites: str):
+        favorites: str, non_favorites: str,
+        extended_builder: str):
 
     db_types = ""
     if db_url == default_db:
@@ -1328,7 +1353,8 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
-                     favorites=favorites, non_favorites=non_favorites, open_with=open_with)
+                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                     extended_builder=extended_builder)
 
 
 log = logging.getLogger(__name__)
