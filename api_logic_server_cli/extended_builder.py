@@ -40,7 +40,7 @@ class TvfBuilder(object):
         self.tvf_contents += f'\t"{cols[0].Function}", metadata,\n'
         col_count = 0
         for each_col in cols:
-            self.tvf_contents += f'\tColumn("{each_col.Function}", '
+            self.tvf_contents += f'\tColumn("{each_col.Column}", '
             if each_col.Data_Type == "int":
                 self.tvf_contents += f'Integer)'
             elif each_col.Data_Type == "nvarchar":

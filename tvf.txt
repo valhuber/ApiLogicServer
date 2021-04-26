@@ -10,9 +10,9 @@ from safrs import JABase, DB
 
 t_udfEmployeeInLocation = Table(  # define result for udfEmployeeInLocation
 	"udfEmployeeInLocation", metadata,
-	Column("udfEmployeeInLocation", Integer),
-	Column("udfEmployeeInLocation", String(50)),
-	Column("udfEmployeeInLocation", String(50)))
+	Column("Id", Integer),
+	Column("Location", String(50)),
+	Column("Name", String(50)))
 
 
 class udfEmployeeInLocation(JABase):
