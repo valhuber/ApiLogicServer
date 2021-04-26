@@ -160,7 +160,9 @@ def extended_builder(db_url, project_directory):
             for each TVF:
                 class t_<TVF_Name> -- the model
                 class <TVF_Name>   -- the service
-
+        args
+            db_url - use this to open the target database, e.g. for meta data
+            project_directory - the created project... create / alter files here
     """
     print(f'extended_builder.extended_builder("{db_url}", "{project_directory}"')
     tvf_builder = TvfBuilder(db_url, project_directory)
