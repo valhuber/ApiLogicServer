@@ -3,16 +3,19 @@ from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, In
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.ext.declarative import declarative_base
+from flask_sqlalchemy import SQLAlchemy
+from safrs import SAFRSAPI, jsonapi_rpc
+from safrs import JABase, DB
 
 
 t_udfEmployeeInLocation = Table(  # define result for udfEmployeeInLocation
 	"udfEmployeeInLocation", metadata,
-	Column(udfEmployeeInLocation, Integer),
-	Column(udfEmployeeInLocation, String(50)),
-	Column(udfEmployeeInLocation, String(50)))
+	Column("udfEmployeeInLocation", Integer),
+	Column("udfEmployeeInLocation", String(50)),
+	Column("udfEmployeeInLocation", String(50)))
 
 
-class udfEmployeeInLocation(object):
+class udfEmployeeInLocation(JABase):
 	''' define service for udfEmployeeInLocation '''
 	@staticmethod
 	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)

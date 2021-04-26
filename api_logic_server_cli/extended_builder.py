@@ -30,6 +30,9 @@ class TvfBuilder(object):
         self.tvf_contents += "from sqlalchemy.orm import relationship\n"
         self.tvf_contents += "from sqlalchemy.sql.sqltypes import NullType\n"
         self.tvf_contents += "from sqlalchemy.ext.declarative import declarative_base\n"
+        self.tvf_contents += "from flask_sqlalchemy import SQLAlchemy\n"
+        self.tvf_contents += "from safrs import SAFRSAPI, jsonapi_rpc\n"
+        self.tvf_contents += "from safrs import JABase, DB\n"
         self.tvf_contents += "\n\n"
 
     def build_tvf_class(self, cols: List[DotDict]):
@@ -37,7 +40,7 @@ class TvfBuilder(object):
         self.tvf_contents += f'\t"{cols[0].Function}", metadata,\n'
         col_count = 0
         for each_col in cols:
-            self.tvf_contents += f'\tColumn({each_col.Function}, '
+            self.tvf_contents += f'\tColumn("{each_col.Function}", '
             if each_col.Data_Type == "int":
                 self.tvf_contents += f'Integer)'
             elif each_col.Data_Type == "nvarchar":
@@ -52,7 +55,7 @@ class TvfBuilder(object):
         self.tvf_contents += f'\n\n'
 
     def build_tvf_service(self, args: List[DotDict]):
-        self.tvf_contents += f'class {args[0].ObjectName}(object):\n'
+        self.tvf_contents += f'class {args[0].ObjectName}(JABase):\n'
         self.tvf_contents += f"\t''' define service for {args[0].ObjectName} '''\n"
         self.tvf_contents += f"\t@staticmethod\n"
         self.tvf_contents += f"\t@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)\n"
