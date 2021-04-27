@@ -79,7 +79,7 @@ from sqlalchemy.dialects.mysql import *
         self.tvf_contents += f"\t@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)\n"
 
         # def udfEmployeeInLocationWithName(location, Name):
-        self.tvf_contents += f"\tdef {args[0].ObjectName}("  #  arg):\n"
+        self.tvf_contents += f"\tdef {args[0].ObjectName}("
         arg_number = 0
         for each_arg in args:
             self.tvf_contents += each_arg.ParameterName[1:]
@@ -88,14 +88,14 @@ from sqlalchemy.dialects.mysql import *
                 self.tvf_contents += ", "
         self.tvf_contents += "):\n"
         self.tvf_contents += f'\t\t"""\n'
-        self.tvf_contents += f"\t\tdescription: expose TVF: {args[0].ObjectName}\n"
+        self.tvf_contents += f"\t\tdescription: expose TVF - {args[0].ObjectName}\n"
         self.tvf_contents += f"\t\targs:\n"
         for each_arg in args:
-            self.tvf_contents += f'\t\t\t{each_arg.ParameterName}\n'
+            self.tvf_contents += f'\t\t\t{each_arg.ParameterName[1:]}\n'
         self.tvf_contents += f'\t\t"""\n'
 
         # sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
-        self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}('  # :arg)")\n'
+        self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}('
         arg_number = 0
         for each_arg in args:
             self.tvf_contents += ":" + each_arg.ParameterName[1:]
