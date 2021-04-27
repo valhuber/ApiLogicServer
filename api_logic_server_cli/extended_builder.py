@@ -45,7 +45,7 @@ class TvfBuilder(object):
                 self.tvf_contents += f'Integer)'
             elif each_col.Data_Type == "nvarchar":
                 self.tvf_contents += f'String({each_col.Char_Max_Length}))'
-            else:
+            else:  # TODO - support additional data types
                 self.tvf_contents += f'String(8000))'
             col_count += 1
             if col_count < len(cols):
@@ -59,15 +59,42 @@ class TvfBuilder(object):
         self.tvf_contents += f"\t''' define service for {args[0].ObjectName} '''\n"
         self.tvf_contents += f"\t@staticmethod\n"
         self.tvf_contents += f"\t@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)\n"
-        self.tvf_contents += f"\tdef {args[0].ObjectName}(arg):\n"
+
+        # def udfEmployeeInLocationWithName(location, Name):
+        self.tvf_contents += f"\tdef {args[0].ObjectName}("  #  arg):\n"
+        arg_number = 0
+        for each_arg in args:
+            self.tvf_contents += each_arg.ParameterName[1:]
+            arg_number += 1
+            if arg_number < len(args):
+                self.tvf_contents += ", "
+        self.tvf_contents += "):\n"
         self.tvf_contents += f'\t\t"""\n'
-        self.tvf_contents += f"\t\tdescription: rpc example\n"
+        self.tvf_contents += f"\t\tdescription: expose TVF: {args[0].ObjectName}\n"
         self.tvf_contents += f"\t\targs:\n"
         for each_arg in args:
             self.tvf_contents += f'\t\t\t{each_arg.ParameterName}\n'
         self.tvf_contents += f'\t\t"""\n'
-        self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}(:arg)")\n'
-        self.tvf_contents += f'\t\tquery_result = db.engine.execute(sql_query, arg=arg)\n'
+
+        # sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
+        self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}('  # :arg)")\n'
+        arg_number = 0
+        for each_arg in args:
+            self.tvf_contents += ":" + each_arg.ParameterName[1:]
+            arg_number += 1
+            if arg_number < len(args):
+                self.tvf_contents += ", "
+        self.tvf_contents += ')")\n'
+
+        # query_result = db.engine.execute(sql_query, location=location, Name=Name)
+        self.tvf_contents += f'\t\tquery_result = db.engine.execute(sql_query, '  # arg=arg)\n'
+        arg_number = 0
+        for each_arg in args:
+            self.tvf_contents += each_arg.ParameterName[1:] + "=" + each_arg.ParameterName[1:]
+            arg_number += 1
+            if arg_number < len(args):
+                self.tvf_contents += ", "
+        self.tvf_contents += ")\n"
         self.tvf_contents += f'\t\tresult = query_result.fetchall()\n'
         self.tvf_contents += '\t\treturn {"result" : list(result[0])}\n'
         self.tvf_contents += f'\n\n'
@@ -150,7 +177,7 @@ class TvfBuilder(object):
         if len(args) > 0:
             self.build_tvf_service(args)
 
-        self.tvf_contents += f'\n\n#  {self.number_of_services} services created.\n'
+        self.tvf_contents += f'#  {self.number_of_services} services created.\n'
 
         self.write_tvf_file()
 

@@ -96,9 +96,11 @@ def json_to_entities(from_row: object, to_row: safrs.DB.Model):
                     break
 
 
-class ServicesEndPoint(models.Service):
+class ServicesEndPoint(safrs.JABase):
     """
-    future safrs release will eliminate need to back services with physical tables
+    Illustrate custom service
+
+    Quite small, since transaction logic comes from shared rules
     """
 
     @classmethod

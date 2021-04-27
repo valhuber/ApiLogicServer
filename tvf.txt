@@ -15,22 +15,44 @@ t_udfEmployeeInLocation = Table(  # define result for udfEmployeeInLocation
 	Column("Name", String(50)))
 
 
+t_udfEmployeeInLocationWithName = Table(  # define result for udfEmployeeInLocationWithName
+	"udfEmployeeInLocationWithName", metadata,
+	Column("Id", Integer),
+	Column("Location", String(50)),
+	Column("Name", String(50)))
+
+
 class udfEmployeeInLocation(JABase):
 	''' define service for udfEmployeeInLocation '''
 	@staticmethod
 	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
-	def udfEmployeeInLocation(arg):
+	def udfEmployeeInLocation(location):
 		"""
-		description: rpc example
+		description: expose TVF: udfEmployeeInLocation
 		args:
 			@location
 		"""
-		sql_query = db.text("SELECT * FROM udfEmployeeInLocation(:arg)")
-		query_result = db.engine.execute(sql_query, arg=arg)
+		sql_query = db.text("SELECT * FROM udfEmployeeInLocation(:location)")
+		query_result = db.engine.execute(sql_query, location=location)
 		result = query_result.fetchall()
 		return {"result" : list(result[0])}
 
 
+class udfEmployeeInLocationWithName(JABase):
+	''' define service for udfEmployeeInLocationWithName '''
+	@staticmethod
+	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
+	def udfEmployeeInLocationWithName(location, Name):
+		"""
+		description: expose TVF: udfEmployeeInLocationWithName
+		args:
+			@location
+			@Name
+		"""
+		sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
+		query_result = db.engine.execute(sql_query, location=location, Name=Name)
+		result = query_result.fetchall()
+		return {"result" : list(result[0])}
 
 
-#  1 services created.
+#  2 services created.
