@@ -7,6 +7,23 @@ from flask_sqlalchemy import SQLAlchemy
 from safrs import SAFRSAPI, jsonapi_rpc
 from safrs import JABase, DB
 
+########################################################################################################################
+# Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
+#
+from safrs import SAFRSBase
+
+import safrs
+db = safrs.DB
+
+Base = db.Model
+metadata = Base.metadata
+
+NullType = db.String  # datatype fixup
+TIMESTAMP= db.TIMESTAMP
+
+from sqlalchemy.dialects.mysql import *
+
+########################################################################################################################
 
 t_udfEmployeeInLocation = Table(  # define result for udfEmployeeInLocation
 	"udfEmployeeInLocation", metadata,
