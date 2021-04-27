@@ -24,16 +24,34 @@ class TvfBuilder(object):
 
         self.number_of_services = 0
 
-        self.tvf_contents = ""
-        self.tvf_contents += "# coding: utf-8\n"
-        self.tvf_contents += "from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text\n"
-        self.tvf_contents += "from sqlalchemy.orm import relationship\n"
-        self.tvf_contents += "from sqlalchemy.sql.sqltypes import NullType\n"
-        self.tvf_contents += "from sqlalchemy.ext.declarative import declarative_base\n"
-        self.tvf_contents += "from flask_sqlalchemy import SQLAlchemy\n"
-        self.tvf_contents += "from safrs import SAFRSAPI, jsonapi_rpc\n"
-        self.tvf_contents += "from safrs import JABase, DB\n"
-        self.tvf_contents += "\n\n"
+        self.tvf_contents = """# coding: utf-8
+from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.sqltypes import NullType
+from sqlalchemy.ext.declarative import declarative_base
+from flask_sqlalchemy import SQLAlchemy
+from safrs import SAFRSAPI, jsonapi_rpc
+from safrs import JABase, DB
+
+########################################################################################################################
+# Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
+#
+from safrs import SAFRSBase
+
+import safrs
+db = safrs.DB
+
+Base = db.Model
+metadata = Base.metadata
+
+NullType = db.String  # datatype fixup
+TIMESTAMP= db.TIMESTAMP
+
+from sqlalchemy.dialects.mysql import *
+
+########################################################################################################################
+
+"""
 
     def build_tvf_class(self, cols: List[DotDict]):
         self.tvf_contents += f't_{cols[0].Function} = Table(  # define result for {cols[0].Function}\n'
@@ -102,7 +120,6 @@ class TvfBuilder(object):
     def write_tvf_file(self):
         """ write tvf_contents -> api/tvf.py """
         tvf_file = open(self.project_directory + '/api/tvf.py', 'w')
-        nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_models_ext.txt")
         tvf_file.write(self.tvf_contents)
         tvf_file.close()
 
