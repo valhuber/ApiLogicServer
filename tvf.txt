@@ -40,14 +40,17 @@ t_udfEmployeeInLocationWithName = Table(  # define result for udfEmployeeInLocat
 
 
 class udfEmployeeInLocation(JABase):
-	''' define service for udfEmployeeInLocation '''
+	"""
+		description: define service for udfEmployeeInLocation
+	"""
+
 	@staticmethod
 	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
 	def udfEmployeeInLocation(location):
 		"""
-		description: expose TVF: udfEmployeeInLocation
+		description: expose TVF - udfEmployeeInLocation
 		args:
-			@location
+			location : value
 		"""
 		sql_query = db.text("SELECT * FROM udfEmployeeInLocation(:location)")
 		query_result = db.engine.execute(sql_query, location=location)
@@ -56,15 +59,18 @@ class udfEmployeeInLocation(JABase):
 
 
 class udfEmployeeInLocationWithName(JABase):
-	''' define service for udfEmployeeInLocationWithName '''
+	"""
+		description: define service for udfEmployeeInLocationWithName
+	"""
+
 	@staticmethod
 	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
 	def udfEmployeeInLocationWithName(location, Name):
 		"""
-		description: expose TVF: udfEmployeeInLocationWithName
+		description: expose TVF - udfEmployeeInLocationWithName
 		args:
-			@location
-			@Name
+			location : value
+			Name : value
 		"""
 		sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
 		query_result = db.engine.execute(sql_query, location=location, Name=Name)
