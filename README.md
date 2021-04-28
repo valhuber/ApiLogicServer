@@ -253,6 +253,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+04/27/2021 - 02.01.01: Bug fixes for extended_builder.py (starting to run)
+
 04/26/2021 - 02.01.00: Improved Services, option --extended_builder (e.g., restify Table Value Functions)
 
 04/23/2021 - 02.00.15: bug fix - SQLAlchemy version, server port
