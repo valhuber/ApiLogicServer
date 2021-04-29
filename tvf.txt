@@ -44,6 +44,8 @@ class udfEmployeeInLocation(JABase):
 		description: define service for udfEmployeeInLocation
 	"""
 
+	_s_type = "udfEmployeeInLocation"
+
 	@staticmethod
 	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
 	def udfEmployeeInLocation(location):
@@ -63,6 +65,8 @@ class udfEmployeeInLocationWithName(JABase):
 		description: define service for udfEmployeeInLocationWithName
 	"""
 
+	_s_type = "udfEmployeeInLocationWithName"
+
 	@staticmethod
 	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
 	def udfEmployeeInLocationWithName(location, Name):
@@ -77,5 +81,9 @@ class udfEmployeeInLocationWithName(JABase):
 		result = query_result.fetchall()
 		return {"result" : list(result[0])}
 
+
+def expose_tvfs(api):
+	api.expose_object(udfEmployeeInLocation)
+	api.expose_object(udfEmployeeInLocationWithName)
 
 #  2 services created.

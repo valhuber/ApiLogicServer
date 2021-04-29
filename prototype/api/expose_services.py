@@ -36,4 +36,3 @@ def expose_services(app, api, project_dir):
     util.log(f'*** Server now running -- '
              f'explore with OpenAPI (Swagger) at http://localhost:5000/')
     util.log("\n")
-

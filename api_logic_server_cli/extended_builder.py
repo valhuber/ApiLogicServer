@@ -24,6 +24,8 @@ class TvfBuilder(object):
 
         self.number_of_services = 0
 
+        self.services = []
+
         self.tvf_contents = """# coding: utf-8
 from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text
 from sqlalchemy.orm import relationship
@@ -73,8 +75,12 @@ from sqlalchemy.dialects.mysql import *
         self.tvf_contents += f'\n\n'
 
     def build_tvf_service(self, args: List[DotDict]):
+
+        self.services.append(args[0].ObjectName)
+
         self.tvf_contents += f'class {args[0].ObjectName}(JABase):\n'
         self.tvf_contents += f'\t"""\n\t\tdescription: define service for {args[0].ObjectName}\n\t"""\n\n'
+        self.tvf_contents += f'\t_s_type = "{args[0].ObjectName}"\n\n'
         self.tvf_contents += f"\t@staticmethod\n"
         self.tvf_contents += f"\t@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)\n"
 
@@ -122,6 +128,14 @@ from sqlalchemy.dialects.mysql import *
         tvf_file = open(self.project_directory + '/api/tvf.py', 'w')
         tvf_file.write(self.tvf_contents)
         tvf_file.close()
+
+    def append_expose_services_file(self):
+        """ append import to -> append_expose_services_file """
+        import_statement = f'\n\n    from api import tvf\n'
+        import_statement += f'    tvf.expose_tvfs(api)\n'
+        expose_services_file = open(self.project_directory + '/api/expose_services.py', 'a')
+        expose_services_file.write(import_statement)
+        expose_services_file.close()
 
     def run(self):
         """ call by ApiLogicServer CLI -- scan db_url schema for TVFs, create api/tvf.py
@@ -194,9 +208,14 @@ from sqlalchemy.dialects.mysql import *
         if len(args) > 0:
             self.build_tvf_service(args)
 
-        self.tvf_contents += f'#  {self.number_of_services} services created.\n'
+        self.tvf_contents += f'def expose_tvfs(api):\n'
+        for each_service in self.services:
+            self.tvf_contents += f'\tapi.expose_object({each_service})\n'
+        self.tvf_contents += f'\n#  {self.number_of_services} services created.\n'
 
         self.write_tvf_file()
+
+        self.append_expose_services_file()
 
 
 def extended_builder(db_url, project_directory):
