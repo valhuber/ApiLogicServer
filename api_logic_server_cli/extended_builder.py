@@ -74,6 +74,10 @@ from sqlalchemy.dialects.mysql import *
                 self.tvf_contents += ")\n"
         self.tvf_contents += f'\n\n'
 
+    def get_os_url(self, url: str) -> str:
+        """ idiotic fix for windows (\ --> \\\\) """
+        return url.replace('\\', '\\\\')
+
     def build_tvf_service(self, args: List[DotDict]):
 
         self.services.append(args[0].ObjectName)
@@ -85,7 +89,7 @@ from sqlalchemy.dialects.mysql import *
         self.tvf_contents += f"\t@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)\n"
 
         # def udfEmployeeInLocationWithName(location, Name):
-        self.tvf_contents += f"\tdef {args[0].ObjectName}("  #  arg):\n"
+        self.tvf_contents += f"\tdef {args[0].ObjectName}("
         arg_number = 0
         for each_arg in args:
             self.tvf_contents += each_arg.ParameterName[1:]
@@ -125,7 +129,8 @@ from sqlalchemy.dialects.mysql import *
 
     def write_tvf_file(self):
         """ write tvf_contents -> api/tvf.py """
-        tvf_file = open(self.project_directory + '/api/tvf.py', 'w')
+        file_name = self.get_os_url(self.project_directory + '/api/tvf.py')
+        tvf_file = open(file_name, 'w')
         tvf_file.write(self.tvf_contents)
         tvf_file.close()
 
@@ -133,7 +138,8 @@ from sqlalchemy.dialects.mysql import *
         """ append import to -> append_expose_services_file """
         import_statement = f'\n\n    from api import tvf\n'
         import_statement += f'    tvf.expose_tvfs(api)\n'
-        expose_services_file = open(self.project_directory + '/api/expose_services.py', 'a')
+        file_name = self.get_os_url(self.project_directory + '/api/expose_services.py')
+        expose_services_file = open(file_name, 'a')
         expose_services_file.write(import_statement)
         expose_services_file.close()
 
@@ -171,7 +177,7 @@ from sqlalchemy.dialects.mysql import *
                 cols.append(row)
 
         # connection.close()
-        engine.dispose()  # TODO not sure what this is, but fixed some no-result errors
+        engine.dispose()  # fixed some no-result errors
 
         if len(cols) > 0:
             self.number_of_services += 1
