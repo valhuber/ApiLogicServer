@@ -14,8 +14,8 @@ ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
 This creates:
 
 1. **Instant API** - JSON:API (client configurable).  Unblock client app dev.
-2. **Web App** - multi-table, multi-page.  Engage business users with working software, instantly.
-3. Transaction logic automation with **spreadsheet-like rules - 40X more concise than code**.
+2. Transaction logic automation with **spreadsheet-like rules - 40X more concise than code**.
+3. **Web App** - multi-table, multi-page.  Engage business users with working software, instantly.
 
 *Extensible* with Python.
 
