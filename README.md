@@ -4,7 +4,7 @@
 
 # API Logic Server
 
-### TL:DR
+### TL;DR
 
 **ApiLogicServer** creates customizable projects with a single command:
 ```
