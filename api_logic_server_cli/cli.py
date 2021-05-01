@@ -1214,12 +1214,11 @@ def version(ctx):
             f'Recent Changes:\n'
             "\t04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running\n"
             "\t04/27/2021 - 02.01.01: Improved Services, option --extended_builder (e.g., restify Table Value Functions)\n"
-            "\t04/23/2021 - 02.00.15: bug fix - SQLAlchemy version, server port\n"
+            "\t04/23/2021 - 02.00.15: Bug fix - SQLAlchemy version, server port\n"
             "\t04/21/2021 - 02.00.14: pythonanywhere - port option, wsgi creation\n"
             "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
             "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
             "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
-            "\t03/30/2021 - 02.00.02: Create Services table to avoid startup issues\n"
             "\t03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url\n"
             "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext\n"
             "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
