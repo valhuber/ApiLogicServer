@@ -11,11 +11,12 @@
 ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
 ```
 
-This creates:
+The created project is executable, providing:
 
 1. **Instant API** - JSON:API for each table (related data, client configurable).  Unblock client app dev.
 2. Transaction logic automation with **spreadsheet-like rules - 40X more concise than code**.
-3. **Web App** - multi-table, multi-page.  Engage business users with working software, instantly.
+3. **Basic Web App** - multi-table, multi-page.  Engage business users with working software, instantly.
+4. **SQLAlchemy Data Models** - to support the services above, and custom code.
 
 *Extensible* with Python.
 
