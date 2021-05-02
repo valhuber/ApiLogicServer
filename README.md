@@ -221,7 +221,7 @@ We are starting to see Python / Flask AppBuilder Certificate issues - see [Troub
 
 ### Default Python version
 In some cases, your computer may have multiple Python versions, such as ```python3```.  ```ApiLogicServer run``` relies on the default Python being 3.8 or higher.  You can resolve this by:
-* making this the default
+* making ```python3``` the default Python, or
 * using ```ApiLogicServer create```, and running ```python3 api_logic_server_run.py```
 
 # Learning
