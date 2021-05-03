@@ -53,3 +53,21 @@ go
 SELECT * FROM udfEmployeeInLocation('Sweden');
 
 SELECT * FROM udfEmployeeInLocationWithName('Sweden', 'John');
+
+
+CREATE FUNCTION [dbo].[FN_APPLY_FEE_LIST]
+(
+@EC_RSP_NO varchar(20)
+)
+RETURNS varchar(1000)
+AS
+BEGIN
+
+DECLARE @strFeeName NVARCHAR(100)
+DECLARE @strRetValue NVARCHAR(500)
+
+SET @strRetValue = ''
+
+........
+RETURN ISNULL(@strRetValue ,'')
+END

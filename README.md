@@ -272,6 +272,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions
+
 04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running
 
 04/26/2021 - 02.01.00: Improved Services, option --extended_builder (e.g., restify Table Value Functions)

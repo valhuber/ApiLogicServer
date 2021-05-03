@@ -34,7 +34,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.01.04"
+__version__ = "02.01.05"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1115,6 +1115,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if abs_db_url == "":
         print(f'0. Using demo default db_url: sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite')
         abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite'
+    if extended_builder == "*":
+        extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/extended_builder.py')
+        print(f'0. Using default extended_builder: {extended_builder}')
     if db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         abs_db_url = abspath(url)
@@ -1212,6 +1215,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
             "\t04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running\n"
             "\t04/27/2021 - 02.01.01: Improved Services, option --extended_builder (e.g., restify Table Value Functions)\n"
             "\t04/23/2021 - 02.00.15: Bug fix - SQLAlchemy version, server port\n"

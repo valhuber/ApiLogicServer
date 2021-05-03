@@ -1,10 +1,13 @@
 import os
-
+import sys
 from sqlalchemy.sql import text
 from typing import List
 import sqlalchemy
 
-print("Extended builder")
+def log(msg: any) -> None:
+    print(msg, file=sys.stderr)
+
+log("Extended builder 1.1")
 
 
 class DotDict(dict):
@@ -24,7 +27,8 @@ class TvfBuilder(object):
 
         self.number_of_services = 0
 
-        self.services = []
+        self.tvf_services = []
+        ''' TVFs have cols, SCFs do not '''
 
         self.tvf_contents = """# coding: utf-8
 from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text
@@ -56,6 +60,9 @@ from sqlalchemy.dialects.mysql import *
 """
 
     def build_tvf_class(self, cols: List[DotDict]):
+
+        self.tvf_services.append(cols[0].Function)
+
         self.tvf_contents += f't_{cols[0].Function} = Table(  # define result for {cols[0].Function}\n'
         self.tvf_contents += f'\t"{cols[0].Function}", metadata,\n'
         col_count = 0
@@ -79,53 +86,53 @@ from sqlalchemy.dialects.mysql import *
         return url.replace('\\', '\\\\')
 
     def build_tvf_service(self, args: List[DotDict]):
+        if args[0].ObjectName not in self.tvf_services:
+            log(f'.. Skipping Scalar Value Function: {args[0].ObjectName}')
+        else:
+            self.tvf_contents += f'class {args[0].ObjectName}(JABase):\n'
+            self.tvf_contents += f'\t"""\n\t\tdescription: define service for {args[0].ObjectName}\n\t"""\n\n'
+            self.tvf_contents += f'\t_s_type = "{args[0].ObjectName}"\n\n'
+            self.tvf_contents += f"\t@staticmethod\n"
+            self.tvf_contents += f"\t@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)\n"
 
-        self.services.append(args[0].ObjectName)
+            # def udfEmployeeInLocationWithName(location, Name):
+            self.tvf_contents += f"\tdef {args[0].ObjectName}("
+            arg_number = 0
+            for each_arg in args:
+                self.tvf_contents += each_arg.ParameterName[1:]
+                arg_number += 1
+                if arg_number < len(args):
+                    self.tvf_contents += ", "
+            self.tvf_contents += "):\n"
+            self.tvf_contents += f'\t\t"""\n'
+            self.tvf_contents += f"\t\tdescription: expose TVF - {args[0].ObjectName}\n"
+            self.tvf_contents += f"\t\targs:\n"
+            for each_arg in args:
+                self.tvf_contents += f'\t\t\t{each_arg.ParameterName[1:]} : value\n'
+            self.tvf_contents += f'\t\t"""\n'
 
-        self.tvf_contents += f'class {args[0].ObjectName}(JABase):\n'
-        self.tvf_contents += f'\t"""\n\t\tdescription: define service for {args[0].ObjectName}\n\t"""\n\n'
-        self.tvf_contents += f'\t_s_type = "{args[0].ObjectName}"\n\n'
-        self.tvf_contents += f"\t@staticmethod\n"
-        self.tvf_contents += f"\t@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)\n"
+            # sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
+            self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}('  # :arg)")\n'
+            arg_number = 0
+            for each_arg in args:
+                self.tvf_contents += ":" + each_arg.ParameterName[1:]
+                arg_number += 1
+                if arg_number < len(args):
+                    self.tvf_contents += ", "
+            self.tvf_contents += ')")\n'
 
-        # def udfEmployeeInLocationWithName(location, Name):
-        self.tvf_contents += f"\tdef {args[0].ObjectName}("
-        arg_number = 0
-        for each_arg in args:
-            self.tvf_contents += each_arg.ParameterName[1:]
-            arg_number += 1
-            if arg_number < len(args):
-                self.tvf_contents += ", "
-        self.tvf_contents += "):\n"
-        self.tvf_contents += f'\t\t"""\n'
-        self.tvf_contents += f"\t\tdescription: expose TVF - {args[0].ObjectName}\n"
-        self.tvf_contents += f"\t\targs:\n"
-        for each_arg in args:
-            self.tvf_contents += f'\t\t\t{each_arg.ParameterName[1:]} : value\n'
-        self.tvf_contents += f'\t\t"""\n'
-
-        # sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
-        self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}('  # :arg)")\n'
-        arg_number = 0
-        for each_arg in args:
-            self.tvf_contents += ":" + each_arg.ParameterName[1:]
-            arg_number += 1
-            if arg_number < len(args):
-                self.tvf_contents += ", "
-        self.tvf_contents += ')")\n'
-
-        # query_result = db.engine.execute(sql_query, location=location, Name=Name)
-        self.tvf_contents += f'\t\tquery_result = db.engine.execute(sql_query, '  # arg=arg)\n'
-        arg_number = 0
-        for each_arg in args:
-            self.tvf_contents += each_arg.ParameterName[1:] + "=" + each_arg.ParameterName[1:]
-            arg_number += 1
-            if arg_number < len(args):
-                self.tvf_contents += ", "
-        self.tvf_contents += ")\n"
-        self.tvf_contents += f'\t\tresult = query_result.fetchall()\n'
-        self.tvf_contents += '\t\treturn {"result" : list(result[0])}\n'
-        self.tvf_contents += f'\n\n'
+            # query_result = db.engine.execute(sql_query, location=location, Name=Name)
+            self.tvf_contents += f'\t\tquery_result = db.engine.execute(sql_query, '  # arg=arg)\n'
+            arg_number = 0
+            for each_arg in args:
+                self.tvf_contents += each_arg.ParameterName[1:] + "=" + each_arg.ParameterName[1:]
+                arg_number += 1
+                if arg_number < len(args):
+                    self.tvf_contents += ", "
+            self.tvf_contents += ")\n"
+            self.tvf_contents += f'\t\tresult = query_result.fetchall()\n'
+            self.tvf_contents += '\t\treturn {"result" : list(result[0])}\n'
+            self.tvf_contents += f'\n\n'
 
     def write_tvf_file(self):
         """ write tvf_contents -> api/tvf.py """
@@ -166,7 +173,7 @@ from sqlalchemy.dialects.mysql import *
             result = connection.execute(text(cols_sql))
             for row_dict in result:
                 row = DotDict(row_dict)
-                print(f'col row: {row}, database: {row.Database}')
+                log(f'col row: {row}, database: {row.Database}')
                 function_name = row.Function
                 if function_name != current_table_name:
                     if len(cols) > 0:
@@ -202,7 +209,7 @@ from sqlalchemy.dialects.mysql import *
             result = connection.execute(text(args_sql))
             for row_dict in result:
                 row = DotDict(row_dict)
-                print(f'arg row: {row}, database: {row.Database}')
+                log(f'arg row: {row}, database: {row.Database}')
                 object_name = row.ObjectName
                 if object_name != current_object_name:
                     if len(args) > 0:
@@ -215,7 +222,7 @@ from sqlalchemy.dialects.mysql import *
             self.build_tvf_service(args)
 
         self.tvf_contents += f'def expose_tvfs(api):\n'
-        for each_service in self.services:
+        for each_service in self.tvf_services:
             self.tvf_contents += f'\tapi.expose_object({each_service})\n'
         self.tvf_contents += f'\n#  {self.number_of_services} services created.\n'
 
@@ -233,6 +240,6 @@ def extended_builder(db_url, project_directory):
             db_url - use this to open the target database, e.g. for meta data
             project_directory - the created project... create / alter files here
     """
-    print(f'extended_builder.extended_builder("{db_url}", "{project_directory}"')
+    log(f'extended_builder.extended_builder("{db_url}", "{project_directory}"')
     tvf_builder = TvfBuilder(db_url, project_directory)
     tvf_builder.run()
