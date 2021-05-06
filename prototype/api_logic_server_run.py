@@ -8,6 +8,8 @@
 
 """
 import sys
+import threading
+import time
 from typing import TypedDict
 
 import logic_bank_utils.util as logic_bank_utils
@@ -28,18 +30,24 @@ project_dir = "api_logic_server_project_dir"
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
 import logging
+import util
 
 
 def setup_logging():
     # Initialize Logging
     import sys
 
-    logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
-    logic_logger.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
-    handler.setFormatter(formatter)
+    setup_logic_logger = True
+    if setup_logic_logger:
+        util.log("api_logic_server_run - setup_logging()")
+        logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
+        logic_logger.setLevel(logging.DEBUG)
+        handler = logging.StreamHandler(sys.stderr)
+        handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
+        handler.setFormatter(formatter)
+        logic_logger.addHandler(handler)
+        logic_logger.propagate = True
 
     do_engine_logging = False
     engine_logger = logging.getLogger('engine_logger')  # for internals
@@ -68,9 +76,9 @@ class ValidationErrorExt(ValidationError):
 
 
 def create_app(config_filename=None, host="localhost"):
-    setup_logging()
     flask_app = Flask("API Logic Server")
     flask_app.config.from_object("config.Config")
+    setup_logging()
     db = safrs.DB  # opens database per config, setting session
     detail_logging = False  # True will log SQLAlchemy SQLs
     if detail_logging:
@@ -139,5 +147,40 @@ def after_request(response):
     return response
 
 
+import test.server_startup_test as self_test
+
+@flask_app.before_first_request
+def activate_job():
+    def run_job():
+        print("Hello from run_job()")
+        self_test.server_tests(host, port)
+
+    thread = threading.Thread(target=run_job)
+    thread.start()
+
+import time
+import requests
+def start_runner():
+    def start_loop():
+        not_started = True
+        while not_started:
+            print('In start loop')
+            try:
+                r = requests.get('http://127.0.0.1:5000/')
+                if r.status_code == 200:
+                    print('Server started, quiting start_loop')
+                    not_started = False
+                print(r.status_code)
+            except:
+                print('Server not yet started')
+            time.sleep(2)
+
+    print('Started runner')
+    thread = threading.Thread(target=start_loop)
+    thread.start()
+
+
 if __name__ == "__main__":
+    if self_test.server_tests_enabled:
+        start_runner()
     flask_app.run(host=host, threaded=False, port=port)

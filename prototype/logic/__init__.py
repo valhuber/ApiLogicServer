@@ -18,13 +18,16 @@ from logic.logic_bank import declare_logic
 
 util.log("BEGIN - setup logging, connect to db, register listeners")
 
-logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
-logic_logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
-handler.setFormatter(formatter)
-logic_logger.addHandler(handler)
+setup_logic_logger = False
+if setup_logic_logger:
+    logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
+    logic_logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
+    handler.setFormatter(formatter)
+    logic_logger.addHandler(handler)
+    logic_logger.propagate = False
 
 do_engine_logging = False
 engine_logger = logging.getLogger('engine_logger')  # for internals

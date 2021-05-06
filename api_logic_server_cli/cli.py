@@ -18,6 +18,7 @@ from os.path import realpath
 from pathlib import Path
 from shutil import copyfile
 import shutil
+import importlib.util
 
 import logic_bank_utils.util as logic_bank_utils
 from flask import Flask
@@ -721,6 +722,45 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
+def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
+    """ run shell command
+
+    :param cmd: string of command to execute
+    :param env:
+    :param msg: optional message (no-msg to suppress)
+    :return:
+    """
+    log_msg = ""
+    if msg != "Execute command:":
+        log_msg = msg + " with command:"
+    if msg != "no-msg":
+        print(f'{log_msg} {cmd}')
+
+    use_env = env
+    if env is None:
+        project_dir = get_api_logic_server_dir()
+        python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
+        use_env = os.environ.copy()
+        # print("\n\nFixing env for cmd: " + cmd)
+        if hasattr(use_env, "PYTHONPATH"):
+            use_env["PYTHONPATH"] = python_path + ":" + use_env["PYTHONPATH"]  # eg, /Users/val/dev/ApiLogicServer/venv/lib/python3.9
+            # print("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+        else:
+            use_env["PYTHONPATH"] = python_path
+            # print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+    use_env_debug = False  # not able to get this working
+    if use_env_debug:
+        result_b = subprocess.check_output(cmd, shell=True, env=use_env)
+    else:
+        result_b = subprocess.Popen(cmd, shell=True)
+    result = str(result_b)  # b'pyenv 1.2.21\n'
+    result = result[2: len(result) - 3]
+    tab_to = 20 - len(cmd)
+    spaces = ' ' * tab_to
+    if result != "" and result != "Downloaded the skeleton app, good coding!":
+        print(f'{log_msg} {cmd} result: {spaces}{result}')
+
+
 def clone_prototype_project_with_nw_samples(project_directory: str, from_git: str, msg: str, db_url: str):
     """
     clone prototype to create and remove git folder
@@ -765,6 +805,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         append_logic_with_nw_logic(project_directory)
         replace_models_ext_with_nw_models_ext(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
+        replace_server_startup_test_with_nw_server_startup_test(project_directory)
 
 
 def create_basic_web_app(db_url, project_name, msg):
@@ -906,6 +947,15 @@ def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
     nw_expose_rpcs = nw_expose_rpcs_file.read()
     rpcs_file.write(nw_expose_rpcs)
     rpcs_file.close()
+
+
+def replace_server_startup_test_with_nw_server_startup_test(project_name):
+    """ replace api/expose_rpcs with nw version """
+    tests_file = open(project_name + '/test/server_startup_test.py', 'w')
+    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_server_startup_test.py")
+    nw_tests_file_data = nw_tests_file.read()
+    tests_file.write(nw_tests_file_data)
+    tests_file.close()
 
 
 def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
@@ -1090,12 +1140,20 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
 
 
 def invoke_extended_builder(builder_path, db_url, project_directory):
-    import importlib.util
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
     spec = importlib.util.spec_from_file_location("module.name", builder_path)
     extended_builder = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(extended_builder)  # runs "bare" module code (e.g., initialization)
     extended_builder.extended_builder(db_url, project_directory)  # extended_builder.MyClass()
+
+
+def invoke_nw_tests(builder_path, db_url, project_directory):
+    # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
+    nw_tests_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw_tests.py')
+    spec = importlib.util.spec_from_file_location("module.name", nw_tests_path)
+    nw_tests = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(nw_tests)  # runs "bare" module code (e.g., initialization)
+    nw_tests.nw_tests(db_url, project_directory)  # extended_builder.MyClass()
 
 
 def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
@@ -1168,7 +1226,11 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     if run:
         run_command(f'python {project_directory}/api_logic_server_run.py {host}',
-                    msg="\nRun created ApiLogicServer project")
+                    msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
+
+        if db_url.endswith("nw.sqlite"):
+            invoke_nw_tests(builder_path=extended_builder, db_url=db_url, project_directory=project_directory)
+
     else:
         print("\nApiLogicServer customizable project created.  Next steps:")
         print(f'..cd {project_name}')
@@ -1375,7 +1437,11 @@ def print_info():
         'Creates and optionally runs a customizable ApiLogicServer project',
         '',
         'Examples:',
-        '  ApiLogicServer run [--db_url=mysql+pymysql://root:p@localhost/classicmodels]',
+        '  ApiLogicServer run',
+        '  ApiLogicServer run --db_url=sqlite:///nw.sqlite',
+        '  ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels',
+        '  ApiLogicServer run --db_url=postgresql://postgres:p@10.0.0.234/postgres]',
+        '  ApiLogicServer run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
         '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
         '',
         'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
