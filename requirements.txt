@@ -16,3 +16,4 @@ email-validator
 LogicBank>=0.9.5
 PyMySQL
 cryptography
+requests

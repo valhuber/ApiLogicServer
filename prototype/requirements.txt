@@ -12,3 +12,4 @@ logicbankutils
 flask-appbuilder
 PyMySQL
 cryptography
+requests

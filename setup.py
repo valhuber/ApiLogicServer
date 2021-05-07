@@ -50,10 +50,10 @@ setup(
     long_description_content_type="text/markdown",
     packages=['api_logic_server_cli',
               'expose_existing', 'expose_existing.sqlacodegen', 'expose_existing.sqlacodegen.sqlacodegen',
-              'prototype', 'prototype.api', 'prototype.database', 'prototype.logic',
+              'prototype', 'prototype.api', 'prototype.database', 'prototype.logic', 'prototype.test',
               'prototype.templates', 'prototype.ui'],
     package_data={"api_logic_server_cli": ["nw.sqlite", "nw-gold.sqlite", "nw_logic.txt", "nw_expose_services.txt",
-                                           "create_admin.txt", "nw_models_ext.txt"],
+                                           "create_admin.txt", "nw_models_ext.txt", "nw_server_startup_test.py"],
                   "prototype": ["requirements.txt", "default.env", "EXAMPLE.env", "readme.md"],
                   'prototype.templates': ["index.html"]
                   },
@@ -81,7 +81,8 @@ setup(
         "email-validator==1.1.1",
         "LogicBank>=0.9.3",
         "PyMySQL>=1.0.2",
-        "cryptography>=3.3.1"
+        "cryptography>=3.3.1",
+        "requests>=2.25.1"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",

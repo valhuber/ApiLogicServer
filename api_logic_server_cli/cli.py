@@ -9,7 +9,6 @@ See: main driver
 
 """
 
-import builtins
 import pathlib
 import subprocess
 import traceback
@@ -27,7 +26,6 @@ import logging
 import datetime
 from typing import NewType
 import sys
-from sys import platform
 import os
 import sqlalchemy
 import sqlalchemy.ext
@@ -35,7 +33,8 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.02.00"
+
+__version__ = "02.02.05"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1277,7 +1276,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/06/2021 - 02.02.00: Server Startup Option\n"
+            "\t05/06/2021 - 02.02.05: Server Startup Option\n"
             "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
             "\t04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running\n"
             "\t04/27/2021 - 02.01.01: Improved Services, option --extended_builder (e.g., restify Table Value Functions)\n"
@@ -1449,7 +1448,8 @@ def print_info():
         '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
         '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
         ' ',
-        'Docs: https://github.com/valhuber/ApiLogicServer#readme'
+        'Docs: https://github.com/valhuber/ApiLogicServer#readme',
+        '   Word Wrap on console can be messy - mac/unix: tput rmam  / tput smam\n '
     ]
     for each_line in info:
         sys.stdout.write(each_line + '\n')
