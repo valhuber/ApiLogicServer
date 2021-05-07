@@ -10,6 +10,7 @@
 import sys
 import threading
 import time
+import requests
 from typing import TypedDict
 
 import logic_bank_utils.util as logic_bank_utils
@@ -34,12 +35,9 @@ import util
 
 
 def setup_logging():
-    # Initialize Logging
-    import sys
-
     setup_logic_logger = True
     if setup_logic_logger:
-        util.log("api_logic_server_run - setup_logging()")
+        # util.log("api_logic_server_run - setup_logging()")
         logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
         logic_logger.setLevel(logging.DEBUG)
         handler = logging.StreamHandler(sys.stderr)
@@ -87,7 +85,7 @@ def create_app(config_filename=None, host="localhost"):
         logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
     Base: declarative_base = db.Model
     session: Session = db.session
-    print("api_logic_server_run#create_app - got session: " + str(session))
+    # util.log("api_logic_server_run#create_app - got session: " + str(session))
 
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
@@ -149,33 +147,30 @@ def after_request(response):
 
 import test.server_startup_test as self_test
 
+
 @flask_app.before_first_request
 def activate_job():
-    def run_job():
-        print("Hello from run_job()")
+    ''' start_runner pings server, starts this (1 ping only, Visily)
+    '''
+    def run_server_start_test():
         self_test.server_tests(host, port)
 
-    thread = threading.Thread(target=run_job)
+    thread = threading.Thread(target=run_server_start_test)
     thread.start()
 
-import time
-import requests
+
 def start_runner():
     def start_loop():
         not_started = True
         while not_started:
-            print('In start loop')
             try:
                 r = requests.get('http://127.0.0.1:5000/')
                 if r.status_code == 200:
-                    print('Server started, quiting start_loop')
                     not_started = False
-                print(r.status_code)
             except:
-                print('Server not yet started')
+                pass  # server not started, not a problem
             time.sleep(2)
 
-    print('Started runner')
     thread = threading.Thread(target=start_loop)
     thread.start()
 

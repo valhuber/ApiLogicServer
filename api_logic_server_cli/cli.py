@@ -35,7 +35,7 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 import click
-__version__ = "02.01.05"
+__version__ = "02.02.00"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -713,7 +713,7 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
     if use_env_debug:
         result_b = subprocess.check_output(cmd, shell=True, env=use_env)
     else:
-        result_b = subprocess.check_output(cmd, shell=True)
+        result_b = subprocess.check_output(cmd, shell=True)  # , stderr=subprocess.STDOUT)  loses all logging
     result = str(result_b)  # b'pyenv 1.2.21\n'
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
@@ -1277,6 +1277,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t05/06/2021 - 02.02.00: Server Startup Option\n"
             "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
             "\t04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running\n"
             "\t04/27/2021 - 02.01.01: Improved Services, option --extended_builder (e.g., restify Table Value Functions)\n"

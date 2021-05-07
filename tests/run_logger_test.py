@@ -9,7 +9,7 @@ no logger output when run via  subprocess.check_output (fine when run directly)
 def setup_safrs_logger():
     log = logging.getLogger("safrs_logger")
     if log.level == logging.NOTSET:
-        output = sys.stdout
+        output = sys.stderr
         print(f'setup_safrs_logger on: {output}')
         handler = logging.StreamHandler(output)
         formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
