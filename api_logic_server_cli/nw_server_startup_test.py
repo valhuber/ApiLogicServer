@@ -1,11 +1,9 @@
-import sys
 from pathlib import Path
-
 import requests
 import logging
 import util
 
-server_tests_enabled = True
+server_tests_enabled = True  # use True to invoke server_tests on server startup
 
 def prt(msg: any) -> None:
     util.log(f'{msg}')
@@ -99,11 +97,11 @@ def server_tests(host, port):
     util.log(f'======================\n')
     prt(f''
         f'1. CUSTOMIZABLE PROJECT CREATED from supplied Sample DB\n'
-        f'     .. Open it with your IDE at {get_project_dir()}\n'
+        f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
         f'2. SERVER has been STARTED (api_logic_server_run.py)\n'
-        f'     .. Explore your API at http://{host}:{port}\n'
+        f'     .. Explore your API - Swagger at http://{host}:{port}\n'
         f'3. Startup DIAGNOSTICS have PASSED (see log above)\n'
-        f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order\n'
+        f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#customize-server-startup\n'
         f'\n'
         f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
 

@@ -2,7 +2,7 @@ import os
 import sys
 import util
 
-server_tests_enabled = False
+server_tests_enabled = False  # use True to invoke server_tests on server startup
 
 util.log("server_tests 1.0")
 

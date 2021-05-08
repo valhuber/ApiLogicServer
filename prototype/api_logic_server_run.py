@@ -31,7 +31,7 @@ project_dir = "api_logic_server_project_dir"
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
 import logging
-import util
+import test.server_startup_test as self_test
 
 
 def setup_logging():
@@ -145,11 +145,8 @@ def after_request(response):
     return response
 
 
-import test.server_startup_test as self_test
-
-
 @flask_app.before_first_request
-def activate_job():
+def run_before_first_request():
     ''' start_runner pings server, starts this (1 ping only, Visily)
     '''
     def run_server_start_test():
@@ -159,7 +156,12 @@ def activate_job():
     thread.start()
 
 
-def start_runner():
+def one_ping_on_server_start_for_server_start_tests():
+    """
+    On server start, issues 1 ping only, Visily
+
+    This executes @flask_app.before_first_request
+    """
     def start_loop():
         not_started = True
         while not_started:
@@ -176,6 +178,6 @@ def start_runner():
 
 
 if __name__ == "__main__":
-    if self_test.server_tests_enabled:
-        start_runner()
+    if self_test.server_tests_enabled:  # see test/server_startup_test.py
+        one_ping_on_server_start_for_server_start_tests()
     flask_app.run(host=host, threaded=False, port=port)
