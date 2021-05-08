@@ -98,10 +98,13 @@ def server_tests(host, port):
     util.log(f'\nAPILOGICSERVER SUMMARY')
     util.log(f'======================\n')
     prt(f''
-        f'CUSTOMIZABLE PROJECT CREATED  - open it with your IDE at {get_project_dir()}\n'
-        f'..SERVER has been STARTED\n'
-        f'....Startup DIAGNOSTICS have PASSED (see above)\n\n'
-        f'Explore your API at http://{host}:{port}\n\n'
+        f'1. CUSTOMIZABLE PROJECT CREATED from supplied Sample DB\n'
+        f'     .. Open it with your IDE at {get_project_dir()}\n'
+        f'2. SERVER has been STARTED (api_logic_server_run.py)\n'
+        f'     .. Explore your API at http://{host}:{port}\n'
+        f'3. Startup DIAGNOSTICS have PASSED (see log above)\n'
+        f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order\n'
+        f'\n'
         f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
 
     svr_logger.setLevel(save_level)
