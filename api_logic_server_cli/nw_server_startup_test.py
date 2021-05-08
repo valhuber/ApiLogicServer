@@ -7,7 +7,6 @@ import util
 
 server_tests_enabled = True
 
-prt_prefix = "test/server_startup_test.py --"
 def prt(msg: any) -> None:
     util.log(f'{msg}')
 
@@ -28,6 +27,12 @@ def server_tests(host, port):
             host - server host
             port - server port
     """
+
+    util.log(f'\n\n===================')
+    util.log(f'STARTUP DIAGNOSTICS')
+    util.log(f'.. server_tests("{host}", "{port}") called (v1.0)')
+    util.log(f'.. see test/server_startup_test.py - diagnostics are good GET and POST examples')
+    util.log(f'===================\n')
 
     add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
     args = {
@@ -53,8 +58,6 @@ def server_tests(host, port):
       }
     }
 
-    prt(f'\n\n{prt_prefix} server_tests("{host}", "{port}") called (v1.0)\n')
-
     # use swagger to get uri
 
     get_order_uri = f'http://{host}:{port}/Order/?' \
@@ -64,7 +67,10 @@ def server_tests(host, port):
 
     response_text = r.text
     assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
-    prt(f'\n{prt_prefix} Verified retrieval from table Order')
+    prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now verify Add Order check credit logic...')
+
+    #  logic log hard to read with word wrap.  mac/unix can suppress with tput rmam/tput smam
+    prt(f'.. Add Order logic log follows...')
 
     svr_logger = logging.getLogger('safrs.safrs_init')
     save_level = svr_logger.getEffectiveLevel()
@@ -74,20 +80,28 @@ def server_tests(host, port):
 
     response_text = r.text
     assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
-    prt(f'\n{prt_prefix} STARTUP DIAGNOSTICS SUCCESS - \n'
-        f'..Custom Service and Logic verified, as follows.'
-        f'..Posted intentionally invalid order to Custom Service at: {add_order_uri}.\n'
-        f'..Logic Log (above, best viewed without word wrap <mac: tput rmam/tput smam) '
-        f'shows proper detection of Customer Constraint Failure.\n'
-        f'..This illustrates multi-table chaining (per indention level).'
-        f'  The logic at {get_project_dir()}/logic/logic_bank.py:\n'
-        f'....COMPUTED OrderDetail.Amount (19998), which...\n'
+
+    util.log(f'\nADD ORDER CHECK CREDIT - STARTUP DIAGNOSTICS PASSED')
+    util.log(f'===================================================')
+    prt(f''
+        f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
+        f'Logic Log (above) shows proper detection of Customer Constraint Failure...\n'
+        f'.. Best viewed without word wrap'
+        f' - see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order\n'
+        f'.. The logic illustrates MULTI-TABLE CHAINING (note indents):\n'
+        f'....FORMULA OrderDetail.Amount (19998), which...\n'
         f'......ADJUSTS Order.AmountTotal (19998), which...\n'
         f'........ADJUSTS Customer.Balance (21014), which...\n'
-        f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n\n'
-        f'ApiLogicServer PROJECT SUCCESSFULLY CREATED at {get_project_dir()} - open it with your IDE\n'
-        f'..SERVER has been STARTED, and startup DIAGNOSTICS have run successfully (see above)\n'
-        f'..Explore your API at http://{host}:{port}\n\n'
-        f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database\n')
+        f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n'
+        f'All from just 5 rules in ({get_project_dir()}/logic/logic_bank.py)\n\n')
+
+    util.log(f'\nAPILOGICSERVER SUMMARY')
+    util.log(f'======================\n')
+    prt(f''
+        f'CUSTOMIZABLE PROJECT CREATED  - open it with your IDE at {get_project_dir()}\n'
+        f'..SERVER has been STARTED\n'
+        f'....Startup DIAGNOSTICS have PASSED (see above)\n\n'
+        f'Explore your API at http://{host}:{port}\n\n'
+        f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
 
     svr_logger.setLevel(save_level)
