@@ -34,7 +34,7 @@ The created project is executable, providing:
 - [Features](#features)
   - [API: SAFRS JSON:API and Swagger](#api-safrs-jsonapi-and-swagger)
   - [Logic](#logic)
-  - [Basic Web App](#r#basic-web-app---flask-appbuilder)
+  - [Basic Web App](#basic-web-app---flask-appbuilder)
 - [Installation](#installation)
 <!-- /TOC -->
 
