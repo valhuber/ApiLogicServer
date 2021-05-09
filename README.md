@@ -263,6 +263,7 @@ Many thanks to
 - Alex Grönholm, for Sqlacodegen
 - Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration and testing
+- Max Tardiveau, for testing
 - Michael Holleran, for design collaboration and testing
 - Nishanth Shyamsundar, for review and testing
 - Thomas Peters, for review and testing
