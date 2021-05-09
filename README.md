@@ -6,8 +6,10 @@
 
 ### TL;DR
 
-**ApiLogicServer** creates customizable projects with a single command:
-Get started by creating the sample project:
+**ApiLogicServer** creates customizable projects with a single command.
+
+After [installing](#installation), 
+get started by creating the sample project:
 
 ```
 ApiLogicServer run
