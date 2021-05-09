@@ -7,6 +7,13 @@
 ### TL;DR
 
 **ApiLogicServer** creates customizable projects with a single command:
+Get started by creating the sample project:
+
+```
+ApiLogicServer run
+```
+
+Use your own database:
 ```
 ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
 ```
