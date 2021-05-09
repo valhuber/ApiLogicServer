@@ -28,6 +28,17 @@ The created project is executable, providing:
 *Extensible* with Python.
 
 
+### Table of Contents
+<!-- TOC -->
+- [Quick Start](#quick-start---create-and-run)
+- [Features](#features)
+  - [API: SAFRS JSON:API and Swagger](#api-safrs-jsonapi-and-swagger)
+  - [Logic](#logic)
+  - [Basic Web App](#r#basic-web-app---flask-appbuilder)
+- [Installation](#installation)
+<!-- /TOC -->
+
+
 ### Overview
 
 There is widespread agreement that APIs are strategic
