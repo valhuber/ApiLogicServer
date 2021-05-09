@@ -25,7 +25,7 @@ The created project is executable and customizable, providing the following feat
 
 | Feature | Providing  | Why it Matters | Using
 | :-------------- |:--------------| :------|  :------|
-| 1. [JSON:**API** and Swagger](#api-safrs-jsonapi-and-swagger) | APIs that clients can configure<br>to **reduce network traffic** | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
+| 1. [JSON:**API** and Swagger](#api-safrs-jsonapi-and-swagger) | Enpoint for each table - filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
 | 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* are **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/logicbank#readme) |
 | 3. [Basic **Web App**](#basic-web-app---flask-appbuilder) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
 | 4. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
@@ -140,7 +140,8 @@ python ui/basic_web_app/run.py
 ### API: SAFRS JSON:API and Swagger
 
 Your API is instantly ready to support ui and integration
-development, available in swagger:
+development, available in swagger, as shown below.  JSON:APIs are interesting because they
+are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/swagger.png"></figure>
 
