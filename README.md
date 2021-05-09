@@ -13,7 +13,7 @@ Get started by creating the sample project:
 ApiLogicServer run
 ```
 
-Use your own database:
+After you've explored the sample, use your own database:
 ```
 ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
 ```
