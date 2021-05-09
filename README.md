@@ -20,7 +20,7 @@ After you've explored the sample, use your own database:
 ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
 ```
 
-The created project is executable and customizable, providing the following features:
+The created project is **executable** and **customizable,** providing the following features:
 
 
 | Feature | Providing  | Why it Matters | Using
