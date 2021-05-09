@@ -18,28 +18,23 @@ After you've explored the sample, use your own database:
 ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
 ```
 
-The created project is executable, providing:
-
-1. **Instant API** - JSON:API for each table (related data, client configurable).  Unblock client app dev.
-2. Transaction logic automation with **spreadsheet-like rules - 40X more concise than code**.
-3. **Basic Web App** - multi-table, multi-page.  Engage business users with working software, instantly.
-4. **SQLAlchemy Data Models** - to support the services above, and custom code.
-
-*Extensible* with Python.
+The created project is executable and customizable, providing the following features:
 
 
-### Table of Contents
-<!-- TOC -->
-- [Quick Start](#quick-start---create-and-run)
-- [Features](#features)
-  - [API: SAFRS JSON:API and Swagger](#api-safrs-jsonapi-and-swagger)
-  - [Logic](#logic)
-  - [Basic Web App](#basic-web-app---flask-appbuilder)
-- [Installation](#installation)
-<!-- /TOC -->
+| Feature | Providing  | Why it Matters | Using
+| :-------------- |:--------------| :------|  :------|
+| 1. [JSON:**API** and Swagger](#api-safrs-jsonapi-and-swagger) | APIs that clients can configure<br>to **reduce network traffic** | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
+| 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* are **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/logicbank#readme) |
+| 3. [Basic **Web App**](#basic-web-app---flask-appbuilder) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
+| 4. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
 
+### Tutorials
+There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
+* [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
+* [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
+* [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
 
-### Overview
+### Background
 
 There is widespread agreement that APIs are strategic
 to the business, required for mobile apps and internal
@@ -51,26 +46,9 @@ This reduces strategic business agility.
 API Logic Server provides exceptional strategic business agility,
 by creating an executable server for a database, instantly.
 Working Software, now.
-
-As illustrated below, the ```ApiLogicServer CLI``` (command line interface) creates an **API Logic Server,**
-from your database.  An Api Logic Server implements these features:
-
-
-| Feature | Using   | Providing  | Why it Matters
-| :-------------- |:--------------| :------|  :------|
-| 1. JSON:**API** and Swagger     | [SAFRS](https://github.com/thomaxxl/safrs/wiki) | APIs that clients can configure<br>to **reduce network traffic** | Unblock Client App Dev |
-| 2. Transactional **Logic**| [Logic Bank](https://github.com/valhuber/logicbank#readme) | *Spreadsheet-like Rules* are **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility |
-| 3. Basic **Web App** | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin |
-| 4. Model Creation | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App |
  
 This **declarative approach** is based on standard Python tooling,
 and can be [installed](#Installation) and customized with standard approaches as described below.
-
-### Tutorials
-There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
-* [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
-* [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
-* [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
 
 
 # Quick Start - Create and Run
