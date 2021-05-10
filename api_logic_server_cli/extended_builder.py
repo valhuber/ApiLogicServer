@@ -98,37 +98,42 @@ from sqlalchemy.dialects.mysql import *
             # def udfEmployeeInLocationWithName(location, Name):
             self.tvf_contents += f"\tdef {args[0].ObjectName}("
             arg_number = 0
-            for each_arg in args:
-                self.tvf_contents += each_arg.ParameterName[1:]
-                arg_number += 1
-                if arg_number < len(args):
-                    self.tvf_contents += ", "
+            has_args = args[0].ParameterName is not None
+            if has_args:
+                for each_arg in args:
+                    self.tvf_contents += each_arg.ParameterName[1:]
+                    arg_number += 1
+                    if arg_number < len(args):
+                        self.tvf_contents += ", "
             self.tvf_contents += "):\n"
             self.tvf_contents += f'\t\t"""\n'
             self.tvf_contents += f"\t\tdescription: expose TVF - {args[0].ObjectName}\n"
             self.tvf_contents += f"\t\targs:\n"
-            for each_arg in args:
-                self.tvf_contents += f'\t\t\t{each_arg.ParameterName[1:]} : value\n'
+            if has_args:
+                for each_arg in args:
+                    self.tvf_contents += f'\t\t\t{each_arg.ParameterName[1:]} : value\n'
             self.tvf_contents += f'\t\t"""\n'
 
             # sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
             self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}('  # :arg)")\n'
             arg_number = 0
-            for each_arg in args:
-                self.tvf_contents += ":" + each_arg.ParameterName[1:]
-                arg_number += 1
-                if arg_number < len(args):
-                    self.tvf_contents += ", "
+            if has_args:
+                for each_arg in args:
+                    self.tvf_contents += ":" + each_arg.ParameterName[1:]
+                    arg_number += 1
+                    if arg_number < len(args):
+                        self.tvf_contents += ", "
             self.tvf_contents += ')")\n'
 
             # query_result = db.engine.execute(sql_query, location=location, Name=Name)
             self.tvf_contents += f'\t\tquery_result = db.engine.execute(sql_query, '  # arg=arg)\n'
             arg_number = 0
-            for each_arg in args:
-                self.tvf_contents += each_arg.ParameterName[1:] + "=" + each_arg.ParameterName[1:]
-                arg_number += 1
-                if arg_number < len(args):
-                    self.tvf_contents += ", "
+            if has_args:
+                for each_arg in args:
+                    self.tvf_contents += each_arg.ParameterName[1:] + "=" + each_arg.ParameterName[1:]
+                    arg_number += 1
+                    if arg_number < len(args):
+                        self.tvf_contents += ", "
             self.tvf_contents += ")\n"
             self.tvf_contents += f'\t\tresult = query_result.fetchall()\n'
             self.tvf_contents += '\t\treturn {"result" : list(result[0])}\n'
@@ -200,7 +205,8 @@ from sqlalchemy.dialects.mysql import *
                    ",P.max_length AS [ParameterMaxBytes]" \
                    ",P.is_output AS [IsOutPutParameter]" \
                    " FROM sys.objects AS SO" \
-                   " INNER JOIN sys.parameters AS P ON SO.OBJECT_ID = P.OBJECT_ID" \
+                   " LEFT OUTER JOIN sys.parameters AS P ON SO.OBJECT_ID = P.OBJECT_ID" \
+                   " WHERE SO.Type_Desc = 'SQL_INLINE_TABLE_VALUED_FUNCTION'" \
                    " ORDER BY [Schema], SO.name, P.parameter_id"
         args = []
         current_object_name = ""

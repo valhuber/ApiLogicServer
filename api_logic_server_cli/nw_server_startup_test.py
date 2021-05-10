@@ -2,6 +2,7 @@ from pathlib import Path
 import requests
 import logging
 import util
+import subprocess
 
 server_tests_enabled = True  # use True to invoke server_tests on server startup
 
@@ -19,6 +20,19 @@ def get_project_dir() -> str:
     return parent_path
 
 
+def run_command_nowait(cmd: str, env=None, msg: str = ""):
+    """ run shell command
+
+    :param cmd: string of command to execute
+    :param msg: optional message (no-msg to suppress)
+    :return:
+    """
+    print(f'\n{msg}...\n')
+    proc = subprocess.Popen(cmd, shell=True,
+                            stdin=None, stdout=None, stderr=None, close_fds=True)
+    print(f'run_command result: str{proc}')
+
+
 def server_tests(host, port):
     """ called by api_logic_server_run.py, for any tests on server start
         args
@@ -31,6 +45,8 @@ def server_tests(host, port):
     util.log(f'.. server_tests("{host}", "{port}") called (v1.0)')
     util.log(f'.. see test/server_startup_test.py - diagnostics are good GET and POST examples')
     util.log(f'===================\n')
+
+    # run_command_nowait(f'python {get_project_dir()}/ui/basic_web_app/run.py')  wip - starts,
 
     add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
     args = {
@@ -101,11 +117,11 @@ def server_tests(host, port):
         f'2. SERVER has been STARTED (python api_logic_server_run.py)\n'
         f'     .. Explore your API - Swagger at http://{host}:{port}\n'
         f'3. BASIC WEB APP Created\n'
-        f'     .. Start it: python ui/basic_web_app/run.py\n'
-        f'     .. Then, explore it: http://0.0.0.0:8080/\n'
+        f'     .. Start it: python ui/basic_web_app/run.py [host [, port]]\n'
+        f'     .. Then, explore it: http://0.0.0.0:8080/ (login: admin, p)\n'
         f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
         f'4. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
-        f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#customize-server-startup\n'
+        f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'
         f'\n'
         f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
 

@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.08"
+__version__ = "02.02.09"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -987,16 +987,29 @@ def resolve_home(name: str) -> str:
 
 def fix_basic_web_app_run__python_path(project_directory):
     """ prepend logic_bank_utils call to fixup python path in ui/basic_web_app/run.py (enables run.py) """
-    file_name = f'{project_directory}/ui/basic_web_app/run.py'
-    proj = os.path.basename(project_directory)
-    insert_text = ("\n# ApiLogicServer - enable flask run\n"
-                   "import logic_bank_utils.util as logic_bank_utils\n"
-                   + f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n\n')
-    with open(file_name, 'r+') as fp:
-        lines = fp.readlines()  # lines is list of line, each element '...\n'
-        lines.insert(0, insert_text)  # you can use any index if you know the line index
-        fp.seek(0)  # file pointer locates at the beginning to write the whole file again
-        fp.writelines(lines)  # write whole lists again to the same file
+    old_way = False
+    if old_way:
+        file_name = f'{project_directory}/ui/basic_web_app/run.py'
+        proj = os.path.basename(project_directory)
+        insert_text = ("\n# ApiLogicServer - enable flask run\n"
+                       "import logic_bank_utils.util as logic_bank_utils\n"
+                       + f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n\n')
+        with open(file_name, 'r+') as fp:
+            lines = fp.readlines()  # lines is list of line, each element '...\n'
+            lines.insert(0, insert_text)  # you can use any index if you know the line index
+            fp.seek(0)  # file pointer locates at the beginning to write the whole file again
+            fp.writelines(lines)  # write whole lists again to the same file
+    else:
+        models_ext_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
+        nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.txt")
+        nw_models_ext = nw_models_ext_file.read()
+        models_ext_file.write(nw_models_ext)
+        models_ext_file.close()
+
+        proj = os.path.basename(project_directory)
+        replace_string_in_file(search_for="api_logic_server_project_directory",
+                               replace_with=proj,
+                               in_file=f'{project_directory}/ui/basic_web_app/run.py')
 
 
 def fix_basic_web_app_run__create_admin(project_directory):
@@ -1276,6 +1289,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
             "\t05/08/2021 - 02.02.08: Server Startup Option\n"
             "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
             "\t04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running\n"
