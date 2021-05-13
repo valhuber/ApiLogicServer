@@ -46,7 +46,7 @@ def server_tests(host, port):
     util.log(f'.. see test/server_startup_test.py - diagnostics are good GET and POST examples')
     util.log(f'===================\n')
 
-    # run_command_nowait(f'python {get_project_dir()}/ui/basic_web_app/run.py')  wip - starts,
+    # run_command_nowait(f'python {get_project_dir()}/ui/basic_web_app/run.py')  wip - starts, but app not responsive
 
     add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
     args = {
@@ -78,17 +78,25 @@ def server_tests(host, port):
                     f'fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CAmountTotal' \
                     f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
     r = requests.get(url=get_order_uri)
-
     response_text = r.text
     assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
-    prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now verify Add Order check credit logic...')
+    prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now test PATCH...')
+
+    patch_cust_uri = 'curl -vX PATCH "http://localhost:5000/Customer/ALFKI/" ' \
+                     '-H  "accept: application/vnd.api+json" -H  "Content-Type: application/json"  ' \
+                     '-d "{  "data": {     "attributes": {        "CreditLimit": "100"     },  ' \
+                     '"type": "Customer",  "id": "ALFKI"}}"'
+    r = requests.get(url=patch_cust_uri)
+    response_text = r.text
+    assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
+    prt(f'\nPATCH DIAGNOSTICS PASSED for table Order... now verify Add Order check credit logic...')
 
     #  logic log hard to read with word wrap.  mac/unix can suppress with tput rmam/tput smam
     prt(f'.. Add Order logic log follows...')
 
     svr_logger = logging.getLogger('safrs.safrs_init')
     save_level = svr_logger.getEffectiveLevel()
-    svr_logger.setLevel(logging.FATAL)  # hide ugly stacktrace on startup - not required
+    svr_logger.setLevel(logging.FATAL)  # hide ugly (scary) stacktrace on startup
 
     r = requests.post(url=add_order_uri, json=args)
 
@@ -117,7 +125,7 @@ def server_tests(host, port):
         f'2. SERVER has been STARTED (python api_logic_server_run.py)\n'
         f'     .. Explore your API - Swagger at http://{host}:{port}\n'
         f'3. BASIC WEB APP Created\n'
-        f'     .. Start it: python ui/basic_web_app/run.py [host [, port]]\n'
+        f'     .. Start it: python ui/basic_web_app/run.py [host port]]\n'
         f'     .. Then, explore it: http://0.0.0.0:8080/ (login: admin, p)\n'
         f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
         f'4. Server Startup DIAGNOSTICS have PASSED (see log above)\n'

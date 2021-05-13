@@ -207,6 +207,7 @@ from sqlalchemy.dialects.mysql import *
                    " FROM sys.objects AS SO" \
                    " LEFT OUTER JOIN sys.parameters AS P ON SO.OBJECT_ID = P.OBJECT_ID" \
                    " WHERE SO.Type_Desc = 'SQL_INLINE_TABLE_VALUED_FUNCTION'" \
+                   "   OR  SO.Type_Desc = 'SQL_TABLE_VALUED_FUNCTION'" \
                    " ORDER BY [Schema], SO.name, P.parameter_id"
         args = []
         current_object_name = ""
