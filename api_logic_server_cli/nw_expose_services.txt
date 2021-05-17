@@ -17,7 +17,6 @@ from database.db import Base
 
 def expose_services(app, api, project_dir):
 
-
     @app.route('/hello_world')
     def hello_world():  # test it with: http://localhost:5000/hello_world?user=ApiLogicServer
         """
@@ -29,13 +28,14 @@ def expose_services(app, api, project_dir):
         """
         user = request.args.get('user')
         return jsonify({"result": f'hello, {user}'})
-
-    util.log("\n\n")
-    util.log(f'*** Customizable ApiLogicServer project created -- '
-             f'open it with your IDE at {project_dir}')
-    util.log(f'*** Server now running -- '
-             f'explore with OpenAPI (Swagger) at http://localhost:5000/')
-    util.log("\n")
+    startup_info = True
+    if startup_info:
+        util.log("\n\n")
+        util.log(f'*** Customizable ApiLogicServer project created -- '
+                 f'open it with your IDE at {project_dir}')
+        util.log(f'*** Server now running -- '
+                 f'explore with OpenAPI (Swagger) at http://localhost:5000/')
+        util.log("\n")
 
     util.log("Exposing custom services")
     api.expose_object(ServicesEndPoint)
@@ -99,14 +99,13 @@ def json_to_entities(from_row: object, to_row: safrs.DB.Model):
 class ServicesEndPoint(safrs.JABase):
     """
     Illustrate custom service
-
     Quite small, since transaction logic comes from shared rules
     """
 
     @classmethod
     @jsonapi_rpc(http_methods=["POST"])
-    def add_order(self, *args, **kwargs):
-        """
+    def add_order(self, *args, **kwargs):  # yaml comment => swagger description
+        """ yaml creates Swagger description
             args :
                 CustomerId: ALFKI
                 EmployeeId: 1
@@ -128,4 +127,4 @@ class ServicesEndPoint(safrs.JABase):
         session.add(new_order)
 
         json_to_entities(kwargs, new_order)  # generic function - any db object
-        return {}
+        return {}  # automatic commit, which executes transaction logic

@@ -1,3 +1,22 @@
+import datetime
+from decimal import Decimal
+from logic_bank.exec_row_logic.logic_row import LogicRow
+from logic_bank.extensions.rule_extensions import RuleExtension
+from logic_bank.logic_bank import Rule
+from database import models
+
+
+def declare_logic():
+
+    print("\n\ndeclare_logic")
+
+    """ example from default database
+
+    Rule.constraint(validate=models.Customer,
+                    as_condition=lambda row: row.Balance <= row.CreditLimit,
+                    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+
+    use code completion to declare rules here """
 
     """
     This code precreated for default database, nw.sqlite.
@@ -31,16 +50,40 @@
                 logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
                               f'Congratulate {sales_rep.FirstName} on their new order')
 
+    # Logic runs in response to transaction commits,
+    #   for multi-table derivations and constraints,
+    #   and events such as sending messages or mail
+
+    # it consists of spreadsheet-like Rules and Python code
+
+    # Rule operation:
+    #   watch, for changes in referenced values
+    #   react, by recomputing value
+    #   chain, to any referencing rules
+
+    # Rules are automatically invoked, with
+    # execution ordered per their dependencies
+
+    # Rules are listed below to best illustrate chaining
+
+    # get Product Price (e,g., on insert, ProductId change)
+    Rule.copy(derive=models.OrderDetail.UnitPrice,
+              from_parent=models.Product.UnitPrice)
+    # compute price * qty
+    Rule.formula(derive=models.OrderDetail.Amount,
+                 as_expression=lambda row: row.UnitPrice * row.Quantity)
+
+    # adjust AmountTotal iff Amount changes
+    Rule.sum(derive=models.Order.AmountTotal,
+             as_sum_of=models.OrderDetail.Amount)
+
+    # adjust Balance iff AmountTotal or ShippedDate or CustomerID changes
+    Rule.sum(derive=models.Customer.Balance,
+             as_sum_of=models.Order.AmountTotal,
+             where=lambda row: row.ShippedDate is None)  # *not* a sql select sum...
     Rule.constraint(validate=models.Customer,
                     as_condition=lambda row: row.Balance <= row.CreditLimit,
                     error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
-    Rule.sum(derive=models.Customer.Balance, as_sum_of=models.Order.AmountTotal,
-             where=lambda row: row.ShippedDate is None)  # *not* a sql select sum...
-
-    Rule.sum(derive=models.Order.AmountTotal, as_sum_of=models.OrderDetail.Amount)
-
-    Rule.formula(derive=models.OrderDetail.Amount, as_expression=lambda row: row.UnitPrice * row.Quantity)
-    Rule.copy(derive=models.OrderDetail.UnitPrice, from_parent=models.Product.UnitPrice)
 
     Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 
