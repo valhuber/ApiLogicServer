@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 """
-  ApiLogicServer v 02.02.11
+  ApiLogicServer v 02.00.03
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
-  This will run on http://Listener-Ip:5000
+  This will run the example on http://Listener-Ip:5000
 
 """
 import sys
-import threading
-import time
-import requests
 from typing import TypedDict
 
 import logic_bank_utils.util as logic_bank_utils
@@ -23,29 +20,26 @@ from sqlalchemy.orm import Session
 from api import expose_api_models, expose_services
 from logic import logic_bank
 
-project_name = "api_logic_server_project_name"
-project_dir = "api_logic_server_project_dir"
+project_name = "python_anywhere"
+project_dir = "/Users/val/dev/servers/python_anywhere"
 (did_fix_path, sys_env_info) = \
     logic_bank_utils.add_python_path(project_dir=project_name, my_file=__file__)
 
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
 import logging
-import test.server_startup_test as self_test
 
 
 def setup_logging():
-    setup_logic_logger = True
-    if setup_logic_logger:
-        # util.log("api_logic_server_run - setup_logging()")
-        logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
-        logic_logger.setLevel(logging.DEBUG)
-        handler = logging.StreamHandler(sys.stderr)
-        handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
-        handler.setFormatter(formatter)
-        logic_logger.addHandler(handler)
-        logic_logger.propagate = True
+    # Initialize Logging
+    import sys
+
+    logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
+    logic_logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
+    handler.setFormatter(formatter)
 
     do_engine_logging = False
     engine_logger = logging.getLogger('engine_logger')  # for internals
@@ -74,9 +68,9 @@ class ValidationErrorExt(ValidationError):
 
 
 def create_app(config_filename=None, host="localhost"):
+    setup_logging()
     flask_app = Flask("API Logic Server")
     flask_app.config.from_object("config.Config")
-    setup_logging()
     db = safrs.DB  # opens database per config, setting session
     detail_logging = False  # True will log SQLAlchemy SQLs
     if detail_logging:
@@ -85,7 +79,7 @@ def create_app(config_filename=None, host="localhost"):
         logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
     Base: declarative_base = db.Model
     session: Session = db.session
-    # util.log("api_logic_server_run#create_app - got session: " + str(session))
+    print("api_logic_server_run#create_app - got session: " + str(session))
 
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
@@ -108,8 +102,8 @@ def create_app(config_filename=None, host="localhost"):
 
 # address where the api will be hosted, change this if you're not running the app on localhost!
 host = sys.argv[1] if sys.argv[1:] \
-    else "api_logic_server_host"  # 127.0.0.1 verify in swagger or your client.  You wight need cors support.
-port = "api_logic_server_port"
+    else "ApiLogicServer.pythonanywhere.com"  # 127.0.0.1 verify in swagger or your client.  You wight need cors support.
+port = ""
 flask_app, safrs_api = create_app(host=host)
 
 
@@ -145,40 +139,5 @@ def after_request(response):
     return response
 
 
-@flask_app.before_first_request
-def run_before_first_request():
-    ''' start_runner pings server, starts this (1 ping only, Visily)
-    '''
-    def run_server_start_test():
-        self_test.server_tests(host, port, "api_logic_server_version")
-
-    thread = threading.Thread(target=run_server_start_test)
-    thread.start()
-
-
-def one_ping_on_server_start_for_server_start_tests():
-    """
-    On server start: 1 ping only, Visily
-
-    This executes @flask_app.before_first_request
-    """
-    def start_loop():
-        not_started = True
-        while not_started:
-            try:
-                r = requests.get('http://127.0.0.1:5000/')
-                if r.status_code == 200:
-                    not_started = False
-            except:
-                pass  # server not started, not a problem
-            time.sleep(2)
-
-    thread = threading.Thread(target=start_loop)
-    thread.start()
-
-
 if __name__ == "__main__":
-    if self_test.server_tests_enabled:  # see test/server_startup_test.py
-        one_ping_on_server_start_for_server_start_tests()
-    print(f'Starting ApiLogicServer project, version api_logic_server_version')
-    flask_app.run(host=host, threaded=False, port=port)
+    flask_app.run(host=host, threaded=False)

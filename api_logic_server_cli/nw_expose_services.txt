@@ -105,7 +105,7 @@ class ServicesEndPoint(safrs.JABase):
     @classmethod
     @jsonapi_rpc(http_methods=["POST"])
     def add_order(self, *args, **kwargs):  # yaml comment => swagger description
-        """ yaml creates Swagger description
+        """ # yaml creates Swagger description
             args :
                 CustomerId: ALFKI
                 EmployeeId: 1

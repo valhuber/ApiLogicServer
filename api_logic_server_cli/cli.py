@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.10"
+__version__ = "02.02.11"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -888,9 +888,11 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
                            replace_with=host,
                            in_file=api_logic_server_run_py)
     replace_port = f', port="{port}"' if port else ""  # TODO: consider reverse proxy
-    replace_string_in_file(search_for=", port=port",   # server port
-                           replace_with=replace_port,
+
+    replace_string_in_file(search_for="api_logic_server_version",
+                           replace_with=__version__,
                            in_file=api_logic_server_run_py)
+
     replace_string_in_file(search_for="api_logic_server_port",   # server port
                            replace_with=port,
                            in_file=api_logic_server_run_py)
@@ -905,11 +907,14 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
         """
         # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
         db_loc = abs_db_url.replace("sqlite:///", "")
-        copyfile(db_loc, project_directory + '/database/db.sqlite')
-        db_uri = abs_db_url
+        target_db_loc = project_directory + '/database/db.sqlite'
+        copyfile(db_loc, target_db_loc)
+
+        db_uri = f'sqlite:///{project_directory}/database/db.sqlite'
         if os.name == "nt":  # windows
-            db_uri = get_os_url(f'sqlite:///{get_os_url(db_loc)}')
-        f"""
+            target_db_loc = get_os_url(f'sqlite:///{get_os_url(db_loc)}')
+        db_uri = f'sqlite:///{target_db_loc}'
+        """
         relative makes run too hard: 
         db_uri = f'sqlite:///{project_directory}/database/db.sqlite'
         if os.name == "nt":  # windows
@@ -1289,7 +1294,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/13/2021 - 02.02.10: SAFRS Patch fix\n"
+            "\t05/13/2021 - 02.02.11: SAFRS Patch fix\n"
             "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
             "\t05/08/2021 - 02.02.08: Server Startup Option\n"
             "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
@@ -1370,7 +1375,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extendded_builder=extended_builder)
+                     extended_builder=extended_builder)
 
 
 @main.command("run")

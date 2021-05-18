@@ -33,17 +33,18 @@ def run_command_nowait(cmd: str, env=None, msg: str = ""):
     print(f'run_command result: str{proc}')
 
 
-def server_tests(host, port):
+def server_tests(host, port, version):
     """ called by api_logic_server_run.py, for any tests on server start
         args
             host - server host
             port - server port
+            version - ApiLogicServer version
     """
 
     util.log(f'\n\n===================')
     util.log(f'STARTUP DIAGNOSTICS')
-    util.log(f'.. server_tests("{host}", "{port}") called (v1.0)')
-    util.log(f'.. see test/server_startup_test.py - diagnostics are good GET and POST examples')
+    util.log(f'.. server_tests("{host}", "{port}") called (v1.1)')
+    util.log(f'.. see test/server_startup_test.py - diagnostics are good GET, PATCH and Custom Service examples')
     util.log(f'===================\n')
 
     # run_command_nowait(f'python {get_project_dir()}/ui/basic_web_app/run.py')  wip - starts, but app not responsive
@@ -72,6 +73,10 @@ def server_tests(host, port):
       }
     }
 
+    svr_logger = logging.getLogger('safrs.safrs_init')
+    save_level = svr_logger.getEffectiveLevel()
+    svr_logger.setLevel(logging.FATAL)  # hide ugly (scary) stacktrace on startup
+
     # use swagger to get uri
 
     get_order_uri = f'http://{host}:{port}/Order/?' \
@@ -80,7 +85,7 @@ def server_tests(host, port):
     r = requests.get(url=get_order_uri)
     response_text = r.text
     assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
-    prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now test PATCH...')
+    prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now verify PATCH...')
 
     patch_cust_uri = f'http://{host}:{port}/Customer/ALFKI/'
     patch_args = \
@@ -92,18 +97,12 @@ def server_tests(host, port):
                 "type": "Customer",
                 "id": "ALFKI"
         }}
-    # patch_args = { "CreditLimit": 10, "Id": "ALFKI" }
     r = requests.patch(url=patch_cust_uri, json=patch_args)
     response_text = r.text
     assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
-    prt(f'\nPATCH DIAGNOSTICS PASSED for table Order... now verify Add Order check credit logic...')
+    prt(f'\nPATCH DIAGNOSTICS PASSED for table Order... now verify Custom Service add_order - check credit logic...')
 
     #  logic log hard to read with word wrap.  mac/unix can suppress with tput rmam/tput smam
-    prt(f'.. Add Order logic log follows...')
-
-    svr_logger = logging.getLogger('safrs.safrs_init')
-    save_level = svr_logger.getEffectiveLevel()
-    svr_logger.setLevel(logging.FATAL)  # hide ugly (scary) stacktrace on startup
 
     r = requests.post(url=add_order_uri, json=add_order_args)
 
@@ -138,6 +137,8 @@ def server_tests(host, port):
         f'4. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
         f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'
         f'\n'
-        f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
+        f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n'
+        f'\n'
+        f'Successful Server Start (ApiLogicServer Version {version}) - see ApiLogicServer Summary, above\n')
 
     svr_logger.setLevel(save_level)
