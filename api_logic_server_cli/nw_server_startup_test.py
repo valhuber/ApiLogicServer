@@ -49,7 +49,7 @@ def server_tests(host, port):
     # run_command_nowait(f'python {get_project_dir()}/ui/basic_web_app/run.py')  wip - starts, but app not responsive
 
     add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
-    args = {
+    add_order_args = {
       "meta": {
         "method": "add_order",
         "args": {
@@ -82,13 +82,20 @@ def server_tests(host, port):
     assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
     prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now test PATCH...')
 
-    patch_cust_uri = 'curl -vX PATCH "http://localhost:5000/Customer/ALFKI/" ' \
-                     '-H  "accept: application/vnd.api+json" -H  "Content-Type: application/json"  ' \
-                     '-d "{  "data": {     "attributes": {        "CreditLimit": "100"     },  ' \
-                     '"type": "Customer",  "id": "ALFKI"}}"'
-    r = requests.get(url=patch_cust_uri)
+    patch_cust_uri = f'http://{host}:{port}/Customer/ALFKI/'
+    patch_args = \
+        {
+            "data": {
+                "attributes": {
+                    "CreditLimit": 10,
+                    "Id": "ALFKI" },
+                "type": "Customer",
+                "id": "ALFKI"
+        }}
+    # patch_args = { "CreditLimit": 10, "Id": "ALFKI" }
+    r = requests.patch(url=patch_cust_uri, json=patch_args)
     response_text = r.text
-    assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
+    assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
     prt(f'\nPATCH DIAGNOSTICS PASSED for table Order... now verify Add Order check credit logic...')
 
     #  logic log hard to read with word wrap.  mac/unix can suppress with tput rmam/tput smam
@@ -98,7 +105,7 @@ def server_tests(host, port):
     save_level = svr_logger.getEffectiveLevel()
     svr_logger.setLevel(logging.FATAL)  # hide ugly (scary) stacktrace on startup
 
-    r = requests.post(url=add_order_uri, json=args)
+    r = requests.post(url=add_order_uri, json=add_order_args)
 
     response_text = r.text
     assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
