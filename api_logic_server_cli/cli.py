@@ -912,7 +912,8 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
 
         db_uri = f'sqlite:///{project_directory}/database/db.sqlite'
         if os.name == "nt":  # windows
-            target_db_loc = get_os_url(f'sqlite:///{get_os_url(db_loc)}')
+            # sqlite:///C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite
+            target_db_loc = get_os_url(target_db_loc)
         db_uri = f'sqlite:///{target_db_loc}'
         """
         relative makes run too hard: 
