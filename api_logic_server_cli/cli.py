@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.12"
+__version__ = "02.02.14"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -915,12 +915,6 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
             # sqlite:///C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite
             target_db_loc = get_os_url(target_db_loc)
         db_uri = f'sqlite:///{target_db_loc}'
-        """
-        relative makes run too hard: 
-        db_uri = f'sqlite:///{project_directory}/database/db.sqlite'
-        if os.name == "nt":  # windows
-            db_uri = get_os_url(f'sqlite:///{project_directory}\\database\\db.sqlite')
-        """
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
@@ -1295,7 +1289,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/13/2021 - 02.02.12: SAFRS Patch Error Reporting fix\n"
+            "\t05/19/2021 - 02.02.14: Model generation for Posting without autoIncrement, Startup Tests\n"
             "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
             "\t05/08/2021 - 02.02.08: Server Startup Option\n"
             "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"

@@ -6,6 +6,7 @@ import subprocess
 
 server_tests_enabled = True  # use True to invoke server_tests on server startup
 
+
 def prt(msg: any) -> None:
     util.log(f'{msg}')
 
@@ -51,94 +52,129 @@ def server_tests(host, port, version):
 
     add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
     add_order_args = {
-      "meta": {
-        "method": "add_order",
-        "args": {
-          "CustomerId": "ALFKI",
-          "EmployeeId": 1,
-          "Freight": 10,
-          "OrderDetailList": [
-            {
-              "ProductId": 1,
-              "Quantity": 1111,
-              "Discount": 0
-            },
-            {
-              "ProductId": 2,
-              "Quantity": 2,
-              "Discount": 0
+        "meta": {
+            "method": "add_order",
+            "args": {
+                "CustomerId": "ALFKI",
+                "EmployeeId": 1,
+                "Freight": 10,
+                "OrderDetailList": [
+                    {
+                        "ProductId": 1,
+                        "Quantity": 1111,
+                        "Discount": 0
+                    },
+                    {
+                        "ProductId": 2,
+                        "Quantity": 2,
+                        "Discount": 0
+                    }
+                ]
             }
-          ]
         }
-      }
     }
 
     svr_logger = logging.getLogger('safrs.safrs_init')
     save_level = svr_logger.getEffectiveLevel()
     svr_logger.setLevel(logging.FATAL)  # hide ugly (scary) stacktrace on startup
+    get_test = True
+    patch_test = True
+    post_test = True
+    delete_test = True
+    custom_service_test = True
+    api_logic_server_summary = True
 
     # use swagger to get uri
+    if get_test:
+        get_order_uri = f'http://{host}:{port}/Order/?' \
+                        f'fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CAmountTotal' \
+                        f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
+        r = requests.get(url=get_order_uri)
+        response_text = r.text
+        assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
 
-    get_order_uri = f'http://{host}:{port}/Order/?' \
-                    f'fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CAmountTotal' \
-                    f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
-    r = requests.get(url=get_order_uri)
-    response_text = r.text
-    assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
-    prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now verify PATCH...')
+        prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now verify PATCH Customer...')
 
-    patch_cust_uri = f'http://{host}:{port}/Customer/ALFKI/'
-    patch_args = \
-        {
-            "data": {
-                "attributes": {
-                    "CreditLimit": 10,
-                    "Id": "ALFKI" },
-                "type": "Customer",
-                "id": "ALFKI"
-        }}
-    r = requests.patch(url=patch_cust_uri, json=patch_args)
-    response_text = r.text
-    assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
-    prt(f'\nPATCH DIAGNOSTICS PASSED for table Order... now verify Custom Service add_order - check credit logic...')
+    if patch_test:
+        patch_cust_uri = f'http://{host}:{port}/Customer/ALFKI/'
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "CreditLimit": 10,
+                        "Id": "ALFKI"},
+                    "type": "Customer",
+                    "id": "ALFKI"
+                }}
+        r = requests.patch(url=patch_cust_uri, json=patch_args)
+        response_text = r.text
+        assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
 
-    #  logic log hard to read with word wrap.  mac/unix can suppress with tput rmam/tput smam
+        prt(f'\nPATCH DIAGNOSTICS PASSED for table Customer... now verify POST Customer...')
 
-    r = requests.post(url=add_order_uri, json=add_order_args)
+    if post_test:
+        post_cust_uri = f'http://{host}:{port}/Customer/'
+        post_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "CreditLimit": 10,
+                        "Balance": 0,
+                        "Id": "ALFKJ"},
+                    "type": "Customer",
+                    "id": "ALFKJ"
+                }}
+        r = requests.post(url=post_cust_uri, json=post_args)
+        response_text = r.text
+        assert r.status_code == 201, f'Error - "status_code != 200 in this response:\n{response_text}'
 
-    response_text = r.text
-    assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
+        prt(f'\nPOST DIAGNOSTICS PASSED for table Customer... now verify DELETE Customer...')
 
-    util.log(f'\nADD ORDER CHECK CREDIT - STARTUP DIAGNOSTICS PASSED')
-    util.log(f'===================================================')
-    prt(f''
-        f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
-        f'Logic Log (above) shows proper detection of Customer Constraint Failure...\n'
-        f'.. Best viewed without word wrap'
-        f' - see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order\n'
-        f'.. The logic illustrates MULTI-TABLE CHAINING (note indents):\n'
-        f'....FORMULA OrderDetail.Amount (19998), which...\n'
-        f'......ADJUSTS Order.AmountTotal (19998), which...\n'
-        f'........ADJUSTS Customer.Balance (21014), which...\n'
-        f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n'
-        f'All from just 5 rules in ({get_project_dir()}/logic/logic_bank.py)\n\n')
+    if delete_test:
+        delete_cust_uri = f'http://{host}:{port}/Customer/ALFKJ/'
+        r = requests.delete(url=delete_cust_uri, json={})
+        # Generic Error: Entity body in unsupported format
+        response_text = r.text
+        assert r.status_code == 204, f'Error - "status_code != 204 in this response:\n{response_text}'
 
-    util.log(f'\nAPILOGICSERVER SUMMARY')
-    util.log(f'======================\n')
-    prt(f''
-        f'1. CUSTOMIZABLE PROJECT CREATED from supplied Sample DB\n'
-        f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
-        f'2. SERVER has been STARTED (python api_logic_server_run.py)\n'
-        f'     .. Explore your API - Swagger at http://{host}:{port}\n'
-        f'3. BASIC WEB APP Created\n'
-        f'     .. Start it: python ui/basic_web_app/run.py [host port]]\n'
-        f'     .. Then, explore it: http://0.0.0.0:8080/ (login: admin, p)\n'
-        f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
-        f'4. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
-        f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'
-        f'\n'
-        f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n'
-        f'\n'
-        f'Successful Server Start (ApiLogicServer Version {version}) - see ApiLogicServer Summary, above\n')
+        prt(f'\nDELETE DIAGNOSTICS PASSED for table Customer... now verify Custom Service add_order - check credit logic...')
+
+    if custom_service_test:
+        r = requests.post(url=add_order_uri, json=add_order_args)
+        response_text = r.text
+        assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
+
+        util.log(f'\nADD ORDER CHECK CREDIT - STARTUP DIAGNOSTICS PASSED')
+        util.log(f'===================================================')
+        prt(f''
+            f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
+            f'Logic Log (above) shows proper detection of Customer Constraint Failure...\n'
+            f'.. Best viewed without word wrap'
+            f' - see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order\n'
+            f'.. The logic illustrates MULTI-TABLE CHAINING (note indents):\n'
+            f'....FORMULA OrderDetail.Amount (19998), which...\n'
+            f'......ADJUSTS Order.AmountTotal (19998), which...\n'
+            f'........ADJUSTS Customer.Balance (21014), which...\n'
+            f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n'
+            f'All from just 5 rules in ({get_project_dir()}/logic/logic_bank.py)\n\n')
+
+    if api_logic_server_summary:
+        util.log(f'\nAPILOGICSERVER SUMMARY')
+        util.log(f'======================\n')
+        prt(f''
+            f'1. CUSTOMIZABLE PROJECT CREATED from supplied Sample DB\n'
+            f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
+            f'2. SERVER has been STARTED (python api_logic_server_run.py)\n'
+            f'     .. Explore your API - Swagger at http://{host}:{port}\n'
+            f'3. BASIC WEB APP Created\n'
+            f'     .. Start it: python ui/basic_web_app/run.py [host port]]\n'
+            f'     .. Then, explore it: http://0.0.0.0:8080/ (login: admin, p)\n'
+            f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
+            f'4. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
+            f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'
+            f'\n'
+            f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n'
+            f'\n'
+            f'Successful Server Start (ApiLogicServer Version {version}) - see ApiLogicServer Summary, above\n')
 
     svr_logger.setLevel(save_level)

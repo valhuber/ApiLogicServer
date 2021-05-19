@@ -711,9 +711,12 @@ from sqlalchemy.dialects.mysql import *
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
 
         # Render constraints and indexes as __table_args__
+        autonum_col = False
         table_args = []
         for constraint in sorted(model.table.constraints, key=_get_constraint_sort_key):
             if isinstance(constraint, PrimaryKeyConstraint):
+                if constraint._autoincrement_column is not None:
+                    autonum_col = True
                 continue
             if (isinstance(constraint, (ForeignKeyConstraint, UniqueConstraint)) and
                     len(constraint.columns) == 1):
@@ -752,6 +755,9 @@ from sqlalchemy.dialects.mysql import *
                 show_name = attr != column.name
                 rendered += '{0}{1} = {2}\n'.format(
                     self.indentation, attr, self.render_column(column, show_name))
+        if not autonum_col:
+            rendered += '{0}{1}'.format(self.indentation, "allow_client_generated_ids = True")
+
 
         # Render relationships (declared in child class, backref to parent)
         if any(isinstance(value, Relationship) for value in model.attributes.values()):
