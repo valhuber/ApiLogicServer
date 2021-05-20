@@ -801,7 +801,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
 
     if db_url.endswith("nw.sqlite"):
         print(".. ..Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
-        append_logic_with_nw_logic(project_directory)
+        replace_logic_with_nw_logic(project_directory)
         replace_models_ext_with_nw_models_ext(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
         replace_server_startup_test_with_nw_server_startup_test(project_directory)
@@ -921,9 +921,9 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
     return db_uri
 
 
-def append_logic_with_nw_logic(project_name):
-    """ Append logic/logic_bank.py with pre-defined nw_logic """
-    logic_file = open(project_name + '/logic/logic_bank.py', 'a')
+def replace_logic_with_nw_logic(project_name):
+    """ Replace logic/logic_bank.py with pre-defined nw_logic """
+    logic_file = open(project_name + '/logic/logic_bank.py', 'w')
     nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_logic.txt")
     nw_logic = nw_logic_file.read()
     logic_file.write(nw_logic)

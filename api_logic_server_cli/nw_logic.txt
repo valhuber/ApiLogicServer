@@ -8,65 +8,44 @@ from database import models
 
 def declare_logic():
 
-    print("\n\ndeclare_logic")
-
-    """ example from default database
-
-    Rule.constraint(validate=models.Customer,
-                    as_condition=lambda row: row.Balance <= row.CreditLimit,
-                    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
-
-    use code completion to declare rules here """
+    print("\n\nlogic/logic_bank.py: declare_logic")
 
     """
-    This code precreated for default database, nw.sqlite.
-        You would normally declare your rules, using code completion.
+    Use code completion to declare rules here
+
+    This logic pre-created for default database, nw.sqlite.
+        You would normally declare your *own* rules, using code completion.
         For details on these rules, see https://github.com/valhuber/LogicBank/wiki/Examples
 
-    Issues function calls to activate rules for check credit (etc), below.
-        These rules are executed not now, but on commits
-        Order is irrelevant - determined by system based on dependency analysis
-        Their inclusion in classes is for doc / convenience, no semantics
+    These rules are activated like this in api_logic_server_run.py:
+        LogicBank.activate(session=session, activator=logic_bank.declare_logic, constraint_event=constraint_handler)
 
     These rules apply to all transactions (automatic re-use), eg.
-    * place order
-    * change Order Detail product, quantity
-    * add/delete Order Detail
-    * ship / unship order
-    * delete order
-    * move order to new customer, etc
+        * place order
+        * change Order Detail product, quantity
+        * add/delete Order Detail
+        * ship / unship order
+        * delete order
+        * move order to new customer, etc
 
-    These rules are automatically activated, like this
+    Logic runs in response to transaction commits,
+      for multi-table derivations and constraints,
+      and events such as sending messages or mail
+        it consists of spreadsheet-like Rules and Python code
 
-        LogicBank.activate(session=session, activator=declare_logic)
+    Rule operate much like a spreadsheet:
+      Watch, for changes in referenced values
+      React, by recomputing value
+      Chain, to any referencing rules, including other tables
+        SQL is automated, and optimized (e.g., adjust vs. select sum)
+
+    Rules are automatically invoked, with
+    execution ordered per their dependencies
+
+    Rules are listed below to best illustrate chaining
     """
 
-    def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: LogicRow):
-        if logic_row.ins_upd_dlt == "ins":  # logic engine fills parents for insert
-            sales_rep = row.Employee
-            if sales_rep is None:
-                logic_row.log("no salesrep for this order")
-            else:
-                logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
-                              f'Congratulate {sales_rep.FirstName} on their new order')
-
-    # Logic runs in response to transaction commits,
-    #   for multi-table derivations and constraints,
-    #   and events such as sending messages or mail
-
-    # it consists of spreadsheet-like Rules and Python code
-
-    # Rule operation:
-    #   watch, for changes in referenced values
-    #   react, by recomputing value
-    #   chain, to any referencing rules
-
-    # Rules are automatically invoked, with
-    # execution ordered per their dependencies
-
-    # Rules are listed below to best illustrate chaining
-
-    # get Product Price (e,g., on insert, ProductId change)
+    # get Product Price (e,g., on insert, or ProductId change)
     Rule.copy(derive=models.OrderDetail.UnitPrice,
               from_parent=models.Product.UnitPrice)
     # compute price * qty
@@ -85,7 +64,24 @@ def declare_logic():
                     as_condition=lambda row: row.Balance <= row.CreditLimit,
                     error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
 
+    """
+        Demonstrate that logic == rules + Python
+    """
+    def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: LogicRow):
+        """ demonstrate that logic == rules, plus Python """
+        if logic_row.ins_upd_dlt == "ins":  # logic engine fills parents for insert
+            sales_rep = row.Employee
+            if sales_rep is None:
+                logic_row.log("no salesrep for this order")
+            else:
+                logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
+                              f'Congratulate {sales_rep.FirstName} on their new order')
+
     Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
+
+    """
+        More complex rules follow - see: https://github.com/valhuber/LogicBank/wiki/Examples
+    """
 
     Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")
 

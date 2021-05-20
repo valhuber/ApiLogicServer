@@ -6,6 +6,20 @@ import subprocess
 
 server_tests_enabled = True  # use True to invoke server_tests on server startup
 
+"""
+    These are server tests for the default Sample DB.
+    See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#customize-server-startup
+
+    These verify the following, and are useful coding examples of API Usage:
+"""
+
+get_test = True  # Performs a basic get, with Fields and Filter
+patch_test = True  # Updates a Customer with intentionally bad data to illustrate logic
+post_test = True  # Posts a customer
+delete_test = True  # Deletes the posted customer
+custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order
+api_logic_server_summary = True  # Prints a banner
+
 
 def prt(msg: any) -> None:
     util.log(f'{msg}')
@@ -77,12 +91,6 @@ def server_tests(host, port, version):
     svr_logger = logging.getLogger('safrs.safrs_init')
     save_level = svr_logger.getEffectiveLevel()
     svr_logger.setLevel(logging.FATAL)  # hide ugly (scary) stacktrace on startup
-    get_test = True
-    patch_test = True
-    post_test = True
-    delete_test = True
-    custom_service_test = True
-    api_logic_server_summary = True
 
     # use swagger to get uri
     if get_test:
@@ -175,6 +183,6 @@ def server_tests(host, port, version):
             f'\n'
             f'===> For more information, see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n'
             f'\n'
-            f'Successful Server Start (ApiLogicServer Version {version}) - see ApiLogicServer Summary, above\n')
+            f'SUCCESSFUL SERVER START (ApiLogicServer Version {version}) - see ApiLogicServer Summary, above\n')
 
     svr_logger.setLevel(save_level)
