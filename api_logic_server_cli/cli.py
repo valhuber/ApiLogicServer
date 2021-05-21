@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.14"
+__version__ = "02.02.17"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1289,12 +1289,12 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/19/2021 - 02.02.14: Model generation for Posting without autoIncrement, Startup Tests\n"
+            "\t05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"
             "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
             "\t05/08/2021 - 02.02.08: Server Startup Option\n"
             "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
             "\t04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running\n"
-            "\t04/27/2021 - 02.01.01: Improved Services, option --extended_builder (e.g., restify Table Value Functions)\n"
+            "\t04/27/2021 - 02.01.01: Improved Svcs, option --extended_builder (e.g., restify Table Value Functions)\n"
             "\t04/23/2021 - 02.00.15: Bug fix - SQLAlchemy version, server port\n"
             "\t04/21/2021 - 02.00.14: pythonanywhere - port option, wsgi creation\n"
             "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"

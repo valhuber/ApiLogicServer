@@ -53,7 +53,8 @@ setup(
               'prototype', 'prototype.api', 'prototype.database', 'prototype.logic', 'prototype.test',
               'prototype.templates', 'prototype.ui'],
     package_data={"api_logic_server_cli": ["nw.sqlite", "nw-gold.sqlite", "nw_logic.txt", "nw_expose_services.txt",
-                                           "create_admin.txt", "nw_models_ext.txt", "nw_server_startup_test.py"],
+                                           "create_admin.txt", "nw_models_ext.txt", "nw_server_startup_test.py",
+                                           "ui_basic_web_app_run.txt"],
                   "prototype": ["requirements.txt", "default.env", "EXAMPLE.env", "readme.md"],
                   'prototype.templates': ["index.html"]
                   },

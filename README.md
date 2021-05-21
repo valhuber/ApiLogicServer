@@ -272,7 +272,7 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
-05/19/2021 - 02.02.14: Model generation for Posting without autoIncrement, Startup Tests
+05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests
 
 05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs
 
