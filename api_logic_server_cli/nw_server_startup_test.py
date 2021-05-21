@@ -170,13 +170,14 @@ def server_tests(host, port, version):
         util.log(f'\nAPILOGICSERVER SUMMARY')
         util.log(f'======================\n')
         prt(f''
-            f'1. CUSTOMIZABLE PROJECT CREATED from supplied Sample DB\n'
+            f'1. CUSTOMIZABLE SERVER PROJECT CREATED from supplied Sample DB\n'
             f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
-            f'2. SERVER has been STARTED (python api_logic_server_run.py)\n'
+            f'2. SERVER STARTED\n'
             f'     .. Explore your API - Swagger at http://{host}:{port}\n'
+            f'     .. Re-run it later - python api_logic_server_run.py\n'
             f'3. BASIC WEB APP Created\n'
             f'     .. Start it: python ui/basic_web_app/run.py [host port]]\n'
-            f'     .. Then, explore it: http://0.0.0.0:8080/ (login: admin, p)\n'
+            f'     .. Then, explore it - http://0.0.0.0:8080/ (login: admin, p)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
             f'4. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'
