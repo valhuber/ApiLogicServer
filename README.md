@@ -64,7 +64,7 @@ With a single command, create and run a
 ### Run ApiLogicServer CLI
 As illustrated above, you run the ApiLogicServer CLI:
 ```
-ApiLogicServer run        # note: you can also create (without execution)
+ApiLogicServer run        # see console log, below
 ```
 
 The CLI provides a number of options you can discover with ```ApiLogicServer --help```.
