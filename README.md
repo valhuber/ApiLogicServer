@@ -240,8 +240,7 @@ The run command provides several useful examples of how to specify `db_url`, a S
 
 ### Status
 
-We have tested several sqlite databases, and several MySQL databases -
-    see [status here.](https://github.com/valhuber/ApiLogicServer/wiki/Testing)
+We have tested several databases - see [status here.](https://github.com/valhuber/ApiLogicServer/wiki/Testing)
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
