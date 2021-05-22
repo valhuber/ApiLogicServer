@@ -1289,7 +1289,8 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/21/2021 - 02.02.18: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"
+            "\t05/22/2021 - 02.02.18: ApiLogicServer Summary - Console Startup Banner\n"
+            "\t05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"
             "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
             "\t05/08/2021 - 02.02.08: Server Startup Option\n"
             "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
