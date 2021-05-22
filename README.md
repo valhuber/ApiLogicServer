@@ -88,13 +88,19 @@ You can open this in your IDE and customize it as shown below.
 
 ### Runs Project - Working Software Now
 
-The CLI then starts the API. As illustrated above, the project implements:
+The CLI then starts the API, which (for the default project) prints this console log:
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/ApiLogicServer-Summary.png"></figure>
+
+As illustrated above, the project implements:
 
 1. Your ___API___, available in Swagger
 
 2. With underlying ___logic___
 
 3. And a ```basic_web_app```
+
+In addition, the sample project pre-creates a [logic file](https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.txt) you can explore.
 
 
 ### Customize the Created Project
