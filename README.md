@@ -92,8 +92,10 @@ The CLI then starts the API, which (for the default project) prints this console
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/ApiLogicServer-Summary.png"></figure>
 
-In particular, note the system has created a **runnable project** (shown below) that you can re-run as desired,
+In particular, note the system has created a **runnable project** (per the red box, above) that you can re-run as desired,
 and **customize** as shown below.
+
+> You do **not** need to repeat the `ApiLogicServer run` command to start the server.
 
 ### Customize the Created Project
 
