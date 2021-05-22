@@ -224,8 +224,8 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 * using ```ApiLogicServer create```, and running ```python3 api_logic_server_run.py```
 
 # Next Steps
-Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to run locally installed ApiLogicServer.
-You can also try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme).
+Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to explore locally installed ApiLogicServer.
+(You can also try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme)).
 
 After creating / exploring the sample project and Tutorial, try it with your own database:
 
@@ -240,15 +240,8 @@ The run command provides several useful examples of how to specify `db_url`, a S
 
 ### Status
 
-Initially released 1/19/2021, the project has stabilized:
-
-* The [default Northwind project](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) is working with for both the API and the web app,
-  with pre-created logic (good to explore for examples)
-  
-
-*   We have tested several sqlite databases, and several MySQL databases -
+We have tested several sqlite databases, and several MySQL databases -
     see [status here.](https://github.com/valhuber/ApiLogicServer/wiki/Testing)
-    These are successfully creating / executing the API and the web app.
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
