@@ -8,17 +8,13 @@
 
 **ApiLogicServer** creates customizable projects with a single command.
 
-After [installing](#installation), 
-get started by creating the sample project:
+After [installing](#installation), get started by creating the **sample project:**
 
 ```
 ApiLogicServer run
 ```
 
-After you've explored the sample, use your own database:
-```
-ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
-```
+After you've explored the sample, use your own database as [described below](#next-steps).
 
 The created project is **executable** and **customizable,** providing the following features:
 
@@ -227,10 +223,18 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 * making ```python3``` the default Python, or
 * using ```ApiLogicServer create```, and running ```python3 api_logic_server_run.py```
 
-# Learning
-Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to run your locally installed software.
+# Next Steps
+Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to run locally installed ApiLogicServer.
+You can also try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme).
 
-If you'd like to try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme).
+After creating / exploring the sample project and Tutorial, try it with your own database:
+
+```
+ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels
+```
+
+The run command provides several useful examples of how to specify `db_url`, a SQLAlchemy uri.
+
 
 # Project Information
 
