@@ -92,24 +92,13 @@ The CLI then starts the API, which (for the default project) prints this console
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/ApiLogicServer-Summary.png"></figure>
 
-As illustrated above, the project implements:
-
-1. Your ___API___, available in Swagger
-
-2. With underlying ___logic___
-
-3. And a ```basic_web_app```
-
-In addition, the sample project pre-creates a [logic file](https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.txt) you can explore.
-
-
-### Customize the Created Project
-Here is the created project;
-you can open it in any IDE or Editor - here it is in PyCharm:
+In particular, note the system has created a runnable project that you can re-run as desired:
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/generated-project.png"></figure>
 
-Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
+### Customize the Created Project
+
+You can customize the created project.  Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
 
 * **Customize API:** edit ```api/expose_services.py``` to define your own endpoints,
