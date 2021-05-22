@@ -99,6 +99,8 @@ and **customize** as shown below.
 
 ### Customize the Created Project
 
+Here is the created project, shown in PyCharm:
+
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/generated-project.png"></figure>
 
 Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
