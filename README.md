@@ -92,13 +92,14 @@ The CLI then starts the API, which (for the default project) prints this console
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/ApiLogicServer-Summary.png"></figure>
 
-In particular, note the system has created a runnable project that you can re-run as desired:
-
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/generated-project.png"></figure>
+In particular, note the system has created a **runnable project** (shown below) that you can re-run as desired,
+and **customize** as shown below.
 
 ### Customize the Created Project
 
-You can customize the created project.  Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/generated-project.png"></figure>
+
+Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
 
 * **Customize API:** edit ```api/expose_services.py``` to define your own endpoints,
