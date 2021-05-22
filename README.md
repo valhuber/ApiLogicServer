@@ -100,7 +100,7 @@ As illustrated above, the project implements:
 
 3. And a ```basic_web_app```
 
-In addition, the sample project pre-creates a logic file you can explore.
+In addition, the sample project pre-creates a [logic file](https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.txt) you can explore.
 
 
 ### Customize the Created Project
