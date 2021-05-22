@@ -95,7 +95,21 @@ The CLI then starts the API, which (for the default project) prints this console
 In particular, note the system has created a **runnable project** (per the red box, above) that you can re-run as desired,
 and **customize** as shown below.
 
-> You do **not** need to repeat the `ApiLogicServer run` command to start the server.
+Here is how your ```api_logic_server``` project can be re-executed (*without creating*).
+To run it:
+1. Specify a proper ```venv``` (virtual environment)
+   
+   * The one used for ApiLogicServer install is fine, or you can use a project-specific
+    [virtual environment](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#environment)
+    
+2. Then:
+
+```
+python api_logic_server_run.py
+python ui/basic_web_app/run.py
+```
+
+> **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
 
 ### Customize the Created Project
 
@@ -120,19 +134,7 @@ Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogi
   learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
 
 
-After customization, your ```api_logic_server``` project can be re-executed (without creating).
-To run it:
-1. Specify a proper ```venv``` (virtual environment)
-   
-   * The one used for ApiLogicServer install is fine, or you can use a project-specific
-    [virtual environment](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#environment)
-    
-2. Then:
-
-```
-python api_logic_server_run.py
-python ui/basic_web_app/run.py
-```
+After customization, your ```api_logic_server``` project can be re-executed as described above.
 
 
 # Features
