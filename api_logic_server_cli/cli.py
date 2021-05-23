@@ -924,7 +924,7 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
 def replace_logic_with_nw_logic(project_name):
     """ Replace logic/logic_bank.py with pre-defined nw_logic """
     logic_file = open(project_name + '/logic/logic_bank.py', 'w')
-    nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_logic.txt")
+    nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_logic.py")
     nw_logic = nw_logic_file.read()
     logic_file.write(nw_logic)
     logic_file.close()
@@ -933,7 +933,7 @@ def replace_logic_with_nw_logic(project_name):
 def replace_models_ext_with_nw_models_ext(project_name):
     """ Replace models/models_ext.py with pre-defined nw_models_ext """
     models_ext_file = open(project_name + '/database/models_ext.py', 'w')
-    nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_models_ext.txt")
+    nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_models_ext.py")
     nw_models_ext = nw_models_ext_file.read()
     models_ext_file.write(nw_models_ext)
     models_ext_file.close()
@@ -942,7 +942,7 @@ def replace_models_ext_with_nw_models_ext(project_name):
 def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
     """ replace api/expose_rpcs with nw version """
     rpcs_file = open(project_name + '/api/expose_services.py', 'w')
-    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_expose_services.txt")
+    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_expose_services.py")
     nw_expose_rpcs = nw_expose_rpcs_file.read()
     rpcs_file.write(nw_expose_rpcs)
     rpcs_file.close()
@@ -1001,7 +1001,7 @@ def fix_basic_web_app_run__python_path(project_directory):
             fp.writelines(lines)  # write whole lists again to the same file
     else:
         models_ext_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
-        nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.txt")
+        nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.py")
         nw_models_ext = nw_models_ext_file.read()
         models_ext_file.write(nw_models_ext)
         models_ext_file.close()
@@ -1017,7 +1017,7 @@ def fix_basic_web_app_run__create_admin(project_directory):
 
     unix_project_name = project_directory.replace('\\', "/")
     target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
-    source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.txt")
+    source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.sh")
     create_admin_commands = source_create_admin_sh_file.read()
     target_create_admin_sh_file.write(create_admin_commands)
     target_create_admin_sh_file.close()
