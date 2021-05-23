@@ -174,7 +174,7 @@ def server_tests(host, port, version):
             f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
             f'2. SERVER STARTED\n'
             f'     .. Explore your API - Swagger at http://{host}:{port}\n'
-            f'     .. Re-run it later - python api_logic_server_run.py\n'
+            f'     .. Re-run it later (without recreating) - python api_logic_server_run.py\n'
             f'3. LOGIC pre-supplied\n'
             f'     .. Explore it at {get_project_dir()}/logic/logic_bank.py\n'
             f'     .. Or, see https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.txt\n'

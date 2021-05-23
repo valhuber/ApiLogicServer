@@ -7,40 +7,38 @@ from database import models
 
 
 def declare_logic():
-
-    print("\n\nlogic/logic_bank.py: declare_logic")
-
     """
-    Use code completion to declare rules here
+    Logic declared here, using code completion.
 
     This logic pre-created for default database, nw.sqlite.
         You would normally declare your *own* rules, using code completion.
         For details on these rules, see https://github.com/valhuber/LogicBank/wiki/Examples
 
-    These rules are activated like this in api_logic_server_run.py:
+    This logic is *activated* in api_logic_server_run.py:
         LogicBank.activate(session=session, activator=logic_bank.declare_logic, constraint_event=constraint_handler)
 
-    These rules apply to all transactions (automatic re-use), eg.
+    Logic *runs* in response to transaction commits,
+      for multi-table derivations and constraints,
+      and events such as sending messages or mail
+        it consists of spreadsheet-like Rules and Python code
+
+    Rules operate much like a spreadsheet:
+        Watch, for changes in referenced values
+        React, by recomputing value
+        Chain, to any referencing rules, including other tables
+            SQL is automated, and optimized (e.g., adjust vs. select sum)
+
+    Rules are automatically invoked, with
+    execution ordered per their dependencies
+
+    These 5 rules apply to all transactions (automatic re-use), eg.
         * place order
         * change Order Detail product, quantity
         * add/delete Order Detail
         * ship / unship order
         * delete order
         * move order to new customer, etc
-
-    Logic runs in response to transaction commits,
-      for multi-table derivations and constraints,
-      and events such as sending messages or mail
-        it consists of spreadsheet-like Rules and Python code
-
-    Rule operate much like a spreadsheet:
-      Watch, for changes in referenced values
-      React, by recomputing value
-      Chain, to any referencing rules, including other tables
-        SQL is automated, and optimized (e.g., adjust vs. select sum)
-
-    Rules are automatically invoked, with
-    execution ordered per their dependencies
+    These 5 rules replace 200 lines of legacy code: https://github.com/valhuber/LogicBank/wiki/by-code
 
     Rules are listed below to best illustrate chaining
     """
@@ -59,7 +57,7 @@ def declare_logic():
     # adjust Balance iff AmountTotal or ShippedDate or CustomerID changes
     Rule.sum(derive=models.Customer.Balance,
              as_sum_of=models.Order.AmountTotal,
-             where=lambda row: row.ShippedDate is None)  # *not* a sql select sum...
+             where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
     Rule.constraint(validate=models.Customer,
                     as_condition=lambda row: row.Balance <= row.CreditLimit,
                     error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
@@ -130,3 +128,6 @@ def declare_logic():
             logic_row.log("early_row_event_all_classes - handle_all sets 'Created_on"'')
 
     Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
+
+    print("\n\nlogic/logic_bank.py: declare_logic complete")
+
