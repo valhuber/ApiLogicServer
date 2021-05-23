@@ -49,7 +49,7 @@ def server_tests(host, port, version):
             f'     .. Re-run it later - python api_logic_server_run.py\n'
             f'3. LOGIC enabled\n'
             f'     .. Explore it at {get_project_dir()}/logic/logic_bank.py\n'
-            f'     .. E.g., see https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.txt\n'
+            f'     .. E.g., see https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.py\n'
             f'4. BASIC WEB APP Created\n'
             f'     .. Start it: python ui/basic_web_app/run.py [host port]]\n'
             f'     .. Then, explore it - http://0.0.0.0:8080/ (login: admin, p)\n'

@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.18"
+__version__ = "02.02.19"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1289,7 +1289,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/22/2021 - 02.02.18: ApiLogicServer Summary - Console Startup Banner\n"
+            "\t05/23/2021 - 02.02.18: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner\n"
             "\t05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"
             "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
             "\t05/08/2021 - 02.02.08: Server Startup Option\n"

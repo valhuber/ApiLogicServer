@@ -7,7 +7,7 @@ import sqlalchemy
 def log(msg: any) -> None:
     print(msg, file=sys.stderr)
 
-log("Extended builder 1.1")
+log("Extended builder 1.2")
 
 
 class DotDict(dict):
@@ -136,7 +136,7 @@ from sqlalchemy.dialects.mysql import *
                         self.tvf_contents += ", "
             self.tvf_contents += ")\n"
             self.tvf_contents += f'\t\tresult = query_result.fetchall()\n'
-            self.tvf_contents += '\t\treturn {"result" : list(result[0])}\n'
+            self.tvf_contents += '\t\treturn {"result" : list(result)}\n'
             self.tvf_contents += f'\n\n'
 
     def write_tvf_file(self):
