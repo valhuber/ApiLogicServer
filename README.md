@@ -272,7 +272,7 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
-05/25/2021 - 02.02.25: Clearer logicbank multi-table chain info - show attribute names
+05/25/2021 - 02.02.26: Clearer logicbank multi-table chain info - show attribute names
 
 05/23/2021 - 02.02.18: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner
 

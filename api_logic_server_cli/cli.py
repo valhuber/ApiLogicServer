@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.25"
+__version__ = "02.02.26"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -871,6 +871,7 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
 
     Note project_directory is from user, and may be relative (and same as project_name)
     """
+    project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
     api_logic_server_run_py = f'{project_directory}/api_logic_server_run.py'
     replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
                            replace_with='"' + os.path.basename(project_name) + '"',
@@ -878,11 +879,11 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
     replace_string_in_file(search_for="ApiLogicServer hello",
                            replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
                            in_file=api_logic_server_run_py)
-    project_directory_actual = str(pathlib.Path(project_directory).absolute())
+    project_directory_fix = project_directory_actual
     if os.name == "nt":  # windows
-        actual_path = get_windows_path_with_slashes(str(project_directory_actual))
+        project_directory_fix = get_windows_path_with_slashes(str(project_directory_actual))
     replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
-                           replace_with='"' + str(project_directory_actual) + '"',
+                           replace_with='"' + project_directory_fix + '"',
                            in_file=api_logic_server_run_py)
     replace_string_in_file(search_for="api_logic_server_host",  # server host
                            replace_with=host,
@@ -911,8 +912,8 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
         copyfile(db_loc, target_db_loc_actual)
 
         if os.name == "nt":  # windows
-            # sqlite:///C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite
-            target_db_loc = get_windows_path_with_slashes(target_db_loc_actual)
+            # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
+            target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
         db_uri = f'sqlite:///{target_db_loc_actual}'
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
@@ -1236,7 +1237,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         start_open_with(open_with=open_with, project_name=project_name)
 
     if run:
-        run_command(f'python {project_directory}/api_logic_server_run.py {host}',
+        run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
+        run_command(f'python {run_file} {host}',
                     msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
 
         if db_url.endswith("nw.sqlite"):
@@ -1288,7 +1290,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/25/2021 - 02.02.25: Clearer logicbank multi-table chain info - show attribute names\n"
+            "\t05/25/2021 - 02.02.26: Clearer logicbank multi-table chain info - show attribute names\n"
             "\t05/23/2021 - 02.02.19: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner\n"
             "\t05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"
             "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
