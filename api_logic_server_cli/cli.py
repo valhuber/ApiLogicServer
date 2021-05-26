@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.22"
+__version__ = "02.02.25"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -878,11 +878,11 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
     replace_string_in_file(search_for="ApiLogicServer hello",
                            replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
                            in_file=api_logic_server_run_py)
-    actual_path = pathlib.Path(project_directory).absolute()
+    project_directory_actual = str(pathlib.Path(project_directory).absolute())
     if os.name == "nt":  # windows
-        actual_path = get_os_url(str(actual_path))
+        actual_path = get_windows_path_with_slashes(str(project_directory_actual))
     replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
-                           replace_with='"' + str(actual_path) + '"',
+                           replace_with='"' + str(project_directory_actual) + '"',
                            in_file=api_logic_server_run_py)
     replace_string_in_file(search_for="api_logic_server_host",  # server host
                            replace_with=host,
@@ -898,7 +898,7 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
                            in_file=api_logic_server_run_py)
     copy_sqlite = True
     if copy_sqlite == False or "sqlite" not in abs_db_url:
-        db_uri = get_os_url(abs_db_url)
+        db_uri = get_windows_path_with_slashes(abs_db_url)
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
@@ -907,14 +907,13 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
         """
         # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
         db_loc = abs_db_url.replace("sqlite:///", "")
-        target_db_loc = project_directory + '/database/db.sqlite'
-        copyfile(db_loc, target_db_loc)
+        target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
+        copyfile(db_loc, target_db_loc_actual)
 
-        db_uri = f'sqlite:///{project_directory}/database/db.sqlite'
         if os.name == "nt":  # windows
             # sqlite:///C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite
-            target_db_loc = get_os_url(target_db_loc)
-        db_uri = f'sqlite:///{target_db_loc}'
+            target_db_loc = get_windows_path_with_slashes(target_db_loc_actual)
+        db_uri = f'sqlite:///{target_db_loc_actual}'
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
@@ -965,7 +964,7 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
         file.write(file_data)
 
 
-def get_os_url(url: str) -> str:
+def get_windows_path_with_slashes(url: str) -> str:
     """ idiotic fix for windows (\ --> \\\\)
 
     https://stackoverflow.com/questions/1347791/unicode-error-unicodeescape-codec-cant-decode-bytes-cannot-open-text-file"""
@@ -1289,7 +1288,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t05/25/2021 - 02.02.22: Clearer logicbank multi-table chain info - show attribute names\n"
+            "\t05/25/2021 - 02.02.25: Clearer logicbank multi-table chain info - show attribute names\n"
             "\t05/23/2021 - 02.02.19: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner\n"
             "\t05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"
             "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
