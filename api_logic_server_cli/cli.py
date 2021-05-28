@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.27"
+__version__ = "02.02.28"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -1075,9 +1075,9 @@ def fix_basic_web_app_app_init__inject_logic(project_directory, db_url):
                    + "from logic import declare_logic\n"
                    + "from logic_bank.logic_bank import LogicBank\n"
                    )
-    if db_url.endswith("nw.sqlite"):
+    if db_url.endswith("nw.sqlite"):    # admin pre-installed for nw, no need to disable logic
         insert_text += "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
-    else:
+    else:                               # logic interferes with create-admin - disable it
         insert_text += "# *** Enable the following after creating Flask AppBuilder Admin ***\n"
         insert_text += "# LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
     insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
@@ -1290,6 +1290,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
             "\t05/23/2021 - 02.02.19: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner\n"
             "\t05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"

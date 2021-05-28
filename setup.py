@@ -2,12 +2,6 @@ import io
 import os
 import re
 
-"""
-import logic_bank_utils.util as logic_bank_utils
-(did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
-"""
-
 from setuptools import find_packages, setup
 
 find_version = True
@@ -70,7 +64,7 @@ setup(
         "six==1.15.0",
         "SQLAlchemy==1.3.24",
         "SQLAlchemy-Utils==0.36.8",
-        "Flask-AppBuilder==3.1.1",
+        "Flask-AppBuilder==3.3.0",
         "logicbankutils==0.6.0",
         "inflect==5.0.2",
         "safrs>=2.11.4",

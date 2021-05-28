@@ -38,7 +38,7 @@ def declare_logic():
         * ship / unship order
         * delete order
         * move order to new customer, etc
-    These 5 rules replace 200 lines of legacy code: https://github.com/valhuber/LogicBank/wiki/by-code
+    This reuse is how 5 rules replace 200 lines of legacy code: https://github.com/valhuber/LogicBank/wiki/by-code
 
     Rules are listed below to best illustrate chaining
     """

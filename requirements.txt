@@ -3,7 +3,7 @@ python-dateutil==2.8.1
 six==1.15.0
 SQLAlchemy==1.3.24
 SQLAlchemy-Utils==0.36.8
-Flask-AppBuilder==3.1.1
+Flask-AppBuilder==3.3.0
 LogicBankUtils==0.6.0
 inflect==5.0.2
 safrs>=2.11.4
