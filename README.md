@@ -6,7 +6,7 @@
 
 ### TL;DR - Executable Software, *now*
 
-**ApiLogicServer** creates customizable projects with a single command.
+**ApiLogicServer** creates customizable database api projects with a single command.
 
 After [installing](#installation), get started by creating the **sample project:**
 
