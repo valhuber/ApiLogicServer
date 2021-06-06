@@ -123,7 +123,7 @@ Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogi
   
 
 * **Customize Model:** edit ```models_ext.py```, for example
-    * to define [relationships](https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design), critical for multi-table logic, APIs, and web apps
+    * to define [relationships perhaps not defined in your schema](https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design), critical for multi-table logic, APIs, and web apps
     * to describe derived attributes, so that your API, logic and apps are not limited to the physical data model
 
 
