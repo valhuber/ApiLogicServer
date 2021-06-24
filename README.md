@@ -224,7 +224,13 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 * using ```ApiLogicServer create```, and running ```python3 api_logic_server_run.py```
 
 # Next Steps
-Take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to explore locally installed ApiLogicServer.
+Create the sample project, and take the [tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) to explore locally installed ApiLogicServer:
+
+```
+ApiLogicServer run
+```
+Note: use ```ApiLogicServer run --help``` for options, e.g., to use port other than 8080.
+
 (You can also try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme)).
 
 After creating / exploring the sample project and Tutorial, try it with your own database:
