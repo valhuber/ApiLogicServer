@@ -229,7 +229,7 @@ Create the sample project, and take the [tutorial](https://github.com/valhuber/A
 ```
 ApiLogicServer run
 ```
-Note: use ```ApiLogicServer run --help``` for options, e.g., to use port other than 8080.
+>  Note: use ```ApiLogicServer run --help``` for options, e.g., to use a port other than 8080.
 
 (You can also try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme)).
 
