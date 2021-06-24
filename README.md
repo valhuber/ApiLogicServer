@@ -212,7 +212,7 @@ Then, install the ApiLogicServer CLI in the usual manner:
 ```
 virtualenv venv            # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
-pip install ApiLogicServer # you may need to restart your terminal session
+pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 ```
 
 ### Important News - Certificate Issues
