@@ -232,7 +232,7 @@ ApiLogicServer run
 ```
 >  Note: use ```ApiLogicServer run --help``` for options, e.g., to use a port other than 5000.
 
-(You can also try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme)).  Note: swagger and the Basic Web App are not available using this approach.
+(You can also try it with no install on the Cloud, use [this version of the Tutorial](https://github.com/valhuber/ApiLogicServerTutorial#readme).  Note: swagger and the Basic Web App are not available using this approach).  
 
 After creating / exploring the sample project and Tutorial, try it with your own database:
 
