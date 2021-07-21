@@ -31,6 +31,7 @@ There are a number of facilities that will quickly enable you to get familiar wi
 * [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
 * [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
 * [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
+   * Note: swagger and the Basic Web App are not available using this approach
 
 ### Background
 
