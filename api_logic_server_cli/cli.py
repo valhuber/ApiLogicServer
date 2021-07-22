@@ -34,7 +34,7 @@ import inspect
 import importlib
 import click
 
-__version__ = "02.02.28"
+__version__ = "02.02.29"
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -986,30 +986,17 @@ def resolve_home(name: str) -> str:
 
 
 def fix_basic_web_app_run__python_path(project_directory):
-    """ prepend logic_bank_utils call to fixup python path in ui/basic_web_app/run.py (enables run.py) """
-    old_way = False
-    if old_way:
-        file_name = f'{project_directory}/ui/basic_web_app/run.py'
-        proj = os.path.basename(project_directory)
-        insert_text = ("\n# ApiLogicServer - enable flask run\n"
-                       "import logic_bank_utils.util as logic_bank_utils\n"
-                       + f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n\n')
-        with open(file_name, 'r+') as fp:
-            lines = fp.readlines()  # lines is list of line, each element '...\n'
-            lines.insert(0, insert_text)  # you can use any index if you know the line index
-            fp.seek(0)  # file pointer locates at the beginning to write the whole file again
-            fp.writelines(lines)  # write whole lists again to the same file
-    else:
-        models_ext_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
-        nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.py")
-        nw_models_ext = nw_models_ext_file.read()
-        models_ext_file.write(nw_models_ext)
-        models_ext_file.close()
+    """ overwrite ui/basic_web_app/run.py (enables run.py) with logic_bank_utils call to fixup python path """
+    project_ui_basic_web_app_run_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
+    ui_basic_web_app_run_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.py")
+    ui_basic_web_app_run = ui_basic_web_app_run_file.read()  # standard content
+    project_ui_basic_web_app_run_file.write(ui_basic_web_app_run)
+    project_ui_basic_web_app_run_file.close()
 
-        proj = os.path.basename(project_directory)
-        replace_string_in_file(search_for="api_logic_server_project_directory",
-                               replace_with=proj,
-                               in_file=f'{project_directory}/ui/basic_web_app/run.py')
+    proj = os.path.basename(project_directory)
+    replace_string_in_file(search_for="api_logic_server_project_directory",
+                           replace_with=proj,
+                           in_file=f'{project_directory}/ui/basic_web_app/run.py')
 
 
 def fix_basic_web_app_run__create_admin(project_directory):
@@ -1290,6 +1277,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t07/22/2021 - 02.02.29: help for basic_web_app: python run.py -help\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
             "\t05/23/2021 - 02.02.19: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner\n"
