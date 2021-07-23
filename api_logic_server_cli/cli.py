@@ -1277,7 +1277,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t07/22/2021 - 02.02.29: help for basic_web_app: python run.py -help\n"
+            "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
             "\t05/23/2021 - 02.02.19: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner\n"

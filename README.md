@@ -104,8 +104,8 @@ To run it:
 2. Then:
 
 ```
-python api_logic_server_run.py
-python ui/basic_web_app/run.py
+python api_logic_server_run.py  # help for command args
+python ui/basic_web_app/run.py  # help for command args
 ```
 
 > **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
@@ -280,7 +280,7 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
-07/22/2021 - 02.02.29: help for basic_web_app: python run.py -help
+07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App
 
 05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0
 
