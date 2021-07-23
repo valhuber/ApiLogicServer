@@ -6,7 +6,7 @@ SQLAlchemy-Utils==0.36.8
 Flask-AppBuilder==3.3.0
 LogicBankUtils==0.6.0
 inflect==5.0.2
-safrs>=2.11.4
+safrs>=2.11.5
 flask-admin
 flask-cors
 Flask
