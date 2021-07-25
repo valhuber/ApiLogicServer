@@ -11,6 +11,7 @@ if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
     print("basic_web_app - run instructions (defaults are host 0.0.0.0, port 8080):")
     print("  python run.py [host [port]]")
+    print("")
     sys.exit()
 
 try:

@@ -12,6 +12,7 @@ if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
     print("API Logic Server - run instructions (default is localhost):")
     print("  python api_logic_server_run.py [host]")
+    print("")
     sys.exit()
 
 import threading
