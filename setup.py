@@ -45,10 +45,12 @@ setup(
     packages=['api_logic_server_cli',
               'expose_existing', 'expose_existing.sqlacodegen', 'expose_existing.sqlacodegen.sqlacodegen',
               'prototype', 'prototype.api', 'prototype.database', 'prototype.logic', 'prototype.test',
-              'prototype.templates', 'prototype.ui'],
+              'prototype.templates', 'prototype.ui',
+              'create_from_model'],
     package_data={"api_logic_server_cli": ["nw.sqlite", "nw-gold.sqlite", "nw_logic.py", "nw_expose_services.py",
                                            "create_admin.sh", "nw_models_ext.py", "nw_server_startup_test.py",
                                            "ui_basic_web_app_run.py"],
+                  "create_from_model": ["create_admin.sh"],
                   "prototype": ["requirements.txt", "default.env", "EXAMPLE.env", "readme.md"],
                   'prototype.templates': ["index.html"]
                   },

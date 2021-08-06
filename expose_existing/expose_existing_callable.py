@@ -26,7 +26,9 @@ if not os.path.isdir(sqlacodegen_dir):
 
 sys.path.insert(0, MODEL_DIR)
 sys.path.insert(0, sqlacodegen_dir)
+# despite compile error, runs due to logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 from sqlacodegen.codegen import CodeGenerator
+# from sqlacodegen.sqlacodegen.codegen import CodeGenerator  # No module named 'sqlacodegen.sqlacodegen'
 
 
 def get_args():
@@ -77,7 +79,7 @@ def codegen(args):
 
     metadata = MetaData(engine)
     tables = args.tables.split(",") if args.tables else None
-    metadata.reflect(engine, args.schema, not args.noviews, tables)
+    metadata.reflect(engine, args.schema, not args.noviews, tables)  # load metadata
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite
         engine.execute("""PRAGMA journal_mode = OFF""")
@@ -88,12 +90,12 @@ def codegen(args):
     # outfile = io.open(args.outfile, 'w', encoding='utf-8') if args.outfile else capture # sys.stdout
     generator = CodeGenerator(metadata, args.noindexes, args.noconstraints, args.nojoined, args.noinflect, args.noclasses)
     generator.render(capture)
-    generated = capture.getvalue()
-    generated = fix_generated(generated, args)
+    models_py = capture.getvalue()
+    models_py = fix_generated(models_py, args)
     if args.outfile:
         outfile = io.open(args.outfile, "w", encoding="utf-8")
-        outfile.write(generated)
-    return generated
+        outfile.write(models_py)
+    return models_py
 
 if on_import:
     args = get_args()

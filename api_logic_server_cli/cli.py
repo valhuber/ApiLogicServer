@@ -34,6 +34,8 @@ import inspect
 import importlib
 import click
 
+import create_from_model.model_creation_services as mod_gen
+
 __version__ = "02.02.29"
 default_db = "<default -- nw.sqlite>"
 
@@ -807,7 +809,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         replace_server_startup_test_with_nw_server_startup_test(project_directory)
 
 
-def create_basic_web_app(db_url, project_name, msg):
+def create_basic_web_app(db_url, project_name, msg):  # remove
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
@@ -985,7 +987,7 @@ def resolve_home(name: str) -> str:
     return result
 
 
-def fix_basic_web_app_run__python_path(project_directory):
+def fix_basic_web_app_run__python_path(project_directory):  # TODO remove these 2
     """ overwrite ui/basic_web_app/run.py (enables run.py) with logic_bank_utils call to fixup python path """
     project_ui_basic_web_app_run_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
     ui_basic_web_app_run_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.py")
@@ -1116,14 +1118,16 @@ def prepare_flask_appbuilder(msg: str,
 
 
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
-                     from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
-                     flask_appbuilder: bool, favorites: str, non_favorites: str, extended_builder: str):
+                  from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
+                  flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
+                  extended_builder: str):
     """ Creating ApiLogicServer with options:"""
     print_options = True
     if print_options:
         print(f'\n\nCreating ApiLogicServer with options:')
         print(f'  --db_url={db_url}')
         print(f'  --project_name={project_name}')
+        print(f'  --react_admin={react_admin}')
         print(f'  --flask_appbuilder={flask_appbuilder}')
         print(f'  --from_git={from_git}')
         #        print(f'  --db_types={db_types}')
@@ -1146,6 +1150,32 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
     extended_builder.extended_builder(db_url, project_directory)  # extended_builder.MyClass()
 
 
+def invoke_creators(db_url, project_directory, model_creation_services: mod_gen.CreateFromModel):
+    # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
+
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_creator.py')
+    creator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
+    creator.create(db_url, project_directory, model_creation_services)  # invoke create function
+
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
+    creator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(creator)
+    creator.create(db_url, project_directory, model_creation_services)
+
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
+    creator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(creator)
+    creator.create(db_url, project_directory, model_creation_services)
+
+    model_creation_services.app.teardown_appcontext(None)
+    if model_creation_services.engine:
+        model_creation_services.engine.dispose()
+
+
 def invoke_nw_tests(builder_path, db_url, project_directory):
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
     nw_tests_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw_tests.py')
@@ -1157,7 +1187,8 @@ def invoke_nw_tests(builder_path, db_url, project_directory):
 
 def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
-                     flask_appbuilder: bool, favorites: str, non_favorites: str, extended_builder: str):
+                     flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
+                     extended_builder: str):
 
     """ Creates logic-enabled Python JSON_API project, options for FAB and execution - main driver """
 
@@ -1165,6 +1196,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     print_options(project_name = project_name, db_url=db_url, host=host, port=port, not_exposed=not_exposed,
                   from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
                   flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
+                  react_admin=react_admin,
                   extended_builder=extended_builder)
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
@@ -1190,29 +1222,50 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
     fix_database_models__inject_db_types(project_directory, db_types)
 
-    if flask_appbuilder:
-        create_basic_web_app(abs_db_url, project_directory, "4. Create ui/basic_web_app")
-    else:
-        print("4. ui/basic/web_app creation declined")
-
     print("5. Create api/expose_api_models.py and ui/basic_web_app/app/views.py (import / iterate models)")
-    generate_from_model = GenerateFromModel(  # Create views.py file from db, models.py
-        project_name=project_directory, db_url=abs_db_url, host=host, port=port,
-        not_exposed=not_exposed + " ", favorite_names=favorites, non_favorite_names=non_favorites)
-    generate_from_model.generate_api_expose_and_ui_views()  # sets generate_from_model.result_apis & result_views
+    use_mod_gen_ext = True
+    if use_mod_gen_ext:
+        model_creation_services = mod_gen.CreateFromModel(  # Create views.py file from db, models.py
+            project_directory=project_directory, db_url=abs_db_url, host=host, port=port,
+            not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
+            favorite_names=favorites, non_favorite_names=non_favorites,
+            react_admin=react_admin)
+        invoke_creators(db_url, project_directory, model_creation_services)
+        if extended_builder is not None and extended_builder != "":
+            print(f'10. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
+            invoke_extended_builder(extended_builder, db_url, project_directory)
+        # model_creation_services.generate_api_expose_and_ui_views()  # sets create_from_model.result_apis & result_views
 
-    print("6. Writing: /api/expose_api_models.py")
-    write_expose_api_models(project_directory, generate_from_model.result_apis)
-    if use_model == "":
-        fix_database_models__import_models_ext(project_directory)
+        # print("6. Writing: /api/expose_api_models.py")
+        # write_expose_api_models(project_directory, model_creation_services.result_apis)
+        if use_model == "":
+            fix_database_models__import_models_ext(project_directory)
 
-    print("7. Update api_logic_server_run.py and config.py with project_name and db_url")
-    db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
+        print("7. Update api_logic_server_run.py and config.py with project_name and db_url")
+        db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
+    else:
 
-    if flask_appbuilder:
-        prepare_flask_appbuilder(msg="8. Writing: /ui/basic_web_app/app/views.py",
-                                 project_directory=project_directory,
-                                 db_uri=db_uri, db_url=db_url, generate_from_model=generate_from_model)
+        if flask_appbuilder:
+            create_basic_web_app(abs_db_url, project_directory, "4. Create ui/basic_web_app")
+        else:
+            print("4. ui/basic/web_app creation declined")
+        generate_from_model = GenerateFromModel(  # Create views.py file from db, models.py
+            project_name=project_directory, db_url=abs_db_url, host=host, port=port,
+            not_exposed=not_exposed + " ", favorite_names=favorites, non_favorite_names=non_favorites)
+        generate_from_model.generate_api_expose_and_ui_views()  # sets generate_from_model.result_apis & result_views
+
+        print("6. Writing: /api/expose_api_models.py")
+        write_expose_api_models(project_directory, generate_from_model.result_apis)
+        if use_model == "":
+            fix_database_models__import_models_ext(project_directory)
+
+        print("7. Update api_logic_server_run.py and config.py with project_name and db_url")
+        db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
+
+        if flask_appbuilder:
+            prepare_flask_appbuilder(msg="8. Writing: /ui/basic_web_app/app/views.py",
+                                     project_directory=project_directory,
+                                     db_uri=db_uri, db_url=db_url, generate_from_model=generate_from_model)
 
     fix_host_and_ports("9. Fixing port / host", project_directory, host, port)
 
@@ -1323,6 +1376,9 @@ def version(ctx):
 @click.option('--flask_appbuilder/--no-flask_appbuilder',
               default=True, is_flag=True,
               help="Creates ui/basic_web_app")
+@click.option('--react_admin/--no-react_admin',
+              default=True, is_flag=True,
+              help="Creates ui/react_admin app")
 @click.option('--favorites',
               default="name description",
               help="Columns named like this displayed first")
@@ -1348,6 +1404,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            open_with: str,
            run: click.BOOL,
            flask_appbuilder: click.BOOL,
+           react_admin: click.BOOL,
            use_model: str,
            host: str,
            port: str,
@@ -1361,6 +1418,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     react_admin=react_admin,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder)
 
@@ -1388,6 +1446,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 @click.option('--flask_appbuilder/--no-flask_appbuilder',
               default=True, is_flag=True,
               help="Creates ui/basic_web_app")
+@click.option('--react_admin/--no-react_admin',
+              default=True, is_flag=True,
+              help="Creates ui/react_admin app")
 @click.option('--favorites',
               default="name description",
               help="Columns named like this displayed first")
@@ -1413,6 +1474,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         open_with: str,
         run: click.BOOL,
         flask_appbuilder: click.BOOL,
+        react_admin: click.BOOL,
         use_model: str,
         host: str,
         port: str,
@@ -1426,6 +1488,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     react_admin=react_admin,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder)
 
@@ -1447,8 +1510,9 @@ def print_info():
         '  ApiLogicServer run',
         '  ApiLogicServer run --db_url=sqlite:///nw.sqlite',
         '  ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels',
-        '  ApiLogicServer run --db_url=postgresql://postgres:p@10.0.0.234/postgres]',
         '  ApiLogicServer run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
+        '  ApiLogicServer run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
+        '  ApiLogicServer run --db_url=postgresql+psycopg2://postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
         '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
         '',
         'Where --db_url defaults to supplied sample, or, specify URI for your own database:',

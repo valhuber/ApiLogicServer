@@ -1,0 +1,1 @@
+export const STILL_BUILDING= 'Given enough time, the code monkey will surely be able to code this link \n. Just as a monkey hitting keys at random on a typewriter keyboard for an infinite amount of time will produce complete works of William Shakespeare.';
