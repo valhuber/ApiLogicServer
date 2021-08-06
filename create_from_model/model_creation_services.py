@@ -95,49 +95,6 @@ class CreateFromModel(object):
         db.init_app(app)
         return app
 
-    def zz_generate_api_expose_and_ui_views(self, version="TBD"):
-        """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
-
-        cwd = os.getcwd()
-        self.result_views += '"""'
-        self.result_apis += '"""'
-        self.result_views += ("\nApiLogicServer Generate From Model " + version + "\n\n"
-                              # + "From: " + sys.argv[0] + "\n\n"
-                              + "Using Python: " + sys.version + "\n\n"
-                              + "Favorites: "
-                              + str(self._favorite_names_list) + "\n\n"
-                              + "Non Favorites: "
-                              + str(self._non_favorite_names_list) + "\n\n"
-                              + "At: " + str(datetime.datetime.now()) + "\n\n")
-        self.result_apis += ("\nApiLogicServer Generate From Model " + version + "\n\n"
-                             # + "From: " + sys.argv[0] + "\n\n"
-                             + "Using Python: " + sys.version + "\n\n"
-                             + "At: " + str(datetime.datetime.now()) + "\n\n"
-                             + '"""\n\n')
-        port_replace = self.port if self.port else "None"
-        self.result_apis += \
-            f'def expose_models(app, HOST="{self.host}", PORT={port_replace}, API_PREFIX="/api"):\n'
-        self.result_apis += '    """ called by api_logic_server_run.py """\n\n'
-        self.result_apis += \
-            '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
-
-        sys.path.append(cwd)  # for banking Command Line test
-
-        self.result_views += '"""\n\n'
-        self.find_meta_data(cwd)  # sets self.metadata
-        meta_tables = self.metadata.tables
-        self.result_views += self.generate_module_imports()
-        for each_table in meta_tables.items():
-            each_result = self.process_each_table(each_table[1])
-            self.result_views += each_result
-        self.result_views += self.process_module_end(meta_tables)
-        self.result_apis += f'    return api\n'
-        # self.session.close()
-        self.app.teardown_appcontext(None)
-        if self.engine:
-            self.engine.dispose()
-        return
-
     def add_table_to_class_map(self, orm_class):
         """ given class, find table (hide your eyes), add table/class to table_to_class_map """
         orm_class_info = orm_class[1]
@@ -261,79 +218,6 @@ class CreateFromModel(object):
         result += "from . import appbuilder, db\n"
         result += "from database.models import *\n"
         return result
-
-    def zz_process_each_table(self, a_table_def: MetaDataTable) -> str:
-        """
-            Generate class and add_view for given table.
-
-            These must be ordered children first,
-            so view.py compiles properly
-            ("related_views" would otherwise fail to compile).
-
-            We therefore recurse for children first.
-
-            Parameters
-                argument1 a_table_def - TableModelInstance
-
-            Returns
-                string class and add_view for given table.
-        """
-        result = ""
-        table_name = a_table_def.name
-        log.debug("process_each_table: " + table_name)
-        if "TRANSFERFUNDx" in table_name:
-            log.debug("special table")  # debug stop here
-        if table_name + " " in self.not_exposed:
-            return "# not_exposed: api.expose_object(models.{table_name})"
-        if "ProductDetails_V" in table_name:
-            log.debug("special table")  # should not occur (--noviews)
-        if table_name.startswith("ab_"):
-            return "# skip admin table: " + table_name + "\n"
-        elif table_name in self.tables_visited:
-            log.debug("table already generated per recursion: " + table_name)
-            return "# table already generated per recursion: " + table_name + "\n"
-        elif 'sqlite_sequence' in table_name:
-            return "# skip sqlite_sequence table: " + table_name + "\n"
-        else:
-            class_name = self.get_class_for_table(table_name)
-            if class_name is None:
-                return "# skip view: " + table_name
-            self.tables_visited.add(table_name)
-            child_list = self.find_child_list(a_table_def)
-            for each_child in child_list:  # recurse to ensure children first
-                log.debug(".. but children first: " + each_child.name)
-                result += self.process_each_table(each_child)
-                self.tables_visited.add(each_child.name)
-
-            self.tables_generated.add(a_table_def.fullname)
-            self.result_apis += f'    api.expose_object(models.{class_name})\n'
-
-            self.num_pages_generated += 1
-
-            model_name = self.model_name(class_name)
-            view_class_name = class_name + model_name
-            result += "\n\n\nclass " + view_class_name + "(" + model_name + "):\n"
-            result += (
-                self._indent + "datamodel = SQLAInterface(" +
-                class_name + ")\n"
-            )
-            result += self._indent + self.list_columns(a_table_def)
-            result += self._indent + self.show_columns(a_table_def)
-            result += self._indent + self.edit_columns(a_table_def)
-            result += self._indent + self.add_columns(a_table_def)
-            result += self._indent + self.related_views(a_table_def)
-            result += (
-                "\nappbuilder.add_view(\n"
-                + self._indent
-                + self._indent
-                + view_class_name
-                + ", "
-                + '"'
-                + class_name
-                + ' List", '
-                + 'icon="fa-folder-open-o", category="Menu")\n'
-            )
-            return result + "\n\n"
 
     def list_columns(self, a_table_def: MetaDataTable) -> str:
         """
@@ -504,55 +388,6 @@ class CreateFromModel(object):
                 return True
         return False
 
-    def zz_related_views(self, a_table_def: MetaDataTable) -> str:
-        """
-            Generates statements like
-                related_views = ["Child1", "Child2"]
-
-            Todo
-                * are child roles required?
-                    ** e.g., children = relationship("Child"
-                * are multiple relationsips supported?
-                    ** e.g., dept has worksFor / OnLoan Emps
-                * are circular relationships supported?
-                    ** e.g., dept has emps, emp has mgr
-
-            Parameters
-                argument1 a_table_def - TableModelInstance
-
-            Returns
-                str like related_views = ["Child1", "Child2"]
-        """
-        result = "related_views = ["
-        related_count = 0
-        child_list = self.find_child_list(a_table_def)
-        self_relns = ""
-        if a_table_def.fullname == "store":
-            log.debug(f'related_views for {a_table_def.fullname}')
-        for each_child in child_list:
-            if a_table_def.fullname not in self.tables_generated:
-                log.debug(f'must omit: {a_table_def.fullname}')
-            if a_table_def.fullname == each_child.fullname or \
-                    each_child.fullname not in self.tables_generated:
-                self_relns += a_table_def.fullname + " "
-            else:
-                related_count += 1
-                if related_count > 1:
-                    result += ", "
-                else:
-                    self.num_related += 1
-                class_name = self.get_class_for_table(each_child.fullname)
-                if class_name is None:
-                    print(f'.. .. .. Warning - Skipping {self.model_name(each_child)}->'
-                          f'{each_child.fullname} - no database/models.py class')
-                    related_count -= 1
-                else:
-                    each_entry = class_name + self.model_name(each_child)
-                    result += each_entry
-        omitted = "  # omitted mutually referring relationships: " + self_relns if self_relns != "" else ""
-        result += "]" + omitted + "\n"
-        return result
-
     def find_child_list(self, a_table_def: MetaDataTable) -> list:
         """
             Returns list of models w/ fKey to a_table_def
@@ -625,27 +460,3 @@ class CreateFromModel(object):
                     return each_column.name
         for each_column in columns:  # no favorites, just return 1st
             return each_column.name
-
-    def zz_process_module_end(self, a_metadata_tables: MetaData) -> str:
-        """
-            returns the last few lines
-
-            comments - # tables etc
-        """
-        result = (
-            "#  "
-            + str(len(a_metadata_tables))
-            + " table(s) in model; generated "
-            + str(self.num_pages_generated)
-            + " page(s), including "
-            + str(self.num_related)
-            + " related_view(s).\n\n"
-        )
-        if self.num_related == 0:
-            result += "#  Warning - no related_views,"
-            result += " since foreign keys missing\n"
-            result += "#  .. add them to your models.py (see nw example)\n"
-            result += "#  .. or better, add them to your database"
-            print(".. ..WARNING - no relationships detected - add them to your database or model")
-            print(".. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
-        return result
