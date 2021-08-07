@@ -63,7 +63,7 @@ class CreateFromModel(object):
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):
-        self.project_directory = project_directory
+        self.project_directory = self.get_windows_path_with_slashes(project_directory)
         self.db_url = db_url
         self.host = host
         self.port = port
@@ -83,6 +83,16 @@ class CreateFromModel(object):
 
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
+
+    @staticmethod
+    def get_windows_path_with_slashes(url: str) -> str:
+        """ idiotic fix for windows (\ --> \\\\)
+        https://stackoverflow.com/questions/1347791/unicode-error-unicodeescape-codec-cant-decode-bytes-cannot-open-text-file"""
+        full_path = os.path.abspath(url)
+        result = full_path.replace('\\', '\\\\')
+        if os.name == "nt":  # windows
+            result = full_path.replace('/', '\\')
+        return result
 
     @staticmethod
     def create_app(config_filename=None, host="localhost"):
