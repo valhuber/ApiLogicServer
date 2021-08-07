@@ -371,7 +371,7 @@ def create(db_url, project_directory, model_creation_services: mod_gen.CreateFro
     """ called by ApiLogicServer CLI -- creates basic web app (Flask AppBuilder)
     """
     if model_creation_services.flask_appbuilder:
-        create_basic_web_app(db_url, project_directory, "4. Create ui/basic_web_app")
+        create_basic_web_app(db_url, project_directory, ".. ..Create ui/basic_web_app")
         fab_creator = FabCreator(model_creation_services,
                                  project_directory=model_creation_services.project_directory,
                                  db_url=model_creation_services.db_url,
@@ -380,12 +380,12 @@ def create(db_url, project_directory, model_creation_services: mod_gen.CreateFro
                                  favorite_names=model_creation_services.favorite_names,
                                  non_favorite_names=model_creation_services.non_favorite_names)
         fab_creator.generate_ui_views()
-        prepare_flask_appbuilder(msg="8. Writing: /ui/basic_web_app/app/views.py",
+        prepare_flask_appbuilder(msg=".. ..Writing: /ui/basic_web_app/app/views.py",
                                  project_directory=project_directory,
                                  db_uri=model_creation_services.db_url,
                                  db_url=model_creation_services.db_url,
                                  fab_creator=fab_creator)
         log.debug(f'create_from_model.fab_creator("{db_url}", "{project_directory}" Completed')
     else:
-        print("4. ui/basic/web_app creation declined")
+        print("6. ui/basic/web_app creation declined")
 

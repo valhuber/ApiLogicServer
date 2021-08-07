@@ -345,7 +345,7 @@ class ReactCreator(object):
         """
 
     def create_application(self):
-        self.create_react_admin_app(msg="4. Create ui/react_admin")
+        self.create_react_admin_app(msg=".. ..Create ui/react_admin")
         self.create_components(version="")
         self.fixup_app_js()
         pass

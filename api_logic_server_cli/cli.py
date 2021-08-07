@@ -499,7 +499,7 @@ def fix_database_models__inject_db_types(project_directory: str, db_types: str):
 def fix_database_models__import_models_ext(project_directory: str):
     """ Append "from database import models_ext" to database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
-    print(f'.. ..Appending "from database import models_ext" to database/models.py')
+    print(f'7. Appending "from database import models_ext" to database/models.py')
     models_file = open(models_file_name, 'a')
     models_file.write("\n\nfrom database import models_ext\n")
     models_file.close()
@@ -566,18 +566,21 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
 def invoke_creators(db_url, project_directory, model_creation_services: mod_gen.CreateFromModel):
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
 
+    print("4. Create api/expose_api_models.py (import / iterate models)")
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(db_url, project_directory, model_creation_services)  # invoke create function
 
+    print("5. Create ui/react_admin app (import / iterate models)")
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)
     creator.create(db_url, project_directory, model_creation_services)
 
+    print("6. Create ui/basic_web_app (import / iterate models)")
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
     creator = importlib.util.module_from_spec(spec)
@@ -635,7 +638,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
     fix_database_models__inject_db_types(project_directory, db_types)
 
-    print("5. Create api/expose_api_models.py and ui/basic_web_app/app/views.py (import / iterate models)")
+    # print("4. Create api/expose_api_models.py (import / iterate models)")
     model_creation_services = mod_gen.CreateFromModel(  # Create views.py file from db, models.py
         project_directory=project_directory, db_url=abs_db_url, host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
@@ -652,7 +655,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if use_model == "":
         fix_database_models__import_models_ext(project_directory)
 
-    print("7. Update api_logic_server_run.py and config.py with project_name and db_url")
+    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
     db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
 
     fix_host_and_ports("9. Fixing port / host", project_directory, host, port)

@@ -122,7 +122,7 @@ class CreateFromModel(object):
             log.debug("skipping view: " + table_name)
             return None
 
-    def find_meta_data(self, cwd: str) -> MetaData:
+    def find_meta_data(self, cwd: str, log_info: bool=False) -> MetaData:
         """     Find Metadata by importing model, or (failing that), db
 
         a_cmd should be cli folder, e.g. '/Users/val/dev/ApiLogicServer/api_logic_server_cli'
@@ -159,8 +159,8 @@ class CreateFromModel(object):
             self.app = self.create_app(host=self.host)
             self.app.config.SQLALCHEMY_DATABASE_URI = self.db_url
             self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
-
-            print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
+            if log_info:
+                print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
             model_imported = False
             sys.path.insert(0, project_abs_path + "/database")  #  e.g., adds /Users/val/Desktop/my_project/database
             try:
@@ -195,10 +195,11 @@ class CreateFromModel(object):
                         orm_class = each_cls_member
                         self.add_table_to_class_map(orm_class)
                 if (orm_class is not None):
-                    print(f'.. ..Dynamic model import successful '
-                          f'({len(self.table_to_class_map)} classes'
-                          f') -'
-                          f' getting metadata from {str(orm_class)}')
+                    if log_info:
+                        print(f'.. ..Dynamic model import successful '
+                              f'({len(self.table_to_class_map)} classes'
+                              f') -'
+                              f' getting metadata from {str(orm_class)}')
                     metadata = orm_class[1].metadata
 
                 self.engine = sqlalchemy.create_engine(conn_string)
