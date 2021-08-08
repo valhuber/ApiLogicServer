@@ -299,7 +299,7 @@ class ReactCreator(object):
             app_file_name = app_file_name + f'/ui/react_admin/src/App.js'
 
         with open(app_file_name) as app_file:
-            server_loc = self.mod_gen.host
+            server_loc = f'http://{self.mod_gen.host}:{self.mod_gen.port}'
             app_code_str = app_file.read().replace("ApiLogicServer_server_url", server_loc)
         with open(app_file_name, 'w') as app_file:
             app_file.write(app_code_str)
