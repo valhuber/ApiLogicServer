@@ -132,7 +132,7 @@ class ReactCreator(object):
             self.insert_show_lines(a_table_def=a_table_def, component_code_lines=component_code_lines)
             self.insert_edit_lines(a_table_def=a_table_def, component_code_lines=component_code_lines)
             self.insert_add_lines(a_table_def=a_table_def, component_code_lines=component_code_lines)
-            # self.insert_related_lines(a_table_def=a_table_def, component_code_lines=component_code_lines)
+            self.insert_related_lines(a_table_def=a_table_def, component_code_lines=component_code_lines)
             with open(component_file_name, 'w') as component_file:
                 component_file.writelines(component_code_lines)
             pass
@@ -173,8 +173,10 @@ class ReactCreator(object):
     def insert_show_lines(self, a_table_def: MetaDataTable, component_code_lines: List[str]):
         columns = self.mod_gen.get_show_columns(a_table_def)
         insert_point = self.find_line(lines = component_code_lines, at = "// ApiLogicServer_show_columns")
+        insert_point -= 1
+        del component_code_lines[insert_point]
         for each_column in columns:
-            component_code_lines.insert(insert_point, f'            <TextField source="{each_column}"/>\n')
+            component_code_lines.insert(insert_point, f'                <ShowField source="{each_column}"/>\n')
             insert_point += 1
         pass
 
@@ -193,6 +195,14 @@ class ReactCreator(object):
             component_code_lines.insert(insert_point, f'            <TextField source="{each_column}"/>\n')
             insert_point += 1
         pass
+
+
+    def insert_related_lines(self, a_table_def: MetaDataTable, component_code_lines: List[str]):
+        columns = self.mod_gen.get_add_columns(a_table_def)
+        insert_point = self.find_line(lines = component_code_lines, at = "// ApiLogicServer_related")
+        insert_point -= 1
+        del component_code_lines[insert_point]
+        pass  # TODO - tab + child grids
 
     @staticmethod
     def find_line(lines: List[str], at: str) -> int:

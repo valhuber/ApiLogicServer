@@ -1,18 +1,29 @@
-import {React} from 'react';
-import { List, Datagrid, TextField, DateField, ReferenceField, NumberField, EditButton} from 'react-admin';
-import {
-    Edit,
-    Show,
-    SimpleForm,
-    ReferenceInput,
-    SelectInput,
-    TextInput,
-    DateInput,
-    NumberInput,
-    SimpleShowLayout,
-    ReferenceManyField
-} from 'react-admin';
+import { React } from "react";
+import { List,
+    Datagrid,
+    TextField,
+    DateField,
+    NumberField,
+    EditButton,
+} from "react-admin";
 import Grid from '@material-ui/core/Grid';
+
+import {
+  Edit,
+  Show,
+  SimpleForm,
+  ReferenceInput,
+  SelectInput,
+  TextInput,
+  DateInput,
+  NumberInput,
+  SimpleShowLayout,
+  ReferenceManyField,
+  ShowController,
+  useRecordContext
+} from "react-admin";
+import Paper from '@material-ui/core/Paper';
+import { Typography } from '@material-ui/core';
 
 const customerFilters = [
     <TextInput source="q" label="Search" alwaysOn />
@@ -52,14 +63,34 @@ const ApiLogicServer_componentTitle = ({ record }) => {
 };
 
 
-export const CustomerShow = props => { 
+const ShowField = ({ source }) => {
+  const record = useRecordContext();
+  return record ? (
+    <Grid item xs={3}>
+      <Typography variant="body2" color="textSecondary" component="p">
+        {source}
+      </Typography>
+      <Typography variant="body2" component="p">
+        {record[source]}
+      </Typography>
+    </Grid>
+  ) : null;
+};
+
+
+export const ApiLogicServer_componentShow = props => {
 
     return (
 
     <Show title={<ApiLogicServer_componentTitle />} {...props}>
         <SimpleShowLayout>
-            // ApiLogicServer_show_columns
-            // ApiLogicServer_related
+            <Typography variant="h5" component="h5" style={{ margin: "30px 0px 30px" }}>
+  ApiLogicServer_component Data:
+            </Typography>
+            <Grid container spacing={3} margin={5} m={40}>
+                // ApiLogicServer_show_columns
+                // ApiLogicServer_related
+            </Grid>
         </SimpleShowLayout>
     </Show>
     );
