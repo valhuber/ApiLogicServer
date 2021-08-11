@@ -257,7 +257,7 @@ Many thanks to
 
 - Armin Ronacher, for Flask
 - Mike Bayer, for SQLAlchemy
-- Thomas Pollet, for SAFRS
+- [Thomas Pollet](https://www.linkedin.com/in/pollet/), for SAFRS, and invaluable design assistance
 - Daniel Gaspar, for Flask AppBuilder
 - Alex Grönholm, for Sqlacodegen
 - [Meera (Meera Bavadekar) Datey](https://www.linkedin.com/in/meeradatey/), for enormous help in using React Admin
