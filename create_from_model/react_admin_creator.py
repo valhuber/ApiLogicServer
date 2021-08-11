@@ -196,12 +196,62 @@ class ReactCreator(object):
             insert_point += 1
         pass
 
-
     def insert_related_lines(self, a_table_def: MetaDataTable, component_code_lines: List[str]):
-        columns = self.mod_gen.get_add_columns(a_table_def)
         insert_point = self.find_line(lines = component_code_lines, at = "// ApiLogicServer_related")
         insert_point -= 1
         del component_code_lines[insert_point]
+
+        related_count = 0
+        child_list = self.mod_gen.find_child_list(a_table_def)
+        if a_table_def.fullname == "store":
+            log.debug(f'related_views for {a_table_def.fullname}')
+        for each_child in child_list:
+            class_name = self.mod_gen.get_class_for_table(each_child.fullname)
+            if class_name is None:
+                print(f'.. .. .. Warning - Skipping {self.mod_gen.model_name(each_child)}->'
+                      f'{each_child.fullname} - no database/models.py class')
+                related_count -= 1
+            else:
+                related_count += 1
+                if related_count == 1:
+                    child_header = ['<hr style={{ margin: "30px 0px 30px" }}/>\n',
+                                    '\t<TabbedShowLayout>\n']
+                    component_code_lines[insert_point:insert_point] = child_header
+                    insert_point += len(child_header)
+
+                component_code_lines.insert(insert_point,
+                                            f'<Tab label="{each_child.fullname} List">\n')
+                insert_point += 1
+
+                ref_many = f'<ReferenceManyField reference = "{each_child.fullname}"' \
+                           f'target = "{a_table_def.fullname}Id"' \
+                           'addLabel = {false}>\n'
+                component_code_lines.insert(insert_point, ref_many)
+                insert_point += 1
+
+                component_code_lines.insert(insert_point, "<Datagrid>\n")
+                insert_point += 1
+
+                columns = self.mod_gen.get_list_columns(each_child)  # TODO - no join for master
+                for each_column in columns:
+                    component_code_lines.insert(insert_point, f'            <TextField source="{each_column}"/>\n')
+                    insert_point += 1
+
+                component_code_lines.insert(insert_point, "<EditButton />\n")
+                insert_point += 1
+
+                component_code_lines.insert(insert_point, "</Datagrid>\n")
+                insert_point += 1
+
+                component_code_lines.insert(insert_point, "</ReferenceManyField>\n")
+                insert_point += 1
+
+                component_code_lines.insert(insert_point, "</Tab>\n")
+                insert_point += 1
+        if related_count > 0:
+            component_code_lines.insert(insert_point, f'</TabbedShowLayout>\n')
+            insert_point += 1
+
         pass  # TODO - tab + child grids
 
     @staticmethod
@@ -219,56 +269,7 @@ class ReactCreator(object):
             raise Exception(f'Internal error - unable to find insert: {at}')
         return find_line_result + 1
 
-    def related_views(self, a_table_def: MetaDataTable) -> str:
-        """
-            Generates statements like
-                related_views = ["Child1", "Child2"]
-
-            Todo
-                * are child roles required?
-                    ** e.g., children = relationship("Child"
-                * are multiple relationsips supported?
-                    ** e.g., dept has worksFor / OnLoan Emps
-                * are circular relationships supported?
-                    ** e.g., dept has emps, emp has mgr
-
-            Parameters
-                argument1 a_table_def - TableModelInstance
-
-            Returns
-                str like related_views = ["Child1", "Child2"]
-        """
-        result = "related_views = ["
-        related_count = 0
-        child_list = self.mod_gen.find_child_list(a_table_def)
-        self_relns = ""
-        if a_table_def.fullname == "store":
-            log.debug(f'related_views for {a_table_def.fullname}')
-        for each_child in child_list:
-            if a_table_def.fullname not in self.tables_generated:
-                log.debug(f'must omit: {a_table_def.fullname}')
-            if a_table_def.fullname == each_child.fullname or \
-                    each_child.fullname not in self.tables_generated:
-                self_relns += a_table_def.fullname + " "
-            else:
-                related_count += 1
-                if related_count > 1:
-                    result += ", "
-                else:
-                    self.num_related += 1
-                class_name = self.mod_gen.get_class_for_table(each_child.fullname)
-                if class_name is None:
-                    print(f'.. .. .. Warning - Skipping {self.mod_gen.model_name(each_child)}->'
-                          f'{each_child.fullname} - no database/models.py class')
-                    related_count -= 1
-                else:
-                    each_entry = class_name + self.mod_gen.model_name(each_child)
-                    result += each_entry
-        omitted = "  # omitted mutually referring relationships: " + self_relns if self_relns != "" else ""
-        result += "]" + omitted + "\n"
-        return result
-
-    def process_module_end(self, a_metadata_tables: MetaData) -> str:  # FIXME unused
+    def process_module_end_zz(self, a_metadata_tables: MetaData) -> str:  # FIXME unused
         """
             returns the last few lines
 
@@ -314,6 +315,35 @@ class ReactCreator(object):
         with open(app_file_name, 'w') as app_file:
             app_file.write(app_code_str)
 
+        meta_tables = self.mod_gen.metadata.tables
+        with open(app_file_name) as app_file:
+            app_file_lines = app_file.readlines()
+
+        import_lines_loc = self.find_line(lines=app_file_lines, at="ApiLogicServer_server_imports")
+        import_lines = []
+        for each_table in meta_tables.items():
+            class_name = self.mod_gen.get_class_for_table(each_table[1].name)
+            if class_name:
+                imports = f'{class_name}List, {class_name}Edit, {class_name}Show'
+                import_line = "import {" + imports + "} from './components/" + class_name + "';\n"
+                import_lines.append(import_line)
+        app_file_lines[import_lines_loc:import_lines_loc] = import_lines
+
+        resource_lines_loc = self.find_line(lines=app_file_lines, at="<Admin loginPage")
+        resource_lines = []
+        for each_table in meta_tables.items():
+            class_name = self.mod_gen.get_class_for_table(each_table[1].name)
+            if class_name:
+                resource_line = f'<Resource name="{class_name}" show={{{class_name}Show}} ' \
+                                f'edit={{{class_name}Edit}} list={{{class_name}List}} icon={{ContactsIcon}} />\n'
+                resource_lines.append(resource_line)
+        app_file_lines[resource_lines_loc:resource_lines_loc] = resource_lines
+
+        # component_file = open(component_file_name, 'w')
+        with open(app_file_name, 'w') as app_file:
+            app_file.writelines(app_file_lines)
+        pass
+
     def create_react_admin_app(self, msg: str = "", from_git: str = ""):
         """
         deep copy ApiLogicServer/create_from_model/react_admin -> project_directory/ui/react_admin
@@ -337,22 +367,6 @@ class ReactCreator(object):
 
         print(f'{msg} copy {from_proto_dir} -> {to_project_dir}')
         shutil.copytree(from_proto_dir, to_project_dir)
-
-        """
-        replace_string_in_file(search_for="creation-date",
-                               replace_with=str(datetime.datetime.now()),
-                               in_file=f'{project_directory}/readme.md')
-        replace_string_in_file(search_for="cloned-from",
-                               replace_with=cloned_from,
-                               in_file=f'{project_directory}/readme.md')
-    
-        if db_url.endswith("nw.sqlite"):
-            print(".. ..Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
-            replace_logic_with_nw_logic(project_directory)
-            replace_models_ext_with_nw_models_ext(project_directory)
-            replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
-            replace_server_startup_test_with_nw_server_startup_test(project_directory)
-        """
 
     def create_application(self):
         self.create_react_admin_app(msg=".. ..Create ui/react_admin")

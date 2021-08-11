@@ -7,6 +7,7 @@ import { List,
     EditButton,
 } from "react-admin";
 import Grid from '@material-ui/core/Grid';
+import { TabbedShowLayout, Tab } from 'react-admin';
 
 import {
   Edit,
@@ -89,8 +90,8 @@ export const ApiLogicServer_componentShow = props => {
             </Typography>
             <Grid container spacing={3} margin={5} m={40}>
                 // ApiLogicServer_show_columns
-                // ApiLogicServer_related
             </Grid>
+        // ApiLogicServer_related
         </SimpleShowLayout>
     </Show>
     );

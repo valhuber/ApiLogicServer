@@ -1,9 +1,6 @@
 import * as React from "react";
 import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
-// import jsonServerProvider from 'ra-data-json-server';
-import {CustomerList, CustomerEdit, CustomerShow} from './components/Customer';
-import {EmployeeList} from './components/Employee';
-import {OrderList, OrderEdit, OrderShow} from './components/Order';
+// ApiLogicServer_server_imports
 
 import jsonapiClient from "ra-jsonapi-client";
 import NotFound  from "./pages/NotFound";
@@ -20,8 +17,6 @@ const dataProvider = jsonapiClient('https://apilogicserver.pythonanywhere.com');
 
 const App = () => (
       <Admin loginPage={LoginPage}  dashboard={Dashboard} dataProvider={dataProvider} catchAll={NotFound} authProvider={authProvider}>
-          <Resource name="Customer" show={CustomerShow} edit={CustomerEdit} list={CustomerList} icon={ContactsIcon} />
-          <Resource name="Order" show={OrderShow} edit={EditGuesser} list={OrderList} icon={ShoppingCartIcon}/>
           {/* <Resource name="Employee" edit={EditGuesser} list={EmployeeList} icon={UserIcon}/>  */}
 
       </Admin>
