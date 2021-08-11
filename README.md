@@ -260,6 +260,7 @@ Many thanks to
 - Thomas Pollet, for SAFRS
 - Daniel Gaspar, for Flask AppBuilder
 - Alex Grönholm, for Sqlacodegen
+- [Meera (Meera Bavadekar) Datey](https://www.linkedin.com/in/meeradatey/), for enormous help in using React Admin
 - Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration and testing
 - Max Tardiveau, for testing
