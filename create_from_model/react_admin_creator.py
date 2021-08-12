@@ -229,7 +229,7 @@ class ReactCreator(object):
                 component_code_lines.insert(insert_point, ref_many)
                 insert_point += 1
 
-                component_code_lines.insert(insert_point, "<Datagrid>\n")
+                component_code_lines.insert(insert_point, f'<Datagrid rowClick="show">\n')
                 insert_point += 1
 
                 columns = self.mod_gen.get_list_columns(each_child)  # TODO - no join for master
