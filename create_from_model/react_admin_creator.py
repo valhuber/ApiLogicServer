@@ -183,6 +183,8 @@ class ReactCreator(object):
     def insert_edit_lines(self, a_table_def: MetaDataTable, component_code_lines: List[str]):
         columns = self.mod_gen.get_edit_columns(a_table_def)
         insert_point = self.find_line(lines = component_code_lines, at = "// ApiLogicServer_edit_columns")
+        insert_point -= 1
+        del component_code_lines[insert_point]
         for each_column in columns:
             component_code_lines.insert(insert_point, f'            <TextInput source="{each_column}"/>\n')
             insert_point += 1
@@ -191,6 +193,8 @@ class ReactCreator(object):
     def insert_add_lines(self, a_table_def: MetaDataTable, component_code_lines: List[str]):
         columns = self.mod_gen.get_add_columns(a_table_def)
         insert_point = self.find_line(lines = component_code_lines, at = "// ApiLogicServer_add_columns")
+        insert_point -= 1
+        del component_code_lines[insert_point]
         for each_column in columns:
             component_code_lines.insert(insert_point, f'            <TextField source="{each_column}"/>\n')
             insert_point += 1
