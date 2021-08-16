@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-  ApiLogicServer v 02.02.11
+  ApiLogicServer v 02.03.00
 
   $ python3 api_logic_server_run.py [Listener-IP]
 

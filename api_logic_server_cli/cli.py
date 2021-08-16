@@ -499,7 +499,7 @@ def fix_database_models__inject_db_types(project_directory: str, db_types: str):
 def fix_database_models__import_models_ext(project_directory: str):
     """ Append "from database import models_ext" to database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
-    print(f'7. Appending "from database import models_ext" to database/models.py')
+    print(f'8. Appending "from database import models_ext" to database/models.py')
     models_file = open(models_file_name, 'a')
     models_file.write("\n\nfrom database import models_ext\n")
     models_file.close()
@@ -511,14 +511,13 @@ def start_open_with(open_with: str, project_name: str):
     print(".. See the readme for install / run instructions")
     run_command(f'{open_with} {project_name}', None, "no-msg")
 
-def prepare_flask_appbuilder(msg: str,
+def prepare_flask_appbuilder_zz(msg: str,
                              project_directory: str, db_uri: str, db_url: str,
                              generate_from_model: mod_gen.CreateFromModel):
-    """ 8. Writing: /ui/basic_web_app/app/views.py """
     replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
                            replace_with='"' + db_uri + '"',
                            in_file=f'{project_directory}/ui/basic_web_app/config.py')
-    print(msg)  # 8. Writing: /ui/basic_web_app/app/views.py
+    print(msg)
     text_file = open(project_directory + '/ui/basic_web_app/app/views.py', 'w')
     text_file.write(generate_from_model.result_views)
     text_file.close()
@@ -646,7 +645,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         react_admin=react_admin)
     invoke_creators(db_url, project_directory, model_creation_services)
     if extended_builder is not None and extended_builder != "":
-        print(f'10. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
+        print(f'7. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
         invoke_extended_builder(extended_builder, db_url, project_directory)
     # model_creation_services.generate_api_expose_and_ui_views()  # sets create_from_model.result_apis & result_views
 
@@ -655,14 +654,10 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if use_model == "":
         fix_database_models__import_models_ext(project_directory)
 
-    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
+    print("9. Update api_logic_server_run.py and config.py with project_name and db_url")
     db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
 
-    fix_host_and_ports("9. Fixing port / host", project_directory, host, port)
-
-    if extended_builder is not None and extended_builder !="":
-        print(f'10. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
-        invoke_extended_builder(extended_builder, db_url, project_directory)
+    fix_host_and_ports("10. Fixing port / host", project_directory, host, port)
 
     if open_with != "":
         start_open_with(open_with=open_with, project_name=project_name)

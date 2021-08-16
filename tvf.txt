@@ -25,6 +25,18 @@ from sqlalchemy.dialects.mysql import *
 
 ########################################################################################################################
 
+t_fn_Data_u_CDM_BusinessProcess_yyyy = Table(  # define result for fn_Data_u_CDM_BusinessProcess_yyyy
+	"fn_Data_u_CDM_BusinessProcess_yyyy", metadata,
+	Column("Document", String(8000)))
+
+
+t_fn_Get_COD111 = Table(  # define result for fn_Get_COD111
+	"fn_Get_COD111", metadata,
+	Column("char_type", String(8000)),
+	Column("Key", String(10)),
+	Column("varchar_type", String(8000)))
+
+
 t_udfEmployeeInLocation = Table(  # define result for udfEmployeeInLocation
 	"udfEmployeeInLocation", metadata,
 	Column("Id", Integer),
@@ -37,6 +49,47 @@ t_udfEmployeeInLocationWithName = Table(  # define result for udfEmployeeInLocat
 	Column("Id", Integer),
 	Column("Location", String(50)),
 	Column("Name", String(50)))
+
+
+class fn_Data_u_CDM_BusinessProcess_yyyy(JABase):
+	"""
+		description: define service for fn_Data_u_CDM_BusinessProcess_yyyy
+	"""
+
+	_s_type = "fn_Data_u_CDM_BusinessProcess_yyyy"
+
+	@staticmethod
+	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
+	def fn_Data_u_CDM_BusinessProcess_yyyy():
+		"""
+		description: expose TVF - fn_Data_u_CDM_BusinessProcess_yyyy
+		args:
+		"""
+		sql_query = db.text("SELECT * FROM fn_Data_u_CDM_BusinessProcess_yyyy()")
+		query_result = db.engine.execute(sql_query, )
+		result = query_result.fetchall()
+		return {"result" : list(result)}
+
+
+class fn_Get_COD111(JABase):
+	"""
+		description: define service for fn_Get_COD111
+	"""
+
+	_s_type = "fn_Get_COD111"
+
+	@staticmethod
+	@jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
+	def fn_Get_COD111(Key):
+		"""
+		description: expose TVF - fn_Get_COD111
+		args:
+			Key : value
+		"""
+		sql_query = db.text("SELECT * FROM fn_Get_COD111(:Key)")
+		query_result = db.engine.execute(sql_query, Key=Key)
+		result = query_result.fetchall()
+		return {"result" : list(result)}
 
 
 class udfEmployeeInLocation(JABase):
@@ -57,7 +110,7 @@ class udfEmployeeInLocation(JABase):
 		sql_query = db.text("SELECT * FROM udfEmployeeInLocation(:location)")
 		query_result = db.engine.execute(sql_query, location=location)
 		result = query_result.fetchall()
-		return {"result" : list(result[0])}
+		return {"result" : list(result)}
 
 
 class udfEmployeeInLocationWithName(JABase):
@@ -79,11 +132,13 @@ class udfEmployeeInLocationWithName(JABase):
 		sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
 		query_result = db.engine.execute(sql_query, location=location, Name=Name)
 		result = query_result.fetchall()
-		return {"result" : list(result[0])}
+		return {"result" : list(result)}
 
 
 def expose_tvfs(api):
+	api.expose_object(fn_Data_u_CDM_BusinessProcess_yyyy)
+	api.expose_object(fn_Get_COD111)
 	api.expose_object(udfEmployeeInLocation)
 	api.expose_object(udfEmployeeInLocationWithName)
 
-#  2 services created.
+#  4 services created.

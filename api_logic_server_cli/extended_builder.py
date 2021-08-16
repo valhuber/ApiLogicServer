@@ -4,8 +4,15 @@ from sqlalchemy.sql import text
 from typing import List
 import sqlalchemy
 
+"""
+    Example
+        APILogicServer run --project_name='~/dev/servers/sqlserver-types' --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no' --extended_builder='*'
+"""
+
+
 def log(msg: any) -> None:
     print(msg, file=sys.stderr)
+
 
 log("Extended builder 1.2")
 
