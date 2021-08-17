@@ -30,7 +30,7 @@ import click
 
 from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
-__version__ = "2.03.03"
+__version__ = "2.03.04"
 
 from api_logic_server_cli.expose_existing import expose_existing_callable
 
@@ -706,7 +706,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t08/17/2021 - 02.03.03: Create react-admin app (tech exploration)\n"
+            "\t08/17/2021 - 02.03.04: Create react-admin app (tech exploration)\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
