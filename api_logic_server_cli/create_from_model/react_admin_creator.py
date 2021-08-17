@@ -48,14 +48,12 @@ class ReactCreator(object):
 
     def __init__(self,
                  mod_gen: CreateFromModel,
-                 db_url: str = "sqlite:///nw.sqlite",
                  host: str = "localhost",
                  port: str = "5000",
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):
         self.mod_gen = mod_gen
-        self.db_url = db_url
         self.host = host
         self.port = port
         self.not_exposed = not_exposed
@@ -374,7 +372,7 @@ class ReactCreator(object):
         print(f'{msg} copy prototype react-admin project {from_proto_dir} -> {to_project_dir}')
         shutil.copytree(from_proto_dir, to_project_dir)
 
-    def create_application(self):
+    def create_react_admin_application(self):
         self.create_react_admin_app(msg=".. ..Create ui/react_admin")
         self.create_components(version="")
         self.fixup_app_js()
@@ -386,12 +384,11 @@ def create(db_url, project_directory, model_creation_services: CreateFromModel):
     """
     if model_creation_services.react_admin:
         fab_creator = ReactCreator(model_creation_services,
-                                   db_url=model_creation_services.db_url,
                                    host=model_creation_services.host, port=model_creation_services.port,
                                    not_exposed=model_creation_services.not_exposed + " ",
                                    favorite_names=model_creation_services.favorite_names,
                                    non_favorite_names=model_creation_services.non_favorite_names)
-        fab_creator.create_application()
+        fab_creator.create_react_admin_application()
     else:
         print("4. ui/react_admin creation declined")
 

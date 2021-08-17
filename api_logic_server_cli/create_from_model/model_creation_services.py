@@ -43,17 +43,14 @@ class CreateFromModel(object):
     non_favorite_names = "id"
 
     _indent = "   "
-    zz_tables_visited = set()  # to address "generate children first"
-    """ table names of all visited views """
-    zz_tables_generated = set()  # to address "generate children first"
-    """ table names of all fully generated views """
 
     num_pages_generated = 0
     num_related = 0
 
     def __init__(self,
                  project_directory: str ="~/Desktop/my_project",
-                 db_url: str = "sqlite:///nw.sqlite",
+                 abs_db_url: str = "sqlite:///nw.sqlite",
+                 db_url: str="sqlite:///nw.sqlite",
                  host: str = "localhost",
                  port: str = "5000",
                  flask_appbuilder: bool=True,
@@ -62,7 +59,8 @@ class CreateFromModel(object):
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):
         self.project_directory = self.get_windows_path_with_slashes(project_directory)
-        self.db_url = db_url
+        self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
+        self.db_url = db_url  # the original cli parameter
         self.host = host
         self.port = port
         self.not_exposed = not_exposed
@@ -155,7 +153,7 @@ class CreateFromModel(object):
             sys_path = str(sys.path)
 
             self.app = self.create_app(host=self.host)
-            self.app.config.SQLALCHEMY_DATABASE_URI = self.db_url
+            self.app.config.SQLALCHEMY_DATABASE_URI = self.abs_db_url
             self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
             if log_info:
                 print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))

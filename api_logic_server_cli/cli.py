@@ -628,7 +628,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     # print("4. Create api/expose_api_models.py (import / iterate models)")
     model_creation_services = CreateFromModel(  # Create views.py file from db, models.py
-        project_directory=project_directory, db_url=abs_db_url, host=host, port=port,
+        project_directory=project_directory, abs_db_url=abs_db_url, db_url=db_url,
+        host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin)

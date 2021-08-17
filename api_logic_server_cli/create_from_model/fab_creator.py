@@ -48,16 +48,12 @@ class FabCreator(object):
 
     def __init__(self,
                  mod_gen: CreateFromModel,
-                 project_directory: str = "~/Desktop/my_project",
-                 db_url: str = "sqlite:///nw.sqlite",
                  host: str = "localhost",
                  port: str = "5000",
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):
-        self.project_directory = project_directory
         self.mod_gen = mod_gen
-        self.db_url = db_url
         self.host = host
         self.port = port
         self.not_exposed = not_exposed
@@ -278,104 +274,94 @@ class FabCreator(object):
             print(".. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
         return result
 
+    def create_basic_web_app_directory(self, msg):
+        project_abs_path = abspath(self.mod_gen.project_directory)
+        fab_project = project_abs_path + "/ui/basic_web_app"
+        cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
+        result = cli.run_command(cmd, msg=msg)
+        pass
 
-def create_basic_web_app(db_url, project_name, msg):
-    project_abs_path = abspath(project_name)
-    fab_project = project_abs_path + "/ui/basic_web_app"
-    cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-    result = cli.run_command(cmd, msg=msg)
-    pass
+    def fix_basic_web_app_run__python_path(self):
+        """ overwrite ui/basic_web_app/run.py (enables run.py) with logic_bank_utils call to fixup python path """
+        project_ui_basic_web_app_run_file = open(self.mod_gen.project_directory + '/ui/basic_web_app/run.py', 'w')
+        ui_basic_web_app_run_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.py")
+        ui_basic_web_app_run = ui_basic_web_app_run_file.read()  # standard content
+        project_ui_basic_web_app_run_file.write(ui_basic_web_app_run)
+        project_ui_basic_web_app_run_file.close()
 
+        proj = os.path.basename(self.mod_gen.project_directory)
+        cli.replace_string_in_file(search_for="api_logic_server_project_directory",
+                                   replace_with=proj,
+                                   in_file=f'{self.mod_gen.project_directory}/ui/basic_web_app/run.py')
 
-def fix_basic_web_app_run__python_path(project_directory):
-    """ overwrite ui/basic_web_app/run.py (enables run.py) with logic_bank_utils call to fixup python path """
-    project_ui_basic_web_app_run_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
-    ui_basic_web_app_run_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.py")
-    ui_basic_web_app_run = ui_basic_web_app_run_file.read()  # standard content
-    project_ui_basic_web_app_run_file.write(ui_basic_web_app_run)
-    project_ui_basic_web_app_run_file.close()
+    def fix_basic_web_app_run__create_admin(self):
+        """ update create_admin.sh with project_directory """
 
-    proj = os.path.basename(project_directory)
-    cli.replace_string_in_file(search_for="api_logic_server_project_directory",
-                           replace_with=proj,
-                           in_file=f'{project_directory}/ui/basic_web_app/run.py')
+        unix_project_name = self.mod_gen.project_directory.replace('\\', "/")
+        target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
+        source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.sh")
+        create_admin_commands = source_create_admin_sh_file.read()
+        target_create_admin_sh_file.write(create_admin_commands)
+        target_create_admin_sh_file.close()
 
+        cli.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
+                                   replace_with=unix_project_name,
+                                   in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
-def fix_basic_web_app_run__create_admin(project_directory):
-    """ update create_admin.sh with project_directory """
+    def fix_basic_web_app_app_init__inject_logic(self):
+        """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
+        file_name = f'{self.mod_gen.project_directory}/ui/basic_web_app/app/__init__.py'
+        proj = os.path.basename(self.mod_gen.project_directory)  # enable flask run
+        import_fix = f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n'
 
-    unix_project_name = project_directory.replace('\\', "/")
-    target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
-    source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.sh")
-    create_admin_commands = source_create_admin_sh_file.read()
-    target_create_admin_sh_file.write(create_admin_commands)
-    target_create_admin_sh_file.close()
+        insert_text = ("\n# ApiLogicServer - enable flask fab create-admin\n"
+                       "import logic_bank_utils.util as logic_bank_utils\n"
+                       + import_fix +
+                       "\nimport database.models as models\n"
+                       + "from logic import declare_logic\n"
+                       + "from logic_bank.logic_bank import LogicBank\n"
+                       )
+        if self.mod_gen.db_url.endswith("nw.sqlite"):  # admin pre-installed for nw, no need to disable logic
+            insert_text += "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
+        else:  # logic interferes with create-admin - disable it
+            insert_text += "# *** Enable the following after creating Flask AppBuilder Admin ***\n"
+            insert_text += "# LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
+        cli.insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
 
-    cli.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
-                           replace_with=unix_project_name,
-                           in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
+    def prepare_flask_appbuilder(self, msg: str):
+        """ 8. Writing: /ui/basic_web_app/app/views.py """
+        # SQLALCHEMY_DATABASE_URI = "sqlite:////Users/val/dev/servers/api_logic_server/database/db.sqlite"
+        cli.replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
+                                   replace_with='"' + self.mod_gen.abs_db_url + '"',
+                                   in_file=f'{self.mod_gen.project_directory}/ui/basic_web_app/config.py')
+        print(msg)  # 8. Writing: /ui/basic_web_app/app/views.py
+        text_file = open(self.mod_gen.project_directory + '/ui/basic_web_app/app/views.py', 'w')
+        text_file.write(self.result_views)
+        text_file.close()
+        print(".. ..Fixing run.py and app/init for Python path, logic")
+        if not self.mod_gen.db_url.endswith("nw.sqlite"):
+            print(".. ..Important: you will need to run flask fab create-admin")
+        self.fix_basic_web_app_run__python_path()
+        self.fix_basic_web_app_run__create_admin()
+        self.fix_basic_web_app_app_init__inject_logic()
 
-
-def fix_basic_web_app_app_init__inject_logic(project_directory, db_url):
-    """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
-    file_name = f'{project_directory}/ui/basic_web_app/app/__init__.py'
-    proj = os.path.basename(project_directory)  # enable flask run
-    import_fix = f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n'
-
-    insert_text = ("\n# ApiLogicServer - enable flask fab create-admin\n"
-                   "import logic_bank_utils.util as logic_bank_utils\n"
-                   + import_fix +
-                   "\nimport database.models as models\n"
-                   + "from logic import declare_logic\n"
-                   + "from logic_bank.logic_bank import LogicBank\n"
-                   )
-    if db_url.endswith("nw.sqlite"):    # admin pre-installed for nw, no need to disable logic
-        insert_text += "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
-    else:                               # logic interferes with create-admin - disable it
-        insert_text += "# *** Enable the following after creating Flask AppBuilder Admin ***\n"
-        insert_text += "# LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
-    cli.insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
-
-
-def prepare_flask_appbuilder(msg: str,
-                             project_directory: str, db_uri: str, db_url: str,
-                             fab_creator: FabCreator):
-    """ 8. Writing: /ui/basic_web_app/app/views.py """
-    # SQLALCHEMY_DATABASE_URI = "sqlite:////Users/val/dev/servers/api_logic_server/database/db.sqlite"
-    cli.replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
-                           replace_with='"' + db_uri + '"',
-                           in_file=f'{project_directory}/ui/basic_web_app/config.py')
-    print(msg)  # 8. Writing: /ui/basic_web_app/app/views.py
-    text_file = open(project_directory + '/ui/basic_web_app/app/views.py', 'w')
-    text_file.write(fab_creator.result_views)
-    text_file.close()
-    print(".. ..Fixing run.py and app/init for Python path, logic")
-    if not db_url.endswith("nw.sqlite"):
-        print(".. ..Important: you will need to run flask fab create-admin")
-    fix_basic_web_app_run__python_path(project_directory)
-    fix_basic_web_app_run__create_admin(project_directory)
-    fix_basic_web_app_app_init__inject_logic(project_directory, db_url)
+    def create_basic_web_app(self):
+        self.create_basic_web_app_directory(".. ..Create ui/basic_web_app")
+        self.generate_ui_views()
+        self.prepare_flask_appbuilder(msg=".. ..Writing: /ui/basic_web_app/app/views.py")
+        log.debug(f'create_from_model.fab_creator("{self.mod_gen.db_url}", "{self.mod_gen.project_directory}" Completed')
 
 
 def create(db_url, project_directory, model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates basic web app (Flask AppBuilder)
     """
     if model_creation_services.flask_appbuilder:
-        create_basic_web_app(db_url, project_directory, ".. ..Create ui/basic_web_app")
+        # create_basic_web_app(db_url, project_directory, ".. ..Create ui/basic_web_app")
         fab_creator = FabCreator(model_creation_services,
-                                 project_directory=model_creation_services.project_directory,
-                                 db_url=model_creation_services.db_url,
                                  host=model_creation_services.host, port=model_creation_services.port,
                                  not_exposed=model_creation_services.not_exposed + " ",
                                  favorite_names=model_creation_services.favorite_names,
                                  non_favorite_names=model_creation_services.non_favorite_names)
-        fab_creator.generate_ui_views()
-        prepare_flask_appbuilder(msg=".. ..Writing: /ui/basic_web_app/app/views.py",
-                                 project_directory=project_directory,
-                                 db_uri=model_creation_services.db_url,
-                                 db_url=model_creation_services.db_url,
-                                 fab_creator=fab_creator)
-        log.debug(f'create_from_model.fab_creator("{db_url}", "{project_directory}" Completed')
+        fab_creator.create_basic_web_app()
     else:
         print("6. ui/basic/web_app creation declined")
-
