@@ -1,0 +1,5 @@
+recursive-include api_logic_server_cli/project_prototype *.*
+recursive-include api_logic_server_cli/project_prototype_nw *.*
+recursive-include api_logic_server_cli/create_from_model create_admin.sh
+recursive-include api_logic_server_cli/create_from_model/react_admin *.*
+recursive-include api_logic_server_cli/create_from_model/react_admin_templates *.*

@@ -2,9 +2,8 @@ import logging
 import sys
 import os
 import datetime
-import create_from_model.model_creation_services as mod_gen
 from typing import NewType
-
+from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
 log = logging.getLogger(__name__)
 
@@ -66,7 +65,7 @@ def create_expose_api_models(model_creation_services, project_directory, version
     return
 
 
-def create(db_url, project_directory, model_creation_services: mod_gen.CreateFromModel):
+def create(db_url, project_directory, model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates api/expose_api_models.py, key input to SAFRS
     """
     log.debug(f'create_from_model.apiCreator("{db_url}", "{project_directory}"')

@@ -9,9 +9,7 @@ See: main driver
 
 """
 
-import pathlib
 import subprocess
-import traceback
 from os.path import abspath
 from os.path import realpath
 from pathlib import Path
@@ -27,16 +25,15 @@ import datetime
 from typing import NewType
 import sys
 import os
-import sqlalchemy
-import sqlalchemy.ext
-from sqlalchemy import MetaData
-import inspect
 import importlib
 import click
 
-import create_from_model.model_creation_services as mod_gen
+from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
-__version__ = "02.03.00"
+__version__ = "2.03.02"
+
+from api_logic_server_cli.expose_existing import expose_existing_callable
+
 default_db = "<default -- nw.sqlite>"
 
 #  MetaData = NewType('MetaData', object)
@@ -44,9 +41,6 @@ MetaDataTable = NewType('MetaDataTable', object)
 
 
 def create_app(config_filename=None, host="localhost"):
-    from flask_sqlalchemy import SQLAlchemy
-    from sqlalchemy.orm import Session
-    from sqlalchemy.ext.declarative import declarative_base
     import safrs
 
     app = Flask("API Logic Server")
@@ -201,9 +195,9 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         if from_dir == "":
             code_loc = str(get_api_logic_server_dir())
             if "\\" in code_loc:
-                from_dir = code_loc + "\\prototype"
+                from_dir = code_loc + "\\api_logic_server_cli\\project_prototype"
             else:
-                from_dir = code_loc + "/prototype"
+                from_dir = code_loc + "/api_logic_server_cli/project_prototype"
         print(f'{msg} copy {from_dir} -> {project_directory}')
         cloned_from = from_dir
         shutil.copytree(from_dir, project_directory)
@@ -269,7 +263,7 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
         print(f'.. ..Copy {model_file} to {project + "/database/models.py"}')
         copyfile(model_file, project + '/database/models.py')
     else:
-        import expose_existing.expose_existing_callable as expose_existing_callable
+        # import expose_existing.expose_existing_callable as expose_existing_callable
         code_gen_args = get_codegen_args()
         expose_existing_callable.codegen(code_gen_args)
         pass
@@ -340,7 +334,7 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
 def replace_logic_with_nw_logic(project_name):
     """ Replace logic/logic_bank.py with pre-defined nw_logic """
     logic_file = open(project_name + '/logic/logic_bank.py', 'w')
-    nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_logic.py")
+    nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_logic.py")
     nw_logic = nw_logic_file.read()
     logic_file.write(nw_logic)
     logic_file.close()
@@ -349,7 +343,7 @@ def replace_logic_with_nw_logic(project_name):
 def replace_models_ext_with_nw_models_ext(project_name):
     """ Replace models/models_ext.py with pre-defined nw_models_ext """
     models_ext_file = open(project_name + '/database/models_ext.py', 'w')
-    nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_models_ext.py")
+    nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_models_ext.py")
     nw_models_ext = nw_models_ext_file.read()
     models_ext_file.write(nw_models_ext)
     models_ext_file.close()
@@ -358,7 +352,7 @@ def replace_models_ext_with_nw_models_ext(project_name):
 def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
     """ replace api/expose_rpcs with nw version """
     rpcs_file = open(project_name + '/api/expose_services.py', 'w')
-    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_expose_services.py")
+    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_expose_services.py")
     nw_expose_rpcs = nw_expose_rpcs_file.read()
     rpcs_file.write(nw_expose_rpcs)
     rpcs_file.close()
@@ -367,7 +361,7 @@ def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
 def replace_server_startup_test_with_nw_server_startup_test(project_name):
     """ replace api/expose_rpcs with nw version """
     tests_file = open(project_name + '/test/server_startup_test.py', 'w')
-    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/nw_server_startup_test.py")
+    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_server_startup_test.py")
     nw_tests_file_data = nw_tests_file.read()
     tests_file.write(nw_tests_file_data)
     tests_file.close()
@@ -499,7 +493,7 @@ def fix_database_models__inject_db_types(project_directory: str, db_types: str):
 def fix_database_models__import_models_ext(project_directory: str):
     """ Append "from database import models_ext" to database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
-    print(f'8. Appending "from database import models_ext" to database/models.py')
+    print(f'7. Appending "from database import models_ext" to database/models.py')
     models_file = open(models_file_name, 'a')
     models_file.write("\n\nfrom database import models_ext\n")
     models_file.close()
@@ -510,23 +504,6 @@ def start_open_with(open_with: str, project_name: str):
     print(f'\nCreation complete - Opening {open_with} at {project_name}')
     print(".. See the readme for install / run instructions")
     run_command(f'{open_with} {project_name}', None, "no-msg")
-
-def prepare_flask_appbuilder_zz(msg: str,
-                             project_directory: str, db_uri: str, db_url: str,
-                             generate_from_model: mod_gen.CreateFromModel):
-    replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
-                           replace_with='"' + db_uri + '"',
-                           in_file=f'{project_directory}/ui/basic_web_app/config.py')
-    print(msg)
-    text_file = open(project_directory + '/ui/basic_web_app/app/views.py', 'w')
-    text_file.write(generate_from_model.result_views)
-    text_file.close()
-    print(".. ..Fixing run.py and app/init for Python path, logic")
-    if not db_url.endswith("nw.sqlite"):
-        print(".. ..Important: you will need to run flask fab create-admin")
-    fix_basic_web_app_run__python_path(project_directory)
-    fix_basic_web_app_run__create_admin(project_directory)
-    fix_basic_web_app_app_init__inject_logic(project_directory, db_url)
 
 
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
@@ -562,25 +539,25 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
     extended_builder.extended_builder(db_url, project_directory)  # extended_builder.MyClass()
 
 
-def invoke_creators(db_url, project_directory, model_creation_services: mod_gen.CreateFromModel):
+def invoke_creators(db_url, project_directory, model_creation_services: CreateFromModel):
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
 
     print("4. Create api/expose_api_models.py (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(db_url, project_directory, model_creation_services)  # invoke create function
 
     print("5. Create ui/react_admin app (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)
     creator.create(db_url, project_directory, model_creation_services)
 
     print("6. Create ui/basic_web_app (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)
@@ -617,14 +594,17 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     abs_db_url = db_url
     if abs_db_url == "":
-        print(f'0. Using demo default db_url: sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite')
-        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite'
+        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
+        print(f'0. Using demo default db_url: {abs_db_url}')
     if extended_builder == "*":
         extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/extended_builder.py')
         print(f'0. Using default extended_builder: {extended_builder}')
     if db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         abs_db_url = abspath(url)
+        if db_url == "sqlite:///nw.sqlite":
+            abs_db_url = f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
+            print(f'0. Using dev demo default db_url: {abs_db_url}')
         abs_db_url = 'sqlite:///' + abs_db_url
         pass
 
@@ -633,12 +613,12 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", db_url)
 
-    print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {db_url}')
+    print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
     fix_database_models__inject_db_types(project_directory, db_types)
 
     # print("4. Create api/expose_api_models.py (import / iterate models)")
-    model_creation_services = mod_gen.CreateFromModel(  # Create views.py file from db, models.py
+    model_creation_services = CreateFromModel(  # Create views.py file from db, models.py
         project_directory=project_directory, db_url=abs_db_url, host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
         favorite_names=favorites, non_favorite_names=non_favorites,
@@ -654,10 +634,10 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if use_model == "":
         fix_database_models__import_models_ext(project_directory)
 
-    print("9. Update api_logic_server_run.py and config.py with project_name and db_url")
+    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
     db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
 
-    fix_host_and_ports("10. Fixing port / host", project_directory, host, port)
+    fix_host_and_ports("9. Fixing port / host", project_directory, host, port)
 
     if open_with != "":
         start_open_with(open_with=open_with, project_name=project_name)
@@ -716,7 +696,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t08/06/2021 - 02.03.00: Create react-admin app\n"
+            "\t08/17/2021 - 02.03.02: Create react-admin app (tech exploration)\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
@@ -800,7 +780,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
     db_types = ""
     if db_url == default_db:
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite'
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
@@ -870,7 +850,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
 
     db_types = ""
     if db_url == default_db:
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw.sqlite'
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,

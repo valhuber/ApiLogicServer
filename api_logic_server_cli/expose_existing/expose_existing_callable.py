@@ -17,6 +17,9 @@ from io import StringIO
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 from flask_cors import CORS
+
+from api_logic_server_cli.expose_existing.sqlacodegen.sqlacodegen.codegen import CodeGenerator
+
 MODEL_DIR = tempfile.mkdtemp()  # directory where the generated models.py will be saved
 on_import = False
 
@@ -27,7 +30,7 @@ if not os.path.isdir(sqlacodegen_dir):
 sys.path.insert(0, MODEL_DIR)
 sys.path.insert(0, sqlacodegen_dir)
 # despite compile error, runs due to logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
-from sqlacodegen.codegen import CodeGenerator
+# FIXME from sqlacodegen.codegen import CodeGenerator
 # from sqlacodegen.sqlacodegen.codegen import CodeGenerator  # No module named 'sqlacodegen.sqlacodegen'
 
 
@@ -96,6 +99,7 @@ def codegen(args):
         outfile = io.open(args.outfile, "w", encoding="utf-8")
         outfile.write(models_py)
     return models_py
+
 
 if on_import:
     args = get_args()

@@ -6,8 +6,8 @@ from os.path import abspath
 from typing import NewType
 from sqlalchemy import MetaData
 from flask import Flask
-import create_from_model.model_creation_services as mod_gen
 import api_logic_server_cli.cli as cli
+from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
 log = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ class FabCreator(object):
     num_related = 0
 
     def __init__(self,
-                 mod_gen: mod_gen.CreateFromModel,
+                 mod_gen: CreateFromModel,
                  project_directory: str = "~/Desktop/my_project",
                  db_url: str = "sqlite:///nw.sqlite",
                  host: str = "localhost",
@@ -367,7 +367,7 @@ def prepare_flask_appbuilder(msg: str,
     fix_basic_web_app_app_init__inject_logic(project_directory, db_url)
 
 
-def create(db_url, project_directory, model_creation_services: mod_gen.CreateFromModel):
+def create(db_url, project_directory, model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates basic web app (Flask AppBuilder)
     """
     if model_creation_services.flask_appbuilder:

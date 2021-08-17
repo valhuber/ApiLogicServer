@@ -1,15 +1,11 @@
 import logging
-import datetime
 import shutil
 import sys
 import os
-from os.path import abspath
 from pathlib import Path
 from typing import NewType, List
 from sqlalchemy import MetaData
-from flask import Flask
-import create_from_model.model_creation_services as mod_gen
-import api_logic_server_cli.cli as cli
+from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
 log = logging.getLogger(__name__)
 
@@ -51,7 +47,7 @@ class ReactCreator(object):
     num_related = 0
 
     def __init__(self,
-                 mod_gen: mod_gen.CreateFromModel,
+                 mod_gen: CreateFromModel,
                  db_url: str = "sqlite:///nw.sqlite",
                  host: str = "localhost",
                  port: str = "5000",
@@ -156,6 +152,7 @@ class ReactCreator(object):
             to_component = to_component + f'\\ui\\react_admin\\src\\components\\{class_name}.js'
         else:
             to_component = to_component + f'/ui/react_admin/src/components/{class_name}.js'
+        # print(f'>> >> >> copy prototype react-admin component {component_template_file} -> {to_component}')
         shutil.copy(component_template_file, to_component)
         return to_component
 
@@ -255,7 +252,7 @@ class ReactCreator(object):
         if related_count > 0:
             component_code_lines.insert(insert_point, f'</TabbedShowLayout>\n')
             insert_point += 1
-
+        self.num_related += related_count
         pass  # TODO - tab + child grids
 
     @staticmethod
@@ -273,15 +270,16 @@ class ReactCreator(object):
             raise Exception(f'Internal error - unable to find insert: {at}')
         return find_line_result + 1
 
-    def process_module_end_zz(self, a_metadata_tables: MetaData) -> str:  # FIXME unused
+    def app_info_lines(self) -> str:
         """
             returns the last few lines
 
             comments - # tables etc
         """
+        meta_tables = self.mod_gen.metadata.tables
         result = (
-            "#  "
-            + str(len(a_metadata_tables))
+            "\n//  "
+            + str(len(meta_tables))
             + " table(s) in model; generated "
             + str(self.num_pages_generated)
             + " page(s), including "
@@ -289,10 +287,10 @@ class ReactCreator(object):
             + " related_view(s).\n\n"
         )
         if self.num_related == 0:
-            result += "#  Warning - no related_views,"
+            result += "//  Warning - no related_views,"
             result += " since foreign keys missing\n"
-            result += "#  .. add them to your models.py (see nw example)\n"
-            result += "#  .. or better, add them to your database"
+            result += "//  .. add them to your models.py (see nw example)\n"
+            result += "//  .. or better, add them to your database"
             print(".. ..WARNING - no relationships detected - add them to your database or model")
             print(".. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
         return result
@@ -343,6 +341,10 @@ class ReactCreator(object):
                 resource_lines.append(resource_line)
         app_file_lines[resource_lines_loc:resource_lines_loc] = resource_lines
 
+        info_lines_loc = self.find_line(lines=app_file_lines, at="export default App")
+        app_file_lines[info_lines_loc:info_lines_loc] = self.app_info_lines()
+
+
         # component_file = open(component_file_name, 'w')
         with open(app_file_name, 'w') as app_file:
             app_file.writelines(app_file_lines)
@@ -369,7 +371,7 @@ class ReactCreator(object):
         else:
             to_project_dir = to_project_dir + "/ui/react_admin"
 
-        print(f'{msg} copy {from_proto_dir} -> {to_project_dir}')
+        print(f'{msg} copy prototype react-admin project {from_proto_dir} -> {to_project_dir}')
         shutil.copytree(from_proto_dir, to_project_dir)
 
     def create_application(self):
@@ -379,7 +381,7 @@ class ReactCreator(object):
         pass
 
 
-def create(db_url, project_directory, model_creation_services: mod_gen.CreateFromModel):
+def create(db_url, project_directory, model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates ui/react_admin application
     """
     if model_creation_services.react_admin:
