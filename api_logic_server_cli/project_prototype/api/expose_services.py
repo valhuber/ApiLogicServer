@@ -11,7 +11,7 @@ from sqlalchemy.orm import object_mapper
 from database import models
 from database.db import Base
 
-# called by expose_api_models.py, to customize api (new end points, services).
+# called by api_logic_server_run.py, to customize api (new end points, services).
 # separate from expose_api_models.py, to simplify merge if project recreated
 
 

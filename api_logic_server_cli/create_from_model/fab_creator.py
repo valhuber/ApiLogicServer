@@ -75,17 +75,6 @@ class FabCreator(object):
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
 
-    @staticmethod
-    def zz_create_app(config_filename=None, host="localhost"):
-        import safrs
-
-        app = Flask("API Logic Server")
-        import api_logic_server_cli.config as app_logic_server_config
-        app.config.from_object(app_logic_server_config.Config)
-        db = safrs.DB
-        db.init_app(app)
-        return app
-
     def generate_ui_views(self, version="TBD"):
         """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
@@ -352,6 +341,7 @@ def prepare_flask_appbuilder(msg: str,
                              project_directory: str, db_uri: str, db_url: str,
                              fab_creator: FabCreator):
     """ 8. Writing: /ui/basic_web_app/app/views.py """
+    # SQLALCHEMY_DATABASE_URI = "sqlite:////Users/val/dev/servers/api_logic_server/database/db.sqlite"
     cli.replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
                            replace_with='"' + db_uri + '"',
                            in_file=f'{project_directory}/ui/basic_web_app/config.py')

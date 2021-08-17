@@ -30,7 +30,7 @@ import click
 
 from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
-__version__ = "2.03.02"
+__version__ = "2.03.03"
 
 from api_logic_server_cli.expose_existing import expose_existing_callable
 
@@ -170,7 +170,7 @@ def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
-def clone_prototype_project_with_nw_samples(project_directory: str, from_git: str, msg: str, db_url: str):
+def clone_prototype_project_with_nw_samples(project_directory: str, from_git: str, msg: str, abs_db_url: str) -> str:
     """
     clone prototype to create and remove git folder
 
@@ -178,7 +178,8 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
 
     :param project_directory: name of project created
     :param from_git: name of git project to clone (blank for default)
-    :return: result of cmd
+    :param abs_db_url: non-relative location of db
+    :return: abs_db_url (e.g., result of sqlite copy)
     """
     cloned_from = from_git
     remove_project_debug = True
@@ -209,12 +210,41 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
                            replace_with=cloned_from,
                            in_file=f'{project_directory}/readme.md')
 
-    if db_url.endswith("nw.sqlite"):
+    project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
+    target_db_loc_actual = abs_db_url
+    copy_sqlite = True
+    if copy_sqlite == False or "sqlite" not in abs_db_url:
+        db_uri = get_windows_path_with_slashes(abs_db_url)
+        replace_string_in_file(search_for="replace_db_url",
+                               replace_with=db_uri,
+                               in_file=f'{project_directory}/config.py')
+    else:
+        """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
+        """
+        # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
+        db_loc = abs_db_url.replace("sqlite:///", "")
+        target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
+        copyfile(db_loc, target_db_loc_actual)
+
+        if os.name == "nt":  # windows
+            # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
+            target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
+        db_uri = f'sqlite:///{target_db_loc_actual}'
+        target_db_loc_actual = db_uri
+        replace_string_in_file(search_for="replace_db_url",
+                               replace_with=db_uri,
+                               in_file=f'{project_directory}/config.py')
+        print(f'.. ..copied sqlite db to: {target_db_loc_actual} and updated {project_directory}/config.py')
+
+
+    if abs_db_url.endswith("nw.sqlite"):
         print(".. ..Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
         replace_logic_with_nw_logic(project_directory)
         replace_models_ext_with_nw_models_ext(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
         replace_server_startup_test_with_nw_server_startup_test(project_directory)
+
+    return target_db_loc_actual
 
 
 def create_basic_web_app(db_url, project_name, msg):  # remove
@@ -275,7 +305,7 @@ def write_expose_api_models(project_name, apis):
     text_file.close()
 
 
-def update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port) -> str:
+def update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port):
     """
     Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
 
@@ -307,28 +337,7 @@ def update_api_logic_server_run__and__config(project_name, project_directory, ab
     replace_string_in_file(search_for="api_logic_server_port",   # server port
                            replace_with=port,
                            in_file=api_logic_server_run_py)
-    copy_sqlite = True
-    if copy_sqlite == False or "sqlite" not in abs_db_url:
-        db_uri = get_windows_path_with_slashes(abs_db_url)
-        replace_string_in_file(search_for="replace_db_url",
-                               replace_with=db_uri,
-                               in_file=f'{project_directory}/config.py')
-    else:
-        """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
-        """
-        # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
-        db_loc = abs_db_url.replace("sqlite:///", "")
-        target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
-        copyfile(db_loc, target_db_loc_actual)
-
-        if os.name == "nt":  # windows
-            # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
-            target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
-        db_uri = f'sqlite:///{target_db_loc_actual}'
-        replace_string_in_file(search_for="replace_db_url",
-                               replace_with=db_uri,
-                               in_file=f'{project_directory}/config.py')
-    return db_uri
+    pass
 
 
 def replace_logic_with_nw_logic(project_name):
@@ -611,7 +620,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     project_directory = resolve_home(project_name)
     """user-supplied project_name, less the twiddle. Typically relative to cwd. """
 
-    clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", db_url)
+    abs_db_url = clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", abs_db_url)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
@@ -634,8 +643,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if use_model == "":
         fix_database_models__import_models_ext(project_directory)
 
-    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")
-    db_uri = update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
+    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")  # BUG - db copied here! wrong abs_url
+    update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
 
     fix_host_and_ports("9. Fixing port / host", project_directory, host, port)
 
@@ -696,7 +705,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t08/17/2021 - 02.03.02: Create react-admin app (tech exploration)\n"
+            "\t08/17/2021 - 02.03.03: Create react-admin app (tech exploration)\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
