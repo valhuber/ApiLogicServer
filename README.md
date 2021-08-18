@@ -203,6 +203,12 @@ multi-page, multi-table applications as shown below:
 
 > Before running, [some setup is required](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
 
+### React-Admin Creation
+ApiLogicServer 2.3.4 can also create react-admin client applications.
+This element is for technology exploration - it is _not_ production ready.
+
+[See here](https://github.com/meera/apilogicserver-react-admin-genned#readme)
+for more information.
 
 # Installation
 Caution: Python install is rather more than running an installer.
