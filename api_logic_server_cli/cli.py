@@ -28,9 +28,12 @@ import os
 import importlib
 import click
 
+(did_fix_path, sys_env_info) = \
+    logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
+
 from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
-__version__ = "2.03.04"
+__version__ = "2.03.05"
 
 from api_logic_server_cli.expose_existing import expose_existing_callable
 
@@ -49,6 +52,7 @@ def create_app(config_filename=None, host="localhost"):
     db = safrs.DB
     db.init_app(app)
     return app
+
 
 def delete_dir(dir_path, msg):
     """
@@ -706,7 +710,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t08/17/2021 - 02.03.04: Create react-admin app (tech exploration)\n"
+            "\t08/22/2021 - 02.03.05: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
@@ -921,8 +925,6 @@ def start():               # target of setup.py
 if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
     # unix: python api_logic_server_cli/cli.py create --project_name=/home/api_logic_server
-    (did_fix_path, sys_env_info) = \
-        logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
 
     print(f'\nWelcome to API Logic Server CLI Utility, {__version__}')
     print_info()
