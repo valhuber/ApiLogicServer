@@ -379,7 +379,7 @@ class ReactCreator(object):
         pass
 
 
-def create(db_url, project_directory, model_creation_services: CreateFromModel):
+def create(model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates ui/react_admin application
     """
     if model_creation_services.react_admin:

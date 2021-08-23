@@ -352,7 +352,7 @@ class FabCreator(object):
         log.debug(f'create_from_model.fab_creator("{self.mod_gen.db_url}", "{self.mod_gen.project_directory}" Completed')
 
 
-def create(db_url, project_directory, model_creation_services: CreateFromModel):
+def create(model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates basic web app (Flask AppBuilder)
     """
     if model_creation_services.flask_appbuilder:

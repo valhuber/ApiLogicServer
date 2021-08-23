@@ -13,7 +13,7 @@ MetaDataTable = NewType('MetaDataTable', object)
 __version__ = "0.0"
 
 
-def create_expose_api_models(model_creation_services, project_directory, version=__version__):
+def create_expose_api_models(model_creation_services, version=__version__):
     """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
     cwd = os.getcwd()
@@ -58,16 +58,14 @@ def create_expose_api_models(model_creation_services, project_directory, version
             result_apis += f'    api.expose_object(models.{class_name})\n'
     result_apis += f'    return api\n'
     # self.session.close()
-    text_file = open(project_directory + '/api/expose_api_models.py', 'a')
+    text_file = open(model_creation_services.project_directory + '/api/expose_api_models.py', 'a')
     text_file.write(result_apis)
     text_file.close()
 
     return
 
 
-def create(db_url, project_directory, model_creation_services: CreateFromModel):
+def create(model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates api/expose_api_models.py, key input to SAFRS
     """
-    log.debug(f'create_from_model.apiCreator("{db_url}", "{project_directory}"')
-    create_expose_api_models(model_creation_services, project_directory)
-    log.debug(f'create_from_model.apiCreator("{db_url}", "{project_directory}" Completed')
+    create_expose_api_models(model_creation_services)

@@ -29,11 +29,11 @@ import importlib
 import click
 
 (did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir="ApiLogicServer", my_file=__file__)
+    logic_bank_utils.add_python_path(project_dir="api_logic_server_cli", my_file=__file__)
 
 from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
-__version__ = "2.03.05"
+__version__ = "2.03.06"
 
 from api_logic_server_cli.expose_existing import expose_existing_callable
 
@@ -238,7 +238,8 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
-        print(f'.. ..copied sqlite db to: {target_db_loc_actual} and updated {project_directory}/config.py')
+        print(f'.. ..Copied sqlite db to: {target_db_loc_actual} and '
+              f'updated db_uri in {project_directory}/config.py')
 
 
     if abs_db_url.endswith("nw.sqlite"):
@@ -309,7 +310,7 @@ def write_expose_api_models(project_name, apis):
     text_file.close()
 
 
-def update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port):
+def update_api_logic_server_run(project_name, project_directory, host, port):
     """
     Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
 
@@ -472,27 +473,6 @@ def fix_host_and_ports(msg, project_name, host, port):
     print(f'.. ..Updated python_anywhere_wsgi.py with {full_path}')
 
 
-def fix_basic_web_app_app_init__inject_logic(project_directory, db_url):
-    """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
-    file_name = f'{project_directory}/ui/basic_web_app/app/__init__.py'
-    proj = os.path.basename(project_directory)  # enable flask run
-    import_fix = f'logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n'
-
-    insert_text = ("\n# ApiLogicServer - enable flask fab create-admin\n"
-                   "import logic_bank_utils.util as logic_bank_utils\n"
-                   + import_fix +
-                   "\nimport database.models as models\n"
-                   + "from logic import declare_logic\n"
-                   + "from logic_bank.logic_bank import LogicBank\n"
-                   )
-    if db_url.endswith("nw.sqlite"):    # admin pre-installed for nw, no need to disable logic
-        insert_text += "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
-    else:                               # logic interferes with create-admin - disable it
-        insert_text += "# *** Enable the following after creating Flask AppBuilder Admin ***\n"
-        insert_text += "# LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
-    insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
-
-
 def fix_database_models__inject_db_types(project_directory: str, db_types: str):
     """ insert <db_types file> into database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
@@ -552,7 +532,7 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
     extended_builder.extended_builder(db_url, project_directory)  # extended_builder.MyClass()
 
 
-def invoke_creators(db_url, project_directory, model_creation_services: CreateFromModel):
+def invoke_creators(model_creation_services: CreateFromModel):
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
 
     print("4. Create api/expose_api_models.py (import / iterate models)")
@@ -560,34 +540,25 @@ def invoke_creators(db_url, project_directory, model_creation_services: CreateFr
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
-    creator.create(db_url, project_directory, model_creation_services)  # invoke create function
+    creator.create(model_creation_services)  # invoke create function
 
     print("5. Create ui/react_admin app (import / iterate models)")
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)
-    creator.create(db_url, project_directory, model_creation_services)
+    creator.create(model_creation_services)
 
     print("6. Create ui/basic_web_app (import / iterate models)")
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)
-    creator.create(db_url, project_directory, model_creation_services)
+    creator.create(model_creation_services)
 
     model_creation_services.app.teardown_appcontext(None)
     if model_creation_services.engine:
         model_creation_services.engine.dispose()
-
-
-def invoke_nw_tests(builder_path, db_url, project_directory):
-    # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
-    nw_tests_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/nw_tests.py')
-    spec = importlib.util.spec_from_file_location("module.name", nw_tests_path)
-    nw_tests = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(nw_tests)  # runs "bare" module code (e.g., initialization)
-    nw_tests.nw_tests(db_url, project_directory)  # extended_builder.MyClass()
 
 
 def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
@@ -637,7 +608,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin)
-    invoke_creators(db_url, project_directory, model_creation_services)
+    invoke_creators(model_creation_services)
     if extended_builder is not None and extended_builder != "":
         print(f'7. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
         invoke_extended_builder(extended_builder, db_url, project_directory)
@@ -648,10 +619,11 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if use_model == "":
         fix_database_models__import_models_ext(project_directory)
 
-    print("8. Update api_logic_server_run.py and config.py with project_name and db_url")  # BUG - db copied here! wrong abs_url
-    update_api_logic_server_run__and__config(project_name, project_directory, abs_db_url, host, port)
+    print(f'8. Update api_logic_server_run.py with '
+          f'project_name={project_name} and host, port')
+    update_api_logic_server_run(project_name, project_directory, host, port)
 
-    fix_host_and_ports("9. Fixing port / host", project_directory, host, port)
+    fix_host_and_ports("9. Fixing api/expose_services - port, host", project_directory, host, port)
 
     if open_with != "":
         start_open_with(open_with=open_with, project_name=project_name)
@@ -660,9 +632,6 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
         run_command(f'python {run_file} {host}',
                     msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
-
-        if db_url.endswith("nw.sqlite"):
-            invoke_nw_tests(builder_path=extended_builder, db_url=db_url, project_directory=project_directory)
 
     else:
         print("\nApiLogicServer customizable project created.  Next steps:")
@@ -710,7 +679,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t08/22/2021 - 02.03.05: Create react-admin app (tech exploration), cmdline debug fix\n"
+            "\t08/22/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
             "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
