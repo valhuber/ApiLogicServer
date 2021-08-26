@@ -35,6 +35,7 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #                          'sqlite:///' + os.path.join(basedir, 'app.db') + '?check_same_thread=False'
     SQLALCHEMY_DATABASE_URI = "replace_db_url"
+    # override SQLALCHEMY_DATABASE_URI here as required
 
     util.log(SQLALCHEMY_DATABASE_URI)
 

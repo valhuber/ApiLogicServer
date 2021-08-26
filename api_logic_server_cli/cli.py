@@ -9,6 +9,8 @@ See: main driver
 
 """
 
+__version__ = "2.04.02"
+
 import subprocess
 from os.path import abspath
 from os.path import realpath
@@ -17,7 +19,6 @@ from shutil import copyfile
 import shutil
 import importlib.util
 
-import logic_bank_utils.util as logic_bank_utils
 from flask import Flask
 
 import logging
@@ -28,14 +29,33 @@ import os
 import importlib
 import click
 
-(did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir="api_logic_server_cli", my_file=__file__)
 
-from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
+def get_api_logic_server_dir() -> str:
+    """
+    :return: ApiLogicServer dir, eg, /Users/val/dev/ApiLogicServer
+    """
+    running_at = Path(__file__)
+    python_path = running_at.parent.absolute()
+    return str(python_path)
 
-__version__ = "2.03.06"
 
-from api_logic_server_cli.expose_existing import expose_existing_callable
+running_at = Path(__file__)
+python_path = running_at.parent.absolute()
+python_path_container = python_path.parent.absolute()
+or_this_path = get_api_logic_server_dir()
+debug_path = True
+if debug_path:
+    print(f'\trunning_at:\t\t\t{running_at}'
+          f'\n\tpython_path:\t\t\t{python_path}'
+          f'\n\tpython_path_container:\t{python_path_container}'
+          f'\n\tor_this_path:\t\t{or_this_path}')
+
+sys.path.append(str(python_path))  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
+
+from create_from_model.model_creation_services import CreateFromModel
+
+import expose_existing.expose_existing_callable as expose_existing_callable
+import create_from_model.api_logic_server_utils as create_utils
 
 default_db = "<default -- nw.sqlite>"
 
@@ -87,16 +107,16 @@ def delete_dir(dir_path, msg):
     else:
         # https://stackoverflow.com/questions/22948189/how-to-solve-the-directory-is-not-empty-error-when-running-rmdir-command-in-a
         try:
-            remove_project = run_command(f'del /f /s /q {dir_path} 1>nul')
+            remove_project = create_utils.run_command(f'del /f /s /q {dir_path} 1>nul')
         except:
             pass
         try:
-            remove_project = run_command(f'rmdir /s /q {dir_path}')  # no prompt, no complaints if non-exists
+            remove_project = create_utils.run_command(f'rmdir /s /q {dir_path}')  # no prompt, no complaints if non-exists
         except:
             pass
 
 
-def run_command(cmd: str, env=None, msg: str = "") -> str:
+def run_command_zz(cmd: str, env=None, msg: str = "") -> str:
     """ run shell command
 
     :param cmd: string of command to execute
@@ -193,24 +213,24 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
     if from_git.startswith("https://"):
         cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
         cmd = f'git clone --quiet {from_git} {project_directory}'
-        result = run_command(cmd, msg=msg)  # "2. Create Project")
+        result = create_utils.run_command(cmd, msg=msg)  # "2. Create Project")
         delete_dir(f'{project_directory}/.git', "3.")
     else:
         from_dir = from_git
         if from_dir == "":
             code_loc = str(get_api_logic_server_dir())
             if "\\" in code_loc:
-                from_dir = code_loc + "\\api_logic_server_cli\\project_prototype"
+                from_dir = code_loc + "\\project_prototype"
             else:
-                from_dir = code_loc + "/api_logic_server_cli/project_prototype"
+                from_dir = code_loc + "/project_prototype"
         print(f'{msg} copy {from_dir} -> {project_directory}')
         cloned_from = from_dir
         shutil.copytree(from_dir, project_directory)
 
-    replace_string_in_file(search_for="creation-date",
+    create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
                            in_file=f'{project_directory}/readme.md')
-    replace_string_in_file(search_for="cloned-from",
+    create_utils.replace_string_in_file(search_for="cloned-from",
                            replace_with=cloned_from,
                            in_file=f'{project_directory}/readme.md')
 
@@ -219,7 +239,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
     copy_sqlite = True
     if copy_sqlite == False or "sqlite" not in abs_db_url:
         db_uri = get_windows_path_with_slashes(abs_db_url)
-        replace_string_in_file(search_for="replace_db_url",
+        create_utils.replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
     else:
@@ -235,9 +255,17 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
             target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
         db_uri = f'sqlite:///{target_db_loc_actual}'
         target_db_loc_actual = db_uri
-        replace_string_in_file(search_for="replace_db_url",
+        create_utils.replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
+        api_config_file_name = os.path.dirname(os.path.realpath(__file__)) +\
+                               "/create_from_model/templates/api_config.txt"
+        with open(api_config_file_name, 'r') as file:
+            api_config = file.read()
+        create_utils.insert_lines_at(lines=api_config,
+                                     at="override SQLALCHEMY_DATABASE_URI here as required",
+                                     file_name=f'{project_directory}/config.py')
+
         print(f'.. ..Copied sqlite db to: {target_db_loc_actual} and '
               f'updated db_uri in {project_directory}/config.py')
 
@@ -256,18 +284,8 @@ def create_basic_web_app(db_url, project_name, msg):  # remove
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-    result = run_command(cmd, msg=msg)
+    result = create_utils.run_command(cmd, msg=msg)
     pass
-
-
-def get_api_logic_server_dir() -> str:
-    """
-    :return: ApiLogicServer dir, eg, /Users/val/dev/ApiLogicServer
-    """
-    path = Path(__file__)
-    parent_path = path.parent
-    parent_path = parent_path.parent
-    return parent_path
 
 
 def create_models(db_url: str, project: str, use_model: str) -> str:
@@ -298,7 +316,6 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
         print(f'.. ..Copy {model_file} to {project + "/database/models.py"}')
         copyfile(model_file, project + '/database/models.py')
     else:
-        # import expose_existing.expose_existing_callable as expose_existing_callable
         code_gen_args = get_codegen_args()
         expose_existing_callable.codegen(code_gen_args)
         pass
@@ -318,28 +335,28 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
     """
     project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
     api_logic_server_run_py = f'{project_directory}/api_logic_server_run.py'
-    replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
+    create_utils.replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
                            replace_with='"' + os.path.basename(project_name) + '"',
                            in_file=api_logic_server_run_py)
-    replace_string_in_file(search_for="ApiLogicServer hello",
+    create_utils.replace_string_in_file(search_for="ApiLogicServer hello",
                            replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
                            in_file=api_logic_server_run_py)
     project_directory_fix = project_directory_actual
     if os.name == "nt":  # windows
         project_directory_fix = get_windows_path_with_slashes(str(project_directory_actual))
-    replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
+    create_utils.replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
                            replace_with='"' + project_directory_fix + '"',
                            in_file=api_logic_server_run_py)
-    replace_string_in_file(search_for="api_logic_server_host",  # server host
+    create_utils.replace_string_in_file(search_for="api_logic_server_host",  # server host
                            replace_with=host,
                            in_file=api_logic_server_run_py)
     replace_port = f', port="{port}"' if port else ""  # TODO: consider reverse proxy
 
-    replace_string_in_file(search_for="api_logic_server_version",
+    create_utils.replace_string_in_file(search_for="api_logic_server_version",
                            replace_with=__version__,
                            in_file=api_logic_server_run_py)
 
-    replace_string_in_file(search_for="api_logic_server_port",   # server port
+    create_utils.replace_string_in_file(search_for="api_logic_server_port",   # server port
                            replace_with=port,
                            in_file=api_logic_server_run_py)
     pass
@@ -381,7 +398,7 @@ def replace_server_startup_test_with_nw_server_startup_test(project_name):
     tests_file.close()
 
 
-def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
+def replace_string_in_file_zz(search_for: str, replace_with: str, in_file: str):
     with open(in_file, 'r') as file:
         file_data = file.read()
         file_data = file_data.replace(search_for, replace_with)
@@ -418,7 +435,7 @@ def fix_basic_web_app_run__python_path(project_directory):  # TODO remove these 
     project_ui_basic_web_app_run_file.close()
 
     proj = os.path.basename(project_directory)
-    replace_string_in_file(search_for="api_logic_server_project_directory",
+    create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
                            replace_with=proj,
                            in_file=f'{project_directory}/ui/basic_web_app/run.py')
 
@@ -433,12 +450,12 @@ def fix_basic_web_app_run__create_admin(project_directory):
     target_create_admin_sh_file.write(create_admin_commands)
     target_create_admin_sh_file.close()
 
-    replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
+    create_utils.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
                            replace_with=unix_project_name,
                            in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
 
-def insert_lines_at(lines: str, at: str, file_name: str):
+def insert_lines_at_zz(lines: str, at: str, file_name: str):
     """ insert <lines> into file_name after line with <str> """
     with open(file_name, 'r+') as fp:
         file_lines = fp.readlines()  # lines is list of lines, each element '...\n'
@@ -462,12 +479,12 @@ def fix_host_and_ports(msg, project_name, host, port):
     replace_port = f':{port}' if port else ""
     replace_with = host + replace_port
     in_file = f'{project_name}/api/expose_services.py'
-    replace_string_in_file(search_for="localhost:5000",
+    create_utils.replace_string_in_file(search_for="localhost:5000",
                            replace_with=replace_with,
                            in_file=in_file)
     print(f'.. ..Updated expose_services_py with port={port} and host={host}')
     full_path = os.path.abspath(project_name)
-    replace_string_in_file(search_for="python_anywhere_path",
+    create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
                            in_file=f'{project_name}/python_anywhere_wsgi.py')
     print(f'.. ..Updated python_anywhere_wsgi.py with {full_path}')
@@ -480,7 +497,7 @@ def fix_database_models__inject_db_types(project_directory: str, db_types: str):
         print(f'.. ..Injecting file {db_types} into database/models.py')
         with open(db_types, 'r') as file:
             db_types_data = file.read()
-        insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
+        create_utils.insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
 
 
 def fix_database_models__import_models_ext(project_directory: str):
@@ -496,7 +513,7 @@ def start_open_with(open_with: str, project_name: str):
     """ Creation complete.  Opening {open_with} at {project_name} """
     print(f'\nCreation complete - Opening {open_with} at {project_name}')
     print(".. See the readme for install / run instructions")
-    run_command(f'{open_with} {project_name}', None, "no-msg")
+    create_utils.run_command(f'{open_with} {project_name}', None, "no-msg")
 
 
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
@@ -536,21 +553,21 @@ def invoke_creators(model_creation_services: CreateFromModel):
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
 
     print("4. Create api/expose_api_models.py (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(model_creation_services)  # invoke create function
 
     print("5. Create ui/react_admin app (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)
     creator.create(model_creation_services)
 
     print("6. Create ui/basic_web_app (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/create_from_model')
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)
@@ -578,16 +595,16 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     abs_db_url = db_url
     if abs_db_url == "":
-        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
+        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
         print(f'0. Using demo default db_url: {abs_db_url}')
     if extended_builder == "*":
-        extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/extended_builder.py')
+        extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/extended_builder.py')
         print(f'0. Using default extended_builder: {extended_builder}')
     if db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         abs_db_url = abspath(url)
         if db_url == "sqlite:///nw.sqlite":
-            abs_db_url = f'{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
+            abs_db_url = f'{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
             print(f'0. Using dev demo default db_url: {abs_db_url}')
         abs_db_url = 'sqlite:///' + abs_db_url
         pass
@@ -630,7 +647,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     if run:
         run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
-        run_command(f'python {run_file} {host}',
+        create_utils.run_command(f'python {run_file} {host}',
                     msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
 
     else:
@@ -679,6 +696,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t08/25/2021 - 02.04.02: Docker foundation (work in Progess)\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
@@ -763,7 +781,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
     db_types = ""
     if db_url == default_db:
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
@@ -833,7 +851,7 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
 
     db_types = ""
     if db_url == default_db:
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/api_logic_server_cli/project_prototype_nw/nw.sqlite'
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,

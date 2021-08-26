@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from typing import NewType, List
 from sqlalchemy import MetaData
-from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
+import create_from_model.model_creation_services as create_from_model
 
 log = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ class ReactCreator(object):
     num_related = 0
 
     def __init__(self,
-                 mod_gen: CreateFromModel,
+                 mod_gen: create_from_model.CreateFromModel,
                  host: str = "localhost",
                  port: str = "5000",
                  not_exposed: str = 'ProductDetails_V',
@@ -140,10 +140,10 @@ class ReactCreator(object):
         component_template_file = str(self.get_create_from_model_dir())
         if "\\" in component_template_file:
             component_template_file = component_template_file +\
-                                      "\\create_from_model\\react_admin_templates\\component_template.js"
+                                      "\\create_from_model\\templates\\react_admin_component.js"
         else:
             component_template_file = component_template_file +\
-                                      "/create_from_model/react_admin_templates/component_template.js"
+                                      "/create_from_model/templates/react_admin_component.js"
 
         to_component = self.mod_gen.project_directory
         if "\\" in to_component:
@@ -379,7 +379,7 @@ class ReactCreator(object):
         pass
 
 
-def create(model_creation_services: CreateFromModel):
+def create(model_creation_services: create_from_model.CreateFromModel):
     """ called by ApiLogicServer CLI -- creates ui/react_admin application
     """
     if model_creation_services.react_admin:

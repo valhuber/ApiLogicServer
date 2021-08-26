@@ -17,8 +17,7 @@ from io import StringIO
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 from flask_cors import CORS
-
-from api_logic_server_cli.expose_existing.sqlacodegen.sqlacodegen.codegen import CodeGenerator
+from expose_existing.sqlacodegen.sqlacodegen.codegen import CodeGenerator
 
 MODEL_DIR = tempfile.mkdtemp()  # directory where the generated models.py will be saved
 on_import = False

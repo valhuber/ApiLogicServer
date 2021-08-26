@@ -3,7 +3,8 @@ import sys
 import os
 import datetime
 from typing import NewType
-from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
+
+import create_from_model.model_creation_services as create_from_model
 
 log = logging.getLogger(__name__)
 
@@ -65,7 +66,7 @@ def create_expose_api_models(model_creation_services, version=__version__):
     return
 
 
-def create(model_creation_services: CreateFromModel):
+def create(model_creation_services: create_from_model.CreateFromModel):
     """ called by ApiLogicServer CLI -- creates api/expose_api_models.py, key input to SAFRS
     """
     create_expose_api_models(model_creation_services)

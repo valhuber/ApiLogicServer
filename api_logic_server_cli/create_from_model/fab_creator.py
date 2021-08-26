@@ -6,7 +6,7 @@ from os.path import abspath
 from typing import NewType
 from sqlalchemy import MetaData
 from flask import Flask
-import api_logic_server_cli.cli as cli
+import create_from_model.api_logic_server_utils as create_utils
 from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
 
 log = logging.getLogger(__name__)
@@ -278,7 +278,7 @@ class FabCreator(object):
         project_abs_path = abspath(self.mod_gen.project_directory)
         fab_project = project_abs_path + "/ui/basic_web_app"
         cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-        result = cli.run_command(cmd, msg=msg)
+        result = create_utils.run_command(cmd, msg=msg)
         pass
 
     def fix_basic_web_app_run__python_path(self):
@@ -290,7 +290,7 @@ class FabCreator(object):
         project_ui_basic_web_app_run_file.close()
 
         proj = os.path.basename(self.mod_gen.project_directory)
-        cli.replace_string_in_file(search_for="api_logic_server_project_directory",
+        create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
                                    replace_with=proj,
                                    in_file=f'{self.mod_gen.project_directory}/ui/basic_web_app/run.py')
 
@@ -299,16 +299,17 @@ class FabCreator(object):
 
         unix_project_name = self.mod_gen.project_directory.replace('\\', "/")
         target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
-        source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.sh")
+        source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/templates/create_admin.sh")
         create_admin_commands = source_create_admin_sh_file.read()
         target_create_admin_sh_file.write(create_admin_commands)
         target_create_admin_sh_file.close()
 
-        cli.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
+        create_utils.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
                                    replace_with=unix_project_name,
                                    in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
     def fix_basic_web_app_app_init__inject_logic(self):
+        """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
         """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
         file_name = f'{self.mod_gen.project_directory}/ui/basic_web_app/app/__init__.py'
         proj = os.path.basename(self.mod_gen.project_directory)  # enable flask run
@@ -326,14 +327,33 @@ class FabCreator(object):
         else:  # logic interferes with create-admin - disable it
             insert_text += "# *** Enable the following after creating Flask AppBuilder Admin ***\n"
             insert_text += "# LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
-        cli.insert_lines_at(lines=insert_text, at="appbuilder = AppBuilder(app, db.session)", file_name=file_name)
+        create_utils.insert_lines_at(lines=insert_text,
+                                     at="appbuilder = AppBuilder(app, db.session)",
+                                     file_name=file_name)
 
-    def prepare_flask_appbuilder(self, msg: str):
+    def fix_config(self):
+        """ add abs_db_url to config
+
+        constant for sqlite, per copy db to <project>/database
+        """
+
+        config_file_name = f'{self.mod_gen.project_directory}/ui/basic_web_app/config.py'
+        create_utils.replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
+                                            replace_with='"' + self.mod_gen.abs_db_url + '"',
+                                            in_file=config_file_name)
+        if "sqlite" in self.mod_gen.abs_db_url:
+            fab_config_file_name = os.path.dirname(os.path.realpath(__file__)) + "/templates/fab_config.py"
+            with open(fab_config_file_name, 'r') as file:
+                fab_config = file.read()
+            create_utils.insert_lines_at(lines=fab_config,
+                                          at="postgresql://root:password@localhost/myapp",
+                                          file_name=config_file_name)
+        pass
+
+
+    def prepare_flask_app_builder(self, msg: str):
         """ 8. Writing: /ui/basic_web_app/app/views.py """
         # SQLALCHEMY_DATABASE_URI = "sqlite:////Users/val/dev/servers/api_logic_server/database/db.sqlite"
-        cli.replace_string_in_file(search_for='"sqlite:///" + os.path.join(basedir, "app.db")',
-                                   replace_with='"' + self.mod_gen.abs_db_url + '"',
-                                   in_file=f'{self.mod_gen.project_directory}/ui/basic_web_app/config.py')
         print(msg)  # 8. Writing: /ui/basic_web_app/app/views.py
         text_file = open(self.mod_gen.project_directory + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(self.result_views)
@@ -344,11 +364,12 @@ class FabCreator(object):
         self.fix_basic_web_app_run__python_path()
         self.fix_basic_web_app_run__create_admin()
         self.fix_basic_web_app_app_init__inject_logic()
+        self.fix_config()
 
     def create_basic_web_app(self):
         self.create_basic_web_app_directory(".. ..Create ui/basic_web_app")
         self.generate_ui_views()
-        self.prepare_flask_appbuilder(msg=".. ..Writing: /ui/basic_web_app/app/views.py")
+        self.prepare_flask_app_builder(msg=".. ..Writing: /ui/basic_web_app/app/views.py")
         log.debug(f'create_from_model.fab_creator("{self.mod_gen.db_url}", "{self.mod_gen.project_directory}" Completed')
 
 
