@@ -2,8 +2,13 @@
 # python ui/basic_web_app/run.py
 
 # Export PYTHONPATH, to enable python ui/basic_web_app/run.py
-import logic_bank_utils.util as logic_bank_utils
-logic_bank_utils.add_python_path(project_dir="api_logic_server_project_directory", my_file=__file__)
+import os, sys
+from pathlib import Path
+current_path = Path(os.path.abspath(os.path.dirname(__file__)))
+current_path = current_path.parent.absolute()  # ui
+current_path = current_path.parent.absolute()  # project
+project_dir = str(current_path)
+sys.path.append(project_dir)
 
 # args for help
 import sys

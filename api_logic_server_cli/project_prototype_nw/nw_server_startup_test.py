@@ -3,6 +3,7 @@ import requests
 import logging
 import util
 import subprocess
+import socket
 
 server_tests_enabled = True  # use True to invoke server_tests on server startup
 
@@ -167,12 +168,15 @@ def server_tests(host, port, version):
             f'All from just 5 rules in ({get_project_dir()}/logic/logic_bank.py)\n\n')
 
     if api_logic_server_summary:
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+
         util.log(f'\nAPILOGICSERVER SUMMARY')
         util.log(f'======================\n')
         prt(f''
             f'1. CUSTOMIZABLE SERVER PROJECT CREATED from supplied Sample DB\n'
             f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
-            f'2. SERVER STARTED\n'
+            f'2. SERVER STARTED on host: {hostname}, on ip (gethostbyname): {local_ip}\n'
             f'     .. Explore your API - Swagger at http://{host}:{port}\n'
             f'     .. Re-run it later (without recreating) - python api_logic_server_run.py\n'
             f'3. LOGIC pre-supplied\n'

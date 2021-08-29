@@ -288,6 +288,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+08/29/2021 - 02.04.07: Docker foundation, improved Python path handling
+
 08/25/2021 - 02.04.00: Docker foundation (work in progress)
 
 08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix (Issue 17)

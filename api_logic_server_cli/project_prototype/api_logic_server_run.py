@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-  ApiLogicServer v 02.03.00
+  ApiLogicServer v 02.04.07
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
   This will run on http://Listener-Ip:5000
 
 """
+import os
 import sys
 if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
@@ -30,10 +31,9 @@ from sqlalchemy.orm import Session
 from api import expose_api_models, expose_services
 from logic import logic_bank
 
-project_name = "api_logic_server_project_name"
-project_dir = "api_logic_server_project_dir"
-(did_fix_path, sys_env_info) = \
-    logic_bank_utils.add_python_path(project_dir=project_name, my_file=__file__)
+current_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(current_path)
+project_dir = str(current_path)
 
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
