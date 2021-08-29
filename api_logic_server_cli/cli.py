@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "2.04.03"
+__version__ = "2.04.06"
 
 import subprocess
 from os.path import abspath
@@ -651,10 +651,15 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                     msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
 
     else:
-        print("\nApiLogicServer customizable project created.  Next steps:")
+        print("\n\nApiLogicServer customizable project created.  Next steps:")
+        print("\nFor Local install, just run:")
         print(f'..cd {project_name}')
         print(f'..python api_logic_server_run.py')
         print(f'..python ui/basic_web_app/run.py')
+        print("\nFor Docker container, copy project to local machine, e.g.")
+        print(f'..cp {project_name} /mnt/servers/. -r')
+        print(f'..python /mnt/servers/{project_name}/api_logic_server_run.py {host}')
+        print("\n\n")
 
 
 @click.group()

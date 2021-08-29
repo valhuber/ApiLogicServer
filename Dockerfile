@@ -1,5 +1,5 @@
-# docker build -t api_logic_server --rm .
-# docker tag api_logic_server apilogicserver/api_logic_server
+# docker build -t apilogicserver/api_logic_server --rm .
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server
 # docker push apilogicserver/api_logic_server
 FROM python:3.8-slim
 RUN useradd --create-home --shell /bin/bash api_logic_server
