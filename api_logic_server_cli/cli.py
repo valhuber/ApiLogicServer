@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "2.04.07"
+__version__ = "2.04.08"
 
 import subprocess
 from os.path import abspath
@@ -701,7 +701,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t08/29/2021 - 02.04.07: Docker foundation, improved Python path handling\n"
+            "\t08/29/2021 - 02.04.08: Docker foundation, improved Python path handling, IDE files\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
