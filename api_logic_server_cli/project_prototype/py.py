@@ -21,7 +21,8 @@ def show(cmd: str):
         spaces = ' ' * tab_to
         print(f'{cmd}: {spaces}{result}')
     except Exception as e:
-        print(f'Failed: {cmd} - str(e)')
+        # print(f'Failed: {cmd} - {str(e)}')
+        pass
 
 
 def python_status():
