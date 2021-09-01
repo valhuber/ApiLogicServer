@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-  ApiLogicServer v 02.04.07
+  ApiLogicServer v api_logic_server_version
+
+  Created on api_logic_server_created_on
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
@@ -21,12 +23,12 @@ import time
 import requests
 from typing import TypedDict
 
-import logic_bank_utils.util as logic_bank_utils
 import safrs
 from logic_bank.logic_bank import LogicBank
 from logic_bank.exec_row_logic.logic_row import LogicRow
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
+import socket
 
 from api import expose_api_models, expose_services
 from logic import logic_bank
@@ -112,10 +114,37 @@ def create_app(config_filename=None, host="localhost"):
 
     return flask_app, safrs_api
 
+""" old code - remove
+host = sys.argv[1] if sys.argv[1:] \
+    else local_ip  # "api_logic_server_host"  # 127.0.0.1 verify in swagger or your client.
+"""
 
 # address where the api will be hosted, change this if you're not running the app on localhost!
-host = sys.argv[1] if sys.argv[1:] \
-    else "api_logic_server_host"  # 127.0.0.1 verify in swagger or your client.  You wight need cors support.
+network_diagnostics = True
+hostname = socket.gethostname()
+local_ip = socket.gethostbyname(hostname)
+if local_ip != "api_logic_server_host" and "localhost" != "api_logic_server_host":
+    print(f'==> Network diagnostic - Warning -- local_ip ({local_ip}) != "api_logic_server_host"')
+if sys.argv[1:]:
+    host = sys.argv[1]  # you many need to enable cors support, below
+    if network_diagnostics:
+        print(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
+    if host == "docker":
+        host = "localhost"
+        print(f'==> Network Diagnostic - docker = {host}')
+    if host == "SWAGGER_HOST":
+        host = os.getenv('SWAGGER_HOST', "0.0.0.0")
+        print(f'==> Network Diagnostic - SWAGGER_HOST = {host}')
+    if host == "dockerhost":
+        host = "0.0.0.0"
+        print(f'==> Network Diagnostic - dockerhost using {host}')
+    if host == "dockerip":
+        host = local_ip
+        print(f'==> Network Diagnostic - dockerip using {host}')
+else:
+    host = "0.0.0.0"  # local_ip?  local_host?
+    if network_diagnostics:
+        print(f'==> Network Diagnostic - using default ip: 0.0.0.0')
 port = "api_logic_server_port"
 flask_app, safrs_api = create_app(host=host)
 
@@ -152,6 +181,24 @@ def after_request(response):
     return response
 
 
+""" enable for cors support
+@flask_app.after_request
+def after_request(response):
+    '''
+    Enable CORS. Disable it if you don't need CORS or install Cors Libaray
+    https://parzibyte.me/blog
+    '''
+    response.headers[
+        "Access-Control-Allow-Origin"] = "*"  # <- You can change "*" for a domain for example "http://localhost"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE, PATCH"
+    response.headers["Access-Control-Allow-Headers"] = \
+        "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+    # print(f'cors aftter_request - response: {str(response)}')
+    return response
+"""
+
+
 @flask_app.before_first_request
 def run_before_first_request():
     ''' start_runner pings server, starts this (1 ping only, Visily)
@@ -173,7 +220,7 @@ def one_ping_on_server_start_for_server_start_tests():
         not_started = True
         while not_started:
             try:
-                r = requests.get('http://127.0.0.1:5000/')
+                r = requests.get(f'http://{host}:5000/')
                 if r.status_code == 200:
                     not_started = False
             except:

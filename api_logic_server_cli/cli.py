@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "2.04.09"
+__version__ = "2.04.12"
 
 import subprocess
 from os.path import abspath
@@ -38,19 +38,22 @@ def get_api_logic_server_dir() -> str:
     python_path = running_at.parent.absolute()
     return str(python_path)
 
+dup_code = False
+if not dup_code:
+    pass
+else:
+    running_at = Path(__file__)
+    python_path = running_at.parent.absolute()
+    python_path_container = python_path.parent.absolute()
+    or_this_path = get_api_logic_server_dir()
+    debug_path = True
+    if debug_path:
+        print(f'\trunning_at:\t\t\t{running_at}'
+              f'\n\tpython_path:\t\t\t{python_path}'
+              f'\n\tpython_path_container:\t{python_path_container}'
+              f'\n\tor_this_path:\t\t{or_this_path}')
 
-running_at = Path(__file__)
-python_path = running_at.parent.absolute()
-python_path_container = python_path.parent.absolute()
-or_this_path = get_api_logic_server_dir()
-debug_path = True
-if debug_path:
-    print(f'\trunning_at:\t\t\t{running_at}'
-          f'\n\tpython_path:\t\t\t{python_path}'
-          f'\n\tpython_path_container:\t{python_path_container}'
-          f'\n\tor_this_path:\t\t{or_this_path}')
-
-sys.path.append(str(python_path))  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
+sys.path.append(get_api_logic_server_dir())  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
 
 from create_from_model.model_creation_services import CreateFromModel
 
@@ -114,45 +117,6 @@ def delete_dir(dir_path, msg):
             remove_project = create_utils.run_command(f'rmdir /s /q {dir_path}')  # no prompt, no complaints if non-exists
         except:
             pass
-
-
-def run_command_zz(cmd: str, env=None, msg: str = "") -> str:
-    """ run shell command
-
-    :param cmd: string of command to execute
-    :param env:
-    :param msg: optional message (no-msg to suppress)
-    :return:
-    """
-    log_msg = ""
-    if msg != "Execute command:":
-        log_msg = msg + " with command:"
-    if msg != "no-msg":
-        print(f'{log_msg} {cmd}')
-
-    use_env = env
-    if env is None:
-        project_dir = get_api_logic_server_dir()
-        python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
-        use_env = os.environ.copy()
-        # print("\n\nFixing env for cmd: " + cmd)
-        if hasattr(use_env, "PYTHONPATH"):
-            use_env["PYTHONPATH"] = python_path + ":" + use_env["PYTHONPATH"]  # eg, /Users/val/dev/ApiLogicServer/venv/lib/python3.9
-            # print("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
-        else:
-            use_env["PYTHONPATH"] = python_path
-            # print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
-    use_env_debug = False  # not able to get this working
-    if use_env_debug:
-        result_b = subprocess.check_output(cmd, shell=True, env=use_env)
-    else:
-        result_b = subprocess.check_output(cmd, shell=True)  # , stderr=subprocess.STDOUT)  loses all logging
-    result = str(result_b)  # b'pyenv 1.2.21\n'
-    result = result[2: len(result) - 3]
-    tab_to = 20 - len(cmd)
-    spaces = ' ' * tab_to
-    if result != "" and result != "Downloaded the skeleton app, good coding!":
-        print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
 def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
@@ -356,6 +320,10 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
                            replace_with=__version__,
                            in_file=api_logic_server_run_py)
 
+    create_utils.replace_string_in_file(search_for="api_logic_server_created_on",
+                           replace_with=str(datetime.datetime.now()),
+                           in_file=api_logic_server_run_py)
+
     create_utils.replace_string_in_file(search_for="api_logic_server_port",   # server port
                            replace_with=port,
                            in_file=api_logic_server_run_py)
@@ -396,14 +364,6 @@ def replace_server_startup_test_with_nw_server_startup_test(project_name):
     nw_tests_file_data = nw_tests_file.read()
     tests_file.write(nw_tests_file_data)
     tests_file.close()
-
-
-def replace_string_in_file_zz(search_for: str, replace_with: str, in_file: str):
-    with open(in_file, 'r') as file:
-        file_data = file.read()
-        file_data = file_data.replace(search_for, replace_with)
-    with open(in_file, 'w') as file:
-        file.write(file_data)
 
 
 def get_windows_path_with_slashes(url: str) -> str:
@@ -453,24 +413,6 @@ def fix_basic_web_app_run__create_admin(project_directory):
     create_utils.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
                            replace_with=unix_project_name,
                            in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
-
-
-def insert_lines_at_zz(lines: str, at: str, file_name: str):
-    """ insert <lines> into file_name after line with <str> """
-    with open(file_name, 'r+') as fp:
-        file_lines = fp.readlines()  # lines is list of lines, each element '...\n'
-        found = False
-        insert_line = 0
-        for each_line in file_lines:
-            if at in each_line:
-                found = True
-                break
-            insert_line += 1
-        if not found:
-            raise Exception(f'Internal error - unable to find insert: {at}')
-        file_lines.insert(insert_line, lines)  # you can use any index if you know the line index
-        fp.seek(0)  # file pointer locates at the beginning to write the whole file again
-        fp.writelines(file_lines)  # write whole list again to the same file
 
 
 def fix_host_and_ports(msg, project_name, host, port):
@@ -624,7 +566,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
         favorite_names=favorites, non_favorite_names=non_favorites,
-        react_admin=react_admin)
+        react_admin=react_admin, version = __version__)
     invoke_creators(model_creation_services)
     if extended_builder is not None and extended_builder != "":
         print(f'7. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
@@ -658,7 +600,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         print(f'..python ui/basic_web_app/run.py')
         print("\nFor Docker container, copy project to local machine, e.g.")
         print(f'..cp {project_name} /mnt/servers/. -r')
-        print(f'..python /mnt/servers/{project_name}/api_logic_server_run.py {host}')
+        print(f'..python /mnt/servers/{project_name}/api_logic_server_run.py 0.0.0.0')
         print("\n\n")
 
 

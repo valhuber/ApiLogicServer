@@ -57,7 +57,8 @@ class CreateFromModel(object):
                  react_admin: bool=True,
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
-                 non_favorite_names: str = "id"):
+                 non_favorite_names: str = "id",
+                 version: str = "0.0.0"):
         self.project_directory = self.get_windows_path_with_slashes(project_directory)
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
         self.db_url = db_url  # the original cli parameter
@@ -68,6 +69,7 @@ class CreateFromModel(object):
         self.non_favorite_names = non_favorite_names
         self.flask_appbuilder = flask_appbuilder
         self.react_admin = react_admin
+        self.version = version
 
         self.table_to_class_map = {}
         """ keys are table[.column], values are class / attribute """

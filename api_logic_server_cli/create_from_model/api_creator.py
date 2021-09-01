@@ -14,24 +14,30 @@ MetaDataTable = NewType('MetaDataTable', object)
 __version__ = "0.0"
 
 
-def create_expose_api_models(model_creation_services, version=__version__):
+def create_expose_api_models(model_creation_services):
     """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
     cwd = os.getcwd()
-    result_apis = '"""'
-    result_apis += ("\nApiLogicServer Generate From Model " + version + "\n\n"
-                                            # + "From: " + sys.argv[0] + "\n\n"
-                                            + "Using Python: " + sys.version + "\n\n"
-                                            + "At: " + str(datetime.datetime.now()) + "\n\n"
-                                            + '"""\n\n')
+    result_apis = ''
+    '''
+    result_apis += '"""'
+    result_apis += ("\nApiLogicServer Generate From Model "
+                    + model_creation_services.version + "\n\n"
+                    # + "From: " + sys.argv[0] + "\n\n"
+                    + "Using Python: " + sys.version + "\n\n"
+                    + "At: " + str(datetime.datetime.now()) + "\n\n"
+                    + '"""\n\n')
+    '''
     port_replace = model_creation_services.port if model_creation_services.port else "None"
     result_apis += \
-        f'def expose_models(app, HOST="{model_creation_services.host}", PORT={port_replace}, API_PREFIX="/api"):\n'
-    result_apis += '    """ called by api_logic_server_run.py """\n\n'
-    result_apis += \
-        '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
+        f'\n\ndef expose_models(app, HOST="{model_creation_services.host}", PORT={port_replace}, API_PREFIX="/api"):\n'
+    result_apis += '    my_host = HOST\n'
+    result_apis += '    if HOST == "0.0.0.0":\n'
+    result_apis += '        my_host = "localhost"  # arg not working on pc, temp fix"\n'
+    result_apis += '    print(f"DEBUG - expose_api_models HOST = <{HOST}>, using my_host = <{my_host}>")\n'
+    result_apis += '    api = SAFRSAPI(app, host=my_host, port=PORT)\n'
 
-    sys.path.append(cwd)  # for banking Command Line test
+    sys.path.append(cwd)
 
     model_creation_services.find_meta_data(cwd, log_info=True)  # sets self.metadata
     meta_tables = model_creation_services.metadata.tables

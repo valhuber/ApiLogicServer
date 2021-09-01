@@ -41,9 +41,6 @@ def python_status():
     local_ip = socket.gethostbyname(hostname)
     print(f'hostname: {hostname}, local_ip (gethostbyname): {local_ip}')
     print("")
-    show("sh ApiLogicServer version")
-    print("")
-
 
 if __name__ == '__main__':
     python_status()
