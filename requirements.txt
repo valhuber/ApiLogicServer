@@ -17,3 +17,4 @@ LogicBank>=1.0.0
 PyMySQL
 cryptography
 requests
+gunicorn

@@ -114,38 +114,9 @@ def create_app(config_filename=None, host="localhost"):
 
     return flask_app, safrs_api
 
-""" old code - remove
-host = sys.argv[1] if sys.argv[1:] \
-    else local_ip  # "api_logic_server_host"  # 127.0.0.1 verify in swagger or your client.
-"""
 
-# address where the api will be hosted, change this if you're not running the app on localhost!
-network_diagnostics = True
-hostname = socket.gethostname()
-local_ip = socket.gethostbyname(hostname)
-if local_ip != "api_logic_server_host" and "localhost" != "api_logic_server_host":
-    print(f'==> Network diagnostic - Warning -- local_ip ({local_ip}) != "api_logic_server_host"')
-if sys.argv[1:]:
-    host = sys.argv[1]  # you many need to enable cors support, below
-    if network_diagnostics:
-        print(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
-    if host == "docker":
-        host = "localhost"
-        print(f'==> Network Diagnostic - docker = {host}')
-    if host == "SWAGGER_HOST":
-        host = os.getenv('SWAGGER_HOST', "0.0.0.0")
-        print(f'==> Network Diagnostic - SWAGGER_HOST = {host}')
-    if host == "dockerhost":
-        host = "0.0.0.0"
-        print(f'==> Network Diagnostic - dockerhost using {host}')
-    if host == "dockerip":
-        host = local_ip
-        print(f'==> Network Diagnostic - dockerip using {host}')
-else:
-    host = "0.0.0.0"  # local_ip?  local_host?
-    if network_diagnostics:
-        print(f'==> Network Diagnostic - using default ip: 0.0.0.0')
-port = "api_logic_server_port"
+host = "172.16.17.12"
+port = "5000"
 flask_app, safrs_api = create_app(host=host)
 
 
