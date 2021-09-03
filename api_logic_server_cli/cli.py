@@ -11,6 +11,7 @@ See: main driver
 
 __version__ = "2.04.15"
 
+import socket
 import subprocess
 from os.path import abspath
 from os.path import realpath
@@ -883,5 +884,8 @@ if __name__ == '__main__':  # debugger & python command line start here
     print_info()
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
-        print_args(commands, f'API Logic Server CLI Utility, {__version__} -- Command Line Arguments:')
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+        print_args(commands, f'API Logic Server CLI Utility, '
+                             f'{__version__} at {local_ip }-- Command Line Arguments:')
     main()
