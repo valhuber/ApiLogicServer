@@ -13,3 +13,4 @@ flask-appbuilder
 PyMySQL
 cryptography
 requests
+gunicorn

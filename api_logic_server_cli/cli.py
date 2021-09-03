@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "2.04.12"
+__version__ = "2.04.15"
 
 import subprocess
 from os.path import abspath
@@ -158,6 +158,23 @@ def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
+def copy_if_mounted(project_directory):
+    """
+    fab is unable to create-app in mounted path
+    so, if mounted, create files in "created_project" and later copy to project_directory
+
+    :param project_directory: name of project created
+    :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
+    """
+    return_project_directory = project_directory
+    return_copy_to_directory = ""
+    if os.name == "posix":  # mac, docker...
+        if project_directory.startswith("/local/"):  # TODO: https://www.baeldung.com/linux/bash-is-directory-mounted
+            return_project_directory = "/home/api_logic_server/created_project"
+            return_copy_to_directory = project_directory
+    return return_project_directory, return_copy_to_directory
+
+
 def clone_prototype_project_with_nw_samples(project_directory: str, from_git: str, msg: str, abs_db_url: str) -> str:
     """
     clone prototype to create and remove git folder
@@ -167,7 +184,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
     :param project_directory: name of project created
     :param from_git: name of git project to clone (blank for default)
     :param abs_db_url: non-relative location of db
-    :return: abs_db_url (e.g., result of sqlite copy)
+    :return: abs_db_url (e.g., reflects sqlite copy)
     """
     cloned_from = from_git
     remove_project_debug = True
@@ -240,7 +257,6 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         replace_models_ext_with_nw_models_ext(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
         replace_server_startup_test_with_nw_server_startup_test(project_directory)
-
     return target_db_loc_actual
 
 
@@ -321,7 +337,7 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
                            in_file=api_logic_server_run_py)
 
     create_utils.replace_string_in_file(search_for="api_logic_server_created_on",
-                           replace_with=str(datetime.datetime.now()),
+                           replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
                            in_file=api_logic_server_run_py)
 
     create_utils.replace_string_in_file(search_for="api_logic_server_port",   # server port
@@ -554,6 +570,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     project_directory = resolve_home(project_name)
     """user-supplied project_name, less the twiddle. Typically relative to cwd. """
 
+    project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
     abs_db_url = clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", abs_db_url)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
@@ -571,10 +588,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if extended_builder is not None and extended_builder != "":
         print(f'7. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
         invoke_extended_builder(extended_builder, db_url, project_directory)
-    # model_creation_services.generate_api_expose_and_ui_views()  # sets create_from_model.result_apis & result_views
 
-    # print("6. Writing: /api/expose_api_models.py")
-    # write_expose_api_models(project_directory, model_creation_services.result_apis)
     if use_model == "":
         fix_database_models__import_models_ext(project_directory)
 
@@ -593,15 +607,20 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                     msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
 
     else:
+        if copy_to_project_directory != "":
+            # print(f'10. Copy created_project to {copy_to_project_directory} ')
+            delete_dir(copy_to_project_directory, f'10. Copy created_project over {copy_to_project_directory} ')
+            shutil.copytree("created_project", copy_to_project_directory)
         print("\n\nApiLogicServer customizable project created.  Next steps:")
         print("\nFor Local install, just run:")
-        print(f'..cd {project_name}')
-        print(f'..python api_logic_server_run.py')
-        print(f'..python ui/basic_web_app/run.py')
-        print("\nFor Docker container, copy project to local machine, e.g.")
-        print(f'..cp {project_name} /mnt/servers/. -r')
-        print(f'..python /mnt/servers/{project_name}/api_logic_server_run.py 0.0.0.0')
-        print("\n\n")
+        print(f'  cd {project_name}')
+        print(f'  python api_logic_server_run.py')
+        print(f'  python ui/basic_web_app/run.py')
+        print("\nFor Docker container:")
+        if project_directory.endswith("api_logic_server"):
+            print(f'  copy project to local machine, e.g. cp {project_name} /local/servers/. -r')
+        print(f'  python {project_name}/api_logic_server_run.py')  # defaults to host 0.0.0.0
+        print("\n")
 
 
 @click.group()
@@ -643,7 +662,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t08/29/2021 - 02.04.09: Docker foundation, improved Python path handling, IDE files\n"
+            "\t09/02/2021 - 02.04.15: Docker foundation, improved Python path handling, IDE files, auto copy\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
@@ -864,5 +883,5 @@ if __name__ == '__main__':  # debugger & python command line start here
     print_info()
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
-        print_args(commands, "Utility / Main - Command Line Arguments:")
+        print_args(commands, f'API Logic Server CLI Utility, {__version__} -- Command Line Arguments:')
     main()

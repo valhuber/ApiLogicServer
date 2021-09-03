@@ -3,16 +3,12 @@
 # docker push apilogicserver/api_logic_server
 #
 # https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker
-# docker run -it --name api_logic_server --rm -p 5000:5000 -v ~/dev/servers:/mnt/servers apilogicserver/api_logic_server
-# sh ApiLogicServer.sh create --host=172.17.0.2 --project_name=docker_project  #
-# cp docker_project /mnt/servers/. -r  # copy it to local machine
-# python /mnt/servers/docker_project/api_logic_server_run.py 0.0.0.0
-# no url: swagger at 127, get times out
 #
-# defaulting host to 0.0.0.0 works locally, mac docker, BUT NOT WINDOWS
-# sh ApiLogicServer.sh create --project_name=docker_project  # create project on docker container
-# cp docker_project /mnt/servers/. -r  # copy it to local machine
-# python /mnt/servers/docker_project/api_logic_server_run.py
+# docker run -it --name api_logic_server --rm -p 5000:5000 -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
+# The software auto-prompts you for the next steps:
+#     sh ApiLogicServer.sh create --project_name=docker_project  # create project on docker container (for fab)
+#     python /local/servers/docker_project/api_logic_server_run.py
+
 
 FROM python:3.8-slim
 RUN useradd --create-home --shell /bin/bash api_logic_server
