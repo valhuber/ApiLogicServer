@@ -887,5 +887,5 @@ if __name__ == '__main__':  # debugger & python command line start here
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
         print_args(commands, f'API Logic Server CLI Utility, '
-                             f'{__version__} at {local_ip }-- Command Line Arguments:')
+                             f'version {__version__} at {local_ip} -- Command Line Arguments:')
     main()
