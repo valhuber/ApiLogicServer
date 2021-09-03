@@ -8,6 +8,10 @@
 # The software auto-prompts you for the next steps:
 #     sh ApiLogicServer.sh create --project_name=docker_project  # create project on docker container (for fab)
 #     python /local/servers/docker_project/api_logic_server_run.py
+#
+# Needs research - run defaults to 0.0.0.0 in api_logic_server_run, overridden to localhost in api/expose_api_models
+#     So, why doesn't this work on windows?
+#     python /local/servers/docker_project/api_logic_server_run.py localhost
 
 
 FROM python:3.8-slim
