@@ -2,7 +2,7 @@
 """
   ApiLogicServer v api_logic_server_version
 
-  Created on api_logic_server_created_on
+  Created on api_logic_server_created_on GMT
 
   $ python3 api_logic_server_run.py [Listener-IP]
 

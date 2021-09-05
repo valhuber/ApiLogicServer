@@ -6,8 +6,8 @@ echo "Optionally verify your environment..."
 echo " "
 echo "  python py.py                  # report Python environment..."
 echo "  sh ApiLogicServer.sh version  # report ApiLogic Server version"
+python py.py
 
-echo " "
 echo " "
 echo "Typical next step..."
 echo " "

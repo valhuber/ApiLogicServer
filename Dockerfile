@@ -4,7 +4,9 @@
 #
 # https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker
 #
+# docker run -it --name api_logic_server --rm -p 5000:5000 -v ~/dev/docker_servers:/local/servers apilogicserver/api_logic_server
 # docker run -it --name api_logic_server --rm -p 5000:5000 -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
+
 # The software auto-prompts you for the next steps:
 #     sh ApiLogicServer.sh create --project_name=docker_project  # create project on docker container (for fab)
 #     python /local/servers/docker_project/api_logic_server_run.py

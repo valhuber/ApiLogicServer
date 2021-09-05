@@ -9,7 +9,8 @@ See: main driver
 
 """
 
-__version__ = "2.04.15"
+__version__ = "2.04.18"
+temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
 import subprocess
@@ -157,23 +158,6 @@ def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
     spaces = ' ' * tab_to
     if result != "" and result != "Downloaded the skeleton app, good coding!":
         print(f'{log_msg} {cmd} result: {spaces}{result}')
-
-
-def copy_if_mounted(project_directory):
-    """
-    fab is unable to create-app in mounted path
-    so, if mounted, create files in "created_project" and later copy to project_directory
-
-    :param project_directory: name of project created
-    :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
-    """
-    return_project_directory = project_directory
-    return_copy_to_directory = ""
-    if os.name == "posix":  # mac, docker...
-        if project_directory.startswith("/local/"):  # TODO: https://www.baeldung.com/linux/bash-is-directory-mounted
-            return_project_directory = "/home/api_logic_server/created_project"
-            return_copy_to_directory = project_directory
-    return return_project_directory, return_copy_to_directory
 
 
 def clone_prototype_project_with_nw_samples(project_directory: str, from_git: str, msg: str, abs_db_url: str) -> str:
@@ -475,6 +459,48 @@ def start_open_with(open_with: str, project_name: str):
     create_utils.run_command(f'{open_with} {project_name}', None, "no-msg")
 
 
+def copy_if_mounted(project_directory):
+    """
+    fab is unable to create-app in mounted path
+    so, if mounted, create files in "created_project" and later copy to project_directory
+
+    :param project_directory: name of project created
+    :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
+    """
+    return_project_directory = project_directory
+    return_copy_to_directory = ""
+    if os.name == "posix":  # mac, docker...
+        directory_is_mounted = project_directory.startswith("/local") or "copy_test" in project_directory
+        if directory_is_mounted:  # TODO: https://www.baeldung.com/linux/bash-is-directory-mounted
+            running_at =  Path(__file__)
+            cli_path = running_at.parent.absolute()
+            root_path = cli_path.parent.absolute()
+            return_project_directory = str(root_path) + f'/{temp_created_project}'
+            return_copy_to_directory = project_directory
+    return return_project_directory, return_copy_to_directory
+
+
+def copy_project_to_local(project_directory, copy_to_project_directory, message) -> str:
+    """
+    fab cannot create-app on a mount, so we created temp_created_project, and then copy_to_local
+
+    test with create, silent, copy (lock /Users/Shared/copy_test for negative test)
+    """
+    result = ""
+    try:
+        # print(f'10. Copy temp_created_project to {copy_to_project_directory} ')
+        delete_dir(copy_to_project_directory, message)
+        shutil.copytree(project_directory, copy_to_project_directory)
+    except OSError as e:
+        if "Delete or copy tree failed" in e.strerror:
+            pass
+        else:
+            result = "Error: %s : %s" % (copy_to_project_directory, e.strerror)
+            print(result)
+            print(f'\n===> Copy failed (see above), but your project exists at {project_directory}')
+            print(f'===> Resolve the issue, and use the cp command below...')
+    return result
+
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
@@ -608,18 +634,20 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                     msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
 
     else:
+        copy_project_result = ""
         if copy_to_project_directory != "":
-            # print(f'10. Copy created_project to {copy_to_project_directory} ')
-            delete_dir(copy_to_project_directory, f'10. Copy created_project over {copy_to_project_directory} ')
-            shutil.copytree("created_project", copy_to_project_directory)
+            copy_project_result = \
+                copy_project_to_local(project_directory, copy_to_project_directory,
+                                      f'10. Copy temp_created_project over {copy_to_project_directory} ')
         print("\n\nApiLogicServer customizable project created.  Next steps:")
-        print("\nFor Local install, just run:")
+        print("\nFor Local install:")
         print(f'  cd {project_name}')
         print(f'  python api_logic_server_run.py')
         print(f'  python ui/basic_web_app/run.py')
         print("\nFor Docker container:")
-        if project_directory.endswith("api_logic_server"):
-            print(f'  copy project to local machine, e.g. cp {project_name} /local/servers/. -r')
+        if project_directory.endswith("api_logic_server") or copy_project_result != "":
+            print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
+            # cp -r /Users/Shared/copy_test/. /Users/Shared/copy_test/
         print(f'  python {project_name}/api_logic_server_run.py')  # defaults to host 0.0.0.0
         print("\n")
 
@@ -663,7 +691,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t09/02/2021 - 02.04.15: Docker foundation, improved Python path handling, IDE files, auto copy\n"
+            "\t09/02/2021 - 02.04.17: Docker foundation, improved Python path handling, IDE files, auto copy\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
