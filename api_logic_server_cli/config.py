@@ -40,9 +40,8 @@ class Config:
     if 'sqlite' in SQLALCHEMY_DATABASE_URI:
         # util.log('Basedir: '+basedir)
         SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
-
-    # util.log(SQLALCHEMY_DATABASE_URI)
     """
+    # util.log(SQLALCHEMY_DATABASE_URI)
 
 #    SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

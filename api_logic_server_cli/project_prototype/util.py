@@ -1,12 +1,13 @@
 import sqlite3
 from os import path
 import sys
+import logging
 
+app_logger = logging.getLogger("api_logic_server_app")
 
 def log(msg: any) -> None:
-    print(msg, file=sys.stderr)
-    # logger = current_app.logger
-    # logger.debug(msg)
+    app_logger.info(msg)
+    # print("TIL==> " + msg)
 
 
 def connection() -> sqlite3.Connection:

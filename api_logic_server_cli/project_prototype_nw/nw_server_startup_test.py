@@ -6,6 +6,7 @@ import subprocess
 import socket
 
 server_tests_enabled = True  # use True to invoke server_tests on server startup
+app_logger = logging.getLogger("api_logic_server_app")
 
 """
     These are server tests for the default Sample DB.
@@ -23,7 +24,7 @@ api_logic_server_summary = True  # Prints a banner
 
 
 def prt(msg: any) -> None:
-    util.log(f'{msg}')
+    app_logger.info(msg)
 
 
 def get_project_dir() -> str:
@@ -43,10 +44,10 @@ def run_command_nowait(cmd: str, env=None, msg: str = ""):
     :param msg: optional message (no-msg to suppress)
     :return:
     """
-    print(f'\n{msg}...\n')
+    app_logger.debug(f'\n{msg}...\n')
     proc = subprocess.Popen(cmd, shell=True,
                             stdin=None, stdout=None, stderr=None, close_fds=True)
-    print(f'run_command result: str{proc}')
+    app_logger.debug(f'run_command result: str{proc}')
 
 
 def server_tests(host, port, version):
@@ -57,13 +58,12 @@ def server_tests(host, port, version):
             version - ApiLogicServer version
     """
 
-    util.log(f'\n\n===================')
-    util.log(f'STARTUP DIAGNOSTICS')
-    util.log(f'.. server_tests("{host}", "{port}") called (v1.1)')
-    util.log(f'.. see test/server_startup_test.py - diagnostics are good GET, PATCH and Custom Service examples')
-    util.log(f'===================\n')
-
-    # run_command_nowait(f'python {get_project_dir()}/ui/basic_web_app/run.py')  wip - starts, but app not responsive
+    app_logger.info(f'\n\n===================')
+    app_logger.info(f'STARTUP DIAGNOSTICS')
+    app_logger.info(f'.. server_tests("{host}", "{port}") called (v1.1)')
+    app_logger.info(f'.. see test/server_startup_test.py - run diagnostics: '
+                    f'good GET, PATCH and Custom Service examples')
+    app_logger.info(f'===================\n')
 
     add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
     add_order_args = {
@@ -153,8 +153,8 @@ def server_tests(host, port, version):
         response_text = r.text
         assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
 
-        util.log(f'\nADD ORDER CHECK CREDIT - STARTUP DIAGNOSTICS PASSED')
-        util.log(f'===================================================')
+        app_logger.info(f'\nADD ORDER CHECK CREDIT - STARTUP DIAGNOSTICS PASSED')
+        app_logger.info(f'===================================================')
         prt(f''
             f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
             f'Logic Log (above) shows proper detection of Customer Constraint Failure...\n'
@@ -171,8 +171,8 @@ def server_tests(host, port, version):
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
 
-        util.log(f'\nAPILOGICSERVER SUMMARY')
-        util.log(f'======================\n')
+        app_logger.info(f'\nAPILOGICSERVER SUMMARY')
+        app_logger.info(f'======================\n')
         prt(f''
             f'1. CUSTOMIZABLE SERVER PROJECT CREATED from supplied Sample DB\n'
             f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
@@ -184,7 +184,7 @@ def server_tests(host, port, version):
             f'     .. Or, see https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.py\n'
             f'4. BASIC WEB APP Created\n'
             f'     .. Start it: python ui/basic_web_app/run.py [host port]]\n'
-            f'     .. Then, explore it - http://0.0.0.0:8080/ (login: admin, p)\n'
+            f'     .. Then, explore it - http://{host}:8080/ (login: admin, p)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
             f'5. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'

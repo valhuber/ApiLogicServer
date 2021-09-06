@@ -1,6 +1,6 @@
 import util
 from typing import List
-
+import logging
 import safrs
 import sqlalchemy
 from flask import request, jsonify
@@ -14,6 +14,7 @@ from database.db import Base
 # called by api_logic_server_run.py, to customize api (new end points, services).
 # separate from expose_api_models.py, to simplify merge if project recreated
 
+app_logger = logging.getLogger("api_logic_server_app")
 
 def expose_services(app, api, project_dir):
 
@@ -30,9 +31,8 @@ def expose_services(app, api, project_dir):
         user = request.args.get('user')
         return jsonify({"result": f'hello, {user}'})
 
-    util.log("\n\n")
-    util.log(f'*** Customizable ApiLogicServer project created -- '
+    app_logger.info(f'*** Customizable ApiLogicServer project created -- '
              f'open it in your IDE at {project_dir}')
-    util.log(f'*** Server now running -- '
+    app_logger.info(f'*** Server now running -- '
              f'explore with OpenAPI (Swagger) at http://localhost:5000/')
-    util.log("\n")
+    app_logger.info("\n")

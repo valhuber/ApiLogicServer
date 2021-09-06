@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "2.04.18"
+__version__ = "2.04.19"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -224,8 +224,8 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         create_utils.replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
-        api_config_file_name = os.path.dirname(os.path.realpath(__file__)) +\
-                               "/create_from_model/templates/api_config.txt"
+        api_config_file_name = \
+            os.path.dirname(os.path.realpath(__file__)) +"/create_from_model/templates/api_config.txt"
         with open(api_config_file_name, 'r') as file:
             api_config = file.read()
         create_utils.insert_lines_at(lines=api_config,
@@ -649,6 +649,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r /Users/Shared/copy_test/. /Users/Shared/copy_test/
         print(f'  python {project_name}/api_logic_server_run.py')  # defaults to host 0.0.0.0
+        print(f'  python {project_name}/ui/basic_web_app/run.py')  # defaults to host 0.0.0.0
         print("\n")
 
 
@@ -691,7 +692,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t09/02/2021 - 02.04.17: Docker foundation, improved Python path handling, IDE files, auto copy\n"
+            "\t09/06/2021 - 02.04.19: Docker foundation, improved Python path / log handling, .vscode, auto copy\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
             "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"

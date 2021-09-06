@@ -4,11 +4,12 @@ from logic_bank.exec_row_logic.logic_row import LogicRow
 from logic_bank.extensions.rule_extensions import RuleExtension
 from logic_bank.logic_bank import Rule
 from database import models
+import logging
 
 
 def declare_logic():
-
-    print("\n\ndeclare_logic")
+    app_logger = logging.getLogger("api_logic_server_app")
+    app_logger.info("\n\nlogic_bank.py - declare_logic")
 
     """ example from default database
     

@@ -2,6 +2,7 @@
 from os import environ, path
 import util
 from dotenv import load_dotenv
+import logging
 
 #  for complete flask_sqlachemy config parameters and session handling,
 #  read: file flask_sqlalchemy/__init__.py AND flask/config.py
@@ -20,6 +21,7 @@ app.config.setdefault('SQLALCHEMY_COMMIT_ON_TEARDOWN', False)
 
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, "default.env"))
+app_logger = logging.getLogger('api_logic_server_app')
 
 
 class Config:
@@ -37,7 +39,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = "replace_db_url"
     # override SQLALCHEMY_DATABASE_URI here as required
 
-    util.log(SQLALCHEMY_DATABASE_URI)
+    app_logger.info(f'config.py - SQLALCHEMY_DATABASE_URI: {SQLALCHEMY_DATABASE_URI}')
 
     # SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

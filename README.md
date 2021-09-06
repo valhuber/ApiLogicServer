@@ -288,6 +288,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+09/06/2021 - 02.04.19: Docker foundation, improved Python path / log handling, .vscode, auto copy
+
 08/29/2021 - 02.04.08: Docker foundation, improved Python path handling, IDE files
 
 08/25/2021 - 02.04.00: Docker foundation (work in progress)

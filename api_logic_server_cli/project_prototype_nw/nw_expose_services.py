@@ -1,3 +1,5 @@
+import logging
+
 import util
 from typing import List
 
@@ -28,18 +30,16 @@ def expose_services(app, api, project_dir):
         """
         user = request.args.get('user')
         return jsonify({"result": f'hello, {user}'})
-    startup_info = True
-    if startup_info:
-        util.log("\n\n")
-        util.log(f'*** Customizable ApiLogicServer project created -- '
-                 f'open it with your IDE at {project_dir}')
-        util.log(f'*** Server now running -- '
-                 f'explore with OpenAPI (Swagger) at http://localhost:5000/')
-        util.log("\n")
 
-    util.log("Exposing custom services")
+    app_logger = logging.getLogger("api_logic_server_app")
+    app_logger.info(f'\n*** Customizable ApiLogicServer project created -- '
+             f'open it with your IDE at {project_dir}')
+    app_logger.info(f'*** Server now running -- '
+             f'explore with OpenAPI (Swagger) at http://localhost:5000/')
+
+    app_logger.info("api/expose_service.py - Exposing custom services")
     api.expose_object(ServicesEndPoint)
-    util.log("Custom services exposed\n")
+    app_logger.info("\n")
 
 
 def json_to_entities(from_row: object, to_row: safrs.DB.Model):

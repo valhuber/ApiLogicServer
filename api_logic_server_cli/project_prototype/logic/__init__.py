@@ -16,7 +16,8 @@ from logic.logic_bank import declare_logic
 2 - Register listeners (either hand-coded ones above, or the logic-engine listeners).
 """
 
-util.log("BEGIN - setup logging, connect to db, register listeners")
+app_logger = logging.getLogger("api_logic_server_app")
+app_logger.debug("logic/__init__ loaded - setup logging, connect to db, register listeners")
 
 setup_logic_logger = False
 if setup_logic_logger:
@@ -49,4 +50,4 @@ def constraint_handler(message: str, constraint: constraint, logic_row: logic_ro
 
 # LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler )
 
-util.log("LogicBank activated\n")
+app_logger.debug("logic/__init__ LogicBank activated\n")

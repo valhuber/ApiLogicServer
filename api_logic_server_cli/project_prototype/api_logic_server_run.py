@@ -18,6 +18,17 @@ if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
     sys.exit()
 
+import logging
+app_logger = logging.getLogger('api_logic_server_app')
+handler = logging.StreamHandler(sys.stderr)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
+handler.setFormatter(formatter)
+app_logger.addHandler(handler)
+app_logger.propagate = True
+
+app_logger.setLevel(logging.INFO)  # use WARNING to reduce output
+
 import threading
 import time
 import requests
@@ -39,7 +50,6 @@ project_dir = str(current_path)
 
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
-import logging
 import test.server_startup_test as self_test
 
 
@@ -107,7 +117,7 @@ def create_app(config_filename=None, host="localhost"):
 
     with flask_app.app_context():
         db.init_app(flask_app)
-        safrs_api = expose_api_models.expose_models(flask_app, host)  # services from models
+        safrs_api = expose_api_models.expose_models(flask_app, HOST=host)  # services from models
         expose_services.expose_services(flask_app, safrs_api, project_dir)  # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
@@ -123,28 +133,26 @@ host = sys.argv[1] if sys.argv[1:] \
 network_diagnostics = True
 hostname = socket.gethostname()
 local_ip = socket.gethostbyname(hostname)
-if local_ip != "api_logic_server_host" and "localhost" != "api_logic_server_host":
-    print(f'==> Network diagnostic - Warning -- local_ip ({local_ip}) != "api_logic_server_host"')
+app_logger.debug(f'==> Network diagnostic - Warning -- local_ip ({local_ip}) != "api_logic_server_host"')
 if sys.argv[1:]:
     host = sys.argv[1]  # you many need to enable cors support, below
-    if network_diagnostics:
-        print(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
+    app_logger.debug(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
     if host == "docker":
         host = "localhost"
-        print(f'==> Network Diagnostic - docker = {host}')
+        app_logger.debug(f'==> Network Diagnostic - docker = {host}')
     if host == "SWAGGER_HOST":
         host = os.getenv('SWAGGER_HOST', "0.0.0.0")
-        print(f'==> Network Diagnostic - SWAGGER_HOST = {host}')
+        app_logger.debug(f'==> Network Diagnostic - SWAGGER_HOST = {host}')
     if host == "dockerhost":
         host = "0.0.0.0"
-        print(f'==> Network Diagnostic - dockerhost using {host}')
+        app_logger.debug(f'==> Network Diagnostic - dockerhost using {host}')
     if host == "dockerip":
         host = local_ip
-        print(f'==> Network Diagnostic - dockerip using {host}')
+        app_logger.debug(f'==> Network Diagnostic - dockerip using {host}')
 else:
     host = "0.0.0.0"  # local_ip?  local_host?
     if network_diagnostics:
-        print(f'==> Network Diagnostic - using default ip: 0.0.0.0')
+        app_logger.debug(f'==> Network Diagnostic - using default ip: 0.0.0.0')
 port = "api_logic_server_port"
 flask_app, safrs_api = create_app(host=host)
 
@@ -164,21 +172,6 @@ def handle_exception(e: ValidationError):
 #        res['errorMessage'] = e.message if hasattr(e, 'message') else f'{e}'
 
     return res, 400
-
-
-@flask_app.after_request
-def after_request(response):
-    """
-    Enable CORS. Disable it if you don't need CORS or install Cors Libaray
-    https://parzibyte.me/blog
-    """
-    response.headers[
-        "Access-Control-Allow-Origin"] = "*"  # <- You can change "*" for a domain for example "http://localhost"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE, PATCH"
-    response.headers["Access-Control-Allow-Headers"] = \
-        "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-    return response
 
 
 """ enable for cors support
@@ -234,5 +227,5 @@ def one_ping_on_server_start_for_server_start_tests():
 if __name__ == "__main__":
     if self_test.server_tests_enabled:  # see test/server_startup_test.py
         one_ping_on_server_start_for_server_start_tests()
-    print(f'Starting ApiLogicServer project, version api_logic_server_version')
+    app_logger.info(f'Starting ApiLogicServer project, version api_logic_server_version')
     flask_app.run(host=host, threaded=False, port=port)

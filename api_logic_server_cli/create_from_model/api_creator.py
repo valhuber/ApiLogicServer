@@ -34,8 +34,11 @@ def create_expose_api_models(model_creation_services):
     result_apis += '    my_host = HOST\n'
     result_apis += '    if HOST == "0.0.0.0":\n'
     result_apis += '        my_host = "localhost"  # override default HOST for pc"\n'
-    result_apis += '    print(f"DEBUG - expose_api_models HOST = <{HOST}>, using my_host = <{my_host}>")\n'
+    result_apis += '    app_logger.debug(f"DEBUG - expose_api_models HOST = <{HOST}>, using my_host = <{my_host}>")\n'
     result_apis += '    api = SAFRSAPI(app, host=my_host, port=PORT)\n'
+    result_apis += '    safrs_log_level = safrs.log.getEffectiveLevel()\n'
+    result_apis += '    if app_logger.getEffectiveLevel() >= logging.INFO:\n'
+    result_apis += '        safrs.log.setLevel(logging.WARN)  # warn is 20, info 30\n'
 
     sys.path.append(cwd)
 
@@ -63,6 +66,7 @@ def create_expose_api_models(model_creation_services):
                 # result_apis +=   "# skip view: " + table_name
                 continue
             result_apis += f'    api.expose_object(models.{class_name})\n'
+    result_apis += f'    safrs.log.setLevel(safrs_log_level)\n'
     result_apis += f'    return api\n'
     # self.session.close()
     text_file = open(model_creation_services.project_directory + '/api/expose_api_models.py', 'a')
