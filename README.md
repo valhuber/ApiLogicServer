@@ -211,6 +211,19 @@ This element is for technology exploration - it is _not_ production ready.
 for more information.
 
 # Installation
+As of release 3.00.00, you can install using Docker, or standard
+`pip` install.
+
+## Docker Installation
+[Docker installation](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker)
+enables you to bypass sometimes-tricky Python installs by using Docker.
+
+Docker support provides not only ApiLogicServer, but a Python environment
+you can use with your IDE.
+
+See the link above for more information on install and execution.
+
+## Local Installation
 Caution: Python install is rather more than running an installer.
 Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicServer/wiki/Python-Verify-and-Install).
 

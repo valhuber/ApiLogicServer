@@ -20,7 +20,7 @@ fab_logger.setLevel(logging.WARNING)
 logic_logger = logging.getLogger("engine_logger")
 logic_logger.setLevel(logging.WARNING)
 
-logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
+logger.setLevel(logging.WARNING)  # use WARNING to reduce output
 
 current_path = Path(os.path.abspath(os.path.dirname(__file__)))
 current_path = current_path.parent.absolute()  # ui
