@@ -7,9 +7,21 @@ from pathlib import Path
 
 logger = logging.getLogger()
 
+current_path = Path(os.path.abspath(os.path.dirname(__file__)))
+current_path = current_path.parent.absolute()  # ui
+current_path = current_path.parent.absolute()  # project
+project_dir = str(current_path)
+logger.info(f'ui/basic_web_app/run.py - project_dir: {project_dir}')
+sys.path.append(project_dir)
+
+import ui.basic_web_app.config as config
 handler = logging.StreamHandler(sys.stderr)
 handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
+auto_log_narrow = True
+if auto_log_narrow and config.SQLALCHEMY_DATABASE_URI.endswith("db.sqlite"):
+    formatter = logging.Formatter('%(message).120s')  # lead tag - '%(name)s: %(message)s')
+else:
+    formatter = logging.Formatter('%(message)s')     # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.propagate = True
@@ -21,13 +33,9 @@ logic_logger = logging.getLogger("engine_logger")
 logic_logger.setLevel(logging.WARNING)
 
 logger.setLevel(logging.WARNING)  # use WARNING to reduce output
-
-current_path = Path(os.path.abspath(os.path.dirname(__file__)))
-current_path = current_path.parent.absolute()  # ui
-current_path = current_path.parent.absolute()  # project
-project_dir = str(current_path)
-logger.info(f'ui/basic_web_app/run.py - project_dir: {project_dir}')
-sys.path.append(project_dir)
+if auto_log_narrow and config.SQLALCHEMY_DATABASE_URI.endswith("db.sqlite"):
+    logger.warning("\nLog width reduced for readability - "
+                   "see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#word-wrap-on-the-log\n")
 
 # args for help
 import sys

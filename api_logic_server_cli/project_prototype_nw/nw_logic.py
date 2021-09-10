@@ -7,7 +7,7 @@ from database import models
 import logging
 
 app_logger = logging.getLogger("api_logic_server_app")
-app_logger.info("logic/logic.py - declare_logic")
+app_logger.info("logic/declare_logic.py - importing declare_logic")
 
 def declare_logic():
     """

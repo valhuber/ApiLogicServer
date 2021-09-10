@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.00.00"
+__version__ = "3.00.01"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -164,7 +164,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
     """
     clone prototype to create and remove git folder
 
-    if nw, Append logic/logic_bank.py with pre-defined...
+    if nw, Append logic/declare_logic.py with pre-defined...
 
     :param project_directory: name of project created
     :param from_git: name of git project to clone (blank for default)
@@ -237,7 +237,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
 
 
     if abs_db_url.endswith("nw.sqlite"):
-        print(".. ..Append logic/logic_bank.py with pre-defined nw_logic, rpcs")
+        print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, rpcs")
         replace_logic_with_nw_logic(project_directory)
         replace_models_ext_with_nw_models_ext(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
@@ -332,8 +332,8 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
 
 
 def replace_logic_with_nw_logic(project_name):
-    """ Replace logic/logic_bank.py with pre-defined nw_logic """
-    logic_file = open(project_name + '/logic/logic_bank.py', 'w')
+    """ Replace logic/declare_logic.py with pre-defined nw_logic """
+    logic_file = open(project_name + '/logic/declare_logic.py', 'w')
     nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_logic.py")
     nw_logic = nw_logic_file.read()
     logic_file.write(nw_logic)
@@ -692,6 +692,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t09/10/2021 - 03.00.00: rename logic_bank to declare_logic, improved logging\n"
             "\t09/06/2021 - 03.00.00: Docker foundation with .vscode, improved Python path / log handling\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
             "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
@@ -873,6 +874,7 @@ def print_info():
         'Examples:',
         '  ApiLogicServer run',
         '  ApiLogicServer run --db_url=sqlite:///nw.sqlite',
+        '  ApiLogicServer create --db_url=mysql+pymysql://root:p@mysql8.0:3306/classicmodels --project_name=/local/servers/docker_project',
         '  ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels',
         '  ApiLogicServer run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
         '  ApiLogicServer run --db_url=postgresql://postgres:p@10.0.0.234/postgres',

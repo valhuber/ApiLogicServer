@@ -18,11 +18,15 @@ if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
     sys.exit()
 
+current_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(current_path)
+project_dir = str(current_path)
+
 import logging
 app_logger = logging.getLogger('api_logic_server_app')
 handler = logging.StreamHandler(sys.stderr)
 handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
+formatter = logging.Formatter('%(message)s')     # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
 app_logger.addHandler(handler)
 app_logger.propagate = True
@@ -42,26 +46,30 @@ from sqlalchemy.orm import Session
 import socket
 
 from api import expose_api_models, expose_services
-from logic import logic_bank
-
-current_path = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(current_path)
-project_dir = str(current_path)
+from logic import declare_logic
 
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
 import test.server_startup_test as self_test
 
 
-def setup_logging():
+def setup_logging(flask_app):
     setup_logic_logger = True
     if setup_logic_logger:
-        # util.log("api_logic_server_run - setup_logging()")
         logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
         logic_logger.setLevel(logging.DEBUG)
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
+        if flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
+            formatter = logging.Formatter('%(message).120s')  # lead tag - '%(name)s: %(message)s')
+            handler.setFormatter(formatter)
+            logic_logger = logging.getLogger("logic_logger")
+            logic_logger.handlers = []
+            logic_logger.addHandler(handler)  # why is this affecting app_logger
+            app_logger.warning("\nLog width truncated for readability -- "
+                               "see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#word-wrap-on-the-log")
+        else:
+            formatter = logging.Formatter('%(message).16s - %(asctime)s - %(name)s - %(levelname)s')
         handler.setFormatter(formatter)
         logic_logger.addHandler(handler)
         logic_logger.propagate = True
@@ -95,7 +103,7 @@ class ValidationErrorExt(ValidationError):
 def create_app(config_filename=None, host="localhost"):
     flask_app = Flask("API Logic Server")
     flask_app.config.from_object("config.Config")
-    setup_logging()
+    setup_logging(flask_app)
     db = safrs.DB  # opens database per config, setting session
     detail_logging = False  # True will log SQLAlchemy SQLs
     if detail_logging:
@@ -104,7 +112,6 @@ def create_app(config_filename=None, host="localhost"):
         logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
     Base: declarative_base = db.Model
     session: Session = db.session
-    # util.log("api_logic_server_run#create_app - got session: " + str(session))
 
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
@@ -113,7 +120,7 @@ def create_app(config_filename=None, host="localhost"):
             detail = {"model": logic_row.name}
         raise ValidationErrorExt(message= message, detail=detail)
 
-    LogicBank.activate(session=session, activator=logic_bank.declare_logic, constraint_event=constraint_handler)
+    LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
 
     with flask_app.app_context():
         db.init_app(flask_app)
@@ -124,10 +131,6 @@ def create_app(config_filename=None, host="localhost"):
 
     return flask_app, safrs_api
 
-""" old code - remove
-host = sys.argv[1] if sys.argv[1:] \
-    else local_ip  # "api_logic_server_host"  # 127.0.0.1 verify in swagger or your client.
-"""
 
 # address where the api will be hosted, change this if you're not running the app on localhost!
 network_diagnostics = True
@@ -137,22 +140,9 @@ app_logger.debug(f'==> Network diagnostic - Warning -- local_ip ({local_ip}) != 
 if sys.argv[1:]:
     host = sys.argv[1]  # you many need to enable cors support, below
     app_logger.debug(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
-    if host == "docker":
-        host = "localhost"
-        app_logger.debug(f'==> Network Diagnostic - docker = {host}')
-    if host == "SWAGGER_HOST":
-        host = os.getenv('SWAGGER_HOST', "0.0.0.0")
-        app_logger.debug(f'==> Network Diagnostic - SWAGGER_HOST = {host}')
-    if host == "dockerhost":
-        host = "0.0.0.0"
-        app_logger.debug(f'==> Network Diagnostic - dockerhost using {host}')
-    if host == "dockerip":
-        host = local_ip
-        app_logger.debug(f'==> Network Diagnostic - dockerip using {host}')
 else:
     host = "0.0.0.0"  # local_ip?  local_host?
-    if network_diagnostics:
-        app_logger.debug(f'==> Network Diagnostic - using default ip: 0.0.0.0')
+    app_logger.debug(f'==> Network Diagnostic - using default ip: 0.0.0.0')
 port = "api_logic_server_port"
 flask_app, safrs_api = create_app(host=host)
 

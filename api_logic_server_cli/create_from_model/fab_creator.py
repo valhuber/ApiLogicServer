@@ -312,11 +312,8 @@ class FabCreator(object):
         """ insert call LogicBank.activate into ui/basic_web_app/app/__init__.py """
         file_name = f'{self.mod_gen.project_directory}/ui/basic_web_app/app/__init__.py'
         proj = os.path.basename(self.mod_gen.project_directory)  # enable flask run
-        import_fix = f'# logic_bank_utils.add_python_path(project_dir="{proj}", my_file=__file__)\n'
 
         insert_text = ("\n# ApiLogicServer - enable flask fab create-admin\n"
-                       "import logic_bank_utils.util as logic_bank_utils\n"
-                       + import_fix +
                        "\nimport database.models as models\n"
                        + "from logic import declare_logic\n"
                        + "from logic_bank.logic_bank import LogicBank\n"

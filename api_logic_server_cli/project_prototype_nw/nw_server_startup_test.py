@@ -165,7 +165,7 @@ def server_tests(host, port, version):
             f'......ADJUSTS Order.AmountTotal (19998), which...\n'
             f'........ADJUSTS Customer.Balance (21014), which...\n'
             f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n'
-            f'All from just 5 rules in ({get_project_dir()}/logic/logic_bank.py)\n\n')
+            f'All from just 5 rules in ({get_project_dir()}/logic/logic.py)\n\n')
 
     if api_logic_server_summary:
         hostname = socket.gethostname()
