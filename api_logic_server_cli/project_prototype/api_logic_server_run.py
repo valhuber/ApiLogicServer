@@ -61,15 +61,15 @@ def setup_logging(flask_app):
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.DEBUG)
         if flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
-            formatter = logging.Formatter('%(message).120s')  # lead tag - '%(name)s: %(message)s')
+            formatter = logging.Formatter('%(message).160s')  # lead tag - '%(name)s: %(message)s')
             handler.setFormatter(formatter)
             logic_logger = logging.getLogger("logic_logger")
             logic_logger.handlers = []
-            logic_logger.addHandler(handler)  # why is this affecting app_logger
+            logic_logger.addHandler(handler)
             app_logger.warning("\nLog width truncated for readability -- "
                                "see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#word-wrap-on-the-log")
         else:
-            formatter = logging.Formatter('%(message).16s - %(asctime)s - %(name)s - %(levelname)s')
+            formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
         handler.setFormatter(formatter)
         logic_logger.addHandler(handler)
         logic_logger.propagate = True
@@ -141,7 +141,7 @@ if sys.argv[1:]:
     host = sys.argv[1]  # you many need to enable cors support, below
     app_logger.debug(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
 else:
-    host = "0.0.0.0"  # local_ip?  local_host?
+    host = "0.0.0.0"
     app_logger.debug(f'==> Network Diagnostic - using default ip: 0.0.0.0')
 port = "api_logic_server_port"
 flask_app, safrs_api = create_app(host=host)

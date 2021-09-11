@@ -62,7 +62,7 @@ def server_tests(host, port, version):
     app_logger.info(f'STARTUP DIAGNOSTICS')
     app_logger.info(f'.. server_tests("{host}", "{port}") called (v1.1)')
     app_logger.info(f'.. see test/server_startup_test.py - run diagnostics: '
-                    f'good GET, PATCH and Custom Service examples')
+                    f' verify good GET, PATCH, POST, DELETE and Custom Service')
     app_logger.info(f'===================\n')
 
     add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
@@ -102,7 +102,7 @@ def server_tests(host, port, version):
         response_text = r.text
         assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
 
-        prt(f'\nRETRIEVAL DIAGNOSTICS PASSED for table Order... now verify PATCH Customer...')
+        prt(f'\nGET DIAGNOSTICS PASSED for table Order... now verify PATCH Customer...')
 
     if patch_test:
         patch_cust_uri = f'http://{host}:{port}/Customer/ALFKI/'
@@ -158,18 +158,21 @@ def server_tests(host, port, version):
         prt(f''
             f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
             f'Logic Log (above) shows proper detection of Customer Constraint Failure...\n'
-            f'.. Best viewed without word wrap'
             f' - see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order\n'
             f'.. The logic illustrates MULTI-TABLE CHAINING (note indents):\n'
             f'....FORMULA OrderDetail.Amount (19998), which...\n'
             f'......ADJUSTS Order.AmountTotal (19998), which...\n'
             f'........ADJUSTS Customer.Balance (21014), which...\n'
             f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n'
-            f'All from just 5 rules in ({get_project_dir()}/logic/logic.py)\n\n')
+            f'All from just 5 rules in ({get_project_dir()}/logic/declare_logic.py)\n\n')
 
     if api_logic_server_summary:
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
+
+        my_host = host
+        if host == "0.0.0.0":  # see https://github.com/valhuber/ApiLogicServer/issues/19
+            my_host = "localhost"
 
         app_logger.info(f'\nAPILOGICSERVER SUMMARY')
         app_logger.info(f'======================\n')
@@ -177,14 +180,14 @@ def server_tests(host, port, version):
             f'1. CUSTOMIZABLE SERVER PROJECT CREATED from supplied Sample DB\n'
             f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
             f'2. SERVER STARTED on host: {hostname}, on ip (gethostbyname): {local_ip}\n'
-            f'     .. Explore your API - Swagger at http://{host}:{port}\n'
+            f'     .. Explore your API - Swagger at http://{my_host}:{port}\n'
             f'     .. Re-run it later (without recreating) - python api_logic_server_run.py\n'
             f'3. LOGIC pre-supplied\n'
-            f'     .. Explore it at {get_project_dir()}/logic/logic_bank.py\n'
+            f'     .. Explore it at {get_project_dir()}/logic/declare_logic.py\n'
             f'     .. Or, see https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.py\n'
             f'4. BASIC WEB APP Created\n'
-            f'     .. Start it: python ui/basic_web_app/run.py [host port]]\n'
-            f'     .. Then, explore it - http://{host}:8080/ (login: admin, p)\n'
+            f'     .. First, start it: python ui/basic_web_app/run.py [host port]]\n'
+            f'     .. Then, explore it - http://{my_host}:8080/ (login: admin, p)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
             f'5. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'

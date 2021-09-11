@@ -11,17 +11,16 @@ current_path = Path(os.path.abspath(os.path.dirname(__file__)))
 current_path = current_path.parent.absolute()  # ui
 current_path = current_path.parent.absolute()  # project
 project_dir = str(current_path)
-logger.info(f'ui/basic_web_app/run.py - project_dir: {project_dir}')
 sys.path.append(project_dir)
 
 import ui.basic_web_app.config as config
 handler = logging.StreamHandler(sys.stderr)
-handler.setLevel(logging.DEBUG)
+handler.setLevel(logging.INFO)  # DEBUG, INFO, <default> WARNING, ERROR, CRITICAL
 auto_log_narrow = True
 if auto_log_narrow and config.SQLALCHEMY_DATABASE_URI.endswith("db.sqlite"):
     formatter = logging.Formatter('%(message).120s')  # lead tag - '%(name)s: %(message)s')
 else:
-    formatter = logging.Formatter('%(message)s')     # lead tag - '%(name)s: %(message)s')
+    formatter = logging.Formatter('%(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.propagate = True
@@ -29,10 +28,12 @@ logger.propagate = True
 fab_logger = logging.getLogger("flask_appbuilder")
 fab_logger.setLevel(logging.WARNING)
 
-logic_logger = logging.getLogger("engine_logger")
-logic_logger.setLevel(logging.WARNING)
+logic_logger = logging.getLogger("logic_logger")
+logic_logger.setLevel(logging.INFO)
 
-logger.setLevel(logging.WARNING)  # use WARNING to reduce output
+logger.setLevel(logging.WARNING)  # WARNING to reduce output, INFO for more
+logger.info(f'ui/basic_web_app/run.py - project_dir: {project_dir}')
+
 if auto_log_narrow and config.SQLALCHEMY_DATABASE_URI.endswith("db.sqlite"):
     logger.warning("\nLog width reduced for readability - "
                    "see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#word-wrap-on-the-log\n")
@@ -49,7 +50,7 @@ if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
 try:
     logger.debug("\nui/basic_web_app/run.py - PYTHONPATH" + str(sys.path) + "\n")
     # e.g., /Users/val/dev/servers/api_logic_server/ui/basic_web_app
-    from app import app
+    from app import app  # ui/basic_web_app/app/__init__.py activates logic
 except Exception as e:
     logger.error("ui/basic_web_app/run.py - Exception importing app: " + str(e))
 
