@@ -40,7 +40,7 @@ def get_api_logic_server_dir() -> str:
 
 
 def python_status():
-    print("\nPython Status here, 2.0 (add -path for PYTHONPATH)\n")
+    print("\nPython Status here, 3.0.1 (add -path for PYTHONPATH)\n")
     sys.path.append(get_api_logic_server_dir())  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
     import api_logic_server_cli.cli as cli
     # show("pyenv --version")  # does not exist in docker...
@@ -60,6 +60,11 @@ def python_status():
     print_at('ip (gethostbyname)', local_ip)
     print_at('on hostname', hostname)
     show("python --version")
+    print("")
+    print("Typical commands:")
+    print("  ApiLogicServer create --project_name=/local/servers/docker_project")
+    print("  python /local/servers/docker_project/api_logic_server_run.py")
+    print("  python /local/servers/docker_project/ui/basic_web_app/run.py")
     print("")
 
 if __name__ == '__main__':

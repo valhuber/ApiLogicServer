@@ -8,10 +8,5 @@ echo "Optionally verify your environment..."
 echo " "
 echo "  python py.py                  # report Python environment..."
 echo "  ApiLogicServer version  # report ApiLogic Server version"
-python py.py
 
-echo " "
-echo "Typical next step..."
-echo " "
-echo "  ApiLogicServer create --project_name=/local/servers/docker_project"
-echo " "
+python py.py

@@ -1,12 +1,12 @@
 # docker build -t apilogicserver/api_logic_server --rm .
-# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.0.1
 # docker push apilogicserver/api_logic_server
 #
 # https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker
 #
 # docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
-#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
-#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server
+#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
+#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ${PWD}:/local/servers apilogicserver/api_logic_server
 #
 # The software auto-prompts you for the next steps:
 #   ApiLogicServer create --project_name=/local/servers/docker_project --db_url=mysql+pymysql://root:p@mysql8.0:3306/classicmodels
