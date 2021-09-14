@@ -5,7 +5,6 @@
 # https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker
 #
 # docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
-#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
 #   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ${PWD}:/local/servers apilogicserver/api_logic_server
 #
 # The software auto-prompts you for the next steps:

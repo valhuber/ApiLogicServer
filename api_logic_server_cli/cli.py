@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.00.02"
+__version__ = "3.00.08"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -692,6 +692,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t09/10/2021 - 03.00.08: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
             "\t09/06/2021 - 03.00.00: Docker foundation with .vscode, improved Python path / log handling\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
@@ -874,7 +875,7 @@ def print_info():
         'Examples:',
         '  ApiLogicServer run',
         '  ApiLogicServer run --db_url=sqlite:///nw.sqlite',
-        '  ApiLogicServer create --db_url=mysql+pymysql://root:p@mysql8.0:3306/classicmodels --project_name=/local/servers/docker_project',
+        '  ApiLogicServer create --db_url=mysql+pymysql://root:p@mysql8.0:3306/classicmodels --project_name=/local/servers/docker_db_project',
         '  ApiLogicServer run --db_url=mysql+pymysql://root:p@localhost/classicmodels',
         '  ApiLogicServer run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
         '  ApiLogicServer run --db_url=postgresql://postgres:p@10.0.0.234/postgres',

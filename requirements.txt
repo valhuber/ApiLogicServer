@@ -9,8 +9,7 @@ inflect==5.0.2
 safrs>=2.11.5
 flask-admin
 flask-cors
-Flask
-Flask-Admin
+flask
 python-dotenv
 email-validator
 LogicBank>=1.0.2

@@ -1,5 +1,6 @@
 Flask
 Flask-Admin
+PyJWT
 python-dateutil
 python-dotenv
 SQLAlchemy==1.3.24
