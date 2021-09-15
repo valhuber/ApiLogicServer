@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 """
 quick view of python environment
-
-sudo chmod +x py.py
-./py.py
-in .zshrc: python py.py
-
 """
 
 import os, sys
@@ -36,12 +31,15 @@ def get_api_logic_server_dir() -> str:
     """
     running_at = Path(__file__)
     python_path = running_at.parent.absolute()
-    return str(python_path)
+    parent_path = python_path.parent.absolute()
+    return str(parent_path)
 
 
 def python_status():
-    print("\nPython Status here, 3.0.1 (add -path for PYTHONPATH)\n")
-    sys.path.append(get_api_logic_server_dir())  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
+    print("\nPython Status here, 3.0.2 (add -path for PYTHONPATH)\n")
+    dir = get_api_logic_server_dir()
+    #  dir = "/workspaces/../home/api_logic_server/"  # enable for 3.0.2P
+    sys.path.append(dir)  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
     import api_logic_server_cli.cli as cli
     # show("pyenv --version")  # does not exist in docker...
     # show("pyenv global")

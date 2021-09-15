@@ -16,6 +16,10 @@
 #     So, why doesn't this work on windows?
 #         python /local/servers/docker_project/api_logic_server_run.py localhost
 #         Is it this?  https://docs.docker.com/desktop/windows/networking/
+#
+# docker commit mysql-testdbs
+# docker tag mysql:8.0 apilogicserver/mysql8.0:version1.0.2
+# docker push apilogicserver/mysql8.0:version1.0.2
 
 
 FROM python:3.8-slim
