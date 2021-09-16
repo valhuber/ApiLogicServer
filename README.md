@@ -20,7 +20,7 @@ ApiLogicServer run --project_name=/local/servers/docker_project  # Create and ru
 
 ```
 
-After you've explored the sample (e.g., Swagger at [localhost:5000](http://localhost:5000), try different databases: [connect to a Dockerized Databases](#connect-to-dockerized-databases), and then try your own database as [described below](#next-steps).
+After you've explored the sample (e.g., Swagger at [localhost:5000](http://localhost:5000)), try different databases: [connect to a Dockerized Databases](#connect-to-dockerized-databases), and then try your own database as [described below](#next-steps).
 
 ### Feature Summary
 
