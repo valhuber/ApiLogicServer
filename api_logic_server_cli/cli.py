@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.00.09"
+__version__ = "3.00.10"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -606,7 +606,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     # print("4. Create api/expose_api_models.py (import / iterate models)")
     model_creation_services = CreateFromModel(  # Create views.py file from db, models.py
-        project_directory=project_directory, abs_db_url=abs_db_url, db_url=db_url,
+        project_directory=project_directory,
+        copy_to_project_directory = copy_to_project_directory,
+        abs_db_url=abs_db_url, db_url=db_url,
         host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
         favorite_names=favorites, non_favorite_names=non_favorites,
@@ -692,7 +694,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t09/10/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
+            "\t09/10/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
             "\t09/06/2021 - 03.00.00: Docker foundation with .vscode, improved Python path / log handling\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"

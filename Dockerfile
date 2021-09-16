@@ -1,5 +1,5 @@
 # docker build -t apilogicserver/api_logic_server --rm .
-# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.10.0
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.00.10
 # docker push apilogicserver/api_logic_server
 
 # https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker

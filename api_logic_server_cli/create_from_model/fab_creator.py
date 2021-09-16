@@ -297,7 +297,10 @@ class FabCreator(object):
     def fix_basic_web_app_run__create_admin(self):
         """ update create_admin.sh with project_directory """
 
-        unix_project_name = self.mod_gen.project_directory.replace('\\', "/")
+        unix_project_name = self.mod_gen.project_directory.replace('\\', "/")  # file to update
+        copy_to_unix_project_name = unix_project_name
+        if self.mod_gen.copy_to_project_directory != "":
+            copy_to_unix_project_name = self.mod_gen.copy_to_project_directory.replace('\\', "/")
         target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
         source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/templates/create_admin.sh")
         create_admin_commands = source_create_admin_sh_file.read()
@@ -305,7 +308,7 @@ class FabCreator(object):
         target_create_admin_sh_file.close()
 
         create_utils.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
-                                   replace_with=unix_project_name,
+                                   replace_with=copy_to_unix_project_name,
                                    in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
     def fix_basic_web_app_app_init__inject_logic(self):
