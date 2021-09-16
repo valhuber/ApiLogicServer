@@ -301,6 +301,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug
+
 09/06/2021 - 02.04.19: Docker foundation, improved Python path / log handling, .vscode, auto copy
 
 08/29/2021 - 02.04.08: Docker foundation, improved Python path handling, IDE files
