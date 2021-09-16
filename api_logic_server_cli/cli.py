@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.00.10"
+__version__ = "3.00.14"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -567,8 +567,16 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
                      extended_builder: str):
+    """
+    Main - Creates logic-enabled Python JSON_API project, options for FAB and execution
 
-    """ Creates logic-enabled Python JSON_API project, options for FAB and execution - main driver """
+    :param project_name maybe ~, or volume - create this folder
+    :param db_url SQLAlchemy url
+    :param host where safrs finds the api
+    :param port where safrs finds the port
+    :param extended_builder python file invoked to augment project
+    :returns: none
+    """
 
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
     print_options(project_name = project_name, db_url=db_url, host=host, port=port, not_exposed=not_exposed,
@@ -595,7 +603,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         pass
 
     project_directory = resolve_home(project_name)
-    """user-supplied project_name, less the twiddle. Typically relative to cwd. """
+    """user-supplied project_name, less the twiddle (which might be in project_name). Typically relative to cwd. """
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
     abs_db_url = clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", abs_db_url)
@@ -630,28 +638,30 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     if open_with != "":
         start_open_with(open_with=open_with, project_name=project_name)
 
-    if run:
-        run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
-        create_utils.run_command(f'python {run_file} {host}',
-                    msg="\nRun created ApiLogicServer project")  # sync run of server - does not return
+    copy_project_result = ""
+    if copy_to_project_directory != "":
+        copy_project_result = \
+            copy_project_to_local(project_directory, copy_to_project_directory,
+                                  f'10. Copy temp_created_project over {copy_to_project_directory} ')
 
+    if run:  # synchronous run of server - does not return
+        # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
+        # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
+        run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
+        create_utils.run_command(f'python {run_file}', msg="\nRun created ApiLogicServer project")
     else:
-        copy_project_result = ""
-        if copy_to_project_directory != "":
-            copy_project_result = \
-                copy_project_to_local(project_directory, copy_to_project_directory,
-                                      f'10. Copy temp_created_project over {copy_to_project_directory} ')
         print("\n\nApiLogicServer customizable project created.  Next steps:")
-        print("\nFor Local install:")
+        print("\nRun - Local install:")
         print(f'  cd {project_name}')
         print(f'  python api_logic_server_run.py')
         print(f'  python ui/basic_web_app/run.py')
-        print("\nFor Docker container:")
-        if project_directory.endswith("api_logic_server") or copy_project_result != "":
+        print("\nRun -  Docker container:")
+        if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
-            # cp -r /Users/Shared/copy_test/. /Users/Shared/copy_test/
+            # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
         print(f'  python {project_name}/api_logic_server_run.py')  # defaults to host 0.0.0.0
         print(f'  python {project_name}/ui/basic_web_app/run.py')  # defaults to host 0.0.0.0
+        print(f'\nOr, open IDE on local machine, e.g., code <project-name>')
         print("\n")
 
 
@@ -694,6 +704,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t09/16/2021 - 03.00.14: enable run command for Docker execution \n"
             "\t09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
             "\t09/06/2021 - 03.00.00: Docker foundation with .vscode, improved Python path / log handling\n"

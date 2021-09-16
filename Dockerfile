@@ -9,6 +9,7 @@
 #   docker image inspect apilogicserver/api_logic_server
 
 # The software auto-prompts you for the next steps:
+#   ApiLogicServer create --project_name=/local/servers/docker_project
 #   ApiLogicServer create --project_name=/local/servers/docker_project --db_url=mysql+pymysql://root:p@mysql8.0:3306/classicmodels
 #   python /local/servers/docker_project/api_logic_server_run.py
 #   python /local/servers/docker_project/ui/basic_web_app/run.py
