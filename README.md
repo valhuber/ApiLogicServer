@@ -24,6 +24,7 @@ Projects can connect to Dockerized Databases, are [**customizable**](https://git
 
 After you've explored the sample (e.g., Swagger at [localhost:5000](http://localhost:5000), try different databases: [connect to a Dockerized Databases](#connect-to-dockerized-databases), and then try your own database as [described below](#next-steps).
 
+### Feature Summary
 
 | Feature | Providing  | Why it Matters | Using
 | :-------------- |:--------------| :------|  :------|
