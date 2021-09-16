@@ -226,10 +226,10 @@ cd ~/dev/servers                   # directory of api_logic_server projects on l
 docker network create dev-network  # only required once (ignore errors if network already exists)
 
 # Step 1 - install and start ApiLogicServer
-docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server         
+docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server
 
 # Step 2 - create project on local host machine
-ApiLogicServer create --project_name=/local/servers/docker_project   
+ApiLogicServer create --project_name=/local/servers/docker_project
 
 # Step 3 - run the created ApiLogicServer project
 python /local/servers/docker_project/api_logic_server_run.py
