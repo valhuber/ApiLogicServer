@@ -119,7 +119,7 @@ python ui/basic_web_app/run.py  # help for command args
 
 ### Customize the Created Project
 
-Here is the created project, shown in PyCharm:
+Here is the created project, shown in PyCharm ([setup procedures here](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs)):
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/generated-project.png"></figure>
 
