@@ -20,7 +20,7 @@ ApiLogicServer run --project_name=/local/servers/docker_project  # Create and ru
 
 ```
 
-Projects can [connect to Dockerized Databases](#connect-to-dockerized-databases), are [**customizable**](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker#4-customize---your-ide-python-from-docker-machine) using standard IDEs, **enforce spreadsheet-like logic** ([40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code)), and include an [Instant Basic Web App](https://github.com/valhuber/ApiLogicServer#basic-web-app---flask-appbuilder).
+Projects can [connect to Dockerized Databases](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker#connect-to-dockerized-databases), are [**customizable**](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker#4-customize---your-ide-python-from-docker-machine) using standard IDEs, **enforce spreadsheet-like logic** ([40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code)), and include an [Instant Basic Web App](https://github.com/valhuber/ApiLogicServer#basic-web-app---flask-appbuilder).
 
 After you've explored the sample (e.g., [localhost:5000](localhost:5000), [connect to a Dockerized Databases](#connect-to-dockerized-databases), and then try your own database as [described below](#next-steps).
 
