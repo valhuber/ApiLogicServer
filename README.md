@@ -22,6 +22,10 @@ ApiLogicServer run --project_name=/local/servers/docker_project  # Create and ru
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (e.g., find Swagger at [localhost:5000](http://localhost:5000)), try different databases: [connect to a Dockerized Databases](#connect-to-dockerized-databases), and then try your own database.
 
+You can picture the process like this:
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/creates-and-runs.png"></figure>
+
 ### Feature Summary
 
 | Feature | Providing  | Why it Matters | Using
@@ -29,7 +33,7 @@ After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wi
 | 1. [JSON:**API** and Swagger](#api-safrs-jsonapi-and-swagger) | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
 | 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/logicbank#readme) |
 | 3. [Basic **Web App**](#basic-web-app---flask-appbuilder) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
-| 4. [**Customizable**](#created-project---customizable-re-runnable) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
+| 4. [**Customizable**](#customizable-project---re-runnable) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
 | 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
 
 ### Tutorials
@@ -57,54 +61,68 @@ and can be [installed](#Installation) and customized with standard approaches as
 
 
 # Architectural Overview
-The ApiLogicServer docker image contains:
-1. The **CLI** (Command Language Interface) to create projects
-2. The various **runtimes** (API, Logic, Flask App Builder to execute projects
-3. A **Python** environment to support execution, and your IDE
 
-### ApiLogicServer CLI
-With a single command, create and run a
-[logic](#logic)-enabled
-[JSON:API](#api-safrs-jsonapi-and-swagger) and
-[web app](#basic-web-app---flask-appbuilder) for your database:
+As shown below, there are typically 2-3 "machines" in operation:
+* Your local machine (in grey), where the Customizable Project files (`docker_project`) are stored 
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/creates-and-runs.png"></figure>
 
-As illustrated above, you run the ApiLogicServer CLI to create and optionally run a project:
-```
-ApiLogicServer run        # see console log, below
-```
+* The ApiLogicServer Docker (blue), which contains
+  * The **CLI** (Command Language Interface) to create projects
+  * The various **Runtimes** (API, Logic, Flask App Builder to execute projects
+  * A **Python** environment to support execution, and development using your IDE
 
-The CLI provides a number of options you can discover with ```ApiLogicServer --help```.
-In particular:
+
+* The database (purple)can run as a separate Docker image, in your local machine, or (for the demo) within the ApiLogicServer docker image
+<figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/docker-arch.png"></figure>
+
+<details>
+  <summary>Alternative option: pip install</summary>
+
+You can also run ApiLogicServer without Docker.  The familiar `pip install ApiLogicServer` creates the ApiLogicServer in your `venv` instead of the Docker machine.
+
+We recommend, however, that you take a good look at Docker:
+* It avoids a sometimes-tricky Python install
+* It isolates your projects into containers
+* It is quite likely the eventual deployment architecture, so you're already in step with that
+</details>
+
+# Usage Overview
+
+Let's review the 4 steps shown above:
+1. Install
+2. Create
+3. Customize
+4. Run
+
+### 1. Install
+Once you've installed Docker, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine
+
+
+### 2. Create
+In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
+
+##### Run (Create and Run)
+The ```ApiLogicServer run``` command creates your project, and runs the server (verify with swagger).  You can use `--help` to see arguments; In particular:
+
 1. The ```-db_url``` parameter defaults to a supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database).
 
-   * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html)
-to use your own database.
+   * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html) to use your own database.
    
 
 2. By default, the project name (directory) is ```api_logic_server```- override it with the
-```-project_name``` option.
+```--project_name``` option.
 
 
 3. Discover other options with ```ApiLogicServer run --help```
 
-Use the `run` command to create and run your project, or the `create` command to just create it.
 
+##### Create
 
-### Created Project - Customizable, Re-runnable
+You can also just create the project with `ApiLogicServer create`.  It provides the same arguments.
 
-You can execute the project *(without recreating it)* with the **Docker** terminal window:
+### 3. Customize
 
-```
-python api_logic_server_run.py  # run the API Server - test with cURL, Swagger
-python ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
-```
-
-> **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to restart the server.
-
-
-You will probably prefer to open your project with your IDE.  The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., git).  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
+The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., git).  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
 
 * Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_
 
@@ -122,8 +140,7 @@ The sample project provides an excellent opportunity to study one of *key differ
 Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
 
-* **Customize API:** edit ```api/expose_services.py``` to define your own endpoints,
-  complementing those created from the model
+* **Customize API:** edit ```api/expose_services.py``` to define your own endpoints, complementing those created from the model
   
 
 * **Customize Model:** edit ```models_ext.py```, for example
@@ -132,12 +149,29 @@ Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogi
 
 
 * **Customize Logic:** edit ```models/declare_logic.py``` (initially empty) to declare logic
-    * The default sample database project contains some simple rules you can review;
+    * As shown above, the default sample database project contains some simple rules you can explore;
   learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
     
+### 4. Run
 
+Whether you ran the project or just created it, you still have a project on your local file system.
+You can execute the project *(without recreating it)* with your IDE, or with the **Docker** terminal window.
+
+> **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to restart the server.
+
+##### Using your IDE
+Use the pre-configured launch configurations to run either the server, or the basic web app.
+
+##### From the Docker Terminal window
+You can also run directly from the **Docker** Terminal window:
+
+```
+python api_logic_server_run.py  # run the API Server - test with cURL, Swagger
+python ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
+```
 
 # Features
+Let's take a closer look at what the created project provides.
 
 ### API: SAFRS JSON:API and Swagger
 
