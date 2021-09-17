@@ -104,13 +104,13 @@ python ui/basic_web_app/run.py  # help for command args
 > **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
 
 
-The created Docker project is a standard Python project, fully customizable with your existing IDE and other development tools.  Open the created project folder, configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
+The created Docker project is a standard Python project, fully customizable with your existing IDE and other development tools.  Open the created project folder (it's on your local machine, not the Docker machine, configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.  It's basically `code docker_project`.
 
 > Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_.
 
-The sample database provides an excellent opportunity to study key elements of ApiLogicServer:
+The sample database provides an excellent opportunity to study one of *key differentiators of ApiLogicServer - ***declarative logic***:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
-* Create logic using IDE services such as code completion
+* Create logic, using IDE services such as code completion
 * Use IDE services to breakpoints and inspect variables and the log as shown below:
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/logic-debug.png"></figure>
