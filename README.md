@@ -94,7 +94,7 @@ Use the `run` command to create and run your project, or the `create` command to
 
 ### Created Project - Customizable, Re-runnable
 
-You can execute the project (*without recreating it*) with the Docker terminal window:
+You can execute the project *(without recreating it)* with the Docker terminal window:
 
 ```
 python api_logic_server_run.py  # help for command args
