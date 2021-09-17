@@ -101,7 +101,7 @@ Once you've installed Docker, the `docker run` command above installs the ApiLog
 ### 2. Create
 In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
 
-##### Run (Create and Run)
+##### ApiLogicServer Run (Create and Run)
 The ```ApiLogicServer run``` command creates your project, and runs the server (verify with swagger).  You can use `--help` to see arguments; In particular:
 
 1. The ```-db_url``` parameter defaults to a supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database).
@@ -116,7 +116,7 @@ The ```ApiLogicServer run``` command creates your project, and runs the server (
 3. Discover other options with ```ApiLogicServer run --help```
 
 
-##### Create
+##### ApiLogicServer Create
 
 You can also just create the project with `ApiLogicServer create`.  It provides the same arguments.
 
@@ -169,6 +169,8 @@ You can also run directly from the **Docker** Terminal window:
 python api_logic_server_run.py  # run the API Server - test with cURL, Swagger
 python ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 ```
+
+> Note you run from the **Docker** (not local) terminal, so that you have the proper Python environment.
 
 # Features
 Let's take a closer look at what the created project provides.
@@ -254,22 +256,7 @@ As of release 3.00.00, you can install using Docker, or standard
 enables you to bypass sometimes-tricky Python installs by using Docker.
 
 Docker support provides not only ApiLogicServer, but a Python environment
-you can use with your IDE.
-
-```
-cd ~/dev/servers                   # directory of api_logic_server projects on local machine
-docker network create dev-network  # only required once (ignore errors if network already exists)
-
-# Step 1 - install and start ApiLogicServer
-docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server
-
-# Step 2 - create project on local host machine
-ApiLogicServer create --project_name=/local/servers/docker_project
-
-# Step 3 - run the created ApiLogicServer project
-python /local/servers/docker_project/api_logic_server_run.py
-
-```
+you can use with your IDE.  It is described above.
 
 See the link above for more information on install and execution.
 
@@ -314,7 +301,7 @@ Many thanks to
 - [Meera Datey](https://www.linkedin.com/in/meeradatey/), for creating React Admin user interface
 - Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration and testing
-- Max Tardiveau, for testing
+- Max Tardiveau, for testing and help with Docker
 - Michael Holleran, for design collaboration and testing
 - Nishanth Shyamsundar, for review and testing
 - Thomas Peters, for review and testing
@@ -343,72 +330,3 @@ These technologies are automatically created when you use ApiLogicServer:
 
 08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix (Issue 17)
 
-07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5
-
-05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0
-
-05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names
-
-05/23/2021 - 02.02.18: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner
-
-05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests
-
-05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs
-
-05/08/2021 - 02.02.08: Server Startup Option
-
-05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions
-
-04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running
-
-04/26/2021 - 02.01.00: Improved Services, option --extended_builder (e.g., restify Table Value Functions)
-
-04/23/2021 - 02.00.15: bug fix - SQLAlchemy version, server port
-
-04/20/2021 - 02.00.12: pythonanywhere - port option, wsgi creation
-
-04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)
-
-04/11/2021 - 02.00.06: Minor - additional CLI info
-
-04/09/2021 - 02.00.05: Bug Fix - View names with spaces
-
-03/30/2021 - 02.00.02: Create Services table to avoid startup issues
-
-03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url
-
-03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext
-
-03/10/2021 - 01.04.10: Fix issues in creating Basic Web App
-
-03/03/2021 - 01.04.09: Services, cleanup main api_run
-
-02/23/2021 - 01.04.08: Minor - proper log level for APIs
-
-02/20/2021 - 01.04.07: Tutorial, Logic Bank 0.9.4 (bad warning message)
-
-02/08/2021 - 01.04.05: add employee audit foreign key in nw.sqlite
-
-02/07/2021 - 01.04.04: fix default project name
-
-02/07/2021 - 01.04.03: db_url default (for Jupyter)
-
-02/07/2021 - 01.04.02: Internal Renaming
-
-02/06/2021 - 01.04.00: Fix constraint reporting, get related (issues 7,8)
-
-01/31/2021 - 01.03.00: Resolve n:m relationships (revised models.py)
-
-01/29/2021 - 01.02.04: Minor cleanup
-
-01/29/2021 - 01.02.03: Flask AppBuilder fixes - Admin setup, class vs table names (wip)
-
-01/28/2021 - 01.02.02: Command line cleanup
-
-01/27/2021 - 01.02.00: Many
-* Host option
-* --from_git defaults to local directory
-* hello world example
-* nw rules pre-created
-
-01/25/2021 - 01.01.01: MySQL fixes
