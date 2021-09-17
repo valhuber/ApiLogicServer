@@ -97,8 +97,8 @@ Use the `run` command to create and run your project, or the `create` command to
 You can execute the project *(without recreating it)* with the Docker terminal window:
 
 ```
-python api_logic_server_run.py  # help for command args
-python ui/basic_web_app/run.py  # help for command args
+python api_logic_server_run.py  # run the API Server - test with cURL, Swagger
+python ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 ```
 
 > **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
