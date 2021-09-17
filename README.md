@@ -127,7 +127,7 @@ The sample database provides an excellent opportunity to study key elements of A
 * Create logic using IDE services such as code completion
 * Use IDE services to breakpoints and inspect variables and the log as shown below:
 
-<figure><img src="../raw/main/images/docker/VSCode/logic-debug.png"></figure>
+<figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/logic-debug.png"></figure>
 
 Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
