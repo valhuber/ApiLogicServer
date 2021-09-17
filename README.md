@@ -57,6 +57,12 @@ and can be [installed](#Installation) and customized with standard approaches as
 
 
 # Architectural Overview
+The ApiLogicServer docker image contains:
+1. The **CLI** (Command Language Interface) to create projects
+2. The various **runtimes** (API, Logic, Flask App Builder to execute projects
+3. A **Python** environment to support execution, and your IDE
+
+### ApiLogicServer CLI
 With a single command, create and run a
 [logic](#logic)-enabled
 [JSON:API](#api-safrs-jsonapi-and-swagger) and
@@ -64,8 +70,7 @@ With a single command, create and run a
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/creates-and-runs.png"></figure>
 
-### Run ApiLogicServer CLI
-As illustrated above, you run the ApiLogicServer CLI:
+As illustrated above, you run the ApiLogicServer CLI to create and optionally run a project:
 ```
 ApiLogicServer run        # see console log, below
 ```
@@ -84,30 +89,12 @@ to use your own database.
 
 3. Discover other options with ```ApiLogicServer run --help```
 
+Use the `run` command to create and run your project, or the `create` command to just create it.
 
-### Creates Customizable Project
-The CLI introspects your database, and creates a project.
-You can open this in your IDE and customize it as shown below.
 
-### Runs Project - Working Software Now
+### Created Project - Customizable, Re-runnable
 
-The CLI then starts the API, which (for the default project) prints this console log:
-
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/ApiLogicServer-Summary.png"></figure>
-
-#### Re-running the project
-
-In particular, note the system has created a **runnable project** (per the red box, above) that you can re-run as desired,
-and **customize** as shown below.
-
-Here is how your ```api_logic_server``` project can be re-executed (*without creating*).
-To run it:
-1. Specify a proper ```venv``` (virtual environment)
-   
-   * The one used for ApiLogicServer install is fine, or you can use a project-specific
-    [virtual environment](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#environment)
-    
-2. Then:
+You can execute the project (*without recreating it*) with the Docker terminal window:
 
 ```
 python api_logic_server_run.py  # help for command args
@@ -116,7 +103,6 @@ python ui/basic_web_app/run.py  # help for command args
 
 > **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
 
-### Customize the Created Project
 
 The created Docker project is a standard Python project, [fully customizable](https://github.com/valhuber/ApiLogicServer#customize-the-created-project) with your existing IDE and other development tools.  Open the created project folder, configure as described in [Working with IDEs](Working-with-IDEs), and use your IDE.
 
