@@ -101,7 +101,7 @@ python api_logic_server_run.py  # run the API Server - test with cURL, Swagger
 python ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 ```
 
-> **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
+> **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to restart the server.
 
 
 You will probably prefer to open it with your IDE.  The created Docker project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., git).  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
