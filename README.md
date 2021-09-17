@@ -8,7 +8,7 @@
 
 **ApiLogicServer** creates customizable database api projects with a single command.
 
-After [installing](#installation), get started by creating the **sample project;** for example, using Docker:
+Try it with the **sample project,** using Docker:
 
 ```
 cd ~/dev/servers                   # directory of api_logic_server projects on local machine
