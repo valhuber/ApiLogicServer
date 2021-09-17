@@ -56,7 +56,7 @@ This **declarative approach** is based on standard Python tooling,
 and can be [installed](#Installation) and customized with standard approaches as described below.
 
 
-# Quick Start - Create and Run
+# Architectural Overview
 With a single command, create and run a
 [logic](#logic)-enabled
 [JSON:API](#api-safrs-jsonapi-and-swagger) and
@@ -118,9 +118,16 @@ python ui/basic_web_app/run.py  # help for command args
 
 ### Customize the Created Project
 
-Here is the created project, shown in PyCharm ([setup procedures here](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs)):
+The created Docker project is a standard Python project, [fully customizable](https://github.com/valhuber/ApiLogicServer#customize-the-created-project) with your existing IDE and other development tools.  Open the created project folder, configure as described in [Working with IDEs](Working-with-IDEs), and use your IDE.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/generated-project.png"></figure>
+> Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_.
+
+The sample database provides an excellent opportunity to study key elements of ApiLogicServer:
+* The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
+* Create logic using IDE services such as code completion
+* Use IDE services to breakpoints and inspect variables and the log as shown below:
+
+<figure><img src="../raw/main/images/docker/VSCode/logic-debug.png"></figure>
 
 Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
