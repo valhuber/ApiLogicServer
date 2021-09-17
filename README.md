@@ -94,7 +94,7 @@ Use the `run` command to create and run your project, or the `create` command to
 
 ### Created Project - Customizable, Re-runnable
 
-You can execute the project *(without recreating it)* with the Docker terminal window:
+You can execute the project *(without recreating it)* with the **Docker** terminal window:
 
 ```
 python api_logic_server_run.py  # run the API Server - test with cURL, Swagger
@@ -104,11 +104,13 @@ python ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 > **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
 
 
-The created Docker project is a standard Python project, fully customizable using your existing IDE and other development tools.  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
+You will probably prefer to open it with your IDE.  The created Docker project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., git).  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
 
 * Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_
 
-* It's pre-configured to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project) including *launch configurations* for the server and basid wep app, so it's basically `code docker_project`
+* It's pre-configured to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project) including *launch configurations* for the server and basid wep app, so you basically open the project and proceed
+
+> Tip: install the [`shell` extension](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal) into VSCode, so it's basically `code docker_project`, from your **local** terminal window
 
 The sample database provides an excellent opportunity to study one of *key differentiators* of ApiLogicServer - ***declarative logic***:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
