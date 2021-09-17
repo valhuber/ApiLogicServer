@@ -110,7 +110,7 @@ You will probably prefer to open it with your IDE.  The created Docker project i
 
 * It's pre-configured to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project) including *launch configurations* for the server and basid wep app, so you basically open the project and proceed
 
-> Tip: install the [`shell` extension](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal) into VSCode, so it's basically `code docker_project`, from your **local** terminal window
+> Tip: you may need to install the [`shell` extension](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal) into VSCode, so it's becomes as simple as `code docker_project`, from your **local** terminal window
 
 The sample database provides an excellent opportunity to study one of *key differentiators* of ApiLogicServer - ***declarative logic***:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
