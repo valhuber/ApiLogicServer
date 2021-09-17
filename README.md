@@ -108,7 +108,7 @@ The created Docker project is a standard Python project, fully customizable with
 
 > Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_.
 
-The sample database provides an excellent opportunity to study one of *key differentiators of ApiLogicServer - ***declarative logic***:
+The sample database provides an excellent opportunity to study one of *key differentiators* of ApiLogicServer - ***declarative logic***:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
 * Create logic, using IDE services such as code completion
 * Use IDE services to breakpoints and inspect variables and the log as shown below:
