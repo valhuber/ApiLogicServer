@@ -108,7 +108,7 @@ The created Docker project is a standard Python project, fully customizable usin
 
 * Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_
 
-* It's pre-configured for to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project) including *launch configurations* for the server and basid wep app, so it's basically `code docker_project`
+* It's pre-configured to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project) including *launch configurations* for the server and basid wep app, so it's basically `code docker_project`
 
 The sample database provides an excellent opportunity to study one of *key differentiators* of ApiLogicServer - ***declarative logic***:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
