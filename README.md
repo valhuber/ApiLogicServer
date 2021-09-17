@@ -104,7 +104,7 @@ python ui/basic_web_app/run.py  # help for command args
 > **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer run` command to start the server.
 
 
-The created Docker project is a standard Python project, [fully customizable](https://github.com/valhuber/ApiLogicServer#customize-the-created-project) with your existing IDE and other development tools.  Open the created project folder, configure as described in [Working with IDEs](Working-with-IDEs), and use your IDE.
+The created Docker project is a standard Python project, [fully customizable](https://github.com/valhuber/ApiLogicServer#customize-the-created-project) with your existing IDE and other development tools.  Open the created project folder, configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
 
 > Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_.
 
