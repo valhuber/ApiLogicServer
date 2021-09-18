@@ -140,13 +140,12 @@ In this step, you are using the ApiLogicServer CLI to create and optionally run 
 ##### `ApiLogicServer Run` (Create _and Run_)
 The ```ApiLogicServer run``` command creates your project, and runs the server (verify with swagger).  You can use `--help` to see arguments; in particular:
 
-1. The ```-db_url``` parameter defaults to a supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database).
+1. The ```-db_url``` argument defaults to a pre-supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
 
-   * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html) to use your own database.
+   * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html) to use your own database
    
 
-2. By default, the project name (directory) is ```api_logic_server```- override it with the
-```--project_name``` option.
+2. the```--project_name``` argment defines the project name (directory); it defaults to ```api_logic_server```
 
 
 3. Discover other options with ```ApiLogicServer run --help```
