@@ -1,3 +1,5 @@
+# create a mysql that stores data in the container, not a volume
+
 # docker build -t apilogicserver/mysql --file Dockerfile-MySQL --rm .
 # docker run --name mysql-container --net dev-network -p 3306:3306 -d -e MYSQL_ROOT_PASSWORD=p apilogicserver/mysql
 
@@ -14,11 +16,10 @@
 # docker tag mysql-image apilogicserver/mysql8.0:version1.0.6
 # docker push apilogicserver/mysql8.0:version1.0.6
 
-# docker run --name mysql-testdbs --net dev-network -p 3306:3306 -d -e MYSQL_ROOT_PASSWORD=p apilogicserver/mysql8.0:version1.0.6
 
 # accessing it...
-# mysql+pymysql://root:p@mysql-container:3306/classicmodels
-# eg,  ApiLogicServer create --project_name=/local/servers/classicmodels --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
+# docker run --name mysql-container --net dev-network -p 3306:3306 -d -e MYSQL_ROOT_PASSWORD=p apilogicserver/mysql8.0:version1.0.6
+# ApiLogicServer create --project_name=/local/servers/classicmodels --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
 
 # thanks - https://medium.com/@stevenlandow/persist-share-dev-mysql-data-in-a-docker-image-with-commit-f9aa9910be0a
 
