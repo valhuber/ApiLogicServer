@@ -20,7 +20,7 @@ ApiLogicServer run --project_name=/local/servers/docker_project  # Create and ru
 
 ```
 
-After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (e.g., find Swagger at [localhost:5000](http://localhost:5000)), try different databases: [connect to a Dockerized Databases](#connect-to-dockerized-databases), and then try your own database.
+After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (e.g., find Swagger at [localhost:5000](http://localhost:5000)), try different databases: [connect to a Dockerized Database](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker#connect-to-dockerized-databases), and then try your own database.
 
 You can picture the process like this:
 
