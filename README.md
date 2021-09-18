@@ -105,7 +105,7 @@ The `v ${PWD}:/local/servers apilogicserver/api_logic_server` argument is what e
 ### 2. Create
 In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
 
-##### `ApiLogicServer Run` (Create and Run)
+##### `ApiLogicServer Run` (Create _and Run_)
 The ```ApiLogicServer run``` command creates your project, and runs the server (verify with swagger).  You can use `--help` to see arguments; In particular:
 
 1. The ```-db_url``` parameter defaults to a supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database).
@@ -120,7 +120,7 @@ The ```ApiLogicServer run``` command creates your project, and runs the server (
 3. Discover other options with ```ApiLogicServer run --help```
 
 
-##### ApiLogicServer Create
+##### `ApiLogicServer Create`
 
 You can also just create the project with `ApiLogicServer create`.  It provides the same arguments.
 
