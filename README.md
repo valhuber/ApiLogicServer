@@ -95,7 +95,11 @@ Let's review the 4 steps shown above:
 4. Run
 
 ### 1. Install
-Once you've installed Docker, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine
+Once you've installed Docker, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine.
+
+The `v ${PWD}:/local/servers apilogicserver/api_logic_server` argument is what enables the ApiLogicServer to create / access the project on your local machine.  Caveats:
+* Windows - Powershell must be used (due to the `$(PWD)` syntax)
+* `local/servers` is the volume name used by the Docker machine.  For now, this **must** start with `/local`.
 
 
 ### 2. Create
