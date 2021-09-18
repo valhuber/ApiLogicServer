@@ -175,7 +175,7 @@ The sample project provides an excellent opportunity to study one of *key differ
 Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide) include
 (explore the default sample database to see examples):
 
-* **Customize API:** edit ```api/expose_services.py``` to define your own endpoints, complementing those created from the model
+* **Customize API:** edit ```api/customize_services.py``` to define your own endpoints, complementing those created from the model
   
 
 * **Customize Model:** edit ```customize_models.py```, for example
@@ -249,7 +249,7 @@ are client configurable to **reduce network traffic** and **minimize organizatio
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/swagger.png"></figure>
 
-> Customize your API by editing ```api/expose_services.py```, and see [Customizing](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
+> Customize your API by editing ```api/customize_api.py```, and see [Customizing](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
 
 ### Logic
 

@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.00.14"
+__version__ = "3.01.00"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -239,7 +239,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
     if abs_db_url.endswith("nw.sqlite"):
         print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, rpcs")
         replace_logic_with_nw_logic(project_directory)
-        replace_models_ext_with_nw_models_ext(project_directory)
+        replace_customize_models_with_nw_customize_models(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
         replace_server_startup_test_with_nw_server_startup_test(project_directory)
     return target_db_loc_actual
@@ -340,18 +340,18 @@ def replace_logic_with_nw_logic(project_name):
     logic_file.close()
 
 
-def replace_models_ext_with_nw_models_ext(project_name):
-    """ Replace models/models_ext.py with pre-defined nw_models_ext """
-    models_ext_file = open(project_name + '/database/models_ext.py', 'w')
-    nw_models_ext_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_models_ext.py")
-    nw_models_ext = nw_models_ext_file.read()
-    models_ext_file.write(nw_models_ext)
-    models_ext_file.close()
+def replace_customize_models_with_nw_customize_models(project_name):
+    """ Replace models/customize_models.py with pre-defined nw_customize_models """
+    customize_models_file = open(project_name + '/database/customize_models.py', 'w')
+    nw_customize_models_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_customize_models.py")
+    nw_customize_models = nw_customize_models_file.read()
+    customize_models_file.write(nw_customize_models)
+    customize_models_file.close()
 
 
 def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
     """ replace api/expose_rpcs with nw version """
-    rpcs_file = open(project_name + '/api/expose_services.py', 'w')
+    rpcs_file = open(project_name + '/api/customize_api.py', 'w')
     nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_expose_services.py")
     nw_expose_rpcs = nw_expose_rpcs_file.read()
     rpcs_file.write(nw_expose_rpcs)
@@ -417,11 +417,11 @@ def fix_basic_web_app_run__create_admin(project_directory):
 
 
 def fix_host_and_ports(msg, project_name, host, port):
-    """ 9. Fixing port / host -- update server, port in /api/expose_services.py """
+    """ 9. Fixing port / host -- update server, port in /api/customize_api.py """
     print(msg)  # 9. Fixing port / host
     replace_port = f':{port}' if port else ""
     replace_with = host + replace_port
-    in_file = f'{project_name}/api/expose_services.py'
+    in_file = f'{project_name}/api/customize_api.py'
     create_utils.replace_string_in_file(search_for="localhost:5000",
                            replace_with=replace_with,
                            in_file=in_file)
@@ -443,12 +443,12 @@ def fix_database_models__inject_db_types(project_directory: str, db_types: str):
         create_utils.insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
 
 
-def fix_database_models__import_models_ext(project_directory: str):
-    """ Append "from database import models_ext" to database/models.py """
+def fix_database_models__import_customize_models(project_directory: str):
+    """ Append "from database import customize_models" to database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
-    print(f'7. Appending "from database import models_ext" to database/models.py')
+    print(f'7. Appending "from database import customize_models" to database/models.py')
     models_file = open(models_file_name, 'a')
-    models_file.write("\n\nfrom database import models_ext\n")
+    models_file.write("\n\nfrom database import customize_models\n")
     models_file.close()
 
 
@@ -627,7 +627,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         invoke_extended_builder(extended_builder, db_url, project_directory)
 
     if use_model == "":
-        fix_database_models__import_models_ext(project_directory)
+        fix_database_models__import_customize_models(project_directory)
 
     print(f'8. Update api_logic_server_run.py with '
           f'project_name={project_name} and host, port')
@@ -704,6 +704,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t09/18/2021 - 03.01.00: enable run command for Docker execution \n"
             "\t09/16/2021 - 03.00.14: enable run command for Docker execution \n"
             "\t09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
@@ -725,7 +726,7 @@ def version(ctx):
             "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
             "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
             "\t03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url\n"
-            "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, model_ext\n"
+            "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, models_ext\n"
             "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
             "\t03/03/2021 - 01.04.09: Services, cleanup main api_run\n"
         )

@@ -40,4 +40,4 @@ class Employee(SAFRSBase, Base):
 
 
 # ALTERED -- exclude:
-# from database import models_ext
+# from database import customize_models

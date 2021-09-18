@@ -31,5 +31,5 @@ def proper_salary(row, value):
 
 models.Employee.ProperSalary = proper_salary
 
-app_logger.info("database/models_ext.py successfully adds relationship: "
+app_logger.info("database/customize_models.py successfully adds relationship: "
                 "models.Employee.Manager = relationship('Employee', cascade_backrefs=True, backref='Manages'")

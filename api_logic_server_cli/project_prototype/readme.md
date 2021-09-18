@@ -76,8 +76,8 @@ This project was created with the following directory structure:
 
 | Directory | Usage | Key Customization File | Typical Customization  |
 |:-------------- |:--------|:--------------|:--------------|
-| ```api``` | JSON:API | ```api/expose_services.py``` | Add new end points / services |
-| ```database``` | SQLAlchemy Data Model Classes | ```database/models_ext.py``` | Add derived attributes, and relationships missing in the schema |
+| ```api``` | JSON:API | ```api/customize_api.py``` | Add new end points / services |
+| ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema |
 | ```logic``` | Transactional Logic | ```logic/logic_bank.py``` | Declare multi-table derivations, constraints, and events such as send mail / messages  |
 | ```ui``` | Basic Web App  | ```ui/basic_web_app/app/view.py``` | Control field display, and add interfaces like graphs and charts |
 

@@ -45,7 +45,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 import socket
 
-from api import expose_api_models, expose_services
+from api import expose_api_models, customize_api
 from logic import declare_logic
 
 from flask import render_template, request, jsonify, Flask
@@ -125,7 +125,7 @@ def create_app(config_filename=None, host="localhost"):
     with flask_app.app_context():
         db.init_app(flask_app)
         safrs_api = expose_api_models.expose_models(flask_app, HOST=host)  # services from models
-        expose_services.expose_services(flask_app, safrs_api, project_dir)  # custom services
+        customize_api.expose_services(flask_app, safrs_api, project_dir)  # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
 
