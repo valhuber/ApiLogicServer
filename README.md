@@ -63,7 +63,7 @@ and can be [installed](#Installation) and customized with standard approaches as
 # Architectural Overview
 
 As shown below, there are typically 2-3 "machines" in operation:
-* Your local machine (in grey), where the Customizable Project files (`docker_project`) are stored 
+* Your local machine (in grey), where the Customizable Project files (`docker_project`) are stored, and your Dev Tools (IDE etc) operate
 
 
 * The ApiLogicServer Docker (blue), which contains
