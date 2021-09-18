@@ -178,7 +178,7 @@ Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogi
 * **Customize API:** edit ```api/expose_services.py``` to define your own endpoints, complementing those created from the model
   
 
-* **Customize Model:** edit ```models_ext.py```, for example
+* **Customize Model:** edit ```customize_models.py```, for example
     * to define [relationships perhaps not defined in your schema](https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design), critical for multi-table logic, APIs, and web apps
     * to describe derived attributes, so that your API, logic and apps are not limited to the physical data model
 
@@ -209,6 +209,37 @@ python ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 
 # Features
 Let's take a closer look at what the created project provides.
+
+<details>
+  <summary>How It Works</summary>
+
+The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below.
+
+The executables are shown in blue, corresponding to Run, above.  Your customizations are done to the files noted in green.
+
+##### API Execution: `api_logic_server_run.py`
+
+`api_logic_server_run.py` sets up a Flask app, the database, logic and api:
+
+* **Database Setup:** It imports`api/expose_api_models` which imports `database/models.py`, which then imports `database/customize_models.py` for your model extensions.  `api_logic_server_run.py` then sets up flask, and opens the  database with `db` = safrs.DB`
+
+
+* **Logic Setup:** It then calls `LogicBank.activate`, passing `declare_logic` which loads your declared rules. On subsequent updates, logic operates by handling SQLAlchemy `before_flush` events, enforcing the declared logic.  This is non-trivial, using the engine in `LogicBank` (no relation to retail!).
+
+
+* **API Setup:** It next invokes `api/expose_api_models`.  This calls safrs to create the end points and the swagger information, based on the created `database/models.py` (the models used by the SQLAlchemy ORM).   It finally calls `api/customize.py` where you can add your own services.  The sample includes a trivial Hello World, as well as `add_order`.
+
+
+##### Basic Web App Execution: `ui/basic_web_app/run.py`
+run.py executes `from app import app` which
+loads the module `ui/basic_web_app/app/__init__.py'; this
+loads the models and activates logic.
+
+It then instantiates the class `AppBuilder`, which interprets the `views.py` file that describes your pages and transitions.  You can edit this file to tune what data is displayed, introduce graphs and charts, etc.
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/how-it-works.png"></figure>
+
+</details>
 
 ### API: SAFRS JSON:API and Swagger
 
@@ -323,6 +354,12 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 We have tested several databases - see [status here.](https://github.com/valhuber/ApiLogicServer/wiki/Testing)
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
+
+We have introduced several renames to clarify operation.
+These do not affect existing projects.  However, we've not updated all the docs to reflect these changes:
+* `logic/declare_logic.py` replaces `logic_bank.py`
+* `api/customize_api.py` replaces `expose_services.py`
+* `database/customize_models.py` replaces `models_ext.py`
 
 ### Acknowledgements
 
