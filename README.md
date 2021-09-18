@@ -94,14 +94,45 @@ Let's review the 4 steps shown above:
 3. Customize
 4. Run
 
-### 1. Install
+### 1. Install - `docker run`
 Once you've installed Docker, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine.
 
 The `v ${PWD}:/local/servers apilogicserver/api_logic_server` argument is what enables the ApiLogicServer to create / access the project on your local machine.  Caveats:
 * Windows - Powershell must be used (due to the `$(PWD)` syntax)
 * `local/servers` is the volume name used by the Docker machine.  For now, this **must** start with `/local`.
 
+<details>
+  <summary>Click to see Docker run argument descriptions, and how to inspect Docker environment</summary>
 
+
+The **arguments** mean:
+* **-it** - launch a terminal window for the Docker container
+* **--name api_logic_server** - the name of the image on your local machine
+* **-rm** - remove the container once it stops (your project files are not lost - they are on your local machine)
+* **--net dev-network** - attaches to dev-network (see _docker database networking_, below)
+* **-p 5000:5000** - maps local (host) part to Docker port 
+* **-v ${PWD}:/local/servers** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
+   * `${PWD}` is your current folder.  
+      * You could also provide a specific folder, e.g., `~/dev/servers` (Unix), or `C:\Users\val\dev\servers` (windows)
+   * `/local/servers`is the mounted volume reference from inside the Docker machine
+* **`apilogicserver/api_logic_server`** - the name of the image to pull from Docker Hub.  
+   * This will fetch the image first time, and will run it locally on subsequent runs
+   * The image is not automatically refreshed -- install ApiLogicServer updates as described below
+
+> To update your image to the latest version: ```docker pull apilogicserver/api_logic_server```
+
+On your Docker machine, you can **inspect** your environment:
+```
+python py.py
+```
+
+Open a new terminal window on your **local** machine, and find your docker IP address:
+
+```
+docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
+```
+
+</details>
 ### 2. Create
 In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
 
