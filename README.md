@@ -217,11 +217,13 @@ The ApiLogicServer CLI `create` (or `run`) command creates the project structure
 
 The executables are shown in blue, corresponding to Run, above.  Your customizations are done to the files noted in green.
 
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/how-it-works.png"></figure>
+
 ##### API Execution: `api_logic_server_run.py`
 
 `api_logic_server_run.py` sets up a Flask app, the database, logic and api:
 
-* **Database Setup:** It imports`api/expose_api_models` which imports `database/models.py`, which then imports `database/customize_models.py` for your model extensions.  `api_logic_server_run.py` then sets up flask, and opens the  database with `db` = safrs.DB`
+* **Database Setup:** It imports`api/expose_api_models` which imports `database/models.py`, which then imports `database/customize_models.py` for your model extensions.  `api_logic_server_run.py` then sets up flask, and opens the  database with `db = safrs.DB`
 
 
 * **Logic Setup:** It then calls `LogicBank.activate`, passing `declare_logic` which loads your declared rules. On subsequent updates, logic operates by handling SQLAlchemy `before_flush` events, enforcing the declared logic.  This is non-trivial, using the engine in `LogicBank` (no relation to retail!).
@@ -236,8 +238,6 @@ loads the module `ui/basic_web_app/app/__init__.py'; this
 loads the models and activates logic.
 
 It then instantiates the class `AppBuilder`, which interprets the `views.py` file that describes your pages and transitions.  You can edit this file to tune what data is displayed, introduce graphs and charts, etc.
-
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/how-it-works.png"></figure>
 
 </details>
 
