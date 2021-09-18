@@ -63,7 +63,7 @@ and can be [installed](#Installation) and customized with standard approaches as
 # Architectural Overview
 
 As shown below, there are typically 2-3 "machines" in operation:
-* Your local machine (in grey), where the Customizable Project files (`docker_project`) are stored 
+* Your local machine (in grey), where the Customizable Project files (`docker_project`) are stored, and your Dev Tools (IDE etc) operate
 
 
 * The ApiLogicServer Docker (blue), which contains
@@ -133,19 +133,19 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 ```
 
 </details>
+
 ### 2. Create
 In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
 
 ##### `ApiLogicServer Run` (Create _and Run_)
-The ```ApiLogicServer run``` command creates your project, and runs the server (verify with swagger).  You can use `--help` to see arguments; In particular:
+The ```ApiLogicServer run``` command creates your project, and runs the server (verify with swagger).  You can use `--help` to see arguments; in particular:
 
-1. The ```-db_url``` parameter defaults to a supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database).
+1. The ```-db_url``` argument defaults to a pre-supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
 
-   * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html) to use your own database.
+   * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html) to use your own database
    
 
-2. By default, the project name (directory) is ```api_logic_server```- override it with the
-```--project_name``` option.
+2. the```--project_name``` argment defines the project name (directory); it defaults to ```api_logic_server```
 
 
 3. Discover other options with ```ApiLogicServer run --help```
@@ -159,16 +159,16 @@ You can also just create the project with `ApiLogicServer create`.  It provides 
 
 The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., git).  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
 
-* Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_
+* Significantly, you utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_
 
-* It's pre-configured for VS Code to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project), and includes *launch configurations* for the server and basic wep app, so you basically open the project and proceed.
+* It's pre-configured for VS Code to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project), and includes *launch configurations* for the `ApiLogicServer` and the `Basic Web App`, so you basically open the project and proceed.
 
 > Tip: you may need to install the [`shell` extension](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal) into VS Code, so starting it becomes as simple as `code docker_project` (from your **local** terminal window)
 
 The sample project provides an excellent opportunity to study one of *key differentiators* of ApiLogicServer - ***declarative logic***:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
 * Create logic, using IDE services such as code completion
-* Use IDE services to set breakpoints, and inspect variables and the log as shown below:
+* Use IDE services to set breakpoints, and inspect variables and the log as shown below (try it with [this procedure](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#logic-debugging):
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/logic-debug.png"></figure>
 
