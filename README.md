@@ -159,7 +159,7 @@ You can also just create the project with `ApiLogicServer create`.  It provides 
 
 The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., git).  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
 
-* Significantly, you can utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_
+* Significantly, you utilize the Python environment from the Docker machine, _eliminating the need to install and configure Python_
 
 * It's pre-configured for VS Code to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project), and includes *launch configurations* for the server and basic wep app, so you basically open the project and proceed.
 
