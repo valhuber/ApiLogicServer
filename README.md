@@ -145,7 +145,7 @@ The ```ApiLogicServer run``` command creates your project, and runs the server (
    * Specify a [SQLAlchemy url](https://docs.sqlalchemy.org/en/14/core/engines.html) to use your own database
    
 
-2. the```--project_name``` argment defines the project name (directory); it defaults to ```api_logic_server```
+2. the```--project_name``` argument defines the project name (directory); it defaults to ```api_logic_server```
 
 
 3. Discover other options with ```ApiLogicServer run --help```
@@ -168,7 +168,7 @@ The created project is a standard Python project, fully customizable using your 
 The sample project provides an excellent opportunity to study one of *key differentiators* of ApiLogicServer - ***declarative logic***:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
 * Create logic, using IDE services such as code completion
-* Use IDE services to set breakpoints, and inspect variables and the log as shown below (try it with [this procedure](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#logic-debugging):
+* Use IDE services to set breakpoints, and inspect variables and the log as shown below (try it with [this procedure](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#logic-debugging)):
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/logic-debug.png"></figure>
 
@@ -275,7 +275,7 @@ The following 5 rules represent the
 as 200 lines of Python:
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/example.png"></figure>
 
-> Declare your logic by editing: **```logic/logic_bank.py```**
+> Declare your logic by editing: **```logic/declare_logic.py```**
 
 
 ### Basic Web App - Flask Appbuilder
