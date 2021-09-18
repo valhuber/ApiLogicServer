@@ -133,6 +133,7 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 ```
 
 </details>
+
 ### 2. Create
 In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
 
