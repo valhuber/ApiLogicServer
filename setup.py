@@ -78,6 +78,7 @@ setup(
         "email-validator==1.1.1",
         "LogicBank>=1.0.0",
         "PyMySQL>=1.0.2",
+        # "pyodbc==4.0.30",
         "cryptography>=3.3.1",
         "requests>=2.25.1"
     ],

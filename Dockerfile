@@ -14,10 +14,17 @@
 
 # shout out to Piotr Maślewski https://medium.com/swlh/dockerize-your-python-command-line-program-6a273f5c5544
 
-FROM python:3.8-slim
+# FROM python:3.8-slim # is 683MM
+# FROM python:3.9-slim-bullseye is 638, 660 with curl
+FROM python:3.9-slim-bullseye
+
+USER root
+RUN apt-get update && apt-get install -y curl
+
 RUN useradd --create-home --shell /bin/bash api_logic_server
 WORKDIR /home/api_logic_server
 COPY requirements.txt ./
+
 RUN pip install --no-cache-dir -r requirements.txt
 USER api_logic_server
 COPY . .
