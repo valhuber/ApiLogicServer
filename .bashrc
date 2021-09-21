@@ -2,6 +2,8 @@ export PATH=$PATH:/home/api_logic_server
 
 echo " "
 echo "Welcome to ApiLogicServer - Docker machine"
+echo " "
+cat ../../etc/issue
 
 echo " "
 echo "Optionally verify your environment..."

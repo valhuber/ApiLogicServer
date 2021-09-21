@@ -1,25 +1,46 @@
 # docker build -t apilogicserver/api_logic_server --rm .
-# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.01.00
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.01.01
 # docker push apilogicserver/api_logic_server
 
 # docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/local/servers apilogicserver/api_logic_server
-#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ${PWD}:/local/servers apilogicserver/api_logic_server
 #   docker image inspect apilogicserver/api_logic_server
+#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ${PWD}:/local/servers apilogicserver/api_logic_server
 
 # The software auto-prompts you for the next steps:
-#   ApiLogicServer run --project_name=/local/servers/docker_project
-#   ApiLogicServer run --project_name=/local/servers/docker_project --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
+# ApiLogicServer run --project_name=/local/servers/docker_project
+#   ApiLogicServer create --project_name=/local/servers/mysql --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
+#   ApiLogicServer create --project_name=/local/servers/sqlserver --db_url=mssql+pyodbc://sa:posey386\!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\?trusted_connection=no
+#   ApiLogicServer create --project_name=/local/servers/postgres --db_url=postgresql://postgres:p@10.0.0.234/postgres
 #   python /local/servers/docker_project/api_logic_server_run.py
 #   python /local/servers/docker_project/ui/basic_web_app/run.py
 
-# shout out to Piotr Maślewski https://medium.com/swlh/dockerize-your-python-command-line-program-6a273f5c5544
+# shout outs...
+#   Max Tardiveau   https://www.galliumdata.com/
+#   Shantanu        https://forum.astronomer.io/t/how-to-pip-install-pyodbc-in-the-dockerfile/983
+#   Piotr Maślewski https://medium.com/swlh/dockerize-your-python-command-line-program-6a273f5c5544
 
-# FROM python:3.8-slim # is 683MM
-# FROM python:3.9-slim-bullseye is 638, 660 with curl
+# python:3.9-slim-bullseye (Debian Linux 11) is 638MB, with SqlServer (here) is 1.04G
 FROM python:3.9-slim-bullseye
 
 USER root
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update \
+  && apt-get install -y curl \
+  && apt-get -y install gcc gnupg2 \
+  && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+  && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+  && apt install -y \
+		libltdl7 libodbc1 odbcinst odbcinst1debian2 unixodbc wget \
+  && wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.4_amd64.deb \
+  && apt-get install ./multiarch-support_2.27-3ubuntu1.4_amd64.deb \
+  && wget https://packages.microsoft.com/debian/10/prod/pool/main/m/msodbcsql17/msodbcsql17_17.8.1.1-1_amd64.deb \
+  && ACCEPT_EULA=Y dpkg -i msodbcsql17_17.8.1.1-1_amd64.deb;
+
+# TODO RUN wget https://packages.microsoft.com/debian/10/prod/pool/main/m/mssql-tools/mssql-tools_17.8.1.1-1_amd64.deb;
+
+RUN apt-get -y install unixodbc-dev \
+  && apt-get -y install python3-pip \
+  && pip install pyodbc
+
 
 RUN useradd --create-home --shell /bin/bash api_logic_server
 WORKDIR /home/api_logic_server
