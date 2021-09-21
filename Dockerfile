@@ -8,7 +8,7 @@
 
 # The software auto-prompts you for the next steps:
 # ApiLogicServer run --project_name=/local/servers/docker_project
-#   ApiLogicServer create --project_name=/local/servers/mysql --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
+#   ApiLogicServer create --project_name=/local/servers/classicmodels --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
 #   ApiLogicServer create --project_name=/local/servers/sqlserver --db_url=mssql+pyodbc://sa:posey386\!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\?trusted_connection=no
 #   ApiLogicServer create --project_name=/local/servers/postgres --db_url=postgresql://postgres:p@10.0.0.234/postgres
 #   python /local/servers/docker_project/api_logic_server_run.py
