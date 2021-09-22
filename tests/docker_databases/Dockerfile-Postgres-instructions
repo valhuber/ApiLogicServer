@@ -1,0 +1,35 @@
+# create a Postgres that stores data in the container, not a volume
+
+# ref: https://dev.to/shree_j/how-to-install-and-run-psql-using-docker-41j2
+
+# docker run -d --name pg-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p postgres
+
+# Now set up your sqlsvr database
+
+# docker exec -it pg-container /bin/bash
+# apt-get update \
+     && apt-get install curl
+# cd home
+# curl -o northwind.sql "https://raw.githubusercontent.com/pthom/northwind_psql/master/northwind.sql"
+# cd ..
+# psql --username=postgres
+# \i home/northwind.sql
+# \l
+# \dt
+# \q
+# exit
+
+# Now convert container to image
+
+# docker commit pg-container postgresql-image-nw
+# docker tag postgresql-image-nw apilogicserver/postgres:version1.0.2
+# docker push apilogicserver/postgres:version1.0.2
+
+# docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version1.0.2
+# docker exec -it postgresql-container /bin/bash
+# docker exec -it pg-temp /bin/bash
+# ApiLogicServer create --project_name=/local/servers/postgres --db_url=postgresql://postgres:p@postgresql-container/postgres
+
+# docker run --rm -p 5050:5050 thajeztah/pgadmin4
+# browser, create server at 10.0.0.234
+# find tables under Databases > postgres > Schemas > Public > Tables
