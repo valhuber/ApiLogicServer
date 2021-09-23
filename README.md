@@ -69,7 +69,7 @@ As shown below, there are typically 2-3 "machines" in operation:
 
 * The ApiLogicServer Docker (blue), which contains
   * The **CLI** (Command Language Interface) to create projects
-  * The various **Runtimes** (API, Logic, Flask App Builder to execute projects
+  * The various **Runtimes** (API, Logic, Flask App Builder) to execute projects
   * A **Python** environment to support execution, and development using your IDE
 
 
