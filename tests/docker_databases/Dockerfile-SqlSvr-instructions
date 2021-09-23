@@ -6,7 +6,7 @@
 # docker run --name sqlsvr -e 'HOMEBREW_NO_ENV_FILTERING=1' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=posey386!' -p 1433:1433 -d mcr.microsoft.com/mssql/server
 
 
-# Now set up your sqlsvr database
+# Now set up your sqlsvr database using Azure Data Studio
 
 #    northwind - thanks, Doug: https://douglaskline.blogspot.com/2020/09/restoring-sql-server-db-backup-to.html
 #       paste test data from tests/sql_server/northwind.sql
