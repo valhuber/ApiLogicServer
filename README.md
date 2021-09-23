@@ -79,7 +79,7 @@ As shown below, there are typically 2-3 "machines" in operation:
 <details>
   <summary>Directory Contents</summary>
 
-When you have created your project, you will find the following project directory in `~/dev/servers` on your local (gery) machine (here opened in VS Code):
+When you have created your project, you will find the following project directory in `~/dev/servers` on your local (grey) machine (here opened in VS Code):
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/local-project.png"></figure>
 
 Your docker machine (blue) files include Python, Python libraries, and API Logic Server.  The Python project above utilizes IDE `remote-container` support (visible at the lower left in the preceding diagram), which utilizes the docker (not local machine) version of Python.
