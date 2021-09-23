@@ -211,7 +211,7 @@ You can execute the project *(without recreating it)* with your IDE, or with the
 
 ##### Using your IDE
 Use the pre-configured launch configurations to run either the server, or the basic web app.
-Even though you are running the IDE on your local machine, the IDE and launch configurations are pre-configured to use the API Logic Server docker machine.  This provides access to the proper Python environment (API Logic Server runtime libraries for API, Logic etc).
+Even though you are running the IDE on your local machine, the IDE and launch configurations are pre-configured to use the API Logic Server docker machine.  This provides access to the proper Python environment running in the docker machine (API Logic Server runtime libraries for API, Logic etc).
 
 ##### From the Docker Terminal window
 You can also run directly from the **Docker** Terminal window:
