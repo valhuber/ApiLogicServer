@@ -14,7 +14,7 @@ Create the sample project in a *minute or two*, using Docker.  With Docker start
 cd ~/dev/servers                   # directory of api_logic_server projects on local machine
 docker network create dev-network  # only required once (ignore errors if network already exists)
 
-# start (install if required) the API Logic Server docker machine
+# Start (install if required) the API Logic Server docker machine
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server
 
 ApiLogicServer run --project_name=/local/servers/docker_project  # Create and run project using API Logic Server
