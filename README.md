@@ -76,6 +76,18 @@ As shown below, there are typically 2-3 "machines" in operation:
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/docker-arch.png"></figure>
 
 <details>
+  <summary>Directory Contents</summary>
+
+When you have created your project, you will find the following project directory in `~/dev/servers` on your local (gery) machine (here opened in VS Code):
+<figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/local-project.png"></figure>
+
+Your docker machine (blue) files include Python, Python libraries, and API Logic Server, like this:
+
+<figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/docker-files.png"></figure>
+
+</details>
+
+<details>
   <summary>Alternative option: pip install</summary>
 
 You can also run ApiLogicServer without Docker.  The familiar `pip install ApiLogicServer` creates the ApiLogicServer in your `venv` instead of the Docker machine.
