@@ -194,7 +194,11 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         try:
             shutil.copytree(from_dir, project_directory)
         except OSError as e:
-            print(f'\n\nError - unable to copy to {project_directory}\n\n{str(e)}')
+            print(f'\n==>Error - unable to copy to {project_directory} -- see log below'
+                  f'\n\n{str(e)}\n\n'
+                  f'Suggestions:\n'
+                  f'.. Verify the --project_name argument\n'
+                  f'.. If you are using Docker, verify the -v argument\n\n')
 
     create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
