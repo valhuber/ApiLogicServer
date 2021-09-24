@@ -100,7 +100,7 @@ class ValidationErrorExt(ValidationError):
         self.detail: TypedDict = detail
 
 
-def create_app(config_filename=None, host="localhost"):
+def create_app(config_filename=None):
     flask_app = Flask("API Logic Server")
     flask_app.config.from_object("config.Config")
     setup_logging(flask_app)
@@ -124,11 +124,7 @@ def create_app(config_filename=None, host="localhost"):
 
     with flask_app.app_context():
         db.init_app(flask_app)
-        safrs_host = host
-        if host == "localhost":
-            safrs_host = "0.0.0.0"
-            app_logger.debug(f'==> Network Diagnostic - using safrs_host (for VMWare windows): {safrs_host}')
-        safrs_host = expose_api_models.expose_models(flask_app, HOST=safrs_host)  # services from models
+        safrs_api = expose_api_models.expose_models(flask_app, HOST=host)   # services from models
         customize_api.expose_services(flask_app, safrs_api, project_dir)          # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
@@ -147,8 +143,12 @@ if sys.argv[1:]:
 else:
     host = "localhost"
     app_logger.debug(f'==> Network Diagnostic - using default ip: localhost')
+safrs_host = host
+if host == "localhost":
+    safrs_host = None  #  "0.0.0.0"
+    app_logger.debug(f'==> Network Diagnostic - using safrs_host (for VMWare windows): {safrs_host}')
 port = "api_logic_server_port"
-flask_app, safrs_api = create_app(host=host)
+flask_app, safrs_api = create_app()  # references host
 
 
 @flask_app.route('/')

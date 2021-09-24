@@ -92,7 +92,7 @@ Please see the ```nw``` sample for examples of typical customizations.
 
 
 # Installation and Execution
-Install your projects' virtual environment:
+If not using Docker, install your projects' virtual environment:
 ```
 cd <your project>
 virtualenv venv
@@ -100,7 +100,7 @@ source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Then, start the API:
+Then, start the API, either by IDE launch configurations (for Docker), or by command line:
 ```
 python api_logic_server_run.py
 ```
