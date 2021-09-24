@@ -1,7 +1,7 @@
 import logging
 import datetime
-import sys
-import os
+import sys, os
+import shutil
 from os.path import abspath
 from typing import NewType
 from sqlalchemy import MetaData
@@ -277,8 +277,18 @@ class FabCreator(object):
     def create_basic_web_app_directory(self, msg):
         project_abs_path = abspath(self.mod_gen.project_directory)
         fab_project = project_abs_path + "/ui/basic_web_app"
-        cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-        result = create_utils.run_command(cmd, msg=msg)
+        use_fab_based_creation = False
+        if use_fab_based_creation:
+            cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
+            result = create_utils.run_command(cmd, msg=msg)
+        else:  # use local copy
+            code_loc = self.mod_gen.api_logic_server_dir
+            if "\\" in code_loc:
+                from_dir = code_loc + "\\create_from_model\\templates\\basic_web_app"
+            else:
+                from_dir = code_loc + "/create_from_model/templates/basic_web_app"
+            print(f'{msg} - copy {from_dir} -> {fab_project}')
+            shutil.copytree(from_dir, fab_project)
         pass
 
     def fix_basic_web_app_run__python_path(self):

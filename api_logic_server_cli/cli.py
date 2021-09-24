@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.01.01"
+__version__ = "3.01.02"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -191,7 +191,10 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
                 from_dir = code_loc + "/project_prototype"
         print(f'{msg} copy {from_dir} -> {project_directory}')
         cloned_from = from_dir
-        shutil.copytree(from_dir, project_directory)
+        try:
+            shutil.copytree(from_dir, project_directory)
+        except OSError as e:
+            print(f'\n\nError - unable to copy to {project_directory}\n\n{str(e)}')
 
     create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
@@ -469,7 +472,8 @@ def copy_if_mounted(project_directory):
     """
     return_project_directory = project_directory
     return_copy_to_directory = ""
-    if os.name == "posix":  # mac, docker...
+    use_copy_strategy = False  # must be true for fab-based creation (see fab_creator - use_fab_based_creation)
+    if use_copy_strategy and os.name == "posix":  # mac, docker...
         directory_is_mounted = project_directory.startswith("/local") or "copy_test" in project_directory
         if directory_is_mounted:  # TODO: https://www.baeldung.com/linux/bash-is-directory-mounted
             running_at =  Path(__file__)
@@ -616,6 +620,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     model_creation_services = CreateFromModel(  # Create views.py file from db, models.py
         project_directory=project_directory,
         copy_to_project_directory = copy_to_project_directory,
+        api_logic_server_dir = get_api_logic_server_dir(),
         abs_db_url=abs_db_url, db_url=db_url,
         host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
@@ -704,7 +709,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t09/18/2021 - 03.01.01: enable run command for Docker execution, pyodbc \n"
+            "\t09/18/2021 - 03.01.02: enable run command for Docker execution, pyodbc, fab create-by-copy \n"
             "\t09/16/2021 - 03.00.14: enable run command for Docker execution \n"
             "\t09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"

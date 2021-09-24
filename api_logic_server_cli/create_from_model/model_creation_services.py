@@ -50,6 +50,7 @@ class CreateFromModel(object):
     def __init__(self,
                  project_directory: str ="~/Desktop/my_project",
                  copy_to_project_directory: str = "",
+                 api_logic_server_dir: str = "",
                  abs_db_url: str = "sqlite:///nw.sqlite",
                  db_url: str="sqlite:///nw.sqlite",
                  host: str = "localhost",
@@ -64,6 +65,7 @@ class CreateFromModel(object):
         self.copy_to_project_directory = ""
         if copy_to_project_directory != "":
             self.copy_to_project_directory = self.get_windows_path_with_slashes(copy_to_project_directory)
+        self.api_logic_server_dir = api_logic_server_dir
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
         self.db_url = db_url  # the original cli parameter
         self.host = host
