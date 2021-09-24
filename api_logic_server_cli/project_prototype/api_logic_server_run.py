@@ -124,8 +124,12 @@ def create_app(config_filename=None, host="localhost"):
 
     with flask_app.app_context():
         db.init_app(flask_app)
-        safrs_api = expose_api_models.expose_models(flask_app, HOST=host)  # services from models
-        customize_api.expose_services(flask_app, safrs_api, project_dir)  # custom services
+        safrs_host = host
+        if host == "localhost":
+            safrs_host = "0.0.0.0"
+            app_logger.debug(f'==> Network Diagnostic - using safrs_host (for VMWare windows): {safrs_host}')
+        safrs_host = expose_api_models.expose_models(flask_app, HOST=safrs_host)  # services from models
+        customize_api.expose_services(flask_app, safrs_api, project_dir)          # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
 
@@ -141,8 +145,8 @@ if sys.argv[1:]:
     host = sys.argv[1]  # you many need to enable cors support, below
     app_logger.debug(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
 else:
-    host = "0.0.0.0"
-    app_logger.debug(f'==> Network Diagnostic - using default ip: 0.0.0.0')
+    host = "localhost"
+    app_logger.debug(f'==> Network Diagnostic - using default ip: localhost')
 port = "api_logic_server_port"
 flask_app, safrs_api = create_app(host=host)
 

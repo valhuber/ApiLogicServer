@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.01.02"
+__version__ = "3.01.05"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -713,7 +713,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t09/18/2021 - 03.01.02: enable run command for Docker execution, pyodbc, fab create-by-copy \n"
+            "\t09/24/2021 - 03.01.05: enable run command for Docker execution, pyodbc, fab create-by-copy \n"
             "\t09/16/2021 - 03.00.14: enable run command for Docker execution \n"
             "\t09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"

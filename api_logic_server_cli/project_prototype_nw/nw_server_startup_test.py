@@ -57,7 +57,6 @@ def server_tests(host, port, version):
             port - server port
             version - ApiLogicServer version
     """
-
     app_logger.info(f'\n\n===================')
     app_logger.info(f'STARTUP DIAGNOSTICS')
     app_logger.info(f'.. server_tests("{host}", "{port}") called (v1.1)')
@@ -170,24 +169,20 @@ def server_tests(host, port, version):
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
 
-        my_host = host
-        if host == "0.0.0.0":  # see https://github.com/valhuber/ApiLogicServer/issues/19
-            my_host = "localhost"
-
         app_logger.info(f'\nAPILOGICSERVER SUMMARY')
         app_logger.info(f'======================\n')
         prt(f''
             f'1. CUSTOMIZABLE SERVER PROJECT CREATED from supplied Sample DB\n'
             f'     .. Explore your project - open with IDE/Editor at {get_project_dir()}\n'
             f'2. SERVER STARTED on host: {hostname}, on ip (gethostbyname): {local_ip}\n'
-            f'     .. Explore your API - Swagger at http://{my_host}:{port}\n'
+            f'     .. Explore your API - Swagger at http://{host}:{port}\n'
             f'     .. Re-run it later (without recreating) - python api_logic_server_run.py\n'
             f'3. LOGIC pre-supplied\n'
             f'     .. Explore it at {get_project_dir()}/logic/declare_logic.py\n'
             f'     .. Or, see https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/nw_logic.py\n'
             f'4. BASIC WEB APP Created\n'
             f'     .. First, start it: python ui/basic_web_app/run.py [host port]]\n'
-            f'     .. Then, explore it - http://{my_host}:8080/ (login: admin, p)\n'
+            f'     .. Then, explore it - http://{host}:8080/ (login: admin, p)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#3-explore-the-basic-web-app\n'
             f'5. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
             f'     .. See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#sample-project-diagnostics\n'

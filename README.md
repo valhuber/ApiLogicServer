@@ -408,6 +408,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+09/24/2021 - 03.01.04: enable run command for Docker execution, pyodbc, fab create-by-copy
+
 09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug
 
 09/06/2021 - 02.04.19: Docker foundation, improved Python path / log handling, .vscode, auto copy
