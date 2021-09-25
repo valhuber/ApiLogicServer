@@ -318,6 +318,11 @@ multi-page, multi-table applications as shown below:
 
 5. **Ids last:** such boring fields are not shown on lists, and at the end on other pages
 
+If you are using Docker, you can run it like this for the created sample:
+```
+python /local/servers/docker_project/ui/basic_web_app/run.py  # using the docker terminal window
+```
+
 <figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
 
 > Customize your app by editing: **```ui/basic_web_app/app/views.py```**
