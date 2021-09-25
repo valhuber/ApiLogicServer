@@ -21,6 +21,13 @@ ApiLogicServer run --project_name=/local/servers/docker_project  # Create and ru
 
 ```
 
+<details>
+  <summary>Upgrade to current version (3.01.10)</summary>
+
+> To update your image to the latest version: ```docker pull apilogicserver/api_logic_server```
+
+</details>
+
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (e.g., find Swagger at [localhost:5000](http://localhost:5000)), try different databases: [try our dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
 You can picture the process like this:
@@ -133,8 +140,6 @@ The **arguments** mean:
 * **`apilogicserver/api_logic_server`** - the name of the image to pull from Docker Hub.  
    * This will fetch the image first time, and will run it locally on subsequent runs
    * The image is not automatically refreshed -- install ApiLogicServer updates as described below
-
-> To update your image to the latest version: ```docker pull apilogicserver/api_logic_server```
 
 On your Docker machine, you can **inspect** your environment:
 ```
