@@ -53,6 +53,14 @@ from safrs import ValidationError, SAFRSBase
 import test.server_startup_test as self_test
 
 
+def is_docker():
+    path = '/home/api_logic_server'
+    return (
+        os.path.exists('/.dockerenv') or
+        os.path.isfile(path) and any('docker' in line for line in open(path))
+    )
+
+
 def setup_logging(flask_app):
     setup_logic_logger = True
     if setup_logic_logger:
@@ -84,6 +92,12 @@ def setup_logging(flask_app):
         handler.setFormatter(formatter)
         engine_logger.addHandler(handler)
 
+    do_sqlalchemy_info = False  # True will log SQLAlchemy SQLs
+    if do_sqlalchemy_info:
+        logging.basicConfig()
+        logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
+
 
 class ValidationErrorExt(ValidationError):
     """
@@ -101,17 +115,6 @@ class ValidationErrorExt(ValidationError):
 
 
 def create_app(config_filename=None):
-    flask_app = Flask("API Logic Server")
-    flask_app.config.from_object("config.Config")
-    setup_logging(flask_app)
-    db = safrs.DB  # opens database per config, setting session
-    detail_logging = False  # True will log SQLAlchemy SQLs
-    if detail_logging:
-        import logging
-        logging.basicConfig()
-        logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-    Base: declarative_base = db.Model
-    session: Session = db.session
 
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
@@ -119,6 +122,13 @@ def create_app(config_filename=None):
         else:
             detail = {"model": logic_row.name}
         raise ValidationErrorExt(message= message, detail=detail)
+
+    flask_app = Flask("API Logic Server")
+    flask_app.config.from_object("config.Config")
+    setup_logging(flask_app)
+    db = safrs.DB  # opens database per config, setting session
+    Base: declarative_base = db.Model
+    session: Session = db.session
 
     LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
 
@@ -142,13 +152,13 @@ if sys.argv[1:]:
     app_logger.debug(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
 else:
     host = "localhost"
-    app_logger.debug(f'==> Network Diagnostic - using default ip: localhost')
-safrs_host = host
-if host == "localhost":
-    safrs_host = None  #  "0.0.0.0"
-    app_logger.debug(f'==> Network Diagnostic - using safrs_host (for VMWare windows): {safrs_host}')
+    app_logger.warning(f'==> Network Diagnostic - defaulting host: {host}')
+flask_host = host
+if is_docker() and host == "localhost":
+    flask_host = "0.0.0.0"
+    app_logger.debug(f'==> Network Diagnostic - using docker flask_host: {flask_host}')
 port = "api_logic_server_port"
-flask_app, safrs_api = create_app()  # references host
+flask_app, safrs_api = create_app()
 
 
 @flask_app.route('/')
@@ -221,5 +231,5 @@ def one_ping_on_server_start_for_server_start_tests():
 if __name__ == "__main__":
     if self_test.server_tests_enabled:  # see test/server_startup_test.py
         one_ping_on_server_start_for_server_start_tests()
-    app_logger.info(f'Starting ApiLogicServer project, version api_logic_server_version')
-    flask_app.run(host=host, threaded=False, port=port)
+    app_logger.info(f'Starting ApiLogicServer project, version api_logic_server_version on {flask_host}')
+    flask_app.run(host=flask_host, threaded=False, port=port)
