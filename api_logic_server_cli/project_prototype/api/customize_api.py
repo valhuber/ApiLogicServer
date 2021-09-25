@@ -17,7 +17,7 @@ from database.db import Base
 app_logger = logging.getLogger("api_logic_server_app")
 
 def expose_services(app, api, project_dir):
-
+    app_logger.info("api/customize_api.py - expose custom services")
 
     @app.route('/hello_world')
     def hello_world():  # test it with: http://localhost:5000/hello_world?user=ApiLogicServer

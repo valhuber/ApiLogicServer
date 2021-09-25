@@ -25,7 +25,6 @@ project_dir = str(current_path)
 import logging
 app_logger = logging.getLogger('api_logic_server_app')
 handler = logging.StreamHandler(sys.stderr)
-handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(message)s')     # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
 app_logger.addHandler(handler)
@@ -65,7 +64,6 @@ def setup_logging(flask_app):
     setup_logic_logger = True
     if setup_logic_logger:
         logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
-        logic_logger.setLevel(logging.DEBUG)
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.DEBUG)
         if flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
@@ -80,6 +78,7 @@ def setup_logging(flask_app):
             formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
         handler.setFormatter(formatter)
         logic_logger.addHandler(handler)
+        logic_logger.setLevel(logging.DEBUG)
         logic_logger.propagate = True
 
     do_engine_logging = False
@@ -87,10 +86,10 @@ def setup_logging(flask_app):
     if do_engine_logging:
         engine_logger.setLevel(logging.DEBUG)
         handler = logging.StreamHandler(sys.stdout)
-        handler.setLevel(logging.DEBUG)
         formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
         handler.setFormatter(formatter)
         engine_logger.addHandler(handler)
+        engine_logger.setLevel(logging.DEBUG)
 
     do_sqlalchemy_info = False  # True will log SQLAlchemy SQLs
     if do_sqlalchemy_info:
@@ -152,7 +151,7 @@ if sys.argv[1:]:
     app_logger.debug(f'==> Network Diagnostic - using specified ip: {sys.argv[1]}')
 else:
     host = "localhost"
-    app_logger.warning(f'==> Network Diagnostic - defaulting host: {host}')
+    app_logger.debug(f'==> Network Diagnostic - defaulting host: {host}')
 flask_host = host
 if is_docker() and host == "localhost":
     flask_host = "0.0.0.0"
