@@ -318,6 +318,10 @@ multi-page, multi-table applications as shown below:
 
 5. **Ids last:** such boring fields are not shown on lists, and at the end on other pages
 
+6. **Logic enforcement:** logic is enforced on all updates.  For example, try to alter the `Credit Limit` of the first customer to 20, and observe the error.
+
+   ** This is due to the contraint rule on Customer, containing: `row.Balance <= row.CreditLimit`
+
 If you are using Docker, you can run it like this for the created sample:
 ```
 python /local/servers/docker_project/ui/basic_web_app/run.py  # using the docker terminal window
