@@ -21,12 +21,9 @@ ApiLogicServer run --project_name=/local/servers/docker_project  # Create and ru
 
 ```
 
-<details>
-  <summary>Upgrade to current version (3.01.10)</summary>
 
-> To update your image to the latest version: ```docker pull apilogicserver/api_logic_server```
+> Already installed?  Upgrade to the latest (3.01.10): ```docker pull apilogicserver/api_logic_server```
 
-</details>
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (e.g., find Swagger at [localhost:5000](http://localhost:5000)), try different databases: [try our dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
