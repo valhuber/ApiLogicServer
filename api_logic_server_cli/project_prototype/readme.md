@@ -34,7 +34,8 @@ swagger/OpenAPI and JSON:API compliant API implementation.
 
 [Transaction Rules for SQLAlchemy Object Models](https://github.com/valhuber/logicbank)
 
-Use Logic Bank to govern SQLAlchemy update transaction logic - multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
+Use Logic Bank to govern SQLAlchemy update transaction logic - 
+multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
 
 *   **Rules - 40X** more concise using a spreadsheet-like paradigm, and
 
