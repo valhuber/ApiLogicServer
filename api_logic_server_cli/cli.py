@@ -176,13 +176,13 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
     if remove_project_debug:
         delete_dir(realpath(project_directory), "1.")
 
+    from_dir = from_git
     if from_git.startswith("https://"):
         cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
         cmd = f'git clone --quiet {from_git} {project_directory}'
         result = create_utils.run_command(cmd, msg=msg)  # "2. Create Project")
         delete_dir(f'{project_directory}/.git', "3.")
     else:
-        from_dir = from_git
         if from_dir == "":
             code_loc = str(get_api_logic_server_dir())
             if "\\" in code_loc:
@@ -203,8 +203,11 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
     create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now()),
                            in_file=f'{project_directory}/readme.md')
-    create_utils.replace_string_in_file(search_for="cloned-from",
-                           replace_with=cloned_from,
+    create_utils.replace_string_in_file(search_for="api_logic_server_version",
+                           replace_with=__version__,
+                           in_file=f'{project_directory}/readme.md')
+    create_utils.replace_string_in_file(search_for="api_logic_server_template",
+                           replace_with=f'{from_dir}',
                            in_file=f'{project_directory}/readme.md')
 
     project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
