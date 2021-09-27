@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.01.10"
+__version__ = "3.01.11"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -709,13 +709,15 @@ def main(ctx):
 @click.pass_context
 def version(ctx):
     """
-        Recent Changes.
+        Recent Changes
     """
+    print_info()
     print(f'\tInstalled at {abspath(__file__)}\n')
     print(f'\thttps://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t09/25/2021 - 03.01.11: run (just runs) vs. create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
             "\t09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
@@ -801,7 +803,10 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            port: str,
            favorites: str, non_favorites: str,
            extended_builder: str):
-
+    """
+        Creates new project (overwrites)
+    """
+    print_info()
     db_types = ""
     if db_url == default_db:
         db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
@@ -814,7 +819,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
                      extended_builder=extended_builder)
 
 
-@main.command("run")
+@main.command("create-and-run")
 @click.option('--db_url',
               default=f'{default_db}',
               prompt="SQLAlchemy Database URI",
@@ -859,7 +864,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'',
               help="your_code.py for additional build automation")
 @click.pass_context
-def run(ctx, project_name: str, db_url: str, not_exposed: str,
+def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
         from_git: str,
         # db_types: str,
         open_with: str,
@@ -871,7 +876,10 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
         port: str,
         favorites: str, non_favorites: str,
         extended_builder: str):
-
+    """
+        Creates new project and runs it (overwrites)
+    """
+    print_info()
     db_types = ""
     if db_url == default_db:
         db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
@@ -882,6 +890,28 @@ def run(ctx, project_name: str, db_url: str, not_exposed: str,
                      react_admin=react_admin,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder)
+
+
+@main.command("run")
+@click.option('--project_name',
+              default="api_logic_server",
+              help="Project to run")
+@click.option('--host',
+              default=f'localhost',
+              help="Server hostname (default is localhost)")
+@click.option('--port',
+              default=f'5000',
+              help="Port (default 5000, or leave empty)")
+@click.pass_context
+def run(ctx, project_name: str, host: str="localhost", port: str="5000"):
+    """
+        Runs existing project
+    """
+
+    # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
+    # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
+    run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
+    create_utils.run_command(f'python {run_file}', msg="\nRun created ApiLogicServer project")
 
 
 log = logging.getLogger(__name__)
@@ -898,12 +928,15 @@ def print_info():
         'Creates and optionally runs a customizable ApiLogicServer project',
         '',
         'Examples:',
-        '  ApiLogicServer run',
-        '  ApiLogicServer run --db_url=sqlite:///nw.sqlite',
-        '  ApiLogicServer create --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels --project_name=/local/servers/docker_db_project',
-        '  ApiLogicServer run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
-        '  ApiLogicServer run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
-        '  ApiLogicServer run --db_url=postgresql+psycopg2://postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
+        '  ApiLogicServer create-and-run',
+        '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
+        '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
+        '--project_name=/local/servers/docker_db_project',
+        '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
+        'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
+        '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
+        '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
+        '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
         '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
         '',
         'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
@@ -925,8 +958,7 @@ def print_args(args, msg):
 
 
 def start():               # target of setup.py
-    sys.stdout.write("\nWelcome to API Logic Server CLI, " + __version__ + "\n")
-    print_info()
+    sys.stdout.write("\nWelcome to API Logic Server" + __version__ + "\n")
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
@@ -936,12 +968,10 @@ if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
     # unix: python api_logic_server_cli/cli.py create --project_name=/home/api_logic_server
 
-    print(f'\nWelcome to API Logic Server CLI Utility, {__version__}')
-    print_info()
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    print(f'\nWelcome to API Logic Server, {__version__} at {local_ip} ')
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] != "version":
-        hostname = socket.gethostname()
-        local_ip = socket.gethostbyname(hostname)
-        print_args(commands, f'API Logic Server CLI Utility, '
-                             f'version {__version__} at {local_ip} -- Command Line Arguments:')
+        print_args(commands, f'\nCommand Line Arguments:')
     main()
