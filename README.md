@@ -108,12 +108,11 @@ We recommend, however, that you take a good look at Docker:
 # Usage Overview
 
 Let's review the 4 steps shown above:
-1. Install
-2. Create
-3. Customize
-4. Run
+1. Create
+2. Customize
+3. Run
 
-### 1. Install - `docker run`
+### Install - `docker run`
 Once you've installed Docker, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine.
 
 The `v ${PWD}:/local/servers apilogicserver/api_logic_server` argument is what enables the ApiLogicServer to create / access the project on your local machine.  Caveats:
@@ -151,7 +150,7 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 
 </details>
 
-### 2. Create
+### 1. Create
 In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
 
 ##### `ApiLogicServer Run` (Create _and Run_)
@@ -172,7 +171,7 @@ The ```ApiLogicServer run``` command creates your project, and runs the server (
 
 You can also just create the project with `ApiLogicServer create`.  It provides the same arguments.
 
-### 3. Customize
+### 2. Customize
 
 The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., git).  Open the created project folder (it's on your local machine, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE.
 
@@ -204,7 +203,7 @@ Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogi
     * As shown above, the default sample database project contains some simple rules you can explore;
   learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
     
-### 4. Run
+### 3. Run
 
 Whether you ran the project or just created it, you still have a project on your local file system.
 You can execute the project *(without recreating it)* with your IDE, or with the **Docker** terminal window.
