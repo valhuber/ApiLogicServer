@@ -201,7 +201,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
                   f'.. If you are using Docker, verify the -v argument\n\n')
 
     create_utils.replace_string_in_file(search_for="creation-date",
-                           replace_with=str(datetime.datetime.now()),
+                           replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
                            in_file=f'{project_directory}/readme.md')
     create_utils.replace_string_in_file(search_for="api_logic_server_version",
                            replace_with=__version__,
@@ -911,7 +911,7 @@ def run(ctx, project_name: str, host: str="localhost", port: str="5000"):
     # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
     # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
     run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
-    create_utils.run_command(f'python {run_file}', msg="\nRun created ApiLogicServer project")
+    create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
 
 
 log = logging.getLogger(__name__)

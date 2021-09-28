@@ -40,7 +40,7 @@ def insert_lines_at(lines: str, at: str, file_name: str):
         fp.writelines(file_lines)  # write whole list again to the same file
 
 
-def run_command(cmd: str, env=None, msg: str = "") -> str:
+def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     """ run shell command
 
     :param cmd: string of command to execute
@@ -53,6 +53,8 @@ def run_command(cmd: str, env=None, msg: str = "") -> str:
         log_msg = msg + " with command:"
     if msg != "no-msg":
         print(f'{log_msg} {cmd}')
+    if new_line:
+        print("")
 
     use_env = env
     if env is None:
