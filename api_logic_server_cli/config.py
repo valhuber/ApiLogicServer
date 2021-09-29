@@ -1,4 +1,4 @@
-"""Flask configuration variables - see create_server#find_meta_data """
+"""Flask configuration variables - see create_from_model/model_creation_services#find_meta_data """
 from os import environ, path
 # import util
 # from dotenv import load_dotenv

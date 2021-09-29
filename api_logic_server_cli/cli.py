@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.01.11"
+__version__ = "3.01.12"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -663,18 +663,17 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         create_utils.run_command(f'python {run_file}', msg="\nRun created ApiLogicServer project")
     else:
         print("\n\nApiLogicServer customizable project created.  Next steps:")
-        print("\nRun - Local install:")
-        print(f'  cd {project_name}')
-        print(f'  python api_logic_server_run.py')
-        print(f'  python ui/basic_web_app/run.py')
+        print("\nRun:")
+        print(f'  python {project_name}/api_logic_server_run.py')  # defaults to host 0.0.0.0
+        print(f'  python {project_name}/ui/basic_web_app/run.py')  # defaults to host 0.0.0.0
         print("\nRun -  Docker container:")
         if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
-        print(f'  python {project_name}/api_logic_server_run.py')  # defaults to host 0.0.0.0
-        print(f'  python {project_name}/ui/basic_web_app/run.py')  # defaults to host 0.0.0.0
-        print(f'\nOr, open IDE on local machine, e.g., code <project-name>')
-        print("\n")
+        print(f'  ApiLogicServer run --project_name={project_name}')
+        print(f'\nOpen IDE on local machine, see https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs  e.g., ')
+        print(f'  code <project-name>')
+        print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
 
 @click.group()
@@ -717,31 +716,12 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t09/25/2021 - 03.01.11: run (just runs) vs. create-and-run \n"
+            "\t09/29/2021 - 03.01.12: run (now just runs), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
-            "\t09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug \n"
+            "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
             "\t09/06/2021 - 03.00.00: Docker foundation with .vscode, improved Python path / log handling\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
-            "\t07/22/2021 - 02.02.29: help command arg for starting APILogicServer / Basic Web App; SAFRS 2.11.5\n"
-            "\t05/27/2021 - 02.02.28: Flask AppBuilder 3.3.0\n"
-            "\t05/26/2021 - 02.02.27: Clearer logicbank multi-table chain log - show attribute names\n"
-            "\t05/23/2021 - 02.02.19: TVF multi-row fix; ApiLogicServer Summary - Console Startup Banner\n"
-            "\t05/21/2021 - 02.02.17: SAFRS Patch Error Fix, model gen for Posting w/o autoIncr, Startup Tests\n"
-            "\t05/10/2021 - 02.02.09: Extended Builder fix - no-arg TVFs\n"
-            "\t05/08/2021 - 02.02.08: Server Startup Option\n"
-            "\t05/03/2021 - 02.01.05: --extended_builder - bypass Scalar Value Functions\n"
-            "\t04/30/2021 - 02.01.04: --extended_builder - multiple Table Value Functions example running\n"
-            "\t04/27/2021 - 02.01.01: Improved Svcs, option --extended_builder (e.g., restify Table Value Functions)\n"
-            "\t04/23/2021 - 02.00.15: Bug fix - SQLAlchemy version, server port\n"
-            "\t04/21/2021 - 02.00.14: pythonanywhere - port option, wsgi creation\n"
-            "\t04/13/2021 - 02.00.10: Improved model error recovery; fix sql/server char type (issues # 13)\n"
-            "\t04/11/2021 - 02.00.06: Minor - additional CLI info\n"
-            "\t04/09/2021 - 02.00.05: Bug Fix - View names with spaces\n"
-            "\t03/23/2021 - 02.00.01: Minor doc changes, CLI argument simplification for default db_url\n"
-            "\t03/17/2021 - 02.00.00: Create create_admin.sh, copy sqlite3 DBs locally, models_ext\n"
-            "\t03/10/2021 - 01.04.10: Fix issues in creating Basic Web App\n"
-            "\t03/03/2021 - 01.04.09: Services, cleanup main api_run\n"
         )
     )
 
@@ -910,7 +890,7 @@ def run(ctx, project_name: str, host: str="localhost", port: str="5000"):
 
     # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
     # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
-    run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
+    run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py {host} {port}')
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
 
 
@@ -958,7 +938,7 @@ def print_args(args, msg):
 
 
 def start():               # target of setup.py
-    sys.stdout.write("\nWelcome to API Logic Server" + __version__ + "\n")
+    sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n")
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
