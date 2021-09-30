@@ -36,7 +36,7 @@ def get_api_logic_server_dir() -> str:
 
 
 def python_status():
-    print("\nPython Status here, 3.0.2 (add -path for PYTHONPATH)\n")
+    print("\nPython Status here, 3.1 (add -path for PYTHONPATH)\n")
     dir = get_api_logic_server_dir()
     #  dir = "/workspaces/../home/api_logic_server/"  # enable for 3.0.2P
     sys.path.append(dir)  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
@@ -60,8 +60,8 @@ def python_status():
     show("python --version")
     print("")
     print("Typical commands:")
-    print("  ApiLogicServer create --project_name=/local/servers/docker_project")
-    print("  python /local/servers/docker_project/api_logic_server_run.py")
+    print("  ApiLogicServer create-and-run --project_name=/local/servers/docker_project")
+    print("  ApiLogicServer run --project_name=/local/servers/docker_project")
     print("  python /local/servers/docker_project/ui/basic_web_app/run.py")
     print("")
 

@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.01.12"
+__version__ = "3.01.15"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -663,14 +663,14 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         create_utils.run_command(f'python {run_file}', msg="\nRun created ApiLogicServer project")
     else:
         print("\n\nApiLogicServer customizable project created.  Next steps:")
-        print("\nRun:")
-        print(f'  python {project_name}/api_logic_server_run.py')  # defaults to host 0.0.0.0
-        print(f'  python {project_name}/ui/basic_web_app/run.py')  # defaults to host 0.0.0.0
-        print("\nRun -  Docker container:")
+        print("\nRun API Logic Server:")
+        print(f'  ApiLogicServer run --project_name={project_name}')
+        print(f'  python {project_name}/api_logic_server_run.py       # equivalent to above')
+        print("\nRun basic web app:")
+        print(f'  python {project_name}/ui/basic_web_app/run.py')
         if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
-        print(f'  ApiLogicServer run --project_name={project_name}')
         print(f'\nOpen IDE on local machine, see https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs  e.g., ')
         print(f'  code <project-name>')
         print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
@@ -716,7 +716,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t09/29/2021 - 03.01.12: run (now just runs), added create-and-run \n"
+            "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
             "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
