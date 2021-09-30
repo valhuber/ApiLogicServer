@@ -196,7 +196,7 @@ Notes:
 
 * **Key Takeaway:** you do **not** need to repeat the `ApiLogicServer create` command to restart the server.
 
-You can also run using your IDE, as discussed below -- see **Debug**.
+You can also run using your IDE, as discussed below -- see **Debug, using your IDE**.
 
 
 ### Customize with your IDE
