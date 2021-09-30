@@ -214,12 +214,6 @@ code ~/dev/servers/api_logic_server  # local machine!  Launch VS Code; use charm
   * This means it uses Python in the ApiLogicServer docker (not your local machine), which _eliminates the need to install and configure Python_
 
 
-
-* The created project also includes *launch configurations* for the `ApiLogicServer` and the `Basic Web App`
-
-   * This allows you to run / debug your project (click the _run and debug_ triangular run button on the left, and then the green run button
-
-
 Here is the created project, opened in VS Code:
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/generated-project.png"></figure>
