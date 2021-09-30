@@ -408,9 +408,9 @@ source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 ```
 
-### Cloud (quick demo only)
+#### Cloud (reduced functionality)
 The cloud demo is less recommended, since you don't get to use Swagger or the Basic Web App.
-But you just want to take a quick look, [run the demo using a cloud-based (MyBinder) install](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install.
+But you just want to take a quick look the the API, [run the demo using a cloud-based (MyBinder) install](https://github.com/valhuber/ApiLogicServerTutorial).
 
 For your own projects, follow normal procedures to deploy them to the cloud.
 
