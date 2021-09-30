@@ -22,7 +22,7 @@ ApiLogicServer create-and-run --project_name=/local/servers/docker_project  # Cr
 ```
 
 
-> Already installed?  Upgrade to the latest (3.01.12): ```docker pull apilogicserver/api_logic_server```
+> Already installed?  Upgrade to the latest (3.10.15): ```docker pull apilogicserver/api_logic_server```
 
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (e.g., find Swagger at [localhost:5000](http://localhost:5000)), try different databases: [try our dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
