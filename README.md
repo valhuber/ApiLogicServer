@@ -45,8 +45,7 @@ You can picture the process like this:
 There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
 * [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
 * [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
-* [Cloud Demo](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install
-   * Note: swagger and the Basic Web App are not available using this approach
+
 
 ### Background
 
@@ -408,6 +407,13 @@ virtualenv venv            # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 ```
+
+### Cloud (quick demo only)
+The cloud demo is less recommended, since you don't get to use Swagger or the Basic Web App.
+But you just want to take a quick look, [run the demo using a cloud-based (MyBinder) install](https://github.com/valhuber/ApiLogicServerTutorial) enables you to run the demo using a cloud-based (MyBinder) install.
+
+For your own projects, follow normal procedures to deploy them to the cloud.
+
 
 ### Important News - Certificate Issues
 We are starting to see Python / Flask AppBuilder Certificate issues - see [Troubleshooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#certificate-failures).
