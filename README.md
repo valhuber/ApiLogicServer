@@ -201,9 +201,9 @@ You can also run using your IDE, as discussed below.
 
 ### Customize with your IDE
 
-The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., `git`).  Open the created project folder (it's on your **local machine**, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE:
+The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., `git`).  Open the created project folder (issue this command your **local machine**, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE:
 ```
-code ~/dev/servers/api_logic_server  # for VS Code; use charm for PyCharm
+code ~/dev/servers/api_logic_server  # local machine!  Launch VS Code; use charm for PyCharm
 ```
 
 * It's pre-configured for VS Code to use this Python as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project), and includes *launch configurations* for the `ApiLogicServer` and the `Basic Web App`, so you basically open the project and proceed.
