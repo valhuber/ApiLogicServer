@@ -114,11 +114,10 @@ Let's review the steps shown above:
 3. Customize
 
 ### Install - `docker run`
-Once you've installed Docker, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine.
-
-The `v ${PWD}:/local/servers` argument is what enables the ApiLogicServer to create / access the project on your local machine.  Caveats:
-* Windows - Powershell must be used (due to the `$(PWD)` syntax)
-* `local/servers` is the volume name used by the Docker machine to create projects on your local machine 
+Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine.  Notes:
+* the `v ${PWD}:/local/servers` argument is what enables the ApiLogicServer to create / access the project on your local machine
+   * Windows - Powershell must be used (due to the `$(PWD)` syntax)
+   * if you use Command Prompt, specify the local directory completely 
 
 <details>
   <summary>Click to see Docker run argument descriptions, and how to inspect Docker environment</summary>
