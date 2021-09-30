@@ -180,15 +180,15 @@ You can also just create the project with `ApiLogicServer create`.  It accepts t
 
 Run directly from the **Docker** Terminal window:
 ```
-ApiLogicServer run --project_name=~/dev/servers/docker_project
+ApiLogicServer run --project_name=/local/servers/docker_project
 ```
 Or, equivalently:
 ```
-python ~/dev/servers/docker_project/api_logic_server_run.py  # run the API Server - test with cURL, Swagger
+python /local/servers/docker_project/api_logic_server_run.py  # run the API Server - test with cURL, Swagger
 ```
 Run the basic web app like this:
 ```
-python ~/dev/servers/docker_project/ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
+python /local/servers/docker_project/ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 ```
 
 Notes:
