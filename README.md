@@ -206,11 +206,13 @@ The created project is a standard Python project, fully customizable using your 
 code ~/dev/servers/api_logic_server  # local machine!  Launch VS Code; use charm for PyCharm
 ```
 
-* The created project is pre-configured for VS Code to use Python in the ApiLogicServer docker as a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project), and , so you basically open the project and proceed.
+* __Important:__ you may need to install the [`shell` extension](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal) into VS Code, so starting it becomes as simple as `code docker_project` (from your **local** terminal window)
 
-  * Significantly, this _eliminates the need to install and configure Python_
 
-  * __Important:__ you may need to install the [`shell` extension](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal) into VS Code, so starting it becomes as simple as `code docker_project` (from your **local** terminal window)
+* The created project is pre-configured for VS Code to use a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project)
+
+  * This means it uses Python in the ApiLogicServer docker (not your local machine), which _eliminates the need to install and configure Python_
+
 
 
 * The created project also includes *launch configurations* for the `ApiLogicServer` and the `Basic Web App`
