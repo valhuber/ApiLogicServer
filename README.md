@@ -154,7 +154,12 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 In this step, you are using the ApiLogicServer CLI to create and optionally run your project.  There are 2 alternatives.
 
 ##### Create and Run: `ApiLogicServer create-and-run`
-The ```ApiLogicServer create-and-run``` command creates your project, and runs the server (verify with swagger).  It accepts these arguments:
+The ```ApiLogicServer create-and-run``` command creates your project, and runs the server (verify with swagger):
+```
+ApiLogicServer create-and-run --project_name=/local/servers/docker_project  # Create and run project using API Logic Server
+```
+
+It accepts these arguments:
 
 1. The ```-db_url``` argument defaults to a pre-supplied [sample database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
 
