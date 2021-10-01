@@ -11,10 +11,10 @@ With 1 command, create a **database API,** to unblock UI development.  Also, a *
 Create the sample project in a *minute or two*, using Docker.  With Docker started (Windows, use Powershell):
 
 ```
-cd ~/dev/servers                   # directory of api_logic_server projects on local machine
+cd ~/dev/servers                   # directory of api_logic_server projects on local host
 docker network create dev-network  # only required once (ignore errors if network already exists)
 
-# Start (install if required) the API Logic Server docker machine
+# Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server
 
 ApiLogicServer create-and-run --project_name=/local/servers/docker_project  # Create and run project using API Logic Server
@@ -67,29 +67,29 @@ and can be [installed](#Installation) and customized with standard approaches as
 # Architectural Overview
 
 As shown below, there are typically 2-3 "machines" in operation:
-* Your local machine (in grey), where the Customizable Project files (`docker_project`) are stored, 
+* Your **local host** (in grey), where the Customizable Project files (`docker_project`) are stored, 
 and your Dev Tools (IDE etc) operate
 
 
-* The ApiLogicServer Docker (blue), which contains:
-  * The ApiLogicServer, with CLI (Command Language Interface) commands:
-     * **`create`** to create projects on your local machine
-     * **`run`** to execute projects, utilizing the various **Runtimes** (API, Logic, Flask App Builder)
+* The ApiLogicServer Docker **container** (blue), which contains:
+  * The **ApiLogicServer**, with CLI (Command Language Interface) commands:
+     * **`create`** to create projects on your local host
+     * **`run`** to execute projects, utilizing the various runtimes (Flask, SQLAlchemy, SAFRS API, Logic, Flask App Builder)
   * A **Python** environment to support execution, and development using your IDE
 
 
-* The database (purple) can run as a separate Docker image, in your local machine, or (for the demo) within the ApiLogicServer docker image
+* The **database** (purple) can run as a separate Docker container, in your local host, or (for the demo) within the ApiLogicServer docker container
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/docker-arch-create-run.png"></figure>
 
 <details>
   <summary>Directory Contents</summary>
 
-When you have created your project, you will find the following project directory in `~/dev/servers` on your local (grey) machine (here opened in VS Code):
+When you have created your project, you will find the following project directory in `~/dev/servers` on your (grey) local host   (here opened in VS Code):
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/generated-project.png"></figure>
 
-Your docker machine (blue) files include Python, Python libraries, and API Logic Server.  The Python project above utilizes IDE `remote-container` support (visible at the lower left in the preceding diagram), which utilizes the docker (not local machine) version of Python.
+Your docker container (blue) files include Python, Python libraries, and API Logic Server.  The Python project above utilizes IDE `remote-container` support (visible at the lower left in the preceding diagram), which utilizes the docker container (not local host) version of Python.
 
-You docker machine looks like this:
+You docker container looks like this:
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/docker-files.png"></figure>
 
@@ -98,7 +98,7 @@ You docker machine looks like this:
 <details>
   <summary>Alternative option: pip install</summary>
 
-You can also run ApiLogicServer without Docker.  The familiar `pip install ApiLogicServer` creates the ApiLogicServer in your `venv` instead of the Docker machine.
+You can also run ApiLogicServer without Docker.  The familiar `pip install ApiLogicServer` creates the ApiLogicServer in your `venv` instead of the Docker container.
 
 We recommend, however, that you take a good look at Docker:
 * It avoids a sometimes-tricky Python install
@@ -114,8 +114,8 @@ Let's review the steps shown above:
 3. Customize
 
 ### Install - `docker run`
-Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker machine.  Notes:
-* the `v ${PWD}:/local/servers` argument is what enables the ApiLogicServer to create / access the project on your local machine
+Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
+* the `v ${PWD}:/local/servers` argument is what enables the ApiLogicServer to create / access the project on your local host
    * Windows - Powershell must be used (due to the `$(PWD)` syntax)
    * if you use Command Prompt, specify the local directory completely 
 
@@ -125,24 +125,24 @@ Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/W
 
 The **arguments** mean:
 * **-it** - launch a terminal window for the Docker container
-* **--name api_logic_server** - the name of the image on your local machine
-* **-rm** - remove the container once it stops (your project files are not lost - they are on your local machine)
+* **--name api_logic_server** - the name of the image on your local host
+* **-rm** - remove the container once it stops (your project files are not lost - they are on your local host)
 * **--net dev-network** - attaches to dev-network (see _docker database networking_, below)
 * **-p 5000:5000** - maps local (host) part to Docker port 
 * **-v ${PWD}:/local/servers** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
    * `${PWD}` is your current folder.  
       * You could also provide a specific folder, e.g., `~/dev/servers` (Unix), or `C:\Users\val\dev\servers` (windows)
-   * `/local/servers`is the mounted volume reference from inside the Docker machine
+   * `/local/servers`is the mounted volume reference from inside the Docker container
 * **`apilogicserver/api_logic_server`** - the name of the image to pull from Docker Hub.  
    * This will fetch the image first time, and will run it locally on subsequent runs
    * The image is not automatically refreshed -- install ApiLogicServer updates as described below
 
-On your Docker machine, you can **inspect** your environment:
+On your Docker container, you can **inspect** your environment:
 ```
 python py.py
 ```
 
-Open a new terminal window on your **local** machine, and find your docker IP address:
+Open a new terminal window on your **local host**, and find your docker IP address:
 
 ```
 docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
@@ -201,9 +201,9 @@ You can also run using your IDE, as discussed below -- see **Debug, using your I
 
 ### Customize with your IDE
 
-The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., `git`).  Open the created project folder (issue this command your **local machine**, not the Docker machine), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE:
+The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., `git`).  Open the created project folder (issue this command your **local host**, not the Docker container), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE:
 ```
-code ~/dev/servers/api_logic_server  # local machine!  Launch VS Code; use charm for PyCharm
+code ~/dev/servers/api_logic_server  # local host!  Launch VS Code; use charm for PyCharm
 ```
 
 * __Important:__ you may need to install the [`shell` extension](https://stackoverflow.com/questions/30065227/run-open-vscode-from-mac-terminal) into VS Code, so starting it becomes as simple as `code docker_project` (from your **local** terminal window)
@@ -211,7 +211,7 @@ code ~/dev/servers/api_logic_server  # local machine!  Launch VS Code; use charm
 
 * The created project is pre-configured for VS Code to use a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project)
 
-  * This means it uses Python in the ApiLogicServer docker (not your local machine), which _eliminates the need to install and configure Python_
+  * This means it uses Python in the ApiLogicServer docker (not your local host), which _eliminates the need to install and configure Python_
 
 
 Here is the created project, opened in VS Code:
