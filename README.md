@@ -358,7 +358,7 @@ This element is for technology exploration - it is _not_ production ready.
 [See here](https://github.com/meera/apilogicserver-react-admin-genned#readme)
 for more information.
 
-## Internals - How It Works
+# Internals - How It Works
 <details>
   <summary>How It Works</summary>
 
