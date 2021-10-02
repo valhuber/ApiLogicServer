@@ -17,7 +17,7 @@ docker network create dev-network  # only required once (ignore errors if networ
 # Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/local/servers/docker_project  # Create and run project using API Logic Server
+ApiLogicServer create-and-run --project_name=/local/servers/docker_project  # Swagger at [localhost:5000](localhost:5000)
 
 ```
 
@@ -25,7 +25,7 @@ ApiLogicServer create-and-run --project_name=/local/servers/docker_project  # Cr
 > Already installed?  Upgrade to the latest (3.10.15): ```docker pull apilogicserver/api_logic_server```
 
 
-After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (e.g., find Swagger at [localhost:5000](http://localhost:5000)), try different databases: [try our dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
+After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database), try different databases: [try our dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
 You can picture the process like this:
 
