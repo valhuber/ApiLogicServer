@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.01.16"
+__version__ = "3.10.16"
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -716,7 +716,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t10/02/2021 - 03.01.16: bugfix improper run arg for VSCode launch configuration \n"
+            "\t10/02/2021 - 03.10.16: bugfix improper run arg for VSCode launch configuration \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
             "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
