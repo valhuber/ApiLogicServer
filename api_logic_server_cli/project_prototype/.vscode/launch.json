@@ -9,7 +9,6 @@
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_run.py",
-            "args": ["0.0.0.0"],
             "console": "integratedTerminal"
         },
         {

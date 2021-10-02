@@ -477,6 +477,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+10/02/2021 - 03.01.16: bugfix improper run arg for VSCode launch configuration
+
 09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run
 
 09/24/2021 - 03.01.04: enable run command for Docker execution, pyodbc, fab create-by-copy
