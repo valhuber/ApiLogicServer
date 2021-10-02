@@ -11,7 +11,7 @@ With 1 command, create a **database API,** to unblock UI development.  Also, a *
 Create the sample project in a *minute or two*, using Docker.  With Docker started (Windows, use Powershell):
 
 ```
-cd ~/dev/servers                   # directory of api_logic_server projects on local host
+cd ~/dev/servers                   # directory of API Logic Server projects on local host
 docker network create dev-network  # only required once (ignore errors if network already exists)
 
 # Start (install if required) the API Logic Server docker container
@@ -169,7 +169,7 @@ It accepts these arguments:
 2. the```--project_name``` argument defines the project name (directory); it defaults to ```api_logic_server```
 
 
-3. Discover other options with ```ApiLogicServer run --help```
+3. Discover other arguments with ```ApiLogicServer run --help```
 
 
 ##### Create only: `ApiLogicServer create`
@@ -199,7 +199,7 @@ Notes:
 You can also run using your IDE, as discussed below -- see **Debug, using your IDE**.
 
 
-### Customize with your IDE
+### Customize, Extend and Debug with your IDE
 
 The created project is a standard Python project, fully customizable using your existing IDE and other development tools (e.g., `git`).  Open the created project folder (issue this command your **local host**, not the Docker container), configure as described in [Working with IDEs](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs), and use your IDE:
 ```
@@ -265,7 +265,7 @@ Typical [customizations](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogi
   learn more about rules in the [Logic Bank](https://github.com/valhuber/LogicBank)
     
 
-### Debug, using your IDE
+#### Debug, using your IDE
 Since the project is standard, you can use your existing IDE services 
 such as code completion and debugging.  
 
