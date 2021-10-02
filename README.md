@@ -277,37 +277,6 @@ for `ApiLogicServer` and the `Basic Web App`.  You can set breakpoints, examine 
 # Features
 Let's take a closer look at what the created project provides.
 
-<details>
-  <summary>How It Works</summary>
-
-The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below.
-
-The executables are shown in blue, corresponding to Run, above.  Your customizations are done to the files noted in green.
-
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/how-it-works.png"></figure>
-
-##### API Execution: `api_logic_server_run.py`
-
-`api_logic_server_run.py` sets up a Flask app, the database, logic and api:
-
-* **Database Setup:** It imports`api/expose_api_models` which imports `database/models.py`, which then imports `database/customize_models.py` for your model extensions.  `api_logic_server_run.py` then sets up flask, and opens the  database with `db = safrs.DB`
-
-
-* **Logic Setup:** It then calls `LogicBank.activate`, passing `declare_logic` which loads your declared rules. On subsequent updates, logic operates by handling SQLAlchemy `before_flush` events, enforcing the declared logic.  This is non-trivial, using the engine in `LogicBank` (no relation to retail!).
-
-
-* **API Setup:** It next invokes `api/expose_api_models`.  This calls safrs to create the end points and the swagger information, based on the created `database/models.py` (the models used by the SQLAlchemy ORM).   It finally calls `api/customize.py` where you can add your own services.  The sample includes a trivial Hello World, as well as `add_order`.
-
-
-##### Basic Web App Execution: `ui/basic_web_app/run.py`
-run.py executes `from app import app` which
-loads the module `ui/basic_web_app/app/__init__.py'; this
-loads the models and activates logic.
-
-It then instantiates the class `AppBuilder`, which interprets the `views.py` file that describes your pages and transitions.  You can edit this file to tune what data is displayed, introduce graphs and charts, etc.
-
-</details>
-
 ### API: SAFRS JSON:API and Swagger
 
 Your API is instantly ready to support ui and integration
@@ -388,6 +357,39 @@ This element is for technology exploration - it is _not_ production ready.
 
 [See here](https://github.com/meera/apilogicserver-react-admin-genned#readme)
 for more information.
+
+## Internals - How It Works
+<details>
+  <summary>How It Works</summary>
+
+The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below.
+
+The executables are shown in blue, corresponding to Run, above.  Your customizations are done to the files noted in green.
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/how-it-works.png"></figure>
+
+### API Execution: `api_logic_server_run.py`
+
+`api_logic_server_run.py` sets up a Flask app, the database, logic and api:
+
+* **Database Setup:** It imports`api/expose_api_models` which imports `database/models.py`, which then imports `database/customize_models.py` for your model extensions.  `api_logic_server_run.py` then sets up flask, and opens the  database with `db = safrs.DB`
+
+
+* **Logic Setup:** It then calls `LogicBank.activate`, passing `declare_logic` which loads your declared rules. On subsequent updates, logic operates by handling SQLAlchemy `before_flush` events, enforcing the declared logic.  This is non-trivial, using the engine in `LogicBank` (no relation to retail!).
+
+
+* **API Setup:** It next invokes `api/expose_api_models`.  This calls safrs to create the end points and the swagger information, based on the created `database/models.py` (the models used by the SQLAlchemy ORM).   It finally calls `api/customize.py` where you can add your own services.  The sample includes a trivial Hello World, as well as `add_order`.
+
+
+### Basic Web App Execution: `ui/basic_web_app/run.py`
+run.py executes `from app import app` which
+loads the module `ui/basic_web_app/app/__init__.py'; this
+loads the models and activates logic.
+
+It then instantiates the class `AppBuilder`, which interprets the `views.py` file that describes your pages and transitions.  You can edit this file to tune what data is displayed, introduce graphs and charts, etc.
+
+</details>
+
 
 # Installation
 As of release 3.00.00, you can install using Docker, or standard
