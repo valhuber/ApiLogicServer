@@ -22,7 +22,7 @@ ApiLogicServer create-and-run --project_name=/localhost/docker_project
 ```
 
 
-> Already installed?  Upgrade to the latest (3.10.16): ```docker pull apilogicserver/api_logic_server```
+> Already installed?  Upgrade to the latest (3.10.17): ```docker pull apilogicserver/api_logic_server```
 
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (find swagger at [localhost:5000](http://localhost:5000) ), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
@@ -476,6 +476,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+
+10/03/2021 - 03.10.17: default db_url
 
 10/02/2021 - 03.01.16: bugfix improper run arg for VSCode launch configuration
 
