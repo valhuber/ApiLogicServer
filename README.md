@@ -15,9 +15,9 @@ cd ~/dev/servers                   # directory of API Logic Server projects on l
 docker network create dev-network  # only required once (ignore errors if network already exists)
 
 # Start (install if required) the API Logic Server docker container
-docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/local/servers apilogicserver/api_logic_server
+docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/local/servers/docker_project 
+ApiLogicServer create-and-run --project_name=/localhost/docker_project 
 
 ```
 
@@ -115,7 +115,7 @@ Let's review the steps shown above:
 
 ### Install - `docker run`
 Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
-* the `v ${PWD}:/local/servers` argument is what enables the ApiLogicServer to create / access the project on your local host
+* the `v ${PWD}:/localhost` argument is what enables the ApiLogicServer to create / access the project on your local host
    * Windows - Powershell must be used (due to the `$(PWD)` syntax)
    * if you use Command Prompt, specify the local directory completely 
 
@@ -129,10 +129,10 @@ The **arguments** mean:
 * **-rm** - remove the container once it stops (your project files are not lost - they are on your local host)
 * **--net dev-network** - attaches to dev-network (see _docker database networking_, below)
 * **-p 5000:5000** - maps local (host) part to Docker port 
-* **-v ${PWD}:/local/servers** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
+* **-v ${PWD}:/localhost** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
    * `${PWD}` is your current folder.  
       * You could also provide a specific folder, e.g., `~/dev/servers` (Unix), or `C:\Users\val\dev\servers` (windows)
-   * `/local/servers`is the mounted volume reference from inside the Docker container
+   * `/localhost`is the mounted volume reference from inside the Docker container
 * **`apilogicserver/api_logic_server`** - the name of the image to pull from Docker Hub.  
    * This will fetch the image first time, and will run it locally on subsequent runs
    * The image is not automatically refreshed -- install ApiLogicServer updates as described below
@@ -156,7 +156,7 @@ In this step, you are using the ApiLogicServer CLI to create and optionally run 
 ##### Create and Run: `ApiLogicServer create-and-run`
 The ```ApiLogicServer create-and-run``` command creates your project, and runs the server (verify with swagger):
 ```
-ApiLogicServer create-and-run --project_name=/local/servers/docker_project  # Create and run project using API Logic Server
+ApiLogicServer create-and-run --project_name=/localhost/docker_project  # Create and run project using API Logic Server
 ```
 
 It accepts these arguments:
@@ -180,15 +180,15 @@ You can also just create the project with `ApiLogicServer create`.  It accepts t
 
 Run directly from the **Docker** Terminal window:
 ```
-ApiLogicServer run --project_name=/local/servers/docker_project
+ApiLogicServer run --project_name=/localhost/docker_project
 ```
 Or, equivalently:
 ```
-python /local/servers/docker_project/api_logic_server_run.py  # run the API Server - test with cURL, Swagger
+python /localhost/docker_project/api_logic_server_run.py  # run the API Server - test with cURL, Swagger
 ```
 Run the basic web app like this:
 ```
-python /local/servers/docker_project/ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
+python /localhost/docker_project/ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 ```
 
 Notes:
@@ -342,7 +342,7 @@ multi-page, multi-table applications as shown below:
 
 If you are using Docker, you can run it like this for the created sample:
 ```
-python /local/servers/docker_project/ui/basic_web_app/run.py  # using the docker terminal window
+python /localhost/docker_project/ui/basic_web_app/run.py  # using the docker terminal window
 ```
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>

@@ -28,7 +28,7 @@
 # docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version1.0.2
 # docker exec -it postgresql-container /bin/bash
 # docker exec -it pg-temp /bin/bash
-# ApiLogicServer create --project_name=/local/servers/postgres --db_url=postgresql://postgres:p@postgresql-container/postgres
+# ApiLogicServer create --project_name=/localhost/postgres --db_url=postgresql://postgres:p@postgresql-container/postgres
 
 # docker run --rm -p 5050:5050 thajeztah/pgadmin4
 # browser, create server at 10.0.0.234

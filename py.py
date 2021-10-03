@@ -60,9 +60,9 @@ def python_status():
     show("python --version")
     print("")
     print("Typical commands:")
-    print("  ApiLogicServer create-and-run --project_name=/local/servers/docker_project")
-    print("  ApiLogicServer run --project_name=/local/servers/docker_project")
-    print("  python /local/servers/docker_project/ui/basic_web_app/run.py")
+    print("  ApiLogicServer create-and-run --project_name=/localhost/docker_project")
+    print("  ApiLogicServer run --project_name=/localhost/docker_project")
+    print("  python /localhost/docker_project/ui/basic_web_app/run.py")
     print("")
 
 if __name__ == '__main__':
