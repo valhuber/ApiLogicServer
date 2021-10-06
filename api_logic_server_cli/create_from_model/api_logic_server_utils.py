@@ -51,7 +51,9 @@ def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     log_msg = ""
     if msg != "Execute command:":
         log_msg = msg + " with command:"
-    if msg != "no-msg":
+    if msg == "no-msg":
+        log_msg = ""
+    else:
         print(f'{log_msg} {cmd}')
     if new_line:
         print("")
@@ -77,6 +79,8 @@ def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
     spaces = ' ' * tab_to
-    if result != "" and result != "Downloaded the skeleton app, good coding!":
+    if msg == "no-msg":
+        pass
+    elif result != "" and result != "Downloaded the skeleton app, good coding!":
         print(f'{log_msg} {cmd} result: {spaces}{result}')
     return result

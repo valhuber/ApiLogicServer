@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.10.18"
+__version__ = "3.20.00"
 
 import yaml
 
@@ -66,7 +66,7 @@ import expose_existing.expose_existing_callable as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
 
 
-api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"  # windows TODO??
+api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
 api_logic_server_info_file = open(api_logic_server_info_file_name)
 api_logic_server_info_file_dict = yaml.load(api_logic_server_info_file, Loader=yaml.FullLoader)
 api_logic_server_info_file.close()
@@ -74,6 +74,8 @@ api_logic_server_info_file.close()
 last_created_project_name = api_logic_server_info_file_dict["last_created_project_name"]
 default_db = "<default -- nw.sqlite>"
 default_project_name = "api_logic_server"
+if os.path.exists('/home/api_logic_server'):  # docker?
+    default_project_name = "/localhost/api_logic_server"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -700,23 +702,23 @@ def main(ctx):
     """
     Creates and runs logic-enabled Python project.
 
-        Example:
+    Example:
 
-            ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
+        ApiLogicServer create-and-run --project_name= --db_url=
 
-        Doc:
+    Doc:
 
-            ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
+        ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
 
-            Logic Bank: https://github.com/valhuber/logicbank#readme
+        Logic Bank: https://github.com/valhuber/logicbank#readme
 
-            SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
+        SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
 
-            SAFRS: https://github.com/thomaxxl/safrs/wiki
+        SAFRS: https://github.com/thomaxxl/safrs/wiki
 
-            FAB: https://flask-appbuilder.readthedocs.io/en/latest/
+        FAB: https://flask-appbuilder.readthedocs.io/en/latest/
 
-    https://github.com/valhuber/ApiLogicServer/wiki/Tutorial
+        https://github.com/valhuber/ApiLogicServer/wiki/Tutorial
     """
 
 @main.command("version")
@@ -725,13 +727,13 @@ def version(ctx):
     """
         Recent Changes
     """
-    print_info()
+    # print_info()
     print(f'\tInstalled at {abspath(__file__)}\n')
     print(f'\thttps://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t10/02/2021 - 03.10.18: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
+            "\t10/02/2021 - 03.20.00: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
@@ -804,7 +806,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     """
         Creates new project (overwrites)
     """
-    print_info()
+    # print_info()
     db_types = ""
     if db_url == default_db or db_url == "":
         db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
@@ -878,7 +880,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
     """
         Creates new project and runs it (overwrites)
     """
-    print_info()
+    # print_info()
     db_types = ""
     if db_url == default_db or db_url == "":
         db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
@@ -891,7 +893,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
                      extended_builder=extended_builder)
 
 
-@main.command("run-api")
+@main.command("run")
 @click.option('--project_name',
               default=f'{last_created_project_name}',
               prompt="Project to run",
@@ -937,6 +939,76 @@ def run_ui(ctx, project_name: str, host: str="localhost", port: str="5000"):
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
 
 
+@main.command("sys-info")
+@click.pass_context
+def sys_info(ctx):
+    """
+        Python version, paths, IPs, etc
+    """
+
+    def print_at(label: str, value: str):
+        tab_to = 24 - len(label)
+        spaces = ' ' * tab_to
+        print(f'{label}: {spaces}{value}')
+
+    print("\nPYTHONPATH..")
+    for p in sys.path:
+        print(".." + p)
+    print("")
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    print_at('ApiLogicServer version', __version__)
+    print_at('ip (gethostbyname)', local_ip)
+    print_at('on hostname', hostname)
+    print_at("Python version", create_utils.run_command(f'python --version', msg="no-msg"))
+
+
+@main.command("welcome")
+@click.pass_context
+def welcome(ctx):
+    """
+        Show version, typical commands
+    """
+    print("")
+    print("Typical commands:")
+    print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")
+    print("  ApiLogicServer run            --project_name=/localhost/api_logic_server")
+    print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login: admin, p")
+    print("  ApiLogicServer sys-info")
+    print("  ApiLogicServer version")
+    print("")
+
+
+@main.command("examples")
+@click.pass_context
+def examples(ctx):
+    """
+    Example commands, including SQLAlchemy URIs
+
+    URI examples, Docs URL
+    """
+    info = [
+        'Examples:',
+        '  ApiLogicServer create-and-run',
+        '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
+        '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
+        '--project_name=/localhost/docker_db_project',
+        '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
+        'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
+        '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
+        '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
+        '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
+        '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
+        '',
+        'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
+        '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
+        '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
+        ' ',
+        'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
+    ]
+    for each_line in info:
+        print(each_line)
+
 log = logging.getLogger(__name__)
 
 
@@ -981,6 +1053,8 @@ def print_args(args, msg):
 
 
 def start():               # target of setup.py
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
     sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n")
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
@@ -993,8 +1067,9 @@ if __name__ == '__main__':  # debugger & python command line start here
 
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname(hostname)
-    print(f'\nWelcome to API Logic Server, {__version__} at {local_ip} ')
+    print(f'\nWelcome to API Logic Server, {__version__}')  #  at {local_ip} ')
     commands = sys.argv
-    if len(sys.argv) > 1 and sys.argv[1] != "version":
+    if len(sys.argv) > 1 and sys.argv[1] not in ["version", "sys-info", "welcome"] and \
+            "show-args" in api_logic_server_info_file_dict:
         print_args(commands, f'\nCommand Line Arguments:')
     main()

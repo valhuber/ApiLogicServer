@@ -4,11 +4,11 @@ PyJWT
 python-dateutil
 python-dotenv
 SQLAlchemy==1.3.24
-# SQLAlchemy-Utils
+SQLAlchemy-Utils
 six
 email-validator
 LogicBank>=1.0.2
-safrs>=2.11.5
+safrs>=2.12.0
 logicbankutils
 flask-appbuilder
 PyMySQL
