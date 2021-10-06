@@ -17,7 +17,7 @@ docker network create dev-network  # only required once (ignore errors if networ
 # Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/localhost/docker_project 
+ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
 
 ```
 
@@ -156,7 +156,7 @@ In this step, you are using the ApiLogicServer CLI to create and optionally run 
 ##### Create and Run: `ApiLogicServer create-and-run`
 The ```ApiLogicServer create-and-run``` command creates your project, and runs the server (verify with swagger):
 ```
-ApiLogicServer create-and-run --project_name=/localhost/docker_project  # Create and run project using API Logic Server
+ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=   # default (pre-installed) db
 ```
 
 It accepts these arguments:

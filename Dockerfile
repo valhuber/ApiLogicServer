@@ -1,5 +1,5 @@
 # docker build -t apilogicserver/api_logic_server --rm .
-# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.10.15
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.10.18
 # docker push apilogicserver/api_logic_server
 
 # docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/localhost apilogicserver/api_logic_server
@@ -7,7 +7,7 @@
 #   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 # The software auto-prompts you for the next steps:
-# ApiLogicServer run --project_name=/localhost/docker_project
+# ApiLogicServer run --project_name=/localhost/docker_project --db_url=
 #   ApiLogicServer create --project_name=/localhost/classicmodels --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
 #   ApiLogicServer create --project_name=/localhost/sqlserver --db_url=mssql+pyodbc://sa:posey386\!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\?trusted_connection=no
 #   ApiLogicServer create --project_name=/localhost/postgres --db_url=postgresql://postgres:p@postgresql-container/postgres
@@ -52,7 +52,9 @@ COPY . .
 # EXPOSE 5000:5000
 # EXPOSE 8080
 USER root
-RUN chmod +x ApiLogicServer
-CMD ["ApiLogicServer"]
+RUN chmod +x bin/ApiLogicServer \
+    && chmod a+rwx -R api_logic_server_cli/api_logic_server_info.yaml
+# CMD ["ApiLogicServer"]
 USER api_logic_server
+# RUN chmod a+rwx -R api_logic_server_cli/api_logic_server_info.yaml
 CMD ["bash"]

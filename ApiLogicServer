@@ -1,3 +1,0 @@
-#!/bin/bash
-# python api_logic_server_cli/cli.py run --project_name=~/dev/servers/api_logic_server
-python api_logic_server_cli/cli.py $1 $2 $3 $4 $5

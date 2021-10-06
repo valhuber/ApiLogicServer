@@ -9,7 +9,10 @@ See: main driver
 
 """
 
-__version__ = "3.10.17"
+__version__ = "3.10.18"
+
+import yaml
+
 temp_created_project = "temp_created_project"   # see copy_if_mounted
 
 import socket
@@ -62,7 +65,15 @@ from create_from_model.model_creation_services import CreateFromModel
 import expose_existing.expose_existing_callable as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
 
+
+api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"  # windows TODO??
+api_logic_server_info_file = open(api_logic_server_info_file_name)
+api_logic_server_info_file_dict = yaml.load(api_logic_server_info_file, Loader=yaml.FullLoader)
+api_logic_server_info_file.close()
+
+last_created_project_name = api_logic_server_info_file_dict["last_created_project_name"]
 default_db = "<default -- nw.sqlite>"
+default_project_name = "api_logic_server"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -314,7 +325,8 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
                            replace_with='"' + os.path.basename(project_name) + '"',
                            in_file=api_logic_server_run_py)
     create_utils.replace_string_in_file(search_for="ApiLogicServer hello",
-                           replace_with="ApiLogicServer generated at:" + str(datetime.datetime.now()),
+                           replace_with="ApiLogicServer generated at:" +
+                                        str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
                            in_file=api_logic_server_run_py)
     project_directory_fix = project_directory_actual
     if os.name == "nt":  # windows
@@ -656,6 +668,12 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
             copy_project_to_local(project_directory, copy_to_project_directory,
                                   f'10. Copy temp_created_project over {copy_to_project_directory} ')
 
+    api_logic_server_info_file_dict["last_created_project_name"] = project_directory  # project_name - twiddle
+    api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
+    api_logic_server_info_file_dict["last_created_version"] = __version__
+    with open(api_logic_server_info_file_name, 'w') as api_logic_server_info_file_file:
+        yaml.dump(api_logic_server_info_file_dict, api_logic_server_info_file_file, default_flow_style=False)
+
     if run:  # synchronous run of server - does not return
         # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
         # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
@@ -682,11 +700,9 @@ def main(ctx):
     """
     Creates and runs logic-enabled Python project.
 
-        Examples:
+        Example:
 
-            ApiLogicServer run  # use defaults (verify install)
-
-            ApiLogicServer run --db_url=sqlite:///nw.sqlite
+            ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
 
         Doc:
 
@@ -703,7 +719,6 @@ def main(ctx):
     https://github.com/valhuber/ApiLogicServer/wiki/Tutorial
     """
 
-
 @main.command("version")
 @click.pass_context
 def version(ctx):
@@ -716,6 +731,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
+            "\t10/02/2021 - 03.10.18: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
@@ -733,7 +749,8 @@ def version(ctx):
               prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
-              default="api_logic_server",
+              default=f'{default_project_name}',
+              prompt="Project to create",
               help="Create new directory here")
 @click.option('--from_git',
               default="",
@@ -806,7 +823,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
-              default="api_logic_server",
+              default=f'{default_project_name}',
+              prompt="Project to create and run",
               help="Create new directory here")
 @click.option('--from_git',
               default="",
@@ -873,9 +891,10 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
                      extended_builder=extended_builder)
 
 
-@main.command("run")
+@main.command("run-api")
 @click.option('--project_name',
-              default="api_logic_server",
+              default=f'{last_created_project_name}',
+              prompt="Project to run",
               help="Project to run")
 @click.option('--host',
               default=f'localhost',
@@ -884,7 +903,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'5000',
               help="Port (default 5000, or leave empty)")
 @click.pass_context
-def run(ctx, project_name: str, host: str="localhost", port: str="5000"):
+def run_api(ctx, project_name: str, host: str="localhost", port: str="5000"):
     """
         Runs existing project
     """
@@ -893,6 +912,29 @@ def run(ctx, project_name: str, host: str="localhost", port: str="5000"):
     # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
     run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py {host} {port}')
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
+
+
+@main.command("run-ui")
+@click.option('--project_name',
+              default=f'{last_created_project_name}',
+              prompt="Project to run",
+              help="Project to run")
+@click.option('--host',
+              default=f'localhost',
+              help="Server hostname (default is localhost)")
+@click.option('--port',
+              default=f'5000',
+              help="Port (default 5000, or leave empty)")
+@click.pass_context
+def run_ui(ctx, project_name: str, host: str="localhost", port: str="5000"):
+    """
+        Runs existing basic web app
+    """
+
+    # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
+    # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
+    run_file = os.path.abspath(f'{resolve_home(project_name)}/ui/basic_web_app/run.py {host} 8080')
+    create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
 
 
 log = logging.getLogger(__name__)

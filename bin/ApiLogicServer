@@ -1,0 +1,19 @@
+#!/bin/bash
+# python api_logic_server_cli/cli.py run --project_name=~/dev/servers/api_logic_server
+if [ $# -eq 0 ]
+  then
+    echo "try:  welcome | sys-info | --help"
+    exit 0
+fi
+
+if [[ $1 == welcome ]]; then
+    python bin/py.py welcome
+    exit 0
+fi
+
+if [[ $1 == sys-info ]]; then
+    python bin/py.py sys-info
+    exit 0
+fi
+
+python api_logic_server_cli/cli.py $1 $2 $3 $4 $5
