@@ -11,7 +11,7 @@ With 1 command, create a **database API,** to unblock UI development.  Also, a *
 Create the sample project in a *minute or two*, using Docker.  With Docker started (Windows, use Powershell):
 
 ```
-cd ~/dev/servers                   # directory of API Logic Server projects on local host
+cd ~/Desktop                       # directory of API Logic Server projects on local host
 docker network create dev-network  # only required once (ignore errors if network already exists)
 
 # Start (install if required) the API Logic Server docker container
@@ -22,7 +22,7 @@ ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
 ```
 
 
-> Already installed?  Upgrade to the latest (3.10.17): ```docker pull apilogicserver/api_logic_server```
+> Already installed?  Upgrade to the latest (3.20.00): ```docker pull apilogicserver/api_logic_server```
 
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (find swagger at [localhost:5000](http://localhost:5000) ), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
@@ -180,13 +180,18 @@ You can also just create the project with `ApiLogicServer create`.  It accepts t
 
 Run directly from the **Docker** Terminal window:
 ```
-ApiLogicServer run --project_name=/localhost/docker_project
+ApiLogicServer run  # defaults to last-created project, or, specify project explicitly
+ApiLogicServer run --project_name=/localhost/docker_project  # explicit project name
 ```
 Or, equivalently:
 ```
 python /localhost/docker_project/api_logic_server_run.py  # run the API Server - test with cURL, Swagger
 ```
 Run the basic web app like this:
+```
+ApiLogicServer run-ui --project_name=/localhost/docker_project
+```
+Or, equivalently:
 ```
 python /localhost/docker_project/ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 ```
