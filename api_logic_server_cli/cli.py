@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.10.18"
+__version__ = "3.20.00"
 
 import yaml
 
@@ -66,7 +66,7 @@ import expose_existing.expose_existing_callable as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
 
 
-api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"  # windows TODO??
+api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
 api_logic_server_info_file = open(api_logic_server_info_file_name)
 api_logic_server_info_file_dict = yaml.load(api_logic_server_info_file, Loader=yaml.FullLoader)
 api_logic_server_info_file.close()
@@ -733,7 +733,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t10/02/2021 - 03.10.18: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
+            "\t10/02/2021 - 03.20.00: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
@@ -893,7 +893,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
                      extended_builder=extended_builder)
 
 
-@main.command("run-api")
+@main.command("run")
 @click.option('--project_name',
               default=f'{last_created_project_name}',
               prompt="Project to run",
@@ -955,6 +955,8 @@ def sys_info(ctx):
     for p in sys.path:
         print(".." + p)
     print("")
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
     print_at('ApiLogicServer version', __version__)
     print_at('ip (gethostbyname)', local_ip)
     print_at('on hostname', hostname)
@@ -970,7 +972,7 @@ def welcome(ctx):
     print("")
     print("Typical commands:")
     print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")
-    print("  ApiLogicServer run-api        --project_name=/localhost/api_logic_server")
+    print("  ApiLogicServer run            --project_name=/localhost/api_logic_server")
     print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login: admin, p")
     print("  ApiLogicServer sys-info")
     print("  ApiLogicServer version")
@@ -1051,6 +1053,8 @@ def print_args(args, msg):
 
 
 def start():               # target of setup.py
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
     sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n")
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
