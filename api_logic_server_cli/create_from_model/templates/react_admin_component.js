@@ -25,20 +25,34 @@ import {
 } from "react-admin";
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
+import { useRefresh } from 'react-admin';
+import { useDataProvider } from 'react-admin';
+import { FunctionField } from 'react-admin';
+import DeleteIcon from "@material-ui/icons/Delete";
+
 
 const customerFilters = [
     <TextInput source="q" label="Search" alwaysOn />
 ];
 
 
-export const ApiLogicServer_componentList = props => (
-    <List filters={customerFilters} perPage={10}  {...props} >
+export const ApiLogicServer_componentList = props => {
+
+    const dataProvider = useDataProvider();
+    const refresh = useRefresh();
+
+    return <List filters={customerFilters} perPage={10}  {...props} >
         <Datagrid rowClick="show">
             // ApiLogicServer_list_columns
-            <EditButton />
+            <EditButton label="Edit"/>
+	    // This functionField is similar to react-admin "DeleteButton"
+            <FunctionField onClick={(e)=> {e.stopPropagation()}}
+                        label="Delete"
+                        render={record => <DeleteIcon style={{fill: "#3f51b5"}} onClick={(item)=>deleteField(dataProvider, record, refresh)}/>}
+                    />
         </Datagrid>
     </List>
-);
+};
 
 
 export const ApiLogicServer_componentEdit = props => (
@@ -48,6 +62,15 @@ export const ApiLogicServer_componentEdit = props => (
         </SimpleForm>
     </Edit>
 );
+
+
+const deleteField = (dataProvider, record, refresh) => {
+
+    dataProvider.delete('ApiLogicServer_component', record).then(()=>{
+        refresh();
+        }
+    ).catch((e)=> alert('error'))
+}
 
 
 export const ApiLogicServer_componentAdd = props => (
