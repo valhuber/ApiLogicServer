@@ -12,7 +12,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ContactsIcon from '@material-ui/icons/Contacts';
 import LoginPage from './pages/LoginPage';
 
-const dataProvider = jsonapiClient('https://apilogicserver.pythonanywhere.com'); // ApiLogicServer_server_url
+const dataProvider = jsonapiClient('ApiLogicServer_server_url'); // ApiLogicServer_server_url
 // e.g., const dataProvider = jsonapiClient('https://apilogicserver.pythonanywhere.com');
 
 const App = () => (
