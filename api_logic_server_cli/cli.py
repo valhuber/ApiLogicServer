@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.00"
+__version__ = "3.20.01"
 
 import yaml
 
@@ -733,7 +733,7 @@ def version(ctx):
     click.echo(
         click.style(
             f'Recent Changes:\n'
-            "\t10/02/2021 - 03.20.00: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
+            "\t10/02/2021 - 03.20.01: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
@@ -910,9 +910,12 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5000"):
         Runs existing project
     """
 
-    # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
-    # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
-    run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py {host} {port}')
+    proj_dir = project_name
+    if proj_dir == "":
+        proj_dir = last_created_project_name
+    else:
+        proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
+    run_file = f'{proj_dir}/api_logic_server_run.py {host} {port}'
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
 
 
@@ -925,17 +928,20 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5000"):
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'5000',
-              help="Port (default 5000, or leave empty)")
+              default=f'8080',
+              help="Port (default 8080, or leave empty)")
 @click.pass_context
-def run_ui(ctx, project_name: str, host: str="localhost", port: str="5000"):
+def run_ui(ctx, project_name: str, host: str="localhost", port: str="8080"):
     """
         Runs existing basic web app
     """
 
-    # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
-    # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
-    run_file = os.path.abspath(f'{resolve_home(project_name)}/ui/basic_web_app/run.py {host} 8080')
+    proj_dir = project_name
+    if proj_dir == "":
+        proj_dir = last_created_project_name
+    else:
+        proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
+    run_file = f'{proj_dir}/ui/basic_web_app/run.py'   # this fails to open: {host} 8080
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
 
 
@@ -947,13 +953,17 @@ def sys_info(ctx):
     """
 
     def print_at(label: str, value: str):
-        tab_to = 24 - len(label)
+        tab_to = 30 - len(label)
         spaces = ' ' * tab_to
         print(f'{label}: {spaces}{value}')
 
     print("\nPYTHONPATH..")
     for p in sys.path:
         print(".." + p)
+    print("")
+    print("api_logic_server_info...")
+    for key, value in api_logic_server_info_file_dict.items():
+        print_at(f'  {key}', value)
     print("")
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname(hostname)
@@ -973,7 +983,7 @@ def welcome(ctx):
     print("Typical commands:")
     print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")
     print("  ApiLogicServer run            --project_name=/localhost/api_logic_server")
-    print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login: admin, p")
+    print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login with: admin, p")
     print("  ApiLogicServer sys-info")
     print("  ApiLogicServer version")
     print("")
