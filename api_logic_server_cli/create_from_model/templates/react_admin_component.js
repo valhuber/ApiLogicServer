@@ -11,6 +11,7 @@ import { TabbedShowLayout, Tab } from 'react-admin';
 
 import {
   Edit,
+  Create,
   Show,
   SimpleForm,
   ReferenceInput,
@@ -73,12 +74,12 @@ const deleteField = (dataProvider, record, refresh) => {
 }
 
 
-export const ApiLogicServer_componentAdd = props => (
-    <Edit {...props}>
+export const ApiLogicServer_componentCreate = props => (
+    <Create {...props}>
         <SimpleForm>
             // ApiLogicServer_add_columns
         </SimpleForm>
-    </Edit>
+    </Create >
 );
 
 
