@@ -7,4 +7,4 @@ echo "Welcome to ApiLogicServer - Docker container"
 echo " "
 cat ../../etc/issue
 
-ApiLogicServer welcome
+ApiLogicServer

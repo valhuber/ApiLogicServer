@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.01"
+__version__ = "3.20.02"
 
 import yaml
 
@@ -700,40 +700,56 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 @click.pass_context
 def main(ctx):
     """
-    Creates and runs logic-enabled Python project.
+    Creates and runs logic-enabled Python database api projects.
 
-    Example:
+\b
+    Doc: https://github.com/valhuber/ApiLogicServer/blob/main/README.md
 
-        ApiLogicServer create-and-run --project_name= --db_url=
+\b
+    Examples:
 
-    Doc:
-
-        ApiLogicServer: https://github.com/valhuber/ApiLogicServer#readme
-
-        Logic Bank: https://github.com/valhuber/logicbank#readme
-
-        SQLAlchemy: https://docs.sqlalchemy.org/en/14/core/engines.html
-
-        SAFRS: https://github.com/thomaxxl/safrs/wiki
-
-        FAB: https://flask-appbuilder.readthedocs.io/en/latest/
-
-        https://github.com/valhuber/ApiLogicServer/wiki/Tutorial
+\b
+        ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=
+        ApiLogicServer create         --project_name=/localhost/api_logic_server --db_url=
+        ApiLogicServer run            --project_name=/localhost/api_logic_server
+        ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login with: admin, p
     """
 
-@main.command("version")
+
+@main.command("about")
 @click.pass_context
-def version(ctx):
+def about(ctx):
     """
-        Recent Changes
+        Recent Changes, system information.
     """
     # print_info()
     print(f'\tInstalled at {abspath(__file__)}\n')
     print(f'\thttps://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
+
+    def print_at(label: str, value: str):
+        tab_to = 30 - len(label)
+        spaces = ' ' * tab_to
+        print(f'{label}: {spaces}{value}')
+
+    print("\nPYTHONPATH..")
+    for p in sys.path:
+        print(".." + p)
+    print("")
+    print("api_logic_server_info...")
+    for key, value in api_logic_server_info_file_dict.items():
+        print_at(f'  {key}', value)
+    print("")
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    print_at('ApiLogicServer version', __version__)
+    print_at('ip (gethostbyname)', local_ip)
+    print_at('on hostname', hostname)
+    print_at("Python version", create_utils.run_command(f'python --version', msg="no-msg"))
+
     click.echo(
         click.style(
-            f'Recent Changes:\n'
-            "\t10/02/2021 - 03.20.01: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
+            f'\n\nRecent Changes:\n'
+            "\t10/02/2021 - 03.20.02: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
@@ -743,6 +759,7 @@ def version(ctx):
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
         )
     )
+
 
 
 @main.command("create")
@@ -804,7 +821,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            favorites: str, non_favorites: str,
            extended_builder: str):
     """
-        Creates new project (overwrites)
+        Creates new customizable project (overwrites).
     """
     # print_info()
     db_types = ""
@@ -878,7 +895,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
         favorites: str, non_favorites: str,
         extended_builder: str):
     """
-        Creates new project and runs it (overwrites)
+        Creates new project and runs it (overwrites).
     """
     # print_info()
     db_types = ""
@@ -907,7 +924,15 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
 @click.pass_context
 def run_api(ctx, project_name: str, host: str="localhost", port: str="5000"):
     """
-        Runs existing project
+        Runs existing project.
+
+
+\b
+        Example
+
+\b
+            ApiLogicServer run --project_name=/localhost/api_logic_server
+            ApiLogicServer run --project_name=    # runs last-created project
     """
 
     proj_dir = project_name
@@ -933,7 +958,14 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5000"):
 @click.pass_context
 def run_ui(ctx, project_name: str, host: str="localhost", port: str="8080"):
     """
-        Runs existing basic web app
+        Runs existing basic web app.
+
+\b
+        Example
+
+\b
+            ApiLogicServer run-ui --project_name=/localhost/api_logic_server
+            ApiLogicServer run-ui --project_name=    # runs last-created project
     """
 
     proj_dir = project_name
@@ -945,57 +977,11 @@ def run_ui(ctx, project_name: str, host: str="localhost", port: str="8080"):
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
 
 
-@main.command("sys-info")
-@click.pass_context
-def sys_info(ctx):
-    """
-        Python version, paths, IPs, etc
-    """
-
-    def print_at(label: str, value: str):
-        tab_to = 30 - len(label)
-        spaces = ' ' * tab_to
-        print(f'{label}: {spaces}{value}')
-
-    print("\nPYTHONPATH..")
-    for p in sys.path:
-        print(".." + p)
-    print("")
-    print("api_logic_server_info...")
-    for key, value in api_logic_server_info_file_dict.items():
-        print_at(f'  {key}', value)
-    print("")
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
-    print_at('ApiLogicServer version', __version__)
-    print_at('ip (gethostbyname)', local_ip)
-    print_at('on hostname', hostname)
-    print_at("Python version", create_utils.run_command(f'python --version', msg="no-msg"))
-
-
-@main.command("welcome")
-@click.pass_context
-def welcome(ctx):
-    """
-        Show version, typical commands
-    """
-    print("")
-    print("Typical commands:")
-    print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")
-    print("  ApiLogicServer run            --project_name=/localhost/api_logic_server")
-    print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login with: admin, p")
-    print("  ApiLogicServer sys-info")
-    print("  ApiLogicServer version")
-    print("")
-
-
 @main.command("examples")
 @click.pass_context
 def examples(ctx):
     """
-    Example commands, including SQLAlchemy URIs
-
-    URI examples, Docs URL
+    Example commands, including SQLAlchemy URIs.
     """
     info = [
         'Examples:',
@@ -1077,7 +1063,7 @@ if __name__ == '__main__':  # debugger & python command line start here
 
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname(hostname)
-    print(f'\nWelcome to API Logic Server, {__version__}')  #  at {local_ip} ')
+    print(f'\nWelcome to API Logic Server, {__version__}\n')  #  at {local_ip} ')
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] not in ["version", "sys-info", "welcome"] and \
             "show-args" in api_logic_server_info_file_dict:
