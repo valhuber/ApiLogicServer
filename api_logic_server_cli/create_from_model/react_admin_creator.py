@@ -191,7 +191,7 @@ class ReactCreator(object):
         insert_point -= 1
         del component_code_lines[insert_point]
         for each_column in columns:
-            component_code_lines.insert(insert_point, f'            <TextField source="{each_column}"/>\n')
+            component_code_lines.insert(insert_point, f'            <TextInput source="{each_column}"/>\n')
             insert_point += 1
         pass
 
@@ -324,7 +324,7 @@ class ReactCreator(object):
         for each_table in meta_tables.items():
             class_name = self.mod_gen.get_class_for_table(each_table[1].name)
             if class_name:
-                imports = f'{class_name}List, {class_name}Edit, {class_name}Show'
+                imports = f'{class_name}List, {class_name}Edit, {class_name}Show, {class_name}Create'
                 import_line = "import {" + imports + "} from './components/" + class_name + "';\n"
                 import_lines.append(import_line)
         app_file_lines[import_lines_loc:import_lines_loc] = import_lines
@@ -335,7 +335,7 @@ class ReactCreator(object):
             class_name = self.mod_gen.get_class_for_table(each_table[1].name)
             if class_name:
                 resource_line = f'<Resource name="{class_name}" show={{{class_name}Show}} ' \
-                                f'edit={{{class_name}Edit}} list={{{class_name}List}} icon={{ContactsIcon}} />\n'
+                                f'edit={{{class_name}Edit}} create={{{class_name}Create}} list={{{class_name}List}} icon={{ContactsIcon}} />\n'
                 resource_lines.append(resource_line)
         app_file_lines[resource_lines_loc:resource_lines_loc] = resource_lines
 
