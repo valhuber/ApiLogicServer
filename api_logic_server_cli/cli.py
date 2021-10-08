@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.02"
+__version__ = "3.20.03"
 
 import yaml
 
@@ -709,10 +709,10 @@ def main(ctx):
     Examples:
 
 \b
-        ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=
-        ApiLogicServer create         --project_name=/localhost/api_logic_server --db_url=
+        ApiLogicServer create         --project_name=/localhost/api_logic_server   --db_url=
         ApiLogicServer run            --project_name=/localhost/api_logic_server
         ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login with: admin, p
+        ApiLogicServer create-and-run --project_name=/localhost/api_logic_server   --db_url=
     """
 
 
@@ -744,11 +744,13 @@ def about(ctx):
     print_at('ApiLogicServer version', __version__)
     print_at('ip (gethostbyname)', local_ip)
     print_at('on hostname', hostname)
+    print_at('cwd', os. getcwd())
     print_at("Python version", create_utils.run_command(f'python --version', msg="no-msg"))
 
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t10/02/2021 - 03.20.03: fix 1st-run bug in VSCode execution \n"
             "\t10/02/2021 - 03.20.02: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"

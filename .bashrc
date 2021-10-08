@@ -1,6 +1,6 @@
 export PATH=$PATH:/home/api_logic_server/bin
 
-cd ~
+# cd ~
 
 echo " "
 echo "Welcome to ApiLogicServer - Docker container"
