@@ -49,7 +49,6 @@ from logic import declare_logic
 
 from flask import render_template, request, jsonify, Flask
 from safrs import ValidationError, SAFRSBase
-import test.server_startup_test as self_test
 
 
 def is_docker():
@@ -176,7 +175,7 @@ def handle_exception(e: ValidationError):
     return res, 400
 
 
-""" enable for cors support
+""" enable for cors support"""
 @flask_app.after_request
 def after_request(response):
     '''
@@ -191,43 +190,9 @@ def after_request(response):
         "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
     # print(f'cors aftter_request - response: {str(response)}')
     return response
-"""
-
-
-@flask_app.before_first_request
-def run_before_first_request():
-    ''' start_runner pings server, starts this (1 ping only, Visily)
-    '''
-    def run_server_start_test():
-        self_test.server_tests(host, port, "api_logic_server_version")
-
-    thread = threading.Thread(target=run_server_start_test)
-    thread.start()
-
-
-def one_ping_on_server_start_for_server_start_tests():
-    """
-    On server start: 1 ping only, Visily
-
-    This executes @flask_app.before_first_request
-    """
-    def start_loop():
-        not_started = True
-        while not_started:
-            try:
-                r = requests.get(f'http://{host}:5000/')
-                if r.status_code == 200:
-                    not_started = False
-            except:
-                pass  # server not started, not a problem
-            time.sleep(2)
-
-    thread = threading.Thread(target=start_loop)
-    thread.start()
+""" """
 
 
 if __name__ == "__main__":
-    if self_test.server_tests_enabled:  # see test/server_startup_test.py
-        one_ping_on_server_start_for_server_start_tests()
     app_logger.info(f'Starting ApiLogicServer project, version api_logic_server_version on {flask_host}')
     flask_app.run(host=flask_host, threaded=False, port=port)

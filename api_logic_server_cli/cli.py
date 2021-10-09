@@ -264,7 +264,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         replace_logic_with_nw_logic(project_directory)
         replace_customize_models_with_nw_customize_models(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
-        replace_server_startup_test_with_nw_server_startup_test(project_directory)
+        replace_server_test_with_nw_server_test(project_directory)
     return target_db_loc_actual
 
 
@@ -382,10 +382,10 @@ def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
     rpcs_file.close()
 
 
-def replace_server_startup_test_with_nw_server_startup_test(project_name):
-    """ replace api/expose_rpcs with nw version """
-    tests_file = open(project_name + '/test/server_startup_test.py', 'w')
-    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_server_startup_test.py")
+def replace_server_test_with_nw_server_test(project_name):
+    """ replace test/server_tests.py with nw version """
+    tests_file = open(project_name + '/test/server_test.py', 'w')
+    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_server_test.py")
     nw_tests_file_data = nw_tests_file.read()
     tests_file.write(nw_tests_file_data)
     tests_file.close()
@@ -750,7 +750,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/02/2021 - 03.20.03: fix 1st-run bug in VSCode execution \n"
+            "\t10/02/2021 - 03.20.03: fix 1st-run bug in VSCode execution, remove startup tests \n"
             "\t10/02/2021 - 03.20.02: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
