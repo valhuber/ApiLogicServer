@@ -217,9 +217,9 @@ code ~/dev/servers/api_logic_server  # local host!  Launch VS Code; use charm fo
 
    * The created project is pre-configured for VS Code to use a [Remote Container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#create-the-project).  You may be asked to install container support, and reload the project in a container... do so.
 
-   * you may need to install the [`shell` extension](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line) into VS Code, so starting it becomes as simple as `code docker_project` (from your **local** terminal window)
+      * This means it uses Python in the ApiLogicServer docker (not your local host), which _eliminates the need to install and configure Python_
 
-   * This means it uses Python in the ApiLogicServer docker (not your local host), which _eliminates the need to install and configure Python_
+   * you may need to install the [`shell` extension](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line) into VS Code, so starting it becomes as simple as `code docker_project` (from your **local** terminal window)
 
 
 Here is the created project, opened in VS Code:
