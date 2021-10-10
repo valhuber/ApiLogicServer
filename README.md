@@ -26,9 +26,10 @@ ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
 
 ```
 
+https://youtu.be/Zo0dUIgRYFg
 You can picture the process as follows, as shown by this short video showing complete project creation, execution, customization and debugging:
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://www.youtube.com/watch?v=bOUzdg-PSlg&t=2s "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (find swagger at [localhost:5000](http://localhost:5000) ), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
