@@ -22,7 +22,7 @@ docker network create dev-network  # only required once (ignore errors if networ
 # Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
+ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=  # Working Software, Now
 
 ```
 
