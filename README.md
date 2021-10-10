@@ -26,7 +26,6 @@ ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
 
 ```
 
-https://youtu.be/Zo0dUIgRYFg
 You can picture the process as follows, as shown by this short video showing complete project creation, execution, customization and debugging:
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
