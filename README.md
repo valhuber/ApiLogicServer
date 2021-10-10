@@ -10,7 +10,7 @@ With 1 command, you get:
 * Working Software, ***Now***
   * a **database API,** to unblock UI development
   * a **multi-page web app,** to engage Business Users - early in the project
-  * Declare logic with **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
+  * Declarative logic using **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
 * **Customizeable** using standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
 
 Create the sample project in a *minute or two*, using Docker.  With Docker started (Windows, use Powershell):
@@ -22,13 +22,13 @@ docker network create dev-network  # only required once (ignore errors if networ
 # Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=
+ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=  # Working Software, Now
 
 ```
 
 You can picture the process as follows, as shown by this short video showing complete project creation, execution, customization and debugging:
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://www.youtube.com/watch?v=bOUzdg-PSlg&t=2s "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (find swagger at [localhost:5000](http://localhost:5000) ), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
