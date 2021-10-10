@@ -30,7 +30,7 @@ After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wi
 Here's a short video showing complete project creation, execution, customization and debugging:
 
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs.png?raw=true)](https://www.youtube.com/watch?v=bOUzdg-PSlg&t=2s "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/docker-files.png?raw=true)](https://www.youtube.com/watch?v=bOUzdg-PSlg&t=2s "Using VS Code with the ApiLogicServer container")
 
 
 ### Feature Summary
