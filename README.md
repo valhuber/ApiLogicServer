@@ -6,7 +6,7 @@
 
 ### TL;DR - Executable Software, *now*
 
-With 1 command, create a **database API,** to unblock UI development.  Also, a **multi-page web app,** to engage Business Users - early in the project.  Declare logic with **spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
+With 1 command, you get Working Software ***Now:*** a **database API,** to unblock UI development, and a **multi-page web app,** to engage Business Users - early in the project.  Declare logic with **spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.  **Customize** using standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
 
 Create the sample project in a *minute or two*, using Docker.  With Docker started (Windows, use Powershell):
 
