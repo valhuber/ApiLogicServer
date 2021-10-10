@@ -30,7 +30,8 @@ After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wi
 > Already installed?  Upgrade to the latest (3.20.03): ```docker pull apilogicserver/api_logic_server```
 
 
-### Feature Summary
+# Features
+
 
 | Feature | Providing  | Why it Matters | Using
 | :-------------- |:--------------| :------|  :------|
@@ -40,8 +41,6 @@ After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wi
 | 4. [**Customizable Project**](#3-customize) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
 | 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
 
-
-# Features
 Let's take a closer look at what the created project provides.
 
 ### API: SAFRS JSON:API and Swagger
