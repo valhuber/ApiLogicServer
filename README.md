@@ -40,11 +40,90 @@ After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wi
 | 4. [**Customizable Project**](#3-customize) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
 | 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
 
-### Tutorials
-There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
-* [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
-* [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
 
+# Features
+Let's take a closer look at what the created project provides.
+
+### API: SAFRS JSON:API and Swagger
+
+Your API is instantly ready to support ui and integration
+development, available in swagger, as shown below.  JSON:APIs are interesting because they
+are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/swagger.png"></figure>
+
+> Customize your API by editing ```api/customize_api.py```, and see [Customizing](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
+
+### Logic
+
+Transactional business logic - multi-table derivations and
+constraints - is a significant portion of database systems,
+often nearly half.  Procedural coding is time-consuming
+to develop and maintain, reducing business agility.
+
+ApiLogicServer integrates Logic Bank, spreadsheet-like rules
+that reduce transaction logic by 40X.
+Logic is declared in Python (example below), and is:
+
+- **Extensible:** logic consists of rules (see below), plus standard Python code
+
+- **Multi-table:** rules like ``sum`` automate multi-table transactions
+
+- **Scalable:** rules are pruned and optimized; for example, sums are processed as *1 row adjustment updates,* rather than expensive SQL aggregate queries
+
+- **Manageable:** develop and debug your rules in IDEs, manage it in SCS systems (such as `git`) using existing procedures
+
+The following 5 rules represent the
+[same logic](https://github.com/valhuber/LogicBank/wiki/by-code)
+as 200 lines of Python:
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/logic-declare-5-rules.png"></figure>
+
+> Declare your logic by editing: **```logic/declare_logic.py```**
+
+
+### Basic Web App - Flask Appbuilder
+
+UI development takes time.  That's a problem since
+* Such effort may not be warranted for admin "back office" screens,
+and
+  
+* [Agile approaches](https://agilemanifesto.org) depend on getting _working
+software_ soon, to drive _collaboration and iteration_.
+
+ApiLogicServer CLI therefore creates working software _now:_
+multi-page, multi-table applications as shown below:
+
+1. **Multi-page:** apps include 1 page per table
+
+2. **Multi-table:** pages include ``related_views`` for each related child table, and join in parent data
+
+3. **Favorite fields first:** first-displayed field is "name", or `contains` "name" (configurable)
+
+4. **Predictive joins:** favorite field of each parent is shown (product *name* - not product *id*)
+
+5. **Ids last:** such boring fields are not shown on lists, and at the end on other pages
+
+6. **Logic enforcement:** logic is enforced on all updates.  For example, try to alter the `Credit Limit` of the first customer to 20, and observe the error.
+
+    * This is due to the constraint rule in `logic/declare_logic.py` on Customer, containing: `row.Balance <= row.CreditLimit`
+
+If you are using Docker, you can run it like this for the created sample:
+```
+python /localhost/docker_project/ui/basic_web_app/run.py  # using the docker terminal window
+```
+
+<figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
+
+> Customize your app by editing: **```ui/basic_web_app/app/views.py```**
+
+> Before running, [some setup is required](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
+
+### React-Admin Creation
+ApiLogicServer 2.3.4 can also create react-admin client applications.
+This element is for technology exploration - it is _not_ production ready.
+
+[See here](https://github.com/meera/apilogicserver-react-admin-genned#readme)
+for more information.
 
 ### Background
 
@@ -283,90 +362,6 @@ for `ApiLogicServer` and the `Basic Web App`.  You can set breakpoints, examine 
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/logic-debug.png"></figure>
 
-# Features
-Let's take a closer look at what the created project provides.
-
-### API: SAFRS JSON:API and Swagger
-
-Your API is instantly ready to support ui and integration
-development, available in swagger, as shown below.  JSON:APIs are interesting because they
-are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
-
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/swagger.png"></figure>
-
-> Customize your API by editing ```api/customize_api.py```, and see [Customizing](https://github.com/valhuber/ApiLogicServer/wiki/ApiLogicServer-Guide#customizing-apilogicprojects)
-
-### Logic
-
-Transactional business logic - multi-table derivations and
-constraints - is a significant portion of database systems,
-often nearly half.  Procedural coding is time-consuming
-to develop and maintain, reducing business agility.
-
-ApiLogicServer integrates Logic Bank, spreadsheet-like rules
-that reduce transaction logic by 40X.
-Logic is declared in Python (example below), and is:
-
-- **Extensible:** logic consists of rules (see below), plus standard Python code
-
-- **Multi-table:** rules like ``sum`` automate multi-table transactions
-
-- **Scalable:** rules are pruned and optimized; for example, sums are processed as *1 row adjustment updates,* rather than expensive SQL aggregate queries
-
-- **Manageable:** develop and debug your rules in IDEs, manage it in SCS systems (such as `git`) using existing procedures
-
-The following 5 rules represent the
-[same logic](https://github.com/valhuber/LogicBank/wiki/by-code)
-as 200 lines of Python:
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/logic-declare-5-rules.png"></figure>
-
-> Declare your logic by editing: **```logic/declare_logic.py```**
-
-
-### Basic Web App - Flask Appbuilder
-
-UI development takes time.  That's a problem since
-* Such effort may not be warranted for admin "back office" screens,
-and
-  
-* [Agile approaches](https://agilemanifesto.org) depend on getting _working
-software_ soon, to drive _collaboration and iteration_.
-
-ApiLogicServer CLI therefore creates working software _now:_
-multi-page, multi-table applications as shown below:
-
-1. **Multi-page:** apps include 1 page per table
-
-2. **Multi-table:** pages include ``related_views`` for each related child table, and join in parent data
-
-3. **Favorite fields first:** first-displayed field is "name", or `contains` "name" (configurable)
-
-4. **Predictive joins:** favorite field of each parent is shown (product *name* - not product *id*)
-
-5. **Ids last:** such boring fields are not shown on lists, and at the end on other pages
-
-6. **Logic enforcement:** logic is enforced on all updates.  For example, try to alter the `Credit Limit` of the first customer to 20, and observe the error.
-
-    * This is due to the constraint rule in `logic/declare_logic.py` on Customer, containing: `row.Balance <= row.CreditLimit`
-
-If you are using Docker, you can run it like this for the created sample:
-```
-python /localhost/docker_project/ui/basic_web_app/run.py  # using the docker terminal window
-```
-
-<figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
-
-> Customize your app by editing: **```ui/basic_web_app/app/views.py```**
-
-> Before running, [some setup is required](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder) for Flask App Builder (except for Northwind, which is pre-created).
-
-### React-Admin Creation
-ApiLogicServer 2.3.4 can also create react-admin client applications.
-This element is for technology exploration - it is _not_ production ready.
-
-[See here](https://github.com/meera/apilogicserver-react-admin-genned#readme)
-for more information.
-
 # Internals - How It Works
 <details>
   <summary>How It Works</summary>
@@ -442,6 +437,12 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 
 
 # Project Information
+
+### Tutorials
+There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
+* [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
+* [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
+
 
 ### Status
 
