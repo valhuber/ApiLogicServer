@@ -10,7 +10,7 @@ With 1 command, you get:
 * Working Software, ***Now***
   * a **database API,** to unblock UI development
   * a **multi-page web app,** to engage Business Users - early in the project
-  * Declare logic with **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
+  * Declarative logic using **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
 * **Customizeable** using standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
 
 Create the sample project in a *minute or two*, using Docker.  With Docker started (Windows, use Powershell):
