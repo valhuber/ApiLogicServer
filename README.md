@@ -22,7 +22,7 @@ docker network create dev-network  # only required once (ignore errors if networ
 # Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=  # Working Software, Now
+ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=  # Working Software, Now
 
 ```
 
@@ -113,7 +113,7 @@ multi-page, multi-table applications as shown below:
 
 If you are using Docker, you can run it like this for the created sample:
 ```
-python /localhost/docker_project/ui/basic_web_app/run.py  # using the docker terminal window
+python /localhost/api_logic_server/ui/basic_web_app/run.py  # using the docker terminal window
 ```
 
 <figure><img src="https://raw.githubusercontent.com/valhuber/fab-quick-start/master/images/generated-page.png"></figure>
@@ -149,7 +149,7 @@ and can be [installed](#Installation) and customized with standard approaches as
 # Architectural Overview
 
 As shown below, there are typically 2-3 "machines" in operation:
-* Your **local host** (in grey), where the Customizable Project files (`docker_project`) are stored, 
+* Your **local host** (in grey), where the Customizable Project files (`api_logic_server`) are stored, 
 and your Dev Tools (IDE etc) operate
 
 
@@ -238,7 +238,7 @@ In this step, you are using the ApiLogicServer CLI to create and optionally run 
 ##### Create and Run: `ApiLogicServer create-and-run`
 The ```ApiLogicServer create-and-run``` command creates your project, and runs the server (verify with swagger):
 ```
-ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=   # default (pre-installed) db
+ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=   # default (pre-installed) db
 ```
 
 It accepts these arguments:
@@ -263,19 +263,19 @@ You can also just create the project with `ApiLogicServer create`.  It accepts t
 Run directly from the **Docker** Terminal window:
 ```
 ApiLogicServer run  # defaults to last-created project, or, specify project explicitly
-ApiLogicServer run --project_name=/localhost/docker_project  # explicit project name
+ApiLogicServer run --project_name=/localhost/api_logic_server  # explicit project name
 ```
 Or, equivalently:
 ```
-python /localhost/docker_project/api_logic_server_run.py  # run the API Server - test with cURL, Swagger
+python /localhost/api_logic_server/api_logic_server_run.py  # run the API Server - test with cURL, Swagger
 ```
 Run the basic web app like this:
 ```
-ApiLogicServer run-ui --project_name=/localhost/docker_project
+ApiLogicServer run-ui --project_name=/localhost/api_logic_server
 ```
 Or, equivalently:
 ```
-python /localhost/docker_project/ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
+python /localhost/api_logic_server/ui/basic_web_app/run.py  # run the Basic Web App (help for command args)
 ```
 
 Notes:
@@ -303,7 +303,7 @@ code ~/dev/servers/api_logic_server  # local host!  Launch VS Code; use charm fo
 
       * Using the container means VS Code uses Python _in the ApiLogicServer docker_ (not your local host), which _eliminates the need to install and configure Python_
 
-   * you may need to install the [`shell` extension](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line) into VS Code, so starting it becomes as simple as `code docker_project` (from your **local** terminal window)
+   * you may need to install the [`shell` extension](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line) into VS Code, so starting it becomes as simple as `code api_logic_server` (from your **local** terminal window)
 
 
 Here is the created project, opened in VS Code:

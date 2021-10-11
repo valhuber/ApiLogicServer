@@ -7,10 +7,10 @@
 #   docker image inspect apilogicserver/api_logic_server
 
 # The software auto-prompts you for the next steps:
-#   ApiLogicServer run --project_name=/localhost/docker_project
-#   ApiLogicServer run --project_name=/localhost/docker_project --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
-#   python /localhost/docker_project/api_logic_server_run.py
-#   python /localhost/docker_project/ui/basic_web_app/run.py
+#   ApiLogicServer run --project_name=/localhost/api_logic_server
+#   ApiLogicServer run --project_name=/localhost/api_logic_server --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
+#   python /localhost/api_logic_server/api_logic_server_run.py
+#   python /localhost/api_logic_server/ui/basic_web_app/run.py
 
 # shout out to Piotr Maślewski https://medium.com/swlh/dockerize-your-python-command-line-program-6a273f5c5544
 
