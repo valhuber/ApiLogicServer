@@ -1,4 +1,4 @@
 #!/bin/bash
 # python api_logic_server_cli/cli.py run --project_name=~/dev/servers/api_logic_server
 
-python /home/api_logic_server/api_logic_server_cli/cli.py $1 $2 $3 $4 $5
+python /home/api_logic_server/api_logic_server_cli/cli.py $*
