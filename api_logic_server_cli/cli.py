@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.03"
+__version__ = "3.20.04"
 
 import yaml
 
@@ -526,6 +526,17 @@ def copy_project_to_local(project_directory, copy_to_project_directory, message)
             print(f'===> Resolve the issue, and use the cp command below...')
     return result
 
+
+def is_docker():
+    """ running docker?  path exists: /home/api_logic_server
+    """
+    path = '/home/api_logic_server'
+    return (
+        os.path.exists('/.dockerenv') or
+        os.path.isfile(path) and any('docker' in line for line in open(path))
+    )
+
+
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
@@ -692,6 +703,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
         print(f'\nOpen IDE on local machine, see https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs  e.g., ')
+        if (is_docker()):
+            print(f'  exit  # exit the Docker container ')
         print(f'  code <project-name>')
         print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
@@ -750,6 +763,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t10/11/2021 - 03.20.04: default project name \n"
             "\t10/02/2021 - 03.20.03: fix 1st-run bug in VSCode execution, remove startup tests \n"
             "\t10/02/2021 - 03.20.02: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
             "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
@@ -761,7 +775,6 @@ def about(ctx):
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
         )
     )
-
 
 
 @main.command("create")
