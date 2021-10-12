@@ -13,7 +13,7 @@ With 1 command, you get:
   * Declarative logic using **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
 * **Customizable** using a standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
 
-Create the sample api and web-app project in a *minute or two.*  With Docker started (Windows, use Powershell):
+Create the sample api and web-app project in a *minute or two --*  with Docker started (Windows, use Powershell), execute the following commands:
 
 ```
 cd ~/Desktop                       # directory of API Logic Server projects on local host
@@ -22,7 +22,7 @@ docker network create dev-network  # only required once (ignore errors if networ
 # Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=  # Working Software, Now
+ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=  # Working Software, Now - [swagger](localhost:5000)
 
 ```
 
