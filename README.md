@@ -32,7 +32,7 @@ You can picture the process as follows, as shown by this short video showing com
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
 
-After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) (find swagger at [localhost:5000](http://localhost:5000) ), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
+After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
 > Already installed?  Upgrade to the latest (3.20.04): ```docker pull apilogicserver/api_logic_server```.  You may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#apilogicserver-container-upgrades)
 
