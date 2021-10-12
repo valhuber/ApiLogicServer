@@ -26,7 +26,7 @@ ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_ur
 
 ```
 
-Your API is running - explore it with  - [swagger](http://localhost:5000).
+Your API is running - explore it with [swagger](http://localhost:5000).
 
 You can picture the process as follows, as shown by this short video showing complete project creation, execution, customization and debugging:
 
