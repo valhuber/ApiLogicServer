@@ -113,6 +113,7 @@ if on_import:
 
     app.config.update(SQLALCHEMY_DATABASE_URI=args.url, DEBUG=True, JSON_AS_ASCII=False)
     SAFRSBase.db_commit = False
+    allow_client_generated_ids = True
     db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used in employees.py
     models = codegen(args)
     print(models)
