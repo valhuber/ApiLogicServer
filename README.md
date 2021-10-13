@@ -13,7 +13,7 @@ With 1 command, you get:
   * Declarative logic using **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
 * A **Customizable Project,** using a standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
 
-To create the sample API and web-app project in a *minute or two --*  with Docker started, execute the following commands (Windows, use Powershell):
+To create the sample API and web-app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
 ```
 cd ~/Desktop                       # directory of API Logic Server projects on local host
