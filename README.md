@@ -28,6 +28,8 @@ ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_ur
 
 Your API is running - explore it with [swagger](http://localhost:5000).
 
+VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs).
+
 You can picture the process as follows, as shown by this short video showing complete project creation, execution, customization and debugging:
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
@@ -492,6 +494,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+
+10/14/2021 - 03.20.06: create in current working directory
 
 10/03/2021 - 03.10.17: default db_url
 

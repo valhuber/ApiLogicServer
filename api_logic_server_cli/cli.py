@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.04"
+__version__ = "3.20.06"
 
 import yaml
 
@@ -43,23 +43,11 @@ def get_api_logic_server_dir() -> str:
     python_path = running_at.parent.absolute()
     return str(python_path)
 
-dup_code = False
-if not dup_code:
-    pass
-else:
-    running_at = Path(__file__)
-    python_path = running_at.parent.absolute()
-    python_path_container = python_path.parent.absolute()
-    or_this_path = get_api_logic_server_dir()
-    debug_path = True
-    if debug_path:
-        print(f'\trunning_at:\t\t\t{running_at}'
-              f'\n\tpython_path:\t\t\t{python_path}'
-              f'\n\tpython_path_container:\t{python_path_container}'
-              f'\n\tor_this_path:\t\t{or_this_path}')
 
-sys.path.append(get_api_logic_server_dir())  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
-
+# print("sys.path.append(get_api_logic_server_dir())\n",get_api_logic_server_dir())
+sys.path.append(get_api_logic_server_dir())  # e.g, on Docker: export PATH="/home/api_logic_server/api_logic_server_cli"
+api_logic_server_path = os.path.dirname(get_api_logic_server_dir())  # e.g: export PATH="/home/api_logic_server"
+sys.path.append(api_logic_server_path)
 from create_from_model.model_creation_services import CreateFromModel
 
 import expose_existing.expose_existing_callable as expose_existing_callable
@@ -173,20 +161,93 @@ def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
         print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
-def clone_prototype_project_with_nw_samples(project_directory: str, from_git: str, msg: str, abs_db_url: str) -> str:
+def recursive_overwrite(src, dest, ignore=None):
+    """ copyTree, with overwrite
     """
-    clone prototype to create and remove git folder
+    if os.path.isdir(src):
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
+        files = os.listdir(src)
+        if ignore is not None:
+            ignored = ignore(src, files)
+        else:
+            ignored = set()
+        for f in files:
+            if f not in ignored:
+                recursive_overwrite(os.path.join(src, f),
+                                    os.path.join(dest, f),
+                                    ignore)
+    else:
+        shutil.copyfile(src, dest)
+
+
+def copy_project_to_local(project_directory, copy_to_project_directory, message) -> str:
+    """
+    fab cannot create-app on a mount, so we created temp_created_project, and then copy_to_local
+
+    test with create, silent, copy (lock /Users/Shared/copy_test for negative test)
+    """
+    result = ""
+    try:
+        # print(f'10. Copy temp_created_project to {copy_to_project_directory} ')
+        delete_dir(copy_to_project_directory, message)
+        shutil.copytree(project_directory, copy_to_project_directory)
+    except OSError as e:
+        if "Delete or copy tree failed" in e.strerror:
+            pass
+        else:
+            result = "Error: %s : %s" % (copy_to_project_directory, e.strerror)
+            print(result)
+            print(f'\n===> Copy failed (see above), but your project exists at {project_directory}')
+            print(f'===> Resolve the issue, and use the cp command below...')
+    return result
+
+
+def copy_if_mounted(project_directory):
+    """
+    fab is unable to create-app in mounted path
+    so, if mounted, create files in "created_project" and later copy to project_directory
+
+    :param project_directory: name of project created
+    :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
+    """
+    return_project_directory = project_directory
+    return_copy_to_directory = ""
+    cwd = os.getcwd()
+    if project_directory == ".":
+        code_path = os.path.dirname(os.path.realpath(__file__))
+        if cwd == code_path:  # '/Users/val/dev/ApiLogicServer/api_logic_server_cli':
+            return_project_directory = "/Users/val/dev/servers/current"
+        else:
+            return_project_directory = cwd
+    use_copy_strategy = False  # must be true for fab-based creation (see fab_creator - use_fab_based_creation)
+    if use_copy_strategy and os.name == "posix":  # mac, docker...
+        directory_is_mounted = project_directory.startswith("/local") or "copy_test" in project_directory
+        if directory_is_mounted:  # TODO: https://www.baeldung.com/linux/bash-is-directory-mounted
+            running_at =  Path(__file__)
+            cli_path = running_at.parent.absolute()
+            root_path = cli_path.parent.absolute()
+            return_project_directory = str(root_path) + f'/{temp_created_project}'
+            return_copy_to_directory = project_directory
+    return return_project_directory, return_copy_to_directory
+
+
+def clone_prototype_project_with_nw_samples(project_directory: str, project_name: str,
+                                            from_git: str, msg: str, abs_db_url: str) -> str:
+    """
+    clone prototype to  project directory, and remove git folder
 
     if nw, Append logic/declare_logic.py with pre-defined...
 
     :param project_directory: name of project created
+    :param project_name: actual user parameter (might have ~, .)
     :param from_git: name of git project to clone (blank for default)
     :param abs_db_url: non-relative location of db
     :return: abs_db_url (e.g., reflects sqlite copy)
     """
     cloned_from = from_git
     remove_project_debug = True
-    if remove_project_debug:
+    if remove_project_debug and project_name != ".":
         delete_dir(realpath(project_directory), "1.")
 
     from_dir = from_git
@@ -205,7 +266,10 @@ def clone_prototype_project_with_nw_samples(project_directory: str, from_git: st
         print(f'{msg} copy {from_dir} -> {project_directory}')
         cloned_from = from_dir
         try:
-            shutil.copytree(from_dir, project_directory)
+            if project_name != ".":
+                shutil.copytree(from_dir, project_directory)
+            else:
+                recursive_overwrite(from_dir, project_directory)
         except OSError as e:
             print(f'\n==>Error - unable to copy to {project_directory} -- see log below'
                   f'\n\n{str(e)}\n\n'
@@ -483,50 +547,6 @@ def start_open_with(open_with: str, project_name: str):
     create_utils.run_command(f'{open_with} {project_name}', None, "no-msg")
 
 
-def copy_if_mounted(project_directory):
-    """
-    fab is unable to create-app in mounted path
-    so, if mounted, create files in "created_project" and later copy to project_directory
-
-    :param project_directory: name of project created
-    :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
-    """
-    return_project_directory = project_directory
-    return_copy_to_directory = ""
-    use_copy_strategy = False  # must be true for fab-based creation (see fab_creator - use_fab_based_creation)
-    if use_copy_strategy and os.name == "posix":  # mac, docker...
-        directory_is_mounted = project_directory.startswith("/local") or "copy_test" in project_directory
-        if directory_is_mounted:  # TODO: https://www.baeldung.com/linux/bash-is-directory-mounted
-            running_at =  Path(__file__)
-            cli_path = running_at.parent.absolute()
-            root_path = cli_path.parent.absolute()
-            return_project_directory = str(root_path) + f'/{temp_created_project}'
-            return_copy_to_directory = project_directory
-    return return_project_directory, return_copy_to_directory
-
-
-def copy_project_to_local(project_directory, copy_to_project_directory, message) -> str:
-    """
-    fab cannot create-app on a mount, so we created temp_created_project, and then copy_to_local
-
-    test with create, silent, copy (lock /Users/Shared/copy_test for negative test)
-    """
-    result = ""
-    try:
-        # print(f'10. Copy temp_created_project to {copy_to_project_directory} ')
-        delete_dir(copy_to_project_directory, message)
-        shutil.copytree(project_directory, copy_to_project_directory)
-    except OSError as e:
-        if "Delete or copy tree failed" in e.strerror:
-            pass
-        else:
-            result = "Error: %s : %s" % (copy_to_project_directory, e.strerror)
-            print(result)
-            print(f'\n===> Copy failed (see above), but your project exists at {project_directory}')
-            print(f'===> Resolve the issue, and use the cp command below...')
-    return result
-
-
 def is_docker():
     """ running docker?  path exists: /home/api_logic_server
     """
@@ -604,7 +624,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
                      extended_builder: str):
     """
-    Main - Creates logic-enabled Python JSON_API project, options for FAB and execution
+    Creates logic-enabled Python JSON_API project, options for FAB and execution
+
+    main driver
 
     :param project_name maybe ~, or volume - create this folder
     :param db_url SQLAlchemy url
@@ -642,7 +664,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     """user-supplied project_name, less the twiddle (which might be in project_name). Typically relative to cwd. """
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
-    abs_db_url = clone_prototype_project_with_nw_samples(project_directory, from_git, "2. Create Project", abs_db_url)
+    abs_db_url = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
+                                                         project_name,      # actual user parameter
+                                                         from_git, "2. Create Project", abs_db_url)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
@@ -763,15 +787,11 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/11/2021 - 03.20.04: default project name \n"
-            "\t10/02/2021 - 03.20.03: fix 1st-run bug in VSCode execution, remove startup tests \n"
-            "\t10/02/2021 - 03.20.02: bugfix missing SQLAlchemy-utils, default run project_name to last created \n"
-            "\t10/02/2021 - 03.10.17: bugfix improper run arg for VSCode launch configuration, default db_url \n"
+            "\t10/13/2021 - 03.20.06: create in current working directory (e.g., faciliate VS Code) \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
             "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
-            "\t09/06/2021 - 03.00.00: Docker foundation with .vscode, improved Python path / log handling\n"
             "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
         )
     )

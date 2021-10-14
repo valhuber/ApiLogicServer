@@ -1,5 +1,6 @@
 import ast
 import logging
+import shutil
 import traceback
 from os.path import abspath
 import importlib.util
@@ -98,6 +99,25 @@ class CreateFromModel(object):
             result = full_path.replace('/', '\\')
         return result
 
+    def recursive_overwrite(self, src, dest, ignore=None):
+        """ copyTree, with overwrite
+        """
+        if os.path.isdir(src):
+            if not os.path.isdir(dest):
+                os.makedirs(dest)
+            files = os.listdir(src)
+            if ignore is not None:
+                ignored = ignore(src, files)
+            else:
+                ignored = set()
+            for f in files:
+                if f not in ignored:
+                    self.recursive_overwrite(os.path.join(src, f),
+                                        os.path.join(dest, f),
+                                        ignore)
+        else:
+            shutil.copyfile(src, dest)
+
     @staticmethod
     def create_app(config_filename=None, host="localhost"):
         import safrs
@@ -159,6 +179,7 @@ class CreateFromModel(object):
                 credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             """
             sys_path = str(sys.path)
+            print("find_meta_data sys_path:\n", sys_path)
 
             self.app = self.create_app(host=self.host)
             self.app.config.SQLALCHEMY_DATABASE_URI = self.abs_db_url

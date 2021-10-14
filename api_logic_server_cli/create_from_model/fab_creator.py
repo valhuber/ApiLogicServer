@@ -289,6 +289,8 @@ class FabCreator(object):
                 from_dir = code_loc + "/create_from_model/templates/basic_web_app"
             print(f'{msg} - copy {from_dir} -> {fab_project}')
             shutil.copytree(from_dir, fab_project)
+            # self.mod_gen.recursive_overwrite(from_dir, fab_project)
+
         pass
 
     def fix_basic_web_app_run__python_path(self):

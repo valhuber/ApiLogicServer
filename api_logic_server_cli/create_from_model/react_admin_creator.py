@@ -370,6 +370,7 @@ class ReactCreator(object):
             to_project_dir = to_project_dir + "/ui/react_admin"
 
         print(f'{msg} copy prototype react-admin project {from_proto_dir} -> {to_project_dir}')
+        # self.mod_gen.recursive_overwrite(from_proto_dir, to_project_dir)
         shutil.copytree(from_proto_dir, to_project_dir)
 
     def create_react_admin_application(self):
