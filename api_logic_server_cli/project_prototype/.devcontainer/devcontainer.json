@@ -12,8 +12,8 @@
 	// Set *default* container specific settings.json values on container create.
 	"settings": {},
 
-	// add network
-	"runArgs": ["--network=dev-network"],
+	// add network -- enable this as required, e.g., https://github.com/valhuber/ApiLogicServer/wiki/Testing
+	// "runArgs": ["--network=dev-network"],
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": ["ms-python.python"]

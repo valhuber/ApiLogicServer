@@ -17,10 +17,9 @@ To create the sample API and web-app project in a *minute or two --*  start Dock
 
 ```
 cd ~/Desktop                       # directory of API Logic Server projects on local host
-docker network create dev-network  # only required once (ignore errors if network already exists)
 
 # Start (install if required) the API Logic Server docker container
-docker run -it --name api_logic_server --rm --net dev-network -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
+docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=  # Working Software, Now
 
@@ -213,7 +212,6 @@ The **arguments** mean:
 * **-it** - launch a terminal window for the Docker container
 * **--name api_logic_server** - the name of the image on your local host
 * **-rm** - remove the container once it stops (your project files are not lost - they are on your local host)
-* **--net dev-network** - attaches to dev-network (see _docker database networking_, below)
 * **-p 5000:5000** - maps local (host) part to Docker port 
 * **-v ${PWD}:/localhost** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
    * `${PWD}` is your current folder.  
@@ -222,6 +220,9 @@ The **arguments** mean:
 * **`apilogicserver/api_logic_server`** - the name of the image to pull from Docker Hub.  
    * This will fetch the image first time, and will run it locally on subsequent runs
    * The image is not automatically refreshed -- install ApiLogicServer updates as described below
+
+You may also wish to add a parameter for networking:
+* **--net my-network** - attaches to my-network
 
 On your Docker container, you can **inspect** your environment:
 ```
@@ -494,6 +495,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+
+10/16/2021 - 03.20.07: dev-network no longer required (reduce errors)
 
 10/14/2021 - 03.20.06: create in current working directory
 

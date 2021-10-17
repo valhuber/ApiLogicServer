@@ -2,9 +2,10 @@
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.20.06
 # docker push apilogicserver/api_logic_server
 
-# docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/localhost apilogicserver/api_logic_server
+# docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
+#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/localhost apilogicserver/api_logic_server
 #   docker image inspect apilogicserver/api_logic_server
-#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ${PWD}:/localhost apilogicserver/api_logic_server
+#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 # The software auto-prompts you for the next steps:
 # ApiLogicServer run --project_name=/localhost/api_logic_server --db_url=

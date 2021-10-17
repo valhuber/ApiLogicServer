@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.06"
+__version__ = "3.20.07"
 
 import yaml
 
@@ -787,6 +787,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
             "\t10/13/2021 - 03.20.06: create in current working directory (e.g., faciliate VS Code) \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
