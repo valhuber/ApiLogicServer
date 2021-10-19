@@ -29,6 +29,8 @@ Your API is running - explore it with [swagger](http://localhost:5000).
 
 VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs).
 
+> The created project has a readme which includes a tutorial.
+
 You can picture the process as follows, as shown by this short video showing complete project creation, execution, customization and debugging:
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
