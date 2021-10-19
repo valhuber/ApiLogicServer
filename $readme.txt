@@ -1,5 +1,10 @@
 https://github.com/ApiLogicServer/working_software_now added
 
+Readme
+    cmd line - installation, execution
+    api - related data
+    logic - cocktail napkin diagram
+
 Ports and Hosts
 ===============
     Verified you can run SAFRS and Basic Web App concurrently

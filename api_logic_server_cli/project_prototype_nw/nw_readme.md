@@ -6,7 +6,7 @@ You've already completed the `create` step below.  In this tutorial, we will exp
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
 
-This tutorial presumes are are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for `.devcontainer` and `launch configurations`, so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here]() for more information.
+This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for `.devcontainer` and `launch configurations`, so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here]() for more information.
 
 Here is a video going through the same basic steps:
 
