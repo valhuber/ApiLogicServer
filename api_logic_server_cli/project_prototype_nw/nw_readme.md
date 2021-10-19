@@ -12,6 +12,17 @@ Here is a video going through the same basic steps:
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/-C5O453Q-Mc "Using VS Code with the ApiLogicServer container")
 
+## Features
+
+
+| Feature | Providing  | Why it Matters | Using
+| :-------------- |:--------------| :------|  :------|
+| 1. [JSON:**API** and Swagger](#json:api---swagger) | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
+| 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/logicbank#readme) |
+| 3. [Basic **Web App**](#basic-web-app) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
+| 4. [**Customizable Project**](#3-customize) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
+| 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
+
 &nbsp;&nbsp;&nbsp;
 
 ## Run
@@ -31,7 +42,11 @@ To run the Web App:
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/basic-web-app.png"></figure>
 
 
-### JSON:API (Swagger)
+### JSON:API - Swagger
+Your API is instantly ready to support ui and integration
+development, available in swagger, as shown below.  JSON:APIs are interesting because they
+are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
+
 The creation process builds not only the API, but swagger so you can explore it, like this:
 1. Select the `ApiLogicServer` Launch Configuration
 2. Press the green run button
