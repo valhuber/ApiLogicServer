@@ -11,7 +11,7 @@ With 1 command, you get:
   * a **database API,** to unblock UI development
   * a **multi-page web app,** to engage Business Users - early in the project
   * Declarative logic using **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
-* A **Customizable Project,** using a standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
+* A **_Customizable_ Project,** using a standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
 
 To create the sample API and web-app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
@@ -37,7 +37,7 @@ You can picture the process as follows, as shown by this short video showing com
 
 After you've explored the [sample](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (3.20.07): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (3.20.08): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs#apilogicserver-container-upgrades)).
 
 
 # Features
