@@ -14,18 +14,19 @@ Here is a video going through the same basic steps:
 
 &nbsp;&nbsp;&nbsp;
 
-# Run
+## Run
 
 Created projects are instantly executable.  Let's explore the Basic Web App and the API.
 
 ### Basic Web App
-To run the Web App, from the **Run and Debug** view:
+To run the Web App:
 
-1. Select the `Basic Web App` Launch Configuration
-2. Press the green run button
+1. Click **Run and Debug**
+2. Select the `Basic Web App` Launch Configuration
+3. Press the green run button
    * The app should start, and VS Code will suggest opening a Browser.  Do so, and run the app with user **admin**, password **p**.
-3. Explore the app
-4. Stop the server
+4. Explore the app - multi-page, multi-table, automatic joins
+5. Stop the server
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/basic-web-app.png"></figure>
 
@@ -40,13 +41,13 @@ The creation process builds not only the API, but swagger so you can explore it,
 
 &nbsp;&nbsp;&nbsp;
 
-# Customize and Debug
+## Customize and Debug
 
 That's quite a good start on a project.  But we've all seen generators that get close, but fail because the results cannot be extended, debugged, or managed with tools such as git and diff.
 
 Let's examine how API Logic Server projects can be customized for both APIs and logic.  We'll first have a quick look at the created project structure, then some typical customizations.
 
-> The API and web app you just reviewed above were ***not*** customized - they were created completely from the database structure.  For the sample project, we've injected some API and logic customizations so you can explore them in this tutorial, as described below.
+> The API and web app you just reviewed above were ***not*** customized - they were created completely from the database structure.  For the sample project, we've injected some API and logic customizations, so you can explore them in this tutorial, as described below.
 
 
 ### Project Structure
@@ -65,10 +66,11 @@ Let's now explore some examples.
 
 While a standards-based API is a great start, sometimes you need custom endpoint tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for `add_order`.
 
-To see it in action, open **Explorer > `api/customize_api.py`:**
+To see it in action: 
 
-1. Set the breakpoint as shown
-2. Use the swagger to access the `ServicesEndPoint > add_order`, and
+1. Open **Explorer > `api/customize_api.py`:**
+2. Set the breakpoint as shown
+3. Use the swagger to access the `ServicesEndPoint > add_order`, and
    1. **Try it out**, then 
    2. **execute**
 
@@ -86,17 +88,18 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
 
-Logic consists of rules **and** conventional Python code.  Explore the `logic/declare_logic.py` file, and:
-1. Set a breakpoint as shown
-2. Using swagger, re-execute the `add_order` endpoint
-3. When you hit the breakpoint, expand the `row` variable
+Logic consists of rules **and** conventional Python code:
+1. Explore the `logic/declare_logic.py` file
+2. Set a breakpoint as shown
+3. Using swagger, re-execute the `add_order` endpoint
+4. When you hit the breakpoint, expand the `row` variable
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare_logic.png"></figure>
 
 
 &nbsp;&nbsp;&nbsp;
 
-# Appendix 1 - Project Information
+## Appendix 1 - Project Information
 
 | About | Info  |
 |:--------------|:--------------|
@@ -104,7 +107,7 @@ Logic consists of rules **and** conventional Python code.  Explore the `logic/de
 | API Logic Server Version | api_logic_server_version |
 | Cloned From | api_logic_server_template  |
 
-# Appendix 2 - Key Technologies
+## Appendix 2 - Key Technologies
 
 API Logic Server is based on the projects shown below.
 Consult their documentation for important information.
@@ -156,7 +159,6 @@ created automatically by API Logic Server from your database,
 and saved in the `database` directory.
 
 
-
 ### Basic Web App - Flask App Builder
 
 This generated project also contains a basic web app
@@ -170,26 +172,4 @@ and address certain restrictions.  For more information, see
 [Working with Flask AppBuilder](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder).
 
 
-# Installation and Execution
-If not using Docker, install your projects' virtual environment:
-```
-cd <your project>
-virtualenv venv
-source venv/bin/activate  # windows venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-Then, start the API, either by IDE launch configurations (for Docker), or by command line:
-```
-python api_logic_server_run.py
-```
-* **Open API (Swagger) -** [localhost:5000/api](localhost:5000/api)
-
-
-Or, start the web app:
-```
-python ui/basic_web_app/run.py
-```
-
-* **Basic Web App -** [localhost:8080](/localhost:8080)
 
