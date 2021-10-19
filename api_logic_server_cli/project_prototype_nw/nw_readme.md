@@ -12,20 +12,14 @@ Here is a video going through the same basic steps:
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/-C5O453Q-Mc "Using VS Code with the ApiLogicServer container")
 
-# Project Information
-
-| About | Info  |
-|:--------------|:--------------|
-| Created | creation-date |
-| API Logic Server Version | api_logic_server_version |
-| Cloned From | api_logic_server_template  |
+&nbsp;&nbsp;&nbsp;
 
 # Run
 
 Created projects are instantly executable.  Let's explore the Basic Web App and the API.
 
 ### Basic Web App
-To run the Web App:
+To run the Web App, from the **Run and Debug** view:
 
 1. Select the `Basic Web App` Launch Configuration
 2. Press the green run button
@@ -42,20 +36,21 @@ The creation process builds not only the API, but swagger so you can explore it,
 2. Press the green run button
    * The app should start, and VS Code will suggest opening a Browser.
 3. Explore the swagger
-4. Don't stop the server; we'll use it for debugging...
+4. **Don't stop** the server; we'll use it for debugging...
 
+&nbsp;&nbsp;&nbsp;
 
 # Customize and Debug
 
 That's quite a good start on a project.  But we've all seen generators that get close, but fail because the results cannot be extended, debugged, or managed with tools such as git and diff.
 
-Let's examine the API Logic Server projects can be customized for both APIs and logic.  We'll first have a quick look at the created project structure, then some typical customizations.
+Let's examine how API Logic Server projects can be customized for both APIs and logic.  We'll first have a quick look at the created project structure, then some typical customizations.
 
-> The API and web app you just reviewed were ***not*** customized - they were created completely from the model.  For the sample project, we've injected some API and logic customizations so you can explore them in this tutorial.
+> The API and web app you just reviewed above were ***not*** customized - they were created completely from the database structure.  For the sample project, we've injected some API and logic customizations so you can explore them in this tutorial, as described below.
 
 
 ### Project Structure
-This project was created with the following directory structure:
+Use the Project Explorer to see the project structure:
 
 | Directory | Usage | Key Customization File | Typical Customization  |
 |:-------------- |:--------|:--------------|:--------------|
@@ -64,21 +59,18 @@ This project was created with the following directory structure:
 | ```logic``` | Transactional Logic | ```logic/declare_logic.py``` | Declare multi-table derivations, constraints, and events such as send mail / messages  |
 | ```ui``` | Basic Web App  | ```ui/basic_web_app/app/view.py``` | Control field display, and add interfaces like graphs and charts |
 
-### Key Customization File - Typical Customization
-
-In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
-the created API, Logic and Web App.  Since they are separate files, the project can be
-recreated (e.g., synchronized with a revised schema), and these files can be easily copied
-into the new project, without line-by-line merges.
-
 Let's now explore some examples.
 
 ### API Customization
 
-While a standards-based API is a great start, sometimes you need custom endpoint tailored exactly to your business requirement.  You can create these as shown below in `api/customize_api.py`, where we create an additional endpoint for add_order.  To see it in action:
+While a standards-based API is a great start, sometimes you need custom endpoint tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for `add_order`.
+
+To see it in action, open **Explorer > `api/customize_api.py`:**
 
 1. Set the breakpoint as shown
-2. Use the swagger to access the endpoint, and **Try it out**, then **execute**
+2. Use the swagger to access the `ServicesEndPoint > add_order`, and
+   1. **Try it out**, then 
+   2. **execute**
 
 You can examine the variables, step, etc.
 
@@ -90,18 +82,29 @@ We've all seen excellent technology that can create great User Interfaces. But f
 
 > That's a problem - for transaction systems, the backend constraint and derivation logic is often *half* the system.
  
-The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for constraints and derivations.
+The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
 
-Logic is rules **plus** conventional Python code.  Explore the `logic/declare_logic.py` file, and:
-1. Set a breakpoint
-2. Using swagger, re-execute the add_order endpoint
+Logic consists of rules **and** conventional Python code.  Explore the `logic/declare_logic.py` file, and:
+1. Set a breakpoint as shown
+2. Using swagger, re-execute the `add_order` endpoint
 3. When you hit the breakpoint, expand the `row` variable
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare_logic.png"></figure>
 
-# Appendix 1 - Key Technologies
+
+&nbsp;&nbsp;&nbsp;
+
+# Appendix 1 - Project Information
+
+| About | Info  |
+|:--------------|:--------------|
+| Created | creation-date |
+| API Logic Server Version | api_logic_server_version |
+| Cloned From | api_logic_server_template  |
+
+# Appendix 2 - Key Technologies
 
 API Logic Server is based on the projects shown below.
 Consult their documentation for important information.
