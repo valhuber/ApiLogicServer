@@ -33,14 +33,28 @@ To run the Web App:
 3. Explore the app
 4. Stop the server
 
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/basic-web-app.png"></figure>
+
+
 ### JSON:API (Swagger)
+The creation process builds not only the API, but swagger so you can explore it, like this:
+1. Select the `ApiLogicServer` Launch Configuration
+2. Press the green run button
+   * The app should start, and VS Code will suggest opening a Browser.
+3. Explore the swagger
+4. Don't stop the server; we'll use it for debugging...
+
 
 # Customize and Debug
 
-TBD
+That's quite a good start on a project.  But we've all seen generators that get close, but fail because the results cannot be extended, debugged, or managed with tools such as git and diff.
+
+Let's examine the API Logic Server projects can be customized for both APIs and logic.  We'll first have a quick look at the created project structure, then some typical customizations.
+
+> The API and web app you just reviewed were ***not*** customized - they were created completely from the model.  For the sample project, we've injected some API and logic customizations so you can explore them in this tutorial.
 
 
-# Project Structure
+### Project Structure
 This project was created with the following directory structure:
 
 | Directory | Usage | Key Customization File | Typical Customization  |
@@ -57,9 +71,23 @@ the created API, Logic and Web App.  Since they are separate files, the project 
 recreated (e.g., synchronized with a revised schema), and these files can be easily copied
 into the new project, without line-by-line merges.
 
-Please see the ```nw``` sample for examples of typical customizations.
+Let's now explore some examples.
 
-# Key Technologies
+### API Customization
+
+While a standards-based API is a great start, sometimes you need custom endpoint tailored exactly to your business requirement.  You can create these as shown below in `api/customize_api.py`, where we create an additional endpoint for add_order.  To see it in action:
+
+1. Set the breakpoint as shown
+2. Use the swagger to access the endpoint, and **Try it out**, then **execute**
+
+You can examine the variables, step, etc.
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/basic-web-app.png"></figure>
+
+
+### Logic
+
+# Appendix 1 - Key Technologies
 
 API Logic Server is based on the projects shown below.
 Consult their documentation for important information.
