@@ -94,7 +94,7 @@ Logic consists of rules **and** conventional Python code.  Explore it like this:
 3. Using swagger, re-execute the `add_order` endpoint
 4. When you hit the breakpoint, expand the `row` variable
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare_logic.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
 
 &nbsp;&nbsp;&nbsp;
