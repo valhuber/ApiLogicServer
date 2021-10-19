@@ -1,4 +1,16 @@
-# API Logic Server
+# API Logic Server - Sample Tutorial
+
+You've already completed the `create` step below.  In this tutorial, we will explore:
+
+* **run** - we will first run the Web App and the JSON:API
+
+* **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
+
+This tutorial presumes are are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for `.devcontainer` and `launch configurations`, so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here]() for more information.
+
+Here is a video going through the same basic steps:
+
+[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/-C5O453Q-Mc "Using VS Code with the ApiLogicServer container")
 
 # Project Information
 
@@ -7,6 +19,45 @@
 | Created | creation-date |
 | API Logic Server Version | api_logic_server_version |
 | Cloned From | api_logic_server_template  |
+
+# Run
+
+Created projects are instantly executable.  Let's explore the Basic Web App and the API.
+
+### Basic Web App
+To run the Web App:
+
+1. Select the `Basic Web App` Launch Configuration
+2. Press the green run button
+   * The app should start, and VS Code will suggest opening a Browser.  Do so, and run the app with user **admin**, password **p**.
+3. Explore the app
+4. Stop the server
+
+### JSON:API (Swagger)
+
+# Customize and Debug
+
+TBD
+
+
+# Project Structure
+This project was created with the following directory structure:
+
+| Directory | Usage | Key Customization File | Typical Customization  |
+|:-------------- |:--------|:--------------|:--------------|
+| ```api``` | JSON:API | ```api/customize_api.py``` | Add new end points / services |
+| ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema |
+| ```logic``` | Transactional Logic | ```logic/declare_logic.py``` | Declare multi-table derivations, constraints, and events such as send mail / messages  |
+| ```ui``` | Basic Web App  | ```ui/basic_web_app/app/view.py``` | Control field display, and add interfaces like graphs and charts |
+
+### Key Customization File - Typical Customization
+
+In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
+the created API, Logic and Web App.  Since they are separate files, the project can be
+recreated (e.g., synchronized with a revised schema), and these files can be easily copied
+into the new project, without line-by-line merges.
+
+Please see the ```nw``` sample for examples of typical customizations.
 
 # Key Technologies
 
@@ -72,26 +123,6 @@ This generated project also contains a basic web app
 Before you run your app, you must create admin data,
 and address certain restrictions.  For more information, see
 [Working with Flask AppBuilder](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder).
-
-
-# Project Structure
-This project was created with the following directory structure:
-
-| Directory | Usage | Key Customization File | Typical Customization  |
-|:-------------- |:--------|:--------------|:--------------|
-| ```api``` | JSON:API | ```api/customize_api.py``` | Add new end points / services |
-| ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema |
-| ```logic``` | Transactional Logic | ```logic/declare_logic.py``` | Declare multi-table derivations, constraints, and events such as send mail / messages  |
-| ```ui``` | Basic Web App  | ```ui/basic_web_app/app/view.py``` | Control field display, and add interfaces like graphs and charts |
-
-### Key Customization File - Typical Customization
-
-In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
-the created API, Logic and Web App.  Since they are separate files, the project can be
-recreated (e.g., synchronized with a revised schema), and these files can be easily copied
-into the new project, without line-by-line merges.
-
-Please see the ```nw``` sample for examples of typical customizations.
 
 
 # Installation and Execution

@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.07"
+__version__ = "3.20.08"
 
 import yaml
 
@@ -325,6 +325,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
 
     if abs_db_url.endswith("nw.sqlite"):
         print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, rpcs")
+        replace_readme_with_nw_readme(project_directory)
         replace_logic_with_nw_logic(project_directory)
         replace_customize_models_with_nw_customize_models(project_directory)
         replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
@@ -417,6 +418,15 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
                            replace_with=port,
                            in_file=api_logic_server_run_py)
     pass
+
+
+def replace_readme_with_nw_readme(project_name):
+    """ Replace readme.md with pre-defined nw_readme """
+    readme_file = open(project_name + '/readme.md', 'w')
+    nw_readme_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_readme.md")
+    nw_readme = nw_readme_file.read()
+    readme_file.write(nw_readme)
+    readme_file.close()
 
 
 def replace_logic_with_nw_logic(project_name):
@@ -787,6 +797,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t10/18/2021 - 03.20.08: Readme Tutorial for IDE users \n"
             "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
             "\t10/13/2021 - 03.20.06: create in current working directory (e.g., faciliate VS Code) \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
