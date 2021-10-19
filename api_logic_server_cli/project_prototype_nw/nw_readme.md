@@ -88,7 +88,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
 
-Logic consists of rules **and** conventional Python code:
+Logic consists of rules **and** conventional Python code.  Explore it like this:
 1. Explore the `logic/declare_logic.py` file
 2. Set a breakpoint as shown
 3. Using swagger, re-execute the `add_order` endpoint
