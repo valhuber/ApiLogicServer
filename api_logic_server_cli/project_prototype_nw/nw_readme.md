@@ -92,6 +92,15 @@ We've all seen excellent technology that can create great User Interfaces. But f
  
 The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for constraints and derivations.
 
+> Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
+
+Logic is rules **plus** conventional Python code.  Explore the `logic/declare_logic.py` file, and:
+1. Set a breakpoint
+2. Using swagger, re-execute the add_order endpoint
+3. When you hit the breakpoint, expand the `row` variable
+
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
+
 # Appendix 1 - Key Technologies
 
 API Logic Server is based on the projects shown below.

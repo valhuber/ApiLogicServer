@@ -277,6 +277,14 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
                   f'.. Verify the --project_name argument\n'
                   f'.. If you are using Docker, verify the -v argument\n\n')
 
+    if abs_db_url.endswith("nw.sqlite"):
+        print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, rpcs")
+        replace_readme_with_nw_readme(project_directory)
+        replace_logic_with_nw_logic(project_directory)
+        replace_customize_models_with_nw_customize_models(project_directory)
+        replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
+        replace_server_test_with_nw_server_test(project_directory)
+
     create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
                            in_file=f'{project_directory}/readme.md')
@@ -322,14 +330,6 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
         print(f'.. ..Copied sqlite db to: {target_db_loc_actual} and '
               f'updated db_uri in {project_directory}/config.py')
 
-
-    if abs_db_url.endswith("nw.sqlite"):
-        print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, rpcs")
-        replace_readme_with_nw_readme(project_directory)
-        replace_logic_with_nw_logic(project_directory)
-        replace_customize_models_with_nw_customize_models(project_directory)
-        replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
-        replace_server_test_with_nw_server_test(project_directory)
     return target_db_loc_actual
 
 
