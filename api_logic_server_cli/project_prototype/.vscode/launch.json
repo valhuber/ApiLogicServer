@@ -16,7 +16,7 @@
             "type": "python",
             "request": "launch",
             "program": "run.py",
-            "args": ["localhost"],
+            "args": ["localhost", "5001"],
             "cwd": "${workspaceFolder}/ui/basic_web_app",
             "console": "integratedTerminal"
         },

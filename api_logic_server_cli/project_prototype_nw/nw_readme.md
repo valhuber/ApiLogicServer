@@ -8,9 +8,11 @@ You've already completed the `create` step below.  In this tutorial, we will exp
 
 This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for `.devcontainer` and `launch configurations`, so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here]() for more information.
 
-Here is a video going through the same basic steps:
+The diagram below summarizes the create/run process:
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/-C5O453Q-Mc "Using VS Code with the ApiLogicServer container")
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/creates-and-runs.png"></figure>
+
+You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
 ## Features
 
