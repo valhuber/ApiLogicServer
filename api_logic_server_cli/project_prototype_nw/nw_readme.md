@@ -82,10 +82,15 @@ While a standards-based API is a great start, sometimes you need custom endpoint
 
 You can examine the variables, step, etc.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/basic-web-app.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
 
 
 ### Logic
+We've all seen excellent technology that can create great User Interfaces. But for transactional systems, their approach to logic is basically "your code goes here".
+
+> That's a problem - for transaction systems, the backend constraint and derivation logic is often *half* the system.
+ 
+The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for constraints and derivations.
 
 # Appendix 1 - Key Technologies
 
