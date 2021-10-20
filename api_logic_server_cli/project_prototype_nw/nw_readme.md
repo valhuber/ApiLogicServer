@@ -1,29 +1,21 @@
 # API Logic Server - Sample Tutorial
 
-You've already completed the `create` step below.  In this tutorial, we will explore:
+You've already completed the `create` step below, and now viewing the readme in the created project - the sample tutorial, created from [this database.](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)  
+
+In this tutorial, we will explore:
 
 * **run** - we will first run the Web App and the JSON:API
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
 
-This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for `.devcontainer` and `launch configurations`, so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here]() for more information.
+This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here]() for more information.
 
-The diagram below summarizes the create/run process:
+The diagram below summarizes the create / run / customize process:
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/creates-and-runs.png"></figure>
 
 You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
-## Features
-
-
-| Feature | Providing  | Why it Matters | Learn More
-| :-------------- |:--------------| :------|  :------|
-| 1. [JSON:**API** and Swagger](#jsonapi---swagger) | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
-| 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/logicbank#readme) |
-| 3. [Basic **Web App**](#basic-web-app) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
-| 4. [**Customizable Project**](#customize-and-debug) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
-| 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
 
 &nbsp;&nbsp;&nbsp;
 
@@ -32,12 +24,13 @@ You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 Created projects are instantly executable.  Let's explore the Basic Web App and the API.
 
 ### Basic Web App
-To run the Web App:
+To run the Web App, follow these steps:
 
 1. Click **Run and Debug**
+   * *Note:* these steps are highlighted in the diagram below
 2. Select the `Basic Web App` Launch Configuration
 3. Press the green run button
-   * The app should start, and VS Code will suggest opening a Browser.  Do so, and run the app with user **admin**, password **p**.
+   * The app should start, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and run the app with user **admin**, password **p**.
 4. Explore the app - multi-page, multi-table, automatic joins
 5. Stop the server
 
@@ -81,9 +74,9 @@ Let's now explore some examples.
 
 ### API Customization
 
-While a standards-based API is a great start, sometimes you need custom endpoint tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for `add_order`.
+While a standards-based API is a great start, sometimes you need custom endpoints tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for `add_order`.
 
-To see it in action: 
+To review the implementation: 
 
 1. Open **Explorer > `api/customize_api.py`:**
 2. Set the breakpoint as shown
@@ -101,30 +94,38 @@ We've all seen excellent technology that can create great User Interfaces. But f
 
 > That's a problem - for transaction systems, the backend constraint and derivation logic is often *half* the system.
  
-The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
+The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for multi-table constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
 
 Logic consists of rules **and** conventional Python code.  Explore it like this:
 1. Explore the `logic/declare_logic.py` file
+   * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown
+   * This event illustrates that logic is mainly _rules,_ extensible with standard _Python code_
 3. Using swagger, re-execute the `add_order` endpoint
-4. When you hit the breakpoint, expand the `row` variable
+4. When you hit the breakpoint, expand `row` VARIABLES list (top left)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
 
 &nbsp;&nbsp;&nbsp;
 
-## Appendix 1 - Project Information
+## Wrap up
+Let's recap what you've seen:
 
-| About | Info  |
-|:--------------|:--------------|
-| Created | creation-date |
-| API Logic Server Version | api_logic_server_version |
-| Cloned From | api_logic_server_template  |
+* **Working software now** - a database API and a Web App - created automatically from a database, in moments instead of weeks or months.
 
-## Appendix 2 - Key Technologies
+
+* **Customization** - for both the API and Logic - using Visual Studio code, for both editing and debugging
+
+### Docker cleanup
+VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-api_logic_server...`.
+
+&nbsp;&nbsp;&nbsp;
+
+
+## Appendix - Key Technologies
 
 API Logic Server is based on the projects shown below.
 Consult their documentation for important information.
@@ -187,6 +188,25 @@ This generated project also contains a basic web app
 Before you run your app, you must create admin data,
 and address certain restrictions.  For more information, see
 [Working with Flask AppBuilder](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder).
+
+## Appendix 1 - Features
+
+
+| Feature | Providing  | Why it Matters | Learn More
+| :-------------- |:--------------| :------|  :------|
+| 1. [JSON:**API** and Swagger](#jsonapi---swagger) | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
+| 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/logicbank#readme) |
+| 3. [Basic **Web App**](#basic-web-app) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
+| 4. [**Customizable Project**](#customize-and-debug) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
+| 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
+
+## Appendix 2 - Project Information
+
+| About | Info  |
+|:--------------|:--------------|
+| Created | creation-date |
+| API Logic Server Version | api_logic_server_version |
+| Cloned From | api_logic_server_template  |
 
 
 

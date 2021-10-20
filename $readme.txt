@@ -1,5 +1,9 @@
 https://github.com/ApiLogicServer/working_software_now added
 
+https://github.com/ApiLogicServer/api_logic_server.git
+
+--> pwd = /workspaces/api_logic_server
+
 Readme
     cmd line - installation, execution
     api - related data
