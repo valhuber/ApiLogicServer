@@ -98,7 +98,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
 
-Logic consists of rules **and** conventional Python code.  Explore it like this:
+[Logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
 1. Explore the `logic/declare_logic.py` file
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown
@@ -153,14 +153,14 @@ swagger/OpenAPI and JSON:API compliant API implementation.
 
 [Transaction Rules for SQLAlchemy Object Models](https://github.com/valhuber/logicbank)
 
-Use Logic Bank to govern SQLAlchemy update transaction logic - 
+Use [Logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) to govern update transaction logic - 
 multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
 
 *   **Rules - 40X** more concise using a spreadsheet-like paradigm, and
 
 *   **Python - control and extensibility,** using standard tools and techniques
 
-Logic Bank is based on SQLAlchemy - it handles `before_flush` events to enforce your logic.
+The Logic Engine is based on SQLAlchemy - it handles `before_flush` events to enforce your logic.
 Your logic therefore applies to any SQLAlchemy-based access - JSON:Api, Flask App Builder, etc.
 
 
@@ -195,7 +195,7 @@ and address certain restrictions.  For more information, see
 | Feature | Providing  | Why it Matters | Learn More
 | :-------------- |:--------------| :------|  :------|
 | 1. [JSON:**API** and Swagger](#jsonapi---swagger) | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
-| 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/logicbank#readme) |
+| 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) |
 | 3. [Basic **Web App**](#basic-web-app) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
 | 4. [**Customizable Project**](#customize-and-debug) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ... |
 | 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
