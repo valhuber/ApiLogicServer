@@ -4,11 +4,6 @@ https://github.com/ApiLogicServer/api_logic_server.git
 
 --> pwd = /workspaces/api_logic_server
 
-Readme
-    cmd line - installation, execution
-    api - related data
-    logic - cocktail napkin diagram
-
 Ports and Hosts
 ===============
     Verified you can run SAFRS and Basic Web App concurrently
