@@ -1,0 +1,347 @@
+resources:
+  Category:
+    type: Category
+    user_key: CategoryName
+#    menu: False | name
+#    info: |
+#      {long html text
+#      for user info}
+#    allow_update: False
+#    allow_insert: False
+#    allow_delete: False
+    columns:
+    - name: CategoryName
+#     label: text
+#     hidden: <exp>
+#     group: name
+#     component: name
+#     style:
+#       font-weight: 20
+#       color: blue
+    - name: Description
+    - name: Id
+  Customer:
+    type: Customer
+    user_key: CompanyName
+    columns:
+    - name: CompanyName
+    - name: ContactName
+    - name: ContactTitle
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: Phone
+    - name: Fax
+    - name: Balance
+    - name: CreditLimit
+    - name: OrderCount
+    - name: Id
+    - name: UnpaidOrderCount
+    tab_group:
+      - tab: CustomerCustomerDemo List
+        resource: CustomerCustomerDemo
+          fkeys:
+          - parent: Customer.Id
+            child: CustomerCustomerDemo.CustomerTypeId
+          columns:
+          - name: Id
+          - name: CustomerTypeId
+      - tab: Order List
+        resource: Order
+          fkeys:
+          - parent: Customer.Id
+            child: Order.CustomerId
+          columns:
+          - name: ShipName
+          - object:
+            - type: Employee
+            - show_attributes:
+            - key_attributes:
+              - name: EmployeeId
+          - name: OrderDate
+          - name: RequiredDate
+          - name: ShippedDate
+          - name: ShipVia
+  CustomerDemographic:
+    type: CustomerDemographic
+    user_key: Id
+    columns:
+    - name: Id
+    - name: CustomerDesc
+  Employee:
+    type: Employee
+    user_key: LastName
+    columns:
+    - name: LastName
+    - name: FirstName
+    - name: Title
+    - name: TitleOfCourtesy
+    - name: BirthDate
+    - name: HireDate
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: HomePhone
+    - name: Extension
+    - name: Photo
+    - name: Notes
+    - name: ReportsTo
+    - name: PhotoPath
+    - name: IsCommissioned
+    - name: Salary
+    - name: Id
+    tab_group:
+      - tab: EmployeeAudit List
+        resource: EmployeeAudit
+          fkeys:
+          - parent: Employee.Id
+            child: EmployeeAudit.EmployeeId
+          columns:
+          - name: LastName
+          - name: Title
+          - name: Salary
+          - name: FirstName
+          - name: CreatedOn
+          - name: Id
+      - tab: EmployeeTerritory List
+        resource: EmployeeTerritory
+          fkeys:
+          - parent: Employee.Id
+            child: EmployeeTerritory.EmployeeId
+          columns:
+          - name: Id
+          - object:
+            - type: Territory
+            - show_attributes:
+            - key_attributes:
+              - name: TerritoryId
+          - name: EmployeeId
+          - name: TerritoryId
+      - tab: Order List
+        resource: Order
+          fkeys:
+          - parent: Employee.Id
+            child: Order.EmployeeId
+          columns:
+          - name: ShipName
+          - object:
+            - type: Customer
+            - show_attributes:
+            - key_attributes:
+              - name: CustomerId
+          - name: OrderDate
+          - name: RequiredDate
+          - name: ShippedDate
+          - name: ShipVia
+  Product:
+    type: Product
+    user_key: ProductName
+    columns:
+    - name: ProductName
+    - name: QuantityPerUnit
+    - name: UnitPrice
+    - name: UnitsInStock
+    - name: UnitsOnOrder
+    - name: ReorderLevel
+    - name: Discontinued
+    - name: UnitsShipped
+    - name: CategoryId
+    - name: SupplierId
+    - name: Id
+    tab_group:
+      - tab: OrderDetail List
+        resource: OrderDetail
+          fkeys:
+          - parent: Product.Id
+            child: OrderDetail.ProductId
+          columns:
+          - name: Id
+          - object:
+            - type: Order
+            - show_attributes:
+            - key_attributes:
+              - name: OrderId
+          - name: UnitPrice
+          - name: Quantity
+          - name: Discount
+          - name: Amount
+  Region:
+    type: Region
+    user_key: RegionDescription
+    columns:
+    - name: RegionDescription
+    - name: Id
+  Shipper:
+    type: Shipper
+    user_key: CompanyName
+    columns:
+    - name: CompanyName
+    - name: Phone
+    - name: Id
+  Supplier:
+    type: Supplier
+    user_key: CompanyName
+    columns:
+    - name: CompanyName
+    - name: ContactName
+    - name: ContactTitle
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: Phone
+    - name: Fax
+    - name: HomePage
+    - name: Id
+  Territory:
+    type: Territory
+    user_key: TerritoryDescription
+    columns:
+    - name: TerritoryDescription
+    - name: RegionId
+    - name: Id
+    tab_group:
+      - tab: EmployeeTerritory List
+        resource: EmployeeTerritory
+          fkeys:
+          - parent: Territory.Id
+            child: EmployeeTerritory.TerritoryId
+          columns:
+          - name: Id
+          - object:
+            - type: Employee
+            - show_attributes:
+            - key_attributes:
+              - name: EmployeeId
+          - name: EmployeeId
+          - name: TerritoryId
+  CustomerCustomerDemo:
+    type: CustomerCustomerDemo
+    user_key: Id
+    columns:
+    - name: Id
+    - object:
+      - type: Customer
+      - show_attributes:
+      - key_attributes:
+        - name: CustomerTypeId
+    - name: CustomerTypeId
+  EmployeeAudit:
+    type: EmployeeAudit
+    user_key: LastName
+    columns:
+    - name: LastName
+    - object:
+      - type: Employee
+      - show_attributes:
+      - key_attributes:
+        - name: EmployeeId
+    - name: Title
+    - name: Salary
+    - name: FirstName
+    - name: CreatedOn
+    - name: Id
+    - name: EmployeeId
+  EmployeeTerritory:
+    type: EmployeeTerritory
+    user_key: Id
+    columns:
+    - name: Id
+    - object:
+      - type: Employee
+      - show_attributes:
+      - key_attributes:
+        - name: EmployeeId
+    - object:
+      - type: Territory
+      - show_attributes:
+      - key_attributes:
+        - name: TerritoryId
+    - name: EmployeeId
+    - name: TerritoryId
+  Order:
+    type: Order
+    user_key: ShipName
+    columns:
+    - name: ShipName
+    - object:
+      - type: Employee
+      - show_attributes:
+      - key_attributes:
+        - name: EmployeeId
+    - object:
+      - type: Customer
+      - show_attributes:
+      - key_attributes:
+        - name: CustomerId
+    - name: OrderDate
+    - name: RequiredDate
+    - name: ShippedDate
+    - name: ShipVia
+    - name: Freight
+    - name: ShipAddress
+    - name: ShipCity
+    - name: ShipRegion
+    - name: ShipPostalCode
+    - name: ShipCountry
+    - name: AmountTotal
+    - name: CustomerId
+    - name: Id
+    - name: EmployeeId
+    tab_group:
+      - tab: OrderDetail List
+        resource: OrderDetail
+          fkeys:
+          - parent: Order.Id
+            child: OrderDetail.OrderId
+          columns:
+          - name: Id
+          - object:
+            - type: Product
+            - show_attributes:
+            - key_attributes:
+              - name: ProductId
+          - name: UnitPrice
+          - name: Quantity
+          - name: Discount
+          - name: Amount
+  OrderDetail:
+    type: OrderDetail
+    user_key: Id
+    columns:
+    - name: Id
+    - object:
+      - type: Product
+      - show_attributes:
+      - key_attributes:
+        - name: ProductId
+    - object:
+      - type: Order
+      - show_attributes:
+      - key_attributes:
+        - name: OrderId
+    - name: UnitPrice
+    - name: Quantity
+    - name: Discount
+    - name: Amount
+    - name: ShippedDate
+    - name: OrderId
+    - name: ProductId
+about:
+  date: October 24, 2021 21:22:56
+  version: 3.20.10
+  recent_changes: |
+    Object: Lookups optional
+    Resource: Info box
+    Column: Group
+    Tabs: tab-group, explicit columns, redundant master ref
+info:
+  number_tables: 14
+  number_relationships: 8
+settings:
+  max_list_columns: 7
