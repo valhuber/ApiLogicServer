@@ -391,5 +391,5 @@ def create(model_creation_services: create_from_model.CreateFromModel):
                                    non_favorite_names=model_creation_services.non_favorite_names)
         fab_creator.create_react_admin_application()
     else:
-        print("4. ui/react_admin creation declined")
+        print(".. ..ui/react_admin creation declined")
 

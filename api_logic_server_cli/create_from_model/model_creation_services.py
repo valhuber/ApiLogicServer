@@ -56,6 +56,7 @@ class CreateFromModel(object):
                  db_url: str="sqlite:///nw.sqlite",
                  host: str = "localhost",
                  port: str = "5000",
+                 admin_app: bool = True,
                  flask_appbuilder: bool=True,
                  react_admin: bool=True,
                  not_exposed: str = 'ProductDetails_V',
@@ -74,6 +75,7 @@ class CreateFromModel(object):
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_names = non_favorite_names
+        self.admin_app = admin_app
         self.flask_appbuilder = flask_appbuilder
         self.react_admin = react_admin
         self.version = version
@@ -179,7 +181,7 @@ class CreateFromModel(object):
                 credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             """
             sys_path = str(sys.path)
-            print("find_meta_data sys_path:\n", sys_path)
+            log.debug("find_meta_data sys_path:\n", sys_path)
 
             self.app = self.create_app(host=self.host)
             self.app.config.SQLALCHEMY_DATABASE_URI = self.abs_db_url

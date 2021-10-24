@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.09"
+__version__ = "3.20.10"
 
 import yaml
 
@@ -568,7 +568,7 @@ def is_docker():
 
 
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
-                  from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
+                  from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
                   extended_builder: str):
     """ Creating ApiLogicServer with options:"""
@@ -577,6 +577,7 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
         print(f'\n\nCreating ApiLogicServer with options:')
         print(f'  --db_url={db_url}')
         print(f'  --project_name={project_name}')
+        print(f'  --react_admin={admin_app}')
         print(f'  --react_admin={react_admin}')
         print(f'  --flask_appbuilder={flask_appbuilder}')
         print(f'  --from_git={from_git}')
@@ -610,19 +611,36 @@ def invoke_creators(model_creation_services: CreateFromModel):
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(model_creation_services)  # invoke create function
 
-    print("5. Create ui/react_admin app (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
-    creator = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(creator)
-    creator.create(model_creation_services)
+    if model_creation_services.admin_app:
+        print("5. Create ui/admin app (import / iterate models)")
+        creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/admin_creator.py')
+        creator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(creator)
+        creator.create(model_creation_services)
+    else:
+        print(".. ..ui/admin_app creation declined")
 
-    print("6. Create ui/basic_web_app (import / iterate models)")
-    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
-    creator = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(creator)
-    creator.create(model_creation_services)
+    if model_creation_services.react_admin:
+        print("5. Create ui/react_admin app (import / iterate models)")
+        creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
+        creator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(creator)
+        creator.create(model_creation_services)
+    else:
+        print(".. ..ui/react_admin creation declined")
+
+
+    if model_creation_services.flask_appbuilder:
+        print("6. Create ui/basic_web_app (import / iterate models)")
+        creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
+        creator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(creator)
+        creator.create(model_creation_services)
+    else:
+        print(".. ..ui/basic_web_app creation declined")
 
     model_creation_services.app.teardown_appcontext(None)
     if model_creation_services.engine:
@@ -630,7 +648,7 @@ def invoke_creators(model_creation_services: CreateFromModel):
 
 
 def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
-                     from_git: str, db_types: str, open_with: str, run: bool, use_model: str,
+                     from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
                      extended_builder: str):
     """
@@ -650,7 +668,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     print_options(project_name = project_name, db_url=db_url, host=host, port=port, not_exposed=not_exposed,
                   from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
                   flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
-                  react_admin=react_admin,
+                  react_admin=react_admin, admin_app=admin_app,
                   extended_builder=extended_builder)
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
@@ -689,7 +707,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         api_logic_server_dir = get_api_logic_server_dir(),
         abs_db_url=abs_db_url, db_url=db_url,
         host=host, port=port,
-        not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder,
+        not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__)
     invoke_creators(model_creation_services)
@@ -797,6 +815,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t10/18/2021 - 03.20.10: Preliminary admin_app yaml generation (internal, experimental) \n"
             "\t10/18/2021 - 03.20.09: Readme Tutorial for IDE users \n"
             "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
             "\t10/13/2021 - 03.20.06: create in current working directory (e.g., faciliate VS Code) \n"
@@ -830,11 +849,14 @@ def about(ctx):
 @click.option('--not_exposed',
               default="ProductDetails_V",
               help="Tables not written to api/expose_api_models")
-@click.option('--flask_appbuilder/--no-flask_appbuilder',
+@click.option('--admin_app/--no_admin_app',
+              default=True, is_flag=True,
+              help="Creates ui/react app (yaml model)")
+@click.option('--flask_appbuilder/--no_flask_appbuilder',
               default=True, is_flag=True,
               help="Creates ui/basic_web_app")
-@click.option('--react_admin/--no-react_admin',
-              default=True, is_flag=True,
+@click.option('--react_admin/--no_react_admin',
+              default=False, is_flag=True,
               help="Creates ui/react_admin app")
 @click.option('--favorites',
               default="name description",
@@ -860,6 +882,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            # db_types: str,
            open_with: str,
            run: click.BOOL,
+           admin_app: click.BOOL,
            flask_appbuilder: click.BOOL,
            react_admin: click.BOOL,
            use_model: str,
@@ -878,7 +901,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
-                     react_admin=react_admin,
+                     react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder)
 
@@ -904,11 +927,14 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 @click.option('--not_exposed',
               default="ProductDetails_V",
               help="Tables not written to api/expose_api_models")
-@click.option('--flask_appbuilder/--no-flask_appbuilder',
+@click.option('--admin_app/--no_admin_app',
+              default=True, is_flag=True,
+              help="Creates ui/react app (yaml model)")
+@click.option('--flask_appbuilder/--no_flask_appbuilder',
               default=True, is_flag=True,
               help="Creates ui/basic_web_app")
-@click.option('--react_admin/--no-react_admin',
-              default=True, is_flag=True,
+@click.option('--react_admin/--no_react_admin',
+              default=False, is_flag=True,
               help="Creates ui/react_admin app")
 @click.option('--favorites',
               default="name description",
@@ -934,6 +960,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
         # db_types: str,
         open_with: str,
         run: click.BOOL,
+        admin_app: click.BOOL,
         flask_appbuilder: click.BOOL,
         react_admin: click.BOOL,
         use_model: str,
@@ -952,7 +979,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
-                     react_admin=react_admin,
+                     react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder)
 

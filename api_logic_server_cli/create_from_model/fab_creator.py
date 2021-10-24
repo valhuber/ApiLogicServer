@@ -387,13 +387,10 @@ class FabCreator(object):
 def create(model_creation_services: CreateFromModel):
     """ called by ApiLogicServer CLI -- creates basic web app (Flask AppBuilder)
     """
-    if model_creation_services.flask_appbuilder:
-        # create_basic_web_app(db_url, project_directory, ".. ..Create ui/basic_web_app")
-        fab_creator = FabCreator(model_creation_services,
-                                 host=model_creation_services.host, port=model_creation_services.port,
-                                 not_exposed=model_creation_services.not_exposed + " ",
-                                 favorite_names=model_creation_services.favorite_names,
-                                 non_favorite_names=model_creation_services.non_favorite_names)
-        fab_creator.create_basic_web_app()
-    else:
-        print("6. ui/basic/web_app creation declined")
+    # create_basic_web_app(db_url, project_directory, ".. ..Create ui/basic_web_app")
+    fab_creator = FabCreator(model_creation_services,
+                             host=model_creation_services.host, port=model_creation_services.port,
+                             not_exposed=model_creation_services.not_exposed + " ",
+                             favorite_names=model_creation_services.favorite_names,
+                             non_favorite_names=model_creation_services.non_favorite_names)
+    fab_creator.create_basic_web_app()

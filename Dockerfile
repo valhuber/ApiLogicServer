@@ -3,7 +3,7 @@
 # docker push apilogicserver/api_logic_server
 
 # docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
-#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 --net dev-network -v ~/dev/servers:/localhost apilogicserver/api_logic_server
+#   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
 #   docker image inspect apilogicserver/api_logic_server
 #   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
