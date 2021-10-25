@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.10"
+__version__ = "3.20.11"
 
 import yaml
 
@@ -815,7 +815,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/18/2021 - 03.20.10: Preliminary admin_app yaml generation (internal, experimental) \n"
+            "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"
             "\t10/18/2021 - 03.20.09: Readme Tutorial for IDE users \n"
             "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
             "\t10/13/2021 - 03.20.06: create in current working directory (e.g., faciliate VS Code) \n"
