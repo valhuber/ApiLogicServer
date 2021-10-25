@@ -456,6 +456,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+10/24/2021 - 03.20.10: Preliminary admin_app yaml generation (internal, experimental)
+
 10/18/2021 - 03.20.09: Readme Tutorial for IDE users
 
 10/16/2021 - 03.20.07: dev-network no longer required (see Releases)

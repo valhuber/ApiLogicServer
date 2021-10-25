@@ -897,6 +897,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     db_types = ""
     if db_url == default_db or db_url == "":
         db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+    if db_url == "nw":
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-v2.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
@@ -975,6 +977,8 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
     db_types = ""
     if db_url == default_db or db_url == "":
         db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+    if db_url == "nw":
+        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-v2.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
