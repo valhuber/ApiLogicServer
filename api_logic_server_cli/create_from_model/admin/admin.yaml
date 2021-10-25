@@ -37,8 +37,8 @@ resources:
     - name: Balance
     - name: CreditLimit
     - name: OrderCount
-    - name: Id
     - name: UnpaidOrderCount
+    - name: Id
     tab_group:
       - tab: CustomerCustomerDemo List
         resource: CustomerCustomerDemo
@@ -106,7 +106,7 @@ resources:
           - name: Salary
           - name: FirstName
           - name: CreatedOn
-          - name: Id
+          - name: EmployeeId
       - tab: EmployeeTerritory List
         resource: EmployeeTerritory
           fkeys:
@@ -149,8 +149,8 @@ resources:
     - name: ReorderLevel
     - name: Discontinued
     - name: UnitsShipped
-    - name: CategoryId
     - name: SupplierId
+    - name: CategoryId
     - name: Id
     tab_group:
       - tab: OrderDetail List
@@ -245,23 +245,23 @@ resources:
     - name: Salary
     - name: FirstName
     - name: CreatedOn
-    - name: Id
     - name: EmployeeId
+    - name: Id
   EmployeeTerritory:
     type: EmployeeTerritory
     user_key: Id
     columns:
     - name: Id
     - object:
-      - type: Employee
-      - show_attributes:
-      - key_attributes:
-        - name: EmployeeId
-    - object:
       - type: Territory
       - show_attributes:
       - key_attributes:
         - name: TerritoryId
+    - object:
+      - type: Employee
+      - show_attributes:
+      - key_attributes:
+        - name: EmployeeId
     - name: EmployeeId
     - name: TerritoryId
   Order:
@@ -270,15 +270,15 @@ resources:
     columns:
     - name: ShipName
     - object:
-      - type: Employee
-      - show_attributes:
-      - key_attributes:
-        - name: EmployeeId
-    - object:
       - type: Customer
       - show_attributes:
       - key_attributes:
         - name: CustomerId
+    - object:
+      - type: Employee
+      - show_attributes:
+      - key_attributes:
+        - name: EmployeeId
     - name: OrderDate
     - name: RequiredDate
     - name: ShippedDate
@@ -290,9 +290,9 @@ resources:
     - name: ShipPostalCode
     - name: ShipCountry
     - name: AmountTotal
-    - name: CustomerId
-    - name: Id
     - name: EmployeeId
+    - name: Id
+    - name: CustomerId
     tab_group:
       - tab: OrderDetail List
         resource: OrderDetail
@@ -330,11 +330,11 @@ resources:
     - name: Discount
     - name: Amount
     - name: ShippedDate
-    - name: OrderId
     - name: ProductId
+    - name: OrderId
 about:
-  date: October 24, 2021 21:22:56
-  version: 3.20.10
+  date: October 25, 2021 02:52:02
+  version: 3.20.11
   recent_changes: |
     Object: Lookups optional
     Resource: Info box
