@@ -9,6 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_run.py",
+            "args": ["localhost", "5001"],
             "console": "integratedTerminal"
         },
         {
@@ -16,7 +17,7 @@
             "type": "python",
             "request": "launch",
             "program": "run.py",
-            "args": ["localhost", "5001"],
+            "args": ["localhost", "5002"],
             "cwd": "${workspaceFolder}/ui/basic_web_app",
             "console": "integratedTerminal"
         },

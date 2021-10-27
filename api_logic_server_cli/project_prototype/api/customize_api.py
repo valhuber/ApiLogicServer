@@ -20,7 +20,7 @@ def expose_services(app, api, project_dir):
     app_logger.info("api/customize_api.py - expose custom services")
 
     @app.route('/hello_world')
-    def hello_world():  # test it with: http://localhost:5000/hello_world?user=ApiLogicServer
+    def hello_world():  # test it with: http://localhost:5001/hello_world?user=ApiLogicServer
         """
         This is inserted to illustrate that APIs not limited to database objects, but are extensible.
 
@@ -34,5 +34,5 @@ def expose_services(app, api, project_dir):
     app_logger.info(f'*** Customizable ApiLogicServer project created -- '
              f'open it in your IDE at {project_dir}')
     app_logger.info(f'*** Server now running -- '
-             f'explore with OpenAPI (Swagger) at http://localhost:5000/')
+             f'explore with OpenAPI (Swagger) at http://localhost:5001/')
     app_logger.info("\n")

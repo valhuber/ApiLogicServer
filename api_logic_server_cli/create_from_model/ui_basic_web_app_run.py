@@ -42,7 +42,7 @@ if auto_log_narrow and config.SQLALCHEMY_DATABASE_URI.endswith("db.sqlite"):
 import sys
 if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
-    print("basic_web_app - run instructions (defaults are host 0.0.0.0, port 8080):")
+    print("basic_web_app - run instructions (defaults are host 0.0.0.0, port 5002):")
     print("  python run.py [host [port]]")
     print("")
     sys.exit()
@@ -58,6 +58,6 @@ except Exception as e:
 host = sys.argv[1] if sys.argv[1:] \
     else "0.0.0.0"
 port = sys.argv[2] if sys.argv[2:] \
-    else "8080"
+    else "5002"
 
 app.run(host=host, port=port, debug=True)

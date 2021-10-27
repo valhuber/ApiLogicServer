@@ -456,6 +456,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002
+
 10/24/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental)
 
 10/18/2021 - 03.20.09: Readme Tutorial for IDE users

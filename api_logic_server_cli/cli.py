@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.11"
+__version__ = "3.20.12"
 
 import yaml
 
@@ -520,10 +520,10 @@ def fix_host_and_ports(msg, project_name, host, port):
     replace_port = f':{port}' if port else ""
     replace_with = host + replace_port
     in_file = f'{project_name}/api/customize_api.py'
-    create_utils.replace_string_in_file(search_for="localhost:5000",
+    create_utils.replace_string_in_file(search_for="localhost:5001",
                            replace_with=replace_with,
                            in_file=in_file)
-    print(f'.. ..Updated expose_services_py with port={port} and host={host}')
+    print(f'.. ..Updated customize_api_py with port={port} and host={host}')
     full_path = os.path.abspath(project_name)
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
@@ -815,6 +815,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"
             "\t10/18/2021 - 03.20.09: Readme Tutorial for IDE users \n"
             "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
@@ -871,8 +872,8 @@ def about(ctx):
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'5000',
-              help="Port (default 5000, or leave empty)")
+              default=f'5001',
+              help="Port (default 5001, or leave empty)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -951,8 +952,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'5000',
-              help="Port (default 5000, or leave empty)")
+              default=f'5001',
+              help="Port (default 5001, or leave empty)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -997,10 +998,10 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'5000',
-              help="Port (default 5000, or leave empty)")
+              default=f'5001',
+              help="Port (default 5001, or leave empty)")
 @click.pass_context
-def run_api(ctx, project_name: str, host: str="localhost", port: str="5000"):
+def run_api(ctx, project_name: str, host: str="localhost", port: str="5001"):
     """
         Runs existing project.
 
@@ -1031,10 +1032,10 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5000"):
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'8080',
+              default=f'5002',
               help="Port (default 8080, or leave empty)")
 @click.pass_context
-def run_ui(ctx, project_name: str, host: str="localhost", port: str="8080"):
+def run_ui(ctx, project_name: str, host: str="localhost", port: str="5002"):
     """
         Runs existing basic web app.
 
@@ -1052,7 +1053,7 @@ def run_ui(ctx, project_name: str, host: str="localhost", port: str="8080"):
     else:
         proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
     run_file = f'{proj_dir}/ui/basic_web_app/run.py'   # this fails to open: {host} 8080
-    create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
+    create_utils.run_command(f'python {run_file} {host} {port}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
 
 
 @main.command("examples")

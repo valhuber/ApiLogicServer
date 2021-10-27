@@ -132,7 +132,7 @@ def create_app(config_filename=None):
 
     with flask_app.app_context():
         db.init_app(flask_app)
-        safrs_api = expose_api_models.expose_models(flask_app, HOST=host)   # services from models
+        safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port)   # services from models
         customize_api.expose_services(flask_app, safrs_api, project_dir)    # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
@@ -154,7 +154,11 @@ flask_host = host
 if is_docker() and host == "localhost":
     flask_host = "0.0.0.0"
     app_logger.debug(f'==> Network Diagnostic - using docker flask_host: {flask_host}')
-port = "api_logic_server_port"
+if sys.argv[2:]:
+    port = sys.argv[2]  # you many need to enable cors support, below
+    app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[1]}')
+else:
+    port = "api_logic_server_port"
 flask_app, safrs_api = create_app()
 
 
