@@ -4,7 +4,7 @@
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
-  This will run the example on http://Listener-Ip:5000
+  This will run the example on http://Listener-Ip:5001
 
 """
 import sys

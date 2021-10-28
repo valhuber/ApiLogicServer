@@ -37,7 +37,7 @@ def create_expose_api_models(model_creation_services):
     # result_apis += '    app_logger.debug(f"DEBUG - expose_api_models HOST = <{HOST}>, using my_host = <{my_host}>")\n'
     result_apis += '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
     result_apis += '    safrs_log_level = safrs.log.getEffectiveLevel()\n'
-    result_apis += '    if app_logger.getEffectiveLevel() >= logging.INFO:\n'
+    result_apis += '    if True or app_logger.getEffectiveLevel() >= logging.INFO:\n'
     result_apis += '        safrs.log.setLevel(logging.WARN)  # warn is 20, info 30\n'
 
     sys.path.append(cwd)

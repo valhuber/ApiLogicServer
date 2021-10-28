@@ -17,10 +17,10 @@ from database.db import Base
 # separate from expose_api_models.py, to simplify merge if project recreated
 
 
-def expose_services(app, api, project_dir):
+def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
     @app.route('/hello_world')
-    def hello_world():  # test it with: http://localhost:5000/hello_world?user=ApiLogicServer
+    def hello_world():  # test it with: http://localhost:5001/hello_world?user=ApiLogicServer
         """
         This is inserted to illustrate that APIs not limited to database objects, but are extensible.
 
@@ -35,7 +35,7 @@ def expose_services(app, api, project_dir):
     app_logger.info(f'\n*** Customizable ApiLogicServer project created -- '
              f'open it with your IDE at {project_dir}')
     app_logger.info(f'*** Server now running -- '
-             f'explore with OpenAPI (Swagger) at http://localhost:5000/')
+             f'explore with OpenAPI (Swagger) at http://{HOST}:{PORT}/')
 
     app_logger.info("api/expose_service.py - Exposing custom services")
     api.expose_object(ServicesEndPoint)

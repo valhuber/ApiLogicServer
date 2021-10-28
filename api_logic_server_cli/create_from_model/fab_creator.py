@@ -49,7 +49,7 @@ class FabCreator(object):
     def __init__(self,
                  mod_gen: CreateFromModel,
                  host: str = "localhost",
-                 port: str = "5000",
+                 port: str = "5001",
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):

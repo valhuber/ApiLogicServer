@@ -6,7 +6,7 @@
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
-  This will run on http://Listener-Ip:5000
+  This will run on http://Listener-Ip:5001
 
 """
 import os
@@ -47,7 +47,7 @@ import socket
 from api import expose_api_models, customize_api
 from logic import declare_logic
 
-from flask import render_template, request, jsonify, Flask
+from flask import render_template, request, jsonify, Flask, redirect, send_from_directory
 from safrs import ValidationError, SAFRSBase
 
 
@@ -133,7 +133,7 @@ def create_app(config_filename=None):
     with flask_app.app_context():
         db.init_app(flask_app)
         safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port)   # services from models
-        customize_api.expose_services(flask_app, safrs_api, project_dir)    # custom services
+        customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)    # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
 
@@ -156,10 +156,22 @@ if is_docker() and host == "localhost":
     app_logger.debug(f'==> Network Diagnostic - using docker flask_host: {flask_host}')
 if sys.argv[2:]:
     port = sys.argv[2]  # you many need to enable cors support, below
-    app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[1]}')
+    app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
 else:
     port = "api_logic_server_port"
 flask_app, safrs_api = create_app()
+
+
+@flask_app.route("/als/<path:path>")  # , endpoint="als_admin_static")
+def send_ja(path):
+    """
+        Return files from the javascript SPA frontend
+    """
+    if "index.html" in path:
+        resp = redirect("/als/index.html")
+        return resp
+    ALS_PATH = "/als"
+    return send_from_directory(ALS_PATH, path)
 
 
 @flask_app.route('/')

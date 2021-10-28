@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.12"
+__version__ = "3.20.15"
 
 import yaml
 
@@ -815,6 +815,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t10/27/2021 - 03.20.15: More port changes, test inclusion of admin app build \n"
             "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"
             "\t10/18/2021 - 03.20.09: Readme Tutorial for IDE users \n"

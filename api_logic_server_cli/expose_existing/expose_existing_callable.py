@@ -34,7 +34,7 @@ sys.path.insert(0, sqlacodegen_dir)
 
 
 def get_args():
-
+    """ unused by ApiLogicServer """
     parser = argparse.ArgumentParser(description="Generates SQLAlchemy model code from an existing database.")
     parser.add_argument("url", nargs="?", help="SQLAlchemy url to the database")
     parser.add_argument("--version", action="store_true", help="print the version number and exit")
@@ -75,7 +75,8 @@ def fix_generated(code, args):
 
 
 def codegen(args):
-
+    """ called by ApiLogicServer CLI to create create database/dbp.py
+    """
     # Use reflection to fill in the metadata
     engine = create_engine(args.url)
 
@@ -101,6 +102,7 @@ def codegen(args):
 
 
 if on_import:
+    """ unused by ApiLogicServer """
     args = get_args()
     app = Flask("DB App")
     CORS(app, origins=["*"])
@@ -133,7 +135,7 @@ if on_import:
 
 
 def start_api(HOST="0.0.0.0", PORT=5000):
-
+    """ unused - safrs code to create/start api """
     OAS_PREFIX = ""  # swagger prefix
     with app.app_context():
         api = SAFRSAPI(

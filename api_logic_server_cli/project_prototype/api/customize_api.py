@@ -16,7 +16,8 @@ from database.db import Base
 
 app_logger = logging.getLogger("api_logic_server_app")
 
-def expose_services(app, api, project_dir):
+
+def expose_services(app, api, project_dir, HOST: str, PORT: str):
     app_logger.info("api/customize_api.py - expose custom services")
 
     @app.route('/hello_world')
@@ -34,5 +35,5 @@ def expose_services(app, api, project_dir):
     app_logger.info(f'*** Customizable ApiLogicServer project created -- '
              f'open it in your IDE at {project_dir}')
     app_logger.info(f'*** Server now running -- '
-             f'explore with OpenAPI (Swagger) at http://localhost:5001/')
+             f'explore with OpenAPI (Swagger) at http://{HOST}:{PORT}/')
     app_logger.info("\n")

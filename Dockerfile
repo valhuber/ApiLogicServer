@@ -2,7 +2,7 @@
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.20.11
 # docker push apilogicserver/api_logic_server
 
-# docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
+# docker run -it --name api_logic_server --rm -p 5001:5001 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
 #   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
 #   docker image inspect apilogicserver/api_logic_server
 #   docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
@@ -16,6 +16,7 @@
 #   python /localhost/api_logic_server/ui/basic_web_app/run.py
 
 # shout outs...
+#   Thmomas Pollet  https://github.com/thomaxxl/safrs-react-admin -- safrs, safrs-react-admin
 #   Max Tardiveau   https://www.galliumdata.com/
 #   Shantanu        https://forum.astronomer.io/t/how-to-pip-install-pyodbc-in-the-dockerfile/983
 #   Piotr Maślewski https://medium.com/swlh/dockerize-your-python-command-line-program-6a273f5c5544
