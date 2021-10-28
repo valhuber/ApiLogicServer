@@ -6,7 +6,7 @@
 
   $ python3 api_logic_server_run.py [Listener-IP]
 
-  This will run on http://Listener-Ip:5001
+  This will run on http://Listener-Ip:api_logic_server_port
 
 """
 import os

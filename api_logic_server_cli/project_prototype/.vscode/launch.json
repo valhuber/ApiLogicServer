@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_run.py",
-            "args": ["localhost", "5001"],
+            "args": ["localhost", "5656"],
             "console": "integratedTerminal"
         },
         {

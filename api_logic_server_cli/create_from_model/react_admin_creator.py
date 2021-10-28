@@ -49,7 +49,7 @@ class ReactCreator(object):
     def __init__(self,
                  mod_gen: create_from_model.CreateFromModel,
                  host: str = "localhost",
-                 port: str = "5001",
+                 port: str = "5656",
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id"):

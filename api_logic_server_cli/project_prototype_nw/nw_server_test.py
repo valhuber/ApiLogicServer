@@ -150,4 +150,4 @@ def server_tests(host, port, version):
 
 if __name__ == "__main__":
    # only to run when not called via 'import' here
-   server_tests("localhost", "5001", "v0")
+   server_tests("localhost", "5656", "v0")

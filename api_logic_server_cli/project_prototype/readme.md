@@ -107,7 +107,7 @@ Then, start the API, either by IDE launch configurations (for Docker), or by com
 ```
 python api_logic_server_run.py
 ```
-* **Open API (Swagger) -** [localhost:5001/api](localhost:5001/api)
+* **Open API (Swagger) -** [localhost:5656/api](localhost:5656/api)
 
 
 Or, start the web app:

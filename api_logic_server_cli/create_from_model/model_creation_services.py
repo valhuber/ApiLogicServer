@@ -55,7 +55,7 @@ class CreateFromModel(object):
                  abs_db_url: str = "sqlite:///nw.sqlite",
                  db_url: str="sqlite:///nw.sqlite",
                  host: str = "localhost",
-                 port: str = "5001",
+                 port: str = "5656",
                  admin_app: bool = True,
                  flask_appbuilder: bool=True,
                  react_admin: bool=True,

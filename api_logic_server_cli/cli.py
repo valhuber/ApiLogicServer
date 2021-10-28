@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.16"
+__version__ = "3.20.17"
 
 import yaml
 
@@ -518,10 +518,13 @@ def fix_host_and_ports(msg, project_name, host, port):
     """ 9. Fixing port / host -- update server, port in /api/customize_api.py """
     print(msg)  # 9. Fixing port / host
     replace_port = f':{port}' if port else ""
-    replace_with = host + replace_port
+    # replace_with = host + replace_port
     in_file = f'{project_name}/api/customize_api.py'
-    create_utils.replace_string_in_file(search_for="localhost:5001",
-                           replace_with=replace_with,
+    create_utils.replace_string_in_file(search_for="api_logic_server_host",
+                           replace_with=host,
+                           in_file=in_file)
+    create_utils.replace_string_in_file(search_for="api_logic_server_port",
+                           replace_with=replace_port,
                            in_file=in_file)
     print(f'.. ..Updated customize_api_py with port={port} and host={host}')
     full_path = os.path.abspath(project_name)
@@ -815,7 +818,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/28/2021 - 03.20.16: More port changes, running inclusion of admin app build \n"
+            "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app build \n"
             "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"
             "\t10/18/2021 - 03.20.09: Readme Tutorial for IDE users \n"
@@ -873,8 +876,8 @@ def about(ctx):
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'5001',
-              help="Port (default 5001, or leave empty)")
+              default=f'5656',
+              help="Port (default 5656, or leave empty)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -953,8 +956,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'5001',
-              help="Port (default 5001, or leave empty)")
+              default=f'5656',
+              help="Port (default 5656, or leave empty)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -999,10 +1002,10 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'localhost',
               help="Server hostname (default is localhost)")
 @click.option('--port',
-              default=f'5001',
-              help="Port (default 5001, or leave empty)")
+              default=f'5656',
+              help="Port (default 5656, or leave empty)")
 @click.pass_context
-def run_api(ctx, project_name: str, host: str="localhost", port: str="5001"):
+def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
     """
         Runs existing project.
 

@@ -20,7 +20,7 @@ from database.db import Base
 def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
     @app.route('/hello_world')
-    def hello_world():  # test it with: http://localhost:5001/hello_world?user=ApiLogicServer
+    def hello_world():  # test it with: http://api_logic_server_host:api_logic_server_port/hello_world?user=ApiLogicServer
         """
         This is inserted to illustrate that APIs not limited to database objects, but are extensible.
 
