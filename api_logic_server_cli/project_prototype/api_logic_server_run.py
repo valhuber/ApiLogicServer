@@ -162,21 +162,18 @@ else:
 flask_app, safrs_api = create_app()
 
 
-@flask_app.route("/als/<path:path>")  # , endpoint="als_admin_static")
-def send_ja(path):
-    """
-        Return files from the javascript SPA frontend
-    """
-    if "index.html" in path:
-        resp = redirect("/als/index.html")
-        return resp
-    ALS_PATH = "/als"
-    return send_from_directory(ALS_PATH, path)
-
-
 @flask_app.route('/')
-def welcome():
-    return render_template('index.html')
+def index():
+    app_logger.debug(f'index - index.html - use http://localhost:5656/admin-app/index.html')
+    return redirect('/als/index.html')
+
+
+@flask_app.route("/admin-app/<path:path>")
+def send_spa(path=None):
+    app_logger.debug(f'send_spa - path= {path}')
+
+    # return send_from_directory('als', path)
+    return send_from_directory('ui/admin', path)
 
 
 @flask_app.errorhandler(ValidationError)
@@ -191,7 +188,7 @@ def handle_exception(e: ValidationError):
     return res, 400
 
 
-""" enable for cors support"""
+""" uncomment to disable cors support"""
 @flask_app.after_request
 def after_request(response):
     '''
