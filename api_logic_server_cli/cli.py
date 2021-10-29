@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.19"
+__version__ = "3.20.20"
 
 import yaml
 
@@ -62,8 +62,10 @@ api_logic_server_info_file.close()
 last_created_project_name = api_logic_server_info_file_dict["last_created_project_name"]
 default_db = "<default -- nw.sqlite>"
 default_project_name = "api_logic_server"
+default_fab_host = "localhost"
 if os.path.exists('/home/api_logic_server'):  # docker?
     default_project_name = "/localhost/api_logic_server"
+    default_fab_host = "0.0.0.0"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -830,7 +832,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/29/2021 - 03.20.19: More port changes (5656, 5002), running inclusion of admin app, admin bkps \n"
+            "\t10/29/2021 - 03.20.20: More port changes (5656, 5002), running inclusion of admin app, admin bkps \n"
             "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app \n"
             "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"
@@ -1046,7 +1048,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
               prompt="Project to run",
               help="Project to run")
 @click.option('--host',
-              default=f'localhost',
+              default=f'{default_fab_host}',
               help="Server hostname (default is localhost)")
 @click.option('--port',
               default=f'5002',
