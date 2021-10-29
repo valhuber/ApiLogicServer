@@ -270,8 +270,8 @@ class FabCreator(object):
             result += " since foreign keys missing\n"
             result += "#  .. add them to your models.py (see nw example)\n"
             result += "#  .. or better, add them to your database"
-            print(".. ..WARNING - no relationships detected - add them to your database or model")
-            print(".. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
+            print(".. .. ..WARNING - no relationships detected - add them to your database or model")
+            print(".. .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
         return result
 
     def create_basic_web_app_directory(self, msg):
@@ -304,6 +304,12 @@ class FabCreator(object):
         proj = os.path.basename(self.mod_gen.project_directory)
         create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
                                    replace_with=proj,
+                                   in_file=f'{self.mod_gen.project_directory}/ui/basic_web_app/run.py')
+        default_host = "localhost"  # docker uses 0.0.0.0, local install uses localhost
+        if os.path.exists('/home/api_logic_server'):  # docker?
+            default_host = "0.0.0.0"
+        create_utils.replace_string_in_file(search_for="api_logic_server_default_host",
+                                   replace_with=default_host,
                                    in_file=f'{self.mod_gen.project_directory}/ui/basic_web_app/run.py')
 
     def fix_basic_web_app_run__create_admin(self):
@@ -369,18 +375,18 @@ class FabCreator(object):
         text_file = open(self.mod_gen.project_directory + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(self.result_views)
         text_file.close()
-        print(".. ..Fixing run.py and app/init for Python path, logic")
+        print(".. .. ..Fixing run.py and app/init for Python path, logic")
         if not self.mod_gen.db_url.endswith("nw.sqlite"):
-            print(".. ..Important: you will need to run flask fab create-admin")
+            print(".. .. ..Important: you will need to run flask fab create-admin")
         self.fix_basic_web_app_run__python_path()
         self.fix_basic_web_app_run__create_admin()
         self.fix_basic_web_app_app_init__inject_logic()
         self.fix_config()
 
     def create_basic_web_app(self):
-        self.create_basic_web_app_directory(".. ..Create ui/basic_web_app")
+        self.create_basic_web_app_directory(".. .. ..Create ui/basic_web_app")
         self.generate_ui_views()
-        self.prepare_flask_app_builder(msg=".. ..Writing: /ui/basic_web_app/app/views.py")
+        self.prepare_flask_app_builder(msg=".. .. ..Writing: /ui/basic_web_app/app/views.py")
         log.debug(f'create_from_model.fab_creator("{self.mod_gen.db_url}", "{self.mod_gen.project_directory}" Completed')
 
 

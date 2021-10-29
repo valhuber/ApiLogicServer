@@ -56,7 +56,7 @@ except Exception as e:
 
 # args to avoid port conflicts, e.g., localhost 8080
 host = sys.argv[1] if sys.argv[1:] \
-    else "0.0.0.0"
+    else "api_logic_server_default_host"  # docker uses 0.0.0.0, local install uses localhost
 port = sys.argv[2] if sys.argv[2:] \
     else "5002"
 

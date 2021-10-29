@@ -207,7 +207,7 @@ class ReactCreator(object):
         for each_child in child_list:
             class_name = self.mod_gen.get_class_for_table(each_child.fullname)
             if class_name is None:
-                print(f'.. .. .. Warning - Skipping {self.mod_gen.model_name(each_child)}->'
+                print(f'.. .. .. .. Warning - Skipping {self.mod_gen.model_name(each_child)}->'
                       f'{each_child.fullname} - no database/models.py class')
                 related_count -= 1
             else:
@@ -289,8 +289,8 @@ class ReactCreator(object):
             result += " since foreign keys missing\n"
             result += "//  .. add them to your models.py (see nw example)\n"
             result += "//  .. or better, add them to your database"
-            print(".. ..WARNING - no relationships detected - add them to your database or model")
-            print(".. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
+            print(".. .. ..WARNING - no relationships detected - add them to your database or model")
+            print(".. .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
         return result
 
     def get_create_from_model_dir(self) -> str:
@@ -374,7 +374,7 @@ class ReactCreator(object):
         shutil.copytree(from_proto_dir, to_project_dir)
 
     def create_react_admin_application(self):
-        self.create_react_admin_app(msg=".. ..Create ui/react_admin")
+        self.create_react_admin_app(msg=".. .. ..Create ui/react_admin")
         self.create_components(version="")
         self.fixup_app_js()
         pass
@@ -391,5 +391,5 @@ def create(model_creation_services: create_from_model.CreateFromModel):
                                    non_favorite_names=model_creation_services.non_favorite_names)
         fab_creator.create_react_admin_application()
     else:
-        print(".. ..ui/react_admin creation declined")
+        print(".. .. ..ui/react_admin creation declined")
 

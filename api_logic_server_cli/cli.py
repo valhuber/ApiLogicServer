@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.17"
+__version__ = "3.20.19"
 
 import yaml
 
@@ -277,7 +277,9 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
                   f'.. Verify the --project_name argument\n'
                   f'.. If you are using Docker, verify the -v argument\n\n')
 
+    is_northwind = False
     if abs_db_url.endswith("nw.sqlite"):
+        is_northwind = True
         print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, rpcs")
         replace_readme_with_nw_readme(project_directory)
         replace_logic_with_nw_logic(project_directory)
@@ -330,7 +332,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
         print(f'.. ..Copied sqlite db to: {target_db_loc_actual} and '
               f'updated db_uri in {project_directory}/config.py')
 
-    return target_db_loc_actual
+    return target_db_loc_actual, is_northwind
 
 
 def create_basic_web_app(db_url, project_name, msg):  # remove
@@ -366,7 +368,7 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
 
     if use_model != "":  # use this hand-edited model (e.g., added relns)
         model_file = resolve_home(use_model)
-        print(f'.. ..Copy {model_file} to {project + "/database/models.py"}')
+        print(f'.. .. ..Copy {model_file} to {project + "/database/models.py"}')
         copyfile(model_file, project + '/database/models.py')
     else:
         code_gen_args = get_codegen_args()
@@ -378,46 +380,6 @@ def write_expose_api_models(project_name, apis):
     text_file = open(project_name + '/api/expose_api_models.py', 'a')
     text_file.write(apis)
     text_file.close()
-
-
-def update_api_logic_server_run(project_name, project_directory, host, port):
-    """
-    Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
-
-    Note project_directory is from user, and may be relative (and same as project_name)
-    """
-    project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
-    api_logic_server_run_py = f'{project_directory}/api_logic_server_run.py'
-    create_utils.replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
-                           replace_with='"' + os.path.basename(project_name) + '"',
-                           in_file=api_logic_server_run_py)
-    create_utils.replace_string_in_file(search_for="ApiLogicServer hello",
-                           replace_with="ApiLogicServer generated at:" +
-                                        str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
-                           in_file=api_logic_server_run_py)
-    project_directory_fix = project_directory_actual
-    if os.name == "nt":  # windows
-        project_directory_fix = get_windows_path_with_slashes(str(project_directory_actual))
-    create_utils.replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
-                           replace_with='"' + project_directory_fix + '"',
-                           in_file=api_logic_server_run_py)
-    create_utils.replace_string_in_file(search_for="api_logic_server_host",  # server host
-                           replace_with=host,
-                           in_file=api_logic_server_run_py)
-    replace_port = f', port="{port}"' if port else ""  # TODO: consider reverse proxy
-
-    create_utils.replace_string_in_file(search_for="api_logic_server_version",
-                           replace_with=__version__,
-                           in_file=api_logic_server_run_py)
-
-    create_utils.replace_string_in_file(search_for="api_logic_server_created_on",
-                           replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
-                           in_file=api_logic_server_run_py)
-
-    create_utils.replace_string_in_file(search_for="api_logic_server_port",   # server port
-                           replace_with=port,
-                           in_file=api_logic_server_run_py)
-    pass
 
 
 def replace_readme_with_nw_readme(project_name):
@@ -514,6 +476,91 @@ def fix_basic_web_app_run__create_admin(project_directory):
                            in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
 
+def fix_database_models__inject_db_types(project_directory: str, db_types: str):
+    """ insert <db_types file> into database/models.py """
+    models_file_name = f'{project_directory}/database/models.py'
+    if db_types != "":
+        print(f'.. .. ..Injecting file {db_types} into database/models.py')
+        with open(db_types, 'r') as file:
+            db_types_data = file.read()
+        create_utils.insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
+
+
+def final_project_fixup(msg, project_name, project_directory, host, port, use_model, copy_to_project_directory) -> str:
+    print(msg)  # "7. Final project fixup"
+
+    if use_model == "":
+        fix_database_models__import_customize_models(project_directory)
+
+    print(f'.b .. Update api_logic_server_run.py with '
+          f'project_name={project_name} and host, port')
+    update_api_logic_server_run(project_name, project_directory, host, port)
+
+    fix_host_and_ports(".c .. Fixing api/expose_services - port, host", project_directory, host, port)
+
+    copy_project_result = ""
+    if copy_to_project_directory != "":
+        copy_project_result = \
+            copy_project_to_local(project_directory, copy_to_project_directory,
+                                  f'10. Copy temp_created_project over {copy_to_project_directory} ')
+
+    api_logic_server_info_file_dict["last_created_project_name"] = project_directory  # project_name - twiddle
+    api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
+    api_logic_server_info_file_dict["last_created_version"] = __version__
+    with open(api_logic_server_info_file_name, 'w') as api_logic_server_info_file_file:
+        yaml.dump(api_logic_server_info_file_dict, api_logic_server_info_file_file, default_flow_style=False)
+    return copy_project_result
+
+
+def fix_database_models__import_customize_models(project_directory: str):
+    """ Append "from database import customize_models" to database/models.py """
+    models_file_name = f'{project_directory}/database/models.py'
+    print(f'.a .. Appending "from database import customize_models" to database/models.py')
+    models_file = open(models_file_name, 'a')
+    models_file.write("\n\nfrom database import customize_models\n")
+    models_file.close()
+
+
+def update_api_logic_server_run(project_name, project_directory, host, port):
+    """
+    Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
+
+    Note project_directory is from user, and may be relative (and same as project_name)
+    """
+    project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
+    api_logic_server_run_py = f'{project_directory}/api_logic_server_run.py'
+    create_utils.replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
+                           replace_with='"' + os.path.basename(project_name) + '"',
+                           in_file=api_logic_server_run_py)
+    create_utils.replace_string_in_file(search_for="ApiLogicServer hello",
+                           replace_with="ApiLogicServer generated at:" +
+                                        str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
+                           in_file=api_logic_server_run_py)
+    project_directory_fix = project_directory_actual
+    if os.name == "nt":  # windows
+        project_directory_fix = get_windows_path_with_slashes(str(project_directory_actual))
+    create_utils.replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
+                           replace_with='"' + project_directory_fix + '"',
+                           in_file=api_logic_server_run_py)
+    create_utils.replace_string_in_file(search_for="api_logic_server_host",  # server host
+                           replace_with=host,
+                           in_file=api_logic_server_run_py)
+    replace_port = f', port="{port}"' if port else ""  # TODO: consider reverse proxy
+
+    create_utils.replace_string_in_file(search_for="api_logic_server_version",
+                           replace_with=__version__,
+                           in_file=api_logic_server_run_py)
+
+    create_utils.replace_string_in_file(search_for="api_logic_server_created_on",
+                           replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
+                           in_file=api_logic_server_run_py)
+
+    create_utils.replace_string_in_file(search_for="api_logic_server_port",   # server port
+                           replace_with=port,
+                           in_file=api_logic_server_run_py)
+    pass
+
+
 def fix_host_and_ports(msg, project_name, host, port):
     """ 9. Fixing port / host -- update server, port in /api/customize_api.py """
     print(msg)  # 9. Fixing port / host
@@ -526,31 +573,12 @@ def fix_host_and_ports(msg, project_name, host, port):
     create_utils.replace_string_in_file(search_for="api_logic_server_port",
                            replace_with=replace_port,
                            in_file=in_file)
-    print(f'.. ..Updated customize_api_py with port={port} and host={host}')
+    print(f'.d .. Updated customize_api_py with port={port} and host={host}')
     full_path = os.path.abspath(project_name)
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
                            in_file=f'{project_name}/python_anywhere_wsgi.py')
-    print(f'.. ..Updated python_anywhere_wsgi.py with {full_path}')
-
-
-def fix_database_models__inject_db_types(project_directory: str, db_types: str):
-    """ insert <db_types file> into database/models.py """
-    models_file_name = f'{project_directory}/database/models.py'
-    if db_types != "":
-        print(f'.. ..Injecting file {db_types} into database/models.py')
-        with open(db_types, 'r') as file:
-            db_types_data = file.read()
-        create_utils.insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
-
-
-def fix_database_models__import_customize_models(project_directory: str):
-    """ Append "from database import customize_models" to database/models.py """
-    models_file_name = f'{project_directory}/database/models.py'
-    print(f'7. Appending "from database import customize_models" to database/models.py')
-    models_file = open(models_file_name, 'a')
-    models_file.write("\n\nfrom database import customize_models\n")
-    models_file.close()
+    print(f'.e .. Updated python_anywhere_wsgi.py with {full_path}')
 
 
 def start_open_with(open_with: str, project_name: str):
@@ -605,9 +633,11 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
 
 
 def invoke_creators(model_creation_services: CreateFromModel):
+    """ uses data model to create api, apps
+    """
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
 
-    print("4. Create api/expose_api_models.py (import / iterate models)")
+    print(" a.  Create api/expose_api_models.py (import / iterate models)")
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_creator.py')
     creator = importlib.util.module_from_spec(spec)
@@ -615,28 +645,28 @@ def invoke_creators(model_creation_services: CreateFromModel):
     creator.create(model_creation_services)  # invoke create function
 
     if model_creation_services.admin_app:
-        print("5. Create ui/admin app (import / iterate models)")
+        print(" b.  Create ui/admin app (import / iterate models)")
         creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/admin_creator.py')
         creator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(creator)
         creator.create(model_creation_services)
     else:
-        print(".. ..ui/admin_app creation declined")
+        print(".. .. ..ui/admin_app creation declined")
 
     if model_creation_services.react_admin:
-        print("5. Create ui/react_admin app (import / iterate models)")
+        print(" c.  Create ui/react_admin app (import / iterate models)")
         creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
         creator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(creator)
         creator.create(model_creation_services)
     else:
-        print(".. ..ui/react_admin creation declined")
+        print(".. .. ..ui/react_admin creation declined")
 
 
     if model_creation_services.flask_appbuilder:
-        print("6. Create ui/basic_web_app (import / iterate models)")
+        print(" c.  Create ui/basic_web_app (import / iterate models)")
         creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
         creator = importlib.util.module_from_spec(spec)
@@ -695,9 +725,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     """user-supplied project_name, less the twiddle (which might be in project_name). Typically relative to cwd. """
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
-    abs_db_url = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
-                                                         project_name,      # actual user parameter
-                                                         from_git, "2. Create Project", abs_db_url)
+    abs_db_url, is_northwind = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
+                                                                       project_name,      # actual user parameter
+                                                                       from_git, "2. Create Project", abs_db_url)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
@@ -708,39 +738,21 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         project_directory=project_directory,
         copy_to_project_directory = copy_to_project_directory,
         api_logic_server_dir = get_api_logic_server_dir(),
-        abs_db_url=abs_db_url, db_url=db_url,
+        abs_db_url=abs_db_url, db_url=db_url, is_northwind=is_northwind,
         host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__)
     invoke_creators(model_creation_services)
     if extended_builder is not None and extended_builder != "":
-        print(f'7. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
+        print(f'4. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
         invoke_extended_builder(extended_builder, db_url, project_directory)
 
-    if use_model == "":
-        fix_database_models__import_customize_models(project_directory)
+    copy_project_result = final_project_fixup("4. Final project fixup", project_name, project_directory, host, port,
+                        use_model, copy_to_project_directory)
 
-    print(f'8. Update api_logic_server_run.py with '
-          f'project_name={project_name} and host, port')
-    update_api_logic_server_run(project_name, project_directory, host, port)
-
-    fix_host_and_ports("9. Fixing api/expose_services - port, host", project_directory, host, port)
-
-    if open_with != "":
+    if open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
         start_open_with(open_with=open_with, project_name=project_name)
-
-    copy_project_result = ""
-    if copy_to_project_directory != "":
-        copy_project_result = \
-            copy_project_to_local(project_directory, copy_to_project_directory,
-                                  f'10. Copy temp_created_project over {copy_to_project_directory} ')
-
-    api_logic_server_info_file_dict["last_created_project_name"] = project_directory  # project_name - twiddle
-    api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
-    api_logic_server_info_file_dict["last_created_version"] = __version__
-    with open(api_logic_server_info_file_name, 'w') as api_logic_server_info_file_file:
-        yaml.dump(api_logic_server_info_file_dict, api_logic_server_info_file_file, default_flow_style=False)
 
     if run:  # synchronous run of server - does not return
         # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
@@ -818,7 +830,8 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app build \n"
+            "\t10/29/2021 - 03.20.19: More port changes (5656, 5002), running inclusion of admin app, admin bkps \n"
+            "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app \n"
             "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"
             "\t10/18/2021 - 03.20.09: Readme Tutorial for IDE users \n"

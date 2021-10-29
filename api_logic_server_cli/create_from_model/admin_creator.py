@@ -250,8 +250,8 @@ class AdminCreator(object):
         self.yaml_lines.append(f'  number_relationships: {self.num_related}')
         if self.num_related == 0:
             self.yaml_lines.append(f'  warning: no_related_view')
-            print(".. ..WARNING - no relationships detected - add them to your database or model")
-            print(".. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
+            print(".. .. ..WARNING - no relationships detected - add them to your database or model")
+            print(".. .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
 
     def create_admin_app(self, msg: str = "", from_git: str = ""):
         """
@@ -279,7 +279,7 @@ class AdminCreator(object):
         shutil.copytree(from_proto_dir, to_project_dir)
 
     def create_admin_application(self):
-        self.create_admin_app(msg=".. ..Create ui/admin")
+        self.create_admin_app(msg=".. .. ..Create ui/admin")
 
         cwd = os.getcwd()
         sys.path.append(cwd)  # for banking Command Line test  TODO drop??
@@ -302,6 +302,21 @@ class AdminCreator(object):
             yaml_file_name = yaml_file_name + f'/ui/admin/admin.yaml'
         with open(yaml_file_name, 'w') as yaml_file:
             yaml_file.writelines("\n".join(self.yaml_lines))
+        yaml_backup = yaml_file_name.replace("admin.yaml", "admin_create_from_model_backup.yaml")
+        with open(yaml_backup, 'w') as yaml_file:
+            yaml_file.writelines("\n".join(self.yaml_lines))
+        if self.mod_gen.is_northwind:
+            admin_file = open(yaml_file_name, 'w')
+            admin_custom_nw_file = open(
+                os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
+            admin_custom_nw = admin_custom_nw_file.read()
+            admin_file.write(admin_custom_nw)
+            admin_file.close()
+
+            nw_backup_file_name = yaml_file_name.replace("admin.yaml", "admin_custom_nw_backup.yaml")
+            admin_file = open(nw_backup_file_name, 'w')
+            admin_file.write(admin_custom_nw)
+            admin_file.close()
 
 
 def create(model_creation_services: create_from_model.CreateFromModel):

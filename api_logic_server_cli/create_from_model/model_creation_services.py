@@ -54,6 +54,7 @@ class CreateFromModel(object):
                  api_logic_server_dir: str = "",
                  abs_db_url: str = "sqlite:///nw.sqlite",
                  db_url: str="sqlite:///nw.sqlite",
+                 is_northwind: bool=False,
                  host: str = "localhost",
                  port: str = "5656",
                  admin_app: bool = True,
@@ -70,6 +71,7 @@ class CreateFromModel(object):
         self.api_logic_server_dir = api_logic_server_dir
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
         self.db_url = db_url  # the original cli parameter
+        self.is_northwind = is_northwind
         self.host = host
         self.port = port
         self.not_exposed = not_exposed
@@ -187,7 +189,7 @@ class CreateFromModel(object):
             self.app.config.SQLALCHEMY_DATABASE_URI = self.abs_db_url
             self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
             if log_info:
-                print(f'.. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
+                print(f'.. .. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
             model_imported = False
             sys.path.insert(0, project_abs_path + "/database")  #  e.g., adds /Users/val/Desktop/my_project/database
             try:
@@ -209,8 +211,8 @@ class CreateFromModel(object):
         orm_class = None
         metadata = None
         if not model_imported:
-            print('.. ..Creation proceeding to enable manual database/models.py fixup')
-            print('.. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
+            print('.. .. ..Creation proceeding to enable manual database/models.py fixup')
+            print('.. .. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
         else:
             try:
                 cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
@@ -223,7 +225,7 @@ class CreateFromModel(object):
                         self.add_table_to_class_map(orm_class)
                 if (orm_class is not None):
                     if log_info:
-                        print(f'.. ..Dynamic model import successful '
+                        print(f'.. .. ..Dynamic model import successful '
                               f'({len(self.table_to_class_map)} classes'
                               f') -'
                               f' getting metadata from {str(orm_class)}')
