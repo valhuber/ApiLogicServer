@@ -114,16 +114,25 @@ class AdminCreator(object):
             if num_tabs == 1:  # no nested tabs
                 self.create_child_tabs(a_table_def)
 
-    def create_object_reference(self, a_table_def, column_reference, num_tabs, a_parent_table_def):
-        parent_role_name = column_reference.split('.')[0]
-        if a_parent_table_def != None and parent_role_name == a_parent_table_def.name:
-            skipped = f'master object detected - {a_table_def}.{column_reference}'
+    def create_object_reference(self, a_child_table_def, parent_column_reference, num_tabs, a_master_parent_table_def):
+        """
+        given a_child_table_def.parent_column_reference, create object: attrs, fKeys (for *js* client (no meta))
+        """
+        parent_role_name = parent_column_reference.split('.')[0]  # careful - is role (class) name, not table name
+        if a_master_parent_table_def != None and parent_role_name == a_master_parent_table_def.name:
+            skipped = f'avoid redundant master join - {a_child_table_def}.{parent_column_reference}'
             log.debug(f'master object detected - {skipped}')
         else:
-            fkeys = a_table_def.foreign_key_constraints
+            fkeys = a_child_table_def.foreign_key_constraints
+            if parent_column_reference == "employee.lastName":  # table Employees, class/role employee
+                log.debug("Debug stop")
             found_fkey = False
-            for each_fkey in fkeys:
-                if each_fkey.referred_table.key == parent_role_name:
+            checked_keys = ""
+            for each_fkey in fkeys:  # find fkey for parent_role_name
+                referred_table: str = each_fkey.referred_table.key  # table name, eg, Employees
+                referred_table = referred_table.lower()
+                checked_keys += referred_table + " "
+                if referred_table.startswith(parent_role_name.lower()):
                     self.yaml_lines.append(f'{tabs(num_tabs)}  - object:')
                     # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
                     self.yaml_lines.append(f'{tabs(num_tabs)}    - type: {each_fkey.referred_table.fullname}')
@@ -135,8 +144,11 @@ class AdminCreator(object):
                     found_fkey = True
                     break
             if not found_fkey:
-                msg = f'unable to find Parent Role: {a_table_def.table_name}.{parent_role_name}'
-                raise Exception(msg)
+                msg = f'child {a_child_table_def.name} unable to find Parent Role: {a_child_table_def.name}.{parent_role_name} in {checked_keys}'
+                self.yaml_lines.append(f'#{tabs(num_tabs)} - object reference error: {msg}')
+                log.warning(msg)
+                pass
+                # raise Exception(msg)
 
     def create_child_tabs(self, a_table_def):
         """

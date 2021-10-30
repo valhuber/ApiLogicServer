@@ -77,7 +77,7 @@ def setup_logging(flask_app):
             formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
         handler.setFormatter(formatter)
         logic_logger.addHandler(handler)
-        logic_logger.setLevel(logging.DEBUG)
+        logic_logger.setLevel(logging.INFO)
         logic_logger.propagate = True
 
     do_engine_logging = False
