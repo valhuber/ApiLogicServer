@@ -44,12 +44,6 @@ class AdminCreator(object):
     non_favorite_names = "id"
 
     _indent = "   "
-    '''
-    tables_visited = set()  # to address "generate children first"
-    """ table names of all visited views """
-    tables_generated = set()  # to address "generate children first"
-    """ table names of all fully generated views """
-    '''
 
     num_pages_generated = 0
     num_related = 0

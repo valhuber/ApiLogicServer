@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.22"
+__version__ = "3.20.24"
 
 import yaml
 
@@ -832,7 +832,8 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/29/2021 - 03.20.22: More port changes (5656, 5002), running admin yaml app, admin bkps, role fix \n"
+            "\t10/30/2021 - 03.20.24: move json_to_entities to util \n"
+            "\t10/29/2021 - 03.20.23: More port changes (5656, 5002), running admin yaml app, admin bkps, role fix \n"
             "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app \n"
             "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"

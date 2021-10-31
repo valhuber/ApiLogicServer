@@ -1,6 +1,8 @@
+import logging
+
 import util
 from typing import List
-import logging
+
 import safrs
 import sqlalchemy
 from flask import request, jsonify
