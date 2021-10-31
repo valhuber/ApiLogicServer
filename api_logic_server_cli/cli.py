@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.20.25"
+__version__ = "3.20.26"
 
 import yaml
 
@@ -66,6 +66,8 @@ default_fab_host = "localhost"
 if os.path.exists('/home/api_logic_server'):  # docker?
     default_project_name = "/localhost/api_logic_server"
     default_fab_host = "0.0.0.0"
+nw_db_status = ""
+""" '', nw, nw+, nw- """
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -235,17 +237,20 @@ def copy_if_mounted(project_directory):
 
 
 def clone_prototype_project_with_nw_samples(project_directory: str, project_name: str,
-                                            from_git: str, msg: str, abs_db_url: str) -> str:
+                                            from_git: str, msg: str,
+                                            abs_db_url: str, nw_db_status: str) -> str:
     """
-    clone prototype to  project directory, and remove git folder
+    clone prototype to  project directory, copy sqlite db, and remove git folder
 
-    if nw, Append logic/declare_logic.py with pre-defined...
+    if nw/nw+, inject sample logic/declare_logic and api/customize_api.
 
     :param project_directory: name of project created
     :param project_name: actual user parameter (might have ~, .)
     :param from_git: name of git project to clone (blank for default)
+    :param msg printed, such as Create Project
     :param abs_db_url: non-relative location of db
-    :return: abs_db_url (e.g., reflects sqlite copy)
+    :param nw_db_status one of ["", "nw", "nw+", "nw-"]
+    :return: abs_db_url (e.g., reflects sqlite copy to project/database dir)
     """
     cloned_from = from_git
     remove_project_debug = True
@@ -279,10 +284,8 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
                   f'.. Verify the --project_name argument\n'
                   f'.. If you are using Docker, verify the -v argument\n\n')
 
-    is_northwind = False
-    if abs_db_url.endswith("nw.sqlite"):
-        is_northwind = True
-        print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, rpcs")
+    if nw_db_status in ["nw", "nw+"]:
+        print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, services")
         replace_readme_with_nw_readme(project_directory)
         replace_logic_with_nw_logic(project_directory)
         replace_customize_models_with_nw_customize_models(project_directory)
@@ -334,7 +337,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
         print(f'.. ..Copied sqlite db to: {target_db_loc_actual} and '
               f'updated db_uri in {project_directory}/config.py')
 
-    return target_db_loc_actual, is_northwind
+    return target_db_loc_actual
 
 
 def create_basic_web_app(db_url, project_name, msg):  # remove
@@ -590,7 +593,7 @@ def start_open_with(open_with: str, project_name: str):
     create_utils.run_command(f'{open_with} {project_name}', None, "no-msg")
 
 
-def is_docker():
+def is_docker() -> bool:
     """ running docker?  path exists: /home/api_logic_server
     """
     path = '/home/api_logic_server'
@@ -707,29 +710,36 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                   extended_builder=extended_builder)
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
+    nw_db_status = ""  # presume not northwind
     abs_db_url = db_url
-    if abs_db_url == "":
+    """ non-relative db location - we work with this (but NB: we copy sqlite db to <project>/database) """
+    if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:
         abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-        print(f'0. Using demo default db_url: {abs_db_url}')
+        nw_db_status = "nw"
+    elif db_url == "nw-":
+        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+        nw_db_status = "nw-"
+    elif db_url == "nw+":
+        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
+        nw_db_status = "nw+"
+    elif db_url.startswith('sqlite:///'):
+        url = db_url[10: len(db_url)]
+        abs_db_url = abspath(url)
+        abs_db_url = 'sqlite:///' + abs_db_url
+
     if extended_builder == "*":
         extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/extended_builder.py')
         print(f'0. Using default extended_builder: {extended_builder}')
-    if db_url.startswith('sqlite:///'):
-        url = db_url[10: len(db_url)]
-        abs_db_url = abspath(url)
-        if db_url == "sqlite:///nw.sqlite":
-            abs_db_url = f'{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-            print(f'0. Using dev demo default db_url: {abs_db_url}')
-        abs_db_url = 'sqlite:///' + abs_db_url
-        pass
 
     project_directory = resolve_home(project_name)
     """user-supplied project_name, less the twiddle (which might be in project_name). Typically relative to cwd. """
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
-    abs_db_url, is_northwind = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
-                                                                       project_name,      # actual user parameter
-                                                                       from_git, "2. Create Project", abs_db_url)
+    abs_db_url = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
+                                                         project_name,      # actual user parameter
+                                                         from_git, "2. Create Project",
+                                                         abs_db_url,        # sqlite DBs are copied to proj/database
+                                                         nw_db_status)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
     create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
@@ -740,7 +750,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         project_directory=project_directory,
         copy_to_project_directory = copy_to_project_directory,
         api_logic_server_dir = get_api_logic_server_dir(),
-        abs_db_url=abs_db_url, db_url=db_url, is_northwind=is_northwind,
+        abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
         host=host, port=port,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
@@ -832,7 +842,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/30/2021 - 03.20.25: move json_to_entities to util, source/target yaml \n"
+            "\t10/30/2021 - 03.20.26: move json_to_entities to util, source/target yaml, nw+/- \n"
             "\t10/29/2021 - 03.20.23: More port changes (5656, 5002), running admin yaml app, admin bkps, role fix \n"
             "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app \n"
             "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
@@ -916,10 +926,6 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     """
     # print_info()
     db_types = ""
-    if db_url == default_db or db_url == "":
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-    if db_url == "nw":
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-v2.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
@@ -996,10 +1002,6 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
     """
     # print_info()
     db_types = ""
-    if db_url == default_db or db_url == "":
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-    if db_url == "nw":
-        db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-v2.sqlite'
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
@@ -1053,7 +1055,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
               help="Server hostname (default is localhost)")
 @click.option('--port',
               default=f'5002',
-              help="Port (default 8080, or leave empty)")
+              help="Port (default 5002, or leave empty)")
 @click.pass_context
 def run_ui(ctx, project_name: str, host: str="localhost", port: str="5002"):
     """

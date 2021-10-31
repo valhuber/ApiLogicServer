@@ -311,7 +311,7 @@ class AdminCreator(object):
         yaml_backup = yaml_file_name.replace("admin.yaml", "admin_create_from_model_backup.yaml")
         with open(yaml_backup, 'w') as yaml_file:
             yaml_file.writelines("\n".join(self.yaml_lines))
-        if self.mod_gen.is_northwind:
+        if self.mod_gen.nw_db_status in ["nw", "nw+"]:
             admin_file = open(yaml_file_name, 'w')
             admin_custom_nw_file = open(
                 os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")

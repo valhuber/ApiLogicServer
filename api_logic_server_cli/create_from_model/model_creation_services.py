@@ -54,7 +54,7 @@ class CreateFromModel(object):
                  api_logic_server_dir: str = "",
                  abs_db_url: str = "sqlite:///nw.sqlite",
                  db_url: str="sqlite:///nw.sqlite",
-                 is_northwind: bool=False,
+                 nw_db_status: str="",
                  host: str = "localhost",
                  port: str = "5656",
                  admin_app: bool = True,
@@ -71,7 +71,7 @@ class CreateFromModel(object):
         self.api_logic_server_dir = api_logic_server_dir
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
         self.db_url = db_url  # the original cli parameter
-        self.is_northwind = is_northwind
+        self.nw_db_status = nw_db_status
         self.host = host
         self.port = port
         self.not_exposed = not_exposed
