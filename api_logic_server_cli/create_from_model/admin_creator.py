@@ -171,9 +171,9 @@ class AdminCreator(object):
                     self.yaml_lines.append(f'          fkeys:')
                     for each_foreign_key in each_parent.parent.foreign_keys:
                         for each_element in each_foreign_key.constraint.elements:
-                            self.yaml_lines.append(f'          - parent: {each_element.column}')
+                            self.yaml_lines.append(f'          - target: {each_element.column.key}')
                             child_table_name = each_element.parent.table.name
-                            self.yaml_lines.append(f'            child: {child_table_name}.{each_element.parent.name}')
+                            self.yaml_lines.append(f'            source: {each_element.parent.name}')
                     self.yaml_lines.append(f'          columns:')
                     columns = columns = self.mod_gen.get_show_columns(each_possible_child)
                     col_count = 0
