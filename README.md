@@ -25,7 +25,7 @@ ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_ur
 
 ```
 
-Your API is running - explore it with [swagger](http://localhost:5001).
+Your API is running - explore it with [swagger](http://localhost:5000).
 
 VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs).
 
@@ -305,7 +305,7 @@ The **arguments** mean:
 * **-it** - launch a terminal window for the Docker container
 * **--name api_logic_server** - the name of the image on your local host
 * **-rm** - remove the container once it stops (your project files are not lost - they are on your local host)
-* **-p 5001:5001** - maps local (host) part to Docker port 
+* **-p 5000:5000** - maps local (host) part to Docker port 
 * **-v ${PWD}:/localhost** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
    * `${PWD}` is your current folder.  
       * You could also provide a specific folder, e.g., `~/dev/servers` (Unix), or `C:\Users\val\dev\servers` (windows)
@@ -456,7 +456,6 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002
 
 10/24/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental)
 
