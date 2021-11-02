@@ -9,7 +9,9 @@ See: main driver
 
 """
 
-__version__ = "3.20.26"
+__version__ = "3.30.00"
+
+from contextlib import closing
 
 import yaml
 
@@ -842,7 +844,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t10/30/2021 - 03.20.26: move json_to_entities to util, source/target yaml, nw+/- \n"
+            "\t11/01/2021 - 03.30.00: move json_to_entities to util, source/target yaml, nw+/-, port check \n"
             "\t10/29/2021 - 03.20.23: More port changes (5656, 5002), running admin yaml app, admin bkps, role fix \n"
             "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app \n"
             "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
@@ -1149,10 +1151,33 @@ def print_args(args, msg):
     print(" ")
 
 
+def check_ports():
+    rtn_hostname = socket.gethostname()
+    rtn_local_ip = socket.gethostbyname(rtn_hostname)
+    if True or is_docker():
+        output = subprocess.check_output(['bash', '-c', "echo $NAME"])  # just returns \n
+        print(f'check_ports name is: {output}')
+        s = socket.socket()  # Create a socket object
+        host = socket.gethostname()  # Get local machine name
+        port = 5656  # Reserve a port for your service.
+        port_is_available = True
+        try:
+            s.bind((host, port))  # Bind to the port
+        except:
+            port_is_available = False
+        if not port_is_available:
+            msg = "Error - port 5656 not available use\n" \
+                  "  Version 3.30 has changed port assignments to avoid port conflicts\n" \
+                  "  For example, docker start:\n" \
+                  "    docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server"
+            sys.exit(msg)
+        s.close()
+    return rtn_hostname, rtn_local_ip
+
+
 def start():               # target of setup.py
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
     sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n")
+    hostname, local_ip = check_ports() #  = socket.gethostname()
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
@@ -1162,9 +1187,8 @@ if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
     # unix: python api_logic_server_cli/cli.py create --project_name=/home/api_logic_server
 
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
     print(f'\nWelcome to API Logic Server, {__version__}\n')  #  at {local_ip} ')
+    hostname, local_ip = check_ports()
     commands = sys.argv
     if len(sys.argv) > 1 and sys.argv[1] not in ["version", "sys-info", "welcome"] and \
             "show-args" in api_logic_server_info_file_dict:

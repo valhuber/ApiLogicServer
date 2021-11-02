@@ -339,7 +339,7 @@ class FabCreator(object):
                        + "from logic import declare_logic\n"
                        + "from logic_bank.logic_bank import LogicBank\n"
                        )
-        if self.mod_gen.db_url.endswith("nw.sqlite"):  # admin pre-installed for nw, no need to disable logic
+        if self.mod_gen.nw_db_status.startswith("nw"):  # admin pre-installed for nw, no need to disable logic
             insert_text += "LogicBank.activate(session=db.session, activator=declare_logic)\n\n"
         else:  # logic interferes with create-admin - disable it
             insert_text += "# *** Enable the following after creating Flask AppBuilder Admin ***\n"
