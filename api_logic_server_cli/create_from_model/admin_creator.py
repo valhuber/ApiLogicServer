@@ -61,6 +61,7 @@ class AdminCreator(object):
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_name = non_favorite_names
+        self.multi_reln_exceptions = list()
 
         self.metadata = None
         self.engine = None
@@ -84,8 +85,9 @@ class AdminCreator(object):
                 argument1 a_table_def - TableModelInstance
         """
         table_name = a_table_def.name
+        class_name = self.mod_gen.get_class_for_table(table_name)
         log.debug("process_each_table: " + table_name)
-        if "TRANSFERFUNDx" in table_name:
+        if "Employee" == table_name:
             log.debug("special table")  # debug stop here
         if table_name + " " in self.not_exposed:
             return "# not_exposed: api.expose_object(models.{table_name})"
@@ -115,6 +117,7 @@ class AdminCreator(object):
         parent_role_name = parent_column_reference.split('.')[0]  # careful - is role (class) name, not table name
         if a_master_parent_table_def != None and parent_role_name == a_master_parent_table_def.name:
             skipped = f'avoid redundant master join - {a_child_table_def}.{parent_column_reference}'
+            # uncomment for debug self.yaml_lines.append(f'#{tabs(num_tabs)} - {skipped}')
             log.debug(f'master object detected - {skipped}')
         else:
             fkeys = a_child_table_def.foreign_key_constraints
@@ -136,12 +139,16 @@ class AdminCreator(object):
                     for each_column in each_fkey.column_keys:
                         self.yaml_lines.append(f'{tabs(num_tabs)}      - name: {each_column}')
                     found_fkey = True
-                    break
             if not found_fkey:
-                msg = f'child {a_child_table_def.name} unable to find Parent Role: {a_child_table_def.name}.{parent_role_name} in {checked_keys}'
-                self.yaml_lines.append(f'#{tabs(num_tabs)} - object reference error: {msg}')
-                log.warning(msg)
-                pass
+                parent_table_name = parent_role_name
+                if parent_table_name.endswith("1"):
+                    parent_table_name = parent_table_name[:-1]
+                    pass
+                msg = f'Please specify references to {parent_table_name}'
+                self.yaml_lines.append(f'#{tabs(num_tabs)} - Multiple relationships detected -- {msg}')
+                if parent_role_name not in self.multi_reln_exceptions:
+                    self.multi_reln_exceptions.append(parent_role_name)
+                    log.warning(f'Alert - please search ui/admin/admin.yaml for: {msg}')
                 # raise Exception(msg)
 
     def create_child_tabs(self, a_table_def):
@@ -196,7 +203,8 @@ class AdminCreator(object):
         return parent_path
 
     def create_resource(self, a_table_def, num_tabs: int):
-        self.yaml_lines.append(f'{tabs(num_tabs)}{a_table_def.name}:')
+        class_name = self.mod_gen.get_class_for_table(a_table_def.name)
+        self.yaml_lines.append(f'{tabs(num_tabs)}{class_name}:')
         self.num_pages_generated += 1
         self.yaml_lines.append(f'{tabs(num_tabs)}  type: {a_table_def.name}')
         self.yaml_lines.append(f'{tabs(num_tabs)}  user_key: {self.mod_gen.favorite_column_name(a_table_def)}')
@@ -226,7 +234,8 @@ class AdminCreator(object):
 
     def create_first_tab(self):
         if self.first_column:
-            self.yaml_lines.append(f'#     Lookup: False')
+            self.yaml_lines.append(f'#     label: text')
+            self.yaml_lines.append(f'#     lookup: False')
 
         self.first_column = False
 
@@ -311,7 +320,7 @@ class AdminCreator(object):
         yaml_backup = yaml_file_name.replace("admin.yaml", "admin_create_from_model_backup.yaml")
         with open(yaml_backup, 'w') as yaml_file:
             yaml_file.writelines("\n".join(self.yaml_lines))
-        if self.mod_gen.nw_db_status in ["nw", "nw+"]:
+        if self.mod_gen.nw_db_status in ["nw", "nw-"]:
             admin_file = open(yaml_file_name, 'w')
             admin_custom_nw_file = open(
                 os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")

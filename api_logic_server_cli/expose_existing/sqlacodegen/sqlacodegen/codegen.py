@@ -254,6 +254,10 @@ class ModelClass(Model):
         return _re_invalid_identifier.sub("_", name)
 
     def _add_attribute(self, attrname, value):
+        """ add table column/relationship to attributes
+
+        disambiguate relationship accessor names (append tablename with 1, 2...)
+        """
         attrname = tempname = self._convert_to_valid_identifier(attrname)
         counter = 1
         while tempname in self.attributes:
@@ -451,7 +455,7 @@ class CodeGenerator(object):
                 model = self.table_model(table)
             else:
                 model = self.class_model(table, links[table.name], self.inflect_engine,
-                                         not nojoined)
+                                         not nojoined)  # computes attrs (+ roles)
                 classes[model.name] = model
 
             self.models.append(model)

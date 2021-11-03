@@ -153,13 +153,16 @@ class CreateFromModel(object):
     def find_meta_data(self, cwd: str, log_info: bool=False) -> MetaData:
         """     Find Metadata by importing model, or (failing that), db
 
-        a_cmd should be cli folder, e.g. '/Users/val/dev/ApiLogicServer/api_logic_server_cli'
+        cmd should be cli folder, e.g. '/Users/val/dev/ApiLogicServer/api_logic_server_cli'
 
             Metadata contains definition of tables, cols & fKeys (show_related)
             It can be obtained from db, *or* models.py; important because...
                 Many DBs don't define FKs into the db (e.g. nw.db)
                 Instead, they define "Virtual Keys" in their model files
                 To find these, we need to get Metadata from models, not db
+            Also, the names are different (e.g., classicmodels)
+                Class Names are copitalized, singlular
+                And these are the SAFRS resource names
             So, we need to
                 1. Import the models, via a location-relative dynamic import (warning - not trivial)
                 2. Find the Metadata from the imported models:
@@ -384,7 +387,7 @@ class CreateFromModel(object):
         result += "]\n"
         return result
 
-    def predictive_join_columns(self, a_table_def: MetaDataTable) -> set:
+    def predictive_join_columns(self, a_table_def: MetaDataTable) -> list:
         """
         Generates set of predictive join column name:
 
@@ -396,21 +399,27 @@ class CreateFromModel(object):
             Returns
                 set of col names (such Product.ProductName for OrderDetail)
         """
-        result = set()
-        foreign_keys = a_table_def.foreign_keys
-        if a_table_def.name == "orderdetails":  # for debug
+        result = list()
+        foreign_keys = a_table_def.foreign_key_constraints
+        if a_table_def.name == "Order":  # for debug
             log.debug("predictive_joins for: " + a_table_def.name)
         for each_foreign_key in foreign_keys:
-            each_parent_name = each_foreign_key.target_fullname
+            """ remove old code
+            each_parent_name = each_foreign_key.referred_table.name + "." + each_foreign_key.column_keys[0]
             loc_dot = each_parent_name.index(".")
             each_parent_name = each_parent_name[0:loc_dot]
+            """
+            each_parent_name = each_foreign_key.referred_table.name  # todo: improve multi-field key support
             parent_getter = each_parent_name
             if parent_getter[-1] == "s":  # plural parent table names have singular lower case accessors
                 class_name = self.get_class_for_table(each_parent_name)  # eg, Product
                 parent_getter = class_name[0].lower() + class_name[1:]
             each_parent = a_table_def.metadata.tables[each_parent_name]
             favorite_column_name = self.favorite_column_name(each_parent)
-            result.add(parent_getter + "." + favorite_column_name)
+            parent_ref_attr_name = parent_getter + "." + favorite_column_name
+            if parent_ref_attr_name in result:
+                parent_ref_attr_name = parent_getter + "1." + favorite_column_name
+            result.append(parent_ref_attr_name)
         return result
 
     def is_non_favorite_name(self, a_name: str) -> bool:
