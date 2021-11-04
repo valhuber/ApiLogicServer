@@ -141,7 +141,7 @@ class AdminCreator(object):
                 if parent_role_name not in self.multi_reln_exceptions:
                     self.multi_reln_exceptions.append(parent_role_name)
                     log.warning(f'Error - please search ui/admin/admin.yaml for: {msg}')
-            self.yaml_lines.append(f'{tabs(num_tabs)}  - object:')
+            self.yaml_lines.append(f'{tabs(num_tabs)}  - relatioship:')
             self.yaml_lines.append(f'{tabs(num_tabs)}    - type: {each_fkey_constraint.referred_table.fullname}')
             self.yaml_lines.append(f'{tabs(num_tabs)}    - show_attributes:')
             self.yaml_lines.append(f'{tabs(num_tabs)}    - key_attributes:')
@@ -202,7 +202,7 @@ class AdminCreator(object):
                 self.yaml_lines.append(f'        resource: {each_child.name}')
                 self.yaml_lines.append(f'          fkeys:')
                 for each_pair in each_fkey_constraint.elements:
-                    self.yaml_lines.append(f'          - source: {each_pair.parent.name}')
+                    self.yaml_lines.append(f'# REMOVE? - source: {each_pair.parent.name}')
                     self.yaml_lines.append(f'            target: {each_pair.column.name}')
                 self.yaml_lines.append(f'          columns:')
                 columns = self.mod_gen.get_show_columns(each_child)
