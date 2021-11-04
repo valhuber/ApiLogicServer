@@ -97,6 +97,8 @@ class AdminCreator(object):
             return "# skip admin table: " + table_name + "\n"
         elif 'sqlite_sequence' in table_name:
             return "# skip sqlite_sequence table: " + table_name + "\n"
+        elif class_name is None:
+            return "# no class (view): " + table_name + "\n"
         else:
             self.create_resource(a_table_def, num_tabs)
             self.yaml_lines.append(f'    columns:')
@@ -113,15 +115,42 @@ class AdminCreator(object):
     def create_object_reference(self, a_child_table_def, parent_column_reference, num_tabs, a_master_parent_table_def):
         """
         given a_child_table_def.parent_column_reference, create object: attrs, fKeys (for *js* client (no meta))
+
+        :param a_child_table_def: a child table (not class), eg, Employees
+        :param parent_column_reference: parent ref, eg, Department1.DepartmentName
+        :param num_tabs: max tabs
+        :param a_master_parent_table_def: the master of master/detail - skip joins for this
         """
         parent_role_name = parent_column_reference.split('.')[0]  # careful - is role (class) name, not table name
         if a_master_parent_table_def != None and parent_role_name == a_master_parent_table_def.name:
             skipped = f'avoid redundant master join - {a_child_table_def}.{parent_column_reference}'
-            # uncomment for debug self.yaml_lines.append(f'#{tabs(num_tabs)} - {skipped}')
+            # self.yaml_lines.append(f'#{tabs(num_tabs)} - {skipped}')  # uncomment for debug
             log.debug(f'master object detected - {skipped}')
-        else:
+            return
+        if self.mod_gen.my_parents_list is not None:   # almost always, use_model false (we create)
+            class_name = self.mod_gen.get_class_for_table(a_child_table_def.name)
+            my_parents_list = self.mod_gen.my_parents_list[class_name]
+            found_role=False
+            for each_parent_role, each_child_role, each_fkey_constraint in my_parents_list:
+                if each_parent_role == parent_role_name:
+                    found_role = True
+                    break
+            if not found_role:
+                msg = f'Unable to find role for: {parent_column_reference}'
+                self.yaml_lines.append(f'#{tabs(num_tabs)} -- {msg}')
+                if parent_role_name not in self.multi_reln_exceptions:
+                    self.multi_reln_exceptions.append(parent_role_name)
+                    log.warning(f'Error - please search ui/admin/admin.yaml for: {msg}')
+            self.yaml_lines.append(f'{tabs(num_tabs)}  - object:')
+            self.yaml_lines.append(f'{tabs(num_tabs)}    - type: {each_fkey_constraint.referred_table.fullname}')
+            self.yaml_lines.append(f'{tabs(num_tabs)}    - show_attributes:')
+            self.yaml_lines.append(f'{tabs(num_tabs)}    - key_attributes:')
+            for each_column in each_fkey_constraint.column_keys:
+                self.yaml_lines.append(f'{tabs(num_tabs)}      - name: {each_column}')
+            # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
+        else:  # rarely used - only when use_model (we did not generated models.py)
             fkeys = a_child_table_def.foreign_key_constraints
-            if parent_column_reference == "employee.lastName":  # table Employees, class/role employee
+            if a_child_table_def.name == "Employee":  # table Employees, class/role employee
                 log.debug("Debug stop")
             found_fkey = False
             checked_keys = ""
@@ -156,42 +185,73 @@ class AdminCreator(object):
         build tab for any table with fkey to a_table_def (brute force search)
         """
         first_child = True
-        all_tables = a_table_def.metadata.tables
-        for each_possible_child_tuple in all_tables.items():
-            each_possible_child = each_possible_child_tuple[1]
-            parents = each_possible_child.foreign_keys
-            if (a_table_def.name == "Customer" and
-                    each_possible_child.name == "Order"):
-                log.debug(a_table_def)
-            for each_parent in parents:
-                each_parent_name = each_parent.target_fullname
-                loc_dot = each_parent_name.index(".")
-                each_parent_name = each_parent_name[0:loc_dot]
-                if each_parent_name == a_table_def.name:
-                    if first_child:
-                        self.yaml_lines.append(f'    tab_group:')
-                        first_child = False
-                        self.create_first_tab()
-                    self.num_related += 1
-                    self.yaml_lines.append(f'      - tab: {each_possible_child.name} List')
-                    self.yaml_lines.append(f'        resource: {each_possible_child.name}')
-                    self.yaml_lines.append(f'          fkeys:')
-                    for each_foreign_key in each_parent.parent.foreign_keys:
-                        for each_element in each_foreign_key.constraint.elements:
-                            self.yaml_lines.append(f'          - target: {each_element.column.key}')
-                            child_table_name = each_element.parent.table.name
-                            self.yaml_lines.append(f'            source: {each_element.parent.name}')
-                    self.yaml_lines.append(f'          columns:')
-                    columns = columns = self.mod_gen.get_show_columns(each_possible_child)
-                    col_count = 0
-                    for each_column in columns:
-                        col_count += 1
-                        if col_count > self.max_list_columns:
-                            break
-                        if "." not in each_column:
-                            self.yaml_lines.append(f'          - name: {each_column}')
-                        else:
-                            self.create_object_reference(each_possible_child, each_column, 4, a_table_def)
+        if self.mod_gen.my_parents_list is not None:   # almost always, use_model false (we create)
+            class_name = self.mod_gen.get_class_for_table(a_table_def.name)
+            if class_name not in self.mod_gen.my_children_list:
+                return  # it's ok to have no children
+            my_children_list = self.mod_gen.my_children_list[class_name]
+            self.yaml_lines.append(f'    tab_group:')
+            children_seen = set()
+            for each_parent_role, each_child_role, each_fkey_constraint in my_children_list:
+                self.num_related += 1
+                each_child = each_fkey_constraint.table
+                self.yaml_lines.append(f'      - tab: {each_child.name} List')
+                if each_child.name in children_seen:
+                    self.yaml_lines.append(f'        label: {each_child.name}1')
+                children_seen.add(each_child.name)
+                self.yaml_lines.append(f'        resource: {each_child.name}')
+                self.yaml_lines.append(f'          fkeys:')
+                for each_pair in each_fkey_constraint.elements:
+                    self.yaml_lines.append(f'          - source: {each_pair.parent.name}')
+                    self.yaml_lines.append(f'            target: {each_pair.column.name}')
+                self.yaml_lines.append(f'          columns:')
+                columns = self.mod_gen.get_show_columns(each_child)
+                col_count = 0
+                for each_column in columns:
+                    col_count += 1
+                    if col_count > self.max_list_columns:
+                        break
+                    if "." not in each_column:
+                        self.yaml_lines.append(f'          - name: {each_column}')
+                    else:
+                        self.create_object_reference(each_child, each_column, 4, a_table_def)
+        else:
+            all_tables = a_table_def.metadata.tables
+            for each_possible_child_tuple in all_tables.items():
+                each_possible_child = each_possible_child_tuple[1]
+                parents = each_possible_child.foreign_keys
+                if (a_table_def.name == "Customer" and
+                        each_possible_child.name == "Order"):
+                    log.debug(a_table_def)
+                for each_parent in parents:
+                    each_parent_name = each_parent.target_fullname
+                    loc_dot = each_parent_name.index(".")
+                    each_parent_name = each_parent_name[0:loc_dot]
+                    if each_parent_name == a_table_def.name:
+                        if first_child:
+                            self.yaml_lines.append(f'    tab_group:')
+                            first_child = False
+                            self.create_first_tab()
+                        self.num_related += 1
+                        self.yaml_lines.append(f'      - tab: {each_possible_child.name} List')
+                        self.yaml_lines.append(f'        resource: {each_possible_child.name}')
+                        self.yaml_lines.append(f'          fkeys:')
+                        for each_foreign_key in each_parent.parent.foreign_keys:
+                            for each_element in each_foreign_key.constraint.elements:
+                                self.yaml_lines.append(f'          - target: {each_element.column.key}')
+                                child_table_name = each_element.parent.table.name
+                                self.yaml_lines.append(f'            source: {each_element.parent.name}')
+                        self.yaml_lines.append(f'          columns:')
+                        columns = columns = self.mod_gen.get_show_columns(each_possible_child)
+                        col_count = 0
+                        for each_column in columns:
+                            col_count += 1
+                            if col_count > self.max_list_columns:
+                                break
+                            if "." not in each_column:
+                                self.yaml_lines.append(f'          - name: {each_column}')
+                            else:
+                                self.create_object_reference(each_possible_child, each_column, 4, a_table_def)
 
     def get_create_from_model_dir(self) -> Path:
         """

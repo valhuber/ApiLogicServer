@@ -208,6 +208,7 @@ class ModelClass(Model):
         self.name = self._tablename_to_classname(table.name, inflect_engine)
         self.children = []
         self.attributes = OrderedDict()
+        self.foreign_key_relationships = list()
 
         # Assign attribute names for columns
         for column in table.columns:
@@ -292,6 +293,7 @@ class ManyToOneRelationship(Relationship):
         column_names = _get_column_names(constraint)
         colname = column_names[0]
         tablename = constraint.elements[0].column.table.name
+        self.foreign_key_constraint = constraint
         if not colname.endswith('_id'):
             self.preferred_name = inflect_engine.singular_noun(tablename) or tablename
         else:
@@ -305,7 +307,11 @@ class ManyToOneRelationship(Relationship):
 
         # Handle self referential relationships
         if source_cls == target_cls:
-            self.preferred_name = 'parent' if not colname.endswith('_id') else colname[:-3]
+            # self.preferred_name = 'parent' if not colname.endswith('_id') else colname[:-3]
+            if colname.endswith("id") or colname.endswith("Id"):
+                self.preferred_name = colname[:-2]
+            else:
+                self.preferred_name = "parent"  # hmm, why not just table name
             pk_col_names = [col.name for col in constraint.table.primary_key]
             self.kwargs['remote_side'] = '[{0}]'.format(', '.join(pk_col_names))
 
@@ -386,6 +392,10 @@ class CodeGenerator(object):
         self.table_model = table_model
         self.class_model = class_model
         self.nocomments = nocomments
+        self.children_map = dict()
+        """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
+        self.parents_map = dict()
+        """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.inflect_engine = self.create_inflect_engine()
         if template:
             self.template = template
@@ -772,10 +782,10 @@ from sqlalchemy.dialects.mysql import *
                 rel_render = "{0}{1} = {2}\n".format(self.indentation, attr, self.render_relationship(relationship))
                 rel_parts = rel_render.split(")")
                 backref_name = model.name + "List"
-                """ disambiguate multi-relns, eg,
-                    parent1 = relationship('AbUser', remote_side=[id],  <== goofy - should be AbUser
-                        primaryjoin='AbUser.created_by_fk == AbUser.id',
-                        cascade_backrefs=True, backref='AbUserList1')   <== need to append that "1"
+                """ disambiguate multi-relns, eg, in the Employee child class, 2 relns to Department:
+                        Department =  relationship('Department', primaryjoin='Employee.OnLoanDepartmentId == Department.Id', cascade_backrefs=True, backref='EmployeeList')
+                        Department1 = 'Department', primaryjoin='Employee.WorksForDepartmentId == Department.Id', cascade_backrefs=True, backref='EmployeeList_Department1')
+                    cascade_backrefs=True, backref='EmployeeList_Department1'   <== need to append that "1"
                 """
                 unique_name = relationship.target_cls + '.' + backref_name
                 if unique_name in backrefs:  # disambiguate
@@ -787,6 +797,28 @@ from sqlalchemy.dialects.mysql import *
                                           ")" + rel_parts[1]
                 # rendered += "{0}{1} = {2}\n".format(self.indentation, attr, self.render_relationship(relationship))
                 rendered += rel_render_with_backref
+                if relationship.source_cls.startswith("Ab"):
+                    pass
+                elif isinstance(relationship, ManyToManyRelationship):  # eg, chinook:PlayList->PlayListTrack
+                    pass  # fixme: admin.yaml not seeing ManyToManyRelationship
+                else:
+                    if relationship.source_cls not in self.parents_map:
+                        self.parents_map[relationship.source_cls] = list()
+                    self.parents_map[relationship.source_cls].append(
+                        (
+                            attr,          # to parent, eg, Department, Department1
+                            backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
+                            relationship.foreign_key_constraint
+                        ) )
+                    if relationship.target_cls not in self.children_map:
+                        self.children_map[relationship.target_cls] = list()
+                    self.children_map[relationship.target_cls].append(
+                        (
+                            attr,          # to parent, eg, Department, Department1
+                            backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
+                            relationship.foreign_key_constraint
+                        ) )
+                pass
 
         # Render subclasses
         for child_class in model.children:

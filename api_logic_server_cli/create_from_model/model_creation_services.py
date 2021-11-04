@@ -55,6 +55,8 @@ class CreateFromModel(object):
                  abs_db_url: str = "sqlite:///nw.sqlite",
                  db_url: str="sqlite:///nw.sqlite",
                  nw_db_status: str="",
+                 my_children_list: dict=None,
+                 my_parents_list: dict=None,
                  host: str = "localhost",
                  port: str = "5656",
                  admin_app: bool = True,
@@ -74,6 +76,10 @@ class CreateFromModel(object):
         self.nw_db_status = nw_db_status
         self.host = host
         self.port = port
+        self.my_children_list = my_children_list
+        """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
+        self.my_parents_list = my_parents_list
+        """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.not_exposed = not_exposed
         self.favorite_names = favorite_names
         self.non_favorite_names = non_favorite_names

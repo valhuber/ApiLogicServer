@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.30.00"
+__version__ = "3.40.00"
 
 from contextlib import closing
 
@@ -350,11 +350,16 @@ def create_basic_web_app(db_url, project_name, msg):  # remove
     pass
 
 
-def create_models(db_url: str, project: str, use_model: str) -> str:
+def create_models(db_url: str, project: str, use_model: str):
     """
     create model.py, normally via expose_existing.expose_existing_callable
 
     or, use_model -- then just copy
+
+    :param db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
+    :param project: project dictory
+    :param use_model: file name of existing models file ("" means create_models)
+    :returns dict - key is table name, value is list of (role-name, relationship)
     """
 
     class DotDict(dict):
@@ -373,14 +378,17 @@ def create_models(db_url: str, project: str, use_model: str) -> str:
         codegen_args.version = False
         return codegen_args
 
+    rtn_my_children_map = None
+    rtn_my_parents_map = None
     if use_model != "":  # use this hand-edited model (e.g., added relns)
         model_file = resolve_home(use_model)
         print(f'.. .. ..Copy {model_file} to {project + "/database/models.py"}')
         copyfile(model_file, project + '/database/models.py')
     else:
         code_gen_args = get_codegen_args()
-        expose_existing_callable.codegen(code_gen_args)
+        rtn_my_children_map, rtn_my_parents_map = expose_existing_callable.codegen(code_gen_args)
         pass
+    return rtn_my_children_map, rtn_my_parents_map
 
 
 def write_expose_api_models(project_name, apis):
@@ -744,7 +752,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                                                          nw_db_status)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
-    create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
+    my_children_list, my_parents_list = create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
     fix_database_models__inject_db_types(project_directory, db_types)
 
     # print("4. Create api/expose_api_models.py (import / iterate models)")
@@ -754,6 +762,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         api_logic_server_dir = get_api_logic_server_dir(),
         abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
         host=host, port=port,
+        my_children_list=my_children_list, my_parents_list=my_parents_list,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__)
@@ -844,6 +853,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/03/2021 - 03.40.00: significant rework for multiple relns (nw+), multi-field keys \n"
             "\t11/01/2021 - 03.30.00: move json_to_entities to util, source/target yaml, nw+/-, port check \n"
             "\t10/29/2021 - 03.20.23: More port changes (5656, 5002), running admin yaml app, admin bkps, role fix \n"
             "\t10/28/2021 - 03.20.17: More port changes (5656, 5002), running inclusion of admin app \n"

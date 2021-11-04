@@ -98,7 +98,9 @@ def codegen(args):
     if args.outfile:
         outfile = io.open(args.outfile, "w", encoding="utf-8")
         outfile.write(models_py)
-    return models_py
+    rtn_children_map = generator.children_map
+    rtn_parents_map = generator.parents_map
+    return rtn_children_map, rtn_parents_map
 
 
 if on_import:
