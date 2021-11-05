@@ -258,6 +258,8 @@ and your Dev Tools (IDE etc) operate
      * **`create`** to create projects on your local host
      * **`run`** to execute projects, utilizing the various runtimes (Flask, SQLAlchemy, SAFRS API, Logic, Flask App Builder)
   * A **Python** environment to support execution, and development using your IDE
+  * Neither API nor logic execution creates / uses additional files or database data; your database access is via standard SQLAlchemy models
+     * The exception to this is Flask App Builder, which creates additional database tables for security authorization
 
 
 * The **database** (purple) can run as a separate Docker container, in your local host, or (for the demo) within the ApiLogicServer docker container
