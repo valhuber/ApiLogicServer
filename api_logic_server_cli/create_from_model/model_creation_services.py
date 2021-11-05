@@ -129,6 +129,13 @@ class CreateFromModel(object):
             shutil.copyfile(src, dest)
 
     @staticmethod
+    def fix_win_path(path: str) -> str:
+        result = path
+        if os.name == "nt":
+            result = path.replace('/', '\\')
+        return result
+
+    @staticmethod
     def create_app(config_filename=None, host="localhost"):
         import safrs
 

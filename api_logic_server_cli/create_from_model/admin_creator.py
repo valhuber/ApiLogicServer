@@ -337,18 +337,9 @@ class AdminCreator(object):
         """
         from_proto_dir = from_git
         if from_proto_dir == "":
-            code_loc = str(self.get_create_from_model_dir())
-            if "\\" in code_loc:
-                from_proto_dir = code_loc + "\\create_from_model\\admin"
-            else:
-                from_proto_dir = code_loc + "/create_from_model/admin"
-
-        to_project_dir = self.mod_gen.project_directory
-        if "\\" in to_project_dir:
-            to_project_dir = to_project_dir + "\\ui\\admin"
-        else:
-            to_project_dir = to_project_dir + "/ui/admin"
-
+            from_proto_dir = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
+                                                       "/create_from_model/admin")
+        to_project_dir = self.mod_gen.fix_win_path(self.mod_gen.project_directory + "/ui/admin")
         print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
         # self.mod_gen.recursive_overwrite(from_proto_dir, to_project_dir)
         shutil.copytree(from_proto_dir, to_project_dir)
@@ -371,10 +362,13 @@ class AdminCreator(object):
         self.create_settings()
 
         yaml_file_name = self.mod_gen.project_directory
+        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
+        """
         if "\\" in yaml_file_name:
             yaml_file_name = yaml_file_name + f'\\ui\\admin\\admin.yaml'
         else:
             yaml_file_name = yaml_file_name + f'/ui/admin/admin.yaml'
+        """
         with open(yaml_file_name, 'w') as yaml_file:
             yaml_file.writelines("\n".join(self.yaml_lines))
         yaml_backup = yaml_file_name.replace("admin.yaml", "admin_create_from_model_backup.yaml")
