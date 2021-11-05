@@ -258,6 +258,8 @@ and your Dev Tools (IDE etc) operate
      * **`create`** to create projects on your local host
      * **`run`** to execute projects, utilizing the various runtimes (Flask, SQLAlchemy, SAFRS API, Logic, Flask App Builder)
   * A **Python** environment to support execution, and development using your IDE
+  * Neither API nor logic execution creates / uses additional files or database data; your database access is via standard SQLAlchemy models
+     * The exception to this is Flask App Builder, which creates additional database tables for security authorization
 
 
 * The **database** (purple) can run as a separate Docker container, in your local host, or (for the demo) within the ApiLogicServer docker container
@@ -335,7 +337,7 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 <details>
   <summary>How It Works</summary>
 
-The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below.
+The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below - for more information, [see here](https://github.com/valhuber/ApiLogicServer/wiki/Internal-Debug-Execution).
 
 The executables are shown in blue, corresponding to Run, above.  Your customizations are done to the files noted in green.
 
@@ -349,6 +351,7 @@ The executables are shown in blue, corresponding to Run, above.  Your customizat
 
 
 * **Logic Setup:** It then calls `LogicBank.activate`, passing `declare_logic` which loads your declared rules. On subsequent updates, logic operates by handling SQLAlchemy `before_flush` events, enforcing the declared logic.  This is non-trivial, using the engine in `LogicBank` (no relation to retail!).
+ For more information on logic execution, [see here](https://github.com/valhuber/LogicBank/wiki/Logic-Walkthrough).
 
 
 * **API Setup:** It next invokes `api/expose_api_models`.  This calls safrs to create the end points and the swagger information, based on the created `database/models.py` (the models used by the SQLAlchemy ORM).   It finally calls `api/customize.py` where you can add your own services.  The sample includes a trivial Hello World, as well as `add_order`.
