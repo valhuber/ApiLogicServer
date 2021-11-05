@@ -42,20 +42,20 @@ resources:
     tab_group:
       - tab: CustomerCustomerDemo List
         resource: CustomerCustomerDemo
-          fkeys:
-          - parent: Customer.Id
-            child: CustomerCustomerDemo.CustomerTypeId
-          columns:
+        fkeys:
+          - target: CustomerTypeId
+# REMOVE?   source: Id
+        columns:
           - name: Id
           - name: CustomerTypeId
       - tab: Order List
         resource: Order
-          fkeys:
-          - parent: Customer.Id
-            child: Order.CustomerId
-          columns:
+        fkeys:
+          - target: CustomerId
+# REMOVE?   source: Id
+        columns:
           - name: ShipName
-          - object:
+          - relatioship:
             - type: Employee
             - show_attributes:
             - key_attributes:
@@ -97,10 +97,10 @@ resources:
     tab_group:
       - tab: EmployeeAudit List
         resource: EmployeeAudit
-          fkeys:
-          - parent: Employee.Id
-            child: EmployeeAudit.EmployeeId
-          columns:
+        fkeys:
+          - target: EmployeeId
+# REMOVE?   source: Id
+        columns:
           - name: LastName
           - name: Title
           - name: Salary
@@ -109,26 +109,26 @@ resources:
           - name: EmployeeId
       - tab: EmployeeTerritory List
         resource: EmployeeTerritory
-          fkeys:
-          - parent: Employee.Id
-            child: EmployeeTerritory.EmployeeId
-          columns:
+        fkeys:
+          - target: EmployeeId
+# REMOVE?   source: Id
+        columns:
           - name: Id
-          - object:
+          - relatioship:
             - type: Territory
             - show_attributes:
             - key_attributes:
               - name: TerritoryId
-          - name: TerritoryId
           - name: EmployeeId
+          - name: TerritoryId
       - tab: Order List
         resource: Order
-          fkeys:
-          - parent: Employee.Id
-            child: Order.EmployeeId
-          columns:
+        fkeys:
+          - target: EmployeeId
+# REMOVE?   source: Id
+        columns:
           - name: ShipName
-          - object:
+          - relatioship:
             - type: Customer
             - show_attributes:
             - key_attributes:
@@ -155,12 +155,12 @@ resources:
     tab_group:
       - tab: OrderDetail List
         resource: OrderDetail
-          fkeys:
-          - parent: Product.Id
-            child: OrderDetail.ProductId
-          columns:
+        fkeys:
+          - target: ProductId
+# REMOVE?   source: Id
+        columns:
           - name: Id
-          - object:
+          - relatioship:
             - type: Order
             - show_attributes:
             - key_attributes:
@@ -208,24 +208,24 @@ resources:
     tab_group:
       - tab: EmployeeTerritory List
         resource: EmployeeTerritory
-          fkeys:
-          - parent: Territory.Id
-            child: EmployeeTerritory.TerritoryId
-          columns:
+        fkeys:
+          - target: TerritoryId
+# REMOVE?   source: Id
+        columns:
           - name: Id
-          - object:
+          - relatioship:
             - type: Employee
             - show_attributes:
             - key_attributes:
               - name: EmployeeId
-          - name: TerritoryId
           - name: EmployeeId
+          - name: TerritoryId
   CustomerCustomerDemo:
     type: CustomerCustomerDemo
     user_key: Id
     columns:
     - name: Id
-    - object:
+    - relatioship:
       - type: Customer
       - show_attributes:
       - key_attributes:
@@ -236,7 +236,7 @@ resources:
     user_key: LastName
     columns:
     - name: LastName
-    - object:
+    - relatioship:
       - type: Employee
       - show_attributes:
       - key_attributes:
@@ -252,33 +252,33 @@ resources:
     user_key: Id
     columns:
     - name: Id
-    - object:
+    - relatioship:
       - type: Territory
       - show_attributes:
       - key_attributes:
         - name: TerritoryId
-    - object:
+    - relatioship:
       - type: Employee
       - show_attributes:
       - key_attributes:
         - name: EmployeeId
-    - name: TerritoryId
     - name: EmployeeId
+    - name: TerritoryId
   Order:
     type: Order
     user_key: ShipName
     columns:
     - name: ShipName
-    - object:
-      - type: Customer
-      - show_attributes:
-      - key_attributes:
-        - name: CustomerId
-    - object:
+    - relatioship:
       - type: Employee
       - show_attributes:
       - key_attributes:
         - name: EmployeeId
+    - relatioship:
+      - type: Customer
+      - show_attributes:
+      - key_attributes:
+        - name: CustomerId
     - name: OrderDate
     - name: RequiredDate
     - name: ShippedDate
@@ -296,12 +296,12 @@ resources:
     tab_group:
       - tab: OrderDetail List
         resource: OrderDetail
-          fkeys:
-          - parent: Order.Id
-            child: OrderDetail.OrderId
-          columns:
+        fkeys:
+          - target: OrderId
+# REMOVE?   source: Id
+        columns:
           - name: Id
-          - object:
+          - relatioship:
             - type: Product
             - show_attributes:
             - key_attributes:
@@ -315,28 +315,26 @@ resources:
     user_key: Id
     columns:
     - name: Id
-    - object:
-      - type: Order
-      - show_attributes:
-      - key_attributes:
-        - name: OrderId
-    - object:
+    - relatioship:
       - type: Product
       - show_attributes:
       - key_attributes:
         - name: ProductId
+    - relatioship:
+      - type: Order
+      - show_attributes:
+      - key_attributes:
+        - name: OrderId
     - name: UnitPrice
     - name: Quantity
     - name: Discount
     - name: Amount
     - name: ShippedDate
-    - name: OrderId
     - name: ProductId
+    - name: OrderId
 about:
-  date: October 28, 2021 16:40:30
-  version: 3.20.17
-  application: |
-    This is the customized version of nw admin app
+  date: November 05, 2021 07:21:39
+  version: 3.40.01
   recent_changes: |
     Object: Lookups optional
     Resource: Info box

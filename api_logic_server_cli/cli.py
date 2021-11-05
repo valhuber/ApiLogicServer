@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.01"
+__version__ = "3.40.02"
 
 from contextlib import closing
 
@@ -623,7 +623,7 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
         print(f'\n\nCreating ApiLogicServer with options:')
         print(f'  --db_url={db_url}')
         print(f'  --project_name={project_name}')
-        print(f'  --react_admin={admin_app}')
+        print(f'  --admin_app={admin_app}')
         print(f'  --react_admin={react_admin}')
         print(f'  --flask_appbuilder={flask_appbuilder}')
         print(f'  --from_git={from_git}')
@@ -853,6 +853,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/04/2021 - 03.40.02: yaml - indent error, do not override nw temporarily \n"
             "\t11/04/2021 - 03.40.01: significant rework for multiple relns (nw+), multi-field keys \n"
             "\t11/01/2021 - 03.30.00: move json_to_entities to util, source/target yaml, nw+/-, port check \n"
             "\t10/29/2021 - 03.20.23: More port changes (5656, 5002), running admin yaml app, admin bkps, role fix \n"

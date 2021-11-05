@@ -200,11 +200,11 @@ class AdminCreator(object):
                     self.yaml_lines.append(f'        label: {each_child.name}1')
                 children_seen.add(each_child.name)
                 self.yaml_lines.append(f'        resource: {each_child.name}')
-                self.yaml_lines.append(f'          fkeys:')
+                self.yaml_lines.append(f'        fkeys:')
                 for each_pair in each_fkey_constraint.elements:
                     self.yaml_lines.append(f'          - target: {each_pair.parent.name}')
                     self.yaml_lines.append(f'# REMOVE?   source: {each_pair.column.name}')
-                self.yaml_lines.append(f'          columns:')
+                self.yaml_lines.append(f'        columns:')
                 columns = self.mod_gen.get_show_columns(each_child)
                 col_count = 0
                 for each_column in columns:
@@ -381,12 +381,14 @@ class AdminCreator(object):
         with open(yaml_backup, 'w') as yaml_file:
             yaml_file.writelines("\n".join(self.yaml_lines))
         if self.mod_gen.nw_db_status in ["nw", "nw-"]:
-            admin_file = open(yaml_file_name, 'w')
             admin_custom_nw_file = open(
                 os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
             admin_custom_nw = admin_custom_nw_file.read()
-            admin_file.write(admin_custom_nw)
-            admin_file.close()
+            dev_temp_do_not_overwrite = True  # fixme remove this when the files are stable
+            if not dev_temp_do_not_overwrite:
+                admin_file = open(yaml_file_name, 'w')
+                admin_file.write(admin_custom_nw)
+                admin_file.close()
 
             nw_backup_file_name = yaml_file_name.replace("admin.yaml", "admin_custom_nw_backup.yaml")
             admin_file = open(nw_backup_file_name, 'w')
