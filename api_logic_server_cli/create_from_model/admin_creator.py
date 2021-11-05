@@ -202,8 +202,8 @@ class AdminCreator(object):
                 self.yaml_lines.append(f'        resource: {each_child.name}')
                 self.yaml_lines.append(f'          fkeys:')
                 for each_pair in each_fkey_constraint.elements:
-                    self.yaml_lines.append(f'# REMOVE? - source: {each_pair.parent.name}')
-                    self.yaml_lines.append(f'            target: {each_pair.column.name}')
+                    self.yaml_lines.append(f'          - target: {each_pair.parent.name}')
+                    self.yaml_lines.append(f'# REMOVE?   source: {each_pair.column.name}')
                 self.yaml_lines.append(f'          columns:')
                 columns = self.mod_gen.get_show_columns(each_child)
                 col_count = 0

@@ -19,13 +19,13 @@ To create the sample API and web-app project in a *minute or two --*  start Dock
 cd ~/Desktop                       # directory of API Logic Server projects on local host
 
 # Start (install if required) the API Logic Server docker container
-docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=  # Working Software, Now
 
 ```
 
-Your API is running - explore it with [swagger](http://localhost:5000).
+Your API is running - explore it with [swagger](http://localhost:5656).
 
 VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-IDEs).
 
@@ -71,7 +71,7 @@ Pre-reqs:
 cd ~/Desktop                       # directory of API Logic Server projects on local host
 
 # Start API Logic Server container
-docker run -it --name api_logic_server --rm -p 5000:5000 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 ApiLogicServer create --project_name=/localhost/api_logic_server --db_url=  # RETURN for sample database
 
@@ -305,7 +305,7 @@ The **arguments** mean:
 * **-it** - launch a terminal window for the Docker container
 * **--name api_logic_server** - the name of the image on your local host
 * **-rm** - remove the container once it stops (your project files are not lost - they are on your local host)
-* **-p 5000:5000** - maps local (host) part to Docker port 
+* **-p 5656:5656** - maps local (host) part to Docker port 
 * **-v ${PWD}:/localhost** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
    * `${PWD}` is your current folder.  
       * You could also provide a specific folder, e.g., `~/dev/servers` (Unix), or `C:\Users\val\dev\servers` (windows)
@@ -456,6 +456,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002
 
 10/24/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental)
 
