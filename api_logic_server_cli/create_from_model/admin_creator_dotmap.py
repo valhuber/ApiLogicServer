@@ -73,7 +73,7 @@ class AdminCreator(object):
         self.create_admin_app(msg=".. .. ..Create ui/admin")
 
         cwd = os.getcwd()
-        sys.path.append(cwd)  # for banking Command Line test  TODO drop??
+        sys.path.append(cwd)
         self.mod_gen.find_meta_data(cwd)  # sets self.metadata
         meta_tables = self.mod_gen.metadata.tables
 
@@ -98,20 +98,7 @@ class AdminCreator(object):
         """
         table_name = a_table_def.name
         class_name = self.mod_gen.get_class_for_table(table_name)
-        log.debug("process_each_table: " + table_name)
-        if "Employee" == table_name:
-            log.debug("special table")  # debug stop here
-        if table_name + " " in self.not_exposed:
-            return None  # not_exposed: api.expose_object(models.{table_name})
-        if "ProductDetails_V" in table_name:
-            log.debug("special table")  # should not occur (--noviews)
-        if table_name.startswith("ab_"):
-            return None  # skip admin table: " + table_name + "\n
-        elif 'sqlite_sequence' in table_name:
-            return None  # skip sqlite_sequence table: " + table_name + "\n
-        elif class_name is None:
-            return None  # no class (view): " + table_name + "\n
-        else:
+        if self.do_process_resource(table_name, class_name):
             each_resource = self.new_resource(a_table_def)
             each_resource.columns = []
             columns = self.mod_gen.get_show_columns(a_table_def)
@@ -130,10 +117,9 @@ class AdminCreator(object):
             child_tabs = self.create_child_tabs(a_table_def)
             if child_tabs:
                 each_resource.tab_groups = child_tabs
-            self.admin_yaml.resources[str(a_table_def.name)] = each_resource
             return each_resource
 
-    def new_resource(self, a_table_def) -> DotMap:
+    def new_resource(self, a_table_def: MetaDataTable) -> DotMap:
         # resource_header[self.mod_gen.get_class_for_table(a_table_def.name)] = DotMap()
         resource = DotMap()
         self.num_pages_generated += 1
@@ -142,23 +128,22 @@ class AdminCreator(object):
         resource.user_key = str(self.mod_gen.favorite_column_name(a_table_def))
         return resource
 
-    def new_relationship_to_parent(self, a_child_table_def, parent_column_reference,
+    def new_relationship_to_parent(self, a_child_table_def: MetaDataTable, parent_column_reference,
                                    a_master_parent_table_def) -> (None, DotMap):
         """
-        given a_child_table_def.parent_column_reference, create object: attrs, fKeys (for *js* client (no meta))
+        given a_child_table_def.parent_column_reference, create relationship: attrs, fKeys (for *js* client (no meta))
 
         :param a_child_table_def: a child table (not class), eg, Employees
         :param parent_column_reference: parent ref, eg, Department1.DepartmentName
         :param a_master_parent_table_def: the master of master/detail - skip joins for this
         """
         parent_role_name = parent_column_reference.split('.')[0]  # careful - is role (class) name, not table name
-        if a_master_parent_table_def != None and parent_role_name == a_master_parent_table_def.name:
+        if a_master_parent_table_def is not None and parent_role_name == a_master_parent_table_def.name:
             skipped = f'avoid redundant master join - {a_child_table_def}.{parent_column_reference}'
-            # self.yaml_lines.append(f'#{tabs(num_tabs)} - {skipped}')  # uncomment for debug
             log.debug(f'master object detected - {skipped}')
             return None
         relationship = DotMap()
-        if self.mod_gen.my_parents_list is None:   # almost always, use_model false (we create)
+        if self.mod_gen.my_parents_list is None:   # RARELY used - use_model is true (expose_existing not called)
             return self.new_relationship_to_parent_no_model(a_child_table_def,
                                                             parent_column_reference, a_master_parent_table_def)
         class_name = self.mod_gen.get_class_for_table(a_child_table_def.name)
@@ -170,10 +155,10 @@ class AdminCreator(object):
                 break
         if not found_role:
             msg = f'Unable to find role for: {parent_column_reference}'
-            # self.yaml_lines.append(f'#{tabs(num_tabs)} -- {msg}')  FIXME error diagnostic
+            relationship.error_unable_to_find_role = msg
             if parent_role_name not in self.multi_reln_exceptions:
                 self.multi_reln_exceptions.append(parent_role_name)
-                log.warning(f'Error - please search ui/admin/admin.yaml for: {msg}')
+                log.warning(f'Error - please search ui/admin/admin.yaml for: Unable to find role')
         relationship.type = str(each_fkey_constraint.referred_table.fullname)
         relationship.show_attributes = []
         relationship.key_attributes = []
@@ -186,7 +171,7 @@ class AdminCreator(object):
         # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         return relationship
 
-    def create_child_tabs(self, a_table_def) -> DotMap:
+    def create_child_tabs(self, a_table_def: MetaDataTable) -> DotMap:
         """
         build tabs for related children
         """
@@ -204,8 +189,7 @@ class AdminCreator(object):
             self.num_related += 1
             each_child = each_fkey_constraint.table
             if each_child.name in children_seen:
-                pass
-                # FIXME self.yaml_lines.append(f'        label: {each_child.name}1')
+                pass  # it's ok, we are using the child_role_name now
             children_seen.add(each_child.name)
             for each_pair in each_fkey_constraint.elements:
                 key_pair = DotMap()
@@ -231,12 +215,27 @@ class AdminCreator(object):
                         rel[parent_role_name] = relationship.toDict()
                         each_tab.columns.append(rel)
 
-            tab_group[tab_name] = each_tab
+            tab_group[tab_name] = each_tab  # this disambiguates multi-relns, eg Employee OnLoan/WorksForDept
         return tab_group
 
-    def create_child_tabs_no_model(self, a_table_def) -> DotMap:
+    def do_process_resource(self, table_name, class_name)-> bool:
+        """ filter out resources that are skipped by user, start with ab etc
         """
-        Rarely used, now broken.
+        if table_name + " " in self.not_exposed:
+            return False  # not_exposed: api.expose_object(models.{table_name})
+        if "ProductDetails_V" in table_name:
+            log.debug("special table")  # should not occur (--noviews)
+        if table_name.startswith("ab_"):
+            return False  # skip admin table: " + table_name + "\n
+        elif 'sqlite_sequence' in table_name:
+            return False  # skip sqlite_sequence table: " + table_name + "\n
+        elif class_name is None:
+            return False  # no class (view): " + table_name + "\n
+        return True
+
+    def create_child_tabs_no_model(self, a_table_def: MetaDataTable) -> DotMap:
+        """
+        Rarely used, now broken.  Ignore for now
 
         This approach is for cases where use_model specifies an existing model.
 
@@ -279,10 +278,10 @@ class AdminCreator(object):
                             # self.create_object_reference(each_possible_child, each_column, 4, a_table_def)
         return tab_group
 
-    def new_relationship_to_parent_no_model(self, a_child_table_def, parent_column_reference,
+    def new_relationship_to_parent_no_model(self, a_child_table_def: MetaDataTable, parent_column_reference,
                                    a_master_parent_table_def) -> (None, DotMap):
         """
-        Rarely used, now broken.
+        Rarely used, now broken.  Ignore for now.
 
         This approach is for cases where use_model specifies an existing model.
 
@@ -331,34 +330,6 @@ class AdminCreator(object):
         parent_path = path.parent
         parent_path = parent_path.parent
         return parent_path
-
-    def doc_properties(self):
-        """ show non-automated properties in yaml, for users' quick reference
-        """
-        resource_props = DotMap()
-        resource_props.menu = "False | name"
-        resource_props.info = "long html / rich text"
-        resource_props.allow_insert = "exp"
-        resource_props.allow_update = "exp"
-        resource_props.allow_delete = "exp"
-        self.admin_yaml.properties_ref.resource = resource_props
-
-        attr_props = DotMap()
-        attr_props.label = "caption for display"
-        attr_props.hidden = "exp"
-        attr_props.group = "name"
-        style_props = DotMap()
-        style_props.font_weight = 0
-        style_props.color = "blue"
-        attr_props.style = style_props
-        self.admin_yaml.properties_ref.attribute = attr_props
-
-        tab_props = DotMap()
-        tab_props.label = "text"
-        tab_props.lookup = "boolean"
-        self.admin_yaml.properties_ref.tab = tab_props
-
-        # self.admin_yaml.properties_ref = DotMap()
 
     def write_yaml_files(self, admin_yaml):
         """ write admin.yaml, with backup, with additional nw customized backup
@@ -409,6 +380,32 @@ class AdminCreator(object):
             # FIXME what to do self.yaml_lines.append(f'  warning: no_related_view')
             print(".. .. ..WARNING - no relationships detected - add them to your database or model")
             print(".. .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
+
+    def doc_properties(self):
+        """ show non-automated properties in yaml, for users' quick reference
+        """
+        resource_props = DotMap()
+        resource_props.menu = "False | name"
+        resource_props.info = "long html / rich text"
+        resource_props.allow_insert = "exp"
+        resource_props.allow_update = "exp"
+        resource_props.allow_delete = "exp"
+        self.admin_yaml.properties_ref.resource = resource_props
+
+        attr_props = DotMap()
+        attr_props.label = "caption for display"
+        attr_props.hidden = "exp"
+        attr_props.group = "name"
+        style_props = DotMap()
+        style_props.font_weight = 0
+        style_props.color = "blue"
+        attr_props.style = style_props
+        self.admin_yaml.properties_ref.attribute = attr_props
+
+        tab_props = DotMap()
+        tab_props.label = "text"
+        tab_props.lookup = "boolean"
+        self.admin_yaml.properties_ref.tab = tab_props
 
     def create_admin_app(self, msg: str = "", from_git: str = ""):
         """
