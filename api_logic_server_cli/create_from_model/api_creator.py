@@ -42,7 +42,7 @@ def create_expose_api_models(model_creation_services):
 
     sys.path.append(cwd)
 
-    model_creation_services.find_meta_data(cwd, log_info=True)  # sets self.metadata
+    model_creation_services.find_meta_data(cwd, log_info=True)  # sets self.metadata, enables get_class_for_table
     meta_tables = model_creation_services.metadata.tables
     for each_table in meta_tables.items():
         table_name = each_table[1].name

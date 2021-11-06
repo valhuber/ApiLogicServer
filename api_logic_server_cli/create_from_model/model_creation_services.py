@@ -174,8 +174,9 @@ class CreateFromModel(object):
                 Instead, they define "Virtual Keys" in their model files
                 To find these, we need to get Metadata from models, not db
             Also, the names are different (e.g., classicmodels)
-                Class Names are copitalized, singlular
+                Class Names are copitalized, singlular (tables may not be)
                 And these are the SAFRS resource names
+                See model_creation_services.get_class_for_table(table_name)
             So, we need to
                 1. Import the models, via a location-relative dynamic import (warning - not trivial)
                 2. Find the Metadata from the imported models:
