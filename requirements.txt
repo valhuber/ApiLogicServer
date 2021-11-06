@@ -19,3 +19,4 @@ cryptography
 requests
 gunicorn
 psycopg2-binary
+DotMap

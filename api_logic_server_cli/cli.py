@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.02"
+__version__ = "3.40.03"
 
 from contextlib import closing
 
@@ -660,12 +660,21 @@ def invoke_creators(model_creation_services: CreateFromModel):
     creator.create(model_creation_services)  # invoke create function
 
     if model_creation_services.admin_app:
-        print(" b.  Create ui/admin app (import / iterate models)")
-        creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/admin_creator.py')
-        creator = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(creator)
-        creator.create(model_creation_services)
+        use_dotmap = True
+        if use_dotmap:
+            print(" b.  Create ui/admin app (import / iterate models)")
+            creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/admin_creator_dotmap.py')
+            creator = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(creator)
+            creator.create(model_creation_services)
+        else:
+            print(" b.  Create ui/admin app (import / iterate models)")
+            creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/admin_creator.py')
+            creator = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(creator)
+            creator.create(model_creation_services)
     else:
         print(".. .. ..ui/admin_app creation declined")
 
@@ -853,6 +862,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/05/2021 - 03.40.02: yaml.dump using DotMap (pip it!) \n"
             "\t11/04/2021 - 03.40.02: yaml - indent error, do not override nw temporarily \n"
             "\t11/04/2021 - 03.40.01: significant rework for multiple relns (nw+), multi-field keys \n"
             "\t11/01/2021 - 03.30.00: move json_to_entities to util, source/target yaml, nw+/-, port check \n"
