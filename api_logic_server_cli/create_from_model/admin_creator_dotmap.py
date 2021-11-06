@@ -158,34 +158,32 @@ class AdminCreator(object):
             log.debug(f'master object detected - {skipped}')
             return None
         relationship = DotMap()
-        if self.mod_gen.my_parents_list is not None:   # almost always, use_model false (we create)
-            class_name = self.mod_gen.get_class_for_table(a_child_table_def.name)
-            my_parents_list = self.mod_gen.my_parents_list[class_name]
-            found_role=False
-            for each_parent_role, each_child_role, each_fkey_constraint in my_parents_list:
-                if each_parent_role == parent_role_name:
-                    found_role = True
-                    break
-            if not found_role:
-                msg = f'Unable to find role for: {parent_column_reference}'
-                # self.yaml_lines.append(f'#{tabs(num_tabs)} -- {msg}')  FIXME error diagnostic
-                if parent_role_name not in self.multi_reln_exceptions:
-                    self.multi_reln_exceptions.append(parent_role_name)
-                    log.warning(f'Error - please search ui/admin/admin.yaml for: {msg}')
-            relationship.type = str(each_fkey_constraint.referred_table.fullname)
-            relationship.show_attributes = []
-            relationship.key_attributes = []
-            if class_name == "Employee":
-                log.debug("Parents for special table - debug")
-                pass
-            for each_column in each_fkey_constraint.column_keys:
-                key_column = DotMap()
-                key_column.name = str(each_column)
-                relationship.key_attributes.append(str(each_column))
-            # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
-        else:  # rarely used - only when use_model (we did not generated models.py)
-            relationship = self.new_relationship_to_parent_no_model(a_child_table_def,
-                                                                    parent_column_reference, a_master_parent_table_def)
+        if self.mod_gen.my_parents_list is None:   # almost always, use_model false (we create)
+            return self.new_relationship_to_parent_no_model(a_child_table_def,
+                                                            parent_column_reference, a_master_parent_table_def)
+        class_name = self.mod_gen.get_class_for_table(a_child_table_def.name)
+        my_parents_list = self.mod_gen.my_parents_list[class_name]
+        found_role=False
+        for each_parent_role, each_child_role, each_fkey_constraint in my_parents_list:
+            if each_parent_role == parent_role_name:
+                found_role = True
+                break
+        if not found_role:
+            msg = f'Unable to find role for: {parent_column_reference}'
+            # self.yaml_lines.append(f'#{tabs(num_tabs)} -- {msg}')  FIXME error diagnostic
+            if parent_role_name not in self.multi_reln_exceptions:
+                self.multi_reln_exceptions.append(parent_role_name)
+                log.warning(f'Error - please search ui/admin/admin.yaml for: {msg}')
+        relationship.type = str(each_fkey_constraint.referred_table.fullname)
+        relationship.show_attributes = []
+        relationship.key_attributes = []
+        if class_name == "Employee":
+            print("Parents for special table - debug")
+        for each_column in each_fkey_constraint.column_keys:
+            key_column = DotMap()
+            key_column.name = str(each_column)
+            relationship.key_attributes.append(str(each_column))
+        # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         return relationship
 
     def create_child_tabs(self, a_table_def) -> DotMap:
