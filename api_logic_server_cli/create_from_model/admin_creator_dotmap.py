@@ -428,9 +428,9 @@ def create(model_creation_services: create_from_model.CreateFromModel):
     """ called by ApiLogicServer CLI -- creates ui/react_admin application
     """
     admin_creator = AdminCreator(model_creation_services,
-                                   host=model_creation_services.host, port=model_creation_services.port,
-                                   not_exposed=model_creation_services.not_exposed + " ",
-                                   favorite_names=model_creation_services.favorite_names,
-                                   non_favorite_names=model_creation_services.non_favorite_names)
+                                 host=model_creation_services.host, port=model_creation_services.port,
+                                 not_exposed=model_creation_services.not_exposed + " ",
+                                 favorite_names=model_creation_services.favorite_names,
+                                 non_favorite_names=model_creation_services.non_favorite_names)
     admin_creator.create_admin_application()
 
