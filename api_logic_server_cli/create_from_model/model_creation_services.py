@@ -176,7 +176,7 @@ class CreateFromModel(object):
             Also, the names are different (e.g., classicmodels)
                 Class Names are copitalized, singlular (tables may not be)
                 And these are the SAFRS resource names
-                See model_creation_services.get_class_for_table(table_name)
+                Builds add_table_to_class_map - see model_creation_services.get_class_for_table(table_name)
             So, we need to
                 1. Import the models, via a location-relative dynamic import (warning - not trivial)
                 2. Find the Metadata from the imported models:
@@ -239,7 +239,7 @@ class CreateFromModel(object):
                     if ("'models." in str(each_class_def_str) and
                             "Ab" not in str(each_class_def_str)):
                         orm_class = each_cls_member
-                        self.add_table_to_class_map(orm_class)
+                        self.add_table_to_class_map(orm_class)  # <-- CRITICAL: enables get_class_for_table
                 if (orm_class is not None):
                     if log_info:
                         print(f'.. .. ..Dynamic model import successful '
