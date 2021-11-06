@@ -79,47 +79,26 @@ class AdminCreator(object):
 
         cwd = os.getcwd()
         sys.path.append(cwd)  # for banking Command Line test  TODO drop??
-
         self.mod_gen.find_meta_data(cwd)  # sets self.metadata
         meta_tables = self.mod_gen.metadata.tables
 
         self.admin_yaml.resources = {}
         for each_table in meta_tables.items():
-            self.create_each_resource(each_table[1], 1)
+            each_table_def = each_table[1]
+            each_resource = self.create_each_resource(each_table_def)
+            if each_resource is not None:
+                self.admin_yaml.resources[str(each_table_def.name)] = each_resource.toDict()
 
         self.create_about()
         self.create_info()
         self.create_settings()
 
-        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin_dotmap.yaml')
-        real_dict = self.admin_yaml.toDict()
-        admin_yaml = yaml.dump(real_dict)
-        with open(yaml_file_name, 'w') as yaml_file:
-            yaml_file.write(admin_yaml)
-        yaml_backup_file_name = yaml_file_name.replace("admin_dotmap", "admin_dotmap_backup")
-        with open(yaml_backup_file_name, 'w') as yaml_backup_file:
-            yaml_backup_file.write(admin_yaml)
+        admin_yaml_dict = self.admin_yaml.toDict()
+        admin_yaml_dump = yaml.dump(admin_yaml_dict)
+        self.write_yaml_files(admin_yaml_dump)
 
-
-        if self.mod_gen.nw_db_status in ["nw", "nw-"]:
-            admin_custom_nw_file = open(
-                os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
-            admin_custom_nw = admin_custom_nw_file.read()
-            dev_temp_do_not_overwrite = True  # fixme remove this when the files are stable
-            if not dev_temp_do_not_overwrite:
-                admin_file = open(yaml_file_name, 'w')
-                admin_file.write(admin_custom_nw)
-                admin_file.close()
-
-                nw_backup_file_name = yaml_file_name.replace("admin.yaml", "admin_custom_nw_backup.yaml")
-                admin_file = open(nw_backup_file_name, 'w')
-                admin_file.write(admin_custom_nw)
-                admin_file.close()
-
-    def create_each_resource(self, a_table_def: MetaDataTable, num_tabs: int):
-        """ create resources tag for given table
-            Parameters
-                argument1 a_table_def - TableModelInstance
+    def create_each_resource(self, a_table_def: MetaDataTable) -> (None, DotMap):
+        """ create resource DotMap for given table
         """
         table_name = a_table_def.name
         class_name = self.mod_gen.get_class_for_table(table_name)
@@ -127,17 +106,17 @@ class AdminCreator(object):
         if "Employee" == table_name:
             log.debug("special table")  # debug stop here
         if table_name + " " in self.not_exposed:
-            return "# not_exposed: api.expose_object(models.{table_name})"
+            return None  # not_exposed: api.expose_object(models.{table_name})
         if "ProductDetails_V" in table_name:
             log.debug("special table")  # should not occur (--noviews)
         if table_name.startswith("ab_"):
-            return "# skip admin table: " + table_name + "\n"
+            return None  # skip admin table: " + table_name + "\n
         elif 'sqlite_sequence' in table_name:
-            return "# skip sqlite_sequence table: " + table_name + "\n"
+            return None  # skip sqlite_sequence table: " + table_name + "\n
         elif class_name is None:
-            return "# no class (view): " + table_name + "\n"
+            return None  # no class (view): " + table_name + "\n
         else:
-            each_resource = self.new_resource(a_table_def, num_tabs)
+            each_resource = self.new_resource(a_table_def)
             each_resource.columns = []
             columns = self.mod_gen.get_show_columns(a_table_def)
             for each_column in columns:
@@ -146,36 +125,36 @@ class AdminCreator(object):
                     column.name = each_column
                     each_resource.columns.append(column)
                 else:
-                    relationship = self.new_relationship_to_parent(a_table_def, each_column, num_tabs, None)
+                    relationship = self.new_relationship_to_parent(a_table_def, each_column, None)
                     if relationship is not None:  # skip redundant master join
                         rel = DotMap()
-                        rel[relationship.type] = relationship
+                        parent_role_name = each_column.split('.')[0]
+                        rel[parent_role_name] = relationship.toDict()
                         each_resource.columns.append(rel)
-                self.create_first_column(num_tabs)
-            if num_tabs == 1:  # no nested tabs
-                child_tabs = self.create_child_tabs(a_table_def)
-                if child_tabs:
-                    each_resource.tab_groups = child_tabs
-            self.admin_yaml.resources[str(a_table_def.name)] = each_resource.toDict()
+                self.create_first_column()
+            child_tabs = self.create_child_tabs(a_table_def)
+            if child_tabs:
+                each_resource.tab_groups = child_tabs
+            self.admin_yaml.resources[str(a_table_def.name)] = each_resource
+            return each_resource
 
-    def new_resource(self, a_table_def, num_tabs: int) -> DotMap:
+    def new_resource(self, a_table_def) -> DotMap:
         # resource_header[self.mod_gen.get_class_for_table(a_table_def.name)] = DotMap()
         resource = DotMap()
         self.num_pages_generated += 1
         class_name = self.mod_gen.get_class_for_table(a_table_def.name)
         resource.type = str(a_table_def.name)
         resource.user_key = str(self.mod_gen.favorite_column_name(a_table_def))
-        self.create_first_resource(num_tabs)
+        self.create_first_resource()
         return resource
 
     def new_relationship_to_parent(self, a_child_table_def, parent_column_reference,
-                                      num_tabs, a_master_parent_table_def) -> DotMap:
+                                   a_master_parent_table_def) -> (None, DotMap):
         """
         given a_child_table_def.parent_column_reference, create object: attrs, fKeys (for *js* client (no meta))
 
         :param a_child_table_def: a child table (not class), eg, Employees
         :param parent_column_reference: parent ref, eg, Department1.DepartmentName
-        :param num_tabs: max tabs
         :param a_master_parent_table_def: the master of master/detail - skip joins for this
         """
         parent_role_name = parent_column_reference.split('.')[0]  # careful - is role (class) name, not table name
@@ -201,11 +180,14 @@ class AdminCreator(object):
                     log.warning(f'Error - please search ui/admin/admin.yaml for: {msg}')
             relationship.type = str(each_fkey_constraint.referred_table.fullname)
             relationship.show_attributes = []
-            relationship.key_attributes = DotMap()
+            relationship.key_attributes = []
+            if class_name == "Employee":
+                log.debug("Parents for special table - debug")
+                pass
             for each_column in each_fkey_constraint.column_keys:
                 key_column = DotMap()
                 key_column.name = str(each_column)
-                relationship.key_attributes.name = str(each_column)
+                relationship.key_attributes.append(str(each_column))
             # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         else:  # rarely used - only when use_model (we did not generated models.py)
             fkeys = a_child_table_def.foreign_key_constraints
@@ -278,15 +260,16 @@ class AdminCreator(object):
                         column.name = each_column
                         each_tab.columns.append(column)
                     else:
-                        relationship = self.new_relationship_to_parent(each_child, each_column, 4, a_table_def)
+                        relationship = self.new_relationship_to_parent(each_child, each_column, a_table_def)
                         if relationship is not None:  # skip redundant master join
                             rel = DotMap()
-                            rel[relationship.type] = relationship
+                            parent_role_name = each_column.split('.')[0]
+                            rel[parent_role_name] = relationship.toDict()
                             each_tab.columns.append(rel)
 
                 tab_group[tab_name] = each_tab
             return tab_group
-        else:
+        else:  # rarely used (use_model)
             all_tables = a_table_def.metadata.tables
             for each_possible_child_tuple in all_tables.items():
                 each_possible_child = each_possible_child_tuple[1]
@@ -335,7 +318,7 @@ class AdminCreator(object):
         parent_path = parent_path.parent
         return parent_path
 
-    def create_first_resource(self, num_tabs: int):
+    def create_first_resource(self):
         if self.first_resource:
             pass  # FIXME - approach?
             """
@@ -349,7 +332,7 @@ class AdminCreator(object):
             """
         self.first_resource = False
 
-    def create_first_column(self, num_tabs: int):
+    def create_first_column(self):
         if self.first_column:
             pass
             """
@@ -372,6 +355,31 @@ class AdminCreator(object):
             """
 
         self.first_column = False
+
+    def write_yaml_files(self, admin_yaml):
+
+        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin_dotmap.yaml')
+        with open(yaml_file_name, 'w') as yaml_file:
+            yaml_file.write(admin_yaml)
+        yaml_backup_file_name = yaml_file_name.replace("admin_dotmap", "admin_dotmap_backup")
+        with open(yaml_backup_file_name, 'w') as yaml_backup_file:
+            yaml_backup_file.write(admin_yaml)
+
+
+        if self.mod_gen.nw_db_status in ["nw", "nw-"]:
+            admin_custom_nw_file = open(
+                os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
+            admin_custom_nw = admin_custom_nw_file.read()
+            dev_temp_do_not_overwrite = True  # fixme remove this when the files are stable
+            if not dev_temp_do_not_overwrite:
+                admin_file = open(yaml_file_name, 'w')
+                admin_file.write(admin_custom_nw)
+                admin_file.close()
+
+                nw_backup_file_name = yaml_file_name.replace("admin.yaml", "admin_custom_nw_backup.yaml")
+                admin_file = open(nw_backup_file_name, 'w')
+                admin_file.write(admin_custom_nw)
+                admin_file.close()
 
     def create_settings(self):
         self.admin_yaml.settings = DotMap()

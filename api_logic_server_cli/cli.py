@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.03"
+__version__ = "3.40.04"
 
 from contextlib import closing
 
@@ -862,7 +862,8 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t11/05/2021 - 03.40.02: yaml.dump using DotMap (pip it!) \n"
+            "\t11/06/2021 - 03.40.04: cleanup - no more tabs, yaml cleanup \n"
+            "\t11/05/2021 - 03.40.03: yaml.dump using DotMap (pip it!) \n"
             "\t11/04/2021 - 03.40.02: yaml - indent error, do not override nw temporarily \n"
             "\t11/04/2021 - 03.40.01: significant rework for multiple relns (nw+), multi-field keys \n"
             "\t11/01/2021 - 03.30.00: move json_to_entities to util, source/target yaml, nw+/-, port check \n"
