@@ -64,11 +64,6 @@ class AdminCreator(object):
         self.admin_yaml = DotMap()
         self.max_list_columns = 7  # maybe make this a param
 
-        self.first_resource = True
-        self.first_column = True
-        self.first_object = True
-        self.first_object_list = True
-
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
 
@@ -92,6 +87,7 @@ class AdminCreator(object):
         self.create_about()
         self.create_info()
         self.create_settings()
+        self.doc_properties()
 
         admin_yaml_dict = self.admin_yaml.toDict()
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
@@ -131,7 +127,6 @@ class AdminCreator(object):
                         parent_role_name = each_column.split('.')[0]
                         rel[parent_role_name] = relationship.toDict()
                         each_resource.columns.append(rel)
-                self.create_first_column()
             child_tabs = self.create_child_tabs(a_table_def)
             if child_tabs:
                 each_resource.tab_groups = child_tabs
@@ -145,7 +140,6 @@ class AdminCreator(object):
         class_name = self.mod_gen.get_class_for_table(a_table_def.name)
         resource.type = str(a_table_def.name)
         resource.user_key = str(self.mod_gen.favorite_column_name(a_table_def))
-        self.create_first_resource()
         return resource
 
     def new_relationship_to_parent(self, a_child_table_def, parent_column_reference,
@@ -190,124 +184,146 @@ class AdminCreator(object):
                 relationship.key_attributes.append(str(each_column))
             # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         else:  # rarely used - only when use_model (we did not generated models.py)
-            fkeys = a_child_table_def.foreign_key_constraints
-            if a_child_table_def.name == "Employee":  # table Employees, class/role employee
-                log.debug("Debug stop")
-            found_fkey = False
-            checked_keys = ""
-            for each_fkey in fkeys:  # find fkey for parent_role_name
-                referred_table: str = each_fkey.referred_table.key  # table name, eg, Employees
-                referred_table = referred_table.lower()
-                checked_keys += referred_table + " "
-                if referred_table.startswith(parent_role_name.lower()):
-                    # self.yaml_lines.append(f'{tabs(num_tabs)}  - object:')
-                    # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
-                    # self.yaml_lines.append(f'{tabs(num_tabs)}    - type: {each_fkey.referred_table.fullname}')
-                    # self.yaml_lines.append(f'{tabs(num_tabs)}    - show_attributes:')
-                    # self.yaml_lines.append(f'{tabs(num_tabs)}    - key_attributes:')
-                    log.debug(f'got each_fkey: {str(each_fkey)}')
-                    for each_column in each_fkey.column_keys:
-                        # self.yaml_lines.append(f'{tabs(num_tabs)}      - name: {each_column}')
-                        pass
-                    found_fkey = True
-            if not found_fkey:
-                parent_table_name = parent_role_name
-                if parent_table_name.endswith("1"):
-                    parent_table_name = parent_table_name[:-1]
-                    pass
-                msg = f'Please specify references to {parent_table_name}'
-                # self.yaml_lines.append(f'#{tabs(num_tabs)} - Multiple relationships detected -- {msg}')  FIXME
-                if parent_role_name not in self.multi_reln_exceptions:
-                    self.multi_reln_exceptions.append(parent_role_name)
-                    log.warning(f'Alert - please search ui/admin/admin.yaml for: {msg}')
-                # raise Exception(msg)
+            relationship = self.new_relationship_to_parent_no_model(a_child_table_def,
+                                                                    parent_column_reference, a_master_parent_table_def)
         return relationship
 
     def create_child_tabs(self, a_table_def) -> DotMap:
         """
-        build tab for any table with fkey to a_table_def (brute force search)
+        build tabs for related children
         """
-        first_child = True
-        if self.mod_gen.my_parents_list is not None:   # almost always, use_model false (we create)
-            class_name = self.mod_gen.get_class_for_table(a_table_def.name)
-            if class_name not in self.mod_gen.my_children_list:
-                return None  # it's ok to have no children
-            my_children_list = self.mod_gen.my_children_list[class_name]
-            children_seen = set()
-            tab_group = DotMap()
-            for each_parent_role, each_child_role, each_fkey_constraint in my_children_list:
-                each_tab = DotMap()
-                self.num_related += 1
-                each_child = each_fkey_constraint.table
-                if each_child.name in children_seen:
+        if self.mod_gen.my_children_list is  None:   # almost always, use_model false (we create)
+            return self.create_child_tabs_no_model(a_table_def)
+
+        class_name = self.mod_gen.get_class_for_table(a_table_def.name)
+        if class_name not in self.mod_gen.my_children_list:
+            return None  # it's ok to have no children
+        my_children_list = self.mod_gen.my_children_list[class_name]
+        children_seen = set()
+        tab_group = DotMap()
+        for each_parent_role, each_child_role, each_fkey_constraint in my_children_list:
+            each_tab = DotMap()
+            self.num_related += 1
+            each_child = each_fkey_constraint.table
+            if each_child.name in children_seen:
+                pass
+                # FIXME self.yaml_lines.append(f'        label: {each_child.name}1')
+            children_seen.add(each_child.name)
+            for each_pair in each_fkey_constraint.elements:
+                key_pair = DotMap()
+                key_pair.target = str(each_pair.parent.name)
+                key_pair.source_delete_me = str(each_pair.column.name)
+                each_tab.fkeys = key_pair
+
+            each_tab.resource = str(each_child.name)
+            tab_name = each_child_role
+
+            columns = self.mod_gen.get_show_columns(each_child)
+            each_tab.columns = []
+            for each_column in columns:
+                if "." not in each_column:
+                    column = DotMap()
+                    column.name = each_column
+                    each_tab.columns.append(column)
+                else:
+                    relationship = self.new_relationship_to_parent(each_child, each_column, a_table_def)
+                    if relationship is not None:  # skip redundant master join
+                        rel = DotMap()
+                        parent_role_name = each_column.split('.')[0]
+                        rel[parent_role_name] = relationship.toDict()
+                        each_tab.columns.append(rel)
+
+            tab_group[tab_name] = each_tab
+        return tab_group
+
+    def create_child_tabs_no_model(self, a_table_def) -> DotMap:
+        """
+        Rarely used, now broken.
+
+        This approach is for cases where use_model specifies an existing model.
+
+        In such cases, self.mod_gen.my_children_list is  None, so we need to get relns from db, inferring role names
+        """
+        all_tables = a_table_def.metadata.tables
+        tab_group = DotMap()
+        for each_possible_child_tuple in all_tables.items():
+            each_possible_child = each_possible_child_tuple[1]
+            parents = each_possible_child.foreign_keys
+            if (a_table_def.name == "Customer" and
+                    each_possible_child.name == "Order"):
+                log.debug(a_table_def)
+            for each_parent in parents:
+                each_parent_name = each_parent.target_fullname
+                loc_dot = each_parent_name.index(".")
+                each_parent_name = each_parent_name[0:loc_dot]
+                if each_parent_name == a_table_def.name:
+                    self.num_related += 1
+                    # self.yaml_lines.append(f'      - tab: {each_possible_child.name} List')
+                    # self.yaml_lines.append(f'        resource: {each_possible_child.name}')
+                    # self.yaml_lines.append(f'          fkeys:')
+                    for each_foreign_key in each_parent.parent.foreign_keys:
+                        for each_element in each_foreign_key.constraint.elements:
+                            # self.yaml_lines.append(f'          - target: {each_element.column.key}')
+                            child_table_name = each_element.parent.table.name
+                            # self.yaml_lines.append(f'            source: {each_element.parent.name}')
+                    # self.yaml_lines.append(f'          columns:')
+                    columns = columns = self.mod_gen.get_show_columns(each_possible_child)
+                    col_count = 0
+                    for each_column in columns:
+                        col_count += 1
+                        if col_count > self.max_list_columns:
+                            break
+                        if "." not in each_column:
+                            # self.yaml_lines.append(f'          - name: {each_column}')
+                            pass
+                        else:
+                            pass
+                            # self.create_object_reference(each_possible_child, each_column, 4, a_table_def)
+        return tab_group
+
+    def new_relationship_to_parent_no_model(self, a_child_table_def, parent_column_reference,
+                                   a_master_parent_table_def) -> (None, DotMap):
+        """
+        Rarely used, now broken.
+
+        This approach is for cases where use_model specifies an existing model.
+
+        In such cases, self.mod_gen.my_children_list is  None, so we need to get relns from db, inferring role names
+        """
+        parent_role_name = parent_column_reference.split('.')[0]  # careful - is role (class) name, not table name
+        relationship = DotMap()
+        fkeys = a_child_table_def.foreign_key_constraints
+        if a_child_table_def.name == "Employee":  # table Employees, class/role employee
+            log.debug("Debug stop")
+        found_fkey = False
+        checked_keys = ""
+        for each_fkey in fkeys:  # find fkey for parent_role_name
+            referred_table: str = each_fkey.referred_table.key  # table name, eg, Employees
+            referred_table = referred_table.lower()
+            checked_keys += referred_table + " "
+            if referred_table.startswith(parent_role_name.lower()):
+                # self.yaml_lines.append(f'{tabs(num_tabs)}  - object:')
+                # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
+                # self.yaml_lines.append(f'{tabs(num_tabs)}    - type: {each_fkey.referred_table.fullname}')
+                # self.yaml_lines.append(f'{tabs(num_tabs)}    - show_attributes:')
+                # self.yaml_lines.append(f'{tabs(num_tabs)}    - key_attributes:')
+                log.debug(f'got each_fkey: {str(each_fkey)}')
+                for each_column in each_fkey.column_keys:
+                    # self.yaml_lines.append(f'{tabs(num_tabs)}      - name: {each_column}')
                     pass
-                    # FIXME self.yaml_lines.append(f'        label: {each_child.name}1')
-                children_seen.add(each_child.name)
-                for each_pair in each_fkey_constraint.elements:
-                    key_pair = DotMap()
-                    key_pair.target = str(each_pair.parent.name)
-                    key_pair.source_delete_me = str(each_pair.column.name)
-                    each_tab.fkeys = key_pair
-
-                each_tab.resource = str(each_child.name)
-                tab_name = each_child_role
-
-                columns = self.mod_gen.get_show_columns(each_child)
-                each_tab.columns = []
-                for each_column in columns:
-                    if "." not in each_column:
-                        column = DotMap()
-                        column.name = each_column
-                        each_tab.columns.append(column)
-                    else:
-                        relationship = self.new_relationship_to_parent(each_child, each_column, a_table_def)
-                        if relationship is not None:  # skip redundant master join
-                            rel = DotMap()
-                            parent_role_name = each_column.split('.')[0]
-                            rel[parent_role_name] = relationship.toDict()
-                            each_tab.columns.append(rel)
-
-                tab_group[tab_name] = each_tab
-            return tab_group
-        else:  # rarely used (use_model)
-            all_tables = a_table_def.metadata.tables
-            for each_possible_child_tuple in all_tables.items():
-                each_possible_child = each_possible_child_tuple[1]
-                parents = each_possible_child.foreign_keys
-                if (a_table_def.name == "Customer" and
-                        each_possible_child.name == "Order"):
-                    log.debug(a_table_def)
-                for each_parent in parents:
-                    each_parent_name = each_parent.target_fullname
-                    loc_dot = each_parent_name.index(".")
-                    each_parent_name = each_parent_name[0:loc_dot]
-                    if each_parent_name == a_table_def.name:
-                        if first_child:
-                            # self.yaml_lines.append(f'    tab_group:')  FIXME
-                            first_child = False
-                            self.create_first_tab()
-                        self.num_related += 1
-                        # self.yaml_lines.append(f'      - tab: {each_possible_child.name} List')
-                        # self.yaml_lines.append(f'        resource: {each_possible_child.name}')
-                        # self.yaml_lines.append(f'          fkeys:')
-                        for each_foreign_key in each_parent.parent.foreign_keys:
-                            for each_element in each_foreign_key.constraint.elements:
-                                # self.yaml_lines.append(f'          - target: {each_element.column.key}')
-                                child_table_name = each_element.parent.table.name
-                                # self.yaml_lines.append(f'            source: {each_element.parent.name}')
-                        # self.yaml_lines.append(f'          columns:')
-                        columns = columns = self.mod_gen.get_show_columns(each_possible_child)
-                        col_count = 0
-                        for each_column in columns:
-                            col_count += 1
-                            if col_count > self.max_list_columns:
-                                break
-                            if "." not in each_column:
-                                # self.yaml_lines.append(f'          - name: {each_column}')
-                                pass
-                            else:
-                                pass
-                                # self.create_object_reference(each_possible_child, each_column, 4, a_table_def)
+                found_fkey = True
+        if not found_fkey:
+            parent_table_name = parent_role_name
+            if parent_table_name.endswith("1"):
+                parent_table_name = parent_table_name[:-1]
+                pass
+            msg = f'Please specify references to {parent_table_name}'
+            # self.yaml_lines.append(f'#{tabs(num_tabs)} - Multiple relationships detected -- {msg}')  FIXME
+            if parent_role_name not in self.multi_reln_exceptions:
+                self.multi_reln_exceptions.append(parent_role_name)
+                log.warning(f'Alert - please search ui/admin/admin.yaml for: {msg}')
+            # raise Exception(msg)
+        return relationship
 
     def get_create_from_model_dir(self) -> Path:
         """
@@ -318,53 +334,43 @@ class AdminCreator(object):
         parent_path = parent_path.parent
         return parent_path
 
-    def create_first_resource(self):
-        if self.first_resource:
-            pass  # FIXME - approach?
-            """
-            self.yaml_lines.append(f'#{tabs(num_tabs)}  menu: False | name')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}  info: |')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}    {{long html text')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}    for user info}}')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}  allow_update: False')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}  allow_insert: False')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}  allow_delete: False')
-            """
-        self.first_resource = False
+    def doc_properties(self):
+        """ show non-automated properties in yaml, for users' quick reference
+        """
+        resource_props = DotMap()
+        resource_props.menu = "False | name"
+        resource_props.info = "long html / rich text"
+        resource_props.allow_insert = "exp"
+        resource_props.allow_update = "exp"
+        resource_props.allow_delete = "exp"
+        self.admin_yaml.properties_ref.resource = resource_props
 
-    def create_first_column(self):
-        if self.first_column:
-            pass
-            """
-            self.yaml_lines.append(f'#{tabs(num_tabs)}   label: text')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}   hidden: <exp>')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}   group: name')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}   component: name')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}   style:')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}     font-weight: 20')
-            self.yaml_lines.append(f'#{tabs(num_tabs)}     color: blue')
-            """
-        self.first_column = False
+        attr_props = DotMap()
+        attr_props.label = "caption for display"
+        attr_props.hidden = "exp"
+        attr_props.group = "name"
+        style_props = DotMap()
+        style_props.font_weight = 0
+        style_props.color = "blue"
+        attr_props.style = style_props
+        self.admin_yaml.properties_ref.attribute = attr_props
 
-    def create_first_tab(self):
-        if self.first_column:
-            pass
-            """
-            self.yaml_lines.append(f'#     label: text')
-            self.yaml_lines.append(f'#     lookup: False')
-            """
+        tab_props = DotMap()
+        tab_props.label = "text"
+        tab_props.lookup = "boolean"
+        self.admin_yaml.properties_ref.tab = tab_props
 
-        self.first_column = False
+        # self.admin_yaml.properties_ref = DotMap()
 
     def write_yaml_files(self, admin_yaml):
-
+        """ write admin.yaml, with backup, with additional nw customized backup
+        """
         yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin_dotmap.yaml')
         with open(yaml_file_name, 'w') as yaml_file:
             yaml_file.write(admin_yaml)
         yaml_backup_file_name = yaml_file_name.replace("admin_dotmap", "admin_dotmap_backup")
         with open(yaml_backup_file_name, 'w') as yaml_backup_file:
             yaml_backup_file.write(admin_yaml)
-
 
         if self.mod_gen.nw_db_status in ["nw", "nw-"]:
             admin_custom_nw_file = open(
