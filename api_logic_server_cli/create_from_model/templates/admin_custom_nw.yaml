@@ -1,347 +1,384 @@
+about:
+  date: November 08, 2021 13:22:51
+  recent_changes: much to say
+  version: 3.40.07
+info:
+  number_relationships: 8
+  number_tables: 14
+properties_ref:
+  attribute:
+    group: name
+    hidden: exp
+    label: caption for display
+    style:
+      color: blue
+      font_weight: 0
+  resource:
+    allow_delete: exp
+    allow_insert: exp
+    allow_update: exp
+    info: long html / rich text
+    menu: False | name
+  tab:
+    label: text
+    lookup: boolean
 resources:
   Category:
+    info: helpful text
+    menu: admin
+    allow_delete: False
+    attributes:
+    - CategoryName:
+        label: Category Name
+        group: Group Name
+        hidden: <row exp>
+        style:
+          color: blue
+          font_weight: 0
+    - Description
+    - Id
     type: Category
     user_key: CategoryName
-#    menu: False | name
-#    info: |
-#      {long html text
-#      for user info}
-#    allow_update: False
-#    allow_insert: False
-#    allow_delete: False
-    columns:
-    - name: CategoryName
-#     label: text
-#     hidden: <exp>
-#     group: name
-#     component: name
-#     style:
-#       font-weight: 20
-#       color: blue
-    - name: Description
-    - name: Id
   Customer:
+    attributes:
+    - CompanyName
+    - ContactName
+    - ContactTitle
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - Phone
+    - Fax
+    - Balance
+    - CreditLimit
+    - OrderCount
+    - Id
+    - UnpaidOrderCount
+    tab_groups:
+      CustomerCustomerDemoList:
+        label: Customer Demos
+        lookup: False
+        attributes:
+        - Id
+        - CustomerTypeId
+        fkeys:
+          source_delete_me: Id
+          target: CustomerTypeId
+        resource: CustomerCustomerDemo
+      OrderList:
+        attributes:
+        - ShipName
+        - Employee:
+            key_attributes:
+            - EmployeeId
+            show_attributes: []
+            type: Employee
+        - OrderDate
+        - RequiredDate
+        - ShippedDate
+        - ShipVia
+        - Freight
+        - ShipAddress
+        - ShipCity
+        - ShipRegion
+        - ShipPostalCode
+        - ShipCountry
+        - AmountTotal
+        - EmployeeId
+        - Id
+        - CustomerId
+        fkeys:
+          source_delete_me: Id
+          target: CustomerId
+        resource: Order
     type: Customer
     user_key: CompanyName
-    columns:
-    - name: CompanyName
-    - name: ContactName
-    - name: ContactTitle
-    - name: Address
-    - name: City
-    - name: Region
-    - name: PostalCode
-    - name: Country
-    - name: Phone
-    - name: Fax
-    - name: Balance
-    - name: CreditLimit
-    - name: OrderCount
-    - name: UnpaidOrderCount
-    - name: Id
-    tab_group:
-      - tab: CustomerCustomerDemo List
-        resource: CustomerCustomerDemo
-        fkeys:
-          - target: CustomerTypeId
-# REMOVE?   source: Id
-        columns:
-          - name: Id
-          - name: CustomerTypeId
-      - tab: Order List
-        resource: Order
-        fkeys:
-          - target: CustomerId
-# REMOVE?   source: Id
-        columns:
-          - name: ShipName
-          - relatioship:
-            - type: Employee
-            - show_attributes:
-            - key_attributes:
-              - name: EmployeeId
-          - name: OrderDate
-          - name: RequiredDate
-          - name: ShippedDate
-          - name: ShipVia
-  CustomerDemographic:
-    type: CustomerDemographic
-    user_key: Id
-    columns:
-    - name: Id
-    - name: CustomerDesc
-  Employee:
-    type: Employee
-    user_key: LastName
-    columns:
-    - name: LastName
-    - name: FirstName
-    - name: Title
-    - name: TitleOfCourtesy
-    - name: BirthDate
-    - name: HireDate
-    - name: Address
-    - name: City
-    - name: Region
-    - name: PostalCode
-    - name: Country
-    - name: HomePhone
-    - name: Extension
-    - name: Photo
-    - name: Notes
-    - name: ReportsTo
-    - name: PhotoPath
-    - name: IsCommissioned
-    - name: Salary
-    - name: Id
-    tab_group:
-      - tab: EmployeeAudit List
-        resource: EmployeeAudit
-        fkeys:
-          - target: EmployeeId
-# REMOVE?   source: Id
-        columns:
-          - name: LastName
-          - name: Title
-          - name: Salary
-          - name: FirstName
-          - name: CreatedOn
-          - name: EmployeeId
-      - tab: EmployeeTerritory List
-        resource: EmployeeTerritory
-        fkeys:
-          - target: EmployeeId
-# REMOVE?   source: Id
-        columns:
-          - name: Id
-          - relatioship:
-            - type: Territory
-            - show_attributes:
-            - key_attributes:
-              - name: TerritoryId
-          - name: EmployeeId
-          - name: TerritoryId
-      - tab: Order List
-        resource: Order
-        fkeys:
-          - target: EmployeeId
-# REMOVE?   source: Id
-        columns:
-          - name: ShipName
-          - relatioship:
-            - type: Customer
-            - show_attributes:
-            - key_attributes:
-              - name: CustomerId
-          - name: OrderDate
-          - name: RequiredDate
-          - name: ShippedDate
-          - name: ShipVia
-  Product:
-    type: Product
-    user_key: ProductName
-    columns:
-    - name: ProductName
-    - name: QuantityPerUnit
-    - name: UnitPrice
-    - name: UnitsInStock
-    - name: UnitsOnOrder
-    - name: ReorderLevel
-    - name: Discontinued
-    - name: UnitsShipped
-    - name: SupplierId
-    - name: CategoryId
-    - name: Id
-    tab_group:
-      - tab: OrderDetail List
-        resource: OrderDetail
-        fkeys:
-          - target: ProductId
-# REMOVE?   source: Id
-        columns:
-          - name: Id
-          - relatioship:
-            - type: Order
-            - show_attributes:
-            - key_attributes:
-              - name: OrderId
-          - name: UnitPrice
-          - name: Quantity
-          - name: Discount
-          - name: Amount
-  Region:
-    type: Region
-    user_key: RegionDescription
-    columns:
-    - name: RegionDescription
-    - name: Id
-  Shipper:
-    type: Shipper
-    user_key: CompanyName
-    columns:
-    - name: CompanyName
-    - name: Phone
-    - name: Id
-  Supplier:
-    type: Supplier
-    user_key: CompanyName
-    columns:
-    - name: CompanyName
-    - name: ContactName
-    - name: ContactTitle
-    - name: Address
-    - name: City
-    - name: Region
-    - name: PostalCode
-    - name: Country
-    - name: Phone
-    - name: Fax
-    - name: HomePage
-    - name: Id
-  Territory:
-    type: Territory
-    user_key: TerritoryDescription
-    columns:
-    - name: TerritoryDescription
-    - name: RegionId
-    - name: Id
-    tab_group:
-      - tab: EmployeeTerritory List
-        resource: EmployeeTerritory
-        fkeys:
-          - target: TerritoryId
-# REMOVE?   source: Id
-        columns:
-          - name: Id
-          - relatioship:
-            - type: Employee
-            - show_attributes:
-            - key_attributes:
-              - name: EmployeeId
-          - name: EmployeeId
-          - name: TerritoryId
   CustomerCustomerDemo:
+    attributes:
+    - Id
+    - Customer:
+        key_attributes:
+        - CustomerTypeId
+        show_attributes: []
+        type: Customer
+    - CustomerTypeId
     type: CustomerCustomerDemo
     user_key: Id
-    columns:
-    - name: Id
-    - relatioship:
-      - type: Customer
-      - show_attributes:
-      - key_attributes:
-        - name: CustomerTypeId
-    - name: CustomerTypeId
+  CustomerDemographic:
+    attributes:
+    - Id
+    - CustomerDesc
+    type: CustomerDemographic
+    user_key: Id
+  Employee:
+    attributes:
+    - LastName
+    - FirstName
+    - Title
+    - TitleOfCourtesy
+    - BirthDate
+    - HireDate
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - HomePhone
+    - Extension
+    - Photo
+    - Notes
+    - ReportsTo
+    - PhotoPath
+    - IsCommissioned
+    - Salary
+    - Id
+    tab_groups:
+      EmployeeAuditList:
+        attributes:
+        - LastName
+        - Title
+        - Salary
+        - FirstName
+        - CreatedOn
+        - EmployeeId
+        - Id
+        fkeys:
+          source_delete_me: Id
+          target: EmployeeId
+        resource: EmployeeAudit
+      EmployeeTerritoryList:
+        attributes:
+        - Id
+        - Territory:
+            key_attributes:
+            - TerritoryId
+            show_attributes: []
+            type: Territory
+        - EmployeeId
+        - TerritoryId
+        fkeys:
+          source_delete_me: Id
+          target: EmployeeId
+        resource: EmployeeTerritory
+      OrderList:
+        attributes:
+        - ShipName
+        - Customer:
+            key_attributes:
+            - CustomerId
+            show_attributes: []
+            type: Customer
+        - OrderDate
+        - RequiredDate
+        - ShippedDate
+        - ShipVia
+        - Freight
+        - ShipAddress
+        - ShipCity
+        - ShipRegion
+        - ShipPostalCode
+        - ShipCountry
+        - AmountTotal
+        - EmployeeId
+        - Id
+        - CustomerId
+        fkeys:
+          source_delete_me: Id
+          target: EmployeeId
+        resource: Order
+    type: Employee
+    user_key: LastName
   EmployeeAudit:
+    attributes:
+    - LastName
+    - Employee:
+        key_attributes:
+        - EmployeeId
+        show_attributes: []
+        type: Employee
+    - Title
+    - Salary
+    - FirstName
+    - CreatedOn
+    - EmployeeId
+    - Id
     type: EmployeeAudit
     user_key: LastName
-    columns:
-    - name: LastName
-    - relatioship:
-      - type: Employee
-      - show_attributes:
-      - key_attributes:
-        - name: EmployeeId
-    - name: Title
-    - name: Salary
-    - name: FirstName
-    - name: CreatedOn
-    - name: EmployeeId
-    - name: Id
   EmployeeTerritory:
+    attributes:
+    - Id
+    - Employee:
+        key_attributes:
+        - EmployeeId
+        show_attributes: []
+        type: Employee
+    - Territory:
+        key_attributes:
+        - TerritoryId
+        show_attributes: []
+        type: Territory
+    - EmployeeId
+    - TerritoryId
     type: EmployeeTerritory
     user_key: Id
-    columns:
-    - name: Id
-    - relatioship:
-      - type: Territory
-      - show_attributes:
-      - key_attributes:
-        - name: TerritoryId
-    - relatioship:
-      - type: Employee
-      - show_attributes:
-      - key_attributes:
-        - name: EmployeeId
-    - name: EmployeeId
-    - name: TerritoryId
   Order:
+    attributes:
+    - ShipName
+    - Customer:
+        key_attributes:
+        - CustomerId
+        show_attributes: []
+        type: Customer
+    - Employee:
+        key_attributes:
+        - EmployeeId
+        show_attributes: []
+        type: Employee
+    - OrderDate
+    - RequiredDate
+    - ShippedDate
+    - ShipVia
+    - Freight
+    - ShipAddress
+    - ShipCity
+    - ShipRegion
+    - ShipPostalCode
+    - ShipCountry
+    - AmountTotal
+    - EmployeeId
+    - Id
+    - CustomerId
+    tab_groups:
+      OrderDetailList:
+        attributes:
+        - Id
+        - Product:
+            key_attributes:
+            - ProductId
+            show_attributes: []
+            type: Product
+        - UnitPrice
+        - Quantity
+        - Discount
+        - Amount
+        - ShippedDate
+        - OrderId
+        - ProductId
+        fkeys:
+          source_delete_me: Id
+          target: OrderId
+        resource: OrderDetail
     type: Order
     user_key: ShipName
-    columns:
-    - name: ShipName
-    - relatioship:
-      - type: Employee
-      - show_attributes:
-      - key_attributes:
-        - name: EmployeeId
-    - relatioship:
-      - type: Customer
-      - show_attributes:
-      - key_attributes:
-        - name: CustomerId
-    - name: OrderDate
-    - name: RequiredDate
-    - name: ShippedDate
-    - name: ShipVia
-    - name: Freight
-    - name: ShipAddress
-    - name: ShipCity
-    - name: ShipRegion
-    - name: ShipPostalCode
-    - name: ShipCountry
-    - name: AmountTotal
-    - name: EmployeeId
-    - name: CustomerId
-    - name: Id
-    tab_group:
-      - tab: OrderDetail List
-        resource: OrderDetail
-        fkeys:
-          - target: OrderId
-# REMOVE?   source: Id
-        columns:
-          - name: Id
-          - relatioship:
-            - type: Product
-            - show_attributes:
-            - key_attributes:
-              - name: ProductId
-          - name: UnitPrice
-          - name: Quantity
-          - name: Discount
-          - name: Amount
   OrderDetail:
+    attributes:
+    - Id
+    - Order:
+        key_attributes:
+        - OrderId
+        show_attributes: []
+        type: Order
+    - Product:
+        key_attributes:
+        - ProductId
+        show_attributes: []
+        type: Product
+    - UnitPrice
+    - Quantity
+    - Discount
+    - Amount
+    - ShippedDate
+    - OrderId
+    - ProductId
     type: OrderDetail
     user_key: Id
-    columns:
-    - name: Id
-    - relatioship:
-      - type: Product
-      - show_attributes:
-      - key_attributes:
-        - name: ProductId
-    - relatioship:
-      - type: Order
-      - show_attributes:
-      - key_attributes:
-        - name: OrderId
-    - name: UnitPrice
-    - name: Quantity
-    - name: Discount
-    - name: Amount
-    - name: ShippedDate
-    - name: ProductId
-    - name: OrderId
-about:
-  date: November 05, 2021 07:21:39
-  version: 3.40.01
-  recent_changes: |
-    Object: Lookups optional
-    Resource: Info box
-    Column: Group
-    Tabs: tab-group, explicit columns, redundant master ref
-info:
-  number_tables: 14
-  number_relationships: 8
+  Product:
+    attributes:
+    - ProductName
+    - QuantityPerUnit
+    - UnitPrice
+    - UnitsInStock
+    - UnitsOnOrder
+    - ReorderLevel
+    - Discontinued
+    - UnitsShipped
+    - SupplierId
+    - Id
+    - CategoryId
+    tab_groups:
+      OrderDetailList:
+        attributes:
+        - Id
+        - Order:
+            key_attributes:
+            - OrderId
+            show_attributes: []
+            type: Order
+        - UnitPrice
+        - Quantity
+        - Discount
+        - Amount
+        - ShippedDate
+        - OrderId
+        - ProductId
+        fkeys:
+          source_delete_me: Id
+          target: ProductId
+        resource: OrderDetail
+    type: Product
+    user_key: ProductName
+  Region:
+    attributes:
+    - RegionDescription
+    - Id
+    type: Region
+    user_key: RegionDescription
+  Shipper:
+    attributes:
+    - CompanyName
+    - Phone
+    - Id
+    type: Shipper
+    user_key: CompanyName
+  Supplier:
+    attributes:
+    - CompanyName
+    - ContactName
+    - ContactTitle
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - Phone
+    - Fax
+    - HomePage
+    - Id
+    type: Supplier
+    user_key: CompanyName
+  Territory:
+    attributes:
+    - TerritoryDescription
+    - Id
+    - RegionId
+    tab_groups:
+      EmployeeTerritoryList:
+        attributes:
+        - Id
+        - Employee:
+            key_attributes:
+            - EmployeeId
+            show_attributes: []
+            type: Employee
+        - EmployeeId
+        - TerritoryId
+        fkeys:
+          source_delete_me: Id
+          target: TerritoryId
+        resource: EmployeeTerritory
+    type: Territory
+    user_key: TerritoryDescription
 settings:
-  max_list_columns: 7
+  max_list_columns: '7'

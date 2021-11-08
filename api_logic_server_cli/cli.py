@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.07"
+__version__ = "3.40.00"
 
 from contextlib import closing
 
@@ -866,6 +866,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/08/2021 - 03.40.08: standard (not DotMap) admin file names, admin_custom_nw.yaml example \n"
             "\t11/08/2021 - 03.40.07: use resource class model; yaml attributes (vs. column) \n"
             "\t11/06/2021 - 03.40.05: cleanup - get rid of first_resource/attribute etc - see properties_ref \n"
             "\t11/06/2021 - 03.40.04: cleanup - no more tabs, yaml cleanup \n"

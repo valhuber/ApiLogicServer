@@ -325,17 +325,22 @@ class AdminCreator(object):
     def write_yaml_files(self, admin_yaml):
         """ write admin.yaml, with backup, with additional nw customized backup
         """
-        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin_dotmap.yaml')
+        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
         with open(yaml_file_name, 'w') as yaml_file:
             yaml_file.write(admin_yaml)
-        yaml_backup_file_name = yaml_file_name.replace("admin_dotmap", "admin_dotmap_backup")
-        with open(yaml_backup_file_name, 'w') as yaml_backup_file:
-            yaml_backup_file.write(admin_yaml)
+        yaml_copy_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin-copy.yaml')
+        with open(yaml_copy_file_name, 'w') as yaml_copy_file:
+            yaml_copy_file.write(admin_yaml)
 
         if self.mod_gen.nw_db_status in ["nw", "nw-"]:
             admin_custom_nw_file = open(
                 os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
             admin_custom_nw = admin_custom_nw_file.read()
+            nw_backup_file_name = \
+                self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin_custom_nw.yaml')
+            admin_file = open(nw_backup_file_name, 'w')
+            admin_file.write(admin_custom_nw)
+            admin_file.close()
             dev_temp_do_not_overwrite = True  # fixme remove this when the files are stable
             if not dev_temp_do_not_overwrite:
                 admin_file = open(yaml_file_name, 'w')

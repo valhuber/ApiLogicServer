@@ -362,21 +362,21 @@ class AdminCreator(object):
         self.create_settings()
 
         yaml_file_name = self.mod_gen.project_directory
-        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
+        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin-old.yaml')
         """
         if "\\" in yaml_file_name:
-            yaml_file_name = yaml_file_name + f'\\ui\\admin\\admin.yaml'
+            yaml_file_name = yaml_file_name + f'\\ui\\admin\\admin-old.yaml'
         else:
-            yaml_file_name = yaml_file_name + f'/ui/admin/admin.yaml'
+            yaml_file_name = yaml_file_name + f'/ui/admin/admin-old.yaml'
         """
         with open(yaml_file_name, 'w') as yaml_file:
             yaml_file.writelines("\n".join(self.yaml_lines))
-        yaml_backup = yaml_file_name.replace("admin.yaml", "admin_create_from_model_backup.yaml")
+        yaml_backup = yaml_file_name.replace("admin.yaml", "admin_create_from_model_backup-old.yaml")
         with open(yaml_backup, 'w') as yaml_file:
             yaml_file.writelines("\n".join(self.yaml_lines))
         if self.mod_gen.nw_db_status in ["nw", "nw-"]:
             admin_custom_nw_file = open(
-                os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
+                os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw-old.yaml")
             admin_custom_nw = admin_custom_nw_file.read()
             dev_temp_do_not_overwrite = True  # fixme remove this when the files are stable
             if not dev_temp_do_not_overwrite:
@@ -384,7 +384,7 @@ class AdminCreator(object):
                 admin_file.write(admin_custom_nw)
                 admin_file.close()
 
-            nw_backup_file_name = yaml_file_name.replace("admin.yaml", "admin_custom_nw_backup.yaml")
+            nw_backup_file_name = yaml_file_name.replace("admin-old.yaml", "admin_custom_nw_backup-old.yaml")
             admin_file = open(nw_backup_file_name, 'w')
             admin_file.write(admin_custom_nw)
             admin_file.close()
