@@ -166,7 +166,7 @@ class FabCreator(object):
                     result += ", "
                 else:
                     self.num_related += 1
-                class_name = self.mod_gen.get_class_for_table(each_child.fullname)
+                class_name = self.mod_gen.get_class_for_table(each_child.fullname)  # todo why using class name?
                 if class_name is None:
                     print(f'.. .. .. Warning - Skipping {self.mod_gen.model_name(each_child)}->'
                           f'{each_child.fullname} - no database/models.py class')

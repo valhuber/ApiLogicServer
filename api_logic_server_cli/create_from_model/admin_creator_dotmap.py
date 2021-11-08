@@ -158,10 +158,10 @@ class AdminCreator(object):
         relationship.show_attributes = []
         relationship.key_attributes = []
         if a_child_resource.name == "Employee":
-            print("Parents for special table - debug")
+            log.debug("Parents for special table - debug")
         for each_column in parent_relationship.parent_child_key_pairs:  # XXX FIXME
-            key_column = DotMap()
-            key_column.name = str(each_column)
+            # key_column = DotMap()
+            # key_column.name = str(each_column)
             relationship.key_attributes.append(str(each_column[1]))
         # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         return relationship
@@ -195,8 +195,6 @@ class AdminCreator(object):
             each_tab.attributes = []
             for each_attribute in self.mod_gen.get_show_attributes(each_child_resource):
                 if "." not in each_attribute:
-                    attribute = DotMap()
-                    attribute.name = each_attribute
                     each_tab.attributes.append(each_attribute)
                 else:
                     relationship = self.new_relationship_to_parent(each_child_resource, each_attribute, resource)

@@ -42,30 +42,23 @@ def create_expose_api_models(model_creation_services):
 
     sys.path.append(cwd)
 
-    model_creation_services.find_meta_data(cwd, log_info=True)  # sets self.metadata, enables get_class_for_table
-    meta_tables = model_creation_services.metadata.tables
-    for each_table in meta_tables.items():
-        table_name = each_table[1].name
-        log.debug("process_each_table: " + table_name)
-        if "TRANSFERFUNDx" in table_name:
+    for each_resource_name in model_creation_services.resource_list:
+        log.debug("process_each_table: " + each_resource_name)
+        if "TRANSFERFUNDx" in each_resource_name:
             log.debug("special table")  # debug stop here
-        if table_name + " " in model_creation_services.not_exposed:
-            # result_apis += "# not_exposed: api.expose_object(models.{table_name})"
+        if each_resource_name + " " in model_creation_services.not_exposed:
+            # result_apis += "# not_exposed: api.expose_object(models.{resource_name})"
             continue
-        if "ProductDetails_V" in table_name:
+        if "ProductDetails_V" in each_resource_name:
             log.debug("special table")  # should not occur (--noviews)
-        if table_name.startswith("ab_"):
-            # result_apis += "# skip admin table: " + table_name + "\n"
+        if each_resource_name.startswith("ab_"):
+            # result_apis += "# skip admin table: " + resource_name + "\n"
             continue
-        elif 'sqlite_sequence' in table_name:
-            # result_apis +=  "# skip sqlite_sequence table: " + table_name + "\n"
+        elif 'sqlite_sequence' in each_resource_name:
+            # result_apis +=  "# skip sqlite_sequence table: " + resource_name + "\n"
             continue
         else:
-            class_name = model_creation_services.get_class_for_table(table_name)
-            if class_name is None:
-                # result_apis +=   "# skip view: " + table_name
-                continue
-            result_apis += f'    api.expose_object(models.{class_name})\n'
+            result_apis += f'    api.expose_object(models.{each_resource_name})\n'
     result_apis += f'    safrs.log.setLevel(safrs_log_level)\n'
     result_apis += f'    return api\n'
     # self.session.close()

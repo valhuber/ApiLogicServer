@@ -74,12 +74,6 @@ def fix_generated(code, args):
     return code
 
 
-def setup_model_creation_services(model_creation_services, children_map, parents_map):
-    pass
-    for key, map in children_map.items():
-        print(f'key={key}, map={map}')
-        pass
-
 def codegen(args):
     """ called by ApiLogicServer CLI to create create database/dbp.py
     """
@@ -107,7 +101,6 @@ def codegen(args):
         outfile.write(models_py)
     rtn_children_map = generator.children_map
     rtn_parents_map = generator.parents_map
-    setup_model_creation_services(args.model_creation_services, rtn_children_map, rtn_parents_map)
     return rtn_children_map, rtn_parents_map
 
 
