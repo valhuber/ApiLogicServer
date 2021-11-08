@@ -20,6 +20,9 @@ from sqlalchemy.types import Boolean, String
 from sqlalchemy.util import OrderedDict
 
 # The generic ARRAY type was introduced in SQLAlchemy 1.1
+from api_logic_server_cli.create_from_model.model_creation_services import Resource, ResourceRelationship, \
+    ResourceAttribute
+
 try:
     from sqlalchemy import ARRAY
 except ImportError:
@@ -376,7 +379,8 @@ class CodeGenerator(object):
 {models}"""
 
     def __init__(self, metadata, noindexes=False, noconstraints=False, nojoined=False,
-                 noinflect=False, noclasses=False, indentation='    ', model_separator='\n\n',
+                 noinflect=False, noclasses=False, model_creation_services = None,
+                 indentation='    ', model_separator='\n\n',
                  ignored_tables=('alembic_version', 'migrate_version'), table_model=ModelTable,
                  class_model=ModelClass,  template=None, nocomments=False):
         super(CodeGenerator, self).__init__()
@@ -386,6 +390,7 @@ class CodeGenerator(object):
         self.nojoined = nojoined
         self.noinflect = noinflect
         self.noclasses = noclasses
+        self.model_creation_services = model_creation_services  # ApiLogicServer
         self.indentation = indentation
         self.model_separator = model_separator
         self.ignored_tables = ignored_tables
@@ -724,6 +729,16 @@ from sqlalchemy.dialects.mysql import *
         rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, model.parent_name)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
 
+        resource_list = self.model_creation_services.resource_list
+        resource = Resource(name=model.name)
+        for each_attr, each_column in model.attributes.items():
+            if isinstance(each_column, Column):
+                resource_attribute = ResourceAttribute(name=str(each_column.name))
+                resource.attributes.append(resource_attribute)
+        if resource in resource_list:
+            i = 0/0
+        resource_list[model.name] = resource
+
         # Render constraints and indexes as __table_args__
         autonum_col = False
         table_args = []
@@ -802,7 +817,21 @@ from sqlalchemy.dialects.mysql import *
                 elif isinstance(relationship, ManyToManyRelationship):  # eg, chinook:PlayList->PlayListTrack
                     pass  # fixme: admin.yaml not seeing ManyToManyRelationship
                 else:
-                    if relationship.source_cls not in self.parents_map:
+                    resource = self.model_creation_services.resource_list[relationship.source_cls]
+                    resource_relationship = ResourceRelationship(parent_role_name = attr,
+                                                                 child_role_name = backref_name)
+                    resource_relationship.child_resource = relationship.source_cls
+                    resource_relationship.parent_resource = relationship.target_cls
+                    # gen key pairs
+                    for each_pair in relationship.foreign_key_constraint.elements:
+                        pair = ( str(each_pair.column.name), str(each_pair.parent.name) )
+                        resource_relationship.parent_child_key_pairs.append(pair)
+
+                    resource.parents.append(resource_relationship)
+                    resource = self.model_creation_services.resource_list[relationship.target_cls]
+                    resource.children.append(resource_relationship)
+
+                    if relationship.source_cls not in self.parents_map:   # todo old code remove
                         self.parents_map[relationship.source_cls] = list()
                     self.parents_map[relationship.source_cls].append(
                         (

@@ -13,11 +13,47 @@ from sqlalchemy import MetaData
 import inspect
 import importlib
 from flask import Flask
+from typing import List, Dict
 
 log = logging.getLogger(__name__)
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
+
+
+class ResourceAttribute():
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+
+class ResourceRelationship():
+    def __init__(self, parent_role_name, child_role_name):
+        self.parent_role_name = parent_role_name
+        self.child_role_name = child_role_name
+        self.parent_resource = None
+        self.child_resource = None
+        self.parent_child_key_pairs = list()
+
+    def __str__(self):
+        return f'ResourceRelationship: ' \
+               f'parent_role_name: {self.parent_role_name} | ' \
+               f'child_role_name: {self.child_role_name} | ' \
+               f'parent: {self.parent_resource} | ' \
+               f'child: {self.child_resource} | '
+
+
+class Resource():
+    def __init__(self, name):
+        self.name = name
+        self.children: List[ResourceRelationship] = list()
+        self.parents: List[ResourceRelationship] = list()
+        self.attributes: List[ResourceAttribute] = list()
+
+    def __str__(self):
+        return f'Resource: {self.name}'
 
 
 class CreateFromModel(object):
@@ -76,6 +112,7 @@ class CreateFromModel(object):
         self.nw_db_status = nw_db_status
         self.host = host
         self.port = port
+        self.resource_list : Dict[str, Resource] = dict()
         self.my_children_list = my_children_list
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.my_parents_list = my_parents_list
@@ -146,14 +183,14 @@ class CreateFromModel(object):
         db.init_app(app)
         return app
 
-    def add_table_to_class_map(self, orm_class):
+    def add_table_to_class_map(self, orm_class) -> str:
         """ given class, find table (hide your eyes), add table/class to table_to_class_map """
         orm_class_info = orm_class[1]
         query = str(orm_class_info.query)[7:]
         table_name = query.split('.')[0]
         table_name = table_name.strip('\"')
         self.table_to_class_map.update({table_name: orm_class[0]})
-        pass  # for debug
+        return table_name
 
     def get_class_for_table(self, table_name) -> str:
         """ given table_name, return its class_name from table_to_class_map """
@@ -239,7 +276,9 @@ class CreateFromModel(object):
                     if ("'models." in str(each_class_def_str) and
                             "Ab" not in str(each_class_def_str)):
                         orm_class = each_cls_member
-                        self.add_table_to_class_map(orm_class)  # <-- CRITICAL: enables get_class_for_table
+                        table_name = self.add_table_to_class_map(orm_class)  # <-- CRITICAL: enables get_class_for_table
+                        resource = Resource(name=each_class_def_str)
+                        self.resource_list[each_class_def_str] = resource
                 if (orm_class is not None):
                     if log_info:
                         print(f'.. .. ..Dynamic model import successful '
@@ -297,11 +336,20 @@ class CreateFromModel(object):
     def show_columns(self, a_table_def: MetaDataTable):
         return self.gen_columns(a_table_def, "show_columns = [", 99, 999, 999)
 
+    def show_attributes(self, resource: Resource):
+        return self.gen_attributes(resource, "show_columns = [", 99, 999, 999)
+
     def get_show_columns(self, a_table_def: MetaDataTable) -> set:
         gen_string = self.show_columns(a_table_def)
         gen_string = gen_string[2 + gen_string.find("="):]
         columns = ast.literal_eval(gen_string)
         return columns
+
+    def get_show_attributes(self, resource: Resource) -> set:
+        gen_string = self.show_attributes(resource)
+        gen_string = gen_string[2 + gen_string.find("="):]
+        attributes = ast.literal_eval(gen_string)
+        return attributes
 
     def edit_columns(self, a_table_def: MetaDataTable):
         return self.gen_columns(a_table_def, "edit_columns = [", 99, 999, 999)
@@ -329,6 +377,77 @@ class CreateFromModel(object):
         gen_string = gen_string[2 + gen_string.find("="):]
         columns = ast.literal_eval(gen_string)
         return columns
+
+    def gen_attributes(self,
+                       a_resource: Resource,
+                       a_view_type: str,
+                       a_max_joins: int,
+                       a_max_columns: int,
+                       a_max_id_columns: int):
+        """
+        Generates statements like:
+
+            list_columns =["Id", "Product.ProductName", ... "Id"]
+
+            This is *not* simply a list of columms:
+                1. favorite column first,
+                2. then join (parent) columns, with predictive joins
+                3. and id fields at the end.
+
+            Parameters
+                argument1 a_table_def - TableModelInstance
+                argument2 a_view_type - str like "list_columns = ["
+                argument3 a_max_joins - int max joins (list is smaller)
+                argument4 a_max_columns - int how many columns (")
+                argument5 a_id_columns - int how many "id" columns (")
+
+            Returns
+                string like list_columns =["Name", "Parent.Name", ... "Id"]
+        """
+        result = a_view_type
+        attributes = a_resource.attributes
+        id_attribute_names = set()
+        processed_attribute_names = set()
+        result += ""
+        if a_resource.name == "OrderDetail":
+            result += "\n"  # just for debug stop
+
+        favorite_attribute_name = self.favorite_attribute_name(a_resource)
+        column_count = 1
+        result += '"' + favorite_attribute_name + '"'  # todo hmm: emp territory
+        processed_attribute_names.add(favorite_attribute_name)
+
+        predictive_joins = self.predictive_join_attributes(a_resource)
+        if "list" in a_view_type or "show" in a_view_type:
+            # alert - prevent fab key errors!
+            for each_parent_attribute in predictive_joins:
+                column_count += 1
+                if column_count > 1:
+                    result += ", "
+                result += '"' + each_parent_attribute + '"'
+                if column_count > a_max_joins:
+                    break
+        for each_column in attributes:
+            if each_column.name in processed_attribute_names:
+                continue
+            if self.is_non_favorite_name(each_column.name.lower()):
+                id_attribute_names.add(each_column.name)
+                continue  # ids are boring - do at end
+            column_count += 1
+            if column_count > a_max_columns:
+                break
+            if column_count > 1:
+                result += ", "
+            result += '"' + each_column.name + '"'
+        for each_id_column_name in id_attribute_names:
+            column_count += 1
+            if column_count > a_max_id_columns:
+                break
+            if column_count > 1:
+                result += ", "
+            result += '"' + each_id_column_name + '"'
+        result += "]\n"
+        return result
 
     def gen_columns(self,
                     a_table_def: MetaDataTable,
@@ -399,6 +518,28 @@ class CreateFromModel(object):
                 result += ", "
             result += '"' + each_id_column_name + '"'
         result += "]\n"
+        return result
+
+    def predictive_join_attributes(self, a_resource: Resource) -> list:
+        """
+        Generates set of predictive join column name:
+
+            (Parent1.FavoriteColumn, Parent2.FavoriteColumn, ...)
+
+            Parameters
+                argument1 a_table_def - TableModelInstance
+
+            Returns
+                set of col names (such Product.ProductName for OrderDetail)
+        """
+        result = list()
+        if a_resource.name == "Order":  # for debug
+            log.debug("predictive_joins for: " + a_resource.name)
+        for each_parent in a_resource.parents:
+            each_parent_resource = self.resource_list[each_parent.parent_resource]
+            favorite_attribute_name = self.favorite_attribute_name(each_parent_resource)
+            parent_ref_attr_name = each_parent.parent_role_name + "." + favorite_attribute_name
+            result.append(parent_ref_attr_name)
         return result
 
     def predictive_join_columns(self, a_table_def: MetaDataTable) -> list:
@@ -523,3 +664,31 @@ class CreateFromModel(object):
                     return each_column.name
         for each_column in columns:  # no favorites, just return 1st
             return each_column.name
+
+
+    def favorite_attribute_name(self, resource: Resource) -> str:
+        """
+            returns string of first column that is...
+                named <favorite_name> (default to "name"), else
+                containing <favorite_name>, else
+                (or first column)
+
+            Parameters
+                argument1 a_table_name - str
+
+            Returns
+                string of column name that is favorite (e.g., first in list)
+        """
+        favorite_names = self._favorite_names_list
+        for each_favorite_name in favorite_names:
+            attributes = resource.attributes
+            for each_attribute in attributes:
+                attribute_name = each_attribute.name.lower()
+                if attribute_name == each_favorite_name:
+                    return each_attribute.name
+            for each_attribute in attributes:
+                attribute_name = each_attribute.name.lower()
+                if each_favorite_name in attribute_name:
+                    return each_attribute.name
+        for each_attribute in resource.attributes:  # no favorites, just return 1st
+            return each_attribute.name

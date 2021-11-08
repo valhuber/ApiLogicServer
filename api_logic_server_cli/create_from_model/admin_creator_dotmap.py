@@ -12,6 +12,8 @@ import datetime
 import create_from_model.model_creation_services as create_from_model
 from dotmap import DotMap
 
+from api_logic_server_cli.create_from_model.model_creation_services import Resource
+
 log = logging.getLogger(__name__)
 
 #  MetaData = NewType('MetaData', object)
@@ -74,15 +76,13 @@ class AdminCreator(object):
 
         cwd = os.getcwd()
         sys.path.append(cwd)
-        self.mod_gen.find_meta_data(cwd)  # sets self.metadata
-        meta_tables = self.mod_gen.metadata.tables
 
         self.admin_yaml.resources = {}
-        for each_table in meta_tables.items():
-            each_table_def = each_table[1]
-            each_resource = self.create_each_resource(each_table_def)
+        for each_resource_name in self.mod_gen.resource_list:
+            each_resource_item = self.mod_gen.resource_list[each_resource_name]
+            each_resource = self.create_each_resource(each_resource_item)
             if each_resource is not None:
-                self.admin_yaml.resources[str(each_table_def.name)] = each_resource.toDict()
+                self.admin_yaml.resources[each_resource_name] = each_resource.toDict()
 
         self.create_about()
         self.create_info()
@@ -93,129 +93,120 @@ class AdminCreator(object):
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
         self.write_yaml_files(admin_yaml_dump)
 
-    def create_each_resource(self, a_table_def: MetaDataTable) -> (None, DotMap):
+    def create_each_resource(self, resource: Resource) -> (None, DotMap):
         """ create resource DotMap for given table
         """
-        table_name = a_table_def.name
-        class_name = self.mod_gen.get_class_for_table(table_name)
-        if self.do_process_resource(table_name, class_name):
-            each_resource = self.new_resource(a_table_def)
-            each_resource.columns = []
-            columns = self.mod_gen.get_show_columns(a_table_def)
-            for each_column in columns:
-                if "." not in each_column:
-                    column = DotMap()
-                    column.name = each_column
-                    each_resource.columns.append(column)
+        resource_name = resource.name
+        class_name = resource_name
+        if self.do_process_resource(resource_name, class_name):
+            new_resource = self.new_resource(resource)
+            new_resource.attributes = []
+            attributes = self.mod_gen.get_show_attributes(resource)
+            for each_attribute in attributes:
+                if "." not in each_attribute:
+                    new_resource.attributes.append(each_attribute)
                 else:
-                    relationship = self.new_relationship_to_parent(a_table_def, each_column, None)
+                    relationship = self.new_relationship_to_parent(resource, each_attribute, None)
                     if relationship is not None:  # skip redundant master join
                         rel = DotMap()
-                        parent_role_name = each_column.split('.')[0]
+                        parent_role_name = each_attribute.split('.')[0]
                         rel[parent_role_name] = relationship.toDict()
-                        each_resource.columns.append(rel)
-            child_tabs = self.create_child_tabs(a_table_def)
+                        new_resource.attributes.append(rel)
+            child_tabs = self.create_child_tabs(resource)
             if child_tabs:
-                each_resource.tab_groups = child_tabs
-            return each_resource
+                new_resource.tab_groups = child_tabs
+            return new_resource
 
-    def new_resource(self, a_table_def: MetaDataTable) -> DotMap:
-        # resource_header[self.mod_gen.get_class_for_table(a_table_def.name)] = DotMap()
-        resource = DotMap()
+    def new_resource(self, resource: Resource) -> DotMap:
+        new_resource = DotMap()
         self.num_pages_generated += 1
-        class_name = self.mod_gen.get_class_for_table(a_table_def.name)
-        resource.type = str(a_table_def.name)
-        resource.user_key = str(self.mod_gen.favorite_column_name(a_table_def))
-        return resource
+        new_resource.type = str(resource.name)
+        new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
+        return new_resource
 
-    def new_relationship_to_parent(self, a_child_table_def: MetaDataTable, parent_column_reference,
-                                   a_master_parent_table_def) -> (None, DotMap):
+    def new_relationship_to_parent(self, a_child_resource: Resource, parent_attribute_reference,
+                                   a_master_parent_resource) -> (None, DotMap):
         """
         given a_child_table_def.parent_column_reference, create relationship: attrs, fKeys (for *js* client (no meta))
 
-        :param a_child_table_def: a child table (not class), eg, Employees
-        :param parent_column_reference: parent ref, eg, Department1.DepartmentName
-        :param a_master_parent_table_def: the master of master/detail - skip joins for this
+        :param a_child_resource: a child table (not class), eg, Employees
+        :param parent_attribute_reference: parent ref, eg, Department1.DepartmentName
+        :param a_master_parent_resource: the master of master/detail - skip joins for this
         """
-        parent_role_name = parent_column_reference.split('.')[0]  # careful - is role (class) name, not table name
-        if a_master_parent_table_def is not None and parent_role_name == a_master_parent_table_def.name:
-            skipped = f'avoid redundant master join - {a_child_table_def}.{parent_column_reference}'
+        parent_role_name = parent_attribute_reference.split('.')[0]  # careful - is role (class) name, not table name
+        if a_master_parent_resource is not None and parent_role_name == a_master_parent_resource.name:
+            skipped = f'avoid redundant master join - {a_child_resource}.{parent_attribute_reference}'
             log.debug(f'master object detected - {skipped}')
             return None
         relationship = DotMap()
-        if self.mod_gen.my_parents_list is None:   # RARELY used - use_model is true (expose_existing not called)
-            return self.new_relationship_to_parent_no_model(a_child_table_def,
-                                                            parent_column_reference, a_master_parent_table_def)
-        class_name = self.mod_gen.get_class_for_table(a_child_table_def.name)
-        my_parents_list = self.mod_gen.my_parents_list[class_name]
-        found_role=False
-        for each_parent_role, each_child_role, each_fkey_constraint in my_parents_list:
-            if each_parent_role == parent_role_name:
-                found_role = True
+        if len(self.mod_gen.resource_list) == 0:   # RARELY used - use_model is true (expose_existing not called)
+            return self.new_relationship_to_parent_no_model(a_child_resource,
+                                                            parent_attribute_reference, a_master_parent_resource)
+        my_parents_list = a_child_resource.parents
+        parent_relationship = None
+        for each_parent_relationship in my_parents_list:
+            if each_parent_relationship.parent_role_name == parent_role_name:
+                parent_relationship = each_parent_relationship
                 break
-        if not found_role:
-            msg = f'Unable to find role for: {parent_column_reference}'
+        if not parent_relationship:
+            msg = f'Unable to find role for: {parent_attribute_reference}'
             relationship.error_unable_to_find_role = msg
             if parent_role_name not in self.multi_reln_exceptions:
                 self.multi_reln_exceptions.append(parent_role_name)
                 log.warning(f'Error - please search ui/admin/admin.yaml for: Unable to find role')
-        relationship.type = str(each_fkey_constraint.referred_table.fullname)
+        relationship.type = str(parent_relationship.parent_resource)
         relationship.show_attributes = []
         relationship.key_attributes = []
-        if class_name == "Employee":
+        if a_child_resource.name == "Employee":
             print("Parents for special table - debug")
-        for each_column in each_fkey_constraint.column_keys:
+        for each_column in parent_relationship.parent_child_key_pairs:  # XXX FIXME
             key_column = DotMap()
             key_column.name = str(each_column)
-            relationship.key_attributes.append(str(each_column))
+            relationship.key_attributes.append(str(each_column[1]))
         # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         return relationship
 
-    def create_child_tabs(self, a_table_def: MetaDataTable) -> DotMap:
+    def create_child_tabs(self, resource: Resource) -> DotMap:
         """
         build tabs for related children
         """
-        if self.mod_gen.my_children_list is  None:   # almost always, use_model false (we create)
-            return self.create_child_tabs_no_model(a_table_def)
+        if len(self.mod_gen.resource_list) == 0:   # almost always, use_model false (we create)
+            return self.create_child_tabs_no_model(resource)
 
-        class_name = self.mod_gen.get_class_for_table(a_table_def.name)
-        if class_name not in self.mod_gen.my_children_list:
-            return None  # it's ok to have no children
-        my_children_list = self.mod_gen.my_children_list[class_name]
         children_seen = set()
         tab_group = DotMap()
-        for each_parent_role, each_child_role, each_fkey_constraint in my_children_list:
+        for each_resource_relationship in resource.children:
             each_tab = DotMap()
             self.num_related += 1
-            each_child = each_fkey_constraint.table
-            if each_child.name in children_seen:
+            each_child = each_resource_relationship.child_resource
+            if each_child in children_seen:
                 pass  # it's ok, we are using the child_role_name now
-            children_seen.add(each_child.name)
-            for each_pair in each_fkey_constraint.elements:
+            children_seen.add(each_child)
+            for each_pair in each_resource_relationship.parent_child_key_pairs:
                 key_pair = DotMap()
-                key_pair.target = str(each_pair.parent.name)
-                key_pair.source_delete_me = str(each_pair.column.name)
+                key_pair.target = each_pair[1]
+                key_pair.source_delete_me = each_pair[0]
                 each_tab.fkeys = key_pair
 
-            each_tab.resource = str(each_child.name)
-            tab_name = each_child_role
+            each_tab.resource = str(each_child)
+            tab_name = each_resource_relationship.child_role_name
 
-            columns = self.mod_gen.get_show_columns(each_child)
-            each_tab.columns = []
-            for each_column in columns:
-                if "." not in each_column:
-                    column = DotMap()
-                    column.name = each_column
-                    each_tab.columns.append(column)
+            each_child_resource = self.mod_gen.resource_list[each_child]
+            each_tab.attributes = []
+            for each_attribute in self.mod_gen.get_show_attributes(each_child_resource):
+                if "." not in each_attribute:
+                    attribute = DotMap()
+                    attribute.name = each_attribute
+                    each_tab.attributes.append(each_attribute)
                 else:
-                    relationship = self.new_relationship_to_parent(each_child, each_column, a_table_def)
+                    relationship = self.new_relationship_to_parent(each_child_resource, each_attribute, resource)
                     if relationship is not None:  # skip redundant master join
                         rel = DotMap()
-                        parent_role_name = each_column.split('.')[0]
+                        parent_role_name = each_attribute.split('.')[0]
                         rel[parent_role_name] = relationship.toDict()
-                        each_tab.columns.append(rel)
+                        each_tab.attributes.append(rel)
 
-            tab_group[tab_name] = each_tab  # this disambiguates multi-relns, eg Employee OnLoan/WorksForDept
+            tab_group[tab_name] = each_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
         return tab_group
 
     def do_process_resource(self, table_name, class_name)-> bool:
@@ -231,6 +222,8 @@ class AdminCreator(object):
             return False  # skip sqlite_sequence table: " + table_name + "\n
         elif class_name is None:
             return False  # no class (view): " + table_name + "\n
+        elif table_name.startswith("Ab"):
+            return False
         return True
 
     def create_child_tabs_no_model(self, a_table_def: MetaDataTable) -> DotMap:
@@ -372,7 +365,6 @@ class AdminCreator(object):
         """
             info block - # tables, relns, [no-relns warning]
         """
-        meta_tables = self.mod_gen.metadata.tables
         self.admin_yaml.info = DotMap()
         self.admin_yaml.info.number_tables = self.num_pages_generated
         self.admin_yaml.info.number_relationships = self.num_related

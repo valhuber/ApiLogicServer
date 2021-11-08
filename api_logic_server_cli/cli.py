@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.05"
+__version__ = "3.40.06"
 
 from contextlib import closing
 
@@ -350,7 +350,7 @@ def create_basic_web_app(db_url, project_name, msg):  # remove
     pass
 
 
-def create_models(db_url: str, project: str, use_model: str):
+def create_models(db_url: str, project: str, use_model: str, model_creation_services):
     """
     create model.py, normally via expose_existing.expose_existing_callable
 
@@ -376,6 +376,7 @@ def create_models(db_url: str, project: str, use_model: str):
         # codegen_args.outfile = models_file
         codegen_args.outfile = project + '/database/models.py'
         codegen_args.version = False
+        codegen_args.model_creation_services = model_creation_services
         return codegen_args
 
     rtn_my_children_map = None
@@ -761,8 +762,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                                                          nw_db_status)
 
     print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
-    my_children_list, my_parents_list = create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
-    fix_database_models__inject_db_types(project_directory, db_types)
+    # my_children_list, my_parents_list = create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
+    # fix_database_models__inject_db_types(project_directory, db_types)
 
     # print("4. Create api/expose_api_models.py (import / iterate models)")
     model_creation_services = CreateFromModel(  # Create views.py file from db, models.py
@@ -771,10 +772,13 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         api_logic_server_dir = get_api_logic_server_dir(),
         abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
         host=host, port=port,
-        my_children_list=my_children_list, my_parents_list=my_parents_list,
+        # my_children_list=my_children_list, my_parents_list=my_parents_list,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__)
+    my_children_list, my_parents_list = create_models(
+        abs_db_url, project_directory, use_model, model_creation_services)  # exec's sqlacodegen
+    fix_database_models__inject_db_types(project_directory, db_types)
     invoke_creators(model_creation_services)
     if extended_builder is not None and extended_builder != "":
         print(f'4. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
@@ -862,6 +866,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/08/2021 - 03.40.06: use resource class model; yaml attributes (vs. column) \n"
             "\t11/06/2021 - 03.40.05: cleanup - get rid of first_resource/attribute etc - see properties_ref \n"
             "\t11/06/2021 - 03.40.04: cleanup - no more tabs, yaml cleanup \n"
             "\t11/05/2021 - 03.40.03: yaml.dump using DotMap (pip it!) \n"
