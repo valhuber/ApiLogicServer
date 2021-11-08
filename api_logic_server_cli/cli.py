@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.06"
+__version__ = "3.40.07"
 
 from contextlib import closing
 
@@ -388,6 +388,7 @@ def create_models(db_url: str, project: str, use_model: str, model_creation_serv
     else:
         code_gen_args = get_codegen_args()
         rtn_my_children_map, rtn_my_parents_map = expose_existing_callable.codegen(code_gen_args)
+        model_creation_services.resource_list_complete = True
         pass
     return rtn_my_children_map, rtn_my_parents_map
 
@@ -776,8 +777,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__)
-    my_children_list, my_parents_list = create_models(
-        abs_db_url, project_directory, use_model, model_creation_services)  # exec's sqlacodegen
+    create_models(abs_db_url, project_directory, use_model, model_creation_services)  # exec's sqlacodegen
     fix_database_models__inject_db_types(project_directory, db_types)
     invoke_creators(model_creation_services)
     if extended_builder is not None and extended_builder != "":
@@ -866,7 +866,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t11/08/2021 - 03.40.06: use resource class model; yaml attributes (vs. column) \n"
+            "\t11/08/2021 - 03.40.07: use resource class model; yaml attributes (vs. column) \n"
             "\t11/06/2021 - 03.40.05: cleanup - get rid of first_resource/attribute etc - see properties_ref \n"
             "\t11/06/2021 - 03.40.04: cleanup - no more tabs, yaml cleanup \n"
             "\t11/05/2021 - 03.40.03: yaml.dump using DotMap (pip it!) \n"

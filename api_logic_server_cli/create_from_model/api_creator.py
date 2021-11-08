@@ -79,5 +79,4 @@ def create_expose_api_models(model_creation_services):
 def create(model_creation_services: create_from_model.CreateFromModel):
     """ called by ApiLogicServer CLI -- creates api/expose_api_models.py, key input to SAFRS
     """
-    return
     create_expose_api_models(model_creation_services)

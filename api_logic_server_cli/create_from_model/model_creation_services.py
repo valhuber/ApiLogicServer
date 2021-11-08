@@ -113,6 +113,7 @@ class CreateFromModel(object):
         self.host = host
         self.port = port
         self.resource_list : Dict[str, Resource] = dict()
+        self.resource_list_complete = False
         self.my_children_list = my_children_list
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.my_parents_list = my_parents_list
@@ -277,8 +278,6 @@ class CreateFromModel(object):
                             "Ab" not in str(each_class_def_str)):
                         orm_class = each_cls_member
                         table_name = self.add_table_to_class_map(orm_class)  # <-- CRITICAL: enables get_class_for_table
-                        resource = Resource(name=each_class_def_str)
-                        self.resource_list[each_class_def_str] = resource
                 if (orm_class is not None):
                     if log_info:
                         print(f'.. .. ..Dynamic model import successful '

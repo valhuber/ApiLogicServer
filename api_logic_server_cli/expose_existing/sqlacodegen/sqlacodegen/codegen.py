@@ -729,15 +729,14 @@ from sqlalchemy.dialects.mysql import *
         rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, model.parent_name)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
 
-        resource_list = self.model_creation_services.resource_list
-        resource = Resource(name=model.name)
-        for each_attr, each_column in model.attributes.items():
-            if isinstance(each_column, Column):
-                resource_attribute = ResourceAttribute(name=str(each_column.name))
-                resource.attributes.append(resource_attribute)
-        if resource in resource_list:
-            i = 0/0
-        resource_list[model.name] = resource
+        if not self.model_creation_services.resource_list_complete:
+            resource_list = self.model_creation_services.resource_list
+            resource = Resource(name=model.name)
+            for each_attr, each_column in model.attributes.items():
+                if isinstance(each_column, Column):
+                    resource_attribute = ResourceAttribute(name=str(each_column.name))
+                    resource.attributes.append(resource_attribute)
+            resource_list[model.name] = resource
 
         # Render constraints and indexes as __table_args__
         autonum_col = False
