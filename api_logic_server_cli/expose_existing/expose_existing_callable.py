@@ -66,6 +66,8 @@ def get_args():
 
 
 def fix_generated(code, args):
+    """ minor numeric vs. string replacements
+    """
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         code = code.replace("Numeric", "String")
     if "mysql" in args.url:
@@ -75,11 +77,10 @@ def fix_generated(code, args):
 
 
 def create_models_from_db(args) -> str:
-    """ called by ApiLogicServer CLI to create create database/models.py
+    """ called by ApiLogicServer CLI - ModelCreationServices - to create return models_py string
 
     returns str to be written to models.py
     """
-    # Use reflection to fill in the metadata
     engine = create_engine(args.url)
 
     metadata = MetaData(engine)
@@ -89,9 +90,7 @@ def create_models_from_db(args) -> str:
         # dirty hack for sqlite
         engine.execute("""PRAGMA journal_mode = OFF""")
 
-    # Write the generated model code to the specified file or standard output
-
-    capture = StringIO()
+    capture = StringIO()  # generate and return the model
     # outfile = io.open(args.outfile, 'w', encoding='utf-8') if args.outfile else capture # sys.stdout
     generator = CodeGenerator(metadata, args.noindexes, args.noconstraints,
                               args.nojoined, args.noinflect, args.noclasses, args.model_creation_services)

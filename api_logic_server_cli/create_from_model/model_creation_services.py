@@ -17,6 +17,8 @@ from flask import Flask
 from typing import List, Dict
 from pathlib import Path
 from shutil import copyfile
+from sqlalchemy.orm.interfaces import ONETOMANY, MANYTOONE, MANYTOMANY
+
 
 from api_logic_server_cli.expose_existing import expose_existing_callable
 
@@ -620,20 +622,11 @@ class CreateFromModel(object):
     def load_resource_model_from_safrs(self, models_file):
         """ currently does nothing but verify model classes' safrs info is readable.  It is.
         """
-        conn_string = None
-        do_dynamic_load = True
         project_abs_path = abspath(self.project_directory)
-
-        """
-            a_cwd -- see ApiLogicServer/prototype for structure
-
-            credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
-        """
-
         model_imported = False
         sys.path.insert(0, project_abs_path + "/database")  # e.g., adds /Users/val/Desktop/my_project/database
         try:
-            # models =
+            # credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             importlib.import_module('models')
             model_imported = True
         except:
@@ -641,16 +634,13 @@ class CreateFromModel(object):
             traceback.print_exc()
             pass  # try to continue to enable manual fixup
 
-            # sys.path.insert(0, a_cwd)  # success - models open
-            # config = importlib.import_module('config')
-
         orm_class = None
-        metadata = None
         if not model_imported:
             print('.. .. ..Creation proceeding to enable manual database/models.py fixup')
             print('.. .. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
         else:
             try:
+                resource_list: Dict[str, Resource] = dict()
                 cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
                 for each_cls_member in cls_members:
                     each_class_def_str = str(each_cls_member)
@@ -660,26 +650,35 @@ class CreateFromModel(object):
                         resource_name = each_cls_member[0]
                         resource_class = each_cls_member[1]
                         resource = Resource(name=resource_name)
-                        resource_data = {"type": resource_class._s_type}
+                        if resource_name not in resource_list:
+                            resource_list[resource_name] = resource
+                        resource = resource_list[resource_name]
+                        resource_data = {"type": resource_class._s_type}  # todo what's this?
                         for each_attribute in resource_class._s_columns:
                             resource_attribute = ResourceAttribute(name=str(each_attribute.name))
                             resource.attributes.append(resource_attribute)
-                        relations = []
                         for rel_name, rel in resource_class._s_relationships.items():
                             relation = {}
-                            relationship = ResourceRelationship(rel_name, rel.backref)
-                            relation["name"] = rel_name
-                            relation["target"] = rel.target.name
-                            relation["fks"] = [c.key for c in rel._calculated_foreign_keys]
-                            for each_fkey in rel._calculated_foreign_keys:
-                                pair = ( "?", each_fkey.description)
-                                relationship.parent_child_key_pairs.append(pair)
-                            # ignoring this for the moment relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
-                            resource.parents.append(relationship)
-                        pass
+                            relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
+                            if rel.direction == MANYTOONE:  # process only parents of this child
+                                relationship = ResourceRelationship(rel_name, rel.backref)
+                                for each_fkey in rel._calculated_foreign_keys:
+                                    pair = ( "?", each_fkey.description)
+                                    relationship.parent_child_key_pairs.append(pair)
+                                resource.parents.append(relationship)
+                                relationship.child_resource = resource_name
+                                parent_resource_name = str(rel.target.name)
+                                relationship.parent_resource = parent_resource_name
+                                if parent_resource_name not in resource_list:
+                                    parent_resource = Resource(name=parent_resource_name)
+                                    resource_list[parent_resource_name] = parent_resource
+                                parent_resource = resource_list[parent_resource_name]
+                                parent_resource.children.append(relationship)
+                    pass
+                pass
+                self.resource_list = resource_list  # currently, you can disable this to bypass errors
 
-
-                if (orm_class is not None):
+                if orm_class is not None:
                     log.debug(f'.. .. ..Dynamic model import successful '
                              f'({len(self.table_to_class_map)} classes'
                              f') -'
