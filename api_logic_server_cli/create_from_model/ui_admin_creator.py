@@ -69,10 +69,11 @@ class AdminCreator(object):
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
 
-    def create_admin_application(self):
+    def create_admin_application(self) -> str:
         """ main driver - loop through resources, write admin.yaml - with backup, nw customization
         """
-        self.create_admin_app(msg=".. .. ..Create ui/admin")
+        if self.mod_gen.command != "create_ui":
+            self.create_admin_app(msg=".. .. ..Create ui/admin")
 
         cwd = os.getcwd()
         sys.path.append(cwd)
@@ -91,7 +92,9 @@ class AdminCreator(object):
 
         admin_yaml_dict = self.admin_yaml.toDict()
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
-        self.write_yaml_files(admin_yaml_dump)
+        if self.mod_gen.command != "create_ui":
+            self.write_yaml_files(admin_yaml_dump)
+        return admin_yaml_dump
 
     def create_each_resource(self, resource: Resource) -> (None, DotMap):
         """ create resource DotMap for given table
@@ -427,5 +430,5 @@ def create(model_creation_services: create_from_model.CreateFromModel):
                                  not_exposed=model_creation_services.not_exposed + " ",
                                  favorite_names=model_creation_services.favorite_names,
                                  non_favorite_names=model_creation_services.non_favorite_names)
-    admin_creator.create_admin_application()
+    return admin_creator.create_admin_application()
 

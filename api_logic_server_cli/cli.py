@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.10"
+__version__ = "3.40.11"
 
 from contextlib import closing
 
@@ -859,6 +859,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/09/2021 - 03.40.11: create_ui -- non ApiLogicServer creation of admin.yaml from model.py \n"
             "\t11/09/2021 - 03.40.10: model_creation_services.resource_list via safrs-based code \n"
             "\t11/09/2021 - 03.40.09: substantial code cleanup - create_from_model, model_creation_services, ... \n"
             "\t11/08/2021 - 03.40.08: standard (not DotMap) admin file names, admin_custom_nw.yaml example \n"
@@ -1071,18 +1072,19 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
 
 
 @main.command("create-ui")
-@click.option('--project_name',
-              default=f'{last_created_project_name}',
-              prompt="Project to run",
-              help="Project to run")
 @click.option('--use_model',
-              default="database/models.py",
+              default="models.py",
               help="See ApiLogicServer/wiki/Troubleshooting")
-@click.option('--file',
-              default=f'ui/admin/admin.yaml',
-              help="Port (default 5656, or leave empty)")
+@click.option('--favorites',
+              default="name description",
+              help="Columns named like this displayed first")
+@click.option('--non_favorites',
+              default="id",
+              help="Columns named like this displayed last")
 @click.pass_context
-def create_ui(ctx, project_name: str, use_model: str="", file: str=""):
+def create_ui(ctx, use_model: str,
+              favorites: str, non_favorites: str,
+              ):
     """
         Use model to re-create the admin.yaml file (in progress)
 
@@ -1095,14 +1097,26 @@ def create_ui(ctx, project_name: str, use_model: str="", file: str=""):
             ApiLogicServer create-UI
             ApiLogicServer run --project_name=    # runs last-created project
     """
+    admin_out = resolve_home(use_model.replace("py","yaml"))
+    project_directory, ignore = os.path.split(resolve_home(use_model))
+    model_creation_services = CreateFromModel(  # fills in rsource_list for ui_admin_creator
+        use_model=use_model,
+        msg=f'1. Creating: {admin_out} from existing model: {use_model}',
+        favorite_names=favorites, non_favorite_names=non_favorites,
+        project_directory=project_directory,
+        command="create_ui",
+        version=__version__)
 
-    proj_dir = project_name
-    if proj_dir == "":
-        proj_dir = last_created_project_name
-    else:
-        proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
-    run_file = f'{proj_dir}/api_logic_server_run.py <host> <port>'
-    create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
+    print(f'2. Creating yaml from model')
+    creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
+    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_admin_creator.py')
+    creator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(creator)
+    admin_yaml_dump = creator.create(model_creation_services)
+
+    print(f'3. Writing: {admin_out}')
+    with open(admin_out, 'w') as yaml_file:
+        yaml_file.write(admin_yaml_dump)
 
 
 @main.command("run-ui")

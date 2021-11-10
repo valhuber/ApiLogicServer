@@ -112,8 +112,11 @@ class CreateFromModel(object):
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id",
+                 command: str = "",
                  version: str = "0.0.0"):
-        self.project_directory = self.get_windows_path_with_slashes(project_directory)
+        self.project_directory = None
+        if project_directory:
+            self.project_directory = self.get_windows_path_with_slashes(project_directory)
         self.copy_to_project_directory = ""
         if copy_to_project_directory != "":
             self.copy_to_project_directory = self.get_windows_path_with_slashes(copy_to_project_directory)
@@ -125,6 +128,7 @@ class CreateFromModel(object):
         self.host = host
         self.port = port
         self.use_model = use_model
+        self.command = command
         self.resource_list : Dict[str, Resource] = dict()
         self.resource_list_complete = False
         self.my_children_list = my_children_list
@@ -149,7 +153,7 @@ class CreateFromModel(object):
 
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
-        self.create_models(abs_db_url= abs_db_url, project= project_directory)
+        self.create_models(abs_db_url= abs_db_url, project_directory= project_directory)
 
     @staticmethod
     def get_windows_path_with_slashes(url: str) -> str:
@@ -624,7 +628,9 @@ class CreateFromModel(object):
         """
         project_abs_path = abspath(self.project_directory)
         model_imported = False
-        sys.path.insert(0, project_abs_path + "/database")  # e.g., adds /Users/val/Desktop/my_project/database
+        path_to_add = project_abs_path if self.command == "create_ui" else \
+            project_abs_path + "/database"  # for Api Logic Server projects
+        sys.path.insert(0, path_to_add)  # e.g., adds /Users/val/Desktop/my_project/database
         try:
             # credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             importlib.import_module('models')
@@ -688,7 +694,7 @@ class CreateFromModel(object):
                 traceback.print_exc()
                 pass
 
-    def create_models(self, abs_db_url: str, project: str):
+    def create_models(self, abs_db_url: str, project_directory: str):
         """
         Create models.py (using sqlacodegen,  via expose_existing.expose_existing_callable).
 
@@ -728,7 +734,7 @@ class CreateFromModel(object):
             codegen_args = DotDict({})
             codegen_args.url = abs_db_url
             # codegen_args.outfile = models_file
-            codegen_args.outfile = project + '/database/models.py'
+            codegen_args.outfile = project_directory + '/database/models.py'
             codegen_args.version = False
             codegen_args.model_creation_services = self
             return codegen_args
@@ -745,7 +751,8 @@ class CreateFromModel(object):
             self.load_resource_model_from_safrs(code_gen_args.outfile)
         else:
             model_file = self.resolve_home(name = self.use_model)
-            print(f'.. .. ..Copy {model_file} to {project + "/database/models.py"}')
-            copyfile(model_file, project + '/database/models.py')
+            if self.command != "create_ui":  # eg, command create-ui - no API Logic Server project
+                print(f'.. .. ..Copy {model_file} to {project_directory + "/database/models.py"}')
+                copyfile(model_file, project_directory + '/database/models.py')
             self.load_resource_model_from_safrs(model_file)
         return rtn_my_children_map, rtn_my_parents_map
