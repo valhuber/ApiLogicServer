@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.00"
+__version__ = "3.40.09"
 
 from contextlib import closing
 
@@ -352,7 +352,7 @@ def create_basic_web_app(db_url, project_name, msg):  # remove
 
 def create_models(db_url: str, project: str, use_model: str, model_creation_services):
     """
-    create model.py, normally via expose_existing.expose_existing_callable
+    create model.py, normally via expose_existing.expose_existing_callable (sqlacodegen)
 
     or, use_model -- then just copy
 
@@ -494,7 +494,7 @@ def fix_basic_web_app_run__create_admin(project_directory):
 
 
 def fix_database_models__inject_db_types(project_directory: str, db_types: str):
-    """ insert <db_types file> into database/models.py """
+    """ injecting <db_types file> into database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
     if db_types != "":
         print(f'.. .. ..Injecting file {db_types} into database/models.py')
@@ -507,13 +507,14 @@ def final_project_fixup(msg, project_name, project_directory, host, port, use_mo
     print(msg)  # "7. Final project fixup"
 
     if use_model == "":
-        fix_database_models__import_customize_models(project_directory)
+        msg = f' a.   Appending "from database import customize_models" to database/models.py'
+        fix_database_models__import_customize_models(project_directory, msg)
 
-    print(f'.b .. Update api_logic_server_run.py with '
+    print(f' b.   Update api_logic_server_run.py with '
           f'project_name={project_name} and host, port')
     update_api_logic_server_run(project_name, project_directory, host, port)
 
-    fix_host_and_ports(".c .. Fixing api/expose_services - port, host", project_directory, host, port)
+    fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project_directory, host, port)
 
     copy_project_result = ""
     if copy_to_project_directory != "":
@@ -529,10 +530,10 @@ def final_project_fixup(msg, project_name, project_directory, host, port, use_mo
     return copy_project_result
 
 
-def fix_database_models__import_customize_models(project_directory: str):
+def fix_database_models__import_customize_models(project_directory: str, msg: str):
     """ Append "from database import customize_models" to database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
-    print(f'.a .. Appending "from database import customize_models" to database/models.py')
+    print(msg)
     models_file = open(models_file_name, 'a')
     models_file.write("\n\nfrom database import customize_models\n")
     models_file.close()
@@ -579,8 +580,8 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
 
 
 def fix_host_and_ports(msg, project_name, host, port):
-    """ 9. Fixing port / host -- update server, port in /api/customize_api.py """
-    print(msg)  # 9. Fixing port / host
+    """ c.   Fixing api/expose_services - port, host """
+    print(msg)  # c.   Fixing api/expose_services - port, host
     replace_port = f':{port}' if port else ""
     # replace_with = host + replace_port
     in_file = f'{project_name}/api/customize_api.py'
@@ -590,12 +591,12 @@ def fix_host_and_ports(msg, project_name, host, port):
     create_utils.replace_string_in_file(search_for="api_logic_server_port",
                            replace_with=replace_port,
                            in_file=in_file)
-    print(f'.d .. Updated customize_api_py with port={port} and host={host}')
+    print(f' d.   Updated customize_api_py with port={port} and host={host}')
     full_path = os.path.abspath(project_name)
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
                            in_file=f'{project_name}/python_anywhere_wsgi.py')
-    print(f'.e .. Updated python_anywhere_wsgi.py with {full_path}')
+    print(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
 
 
 def start_open_with(open_with: str, project_name: str):
@@ -652,11 +653,11 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
 def invoke_creators(model_creation_services: CreateFromModel):
     """ uses data model to create api, apps
     """
-    # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
 
-    print(" a.  Create api/expose_api_models.py (import / iterate models)")
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_creator.py')
+
+    print(" b.  Create api/expose_api_models.py from models")
+    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_expose_api_models.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(model_creation_services)  # invoke create function
@@ -664,46 +665,43 @@ def invoke_creators(model_creation_services: CreateFromModel):
     if model_creation_services.admin_app:
         use_dotmap = True
         if use_dotmap:
-            print(" b.  Create ui/admin app (import / iterate models)")
-            creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/admin_creator_dotmap.py')
+            print(" c.  Create ui/admin app from models")
+            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_admin_creator.py')
             creator = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(creator)
             creator.create(model_creation_services)
         else:
-            print(" b.  Create ui/admin app (import / iterate models)")
-            creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/admin_creator.py')
+            print(" c.  Create ui/admin app from models")
+            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/z_admin_creator_unused.py')
             creator = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(creator)
             creator.create(model_creation_services)
     else:
-        print(".. .. ..ui/admin_app creation declined")
+        pass
+        # print(".. .. ..ui/admin_app creation declined")
 
     if model_creation_services.react_admin:
-        print(" c.  Create ui/react_admin app (import / iterate models)")
-        creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/react_admin_creator.py')
+        print(" d.  Create ui/react_admin app (import / iterate models)")
+        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/z_react_admin_creator.py')
         creator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(creator)
         creator.create(model_creation_services)
     else:
+        pass
         print(".. .. ..ui/react_admin creation declined")
 
 
     if model_creation_services.flask_appbuilder:
         print(" c.  Create ui/basic_web_app (import / iterate models)")
         creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/fab_creator.py')
+        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_basic_web_app_creator.py')
         creator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(creator)
         creator.create(model_creation_services)
     else:
         print(".. ..ui/basic_web_app creation declined")
 
-    model_creation_services.app.teardown_appcontext(None)
-    if model_creation_services.engine:
-        model_creation_services.engine.dispose()
+    model_creation_services.close_app()  # this may no longer be required
 
 
 def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
@@ -762,24 +760,19 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                                                          abs_db_url,        # sqlite DBs are copied to proj/database
                                                          nw_db_status)
 
-    print(f'3. Create {project_directory + "/database/models.py"} via expose_existing_callable / sqlacodegen: {abs_db_url}')
-    # my_children_list, my_parents_list = create_models(abs_db_url, project_directory, use_model)  # exec's sqlacodegen
-    # fix_database_models__inject_db_types(project_directory, db_types)
-
-    # print("4. Create api/expose_api_models.py (import / iterate models)")
-    model_creation_services = CreateFromModel(  # Create views.py file from db, models.py
+    print(f'3. Create models.py from database, then use that to create api/ and ui/ models')
+    model_creation_services = CreateFromModel(  # Create database/models.py from db
         project_directory=project_directory,
         copy_to_project_directory = copy_to_project_directory,
         api_logic_server_dir = get_api_logic_server_dir(),
         abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
-        host=host, port=port,
-        # my_children_list=my_children_list, my_parents_list=my_parents_list,
+        host=host, port=port, use_model = use_model,
+        msg=f' a.  Create database/models.py from db: {abs_db_url}',
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__)
-    create_models(abs_db_url, project_directory, use_model, model_creation_services)  # exec's sqlacodegen
     fix_database_models__inject_db_types(project_directory, db_types)
-    invoke_creators(model_creation_services)
+    invoke_creators(model_creation_services)  # creates api/expose_api_models, ui/admin & basic_web_app
     if extended_builder is not None and extended_builder != "":
         print(f'4. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
         invoke_extended_builder(extended_builder, db_url, project_directory)
@@ -866,6 +859,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/09/2021 - 03.40.09: substantial code cleanup - create_from_model, model_creation_services, ... \n"
             "\t11/08/2021 - 03.40.08: standard (not DotMap) admin file names, admin_custom_nw.yaml example \n"
             "\t11/08/2021 - 03.40.07: use resource class model; yaml attributes (vs. column) \n"
             "\t11/06/2021 - 03.40.05: cleanup - get rid of first_resource/attribute etc - see properties_ref \n"
@@ -1072,6 +1066,41 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
     else:
         proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
     run_file = f'{proj_dir}/api_logic_server_run.py {host} {port}'
+    create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
+
+
+@main.command("create-ui")
+@click.option('--project_name',
+              default=f'{last_created_project_name}',
+              prompt="Project to run",
+              help="Project to run")
+@click.option('--use_model',
+              default="database/models.py",
+              help="See ApiLogicServer/wiki/Troubleshooting")
+@click.option('--file',
+              default=f'ui/admin/admin.yaml',
+              help="Port (default 5656, or leave empty)")
+@click.pass_context
+def create_ui(ctx, project_name: str, use_model: str="", file: str=""):
+    """
+        Use model to re-create the admin.yaml file (in progress)
+
+
+\b
+        Example
+
+\b
+            cd my-project
+            ApiLogicServer create-UI
+            ApiLogicServer run --project_name=    # runs last-created project
+    """
+
+    proj_dir = project_name
+    if proj_dir == "":
+        proj_dir = last_created_project_name
+    else:
+        proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
+    run_file = f'{proj_dir}/api_logic_server_run.py <host> <port>'
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
 
 

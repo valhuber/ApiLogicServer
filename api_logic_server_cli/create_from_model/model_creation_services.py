@@ -1,4 +1,5 @@
 import ast
+import io
 import logging
 import shutil
 import traceback
@@ -14,6 +15,10 @@ import inspect
 import importlib
 from flask import Flask
 from typing import List, Dict
+from pathlib import Path
+from shutil import copyfile
+
+from api_logic_server_cli.expose_existing import expose_existing_callable
 
 log = logging.getLogger(__name__)
 
@@ -58,9 +63,11 @@ class Resource():
 
 class CreateFromModel(object):
     """
-    Iterate over model
+    Model creation and shared services (favorite attributes, etc)
 
-    Create ui/basic_web_app/views.py and api/expose_api_models.py
+    Create models/expose_api_models.py, services for ui/basic_web_app/views.py and api/expose_api_models.py
+
+    Key logic is initiated when a (single) object is created.  The `__init__` calls `create_models`.
     """
 
     result_views = ""
@@ -85,19 +92,21 @@ class CreateFromModel(object):
     num_related = 0
 
     def __init__(self,
-                 project_directory: str ="~/Desktop/my_project",
+                 project_directory: str = "~/Desktop/my_project",
                  copy_to_project_directory: str = "",
                  api_logic_server_dir: str = "",
                  abs_db_url: str = "sqlite:///nw.sqlite",
-                 db_url: str="sqlite:///nw.sqlite",
-                 nw_db_status: str="",
-                 my_children_list: dict=None,
-                 my_parents_list: dict=None,
+                 db_url: str = "sqlite:///nw.sqlite",
+                 msg: str = " a.  Create database/models.py from db:",
+                 nw_db_status: str = "",
+                 my_children_list: dict = None,
+                 my_parents_list: dict = None,
                  host: str = "localhost",
                  port: str = "5656",
+                 use_model: str = "",
                  admin_app: bool = True,
-                 flask_appbuilder: bool=True,
-                 react_admin: bool=True,
+                 flask_appbuilder: bool = True,
+                 react_admin: bool = True,
                  not_exposed: str = 'ProductDetails_V',
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id",
@@ -110,8 +119,10 @@ class CreateFromModel(object):
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
         self.db_url = db_url  # the original cli parameter
         self.nw_db_status = nw_db_status
+        self.msg = msg
         self.host = host
         self.port = port
+        self.use_model = use_model
         self.resource_list : Dict[str, Resource] = dict()
         self.resource_list_complete = False
         self.my_children_list = my_children_list
@@ -136,6 +147,7 @@ class CreateFromModel(object):
 
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
+        self.create_models(abs_db_url= abs_db_url, project= project_directory)
 
     @staticmethod
     def get_windows_path_with_slashes(url: str) -> str:
@@ -174,7 +186,7 @@ class CreateFromModel(object):
         return result
 
     @staticmethod
-    def create_app(config_filename=None, host="localhost"):
+    def create_app_zzz(config_filename=None, host="localhost"):
         import safrs
 
         app = Flask("API Logic Server")
@@ -183,136 +195,6 @@ class CreateFromModel(object):
         db = safrs.DB
         db.init_app(app)
         return app
-
-    def add_table_to_class_map(self, orm_class) -> str:
-        """ given class, find table (hide your eyes), add table/class to table_to_class_map """
-        orm_class_info = orm_class[1]
-        query = str(orm_class_info.query)[7:]
-        table_name = query.split('.')[0]
-        table_name = table_name.strip('\"')
-        self.table_to_class_map.update({table_name: orm_class[0]})
-        return table_name
-
-    def get_class_for_table(self, table_name) -> str:
-        """ given table_name, return its class_name from table_to_class_map """
-        if table_name in self.table_to_class_map:
-            return self.table_to_class_map[table_name]
-        else:
-            log.debug("skipping view: " + table_name)
-            return None
-
-    def find_meta_data(self, cwd: str, log_info: bool=False) -> MetaData:
-        """     Find Metadata by importing model, or (failing that), db
-
-        cmd should be cli folder, e.g. '/Users/val/dev/ApiLogicServer/api_logic_server_cli'
-
-            Metadata contains definition of tables, cols & fKeys (show_related)
-            It can be obtained from db, *or* models.py; important because...
-                Many DBs don't define FKs into the db (e.g. nw.db)
-                Instead, they define "Virtual Keys" in their model files
-                To find these, we need to get Metadata from models, not db
-            Also, the names are different (e.g., classicmodels)
-                Class Names are copitalized, singlular (tables may not be)
-                And these are the SAFRS resource names
-                Builds add_table_to_class_map - see model_creation_services.get_class_for_table(table_name)
-            So, we need to
-                1. Import the models, via a location-relative dynamic import (warning - not trivial)
-                2. Find the Metadata from the imported models:
-                    a. Find cls_members in models module
-                    b. Locate first user model, use its metadata property
-            #  view_metadata = models.Order().metadata  # class var, non ab_
-
-            All this is doing is:
-                    from <cwd>/database import models(.py) as models
-
-        """
-
-        conn_string = None
-        do_dynamic_load = True
-        project_abs_path = abspath(self.project_directory)
-
-        if do_dynamic_load:
-            """
-                a_cwd -- see ApiLogicServer/prototype for structure
-
-                credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
-            """
-            sys_path = str(sys.path)
-            log.debug("find_meta_data sys_path:\n", sys_path)
-
-            self.app = self.create_app(host=self.host)
-            self.app.config.SQLALCHEMY_DATABASE_URI = self.abs_db_url
-            self.app.app_context().push()  # https://flask-sqlalchemy.palletsprojects.com/en/2.x/contexts/
-            if log_info:
-                print(f'.. .. ..Dynamic model import using sys.path: {project_abs_path + "/database"}')  # str(sys.path))
-            model_imported = False
-            sys.path.insert(0, project_abs_path + "/database")  #  e.g., adds /Users/val/Desktop/my_project/database
-            try:
-                # models =
-                importlib.import_module('models')
-                model_imported = True
-            except:
-                print("\n===> ERROR - Dynamic model import failed - project run will fail")
-                traceback.print_exc()
-                pass  # try to continue to enable manual fixup
-
-            # sys.path.insert(0, a_cwd)  # success - models open
-            # config = importlib.import_module('config')
-            conn_string = self.app.config.SQLALCHEMY_DATABASE_URI
-        else:  # using dynamic loading (above), remove this when stable (TODO)
-            import models
-            conn_string = "sqlite:///nw/nw.db"
-
-        orm_class = None
-        metadata = None
-        if not model_imported:
-            print('.. .. ..Creation proceeding to enable manual database/models.py fixup')
-            print('.. .. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
-        else:
-            try:
-                cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
-                for each_cls_member in cls_members:
-                    each_class_def_str = str(each_cls_member)
-                    #  such as ('Category', <class 'models.Category'>)
-                    if ("'models." in str(each_class_def_str) and
-                            "Ab" not in str(each_class_def_str)):
-                        orm_class = each_cls_member
-                        table_name = self.add_table_to_class_map(orm_class)  # <-- CRITICAL: enables get_class_for_table
-                if (orm_class is not None):
-                    if log_info:
-                        print(f'.. .. ..Dynamic model import successful '
-                              f'({len(self.table_to_class_map)} classes'
-                              f') -'
-                              f' getting metadata from {str(orm_class)}')
-                    metadata = orm_class[1].metadata
-
-                self.engine = sqlalchemy.create_engine(conn_string)
-                self.connection = self.engine.connect()
-            except:
-                print("\n===> ERROR - Unable to introspect model classes")
-                traceback.print_exc()
-                pass
-
-        if metadata is None:  # this recovery fails to find meta, but should continue to enable model repair
-            # print('.. Using db for meta (models not found)')
-            # print('.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
-            metadata = MetaData()
-        else:
-            metadata.reflect(bind=self.engine, resolve_fks=True)
-        self.metadata = metadata
-
-    def zz_generate_module_imports(self) -> str:  # TODO drop
-        """
-            Returns a string of views.py imports
-
-            (first portion of `views.py` file)
-        """
-        result = "from flask_appbuilder import ModelView\n"
-        result += "from flask_appbuilder.models.sqla.interface "\
-            "import SQLAInterface\n"
-        result += "from . import appbuilder, db\n"
-        result += "from database.models import *\n"
-        return result
 
     def list_columns(self, a_table_def: MetaDataTable) -> str:
         """
@@ -691,3 +573,180 @@ class CreateFromModel(object):
                     return each_attribute.name
         for each_attribute in resource.attributes:  # no favorites, just return 1st
             return each_attribute.name
+
+    def add_table_to_class_map(self, orm_class) -> str:
+        """ given class, find table (hide your eyes), add table/class to table_to_class_map """
+        orm_class_info = orm_class[1]
+        query = str(orm_class_info.query)[7:]
+        table_name = query.split('.')[0]
+        table_name = table_name.strip('\"')
+        self.table_to_class_map_update(table_name=table_name, class_name=orm_class[0])
+        return table_name
+
+    def table_to_class_map_update(self, table_name: str, class_name: str):
+        self.table_to_class_map.update({table_name: class_name})
+
+    def get_class_for_table(self, table_name) -> str:
+        """ given table_name, return its class_name from table_to_class_map """
+        if table_name in self.table_to_class_map:
+            return self.table_to_class_map[table_name]
+        else:
+            log.debug("skipping view: " + table_name)
+            return None
+
+    def find_meta_data(self, cwd: str, log_info: bool=False) -> MetaData:
+        return self.metadata
+
+    def resolve_home(self, name: str) -> str:
+        """
+        :param name: a file name, eg, ~/Desktop/a.b
+        :return: /users/you/Desktop/a.b
+
+        This just removes the ~, the path may still be relative to run location
+        """
+        result = name
+        if result.startswith("~"):
+            result = str(Path.home()) + result[1:]
+        return result
+
+    def close_app(self):
+        """ may not be necessary - once had to open app to load class
+        """
+        if self.app:
+            self.app.teardown_appcontext(None)
+        if self.engine:
+            self.engine.dispose()
+
+    def load_resource_model_from_safrs(self, models_file):
+        """ currently does nothing but verify model classes' safrs info is readable.  It is.
+        """
+        conn_string = None
+        do_dynamic_load = True
+        project_abs_path = abspath(self.project_directory)
+
+        """
+            a_cwd -- see ApiLogicServer/prototype for structure
+
+            credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
+        """
+
+        model_imported = False
+        sys.path.insert(0, project_abs_path + "/database")  # e.g., adds /Users/val/Desktop/my_project/database
+        try:
+            # models =
+            importlib.import_module('models')
+            model_imported = True
+        except:
+            print("\n===> ERROR - Dynamic model import failed - project run will fail")
+            traceback.print_exc()
+            pass  # try to continue to enable manual fixup
+
+            # sys.path.insert(0, a_cwd)  # success - models open
+            # config = importlib.import_module('config')
+
+        orm_class = None
+        metadata = None
+        if not model_imported:
+            print('.. .. ..Creation proceeding to enable manual database/models.py fixup')
+            print('.. .. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
+        else:
+            try:
+                cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
+                for each_cls_member in cls_members:
+                    each_class_def_str = str(each_cls_member)
+                    #  such as ('Category', <class 'models.Category'>)
+                    if ("'models." in str(each_class_def_str) and
+                            "Ab" not in str(each_class_def_str)):
+                        resource_name = each_cls_member[0]
+                        resource_class = each_cls_member[1]
+                        resource = Resource(name=resource_name)
+                        resource_data = {"type": resource_class._s_type}
+                        for each_attribute in resource_class._s_columns:
+                            resource_attribute = ResourceAttribute(name=str(each_attribute.name))
+                            resource.attributes.append(resource_attribute)
+                        relations = []
+                        for rel_name, rel in resource_class._s_relationships.items():
+                            relation = {}
+                            relationship = ResourceRelationship(rel_name, rel.backref)
+                            relation["name"] = rel_name
+                            relation["target"] = rel.target.name
+                            relation["fks"] = [c.key for c in rel._calculated_foreign_keys]
+                            for each_fkey in rel._calculated_foreign_keys:
+                                pair = ( "?", each_fkey.description)
+                                relationship.parent_child_key_pairs.append(pair)
+                            # ignoring this for the moment relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
+                            resource.parents.append(relationship)
+                        pass
+
+
+                if (orm_class is not None):
+                    log.debug(f'.. .. ..Dynamic model import successful '
+                             f'({len(self.table_to_class_map)} classes'
+                             f') -'
+                             f' getting metadata from {str(orm_class)}')
+            except:
+                print("\n===> ERROR - Unable to introspect model classes")
+                traceback.print_exc()
+                pass
+
+    def create_models(self, abs_db_url: str, project: str):
+        """
+        Create models.py (using sqlacodegen,  via expose_existing.expose_existing_callable).
+
+        Called on creation of CreateFromModel.__init__.
+
+        It creates the `models.py` file, and loads `self.resource_list` used by creators to iterate the model.
+
+            1. It calls `expose_existing-callable.create_models_from_db`:
+                * It returns the `models_py` text now written to the projects' `database/models.py`.
+                * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
+                    * An important consideration is disambiguating multiple relationships between the same w tables
+                        * See `nw-plus` relationships between `Department` and `Employee`.
+                        * [See here](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) for a database diagram.
+                    * It transforms database names to resource names - capitalized, singular
+                        * These (not table names) are used to create api and ui model
+
+            2. It then calls `load_resource_model_from_safrs`, to create the `resource_list`
+                * This is the meta data iterated by the creation modules to create api and ui model classes.
+                * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
+                    * Many DBs don't define FKs into the db (e.g. nw.db).
+                    * Instead, they define "Virtual Keys" in their model files.
+                    * To leverage these, we need to get resource Metadata from model classes, not db
+
+        :param abs_db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
+        :param project: project directory
+        """
+
+        class DotDict(dict):
+            """dot.notation access to dictionary attributes"""
+            # thanks: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary/28463329
+            __getattr__ = dict.get
+            __setattr__ = dict.__setitem__
+            __delattr__ = dict.__delitem__
+
+        def get_codegen_args():
+            """ DotDict of url, outfile, version """
+            codegen_args = DotDict({})
+            codegen_args.url = abs_db_url
+            # codegen_args.outfile = models_file
+            codegen_args.outfile = project + '/database/models.py'
+            codegen_args.version = False
+            codegen_args.model_creation_services = self
+            return codegen_args
+
+        rtn_my_children_map = None
+        rtn_my_parents_map = None
+        if self.use_model == "":  # use this hand-edited model (e.g., added relns)
+            print(f'{self.msg}{abs_db_url}')
+            code_gen_args = get_codegen_args()
+            models_py = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
+            outfile = io.open(code_gen_args.outfile, "w", encoding="utf-8")
+            outfile.write(models_py)
+            self.resource_list_complete = True
+            self.load_resource_model_from_safrs(code_gen_args.outfile)
+        else:
+            model_file = self.resolve_home(name = self.use_model)
+            print(f'.. .. ..Copy {model_file} to {project + "/database/models.py"}')
+            copyfile(model_file, project + '/database/models.py')
+            self.load_resource_model_from_safrs(model_file)
+        return rtn_my_children_map, rtn_my_parents_map

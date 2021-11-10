@@ -74,8 +74,10 @@ def fix_generated(code, args):
     return code
 
 
-def codegen(args):
-    """ called by ApiLogicServer CLI to create create database/dbp.py
+def create_models_from_db(args) -> str:
+    """ called by ApiLogicServer CLI to create create database/models.py
+
+    returns str to be written to models.py
     """
     # Use reflection to fill in the metadata
     engine = create_engine(args.url)
@@ -93,15 +95,11 @@ def codegen(args):
     # outfile = io.open(args.outfile, 'w', encoding='utf-8') if args.outfile else capture # sys.stdout
     generator = CodeGenerator(metadata, args.noindexes, args.noconstraints,
                               args.nojoined, args.noinflect, args.noclasses, args.model_creation_services)
-    generator.render(capture)
+    args.model_creation_services.metadata = generator.metadata
+    generator.render(capture)  # this writes the models.py file
     models_py = capture.getvalue()
     models_py = fix_generated(models_py, args)
-    if args.outfile:
-        outfile = io.open(args.outfile, "w", encoding="utf-8")
-        outfile.write(models_py)
-    rtn_children_map = generator.children_map
-    rtn_parents_map = generator.parents_map
-    return rtn_children_map, rtn_parents_map
+    return models_py
 
 
 if on_import:

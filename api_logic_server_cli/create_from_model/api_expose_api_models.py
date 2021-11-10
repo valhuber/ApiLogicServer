@@ -51,7 +51,7 @@ def create_expose_api_models(model_creation_services):
             continue
         if "ProductDetails_V" in each_resource_name:
             log.debug("special table")  # should not occur (--noviews)
-        if each_resource_name.startswith("ab_"):
+        if each_resource_name.startswith("Ab"):
             # result_apis += "# skip admin table: " + resource_name + "\n"
             continue
         elif 'sqlite_sequence' in each_resource_name:

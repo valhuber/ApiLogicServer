@@ -737,6 +737,9 @@ from sqlalchemy.dialects.mysql import *
                     resource_attribute = ResourceAttribute(name=str(each_column.name))
                     resource.attributes.append(resource_attribute)
             resource_list[model.name] = resource
+            if not str(model.table.name).startswith("ab_"):
+                self.model_creation_services.table_to_class_map_update(
+                    table_name=model.table.name, class_name=model.name)
 
         # Render constraints and indexes as __table_args__
         autonum_col = False
@@ -855,6 +858,8 @@ from sqlalchemy.dialects.mysql import *
         return rendered
 
     def render(self, outfile=sys.stdout):
+        """ create model from db, and write models.py file to disk
+        """
         rendered_models = []
         for model in self.models:
             if isinstance(model, self.class_model):
