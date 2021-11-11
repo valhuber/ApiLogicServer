@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.11"
+__version__ = "3.40.12"
 
 from contextlib import closing
 
@@ -754,15 +754,19 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     """user-supplied project_name, less the twiddle (which might be in project_name). Typically relative to cwd. """
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
-    abs_db_url = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
-                                                         project_name,      # actual user parameter
-                                                         from_git, "2. Create Project",
-                                                         abs_db_url,        # sqlite DBs are copied to proj/database
-                                                         nw_db_status)
+    if not command.startswith("rebuild"):
+        abs_db_url = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
+                                                             project_name,      # actual user parameter
+                                                             from_git, "2. Create Project",
+                                                             abs_db_url,        # sqlite DBs are copied to proj/database
+                                                             nw_db_status)
+    else:
+        print("2. Use Existing Project")
 
     print(f'3. Create models.py from database, then use that to create api/ and ui/ models')
     model_creation_services = CreateFromModel(  # Create database/models.py from db
         project_directory=project_directory,
+        command = command,
         copy_to_project_directory = copy_to_project_directory,
         api_logic_server_dir = get_api_logic_server_dir(),
         abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
@@ -859,7 +863,8 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t11/09/2021 - 03.40.11: create_ui -- non ApiLogicServer creation of admin.yaml from model.py \n"
+            "\t11/10/2021 - 03.40.12: add rebuild-from-database, rebuild-from-model \n"
+            "\t11/09/2021 - 03.40.11: create-ui -- non ApiLogicServer creation of admin.yaml from model.py \n"
             "\t11/09/2021 - 03.40.10: model_creation_services.resource_list via safrs-based code \n"
             "\t11/09/2021 - 03.40.09: substantial code cleanup - create_from_model, model_creation_services, ... \n"
             "\t11/08/2021 - 03.40.08: standard (not DotMap) admin file names, admin_custom_nw.yaml example \n"
@@ -950,6 +955,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     """
         Creates new customizable project (overwrites).
     """
+    global command
+    command = "create"
     # print_info()
     db_types = ""
     api_logic_server(project_name=project_name, db_url=db_url,
@@ -1026,11 +1033,175 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
     """
         Creates new project and runs it (overwrites).
     """
+    global command
+    command = "create-and-run"
     # print_info()
     db_types = ""
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     react_admin=react_admin, admin_app=admin_app,
+                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                     extended_builder=extended_builder)
+
+
+@main.command("rebuild-from-database")
+@click.option('--db_url',
+              default=f'{default_db}',
+              prompt="SQLAlchemy Database URI",
+              help="SQLAlchemy Database URL - see above\n")
+@click.option('--project_name',
+              default=f'{default_project_name}',
+              prompt="Project to create",
+              help="Create new directory here")
+@click.option('--from_git',
+              default="",
+              help="Template clone-from project (or directory)")
+@click.option('--run', is_flag=True,
+              default=False,
+              help="Run created project")
+@click.option('--open_with',
+              default='',
+              help="Open created project (eg, charm, atom)")
+@click.option('--not_exposed',
+              default="ProductDetails_V",
+              help="Tables not written to api/expose_api_models")
+@click.option('--admin_app/--no_admin_app',
+              default=True, is_flag=True,
+              help="Creates ui/react app (yaml model)")
+@click.option('--flask_appbuilder/--no_flask_appbuilder',
+              default=True, is_flag=True,
+              help="Creates ui/basic_web_app")
+@click.option('--react_admin/--no_react_admin',
+              default=False, is_flag=True,
+              help="Creates ui/react_admin app")
+@click.option('--favorites',
+              default="name description",
+              help="Columns named like this displayed first")
+@click.option('--non_favorites',
+              default="id",
+              help="Columns named like this displayed last")
+@click.option('--use_model',
+              default="",
+              help="See ApiLogicServer/wiki/Troubleshooting")
+@click.option('--host',
+              default=f'localhost',
+              help="Server hostname (default is localhost)")
+@click.option('--port',
+              default=f'5656',
+              help="Port (default 5656, or leave empty)")
+@click.option('--extended_builder',
+              default=f'',
+              help="your_code.py for additional build automation")
+@click.pass_context
+def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
+           from_git: str,
+           # db_types: str,
+           open_with: str,
+           run: click.BOOL,
+           admin_app: click.BOOL,
+           flask_appbuilder: click.BOOL,
+           react_admin: click.BOOL,
+           use_model: str,
+           host: str,
+           port: str,
+           favorites: str, non_favorites: str,
+           extended_builder: str):
+    """
+        Updates database, api, and ui from changed db.
+
+\b
+        ex
+\b
+        ApiLogicServer rebuild-from-database --project_name=~/dev/servers/api_logic_server --db_url=nw
+
+    """
+    global command
+    command = "rebuild-from-database"
+    # print_info()
+    db_types = ""
+    api_logic_server(project_name=project_name, db_url=db_url,
+                     not_exposed=not_exposed,
+                     run=run, use_model=use_model, from_git=from_git, db_types = db_types,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     react_admin=react_admin, admin_app=admin_app,
+                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                     extended_builder=extended_builder)
+
+
+@main.command("rebuild-from-model")
+@click.option('--db_url',
+              default=f'{default_db}',
+              prompt="SQLAlchemy Database URI",
+              help="SQLAlchemy Database URL - see above\n")
+@click.option('--project_name',
+              default=f'{default_project_name}',
+              prompt="Project to create",
+              help="Create new directory here")
+@click.option('--from_git',
+              default="",
+              help="Template clone-from project (or directory)")
+@click.option('--run', is_flag=True,
+              default=False,
+              help="Run created project")
+@click.option('--open_with',
+              default='',
+              help="Open created project (eg, charm, atom)")
+@click.option('--not_exposed',
+              default="ProductDetails_V",
+              help="Tables not written to api/expose_api_models")
+@click.option('--admin_app/--no_admin_app',
+              default=True, is_flag=True,
+              help="Creates ui/react app (yaml model)")
+@click.option('--flask_appbuilder/--no_flask_appbuilder',
+              default=True, is_flag=True,
+              help="Creates ui/basic_web_app")
+@click.option('--react_admin/--no_react_admin',
+              default=False, is_flag=True,
+              help="Creates ui/react_admin app")
+@click.option('--favorites',
+              default="name description",
+              help="Columns named like this displayed first")
+@click.option('--non_favorites',
+              default="id",
+              help="Columns named like this displayed last")
+@click.option('--use_model',
+              default="",
+              help="See ApiLogicServer/wiki/Troubleshooting")
+@click.option('--host',
+              default=f'localhost',
+              help="Server hostname (default is localhost)")
+@click.option('--port',
+              default=f'5656',
+              help="Port (default 5656, or leave empty)")
+@click.option('--extended_builder',
+              default=f'',
+              help="your_code.py for additional build automation")
+@click.pass_context
+def rebuild_from_model(ctx, project_name: str, db_url: str, not_exposed: str,
+           from_git: str,
+           # db_types: str,
+           open_with: str,
+           run: click.BOOL,
+           admin_app: click.BOOL,
+           flask_appbuilder: click.BOOL,
+           react_admin: click.BOOL,
+           use_model: str,
+           host: str,
+           port: str,
+           favorites: str, non_favorites: str,
+           extended_builder: str):
+    """
+        Updates database, api, and ui from changed models.
+    """
+    global command
+    command = "rebuild-from-model"
+    # print_info()
+    db_types = ""
+    api_logic_server(project_name=project_name, db_url=db_url,
+                     not_exposed=not_exposed,
+                     run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
@@ -1061,7 +1232,8 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
             ApiLogicServer run --project_name=/localhost/api_logic_server
             ApiLogicServer run --project_name=    # runs last-created project
     """
-
+    global command
+    command = "run-api"
     proj_dir = project_name
     if proj_dir == "":
         proj_dir = last_created_project_name
@@ -1086,25 +1258,25 @@ def create_ui(ctx, use_model: str,
               favorites: str, non_favorites: str,
               ):
     """
-        Use model to re-create the admin.yaml file (in progress)
+        Use model to re-create the admin.yaml file.
 
 
 \b
         Example
 
 \b
-            cd my-project
-            ApiLogicServer create-UI
-            ApiLogicServer run --project_name=    # runs last-created project
+            ApiLogicServer create-ui --use_model=~/dev/ApiLogicServer/tests/models-nw-plus.py
     """
+    global command
+    command = "create-ui"
     admin_out = resolve_home(use_model.replace("py","yaml"))
     project_directory, ignore = os.path.split(resolve_home(use_model))
     model_creation_services = CreateFromModel(  # fills in rsource_list for ui_admin_creator
         use_model=use_model,
-        msg=f'1. Creating: {admin_out} from existing model: {use_model}',
+        msg=f'1. Loading existing model: {use_model}',
         favorite_names=favorites, non_favorite_names=non_favorites,
         project_directory=project_directory,
-        command="create_ui",
+        command=command,
         version=__version__)
 
     print(f'2. Creating yaml from model')
@@ -1114,7 +1286,7 @@ def create_ui(ctx, use_model: str,
     spec.loader.exec_module(creator)
     admin_yaml_dump = creator.create(model_creation_services)
 
-    print(f'3. Writing: {admin_out}')
+    print(f'3. Writing yaml: {admin_out}')
     with open(admin_out, 'w') as yaml_file:
         yaml_file.write(admin_yaml_dump)
 
@@ -1142,7 +1314,8 @@ def run_ui(ctx, project_name: str, host: str="localhost", port: str="5002"):
             ApiLogicServer run-ui --project_name=/localhost/api_logic_server
             ApiLogicServer run-ui --project_name=    # runs last-created project
     """
-
+    global command
+    command = "run-ui"
     proj_dir = project_name
     if proj_dir == "":
         proj_dir = last_created_project_name
@@ -1252,7 +1425,7 @@ def start():               # target of setup.py
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
 
-
+command = "not set"
 if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
     # unix: python api_logic_server_cli/cli.py create --project_name=/home/api_logic_server

@@ -319,11 +319,14 @@ class FabCreator(object):
         copy_to_unix_project_name = unix_project_name
         if self.mod_gen.copy_to_project_directory != "":
             copy_to_unix_project_name = self.mod_gen.copy_to_project_directory.replace('\\', "/")
-        target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
-        source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/templates/create_admin.sh")
-        create_admin_commands = source_create_admin_sh_file.read()
-        target_create_admin_sh_file.write(create_admin_commands)
-        target_create_admin_sh_file.close()
+        if self.mod_gen.command == "create-ui" or self.mod_gen.command.startswith("rebuild"):
+            pass
+        else:
+            target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
+            source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/templates/create_admin.sh")
+            create_admin_commands = source_create_admin_sh_file.read()
+            target_create_admin_sh_file.write(create_admin_commands)
+            target_create_admin_sh_file.close()
 
         create_utils.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
                                    replace_with=copy_to_unix_project_name,
@@ -384,7 +387,10 @@ class FabCreator(object):
         self.fix_config()
 
     def create_basic_web_app(self):
-        self.create_basic_web_app_directory(".. .. ..Create ui/basic_web_app")
+        if self.mod_gen.command == "create-ui" or self.mod_gen.command.startswith("rebuild"):
+            print(".. .. ..Use existing ui/basic_web_app")
+        else:
+            self.create_basic_web_app_directory(".. .. ..Create ui/basic_web_app")
         self.generate_ui_views()
         self.prepare_flask_app_builder(msg=".. .. ..Writing: /ui/basic_web_app/app/views.py")
         log.debug(f'create_from_model.fab_creator("{self.mod_gen.db_url}", "{self.mod_gen.project_directory}" Completed')

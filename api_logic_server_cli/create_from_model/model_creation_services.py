@@ -628,7 +628,7 @@ class CreateFromModel(object):
         """
         project_abs_path = abspath(self.project_directory)
         model_imported = False
-        path_to_add = project_abs_path if self.command == "create_ui" else \
+        path_to_add = project_abs_path if self.command == "create-ui" else \
             project_abs_path + "/database"  # for Api Logic Server projects
         sys.path.insert(0, path_to_add)  # e.g., adds /Users/val/Desktop/my_project/database
         try:
@@ -636,7 +636,7 @@ class CreateFromModel(object):
             importlib.import_module('models')
             model_imported = True
         except:
-            print("\n===> ERROR - Dynamic model import failed - project run will fail")
+            print(f'\n===> ERROR - Dynamic model import failed in {path_to_add} - project run will fail')
             traceback.print_exc()
             pass  # try to continue to enable manual fixup
 
@@ -674,6 +674,7 @@ class CreateFromModel(object):
                                 resource.parents.append(relationship)
                                 relationship.child_resource = resource_name
                                 parent_resource_name = str(rel.target.name)
+                                parent_resource_name = rel.mapper.class_._s_class_name
                                 relationship.parent_resource = parent_resource_name
                                 if parent_resource_name not in resource_list:
                                     parent_resource = Resource(name=parent_resource_name)
@@ -741,18 +742,25 @@ class CreateFromModel(object):
 
         rtn_my_children_map = None
         rtn_my_parents_map = None
-        if self.use_model == "":  # use this hand-edited model (e.g., added relns)
+        print(self.msg)
+        model_file_name = "*"
+        if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
             print(f'{self.msg}{abs_db_url}')
             code_gen_args = get_codegen_args()
             models_py = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
+            model_file_name = code_gen_args.outfile
             outfile = io.open(code_gen_args.outfile, "w", encoding="utf-8")
             outfile.write(models_py)
             self.resource_list_complete = True
-            self.load_resource_model_from_safrs(code_gen_args.outfile)
+            # self.load_resource_model_from_safrs(code_gen_args.outfile)
+        elif self.command in ('create-ui', 'rebuild-from-model'):
+            model_file_name = self.resolve_home(name = self.use_model)
+            if False and self.command != "create-ui":  # eg, command create-ui - no API Logic Server project
+                print(f'.. .. ..Copy {model_file_name} to {project_directory + "/database/models.py"}')
+                copyfile(model_file_name, project_directory + '/database/models.py')
+            # self.load_resource_model_from_safrs(model_file_name)
         else:
-            model_file = self.resolve_home(name = self.use_model)
-            if self.command != "create_ui":  # eg, command create-ui - no API Logic Server project
-                print(f'.. .. ..Copy {model_file} to {project_directory + "/database/models.py"}')
-                copyfile(model_file, project_directory + '/database/models.py')
-            self.load_resource_model_from_safrs(model_file)
+            error_message = f'System error - unexpected command: {self.command}'
+            raise ValueError(error_message)
+        self.load_resource_model_from_safrs(model_file_name)  # whether created or used, build resource_list
         return rtn_my_children_map, rtn_my_parents_map

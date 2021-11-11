@@ -72,7 +72,10 @@ class AdminCreator(object):
     def create_admin_application(self) -> str:
         """ main driver - loop through resources, write admin.yaml - with backup, nw customization
         """
-        if self.mod_gen.command != "create_ui":
+        if self.mod_gen.command == "create-ui" or self.mod_gen.command.startswith("rebuild"):
+            if self.mod_gen.command.startswith("rebuild"):
+                print(".. .. ..Use existing ui/admin")
+        else:
             self.create_admin_app(msg=".. .. ..Create ui/admin")
 
         cwd = os.getcwd()
@@ -92,7 +95,7 @@ class AdminCreator(object):
 
         admin_yaml_dict = self.admin_yaml.toDict()
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
-        if self.mod_gen.command != "create_ui":
+        if self.mod_gen.command != "create-ui":
             self.write_yaml_files(admin_yaml_dump)
         return admin_yaml_dump
 

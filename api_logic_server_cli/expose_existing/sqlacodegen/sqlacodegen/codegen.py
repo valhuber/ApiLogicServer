@@ -829,26 +829,28 @@ from sqlalchemy.dialects.mysql import *
                         pair = ( str(each_pair.column.name), str(each_pair.parent.name) )
                         resource_relationship.parent_child_key_pairs.append(pair)
 
-                    resource.parents.append(resource_relationship)
-                    resource = self.model_creation_services.resource_list[relationship.target_cls]
-                    resource.children.append(resource_relationship)
+                        resource.parents.append(resource_relationship)
+                        parent_resource = self.model_creation_services.resource_list[relationship.target_cls]
+                        parent_resource.children.append(resource_relationship)
 
-                    if relationship.source_cls not in self.parents_map:   # todo old code remove
-                        self.parents_map[relationship.source_cls] = list()
-                    self.parents_map[relationship.source_cls].append(
-                        (
-                            attr,          # to parent, eg, Department, Department1
-                            backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
-                            relationship.foreign_key_constraint
-                        ) )
-                    if relationship.target_cls not in self.children_map:
-                        self.children_map[relationship.target_cls] = list()
-                    self.children_map[relationship.target_cls].append(
-                        (
-                            attr,          # to parent, eg, Department, Department1
-                            backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
-                            relationship.foreign_key_constraint
-                        ) )
+                        use_old_code = True  # so you can elide this
+                        if use_old_code:
+                            if relationship.source_cls not in self.parents_map:   # todo old code remove
+                                self.parents_map[relationship.source_cls] = list()
+                            self.parents_map[relationship.source_cls].append(
+                                (
+                                    attr,          # to parent, eg, Department, Department1
+                                    backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
+                                    relationship.foreign_key_constraint
+                                ) )
+                            if relationship.target_cls not in self.children_map:
+                                self.children_map[relationship.target_cls] = list()
+                            self.children_map[relationship.target_cls].append(
+                                (
+                                    attr,          # to parent, eg, Department, Department1
+                                    backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
+                                    relationship.foreign_key_constraint
+                                ) )
                 pass
 
         # Render subclasses
