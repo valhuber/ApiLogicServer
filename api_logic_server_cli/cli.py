@@ -510,23 +510,27 @@ def final_project_fixup(msg, project_name, project_directory, host, port, use_mo
         msg = f' a.   Appending "from database import customize_models" to database/models.py'
         fix_database_models__import_customize_models(project_directory, msg)
 
-    print(f' b.   Update api_logic_server_run.py with '
-          f'project_name={project_name} and host, port')
-    update_api_logic_server_run(project_name, project_directory, host, port)
-
-    fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project_directory, host, port)
-
     copy_project_result = ""
-    if copy_to_project_directory != "":
-        copy_project_result = \
-            copy_project_to_local(project_directory, copy_to_project_directory,
-                                  f'10. Copy temp_created_project over {copy_to_project_directory} ')
+    if command.startswith("rebuild"):
+        pass
+    else:
+        print(f' b.   Update api_logic_server_run.py with '
+              f'project_name={project_name} and host, port')
+        update_api_logic_server_run(project_name, project_directory, host, port)
 
-    api_logic_server_info_file_dict["last_created_project_name"] = project_directory  # project_name - twiddle
-    api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
-    api_logic_server_info_file_dict["last_created_version"] = __version__
-    with open(api_logic_server_info_file_name, 'w') as api_logic_server_info_file_file:
-        yaml.dump(api_logic_server_info_file_dict, api_logic_server_info_file_file, default_flow_style=False)
+        fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project_directory, host, port)
+
+        copy_project_result = ""
+        if copy_to_project_directory != "":
+            copy_project_result = \
+                copy_project_to_local(project_directory, copy_to_project_directory,
+                                      f'10. Copy temp_created_project over {copy_to_project_directory} ')
+
+        api_logic_server_info_file_dict["last_created_project_name"] = project_directory  # project_name - twiddle
+        api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
+        api_logic_server_info_file_dict["last_created_version"] = __version__
+        with open(api_logic_server_info_file_name, 'w') as api_logic_server_info_file_file:
+            yaml.dump(api_logic_server_info_file_dict, api_logic_server_info_file_file, default_flow_style=False)
     return copy_project_result
 
 
