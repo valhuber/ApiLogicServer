@@ -378,7 +378,10 @@ class FabCreator(object):
         text_file = open(self.mod_gen.project_directory + '/ui/basic_web_app/app/views.py', 'w')
         text_file.write(self.result_views)
         text_file.close()
-        print(".. .. ..Fixing run.py and app/init for Python path, logic")
+        if self.mod_gen.command.startswith("rebuild"):
+            print(".. .. ..Use existing run.py and app/init for Python path, logic")
+        else:
+            print(".. .. ..Fixing run.py and app/init for Python path, logic")
         if not self.mod_gen.db_url.endswith("nw.sqlite"):
             print(".. .. ..Important: you will need to run flask fab create-admin")
         self.fix_basic_web_app_run__python_path()

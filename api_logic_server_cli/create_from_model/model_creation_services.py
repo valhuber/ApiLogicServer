@@ -99,7 +99,6 @@ class CreateFromModel(object):
                  api_logic_server_dir: str = "",
                  abs_db_url: str = "sqlite:///nw.sqlite",
                  db_url: str = "sqlite:///nw.sqlite",
-                 msg: str = " a.  Create database/models.py from db:",
                  nw_db_status: str = "",
                  my_children_list: dict = None,
                  my_parents_list: dict = None,
@@ -124,7 +123,6 @@ class CreateFromModel(object):
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
         self.db_url = db_url  # the original cli parameter
         self.nw_db_status = nw_db_status
-        self.msg = msg
         self.host = host
         self.port = port
         self.use_model = use_model
@@ -656,6 +654,7 @@ class CreateFromModel(object):
                         resource_name = each_cls_member[0]
                         resource_class = each_cls_member[1]
                         resource = Resource(name=resource_name)
+                        self.metadata = resource_class.metadata
                         if resource_name not in resource_list:
                             resource_list[resource_name] = resource
                         resource = resource_list[resource_name]
@@ -742,23 +741,24 @@ class CreateFromModel(object):
 
         rtn_my_children_map = None
         rtn_my_parents_map = None
-        print(self.msg)
         model_file_name = "*"
         if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
-            print(f'{self.msg}{abs_db_url}')
-            code_gen_args = get_codegen_args()
-            models_py = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
-            model_file_name = code_gen_args.outfile
-            outfile = io.open(code_gen_args.outfile, "w", encoding="utf-8")
-            outfile.write(models_py)
-            self.resource_list_complete = True
-            # self.load_resource_model_from_safrs(code_gen_args.outfile)
-        elif self.command in ('create-ui', 'rebuild-from-model'):
-            model_file_name = self.resolve_home(name = self.use_model)
             if False and self.command != "create-ui":  # eg, command create-ui - no API Logic Server project
-                print(f'.. .. ..Copy {model_file_name} to {project_directory + "/database/models.py"}')
+                print(f' a.   Use existing {model_file_name} - copy to {project_directory + "/database/models.py"}')
                 copyfile(model_file_name, project_directory + '/database/models.py')
-            # self.load_resource_model_from_safrs(model_file_name)
+            else:
+                print(f' a.  Create database/models.py using database: {abs_db_url}')
+                code_gen_args = get_codegen_args()
+                models_py = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
+                model_file_name = code_gen_args.outfile
+                outfile = io.open(code_gen_args.outfile, "w", encoding="utf-8")
+                outfile.write(models_py)
+                self.resource_list_complete = True
+        elif self.command == 'create-ui':
+            model_file_name = self.resolve_home(name = self.use_model)
+        elif self.command == "rebuild-from-model":
+            print(f' a.  Rebuild api and ui models from current database/models.py')
+            model_file_name = project_directory + '/database/models.py'
         else:
             error_message = f'System error - unexpected command: {self.command}'
             raise ValueError(error_message)

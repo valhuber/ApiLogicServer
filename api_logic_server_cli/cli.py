@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.12"
+__version__ = "3.40.14"
 
 from contextlib import closing
 
@@ -506,7 +506,7 @@ def fix_database_models__inject_db_types(project_directory: str, db_types: str):
 def final_project_fixup(msg, project_name, project_directory, host, port, use_model, copy_to_project_directory) -> str:
     print(msg)  # "7. Final project fixup"
 
-    if use_model == "":
+    if use_model == "" and command != "rebuild-from-model":
         msg = f' a.   Appending "from database import customize_models" to database/models.py'
         fix_database_models__import_customize_models(project_directory, msg)
 
@@ -665,7 +665,7 @@ def invoke_creators(model_creation_services: CreateFromModel):
     if model_creation_services.admin_app:
         use_dotmap = True
         if use_dotmap:
-            print(" c.  Create ui/admin app from models")
+            print(" c.  Create ui/admin/admin.yaml from models")
             spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_admin_creator.py')
             creator = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(creator)
@@ -692,7 +692,7 @@ def invoke_creators(model_creation_services: CreateFromModel):
 
 
     if model_creation_services.flask_appbuilder:
-        print(" c.  Create ui/basic_web_app (import / iterate models)")
+        print(" c.  Create ui/basic_web_app/app/views.py (import / iterate models)")
         creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_basic_web_app_creator.py')
         creator = importlib.util.module_from_spec(spec)
@@ -761,9 +761,10 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                                                              abs_db_url,        # sqlite DBs are copied to proj/database
                                                              nw_db_status)
     else:
-        print("2. Use Existing Project")
+        print("1. Not Deleting Existing Project")
+        print("2. Using Existing Project")
 
-    print(f'3. Create models.py from database, then use that to create api/ and ui/ models')
+    print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
     model_creation_services = CreateFromModel(  # Create database/models.py from db
         project_directory=project_directory,
         command = command,
@@ -771,7 +772,6 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         api_logic_server_dir = get_api_logic_server_dir(),
         abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
         host=host, port=port, use_model = use_model,
-        msg=f' a.  Create database/models.py from db: {abs_db_url}',
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__)
@@ -863,6 +863,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/10/2021 - 03.40.14: bug fixes - rebuild-from-database, rebuild-from-model \n"
             "\t11/10/2021 - 03.40.12: add rebuild-from-database, rebuild-from-model \n"
             "\t11/09/2021 - 03.40.11: create-ui -- non ApiLogicServer creation of admin.yaml from model.py \n"
             "\t11/09/2021 - 03.40.10: model_creation_services.resource_list via safrs-based code \n"
