@@ -743,9 +743,10 @@ class CreateFromModel(object):
         rtn_my_parents_map = None
         model_file_name = "*"
         if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
-            if False and self.command != "create-ui":  # eg, command create-ui - no API Logic Server project
-                print(f' a.   Use existing {model_file_name} - copy to {project_directory + "/database/models.py"}')
-                copyfile(model_file_name, project_directory + '/database/models.py')
+            if False and self.use_model != "":  # use-model (todo - disabled)
+                model_file_name = project_directory + '/database/models.py'
+                print(f' a.   Use existing {self.use_model} - copy to {project_directory + "/database/models.py"}')
+                copyfile(self.use_model, model_file_name)
             else:
                 print(f' a.  Create database/models.py using database: {abs_db_url}')
                 code_gen_args = get_codegen_args()
