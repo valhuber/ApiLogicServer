@@ -757,7 +757,7 @@ class CreateFromModel(object):
         elif self.command == 'create-ui':
             model_file_name = self.resolve_home(name = self.use_model)
         elif self.command == "rebuild-from-model":
-            print(f' a.  Rebuild api and ui models from current database/models.py')
+            print(f' a.  Use existing database/models.py to rebuild api and ui models - verifying')
             model_file_name = project_directory + '/database/models.py'
         else:
             error_message = f'System error - unexpected command: {self.command}'
