@@ -655,6 +655,8 @@ class CreateFromModel(object):
                         resource_class = each_cls_member[1]
                         resource = Resource(name=resource_name)
                         self.metadata = resource_class.metadata
+                        table_name = resource_class._s_collection_name
+                        self.table_to_class_map.update({table_name: resource_name})   # required for ui_basic_web_app
                         if resource_name not in resource_list:
                             resource_list[resource_name] = resource
                         resource = resource_list[resource_name]
@@ -752,8 +754,8 @@ class CreateFromModel(object):
                 code_gen_args = get_codegen_args()
                 models_py = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
                 model_file_name = code_gen_args.outfile
-                outfile = io.open(code_gen_args.outfile, "w", encoding="utf-8")
-                outfile.write(models_py)
+                with open(model_file_name, "w") as text_file:
+                    text_file.write(models_py)
                 self.resource_list_complete = True
         elif self.command == 'create-ui':
             model_file_name = self.resolve_home(name = self.use_model)

@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.15"
+__version__ = "3.40.17"
 
 from contextlib import closing
 
@@ -867,7 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t11/10/2021 - 03.40.15: bug fixes - rebuild-from-database, rebuild-from-model \n"
+            "\t11/11/2021 - 03.40.17: bug fixes - rebuild-from-database, rebuild-from-model, codegen hack disabled \n"
             "\t11/10/2021 - 03.40.12: add rebuild-from-database, rebuild-from-model \n"
             "\t11/09/2021 - 03.40.11: create-ui -- non ApiLogicServer creation of admin.yaml from model.py \n"
             "\t11/09/2021 - 03.40.10: model_creation_services.resource_list via safrs-based code \n"
@@ -1263,7 +1263,7 @@ def create_ui(ctx, use_model: str,
               favorites: str, non_favorites: str,
               ):
     """
-        Use model to re-create the admin.yaml file.
+        Creates models.yaml from models.py (internal admin ui).
 
 
 \b

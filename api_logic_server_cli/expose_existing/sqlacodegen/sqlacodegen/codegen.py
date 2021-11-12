@@ -377,6 +377,7 @@ class CodeGenerator(object):
 
 
 {models}"""
+    do_model_creation_services_hack = False
 
     def __init__(self, metadata, noindexes=False, noconstraints=False, nojoined=False,
                  noinflect=False, noclasses=False, model_creation_services = None,
@@ -729,7 +730,7 @@ from sqlalchemy.dialects.mysql import *
         rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, model.parent_name)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
 
-        if not self.model_creation_services.resource_list_complete:
+        if self.do_model_creation_services_hack and not self.model_creation_services.resource_list_complete:
             resource_list = self.model_creation_services.resource_list
             resource = Resource(name=model.name)
             for each_attr, each_column in model.attributes.items():
@@ -818,6 +819,8 @@ from sqlalchemy.dialects.mysql import *
                     pass
                 elif isinstance(relationship, ManyToManyRelationship):  # eg, chinook:PlayList->PlayListTrack
                     pass  # fixme: admin.yaml not seeing ManyToManyRelationship
+                elif not self.do_model_creation_services_hack:
+                    pass
                 else:
                     resource = self.model_creation_services.resource_list[relationship.source_cls]
                     resource_relationship = ResourceRelationship(parent_role_name = attr,
