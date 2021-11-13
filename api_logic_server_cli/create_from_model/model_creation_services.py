@@ -18,11 +18,15 @@ from typing import List, Dict
 from pathlib import Path
 from shutil import copyfile
 from sqlalchemy.orm.interfaces import ONETOMANY, MANYTOONE, MANYTOMANY
-
-
 from api_logic_server_cli.expose_existing import expose_existing_callable
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+handler = logging.StreamHandler(sys.stderr)
+formatter = logging.Formatter('%(message)s')     # lead tag - '%(name)s: %(message)s')
+handler.setFormatter(formatter)
+log.addHandler(handler)
+log.propagate = True
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -684,6 +688,7 @@ class CreateFromModel(object):
                                 parent_resource.children.append(relationship)
                     pass
                 pass
+                log.debug(f'setting resource_list: {str(resource_list)}')
                 self.resource_list = resource_list  # currently, you can disable this to bypass errors
 
                 if orm_class is not None:
