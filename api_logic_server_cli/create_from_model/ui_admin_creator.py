@@ -332,10 +332,12 @@ class AdminCreator(object):
         """ write admin.yaml, with backup, with additional nw customized backup
         """
         yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
-        with open(yaml_file_name, 'w') as yaml_file:
-            yaml_file.write(admin_yaml)
-        yaml_copy_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin-copy.yaml')
-        with open(yaml_copy_file_name, 'w') as yaml_copy_file:
+        if not self.mod_gen.command.startswith("rebuild"):
+            with open(yaml_file_name, 'w') as yaml_file:
+                yaml_file.write(admin_yaml)
+        yaml_created_file_name = \
+            self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin-created.yaml')
+        with open(yaml_created_file_name, 'w') as yaml_copy_file:
             yaml_copy_file.write(admin_yaml)
 
         if self.mod_gen.nw_db_status in ["nw", "nw-"]:

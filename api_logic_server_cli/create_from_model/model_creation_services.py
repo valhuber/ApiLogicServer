@@ -23,7 +23,7 @@ from api_logic_server_cli.expose_existing import expose_existing_callable
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 handler = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter('%(message)s')     # lead tag - '%(name)s: %(message)s')
+formatter = logging.Formatter('%(name)s: %(message)s')     # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
 log.addHandler(handler)
 log.propagate = True
