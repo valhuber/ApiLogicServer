@@ -20,4 +20,4 @@ requests
 gunicorn
 psycopg2-binary
 DotMap
-
+WTForms==2.3.3
