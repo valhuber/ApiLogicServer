@@ -71,7 +71,7 @@ Pre-reqs:
 cd ~/Desktop                       # directory of API Logic Server projects on local host
 
 # Start API Logic Server container
-docker run -it --name api_logic_server --rm -p 5656:5656 -p 8080:8080 -v ${PWD}:/localhost apilogicserver/api_logic_server
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 ApiLogicServer create --project_name=/localhost/api_logic_server --db_url=  # RETURN for sample database
 
