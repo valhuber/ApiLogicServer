@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.40.19"
+__version__ = "3.50.00"
 
 from contextlib import closing
 
@@ -867,30 +867,14 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t11/12/2021 - 03.40.19: bug fixes - rebuild-from-database/modelmodel, codegen hack disabled, setup \n"
-            "\t11/10/2021 - 03.40.12: add rebuild-from-database, rebuild-from-model \n"
-            "\t11/09/2021 - 03.40.11: create-ui -- non ApiLogicServer creation of admin.yaml from model.py \n"
-            "\t11/09/2021 - 03.40.10: model_creation_services.resource_list via safrs-based code \n"
-            "\t11/09/2021 - 03.40.09: substantial code cleanup - create_from_model, model_creation_services, ... \n"
-            "\t11/08/2021 - 03.40.08: standard (not DotMap) admin file names, admin_custom_nw.yaml example \n"
-            "\t11/08/2021 - 03.40.07: use resource class model; yaml attributes (vs. column) \n"
-            "\t11/06/2021 - 03.40.05: cleanup - get rid of first_resource/attribute etc - see properties_ref \n"
-            "\t11/06/2021 - 03.40.04: cleanup - no more tabs, yaml cleanup \n"
-            "\t11/05/2021 - 03.40.03: yaml.dump using DotMap (pip it!) \n"
-            "\t11/04/2021 - 03.40.02: yaml - indent error, do not override nw temporarily \n"
-            "\t11/04/2021 - 03.40.01: significant rework for multiple relns (nw+), multi-field keys \n"
-            "\t11/01/2021 - 03.30.00: move json_to_entities to util, source/target yaml, nw+/-, port check \n"
-            "\t10/29/2021 - 03.20.23: More port changes (5656, 5002), running admin yaml app, admin bkps, role fix \n"
-            "\t10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002 \n"
-            "\t10/18/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental) \n"
-            "\t10/18/2021 - 03.20.09: Readme Tutorial for IDE users \n"
+            "\t11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support \n"
+            "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"
+            "\t10/18/2021 - 03.20.11: Readme Tutorial for IDE users \n"
             "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
-            "\t10/13/2021 - 03.20.06: create in current working directory (e.g., faciliate VS Code) \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
             "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
             "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
-            "\t08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix\n"
         )
     )
 
