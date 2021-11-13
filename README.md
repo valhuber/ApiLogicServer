@@ -459,15 +459,13 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-10/26/2021 - 03.20.12: Per MacOS Monterey, default ports to 5001, 5002
+11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support 
 
-10/24/2021 - 03.20.11: Preliminary admin_app yaml generation (internal, experimental)
+11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002
 
-10/18/2021 - 03.20.09: Readme Tutorial for IDE users
+10/18/2021 - 03.20.11: Readme Tutorial for IDE users
 
 10/16/2021 - 03.20.07: dev-network no longer required (see Releases)
-
-10/14/2021 - 03.20.06: create in current working directory
 
 10/03/2021 - 03.10.17: default db_url
 
@@ -475,15 +473,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run
 
-09/24/2021 - 03.01.04: enable run command for Docker execution, pyodbc, fab create-by-copy
+09/25/2021 - 03.01.10: enable run command for Docker execution, pyodbc, fab create-by-copy
 
-09/15/2021 - 03.00.10: auto-create .devcontainer for vscode, configure network, python & debug
+09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug
 
-09/06/2021 - 02.04.19: Docker foundation, improved Python path / log handling, .vscode, auto copy
-
-08/29/2021 - 02.04.08: Docker foundation, improved Python path handling, IDE files
-
-08/25/2021 - 02.04.00: Docker foundation (work in progress)
-
-08/23/2021 - 02.03.06: Create react-admin app (tech exploration), cmdline debug fix (Issue 17)
-
+09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging
