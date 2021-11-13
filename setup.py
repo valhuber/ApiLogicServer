@@ -75,12 +75,16 @@ setup(
         "Flask==1.1.2",
         "Flask-Admin==1.5.7",
         "python-dotenv==0.15.0",
+        "gunicorn==20.1.0",
         "email-validator==1.1.1",
         "LogicBank>=1.0.5",
         "PyMySQL>=1.0.2",
         # "pyodbc==4.0.30",
         "cryptography>=3.3.1",
-        "requests>=2.25.1"
+        "requests>=2.25.1",
+        "dotmap==1.3.25",
+        "psycopg2-binary",
+        "WTForms==2.3.3"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
