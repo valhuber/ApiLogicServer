@@ -1,5 +1,5 @@
 # docker build -t apilogicserver/api_logic_server --rm .
-# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.40.01
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.50.01
 # docker push apilogicserver/api_logic_server
 
 # docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
