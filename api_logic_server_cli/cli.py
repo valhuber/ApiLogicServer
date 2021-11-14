@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.00"
+__version__ = "3.50.01"
 
 from contextlib import closing
 
@@ -867,6 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/13/2021 - 03.50.01: port conflict warning (not failure) for Docker \n"
             "\t11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support \n"
             "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/18/2021 - 03.20.11: Readme Tutorial for IDE users \n"
@@ -1398,21 +1399,24 @@ def check_ports():
         except:
             port_is_available = False
         if not port_is_available:
-            msg = "Error - port 5656 not available use\n" \
+            msg = "\nWarning - port 5656 does not appear to be available\n" \
                   "  Version 3.30 has changed port assignments to avoid port conflicts\n" \
                   "  For example, docker start:\n" \
-                  "    docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server"
-            sys.exit(msg)
+                  "    docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server \n" \
+                  "Ports are sometimes freed slowly, you may need to re-issue this command.\n\n"
+            log.warning(msg)
+            # sys.exit(msg)
         s.close()
     return rtn_hostname, rtn_local_ip
 
 
 def start():               # target of setup.py
     sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n")
-    hostname, local_ip = check_ports() #  = socket.gethostname()
+    hostname, local_ip = check_ports()  #  = socket.gethostname()
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
+
 
 command = "not set"
 if __name__ == '__main__':  # debugger & python command line start here
