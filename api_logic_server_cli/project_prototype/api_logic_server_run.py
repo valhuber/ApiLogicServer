@@ -30,7 +30,7 @@ handler.setFormatter(formatter)
 app_logger.addHandler(handler)
 app_logger.propagate = True
 
-app_logger.setLevel(logging.INFO)  # use WARNING to reduce output
+app_logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
 
 import threading
 import time
@@ -170,10 +170,10 @@ def index():
 
 @flask_app.route("/admin-app/<path:path>")
 def send_spa(path=None):
-    app_logger.debug(f'send_spa - path= {path}')
-
+    directory = 'ui/admin'
     # return send_from_directory('als', path)
-    return send_from_directory('ui/admin', path)
+    app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
+    return send_from_directory(directory, path)
 
 
 @flask_app.errorhandler(ValidationError)

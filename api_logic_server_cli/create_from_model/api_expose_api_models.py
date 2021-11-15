@@ -34,7 +34,7 @@ def create_expose_api_models(model_creation_services):
     # result_apis += '    my_host = HOST\n'
     # result_apis += '    if HOST == "0.0.0.0":\n'
     # result_apis += '        my_host = "localhost"  # override default HOST for pc"\n'
-    # result_apis += '    app_logger.debug(f"DEBUG - expose_api_models HOST = <{HOST}>, using my_host = <{my_host}>")\n'
+    result_apis += '    app_logger.debug(f"api/expose_api_models -- host = {HOST}, port = {PORT}")\n'
     result_apis += '    api = SAFRSAPI(app, host=HOST, port=PORT)\n'
     result_apis += '    safrs_log_level = safrs.log.getEffectiveLevel()\n'
     result_apis += '    if True or app_logger.getEffectiveLevel() >= logging.INFO:\n'

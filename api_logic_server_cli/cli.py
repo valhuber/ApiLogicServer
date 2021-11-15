@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.01"
+__version__ = "3.50.02"
 
 from contextlib import closing
 
@@ -867,6 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/15/2021 - 03.50.02: minor diagnostics \n"
             "\t11/13/2021 - 03.50.01: port conflict warning (not failure) for Docker \n"
             "\t11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support \n"
             "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"
