@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.02"
+__version__ = "3.50.03"
 
 from contextlib import closing
 
@@ -867,6 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/16/2021 - 03.50.03: safrs-react-admin fixes \n"
             "\t11/15/2021 - 03.50.02: minor diagnostics \n"
             "\t11/13/2021 - 03.50.01: port conflict warning (not failure) for Docker \n"
             "\t11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support \n"
@@ -1232,6 +1233,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
         proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
     run_file = f'{proj_dir}/api_logic_server_run.py {host} {port}'
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
+    print("run complete")
 
 
 @main.command("create-ui")
@@ -1390,7 +1392,8 @@ def print_args(args, msg):
 def check_ports():
     rtn_hostname = socket.gethostname()
     rtn_local_ip = socket.gethostbyname(rtn_hostname)
-    if True or is_docker():
+    port_check = False
+    if port_check or is_docker():
         s = socket.socket()  # Create a socket object
         host = socket.gethostname()  # Get local machine name
         port = 5656  # Reserve a port for your service.
