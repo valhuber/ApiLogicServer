@@ -124,22 +124,7 @@ class AdminCreator(object):
             new_resource.type = str(resource.name)
             new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
 
-            better = True
-            if better:
-                self.create_attributes_in_owner(new_resource, resource, None)
-            else:
-                new_resource.attributes = []
-                attributes = self.mod_gen.get_show_attributes(resource)
-                for each_attribute in attributes:
-                    if "." not in each_attribute:
-                        new_resource.attributes.append(each_attribute)
-                    else:
-                        relationship = self.new_relationship_to_parent(resource, each_attribute, None)
-                        if relationship is not None:  # skip redundant master join
-                            rel = DotMap()
-                            parent_role_name = each_attribute.split('.')[0]
-                            rel[parent_role_name] = relationship.toDict()
-                            new_resource.attributes.append(rel)
+            self.create_attributes_in_owner(new_resource, resource, None)
             child_tabs = self.create_child_tabs(resource)
             if child_tabs:
                 new_resource.tab_groups = child_tabs
@@ -147,6 +132,11 @@ class AdminCreator(object):
 
     def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
         """ create attribute in owner (DotMap - of resource or tab)
+
+          Customer:
+            attributes:
+            - CompanyName
+            - ContactName
         """
         owner.attributes = []
         attributes = self.mod_gen.get_show_attributes(resource)
@@ -171,24 +161,8 @@ class AdminCreator(object):
             new_resource.type = str(resource.name)
             new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
 
-            better = True
-            if better:
-                self.create_columns_in_owner(new_resource, resource, None)
-            else:
-                new_resource.attributes = []
-                attributes = self.mod_gen.get_show_attributes(resource)
-                for each_attribute in attributes:
-                    if "." not in each_attribute:
-                        new_resource.attributes.append(each_attribute)
-                    else:
-                        relationship = self.new_relationship_to_parent(resource, each_attribute, None)
-                        if relationship is not None:  # skip redundant master join
-                            rel = DotMap()
-                            parent_role_name = each_attribute.split('.')[0]
-                            rel[parent_role_name] = relationship.toDict()
-                            new_resource.attributes.append(rel)
+            self.create_columns_in_owner(new_resource, resource, None)
             child_tabs = self.create_child_tabs_col(resource)
-            # if child_tabs:
             new_resource.relationships = child_tabs
 
             self.admin_yaml_col.resources[resource_name] = new_resource.toDict()
@@ -218,6 +192,16 @@ class AdminCreator(object):
                                    a_master_parent_resource) -> (None, DotMap):
         """
         given a_child_table_def.parent_column_reference, create relationship: attrs, fKeys (for *js* client (no meta))
+
+          Order:
+            attributes:
+            - ShipName
+            - Location:
+                fks:
+                - City
+                - Country
+                show_attributes: []
+                type: Location
 
         :param a_child_resource: a child table (not class), eg, Employees
         :param parent_attribute_reference: parent ref, eg, Department1.DepartmentName
@@ -259,6 +243,16 @@ class AdminCreator(object):
     def create_child_tabs(self, resource: Resource) -> DotMap:
         """
         build tabs for related children
+
+            tab_groups:
+              CustomerCustomerDemoList:
+                attributes:
+                - Id
+                - CustomerTypeId
+                fkeys:
+                  source_delete_me: '?'
+                  target: CustomerTypeId
+                resource: CustomerCustomerDemo
         """
         if len(self.mod_gen.resource_list) == 0:   # almost always, use_model false (we create)
             return self.create_child_tabs_no_model(resource)
@@ -286,22 +280,7 @@ class AdminCreator(object):
             tab_name = each_resource_relationship.child_role_name
 
             each_child_resource = self.mod_gen.resource_list[each_child]
-            better = True
-            if better:
-                self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
-            else:
-                each_resource_tab.attributes = []
-                for each_attribute in self.mod_gen.get_show_attributes(each_child_resource):
-                    if "." not in each_attribute:
-                        each_resource_tab.attributes.append(each_attribute)
-                    else:
-                        relationship = self.new_relationship_to_parent(each_child_resource, each_attribute, resource)
-                        if relationship is not None:  # skip redundant master join
-                            rel = DotMap()
-                            parent_role_name = each_attribute.split('.')[0]
-                            rel[parent_role_name] = relationship.toDict()
-                            each_resource_tab.attributes.append(rel)
-
+            self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
             tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
         return tab_group
 
@@ -327,32 +306,10 @@ class AdminCreator(object):
             each_resource_tab.fks = []
             for each_pair in each_resource_relationship.parent_child_key_pairs:
                 each_resource_tab.fks.append(each_pair[1])
-                """
-                key_pair = DotMap()
-                key_pair.target = each_pair[1]
-                key_pair.source_delete_me = each_pair[0]
-                each_resource_tab.fks = key_pair
-                """
-
             tab_name = each_resource_relationship.child_role_name
 
             each_child_resource = self.mod_gen.resource_list[each_child]
-            better = True
-            if better:
-                if admin_col_tab_columns:
-                    self.create_columns_in_owner(each_resource_tab, each_child_resource, resource)
-            else:
-                each_resource_tab.attributes = []
-                for each_attribute in self.mod_gen.get_show_attributes(each_child_resource):
-                    if "." not in each_attribute:
-                        each_resource_tab.attributes.append(each_attribute)
-                    else:
-                        relationship = self.new_relationship_to_parent(each_child_resource, each_attribute, resource)
-                        if relationship is not None:  # skip redundant master join
-                            rel = DotMap()
-                            parent_role_name = each_attribute.split('.')[0]
-                            rel[parent_role_name] = relationship.toDict()
-                            each_resource_tab.attributes.append(rel)
+            self.create_columns_in_owner(each_resource_tab, each_child_resource, resource)
 
             # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
             tab_group.append(each_resource_tab)
