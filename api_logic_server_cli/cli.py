@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.03"
+__version__ = "3.50.04"
 
 from contextlib import closing
 
@@ -867,6 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/17/2021 - 03.50.04: creates runnable admin-col.yaml \n"
             "\t11/16/2021 - 03.50.03: safrs-react-admin fixes \n"
             "\t11/15/2021 - 03.50.02: minor diagnostics \n"
             "\t11/13/2021 - 03.50.01: port conflict warning (not failure) for Docker \n"

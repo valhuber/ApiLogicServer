@@ -14,7 +14,17 @@ from dotmap import DotMap
 
 from api_logic_server_cli.create_from_model.model_creation_services import Resource
 
-log = logging.getLogger(__name__)
+log = logging.getLogger(__file__)
+log.setLevel(logging.DEBUG)
+handler = logging.StreamHandler(sys.stderr)
+formatter = logging.Formatter(f'%(name)s: %(message)s')     # lead tag - '%(name)s: %(message)s')
+handler.setFormatter(formatter)
+log.addHandler(handler)
+log.propagate = True
+
+admin_col_is_active = True
+admin_col_is_join_active = False
+admin_col_tab_columns = False
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -64,6 +74,7 @@ class AdminCreator(object):
         self.connection = None
         self.app = None
         self.admin_yaml = DotMap()
+        self.admin_yaml_col = DotMap()
         self.max_list_columns = 7  # maybe make this a param
 
         self._non_favorite_names_list = self.non_favorite_names.split()
@@ -81,12 +92,14 @@ class AdminCreator(object):
         cwd = os.getcwd()
         sys.path.append(cwd)
 
+        self.admin_yaml.api_root = "http://localhost:5656/"
+        self.admin_yaml_col.api_root = "http://localhost:5656/"
         self.admin_yaml.resources = {}
         for each_resource_name in self.mod_gen.resource_list:
-            each_resource_item = self.mod_gen.resource_list[each_resource_name]
-            each_resource = self.create_each_resource(each_resource_item)
-            if each_resource is not None:
-                self.admin_yaml.resources[each_resource_name] = each_resource.toDict()
+            each_resource = self.mod_gen.resource_list[each_resource_name]
+            self.create_resource_in_admin(each_resource)
+            if admin_col_is_active:
+                self.create_resource_in_admin_col(each_resource)
 
         self.create_about()
         self.create_info()
@@ -95,40 +108,111 @@ class AdminCreator(object):
 
         admin_yaml_dict = self.admin_yaml.toDict()
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
+        admin_yaml_dict_col = self.admin_yaml_col.toDict()
+        admin_yaml_dump_col = yaml.dump(admin_yaml_dict_col)
         if self.mod_gen.command != "create-ui":
-            self.write_yaml_files(admin_yaml_dump)
+            self.write_yaml_files(admin_yaml_dump, admin_yaml_dump_col)
         return admin_yaml_dump
 
-    def create_each_resource(self, resource: Resource) -> (None, DotMap):
-        """ create resource DotMap for given table
+    def create_resource_in_admin(self, resource: Resource):
+        """ self.admin_yaml.resources += resource DotMap for given resource
         """
         resource_name = resource.name
-        class_name = resource_name
-        if self.do_process_resource(resource_name, class_name):
-            new_resource = self.new_resource(resource)
-            new_resource.attributes = []
-            attributes = self.mod_gen.get_show_attributes(resource)
-            for each_attribute in attributes:
-                if "." not in each_attribute:
-                    new_resource.attributes.append(each_attribute)
-                else:
-                    relationship = self.new_relationship_to_parent(resource, each_attribute, None)
-                    if relationship is not None:  # skip redundant master join
-                        rel = DotMap()
-                        parent_role_name = each_attribute.split('.')[0]
-                        rel[parent_role_name] = relationship.toDict()
-                        new_resource.attributes.append(rel)
+        if self.do_process_resource(resource_name):
+            new_resource = DotMap()
+            self.num_pages_generated += 1
+            new_resource.type = str(resource.name)
+            new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
+
+            better = True
+            if better:
+                self.create_attributes_in_owner(new_resource, resource, None)
+            else:
+                new_resource.attributes = []
+                attributes = self.mod_gen.get_show_attributes(resource)
+                for each_attribute in attributes:
+                    if "." not in each_attribute:
+                        new_resource.attributes.append(each_attribute)
+                    else:
+                        relationship = self.new_relationship_to_parent(resource, each_attribute, None)
+                        if relationship is not None:  # skip redundant master join
+                            rel = DotMap()
+                            parent_role_name = each_attribute.split('.')[0]
+                            rel[parent_role_name] = relationship.toDict()
+                            new_resource.attributes.append(rel)
             child_tabs = self.create_child_tabs(resource)
             if child_tabs:
                 new_resource.tab_groups = child_tabs
-            return new_resource
+            self.admin_yaml.resources[resource_name] = new_resource.toDict()
 
-    def new_resource(self, resource: Resource) -> DotMap:
-        new_resource = DotMap()
-        self.num_pages_generated += 1
-        new_resource.type = str(resource.name)
-        new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
-        return new_resource
+    def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
+        """ create attribute in owner (DotMap - of resource or tab)
+        """
+        owner.attributes = []
+        attributes = self.mod_gen.get_show_attributes(resource)
+        for each_attribute in attributes:
+            if "." not in each_attribute:
+                owner.attributes.append(each_attribute)
+            else:
+                relationship = self.new_relationship_to_parent(resource, each_attribute, owner_resource)
+                if relationship is not None:  # skip redundant master join
+                    rel = DotMap()
+                    parent_role_name = each_attribute.split('.')[0]
+                    rel[parent_role_name] = relationship.toDict()
+                    owner.attributes.append(rel)
+
+    def create_resource_in_admin_col(self, resource: Resource):
+        """ self.admin_yaml.resources += resource DotMap for given resource
+        """
+        resource_name = resource.name
+        if self.do_process_resource(resource_name):
+            new_resource = DotMap()
+            self.num_pages_generated += 1
+            new_resource.type = str(resource.name)
+            new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
+
+            better = True
+            if better:
+                self.create_columns_in_owner(new_resource, resource, None)
+            else:
+                new_resource.attributes = []
+                attributes = self.mod_gen.get_show_attributes(resource)
+                for each_attribute in attributes:
+                    if "." not in each_attribute:
+                        new_resource.attributes.append(each_attribute)
+                    else:
+                        relationship = self.new_relationship_to_parent(resource, each_attribute, None)
+                        if relationship is not None:  # skip redundant master join
+                            rel = DotMap()
+                            parent_role_name = each_attribute.split('.')[0]
+                            rel[parent_role_name] = relationship.toDict()
+                            new_resource.attributes.append(rel)
+            child_tabs = self.create_child_tabs_col(resource)
+            # if child_tabs:
+            new_resource.relationships = child_tabs
+
+            self.admin_yaml_col.resources[resource_name] = new_resource.toDict()
+
+    def create_columns_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
+        """ create columns in owner (DotMap - of resource or tab)
+        """
+        owner.columns = []
+        attributes = self.mod_gen.get_show_attributes(resource)
+        for each_attribute in attributes:
+            if "." not in each_attribute:
+                col_def = DotMap()
+                col_def.name = each_attribute
+                owner.columns.append(col_def)
+            elif admin_col_is_join_active:
+                relationship = self.new_relationship_to_parent(resource, each_attribute, owner_resource)
+                if relationship is not None:  # skip redundant master join
+                    rel = DotMap()
+                    parent_role_name = each_attribute.split('.')[0]
+                    rel[parent_role_name] = relationship.toDict()
+                    owner.columns.append(rel)
+            else:
+                log.debug(f'column skipped since admin_col_is_join_active is false: '
+                          f'{resource.name}.{each_attribute} ')
 
     def new_relationship_to_parent(self, a_child_resource: Resource, parent_attribute_reference,
                                    a_master_parent_resource) -> (None, DotMap):
@@ -162,13 +246,13 @@ class AdminCreator(object):
                 log.warning(f'Error - please search ui/admin/admin.yaml for: Unable to find role')
         relationship.type = str(parent_relationship.parent_resource)
         relationship.show_attributes = []
-        relationship.key_attributes = []
+        relationship.fks = []
         if a_child_resource.name == "Employee":
             log.debug("Parents for special table - debug")
         for each_column in parent_relationship.parent_child_key_pairs:  # XXX FIXME
             # key_column = DotMap()
             # key_column.name = str(each_column)
-            relationship.key_attributes.append(str(each_column[1]))
+            relationship.fks.append(str(each_column[1]))
         # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         return relationship
 
@@ -182,51 +266,112 @@ class AdminCreator(object):
         children_seen = set()
         tab_group = DotMap()
         for each_resource_relationship in resource.children:
-            each_tab = DotMap()
+            each_resource_tab = DotMap()
             self.num_related += 1
             each_child = each_resource_relationship.child_resource
             if each_child in children_seen:
                 pass  # it's ok, we are using the child_role_name now
             children_seen.add(each_child)
+            each_resource_tab.fks = []
             for each_pair in each_resource_relationship.parent_child_key_pairs:
+                each_resource_tab.fks.append(each_pair[1])
+                """
                 key_pair = DotMap()
                 key_pair.target = each_pair[1]
                 key_pair.source_delete_me = each_pair[0]
-                each_tab.fkeys = key_pair
+                each_resource_tab.fks = key_pair
+                """
 
-            each_tab.resource = str(each_child)
+            each_resource_tab.resource = str(each_child)
             tab_name = each_resource_relationship.child_role_name
 
             each_child_resource = self.mod_gen.resource_list[each_child]
-            each_tab.attributes = []
-            for each_attribute in self.mod_gen.get_show_attributes(each_child_resource):
-                if "." not in each_attribute:
-                    each_tab.attributes.append(each_attribute)
-                else:
-                    relationship = self.new_relationship_to_parent(each_child_resource, each_attribute, resource)
-                    if relationship is not None:  # skip redundant master join
-                        rel = DotMap()
-                        parent_role_name = each_attribute.split('.')[0]
-                        rel[parent_role_name] = relationship.toDict()
-                        each_tab.attributes.append(rel)
+            better = True
+            if better:
+                self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
+            else:
+                each_resource_tab.attributes = []
+                for each_attribute in self.mod_gen.get_show_attributes(each_child_resource):
+                    if "." not in each_attribute:
+                        each_resource_tab.attributes.append(each_attribute)
+                    else:
+                        relationship = self.new_relationship_to_parent(each_child_resource, each_attribute, resource)
+                        if relationship is not None:  # skip redundant master join
+                            rel = DotMap()
+                            parent_role_name = each_attribute.split('.')[0]
+                            rel[parent_role_name] = relationship.toDict()
+                            each_resource_tab.attributes.append(rel)
 
-            tab_group[tab_name] = each_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
+            tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
         return tab_group
 
-    def do_process_resource(self, table_name, class_name)-> bool:
+    def create_child_tabs_col(self, resource: Resource) -> DotMap:
+        """
+        build tabs for all related children, col style
+        """
+        if len(self.mod_gen.resource_list) == 0:   # almost always, use_model false (we create)
+            return self.create_child_tabs_no_model(resource)
+
+        children_seen = set()
+        tab_group = []  # ??  DotMap()
+        for each_resource_relationship in resource.children:
+            each_resource_tab = DotMap()
+            each_resource_tab.name = each_resource_relationship.child_role_name
+            self.num_related += 1
+            each_child = each_resource_relationship.child_resource
+            if each_child in children_seen:
+                pass  # it's ok, we are using the child_role_name now
+            each_resource_tab.target = str(each_child)
+            each_resource_tab.direction = "tomany"
+            children_seen.add(each_child)
+            each_resource_tab.fks = []
+            for each_pair in each_resource_relationship.parent_child_key_pairs:
+                each_resource_tab.fks.append(each_pair[1])
+                """
+                key_pair = DotMap()
+                key_pair.target = each_pair[1]
+                key_pair.source_delete_me = each_pair[0]
+                each_resource_tab.fks = key_pair
+                """
+
+            tab_name = each_resource_relationship.child_role_name
+
+            each_child_resource = self.mod_gen.resource_list[each_child]
+            better = True
+            if better:
+                if admin_col_tab_columns:
+                    self.create_columns_in_owner(each_resource_tab, each_child_resource, resource)
+            else:
+                each_resource_tab.attributes = []
+                for each_attribute in self.mod_gen.get_show_attributes(each_child_resource):
+                    if "." not in each_attribute:
+                        each_resource_tab.attributes.append(each_attribute)
+                    else:
+                        relationship = self.new_relationship_to_parent(each_child_resource, each_attribute, resource)
+                        if relationship is not None:  # skip redundant master join
+                            rel = DotMap()
+                            parent_role_name = each_attribute.split('.')[0]
+                            rel[parent_role_name] = relationship.toDict()
+                            each_resource_tab.attributes.append(rel)
+
+            # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
+            tab_group.append(each_resource_tab)
+        return tab_group
+
+    def do_process_resource(self, resource_name: str)-> bool:
         """ filter out resources that are skipped by user, start with ab etc
         """
-        if table_name + " " in self.not_exposed:
+        if resource_name + " " in self.not_exposed:
             return False  # not_exposed: api.expose_object(models.{table_name})
-        if "ProductDetails_V" in table_name:
+        if "ProductDetails_V" in resource_name:
             log.debug("special table")  # should not occur (--noviews)
-        if table_name.startswith("ab_"):
+        if resource_name.startswith("ab_"):
             return False  # skip admin table: " + table_name + "\n
-        elif 'sqlite_sequence' in table_name:
+        elif 'sqlite_sequence' in resource_name:
             return False  # skip sqlite_sequence table: " + table_name + "\n
-        elif class_name is None:
+        elif resource_name is None:
             return False  # no class (view): " + table_name + "\n
-        elif table_name.startswith("Ab"):
+        elif resource_name.startswith("Ab"):
             return False
         return True
 
@@ -328,13 +473,19 @@ class AdminCreator(object):
         parent_path = parent_path.parent
         return parent_path
 
-    def write_yaml_files(self, admin_yaml):
+    def write_yaml_files(self, admin_yaml, admin_yaml_col):
         """ write admin.yaml, with backup, with additional nw customized backup
         """
         yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
         if not self.mod_gen.command.startswith("rebuild"):
             with open(yaml_file_name, 'w') as yaml_file:
                 yaml_file.write(admin_yaml)
+            if admin_col_is_active:
+                yaml_file_name_col = self.mod_gen.fix_win_path(
+                    self.mod_gen.project_directory + f'/ui/admin/admin-col.yaml')
+                with open(yaml_file_name_col, 'w') as yaml_file_col:
+                    yaml_file_col.write(admin_yaml_col)
+
         yaml_created_file_name = \
             self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin-created.yaml')
         with open(yaml_created_file_name, 'w') as yaml_copy_file:
