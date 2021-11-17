@@ -1,0 +1,373 @@
+about:
+  date: November 16, 2021 10:15:26
+  recent_changes: much to say
+  version: 3.50.03
+info:
+  number_relationships: 8
+  number_tables: 14
+properties_ref:
+  attribute:
+    group: name
+    hidden: exp
+    label: caption for display
+    style:
+      color: blue
+      font_weight: 0
+  resource:
+    allow_delete: exp
+    allow_insert: exp
+    allow_update: exp
+    info: long html / rich text
+    menu: False | name
+  tab:
+    label: text
+    lookup: boolean
+resources:
+  Category:
+    attributes:
+    - CategoryName
+    - Description
+    - Id
+    type: Category
+    user_key: CategoryName
+  Customer:
+    attributes:
+    - CompanyName
+    - ContactName
+    - ContactTitle
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - Phone
+    - Fax
+    - Balance
+    - CreditLimit
+    - OrderCount
+    - Id
+    - UnpaidOrderCount
+    tab_groups:
+      CustomerCustomerDemoList:
+        attributes:
+        - Id
+        - CustomerTypeId
+        fkeys:
+          source_delete_me: '?'
+          target: CustomerTypeId
+        resource: CustomerCustomerDemo
+      OrderList:
+        attributes:
+        - ShipName
+        - Employee:
+            key_attributes:
+            - EmployeeId
+            show_attributes: []
+            type: Employee
+        - OrderDate
+        - RequiredDate
+        - ShippedDate
+        - ShipVia
+        - Freight
+        - ShipAddress
+        - ShipCity
+        - ShipRegion
+        - ShipPostalCode
+        - ShipCountry
+        - AmountTotal
+        - CustomerId
+        - Id
+        - EmployeeId
+        fkeys:
+          source_delete_me: '?'
+          target: CustomerId
+        resource: Order
+    type: Customer
+    user_key: CompanyName
+  CustomerCustomerDemo:
+    attributes:
+    - Id
+    - Customer:
+        key_attributes:
+        - CustomerTypeId
+        show_attributes: []
+        type: Customer
+    - CustomerTypeId
+    type: CustomerCustomerDemo
+    user_key: Id
+  CustomerDemographic:
+    attributes:
+    - Id
+    - CustomerDesc
+    type: CustomerDemographic
+    user_key: Id
+  Employee:
+    attributes:
+    - LastName
+    - FirstName
+    - Title
+    - TitleOfCourtesy
+    - BirthDate
+    - HireDate
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - HomePhone
+    - Extension
+    - Photo
+    - Notes
+    - ReportsTo
+    - PhotoPath
+    - IsCommissioned
+    - Salary
+    - Id
+    tab_groups:
+      EmployeeAuditList:
+        attributes:
+        - LastName
+        - Title
+        - Salary
+        - FirstName
+        - CreatedOn
+        - Id
+        - EmployeeId
+        fkeys:
+          source_delete_me: '?'
+          target: EmployeeId
+        resource: EmployeeAudit
+      EmployeeTerritoryList:
+        attributes:
+        - Id
+        - Territory:
+            key_attributes:
+            - TerritoryId
+            show_attributes: []
+            type: Territory
+        - TerritoryId
+        - EmployeeId
+        fkeys:
+          source_delete_me: '?'
+          target: EmployeeId
+        resource: EmployeeTerritory
+      OrderList:
+        attributes:
+        - ShipName
+        - Customer:
+            key_attributes:
+            - CustomerId
+            show_attributes: []
+            type: Customer
+        - OrderDate
+        - RequiredDate
+        - ShippedDate
+        - ShipVia
+        - Freight
+        - ShipAddress
+        - ShipCity
+        - ShipRegion
+        - ShipPostalCode
+        - ShipCountry
+        - AmountTotal
+        - CustomerId
+        - Id
+        - EmployeeId
+        fkeys:
+          source_delete_me: '?'
+          target: EmployeeId
+        resource: Order
+    type: Employee
+    user_key: LastName
+  EmployeeAudit:
+    attributes:
+    - LastName
+    - Employee:
+        key_attributes:
+        - EmployeeId
+        show_attributes: []
+        type: Employee
+    - Title
+    - Salary
+    - FirstName
+    - CreatedOn
+    - Id
+    - EmployeeId
+    type: EmployeeAudit
+    user_key: LastName
+  EmployeeTerritory:
+    attributes:
+    - Id
+    - Employee:
+        key_attributes:
+        - EmployeeId
+        show_attributes: []
+        type: Employee
+    - Territory:
+        key_attributes:
+        - TerritoryId
+        show_attributes: []
+        type: Territory
+    - TerritoryId
+    - EmployeeId
+    type: EmployeeTerritory
+    user_key: Id
+  Order:
+    attributes:
+    - ShipName
+    - Customer:
+        key_attributes:
+        - CustomerId
+        show_attributes: []
+        type: Customer
+    - Employee:
+        key_attributes:
+        - EmployeeId
+        show_attributes: []
+        type: Employee
+    - OrderDate
+    - RequiredDate
+    - ShippedDate
+    - ShipVia
+    - Freight
+    - ShipAddress
+    - ShipCity
+    - ShipRegion
+    - ShipPostalCode
+    - ShipCountry
+    - AmountTotal
+    - CustomerId
+    - Id
+    - EmployeeId
+    tab_groups:
+      OrderDetailList:
+        attributes:
+        - Id
+        - Product:
+            key_attributes:
+            - ProductId
+            show_attributes: []
+            type: Product
+        - UnitPrice
+        - Quantity
+        - Discount
+        - Amount
+        - ShippedDate
+        - OrderId
+        - ProductId
+        fkeys:
+          source_delete_me: '?'
+          target: OrderId
+        resource: OrderDetail
+    type: Order
+    user_key: ShipName
+  OrderDetail:
+    attributes:
+    - Id
+    - Order:
+        key_attributes:
+        - OrderId
+        show_attributes: []
+        type: Order
+    - Product:
+        key_attributes:
+        - ProductId
+        show_attributes: []
+        type: Product
+    - UnitPrice
+    - Quantity
+    - Discount
+    - Amount
+    - ShippedDate
+    - OrderId
+    - ProductId
+    type: OrderDetail
+    user_key: Id
+  Product:
+    attributes:
+    - ProductName
+    - QuantityPerUnit
+    - UnitPrice
+    - UnitsInStock
+    - UnitsOnOrder
+    - ReorderLevel
+    - Discontinued
+    - UnitsShipped
+    - Id
+    - CategoryId
+    - SupplierId
+    tab_groups:
+      OrderDetailList:
+        attributes:
+        - Id
+        - Order:
+            key_attributes:
+            - OrderId
+            show_attributes: []
+            type: Order
+        - UnitPrice
+        - Quantity
+        - Discount
+        - Amount
+        - ShippedDate
+        - OrderId
+        - ProductId
+        fkeys:
+          source_delete_me: '?'
+          target: ProductId
+        resource: OrderDetail
+    type: Product
+    user_key: ProductName
+  Region:
+    attributes:
+    - RegionDescription
+    - Id
+    type: Region
+    user_key: RegionDescription
+  Shipper:
+    attributes:
+    - CompanyName
+    - Phone
+    - Id
+    type: Shipper
+    user_key: CompanyName
+  Supplier:
+    attributes:
+    - CompanyName
+    - ContactName
+    - ContactTitle
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - Phone
+    - Fax
+    - HomePage
+    - Id
+    type: Supplier
+    user_key: CompanyName
+  Territory:
+    attributes:
+    - TerritoryDescription
+    - RegionId
+    - Id
+    tab_groups:
+      EmployeeTerritoryList:
+        attributes:
+        - Id
+        - Employee:
+            key_attributes:
+            - EmployeeId
+            show_attributes: []
+            type: Employee
+        - TerritoryId
+        - EmployeeId
+        fkeys:
+          source_delete_me: '?'
+          target: TerritoryId
+        resource: EmployeeTerritory
+    type: Territory
+    user_key: TerritoryDescription
+settings:
+  max_list_columns: '7'

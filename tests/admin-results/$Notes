@@ -1,0 +1,34 @@
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
+
+cd ~/Desktop
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
+
+v18...
+
+docker api runs
+
+minor - run is not setting "latest"
+
+docker ui fails trying to set server to localhost (needs 0.0.0.0 - the default)
+    ApiLogicServer run-ui                   # fails
+    ApiLogicServer run-ui --host=0.0.0.0    # works
+
+local install is the opposite
+    ApiLogicServer run-ui                   # works
+    ApiLogicServer run-ui --host=0.0.0.0    # fails
+
+should this be defaulted...
+    Into the app?
+    On the ApiLogicServer run?
+    VSCode?
+
+
+v21
+===
+
+mac
+    docker: api, ui
+    docker / ide: api, ui
+
+    native: api, ui
+pc

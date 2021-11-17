@@ -1,0 +1,101 @@
+api_root: //thomaxxl.pythonanywhere.com/api
+resources:
+  People:
+    type: Person
+    user_key: name
+    columns:
+      - name: id
+        hidden: true
+      - name: name
+      - name: email
+      - name: comment
+      - name: dob
+      - name: employer_id
+      - name: _password
+    relationships:
+      - name: books_read
+        target: Books
+        fks:
+          - reader_id
+        direction: tomany
+      - name: books_written
+        target: Books
+        fks:
+          - author_id
+        direction: tomany
+      - name: reviews
+        target: Reviews
+        fks:
+          - reader_id
+        direction: tomany
+      - name: friends
+        target: People
+        fks:
+          - friend_a_id
+          - friend_b_id
+        direction: tomany
+    label: null
+  Books:
+    type: Book
+    user_key: title
+    columns:
+      - name: id
+        hidden: true
+      - name: title
+      - name: reader_id
+      - name: author_id
+      - name: publisher_id
+      - name: published
+    relationships:
+      - name: publisher
+        target: Publishers
+        fks:
+          - publisher_id
+        direction: toone
+      - name: reviews
+        target: Reviews
+        fks:
+          - book_id
+        direction: tomany
+      - name: reader
+        target: People
+        fks:
+          - reader_id
+        direction: toone
+      - name: author
+        target: People
+        fks:
+          - author_id
+        direction: toone
+    label: null
+  Reviews:
+    type: Review
+    columns:
+      - name: book_id
+      - name: reader_id
+      - name: review
+      - name: created
+    relationships:
+      - name: book
+        target: Books
+        fks:
+          - book_id
+        direction: toone
+      - name: reader
+        target: People
+        fks:
+          - reader_id
+        direction: toone
+    label: null
+  Publishers:
+    type: Publisher
+    columns:
+      - name: id
+      - name: name
+    relationships:
+      - name: books
+        target: Books
+        fks:
+          - publisher_id
+        direction: tomany
+    label: null

@@ -1,0 +1,481 @@
+{
+  "api_root": "http://localhost:5656/",
+  "resources": {
+    "Category": {
+      "columns": [
+        {
+          "name": "CategoryName"
+        },
+        {
+          "name": "Description"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "type": "Category",
+      "user_key": "CategoryName"
+    },
+    "Customer": {
+      "columns": [
+        {
+          "name": "CompanyName"
+        },
+        {
+          "name": "ContactName"
+        },
+        {
+          "name": "ContactTitle"
+        },
+        {
+          "name": "Address"
+        },
+        {
+          "name": "City"
+        },
+        {
+          "name": "Region"
+        },
+        {
+          "name": "PostalCode"
+        },
+        {
+          "name": "Country"
+        },
+        {
+          "name": "Phone"
+        },
+        {
+          "name": "Fax"
+        },
+        {
+          "name": "Balance"
+        },
+        {
+          "name": "CreditLimit"
+        },
+        {
+          "name": "OrderCount"
+        },
+        {
+          "name": "UnpaidOrderCount"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "relationships": [
+        {
+          "direction": "tomany",
+          "fks": [
+            "CustomerTypeId"
+          ],
+          "name": "CustomerCustomerDemoList",
+          "target": "CustomerCustomerDemo"
+        },
+        {
+          "direction": "tomany",
+          "fks": [
+            "CustomerId"
+          ],
+          "name": "OrderList",
+          "target": "Order"
+        }
+      ],
+      "type": "Customer",
+      "user_key": "CompanyName"
+    },
+    "CustomerCustomerDemo": {
+      "columns": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "CustomerTypeId"
+        }
+      ],
+      "type": "CustomerCustomerDemo",
+      "user_key": "Id"
+    },
+    "CustomerDemographic": {
+      "columns": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "CustomerDesc"
+        }
+      ],
+      "type": "CustomerDemographic",
+      "user_key": "Id"
+    },
+    "Employee": {
+      "columns": [
+        {
+          "name": "LastName"
+        },
+        {
+          "name": "FirstName"
+        },
+        {
+          "name": "Title"
+        },
+        {
+          "name": "TitleOfCourtesy"
+        },
+        {
+          "name": "BirthDate"
+        },
+        {
+          "name": "HireDate"
+        },
+        {
+          "name": "Address"
+        },
+        {
+          "name": "City"
+        },
+        {
+          "name": "Region"
+        },
+        {
+          "name": "PostalCode"
+        },
+        {
+          "name": "Country"
+        },
+        {
+          "name": "HomePhone"
+        },
+        {
+          "name": "Extension"
+        },
+        {
+          "name": "Photo"
+        },
+        {
+          "name": "Notes"
+        },
+        {
+          "name": "ReportsTo"
+        },
+        {
+          "name": "PhotoPath"
+        },
+        {
+          "name": "IsCommissioned"
+        },
+        {
+          "name": "Salary"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "relationships": [
+        {
+          "direction": "tomany",
+          "fks": [
+            "EmployeeId"
+          ],
+          "name": "EmployeeAuditList",
+          "target": "EmployeeAudit"
+        },
+        {
+          "direction": "tomany",
+          "fks": [
+            "EmployeeId"
+          ],
+          "name": "EmployeeTerritoryList",
+          "target": "EmployeeTerritory"
+        },
+        {
+          "direction": "tomany",
+          "fks": [
+            "EmployeeId"
+          ],
+          "name": "OrderList",
+          "target": "Order"
+        }
+      ],
+      "type": "Employee",
+      "user_key": "LastName"
+    },
+    "EmployeeAudit": {
+      "columns": [
+        {
+          "name": "LastName"
+        },
+        {
+          "name": "Title"
+        },
+        {
+          "name": "Salary"
+        },
+        {
+          "name": "FirstName"
+        },
+        {
+          "name": "CreatedOn"
+        },
+        {
+          "name": "EmployeeId"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "type": "EmployeeAudit",
+      "user_key": "LastName"
+    },
+    "EmployeeTerritory": {
+      "columns": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "EmployeeId"
+        },
+        {
+          "name": "TerritoryId"
+        }
+      ],
+      "type": "EmployeeTerritory",
+      "user_key": "Id"
+    },
+    "Order": {
+      "columns": [
+        {
+          "name": "ShipName"
+        },
+        {
+          "name": "OrderDate"
+        },
+        {
+          "name": "RequiredDate"
+        },
+        {
+          "name": "ShippedDate"
+        },
+        {
+          "name": "ShipVia"
+        },
+        {
+          "name": "Freight"
+        },
+        {
+          "name": "ShipAddress"
+        },
+        {
+          "name": "ShipCity"
+        },
+        {
+          "name": "ShipRegion"
+        },
+        {
+          "name": "ShipPostalCode"
+        },
+        {
+          "name": "ShipCountry"
+        },
+        {
+          "name": "AmountTotal"
+        },
+        {
+          "name": "EmployeeId"
+        },
+        {
+          "name": "Id"
+        },
+        {
+          "name": "CustomerId"
+        }
+      ],
+      "relationships": [
+        {
+          "direction": "tomany",
+          "fks": [
+            "OrderId"
+          ],
+          "name": "OrderDetailList",
+          "target": "OrderDetail"
+        }
+      ],
+      "type": "Order",
+      "user_key": "ShipName"
+    },
+    "OrderDetail": {
+      "columns": [
+        {
+          "name": "Id"
+        },
+        {
+          "name": "UnitPrice"
+        },
+        {
+          "name": "Quantity"
+        },
+        {
+          "name": "Discount"
+        },
+        {
+          "name": "Amount"
+        },
+        {
+          "name": "ShippedDate"
+        },
+        {
+          "name": "ProductId"
+        },
+        {
+          "name": "OrderId"
+        }
+      ],
+      "type": "OrderDetail",
+      "user_key": "Id"
+    },
+    "Product": {
+      "columns": [
+        {
+          "name": "ProductName"
+        },
+        {
+          "name": "QuantityPerUnit"
+        },
+        {
+          "name": "UnitPrice"
+        },
+        {
+          "name": "UnitsInStock"
+        },
+        {
+          "name": "UnitsOnOrder"
+        },
+        {
+          "name": "ReorderLevel"
+        },
+        {
+          "name": "Discontinued"
+        },
+        {
+          "name": "UnitsShipped"
+        },
+        {
+          "name": "SupplierId"
+        },
+        {
+          "name": "Id"
+        },
+        {
+          "name": "CategoryId"
+        }
+      ],
+      "relationships": [
+        {
+          "direction": "tomany",
+          "fks": [
+            "ProductId"
+          ],
+          "name": "OrderDetailList",
+          "target": "OrderDetail"
+        }
+      ],
+      "type": "Product",
+      "user_key": "ProductName"
+    },
+    "Region": {
+      "columns": [
+        {
+          "name": "RegionDescription"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "type": "Region",
+      "user_key": "RegionDescription"
+    },
+    "Shipper": {
+      "columns": [
+        {
+          "name": "CompanyName"
+        },
+        {
+          "name": "Phone"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "type": "Shipper",
+      "user_key": "CompanyName"
+    },
+    "Supplier": {
+      "columns": [
+        {
+          "name": "CompanyName"
+        },
+        {
+          "name": "ContactName"
+        },
+        {
+          "name": "ContactTitle"
+        },
+        {
+          "name": "Address"
+        },
+        {
+          "name": "City"
+        },
+        {
+          "name": "Region"
+        },
+        {
+          "name": "PostalCode"
+        },
+        {
+          "name": "Country"
+        },
+        {
+          "name": "Phone"
+        },
+        {
+          "name": "Fax"
+        },
+        {
+          "name": "HomePage"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "type": "Supplier",
+      "user_key": "CompanyName"
+    },
+    "Territory": {
+      "columns": [
+        {
+          "name": "TerritoryDescription"
+        },
+        {
+          "name": "RegionId"
+        },
+        {
+          "name": "Id"
+        }
+      ],
+      "relationships": [
+        {
+          "direction": "tomany",
+          "fks": [
+            "TerritoryId"
+          ],
+          "name": "EmployeeTerritoryList",
+          "target": "EmployeeTerritory"
+        }
+      ],
+      "type": "Territory",
+      "user_key": "TerritoryDescription"
+    }
+  }
+}
