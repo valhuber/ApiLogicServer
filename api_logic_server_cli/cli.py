@@ -1435,3 +1435,16 @@ if __name__ == '__main__':  # debugger & python command line start here
             "show-args" in api_logic_server_info_file_dict:
         print_args(commands, f'\nCommand Line Arguments:')
     main()
+
+
+def key_module_map():
+    """ not called - just index of key code - use this for hover, goto etc """
+    import create_from_model.ui_admin_creator as ui_admin_creator
+    import create_from_model.api_expose_api_models as api_expose_api_models
+
+    api_logic_server()                                          # main driver, calls...
+    model_creation_services = CreateFromModel()                 # creates database/models.py by calling...
+    model_creation_services.create_models()                     # creates database/models.py
+    model_creation_services.load_resource_model_from_safrs()    # creates resource_list
+    ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
+    api_expose_api_models.create()                              # creates api/expose_api_models from resource_list
