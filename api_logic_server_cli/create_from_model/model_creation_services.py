@@ -625,7 +625,7 @@ class CreateFromModel(object):
         if self.engine:
             self.engine.dispose()
 
-    def load_resource_model_from_safrs(self, models_file):
+    def create_resource_model_from_safrs(self, models_file):
         """ imports models.py, uses safrs services to create self.resource_list (drives create_from_model modules)
         """
         project_abs_path = abspath(self.project_directory)
@@ -718,7 +718,7 @@ class CreateFromModel(object):
                     * It transforms database names to resource names - capitalized, singular
                         * These (not table names) are used to create api and ui model
 
-            2. It then calls `load_resource_model_from_safrs`, to create the `resource_list`
+            2. It then calls `create_resource_model_from_safrs`, to create the `resource_list`
                 * This is the meta data iterated by the creation modules to create api and ui model classes.
                 * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
                     * Many DBs don't define FKs into the db (e.g. nw.db).
@@ -770,5 +770,5 @@ class CreateFromModel(object):
         else:
             error_message = f'System error - unexpected command: {self.command}'
             raise ValueError(error_message)
-        self.load_resource_model_from_safrs(model_file_name)  # whether created or used, build resource_list
+        self.create_resource_model_from_safrs(model_file_name)  # whether created or used, build resource_list
         return rtn_my_children_map, rtn_my_parents_map

@@ -1445,6 +1445,6 @@ def key_module_map():
     api_logic_server()                                          # main driver, calls...
     model_creation_services = CreateFromModel()                 # creates database/models.py by calling...
     model_creation_services.create_models()                     # creates database/models.py
-    model_creation_services.load_resource_model_from_safrs()    # creates resource_list
+    model_creation_services.create_resource_model_from_safrs()  # creates resource_list via dynamic import of models.py
     ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
     api_expose_api_models.create()                              # creates api/expose_api_models from resource_list
