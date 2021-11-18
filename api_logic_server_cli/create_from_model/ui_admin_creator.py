@@ -440,6 +440,7 @@ class AdminCreator(object):
             if admin_col_is_active:
                 yaml_file_name_col = self.mod_gen.fix_win_path(
                     self.mod_gen.project_directory + f'/ui/admin/admin-col.yaml')
+                print(f'.. .. .. ..Creating temp {yaml_file_name_col}')
                 with open(yaml_file_name_col, 'w') as yaml_file_col:
                     yaml_file_col.write(admin_yaml_col)
 
