@@ -655,7 +655,7 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
 
 
 def invoke_creators(model_creation_services: CreateFromModel):
-    """ uses data model to create api, apps
+    """ uses model_creation_services (resource_list, model iterator functions) to create api, apps
     """
 
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
