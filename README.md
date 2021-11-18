@@ -220,6 +220,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
+Logic is an incredibly important aspect of API Logic Server - [learn more about logic here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python).
 
 &nbsp;&nbsp;&nbsp;
 
