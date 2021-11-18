@@ -4,3 +4,15 @@ cd ~/Desktop
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 this directory contains various yaml files, and their json equivalents, for test compares.
+
+Proposed Release criteria (Val)
+* Demo script
+    * Admin-attributes, loaded from project
+    * Filter
+    * Constraint
+    * Joins - explicit from admin
+    * Add order - cascade add, lookup
+    * Notes (for demo self-discovery)
+    * All pages work for test DBs
+    * Image? Link? Money?  Date?
+* PythonAnywhere demo (combined app/api)
