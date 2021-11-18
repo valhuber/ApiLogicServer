@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.04"
+__version__ = "3.50.05"
 
 from contextlib import closing
 
@@ -685,7 +685,7 @@ def invoke_creators(model_creation_services: CreateFromModel):
         # print(".. .. ..ui/admin_app creation declined")
 
     if model_creation_services.react_admin:
-        print(" d.  Create ui/react_admin app (import / iterate models)")
+        print(" c.  Create ui/react_admin app (import / iterate models)")
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/z_react_admin_creator.py')
         creator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(creator)
@@ -696,7 +696,7 @@ def invoke_creators(model_creation_services: CreateFromModel):
 
 
     if model_creation_services.flask_appbuilder:
-        print(" c.  Create ui/basic_web_app/app/views.py (import / iterate models)")
+        print(" d.  Create ui/basic_web_app/app/views.py (import / iterate models)")
         creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_basic_web_app_creator.py')
         creator = importlib.util.module_from_spec(spec)
@@ -867,7 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t11/17/2021 - 03.50.04: creates runnable admin-col.yaml \n"
+            "\t11/18/2021 - 03.50.05: creates runnable admin-col.yaml, doc & console log info \n"
             "\t11/16/2021 - 03.50.03: safrs-react-admin fixes \n"
             "\t11/15/2021 - 03.50.02: minor diagnostics \n"
             "\t11/13/2021 - 03.50.01: port conflict warning (not failure) for Docker \n"
@@ -1445,6 +1445,7 @@ def key_module_map():
     api_logic_server()                                          # main driver, calls...
     model_creation_services = CreateFromModel()                 # creates database/models.py by calling...
     model_creation_services.create_models()                     # creates database/models.py
-    model_creation_services.create_resource_model_from_safrs()  # creates resource_list via dynamic import of models.py
-    ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
+    model_creation_services.create_resource_list_from_safrs()   # creates resource_list via dynamic import of models.py
+    invoke_creators()                                           # creates api, ui via create_from_model...
     api_expose_api_models.create()                              # creates api/expose_api_models from resource_list
+    ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list

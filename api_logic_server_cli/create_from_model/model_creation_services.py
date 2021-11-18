@@ -625,14 +625,16 @@ class CreateFromModel(object):
         if self.engine:
             self.engine.dispose()
 
-    def create_resource_model_from_safrs(self, models_file):
-        """ imports models.py, uses safrs services to create self.resource_list (drives create_from_model modules)
+    def create_resource_list_from_safrs(self, models_file, msg):
+        """
+        creates self.resource_list via dynamic import of models.py  (drives create_from_model modules)
         """
         project_abs_path = abspath(self.project_directory)
         model_imported = False
         path_to_add = project_abs_path if self.command == "create-ui" else \
             project_abs_path + "/database"  # for Api Logic Server projects
         sys.path.insert(0, path_to_add)  # e.g., adds /Users/val/Desktop/my_project/database
+        print(msg)  #    b.  Create resource_list - import database/models.py, inspect each class
         try:
             # credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             importlib.import_module('models')
@@ -718,7 +720,7 @@ class CreateFromModel(object):
                     * It transforms database names to resource names - capitalized, singular
                         * These (not table names) are used to create api and ui model
 
-            2. It then calls `create_resource_model_from_safrs`, to create the `resource_list`
+            2. It then calls `create_resource_list_from_safrs`, to create the `resource_list`
                 * This is the meta data iterated by the creation modules to create api and ui model classes.
                 * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
                     * Many DBs don't define FKs into the db (e.g. nw.db).
@@ -752,10 +754,10 @@ class CreateFromModel(object):
         if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
             if False and self.use_model != "":  # use-model (todo - disabled)
                 model_file_name = project_directory + '/database/models.py'
-                print(f' a.   Use existing {self.use_model} - copy to {project_directory + "/database/models.py"}')
+                print(f' a.  Use existing {self.use_model} - copy to {project_directory + "/database/models.py"}')
                 copyfile(self.use_model, model_file_name)
             else:
-                print(f' a.  Create database/models.py using database: {abs_db_url}')
+                print(f' a.  Create Models - create database/models.py, using sqlcodegen for database: {abs_db_url}')
                 code_gen_args = get_codegen_args()
                 models_py = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
                 model_file_name = code_gen_args.outfile
@@ -770,5 +772,6 @@ class CreateFromModel(object):
         else:
             error_message = f'System error - unexpected command: {self.command}'
             raise ValueError(error_message)
-        self.create_resource_model_from_safrs(model_file_name)  # whether created or used, build resource_list
+        msg = f'.. .. ..Create resource_list - dynamic import database/models.py, inspect each class'
+        self.create_resource_list_from_safrs(model_file_name, msg)  # whether created or used, build resource_list
         return rtn_my_children_map, rtn_my_parents_map
