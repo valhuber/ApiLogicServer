@@ -15,7 +15,7 @@ from dotmap import DotMap
 from api_logic_server_cli.create_from_model.model_creation_services import Resource
 
 log = logging.getLogger(__file__)
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 handler = logging.StreamHandler(sys.stderr)
 formatter = logging.Formatter(f'%(name)s: %(message)s')     # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
