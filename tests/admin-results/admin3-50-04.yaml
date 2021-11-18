@@ -1,10 +1,11 @@
 about:
-  date: November 16, 2021 10:15:26
+  date: November 17, 2021 16:39:16
   recent_changes: much to say
-  version: 3.50.03
+  version: 3.50.04
+api_root: http://localhost:5656/
 info:
-  number_relationships: 8
-  number_tables: 14
+  number_relationships: 16
+  number_tables: 28
 properties_ref:
   attribute:
     group: name
@@ -45,22 +46,21 @@ resources:
     - Balance
     - CreditLimit
     - OrderCount
-    - Id
     - UnpaidOrderCount
+    - Id
     tab_groups:
       CustomerCustomerDemoList:
         attributes:
         - Id
         - CustomerTypeId
-        fkeys:
-          source_delete_me: '?'
-          target: CustomerTypeId
+        fks:
+        - CustomerTypeId
         resource: CustomerCustomerDemo
       OrderList:
         attributes:
         - ShipName
         - Employee:
-            key_attributes:
+            fks:
             - EmployeeId
             show_attributes: []
             type: Employee
@@ -75,12 +75,11 @@ resources:
         - ShipPostalCode
         - ShipCountry
         - AmountTotal
-        - CustomerId
-        - Id
         - EmployeeId
-        fkeys:
-          source_delete_me: '?'
-          target: CustomerId
+        - Id
+        - CustomerId
+        fks:
+        - CustomerId
         resource: Order
     type: Customer
     user_key: CompanyName
@@ -88,7 +87,7 @@ resources:
     attributes:
     - Id
     - Customer:
-        key_attributes:
+        fks:
         - CustomerTypeId
         show_attributes: []
         type: Customer
@@ -131,31 +130,29 @@ resources:
         - Salary
         - FirstName
         - CreatedOn
-        - Id
         - EmployeeId
-        fkeys:
-          source_delete_me: '?'
-          target: EmployeeId
+        - Id
+        fks:
+        - EmployeeId
         resource: EmployeeAudit
       EmployeeTerritoryList:
         attributes:
         - Id
         - Territory:
-            key_attributes:
+            fks:
             - TerritoryId
             show_attributes: []
             type: Territory
-        - TerritoryId
         - EmployeeId
-        fkeys:
-          source_delete_me: '?'
-          target: EmployeeId
+        - TerritoryId
+        fks:
+        - EmployeeId
         resource: EmployeeTerritory
       OrderList:
         attributes:
         - ShipName
         - Customer:
-            key_attributes:
+            fks:
             - CustomerId
             show_attributes: []
             type: Customer
@@ -170,12 +167,11 @@ resources:
         - ShipPostalCode
         - ShipCountry
         - AmountTotal
-        - CustomerId
-        - Id
         - EmployeeId
-        fkeys:
-          source_delete_me: '?'
-          target: EmployeeId
+        - Id
+        - CustomerId
+        fks:
+        - EmployeeId
         resource: Order
     type: Employee
     user_key: LastName
@@ -183,7 +179,7 @@ resources:
     attributes:
     - LastName
     - Employee:
-        key_attributes:
+        fks:
         - EmployeeId
         show_attributes: []
         type: Employee
@@ -191,37 +187,37 @@ resources:
     - Salary
     - FirstName
     - CreatedOn
-    - Id
     - EmployeeId
+    - Id
     type: EmployeeAudit
     user_key: LastName
   EmployeeTerritory:
     attributes:
     - Id
     - Employee:
-        key_attributes:
+        fks:
         - EmployeeId
         show_attributes: []
         type: Employee
     - Territory:
-        key_attributes:
+        fks:
         - TerritoryId
         show_attributes: []
         type: Territory
-    - TerritoryId
     - EmployeeId
+    - TerritoryId
     type: EmployeeTerritory
     user_key: Id
   Order:
     attributes:
     - ShipName
     - Customer:
-        key_attributes:
+        fks:
         - CustomerId
         show_attributes: []
         type: Customer
     - Employee:
-        key_attributes:
+        fks:
         - EmployeeId
         show_attributes: []
         type: Employee
@@ -236,15 +232,15 @@ resources:
     - ShipPostalCode
     - ShipCountry
     - AmountTotal
-    - CustomerId
-    - Id
     - EmployeeId
+    - Id
+    - CustomerId
     tab_groups:
       OrderDetailList:
         attributes:
         - Id
         - Product:
-            key_attributes:
+            fks:
             - ProductId
             show_attributes: []
             type: Product
@@ -253,11 +249,10 @@ resources:
         - Discount
         - Amount
         - ShippedDate
-        - OrderId
         - ProductId
-        fkeys:
-          source_delete_me: '?'
-          target: OrderId
+        - OrderId
+        fks:
+        - OrderId
         resource: OrderDetail
     type: Order
     user_key: ShipName
@@ -265,12 +260,12 @@ resources:
     attributes:
     - Id
     - Order:
-        key_attributes:
+        fks:
         - OrderId
         show_attributes: []
         type: Order
     - Product:
-        key_attributes:
+        fks:
         - ProductId
         show_attributes: []
         type: Product
@@ -279,8 +274,8 @@ resources:
     - Discount
     - Amount
     - ShippedDate
-    - OrderId
     - ProductId
+    - OrderId
     type: OrderDetail
     user_key: Id
   Product:
@@ -293,15 +288,15 @@ resources:
     - ReorderLevel
     - Discontinued
     - UnitsShipped
-    - Id
     - CategoryId
+    - Id
     - SupplierId
     tab_groups:
       OrderDetailList:
         attributes:
         - Id
         - Order:
-            key_attributes:
+            fks:
             - OrderId
             show_attributes: []
             type: Order
@@ -310,11 +305,10 @@ resources:
         - Discount
         - Amount
         - ShippedDate
-        - OrderId
         - ProductId
-        fkeys:
-          source_delete_me: '?'
-          target: ProductId
+        - OrderId
+        fks:
+        - ProductId
         resource: OrderDetail
     type: Product
     user_key: ProductName
@@ -357,15 +351,14 @@ resources:
         attributes:
         - Id
         - Employee:
-            key_attributes:
+            fks:
             - EmployeeId
             show_attributes: []
             type: Employee
-        - TerritoryId
         - EmployeeId
-        fkeys:
-          source_delete_me: '?'
-          target: TerritoryId
+        - TerritoryId
+        fks:
+        - TerritoryId
         resource: EmployeeTerritory
     type: Territory
     user_key: TerritoryDescription
