@@ -626,7 +626,7 @@ class CreateFromModel(object):
             self.engine.dispose()
 
     def load_resource_model_from_safrs(self, models_file):
-        """ currently does nothing but verify model classes' safrs info is readable.  It is.
+        """ imports models.py, uses safrs services to create self.resource_list (drives create_from_model modules)
         """
         project_abs_path = abspath(self.project_directory)
         model_imported = False
