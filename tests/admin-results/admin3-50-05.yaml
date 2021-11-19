@@ -1,7 +1,7 @@
 about:
-  date: November 17, 2021 16:39:16
+  date: November 18, 2021 10:09:17
   recent_changes: much to say
-  version: 3.50.04
+  version: 3.50.05
 api_root: http://localhost:5656/
 info:
   number_relationships: 16
@@ -288,9 +288,9 @@ resources:
     - ReorderLevel
     - Discontinued
     - UnitsShipped
+    - SupplierId
     - CategoryId
     - Id
-    - SupplierId
     tab_groups:
       OrderDetailList:
         attributes:
