@@ -7,6 +7,7 @@ this directory contains various yaml files, and their json equivalents, for test
 
 Proposed Release criteria (Val)
 * Demo script
+    * Works from ApiLogicServer run, all browsers
     * Admin-attributes, loaded from project
     * Filter
     * Constraint
@@ -14,5 +15,6 @@ Proposed Release criteria (Val)
     * Add order - cascade add, lookup
     * Notes (for demo self-discovery)
     * All pages work for test DBs
+    * Admin page has link to swagger
     * Image? Link? Money?  Date?
 * PythonAnywhere demo (combined app/api)
