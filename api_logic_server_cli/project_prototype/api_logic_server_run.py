@@ -21,6 +21,7 @@ if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
 current_path = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(current_path)
 project_dir = str(current_path)
+os.chdir(project_dir)  # so admin app can find images, code
 
 import logging
 app_logger = logging.getLogger('api_logic_server_app')
@@ -31,6 +32,7 @@ app_logger.addHandler(handler)
 app_logger.propagate = True
 
 app_logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
+app_logger.info(f'app started: {__file__}\n')
 
 import threading
 import time

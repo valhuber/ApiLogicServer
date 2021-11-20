@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.06"
+__version__ = "3.50.07"
 
 from contextlib import closing
 
@@ -867,6 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/20/2021 - 03.50.07: admin.yaml loaded/used by admin app, runs directly *and* ApiLogicServer run \n"
             "\t11/19/2021 - 03.50.06: admin.yaml loaded/accepted by admin app, runs \n"
             "\t11/18/2021 - 03.50.05: creates runnable admin-col.yaml, doc & console log info \n"
             "\t11/16/2021 - 03.50.03: safrs-react-admin fixes \n"
