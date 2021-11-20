@@ -121,7 +121,7 @@ def create_app(config_filename=None):
             detail = {"model": logic_row.name}
         raise ValidationErrorExt(message= message, detail=detail)
 
-    flask_app = Flask("API Logic Server")
+    flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
     flask_app.config.from_object("config.Config")
     setup_logging(flask_app)
     db = safrs.DB  # opens database per config, setting session
@@ -166,6 +166,14 @@ flask_app, safrs_api = create_app()
 def index():
     app_logger.debug(f'index - index.html - use http://localhost:5656/admin-app/index.html')
     return redirect('/als/index.html')
+
+
+@flask_app.route('/ui/admin/admin.yaml')
+def admin(path=None):
+    with open("ui/admin/admin.yaml", "r") as f:
+        content = f.read()
+    app_logger.debug(f'loading ui/admin/admin.yaml')
+    return render_template('content.html', content=content)
 
 
 @flask_app.route("/admin-app/<path:path>")
