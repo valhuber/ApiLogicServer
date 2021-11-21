@@ -134,7 +134,7 @@ def create_app(config_filename=None):
 
     with flask_app.app_context():
         db.init_app(flask_app)
-        safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port)   # services from models
+        safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port, API_PREFIX = API_PREFIX)
         customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)    # custom services
         SAFRSBase._s_auto_commit = False
         session.close()
@@ -161,13 +161,15 @@ if sys.argv[2:]:
     app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
 else:
     port = "api_logic_server_port"
+
+API_PREFIX = "/api"
 flask_app, safrs_api = create_app()
 
 
 @flask_app.route('/')
 def index():
-    app_logger.debug(f'index - index.html - use http://localhost:5656/admin-app/index.html')
-    return redirect('/als/index.html')
+    app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
+    return redirect('/admin-app/index.html')
 
 
 @flask_app.route('/ui/admin/admin.yaml')
@@ -181,7 +183,6 @@ def admin(path=None):
 @flask_app.route("/admin-app/<path:path>")
 def send_spa(path=None):
     directory = 'ui/admin'
-    # return send_from_directory('als', path)
     app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
     return send_from_directory(directory, path)
 

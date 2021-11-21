@@ -18,6 +18,12 @@ from database.db import Base
 
 
 def expose_services(app, api, project_dir, HOST: str, PORT: str):
+    """ extend model end points with new end points for services
+
+    This sample illustrates the classic hello world,
+    and a more interesting add_order.
+
+     """
 
     @app.route('/hello_world')
     def hello_world():  # test it with: http://api_logic_server_host:api_logic_server_port/hello_world?user=ApiLogicServer
