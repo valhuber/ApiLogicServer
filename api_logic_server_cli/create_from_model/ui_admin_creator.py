@@ -22,7 +22,7 @@ handler.setFormatter(formatter)
 log.addHandler(handler)
 log.propagate = True
 
-admin_col_is_active = True
+admin_col_is_active = False
 admin_col_is_join_active = False
 admin_col_tab_columns = False
 
@@ -128,7 +128,7 @@ class AdminCreator(object):
             child_tabs = self.create_child_tabs(resource)
             if child_tabs:
                 new_resource.tab_groups = child_tabs
-            self.admin_yaml.resources[resource_name] = new_resource.toDict()
+            self.admin_yaml.resources[resource.table_name] = new_resource.toDict()
 
     def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
         """ create attribute in owner (DotMap - of resource or tab)

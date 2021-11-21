@@ -58,13 +58,15 @@ class ResourceRelationship():
 
 class Resource():
     def __init__(self, name):
-        self.name = name
+        self.name = name        # class name (which != safrs resource name)
+        self.table_name = name  # safrs resource name; this is just default, overridden in create_model
+        self.type = name        # just default, overridden in create_model
         self.children: List[ResourceRelationship] = list()
         self.parents: List[ResourceRelationship] = list()
         self.attributes: List[ResourceAttribute] = list()
 
     def __str__(self):
-        return f'Resource: {self.name}'
+        return f'Resource: {self.name}, table_name: {self.table_name}, type: {self.type}'
 
 
 class CreateFromModel(object):
@@ -659,14 +661,16 @@ class CreateFromModel(object):
                             "Ab" not in str(each_class_def_str)):
                         resource_name = each_cls_member[0]
                         resource_class = each_cls_member[1]
+                        table_name = resource_class._s_collection_name
                         resource = Resource(name=resource_name)
                         self.metadata = resource_class.metadata
-                        table_name = resource_class._s_collection_name
                         self.table_to_class_map.update({table_name: resource_name})   # required for ui_basic_web_app
                         if resource_name not in resource_list:
                             resource_list[resource_name] = resource
                         resource = resource_list[resource_name]
+                        resource.table_name = table_name
                         resource_data = {"type": resource_class._s_type}  # todo what's this?
+                        resource_data = {"type": resource_name}
                         for each_attribute in resource_class._s_columns:
                             resource_attribute = ResourceAttribute(name=str(each_attribute.name))
                             resource.attributes.append(resource_attribute)
