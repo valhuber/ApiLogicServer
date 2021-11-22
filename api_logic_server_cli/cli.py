@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.09"
+__version__ = "3.50.10"
 
 from contextlib import closing
 
@@ -867,6 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/22/2021 - 03.50.10: upd build, web page default now admin (not swagger); detail grids still blank  \n"
             "\t11/21/2021 - 03.50.09: web page default now admin (not swagger); detail grids still blank  \n"
             "\t11/20/2021 - 03.50.08: safrs-admn join included, use table-name as resource-name; detail grids blank \n"
             "\t11/20/2021 - 03.50.07: admin.yaml loaded/used by admin app, runs directly *and* ApiLogicServer run \n"
