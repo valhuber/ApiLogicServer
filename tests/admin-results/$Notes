@@ -16,13 +16,18 @@ Proposed Release criteria (Val)
     + Works from ApiLogicServer run, all browsers
     + Admin-attributes, loaded from created project (many properties may be ignored)
     + Admin page has link to swagger
-    - Filter
-    - Constraint retry
+    + Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
+    - Filter (might be working, haven't tried)
+    - Constraint retry (show message, stay on page, retry or cancel)
     - Joins - any sensible default
     * All pages work for test DBs
 * Announcement (articles, videos etc)
-    - Joins - explicit from admin
-    * PythonAnywhere demo (combined app/api)
+    - Lookups!!
     - Add order - cascade add, lookup
+    * PythonAnywhere demo (combined app/api)
     ? Image? Link? Money?  Date?
     - Notes (for demo self-discovery)
+    - Joins - explicit from admin
+* Key Futures
+    * Hide / Show
+    * Set attr=value, save (e.g., checkout, approve, etc)
