@@ -22,9 +22,11 @@ handler.setFormatter(formatter)
 log.addHandler(handler)
 log.propagate = True
 
-admin_col_is_active = False
+admin_col_is_active = True
 admin_col_is_join_active = False
 admin_col_tab_columns = False
+admin_user_key_is_active = False
+admin_relationships_with_parents = True
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -93,7 +95,7 @@ class AdminCreator(object):
         sys.path.append(cwd)
 
         self.admin_yaml.api_root = "http://localhost:5656/api"
-        self.admin_yaml_col.api_root = "http://localhost:5656/"
+        self.admin_yaml_col.api_root = "http://localhost:5656/api"
         self.admin_yaml.resources = {}
         for each_resource_name in self.mod_gen.resource_list:
             each_resource = self.mod_gen.resource_list[each_resource_name]
@@ -122,7 +124,8 @@ class AdminCreator(object):
             new_resource = DotMap()
             self.num_pages_generated += 1
             new_resource.type = str(resource.name)
-            new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
+            if admin_user_key_is_active:
+                new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
 
             self.create_attributes_in_owner(new_resource, resource, None)
             child_tabs = self.create_child_tabs(resource)
@@ -159,7 +162,9 @@ class AdminCreator(object):
             new_resource = DotMap()
             self.num_pages_generated += 1
             new_resource.type = str(resource.name)
-            new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
+            new_resource.label = resource.name + " - label"
+            if admin_user_key_is_active:
+                new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
 
             self.create_columns_in_owner(new_resource, resource, None)
             child_tabs = self.create_child_tabs_col(resource)
@@ -277,11 +282,27 @@ class AdminCreator(object):
                 """
 
             each_resource_tab.resource = str(each_child)
+            each_resource_tab.direction = "tomany"
             tab_name = each_resource_relationship.child_role_name
 
             each_child_resource = self.mod_gen.resource_list[each_child]
-            self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
+            if admin_col_tab_columns:
+                self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
             tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
+        if admin_relationships_with_parents:
+            for each_resource_relationship in resource.parents:
+                each_resource_tab = DotMap()
+                each_resource_tab.name = each_resource_relationship.parent_role_name
+                each_parent = each_resource_relationship.parent_resource
+                each_resource_tab.target = str(each_parent)
+                each_resource_tab.direction = "toone"
+                each_resource_tab.fks = []
+                for each_pair in each_resource_relationship.parent_child_key_pairs:
+                    each_resource_tab.fks.append(each_pair[1])
+                tab_name = each_resource_relationship.parent_role_name
+
+                # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
+                tab_group[tab_name] = each_resource_tab
         return tab_group
 
     def create_child_tabs_col(self, resource: Resource) -> DotMap:
@@ -309,10 +330,25 @@ class AdminCreator(object):
             tab_name = each_resource_relationship.child_role_name
 
             each_child_resource = self.mod_gen.resource_list[each_child]
-            self.create_columns_in_owner(each_resource_tab, each_child_resource, resource)
+            if admin_col_tab_columns:
+                self.create_columns_in_owner(each_resource_tab, each_child_resource, resource)
 
             # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
             tab_group.append(each_resource_tab)
+        if admin_relationships_with_parents:
+            for each_resource_relationship in resource.parents:
+                each_resource_tab = DotMap()
+                each_resource_tab.name = each_resource_relationship.parent_role_name
+                each_parent = each_resource_relationship.parent_resource
+                each_resource_tab.target = str(each_parent)
+                each_resource_tab.direction = "toone"
+                each_resource_tab.fks = []
+                for each_pair in each_resource_relationship.parent_child_key_pairs:
+                    each_resource_tab.fks.append(each_pair[1])
+                tab_name = each_resource_relationship.parent_role_name
+
+                # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
+                tab_group.append(each_resource_tab)
         return tab_group
 
     def do_process_resource(self, resource_name: str)-> bool:

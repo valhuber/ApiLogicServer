@@ -1,13 +1,13 @@
-api_root: http://localhost:5656/
+api_root: http://localhost:5656/api
 resources:
   Category:
     columns:
     - name: CategoryName
     - name: Description
     - name: Id
+    label: Category - label
     relationships: []
     type: Category
-    user_key: CategoryName
   Customer:
     columns:
     - name: CompanyName
@@ -25,6 +25,7 @@ resources:
     - name: OrderCount
     - name: Id
     - name: UnpaidOrderCount
+    label: Customer - label
     relationships:
     - direction: tomany
       fks:
@@ -37,21 +38,25 @@ resources:
       name: OrderList
       target: Order
     type: Customer
-    user_key: CompanyName
   CustomerCustomerDemo:
     columns:
     - name: Id
     - name: CustomerTypeId
-    relationships: []
+    label: CustomerCustomerDemo - label
+    relationships:
+    - direction: toone
+      fks:
+      - CustomerTypeId
+      name: Customer
+      target: Customer
     type: CustomerCustomerDemo
-    user_key: Id
   CustomerDemographic:
     columns:
     - name: Id
     - name: CustomerDesc
+    label: CustomerDemographic - label
     relationships: []
     type: CustomerDemographic
-    user_key: Id
   Employee:
     columns:
     - name: LastName
@@ -74,6 +79,7 @@ resources:
     - name: IsCommissioned
     - name: Salary
     - name: Id
+    label: Employee - label
     relationships:
     - direction: tomany
       fks:
@@ -91,7 +97,6 @@ resources:
       name: OrderList
       target: Order
     type: Employee
-    user_key: LastName
   EmployeeAudit:
     columns:
     - name: LastName
@@ -101,17 +106,32 @@ resources:
     - name: CreatedOn
     - name: Id
     - name: EmployeeId
-    relationships: []
+    label: EmployeeAudit - label
+    relationships:
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      target: Employee
     type: EmployeeAudit
-    user_key: LastName
   EmployeeTerritory:
     columns:
     - name: Id
-    - name: TerritoryId
     - name: EmployeeId
-    relationships: []
+    - name: TerritoryId
+    label: EmployeeTerritory - label
+    relationships:
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      target: Employee
+    - direction: toone
+      fks:
+      - TerritoryId
+      name: Territory
+      target: Territory
     type: EmployeeTerritory
-    user_key: Id
   Order:
     columns:
     - name: ShipName
@@ -127,16 +147,26 @@ resources:
     - name: ShipCountry
     - name: AmountTotal
     - name: Id
-    - name: CustomerId
     - name: EmployeeId
+    - name: CustomerId
+    label: Order - label
     relationships:
     - direction: tomany
       fks:
       - OrderId
       name: OrderDetailList
       target: OrderDetail
+    - direction: toone
+      fks:
+      - CustomerId
+      name: Customer
+      target: Customer
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      target: Employee
     type: Order
-    user_key: ShipName
   OrderDetail:
     columns:
     - name: Id
@@ -145,11 +175,21 @@ resources:
     - name: Discount
     - name: Amount
     - name: ShippedDate
-    - name: ProductId
     - name: OrderId
-    relationships: []
+    - name: ProductId
+    label: OrderDetail - label
+    relationships:
+    - direction: toone
+      fks:
+      - OrderId
+      name: Order
+      target: Order
+    - direction: toone
+      fks:
+      - ProductId
+      name: Product
+      target: Product
     type: OrderDetail
-    user_key: Id
   Product:
     columns:
     - name: ProductName
@@ -160,9 +200,10 @@ resources:
     - name: ReorderLevel
     - name: Discontinued
     - name: UnitsShipped
-    - name: Id
     - name: CategoryId
+    - name: Id
     - name: SupplierId
+    label: Product - label
     relationships:
     - direction: tomany
       fks:
@@ -170,22 +211,21 @@ resources:
       name: OrderDetailList
       target: OrderDetail
     type: Product
-    user_key: ProductName
   Region:
     columns:
     - name: RegionDescription
     - name: Id
+    label: Region - label
     relationships: []
     type: Region
-    user_key: RegionDescription
   Shipper:
     columns:
     - name: CompanyName
     - name: Phone
     - name: Id
+    label: Shipper - label
     relationships: []
     type: Shipper
-    user_key: CompanyName
   Supplier:
     columns:
     - name: CompanyName
@@ -200,14 +240,15 @@ resources:
     - name: Fax
     - name: HomePage
     - name: Id
+    label: Supplier - label
     relationships: []
     type: Supplier
-    user_key: CompanyName
   Territory:
     columns:
     - name: TerritoryDescription
-    - name: RegionId
     - name: Id
+    - name: RegionId
+    label: Territory - label
     relationships:
     - direction: tomany
       fks:
@@ -215,4 +256,3 @@ resources:
       name: EmployeeTerritoryList
       target: EmployeeTerritory
     type: Territory
-    user_key: TerritoryDescription

@@ -1,5 +1,5 @@
 {
-  "api_root": "http://localhost:5656/",
+  "api_root": "http://localhost:5656/api",
   "resources": {
     "Category": {
       "type": "Category",

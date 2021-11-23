@@ -5,6 +5,12 @@ docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:
 
 this directory contains various yaml files, and their json equivalents, for test compares.
 
+Update 3/22
+    * Child grids run, evidently due to
+        * Relationships area must contain *both* children ** and parents **
+        * And the direction property therefore required
+    * Not seeing parent joins...?
+
 Proposed Release criteria (Val)
 * Demo script
     * Works from ApiLogicServer run, all browsers
