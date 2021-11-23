@@ -5,22 +5,24 @@ docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:
 
 this directory contains various yaml files, and their json equivalents, for test compares.
 
-Update 3/22
+Update 11/22
     * Child grids run, evidently due to
         * Relationships area must contain *both* children ** and parents **
         * And the direction property therefore required
     * Not seeing parent joins...?
 
 Proposed Release criteria (Val)
-* Demo script
-    * Works from ApiLogicServer run, all browsers
-    * Admin-attributes, loaded from project
-    * Filter
-    * Constraint
-    * Joins - explicit from admin
-    * Add order - cascade add, lookup
-    * Notes (for demo self-discovery)
+* Technology Preview - public pip/docker release, low key (Legend: + working, - todo, ? needs discussion)
+    + Works from ApiLogicServer run, all browsers
+    + Admin-attributes, loaded from created project (many properties may be ignored)
+    + Admin page has link to swagger
+    - Filter
+    - Constraint retry
+    - Joins - any sensible default
     * All pages work for test DBs
-    * Admin page has link to swagger
-    * Image? Link? Money?  Date?
-* PythonAnywhere demo (combined app/api)
+* Announcement (articles, videos etc)
+    - Joins - explicit from admin
+    * PythonAnywhere demo (combined app/api)
+    - Add order - cascade add, lookup
+    ? Image? Link? Money?  Date?
+    - Notes (for demo self-discovery)
