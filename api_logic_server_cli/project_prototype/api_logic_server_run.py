@@ -173,7 +173,7 @@ def index():
 
 
 @flask_app.route('/ui/admin/admin.yaml')
-def admin(path=None):
+def admin(path=None):  # test http://localhost/ui/admin/admin.yaml
     with open("ui/admin/admin.yaml", "r") as f:
         content = f.read()
     app_logger.debug(f'loading ui/admin/admin.yaml')

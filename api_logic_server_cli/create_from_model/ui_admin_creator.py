@@ -22,10 +22,11 @@ handler.setFormatter(formatter)
 log.addHandler(handler)
 log.propagate = True
 
+# temp hacks for admin app migration to attributes
 admin_col_is_active = True
 admin_col_is_join_active = False
 admin_col_tab_columns = False
-admin_user_key_is_active = False
+admin_user_key_is_active = True  # resource property, in lieu of admin_col_tab_columns
 admin_relationships_with_parents = True
 
 #  MetaData = NewType('MetaData', object)
@@ -142,7 +143,11 @@ class AdminCreator(object):
             - ContactName
         """
         owner.attributes = []
-        attributes = self.mod_gen.get_show_attributes(resource)
+        attributes = set()
+        if admin_col_tab_columns:
+            attributes = self.mod_gen.get_show_attributes(resource)
+        else:
+            attributes = self.mod_gen.get_attributes(resource)
         for each_attribute in attributes:
             if "." not in each_attribute:
                 owner.attributes.append(each_attribute)
@@ -176,7 +181,11 @@ class AdminCreator(object):
         """ create columns in owner (DotMap - of resource or tab)
         """
         owner.columns = []
-        attributes = self.mod_gen.get_show_attributes(resource)
+        attributes = set()
+        if admin_col_tab_columns:
+            attributes = self.mod_gen.get_show_attributes(resource)
+        else:
+            attributes = self.mod_gen.get_attributes(resource)
         for each_attribute in attributes:
             if "." not in each_attribute:
                 col_def = DotMap()

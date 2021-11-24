@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.11"
+__version__ = "3.50.12"
 
 from contextlib import closing
 
@@ -867,6 +867,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/23/2021 - 03.50.12: fix admin - resource type bug.  Parent & child joins, admin-attr  \n"
             "\t11/22/2021 - 03.50.11: fixed config.js, child grids work.  No parent joins  \n"
             "\t11/22/2021 - 03.50.10: upd build, web page default now admin (not swagger); detail grids still blank  \n"
             "\t11/21/2021 - 03.50.09: web page default now admin (not swagger); detail grids still blank  \n"

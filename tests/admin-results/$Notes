@@ -11,23 +11,26 @@ Update 11/22
         * And the direction property therefore required
     * Not seeing parent joins...?
 
+Update 11/23 - parent joins
+    * running with admin-attr, admin-col
+
 Proposed Release criteria (Val)
 * Technology Preview - public pip/docker release, low key (Legend: + working, - todo, ? needs discussion)
     + Works from ApiLogicServer run, all browsers
     + Admin-attributes, loaded from created project (many properties may be ignored)
     + Admin page has link to swagger
     + Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
+    + Joins - parent & child, any sensible default
     - Filter (might be working, haven't tried)
-    - Constraint retry (show message, stay on page, retry or cancel)
-    - Joins - any sensible default
     * All pages work for test DBs
 * Announcement (articles, videos etc)
     - Lookups!!
-    - Add order - cascade add, lookup
+    - Add order - cascade add (set OrderDetail.OrderId from Order), lookup OrderDetail.Product
+    - Constraint retry (show message, stay on page, retry or cancel)
     * PythonAnywhere demo (combined app/api)
     ? Image? Link? Money?  Date?
     - Notes (for demo self-discovery)
-    - Joins - explicit from admin
+    - Join attrs - explicit from admin (so avoid redundant master)
 * Key Futures
     * Hide / Show
     * Set attr=value, save (e.g., checkout, approve, etc)

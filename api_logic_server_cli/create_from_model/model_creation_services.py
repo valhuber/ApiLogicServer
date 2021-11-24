@@ -242,6 +242,13 @@ class CreateFromModel(object):
         attributes = ast.literal_eval(gen_string)
         return attributes
 
+    def get_attributes(self, resource: Resource) -> list:
+        """ bypass all joins, ids at end - just the raw attributes """
+        result_set = list()
+        for each_attribute in resource.attributes:
+            result_set.append(each_attribute.name)
+        return result_set
+
     def edit_columns(self, a_table_def: MetaDataTable):
         return self.gen_columns(a_table_def, "edit_columns = [", 99, 999, 999)
 
