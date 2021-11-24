@@ -4,21 +4,25 @@
     "Category": {
       "columns": [
         {
+          "name": "Id"
+        },
+        {
           "name": "CategoryName"
         },
         {
           "name": "Description"
-        },
-        {
-          "name": "Id"
         }
       ],
       "label": "Category - label",
       "relationships": [],
-      "type": "Category"
+      "type": "Category",
+      "user_key": "CategoryName"
     },
     "Customer": {
       "columns": [
+        {
+          "name": "Id"
+        },
         {
           "name": "CompanyName"
         },
@@ -59,9 +63,6 @@
           "name": "OrderCount"
         },
         {
-          "name": "Id"
-        },
-        {
           "name": "UnpaidOrderCount"
         }
       ],
@@ -84,7 +85,8 @@
           "target": "Order"
         }
       ],
-      "type": "Customer"
+      "type": "Customer",
+      "user_key": "CompanyName"
     },
     "CustomerCustomerDemo": {
       "columns": [
@@ -106,7 +108,8 @@
           "target": "Customer"
         }
       ],
-      "type": "CustomerCustomerDemo"
+      "type": "CustomerCustomerDemo",
+      "user_key": "Id"
     },
     "CustomerDemographic": {
       "columns": [
@@ -119,10 +122,14 @@
       ],
       "label": "CustomerDemographic - label",
       "relationships": [],
-      "type": "CustomerDemographic"
+      "type": "CustomerDemographic",
+      "user_key": "Id"
     },
     "Employee": {
       "columns": [
+        {
+          "name": "Id"
+        },
         {
           "name": "LastName"
         },
@@ -179,9 +186,6 @@
         },
         {
           "name": "Salary"
-        },
-        {
-          "name": "Id"
         }
       ],
       "label": "Employee - label",
@@ -211,12 +215,13 @@
           "target": "Order"
         }
       ],
-      "type": "Employee"
+      "type": "Employee",
+      "user_key": "LastName"
     },
     "EmployeeAudit": {
       "columns": [
         {
-          "name": "LastName"
+          "name": "Id"
         },
         {
           "name": "Title"
@@ -225,16 +230,16 @@
           "name": "Salary"
         },
         {
+          "name": "LastName"
+        },
+        {
           "name": "FirstName"
         },
         {
-          "name": "CreatedOn"
-        },
-        {
-          "name": "Id"
-        },
-        {
           "name": "EmployeeId"
+        },
+        {
+          "name": "CreatedOn"
         }
       ],
       "label": "EmployeeAudit - label",
@@ -248,7 +253,8 @@
           "target": "Employee"
         }
       ],
-      "type": "EmployeeAudit"
+      "type": "EmployeeAudit",
+      "user_key": "LastName"
     },
     "EmployeeTerritory": {
       "columns": [
@@ -281,12 +287,19 @@
           "target": "Territory"
         }
       ],
-      "type": "EmployeeTerritory"
+      "type": "EmployeeTerritory",
+      "user_key": "Id"
     },
     "Order": {
       "columns": [
         {
-          "name": "ShipName"
+          "name": "Id"
+        },
+        {
+          "name": "CustomerId"
+        },
+        {
+          "name": "EmployeeId"
         },
         {
           "name": "OrderDate"
@@ -302,6 +315,9 @@
         },
         {
           "name": "Freight"
+        },
+        {
+          "name": "ShipName"
         },
         {
           "name": "ShipAddress"
@@ -320,15 +336,6 @@
         },
         {
           "name": "AmountTotal"
-        },
-        {
-          "name": "Id"
-        },
-        {
-          "name": "EmployeeId"
-        },
-        {
-          "name": "CustomerId"
         }
       ],
       "label": "Order - label",
@@ -358,12 +365,19 @@
           "target": "Employee"
         }
       ],
-      "type": "Order"
+      "type": "Order",
+      "user_key": "ShipName"
     },
     "OrderDetail": {
       "columns": [
         {
           "name": "Id"
+        },
+        {
+          "name": "OrderId"
+        },
+        {
+          "name": "ProductId"
         },
         {
           "name": "UnitPrice"
@@ -379,12 +393,6 @@
         },
         {
           "name": "ShippedDate"
-        },
-        {
-          "name": "OrderId"
-        },
-        {
-          "name": "ProductId"
         }
       ],
       "label": "OrderDetail - label",
@@ -406,12 +414,22 @@
           "target": "Product"
         }
       ],
-      "type": "OrderDetail"
+      "type": "OrderDetail",
+      "user_key": "Id"
     },
     "Product": {
       "columns": [
         {
+          "name": "Id"
+        },
+        {
           "name": "ProductName"
+        },
+        {
+          "name": "SupplierId"
+        },
+        {
+          "name": "CategoryId"
         },
         {
           "name": "QuantityPerUnit"
@@ -433,15 +451,6 @@
         },
         {
           "name": "UnitsShipped"
-        },
-        {
-          "name": "CategoryId"
-        },
-        {
-          "name": "Id"
-        },
-        {
-          "name": "SupplierId"
         }
       ],
       "label": "Product - label",
@@ -455,39 +464,45 @@
           "target": "OrderDetail"
         }
       ],
-      "type": "Product"
+      "type": "Product",
+      "user_key": "ProductName"
     },
     "Region": {
       "columns": [
         {
-          "name": "RegionDescription"
+          "name": "Id"
         },
         {
-          "name": "Id"
+          "name": "RegionDescription"
         }
       ],
       "label": "Region - label",
       "relationships": [],
-      "type": "Region"
+      "type": "Region",
+      "user_key": "RegionDescription"
     },
     "Shipper": {
       "columns": [
+        {
+          "name": "Id"
+        },
         {
           "name": "CompanyName"
         },
         {
           "name": "Phone"
-        },
-        {
-          "name": "Id"
         }
       ],
       "label": "Shipper - label",
       "relationships": [],
-      "type": "Shipper"
+      "type": "Shipper",
+      "user_key": "CompanyName"
     },
     "Supplier": {
       "columns": [
+        {
+          "name": "Id"
+        },
         {
           "name": "CompanyName"
         },
@@ -520,22 +535,20 @@
         },
         {
           "name": "HomePage"
-        },
-        {
-          "name": "Id"
         }
       ],
       "label": "Supplier - label",
       "relationships": [],
-      "type": "Supplier"
+      "type": "Supplier",
+      "user_key": "CompanyName"
     },
     "Territory": {
       "columns": [
         {
-          "name": "TerritoryDescription"
+          "name": "Id"
         },
         {
-          "name": "Id"
+          "name": "TerritoryDescription"
         },
         {
           "name": "RegionId"
@@ -552,7 +565,8 @@
           "target": "EmployeeTerritory"
         }
       ],
-      "type": "Territory"
+      "type": "Territory",
+      "user_key": "TerritoryDescription"
     }
   }
 }

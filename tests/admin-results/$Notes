@@ -1,3 +1,12 @@
+Testing Notes:
+    * Val has altered
+        * menu.js - hello screen, links to swagger and docs
+        * config.js
+            * loads admin.yaml from disk
+                * if missing, uses config.json import (as as to run without LAC)
+            * converts admin-attributes (if present) to admin-column for internal admin app use
+                * Detects and does not convert admin-column; this enables testing of load vs conversion
+
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
 
 cd ~/Desktop

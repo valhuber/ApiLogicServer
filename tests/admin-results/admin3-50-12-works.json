@@ -1,8 +1,8 @@
 {
   "about": {
-    "date": "November 22, 2021 17:35:06",
+    "date": "November 23, 2021 20:28:48",
     "recent_changes": "much to say",
-    "version": "3.50.11"
+    "version": "3.50.12"
   },
   "api_root": "http://localhost:5656/api",
   "info": {
@@ -34,14 +34,16 @@
   "resources": {
     "Category": {
       "attributes": [
+        "Id",
         "CategoryName",
-        "Description",
-        "Id"
+        "Description"
       ],
-      "type": "Category"
+      "type": "Category",
+      "user_key": "CategoryName"
     },
     "Customer": {
       "attributes": [
+        "Id",
         "CompanyName",
         "ContactName",
         "ContactTitle",
@@ -55,7 +57,6 @@
         "Balance",
         "CreditLimit",
         "OrderCount",
-        "Id",
         "UnpaidOrderCount"
       ],
       "tab_groups": {
@@ -74,20 +75,12 @@
           "resource": "Order"
         }
       },
-      "type": "Customer"
+      "type": "Customer",
+      "user_key": "CompanyName"
     },
     "CustomerCustomerDemo": {
       "attributes": [
         "Id",
-        {
-          "Customer": {
-            "fks": [
-              "CustomerTypeId"
-            ],
-            "show_attributes": [],
-            "type": "Customer"
-          }
-        },
         "CustomerTypeId"
       ],
       "tab_groups": {
@@ -100,17 +93,20 @@
           "target": "Customer"
         }
       },
-      "type": "CustomerCustomerDemo"
+      "type": "CustomerCustomerDemo",
+      "user_key": "Id"
     },
     "CustomerDemographic": {
       "attributes": [
         "Id",
         "CustomerDesc"
       ],
-      "type": "CustomerDemographic"
+      "type": "CustomerDemographic",
+      "user_key": "Id"
     },
     "Employee": {
       "attributes": [
+        "Id",
         "LastName",
         "FirstName",
         "Title",
@@ -129,8 +125,7 @@
         "ReportsTo",
         "PhotoPath",
         "IsCommissioned",
-        "Salary",
-        "Id"
+        "Salary"
       ],
       "tab_groups": {
         "EmployeeAuditList": {
@@ -155,26 +150,18 @@
           "resource": "Order"
         }
       },
-      "type": "Employee"
+      "type": "Employee",
+      "user_key": "LastName"
     },
     "EmployeeAudit": {
       "attributes": [
-        "LastName",
-        {
-          "Employee": {
-            "fks": [
-              "EmployeeId"
-            ],
-            "show_attributes": [],
-            "type": "Employee"
-          }
-        },
+        "Id",
         "Title",
         "Salary",
+        "LastName",
         "FirstName",
-        "CreatedOn",
-        "Id",
-        "EmployeeId"
+        "EmployeeId",
+        "CreatedOn"
       ],
       "tab_groups": {
         "Employee": {
@@ -186,29 +173,12 @@
           "target": "Employee"
         }
       },
-      "type": "EmployeeAudit"
+      "type": "EmployeeAudit",
+      "user_key": "LastName"
     },
     "EmployeeTerritory": {
       "attributes": [
         "Id",
-        {
-          "Employee": {
-            "fks": [
-              "EmployeeId"
-            ],
-            "show_attributes": [],
-            "type": "Employee"
-          }
-        },
-        {
-          "Territory": {
-            "fks": [
-              "TerritoryId"
-            ],
-            "show_attributes": [],
-            "type": "Territory"
-          }
-        },
         "EmployeeId",
         "TerritoryId"
       ],
@@ -230,43 +200,26 @@
           "target": "Territory"
         }
       },
-      "type": "EmployeeTerritory"
+      "type": "EmployeeTerritory",
+      "user_key": "Id"
     },
     "Order": {
       "attributes": [
-        "ShipName",
-        {
-          "Customer": {
-            "fks": [
-              "CustomerId"
-            ],
-            "show_attributes": [],
-            "type": "Customer"
-          }
-        },
-        {
-          "Employee": {
-            "fks": [
-              "EmployeeId"
-            ],
-            "show_attributes": [],
-            "type": "Employee"
-          }
-        },
+        "Id",
+        "CustomerId",
+        "EmployeeId",
         "OrderDate",
         "RequiredDate",
         "ShippedDate",
         "ShipVia",
         "Freight",
+        "ShipName",
         "ShipAddress",
         "ShipCity",
         "ShipRegion",
         "ShipPostalCode",
         "ShipCountry",
-        "AmountTotal",
-        "Id",
-        "EmployeeId",
-        "CustomerId"
+        "AmountTotal"
       ],
       "tab_groups": {
         "Customer": {
@@ -293,36 +246,19 @@
           "resource": "OrderDetail"
         }
       },
-      "type": "Order"
+      "type": "Order",
+      "user_key": "ShipName"
     },
     "OrderDetail": {
       "attributes": [
         "Id",
-        {
-          "Order": {
-            "fks": [
-              "OrderId"
-            ],
-            "show_attributes": [],
-            "type": "Order"
-          }
-        },
-        {
-          "Product": {
-            "fks": [
-              "ProductId"
-            ],
-            "show_attributes": [],
-            "type": "Product"
-          }
-        },
+        "OrderId",
+        "ProductId",
         "UnitPrice",
         "Quantity",
         "Discount",
         "Amount",
-        "ShippedDate",
-        "OrderId",
-        "ProductId"
+        "ShippedDate"
       ],
       "tab_groups": {
         "Order": {
@@ -342,21 +278,22 @@
           "target": "Product"
         }
       },
-      "type": "OrderDetail"
+      "type": "OrderDetail",
+      "user_key": "Id"
     },
     "Product": {
       "attributes": [
+        "Id",
         "ProductName",
+        "SupplierId",
+        "CategoryId",
         "QuantityPerUnit",
         "UnitPrice",
         "UnitsInStock",
         "UnitsOnOrder",
         "ReorderLevel",
         "Discontinued",
-        "UnitsShipped",
-        "CategoryId",
-        "Id",
-        "SupplierId"
+        "UnitsShipped"
       ],
       "tab_groups": {
         "OrderDetailList": {
@@ -367,25 +304,29 @@
           "resource": "OrderDetail"
         }
       },
-      "type": "Product"
+      "type": "Product",
+      "user_key": "ProductName"
     },
     "Region": {
       "attributes": [
-        "RegionDescription",
-        "Id"
+        "Id",
+        "RegionDescription"
       ],
-      "type": "Region"
+      "type": "Region",
+      "user_key": "RegionDescription"
     },
     "Shipper": {
       "attributes": [
+        "Id",
         "CompanyName",
-        "Phone",
-        "Id"
+        "Phone"
       ],
-      "type": "Shipper"
+      "type": "Shipper",
+      "user_key": "CompanyName"
     },
     "Supplier": {
       "attributes": [
+        "Id",
         "CompanyName",
         "ContactName",
         "ContactTitle",
@@ -396,15 +337,15 @@
         "Country",
         "Phone",
         "Fax",
-        "HomePage",
-        "Id"
+        "HomePage"
       ],
-      "type": "Supplier"
+      "type": "Supplier",
+      "user_key": "CompanyName"
     },
     "Territory": {
       "attributes": [
-        "TerritoryDescription",
         "Id",
+        "TerritoryDescription",
         "RegionId"
       ],
       "tab_groups": {
@@ -416,7 +357,8 @@
           "resource": "EmployeeTerritory"
         }
       },
-      "type": "Territory"
+      "type": "Territory",
+      "user_key": "TerritoryDescription"
     }
   },
   "settings": {
