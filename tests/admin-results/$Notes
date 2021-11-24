@@ -7,20 +7,9 @@ Testing Notes:
             * converts admin-attributes (if present) to admin-column for internal admin app use
                 * Detects and does not convert admin-column; this enables testing of load vs conversion
 
-docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server
+This directory contains various yaml files, and their json equivalents, for test compares.
 
-cd ~/Desktop
-docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
-
-this directory contains various yaml files, and their json equivalents, for test compares.
-
-Update 11/22
-    * Child grids run, evidently due to
-        * Relationships area must contain *both* children ** and parents **
-        * And the direction property therefore required
-    * Not seeing parent joins...?
-
-Update 11/23 - parent joins
+Update 11/23 - parent joins, child grids running
     * running with admin-attr, admin-col
 
 Proposed Release criteria (Val)
