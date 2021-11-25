@@ -266,14 +266,10 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
         result = create_utils.run_command(cmd, msg=msg)  # "2. Create Project")
         delete_dir(f'{project_directory}/.git', "3.")
     else:
-        if from_dir == "":  # FIXME pathlib here
+        if from_dir == "":
             code_loc = str(get_api_logic_server_dir())
             from_dir = (Path(code_loc)).\
                 joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
-            ''' if "\\" in code_loc:
-                from_dir = code_loc + "\\project_prototype"
-            else:
-                from_dir = code_loc + "/project_prototype" '''
         print(f'{msg} copy {from_dir} -> {project_directory}')
         cloned_from = from_dir
         try:
