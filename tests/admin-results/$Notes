@@ -9,8 +9,15 @@ Testing Notes:
 
 This directory contains various yaml files, and their json equivalents, for test compares.
 
-Update 11/23 - parent joins, child grids running
+Update 11/24 - parent joins, child grids running
     * running with admin-attr, admin-col
+    * minimal constraint handling
+
+Avoiding redundant parent joins - better approach than "use these attributes"
+    * Instead, "skip these attributes" - better...
+        * smaller raml to read
+        * better re-use of grid attr defs
+    * Should it be <attr> or <fk-name> - whichever is easier...
 
 Proposed Release criteria (Val)
 * Technology Preview - public pip/docker release, low key (Legend: + working, - todo, ? needs discussion)
@@ -19,12 +26,13 @@ Proposed Release criteria (Val)
     + Admin page has link to swagger
     + Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
     + Joins - parent & child, any sensible default
+    - Constraint retry (show message, return to page, retype all changes)
     - Filter (might be working, haven't tried)
     * All pages work for test DBs
 * Announcement (articles, videos etc)
     - Lookups!!
     - Add order - cascade add (set OrderDetail.OrderId from Order), lookup OrderDetail.Product
-    - Constraint retry (show message, stay on page, retry or cancel)
+    - Constraint retry (show message, stay on page, fix {preserved} changes and retry, or cancel)
     * PythonAnywhere demo (combined app/api)
     ? Image? Link? Money?  Date?
     - Notes (for demo self-discovery)

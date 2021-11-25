@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.12"
+__version__ = "3.50.14"
 
 from contextlib import closing
 
@@ -266,12 +266,14 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
         result = create_utils.run_command(cmd, msg=msg)  # "2. Create Project")
         delete_dir(f'{project_directory}/.git', "3.")
     else:
-        if from_dir == "":
+        if from_dir == "":  # FIXME pathlib here
             code_loc = str(get_api_logic_server_dir())
-            if "\\" in code_loc:
+            from_dir = (Path(code_loc)).\
+                joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
+            ''' if "\\" in code_loc:
                 from_dir = code_loc + "\\project_prototype"
             else:
-                from_dir = code_loc + "/project_prototype"
+                from_dir = code_loc + "/project_prototype" '''
         print(f'{msg} copy {from_dir} -> {project_directory}')
         cloned_from = from_dir
         try:
@@ -867,6 +869,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/24/2021 - 03.50.14: constraint retry, pathlib fix  \n"
             "\t11/23/2021 - 03.50.12: fix admin - resource type bug.  Parent & child joins, admin-attr  \n"
             "\t11/22/2021 - 03.50.11: fixed config.js, child grids work.  No parent joins  \n"
             "\t11/22/2021 - 03.50.10: upd build, web page default now admin (not swagger); detail grids still blank  \n"
