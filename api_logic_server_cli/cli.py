@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.14"
+__version__ = "3.50.15"
 
 from contextlib import closing
 
@@ -865,6 +865,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/25/2021 - 03.50.15: folder rename - safrs-react-admin-npm-build  \n"
             "\t11/24/2021 - 03.50.14: constraint retry, pathlib fix  \n"
             "\t11/23/2021 - 03.50.12: fix admin - resource type bug.  Parent & child joins, admin-attr  \n"
             "\t11/22/2021 - 03.50.11: fixed config.js, child grids work.  No parent joins  \n"

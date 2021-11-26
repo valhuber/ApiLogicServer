@@ -574,7 +574,7 @@ class AdminCreator(object):
         from_proto_dir = from_git
         if from_proto_dir == "":
             from_proto_dir = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
-                                                       "/create_from_model/admin")
+                                                       "/create_from_model/safrs-react-admin-npm-build")
         to_project_dir = self.mod_gen.fix_win_path(self.mod_gen.project_directory + "/ui/admin")
         print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
         # self.mod_gen.recursive_overwrite(from_proto_dir, to_project_dir)
