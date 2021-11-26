@@ -218,8 +218,11 @@ def after_request(response):
 
 
 if __name__ == "__main__":
-    msg = f'Starting ApiLogicServer project, version api_logic_server_version on {flask_host}'
+    user_host = flask_host
     if is_docker():
-        msg += f' on docker container -- swagger at http://localhost:{port}'
+        user_host = "localhost"
+    msg = f'Starting ApiLogicServer project, version 3.50.15 on http://{user_host}:{port}'
+    if is_docker():
+        msg += f' on docker container'
     app_logger.info(msg)
     flask_app.run(host=flask_host, threaded=False, port=port)
