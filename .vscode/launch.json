@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "API Logic Server",
+            "type": "python",
+            "request": "launch",
+            "program": "api_logic_server_cli/cli.py",
+            "args": ["create","--project_name=~/dev/servers/api_logic_server","--db_url="],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "api_logic_server",
+            "type": "python",
+            "request": "launch",
+            "program": "${fileWorkspaceFolder}/../servers/api_logic_server/api_logic_server_run.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

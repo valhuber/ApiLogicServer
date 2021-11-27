@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../safrs-react-admin"
+		},
+		{
+			"path": "../../servers"
+		}
+	],
+	"settings": {}
+}

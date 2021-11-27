@@ -8,7 +8,7 @@ const init_Conf = () => {
     }
 }
 
-export const get_Conf = () => {
+export const get_Conf = () => {  // do it all from .then (still returns after issue)
     // returns object of
     // see https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript
     // revise to https://developer.mozilla.org/en-US/docs/Web/API/Response

@@ -21,8 +21,8 @@ resources:
     columns:
     - name: Id
     - name: CompanyName
-    - name: ContactName
       search: true
+    - name: ContactName
     - name: ContactTitle
       search: true
     - name: Address

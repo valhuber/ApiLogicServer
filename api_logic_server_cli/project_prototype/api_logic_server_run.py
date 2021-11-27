@@ -163,6 +163,7 @@ else:
     port = "api_logic_server_port"
 
 API_PREFIX = "/api"
+did_send_spa = False
 flask_app, safrs_api = create_app()
 
 
@@ -182,8 +183,11 @@ def admin(path=None):  # test http://localhost/ui/admin/admin.yaml
 
 @flask_app.route("/admin-app/<path:path>")
 def send_spa(path=None):
+    global did_send_spa
     directory = 'ui/admin'
-    app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
+    if not did_send_spa:
+        did_send_spa = True
+        app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
     return send_from_directory(directory, path)
 
 

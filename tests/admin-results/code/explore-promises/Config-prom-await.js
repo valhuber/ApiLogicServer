@@ -204,7 +204,7 @@ async function httpGetNestAwait(url) {
     request.send();
 }
 
-async function myFetch(url) {
+async function myFetch(url) {  // try to sync up with await
     // https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await
     let response = await fetch(url);
     if (!response.ok) {

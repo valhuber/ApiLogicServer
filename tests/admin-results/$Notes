@@ -1,11 +1,23 @@
-Testing Notes:
-    * Val has altered
+Overview:
+    * Val has altered the files on /code
         * menu.js - hello screen, links to swagger and docs
         * config.js
             * loads admin.yaml from disk
                 * if missing, uses config.json import (as as to run without LAC)
             * converts admin-attributes (if present) to admin-column for internal admin app use
                 * Detects and does not convert admin-column; this enables testing of load vs conversion
+    * to release ALS - see ApiLogicServer/$readme.txt
+        * cd safrs-react-admin
+        * git pull
+        * move /code into safrs-react-admin
+        * npm run build
+        * delete ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/
+        * copy build -> ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/
+
+        * cd ApiLogicServer
+        * python3 setup.py sdist bdist_wheel
+        * python3 -m twine upload  --username vhuber --password xMP0x --skip-existing dist/*
+            * to install locally: pip install /Users/val/dev/ApiLogicServer
 
 This directory contains various yaml files, and their json equivalents, for test compares.
 
