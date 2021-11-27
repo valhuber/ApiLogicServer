@@ -34,7 +34,8 @@ resources:
   Customer:
     attributes:
     - Id
-    - CompanyName
+    - CompanyName:
+        - search: true
     - ContactName
     - ContactTitle
     - Address

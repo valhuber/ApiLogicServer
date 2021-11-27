@@ -98,9 +98,17 @@ export const get_Conf = () => {
           resource.search_cols = []
           for (let each_attribute of resource.attributes) {
             if (typeof each_attribute == 'string') {
-              let each_attribute_object = {}
-              each_attribute_object.name = each_attribute
-              resource.columns.push(each_attribute_object)
+                let each_attribute_object = {}
+                each_attribute_object.name = each_attribute
+                resource.columns.push(each_attribute_object)
+            } else if (typeof each_attribute == 'object' && each_attribute !== null) {
+                let each_attribute_object = {}
+                let attr_name = Object.keys(each_attribute)[0]
+                each_attribute_object.name = Object.keys(each_attribute)[0]
+                if (each_attribute[attr_name].hasOwnProperty("search")) {
+                    each_attribute_object.search = each_attribute[attr_name].search
+                }
+                resource.columns.push(each_attribute_object)
             } else {
               console.log(`ignoring ${each_attribute} in config`)
             }
