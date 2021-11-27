@@ -539,7 +539,7 @@ class AdminCreator(object):
         self.admin_yaml.about = DotMap()
         self.admin_yaml.about.date = f'{str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))}'
         self.admin_yaml.about.version = self.mod_gen.version
-        self.admin_yaml.about.recent_changes = "much to say"
+        self.admin_yaml.about.recent_changes = "works with modified safrs-react-admin"
         return
 
     def create_info(self):
@@ -566,6 +566,7 @@ class AdminCreator(object):
         self.admin_yaml.properties_ref.resource = resource_props
 
         attr_props = DotMap()
+        attr_props.search = "true | false"
         attr_props.label = "caption for display"
         attr_props.hidden = "exp"
         attr_props.group = "name"

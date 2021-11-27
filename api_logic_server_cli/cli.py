@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.15"
+__version__ = "3.50.17"
 
 from contextlib import closing
 
@@ -665,33 +665,14 @@ def invoke_creators(model_creation_services: CreateFromModel):
     creator.create(model_creation_services)  # invoke create function
 
     if model_creation_services.admin_app:
-        use_dotmap = True
-        if use_dotmap:
-            print(" c.  Create ui/admin/admin.yaml from models")
-            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_admin_creator.py')
-            creator = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(creator)
-            creator.create(model_creation_services)
-        else:
-            print(" c.  Create ui/admin app from models")
-            spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/z_admin_creator_unused.py')
-            creator = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(creator)
-            creator.create(model_creation_services)
-    else:
-        pass
-        # print(".. .. ..ui/admin_app creation declined")
-
-    if model_creation_services.react_admin:
-        print(" c.  Create ui/react_admin app (import / iterate models)")
-        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/z_react_admin_creator.py')
+        print(" c.  Create ui/admin/admin.yaml from models")
+        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_admin_creator.py')
         creator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(creator)
         creator.create(model_creation_services)
     else:
         pass
-        print(".. .. ..ui/react_admin creation declined")
-
+        # print(".. .. ..ui/admin_app creation declined")
 
     if model_creation_services.flask_appbuilder:
         print(" d.  Create ui/basic_web_app/app/views.py (import / iterate models)")
@@ -865,6 +846,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/25/2021 - 03.50.17: working search support in Config.js, admin chooser  \n"
             "\t11/25/2021 - 03.50.16: patch to work with WSL as workaround for https://bugs.python.org/issue38633  \n"
             "\t11/25/2021 - 03.50.15: folder rename - safrs-react-admin-npm-build, url for starting browser  \n"
             "\t11/24/2021 - 03.50.14: constraint retry, pathlib fix  \n"

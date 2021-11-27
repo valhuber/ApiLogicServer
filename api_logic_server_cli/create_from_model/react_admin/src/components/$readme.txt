@@ -1,1 +1,0 @@
-You can edit these files to control the application pages.

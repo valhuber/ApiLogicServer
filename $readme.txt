@@ -37,12 +37,8 @@ Creating the ApiLogicServer dev environment
 To release ALS
 ==============
     1 Rebuild safrs-react-admin
-        a cd safrs-react-admin (see "Creating safrs-react-admin", below)
-        b git pull
-        c move tests/admin-results/code into safrs-react-admin
-        d npm run build
-        e delete ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/
-        f copy build -> ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/
+        a cd ApiLogicServer/react-admin
+        b sh rebuild-react-admin go
     2 Build pip
         a cd ApiLogicServer
         b python3 setup.py sdist bdist_wheel

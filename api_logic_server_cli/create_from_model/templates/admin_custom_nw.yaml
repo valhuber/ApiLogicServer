@@ -1,10 +1,11 @@
 about:
-  date: November 08, 2021 13:22:51
+  date: November 26, 2021 19:06:20
   recent_changes: much to say
-  version: 3.40.07
+  version: 3.50.17
+api_root: http://localhost:5656/api
 info:
-  number_relationships: 8
-  number_tables: 14
+  number_relationships: 16
+  number_tables: 28
 properties_ref:
   attribute:
     group: name
@@ -24,24 +25,17 @@ properties_ref:
     lookup: boolean
 resources:
   Category:
-    info: helpful text
-    menu: admin
-    allow_delete: False
     attributes:
-    - CategoryName:
-        label: Category Name
-        group: Group Name
-        hidden: <row exp>
-        style:
-          color: blue
-          font_weight: 0
-    - Description
     - Id
+    - CategoryName
+    - Description
     type: Category
     user_key: CategoryName
   Customer:
     attributes:
-    - CompanyName
+    - Id
+    - CompanyName:
+        search: true
     - ContactName
     - ContactTitle
     - Address
@@ -54,56 +48,31 @@ resources:
     - Balance
     - CreditLimit
     - OrderCount
-    - Id
     - UnpaidOrderCount
     tab_groups:
       CustomerCustomerDemoList:
-        label: Customer Demos
-        lookup: False
-        attributes:
-        - Id
+        direction: tomany
+        fks:
         - CustomerTypeId
-        fkeys:
-          source_delete_me: Id
-          target: CustomerTypeId
         resource: CustomerCustomerDemo
       OrderList:
-        attributes:
-        - ShipName
-        - Employee:
-            key_attributes:
-            - EmployeeId
-            show_attributes: []
-            type: Employee
-        - OrderDate
-        - RequiredDate
-        - ShippedDate
-        - ShipVia
-        - Freight
-        - ShipAddress
-        - ShipCity
-        - ShipRegion
-        - ShipPostalCode
-        - ShipCountry
-        - AmountTotal
-        - EmployeeId
-        - Id
+        direction: tomany
+        fks:
         - CustomerId
-        fkeys:
-          source_delete_me: Id
-          target: CustomerId
         resource: Order
     type: Customer
     user_key: CompanyName
   CustomerCustomerDemo:
     attributes:
     - Id
-    - Customer:
-        key_attributes:
-        - CustomerTypeId
-        show_attributes: []
-        type: Customer
     - CustomerTypeId
+    tab_groups:
+      Customer:
+        direction: toone
+        fks:
+        - CustomerTypeId
+        name: Customer
+        target: Customer
     type: CustomerCustomerDemo
     user_key: Id
   CustomerDemographic:
@@ -114,6 +83,7 @@ resources:
     user_key: Id
   Employee:
     attributes:
+    - Id
     - LastName
     - FirstName
     - Title
@@ -133,170 +103,130 @@ resources:
     - PhotoPath
     - IsCommissioned
     - Salary
-    - Id
     tab_groups:
       EmployeeAuditList:
-        attributes:
-        - LastName
-        - Title
-        - Salary
-        - FirstName
-        - CreatedOn
+        direction: tomany
+        fks:
         - EmployeeId
-        - Id
-        fkeys:
-          source_delete_me: Id
-          target: EmployeeId
         resource: EmployeeAudit
       EmployeeTerritoryList:
-        attributes:
-        - Id
-        - Territory:
-            key_attributes:
-            - TerritoryId
-            show_attributes: []
-            type: Territory
+        direction: tomany
+        fks:
         - EmployeeId
-        - TerritoryId
-        fkeys:
-          source_delete_me: Id
-          target: EmployeeId
         resource: EmployeeTerritory
       OrderList:
-        attributes:
-        - ShipName
-        - Customer:
-            key_attributes:
-            - CustomerId
-            show_attributes: []
-            type: Customer
-        - OrderDate
-        - RequiredDate
-        - ShippedDate
-        - ShipVia
-        - Freight
-        - ShipAddress
-        - ShipCity
-        - ShipRegion
-        - ShipPostalCode
-        - ShipCountry
-        - AmountTotal
+        direction: tomany
+        fks:
         - EmployeeId
-        - Id
-        - CustomerId
-        fkeys:
-          source_delete_me: Id
-          target: EmployeeId
         resource: Order
     type: Employee
     user_key: LastName
   EmployeeAudit:
     attributes:
-    - LastName
-    - Employee:
-        key_attributes:
-        - EmployeeId
-        show_attributes: []
-        type: Employee
+    - Id
     - Title
     - Salary
+    - LastName
     - FirstName
-    - CreatedOn
     - EmployeeId
-    - Id
+    - CreatedOn
+    tab_groups:
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        name: Employee
+        target: Employee
     type: EmployeeAudit
     user_key: LastName
   EmployeeTerritory:
     attributes:
     - Id
-    - Employee:
-        key_attributes:
-        - EmployeeId
-        show_attributes: []
-        type: Employee
-    - Territory:
-        key_attributes:
-        - TerritoryId
-        show_attributes: []
-        type: Territory
     - EmployeeId
     - TerritoryId
+    tab_groups:
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        name: Employee
+        target: Employee
+      Territory:
+        direction: toone
+        fks:
+        - TerritoryId
+        name: Territory
+        target: Territory
     type: EmployeeTerritory
     user_key: Id
   Order:
     attributes:
-    - ShipName
-    - Customer:
-        key_attributes:
-        - CustomerId
-        show_attributes: []
-        type: Customer
-    - Employee:
-        key_attributes:
-        - EmployeeId
-        show_attributes: []
-        type: Employee
+    - Id
+    - CustomerId
+    - EmployeeId
     - OrderDate
     - RequiredDate
     - ShippedDate
     - ShipVia
     - Freight
+    - ShipName
     - ShipAddress
     - ShipCity
     - ShipRegion
     - ShipPostalCode
     - ShipCountry
     - AmountTotal
-    - EmployeeId
-    - Id
-    - CustomerId
     tab_groups:
+      Customer:
+        direction: toone
+        fks:
+        - CustomerId
+        name: Customer
+        target: Customer
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        name: Employee
+        target: Employee
       OrderDetailList:
-        attributes:
-        - Id
-        - Product:
-            key_attributes:
-            - ProductId
-            show_attributes: []
-            type: Product
-        - UnitPrice
-        - Quantity
-        - Discount
-        - Amount
-        - ShippedDate
+        direction: tomany
+        fks:
         - OrderId
-        - ProductId
-        fkeys:
-          source_delete_me: Id
-          target: OrderId
         resource: OrderDetail
     type: Order
     user_key: ShipName
   OrderDetail:
     attributes:
     - Id
-    - Order:
-        key_attributes:
-        - OrderId
-        show_attributes: []
-        type: Order
-    - Product:
-        key_attributes:
-        - ProductId
-        show_attributes: []
-        type: Product
+    - OrderId
+    - ProductId
     - UnitPrice
     - Quantity
     - Discount
     - Amount
     - ShippedDate
-    - OrderId
-    - ProductId
+    tab_groups:
+      Order:
+        direction: toone
+        fks:
+        - OrderId
+        name: Order
+        target: Order
+      Product:
+        direction: toone
+        fks:
+        - ProductId
+        name: Product
+        target: Product
     type: OrderDetail
     user_key: Id
   Product:
     attributes:
+    - Id
     - ProductName
+    - SupplierId
+    - CategoryId
     - QuantityPerUnit
     - UnitPrice
     - UnitsInStock
@@ -304,46 +234,30 @@ resources:
     - ReorderLevel
     - Discontinued
     - UnitsShipped
-    - SupplierId
-    - Id
-    - CategoryId
     tab_groups:
       OrderDetailList:
-        attributes:
-        - Id
-        - Order:
-            key_attributes:
-            - OrderId
-            show_attributes: []
-            type: Order
-        - UnitPrice
-        - Quantity
-        - Discount
-        - Amount
-        - ShippedDate
-        - OrderId
+        direction: tomany
+        fks:
         - ProductId
-        fkeys:
-          source_delete_me: Id
-          target: ProductId
         resource: OrderDetail
     type: Product
     user_key: ProductName
   Region:
     attributes:
-    - RegionDescription
     - Id
+    - RegionDescription
     type: Region
     user_key: RegionDescription
   Shipper:
     attributes:
+    - Id
     - CompanyName
     - Phone
-    - Id
     type: Shipper
     user_key: CompanyName
   Supplier:
     attributes:
+    - Id
     - CompanyName
     - ContactName
     - ContactTitle
@@ -355,28 +269,18 @@ resources:
     - Phone
     - Fax
     - HomePage
-    - Id
     type: Supplier
     user_key: CompanyName
   Territory:
     attributes:
-    - TerritoryDescription
     - Id
+    - TerritoryDescription
     - RegionId
     tab_groups:
       EmployeeTerritoryList:
-        attributes:
-        - Id
-        - Employee:
-            key_attributes:
-            - EmployeeId
-            show_attributes: []
-            type: Employee
-        - EmployeeId
+        direction: tomany
+        fks:
         - TerritoryId
-        fkeys:
-          source_delete_me: Id
-          target: TerritoryId
         resource: EmployeeTerritory
     type: Territory
     user_key: TerritoryDescription
