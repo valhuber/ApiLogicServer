@@ -20,6 +20,7 @@ if [ $# -eq 0 ]
     cp ../ApiLogicServer/react-admin/code/Config.js src/.
     npm run build
     rm -rf ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
+    read -p "Check safrs-react-admin-npm-build is empty, and [Enter] copy new build..."
     cp -a ./build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     exit 1
 fi

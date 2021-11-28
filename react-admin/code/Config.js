@@ -57,7 +57,7 @@ export const get_Conf = () => {
     let result = {}
     let yaml_str = ''
     let ls_conf = null
-    yaml_str = loadFile('http://localhost:5656/ui/admin/admin.yaml')
+    yaml_str = loadFile('/ui/admin/admin.yaml')
 
     if (typeof yaml_str !== 'undefined' && yaml_str !== null) {
       yaml_str = yaml_str.replace('<pre>','')
