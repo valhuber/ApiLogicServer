@@ -166,7 +166,15 @@ class AdminCreator(object):
             attributes = self.mod_gen.get_attributes(resource)
         for each_attribute in attributes:
             if "." not in each_attribute:
-                owner.attributes.append(each_attribute)
+                if each_attribute == self.mod_gen.favorite_attribute_name(resource):
+                    attribute_with_search = DotMap()
+                    search = DotMap()
+                    search.search = True
+                    search.label = f'{each_attribute}*'  # adding space causes newline, so omit for now
+                    attribute_with_search[each_attribute] = search
+                    owner.attributes.append(attribute_with_search)
+                else:
+                    owner.attributes.append(each_attribute)
             else:
                 relationship = self.new_relationship_to_parent(resource, each_attribute, owner_resource)
                 if relationship is not None:  # skip redundant master join
