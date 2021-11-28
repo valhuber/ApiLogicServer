@@ -1,6 +1,6 @@
 about:
-  date: November 26, 2021 19:06:20
-  recent_changes: much to say
+  date: November 27, 2021 17:18:55
+  recent_changes: works with modified safrs-react-admin
   version: 3.50.17
 api_root: http://localhost:5656/api
 info:
@@ -11,6 +11,7 @@ properties_ref:
     group: name
     hidden: exp
     label: caption for display
+    search: true | false
     style:
       color: blue
       font_weight: 0
@@ -27,7 +28,9 @@ resources:
   Category:
     attributes:
     - Id
-    - CategoryName
+    - CategoryName:
+        label: CategoryName*
+        search: true
     - Description
     type: Category
     user_key: CategoryName
@@ -35,6 +38,7 @@ resources:
     attributes:
     - Id
     - CompanyName:
+        label: CompanyName*
         search: true
     - ContactName
     - ContactTitle
@@ -64,7 +68,9 @@ resources:
     user_key: CompanyName
   CustomerCustomerDemo:
     attributes:
-    - Id
+    - Id:
+        label: Id*
+        search: true
     - CustomerTypeId
     tab_groups:
       Customer:
@@ -77,14 +83,18 @@ resources:
     user_key: Id
   CustomerDemographic:
     attributes:
-    - Id
+    - Id:
+        label: Id*
+        search: true
     - CustomerDesc
     type: CustomerDemographic
     user_key: Id
   Employee:
     attributes:
     - Id
-    - LastName
+    - LastName:
+        label: LastName*
+        search: true
     - FirstName
     - Title
     - TitleOfCourtesy
@@ -126,7 +136,9 @@ resources:
     - Id
     - Title
     - Salary
-    - LastName
+    - LastName:
+        label: LastName*
+        search: true
     - FirstName
     - EmployeeId
     - CreatedOn
@@ -141,7 +153,9 @@ resources:
     user_key: LastName
   EmployeeTerritory:
     attributes:
-    - Id
+    - Id:
+        label: Id*
+        search: true
     - EmployeeId
     - TerritoryId
     tab_groups:
@@ -169,7 +183,9 @@ resources:
     - ShippedDate
     - ShipVia
     - Freight
-    - ShipName
+    - ShipName:
+        label: ShipName*
+        search: true
     - ShipAddress
     - ShipCity
     - ShipRegion
@@ -198,7 +214,9 @@ resources:
     user_key: ShipName
   OrderDetail:
     attributes:
-    - Id
+    - Id:
+        label: Id*
+        search: true
     - OrderId
     - ProductId
     - UnitPrice
@@ -224,7 +242,9 @@ resources:
   Product:
     attributes:
     - Id
-    - ProductName
+    - ProductName:
+        label: ProductName*
+        search: true
     - SupplierId
     - CategoryId
     - QuantityPerUnit
@@ -245,20 +265,26 @@ resources:
   Region:
     attributes:
     - Id
-    - RegionDescription
+    - RegionDescription:
+        label: RegionDescription*
+        search: true
     type: Region
     user_key: RegionDescription
   Shipper:
     attributes:
     - Id
-    - CompanyName
+    - CompanyName:
+        label: CompanyName*
+        search: true
     - Phone
     type: Shipper
     user_key: CompanyName
   Supplier:
     attributes:
     - Id
-    - CompanyName
+    - CompanyName:
+        label: CompanyName*
+        search: true
     - ContactName
     - ContactTitle
     - Address
@@ -274,7 +300,9 @@ resources:
   Territory:
     attributes:
     - Id
-    - TerritoryDescription
+    - TerritoryDescription:
+        label: TerritoryDescription*
+        search: true
     - RegionId
     tab_groups:
       EmployeeTerritoryList:
