@@ -12,6 +12,7 @@ if [ $# -eq 0 ]
     exit 0
   else
     echo " "
+    read -p "Verify ApiLogicServer/react-admin/code is current, and [Enter] rebuild react-admin for API Logic Server"
     set -x
     pushd ../../safrs-react-admin
     git reset --hard origin/master
@@ -20,7 +21,6 @@ if [ $# -eq 0 ]
     cp ../ApiLogicServer/react-admin/code/Config.js src/.
     npm run build
     rm -rf ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
-    read -p "Check safrs-react-admin-npm-build is empty, and [Enter] copy new build..."
     cp -a ./build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     exit 1
 fi
