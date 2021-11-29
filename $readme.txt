@@ -44,6 +44,7 @@ To release ALS
         b python3 setup.py sdist bdist_wheel
         c python3 -m twine upload  --username vhuber --password xMP0x --skip-existing dist/*
             * to install locally: pip install /Users/val/dev/ApiLogicServer
+            * python3 -m twine upload  --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*
     3 Build Docker
         a see Dockerfile to build docker image
 

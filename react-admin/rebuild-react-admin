@@ -22,5 +22,5 @@ if [ $# -eq 0 ]
     npm run build
     rm -rf ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
     cp -a ./build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
-    exit 1
+    exit 0
 fi

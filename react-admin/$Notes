@@ -29,11 +29,13 @@ Proposed Release criteria (Val)
     + Works from ApiLogicServer run, all browsers
     + Admin-attributes, loaded from created project (many properties may be ignored)
     + Admin page has link to swagger
-    + Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
+    +- Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
     + Joins - parent & child, any sensible default
     + Filter (working, 3.50.17)
-    - Constraint retry (show message, return to page, retype all changes)
-    * All pages work for test DBs
+    + Constraint retry (show message, return to page, retype all changes, but way better than flask appBuilder)
+    - All pages work for test DBs (many issues, see chinook email)
+    - Pagination not showing up for sample db
+    ? Might be nice to add style to grid headers
 * Announcement (articles, videos etc)
     - Lookups!!
     - Add order - cascade add (set OrderDetail.OrderId from Order), lookup OrderDetail.Product
