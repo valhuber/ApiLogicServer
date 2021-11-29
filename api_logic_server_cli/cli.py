@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.19"
+__version__ = "3.50.20"
 
 from contextlib import closing
 
@@ -846,7 +846,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t11/26/2021 - 03.50.19: default search for favorite attr, indicate on label, yaml url fix  \n"
+            "\t11/26/2021 - 03.50.20: default search for favorite attr (* label), yaml url fix, resource.attrs too  \n"
             "\t11/25/2021 - 03.50.17: working search support in Config.js, admin chooser  \n"
             "\t11/25/2021 - 03.50.16: patch to work with WSL as workaround for https://bugs.python.org/issue38633  \n"
             "\t11/25/2021 - 03.50.15: folder rename - safrs-react-admin-npm-build, url for starting browser  \n"

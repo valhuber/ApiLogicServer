@@ -15,13 +15,13 @@ function handleErrors(response) {  // https://www.tjvantoll.com/2015/09/13/fetch
     return response;
 }
 
-function loadFile(filePath) {
+function loadResponse(url) {
     // see https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript
     // revise to https://developer.mozilla.org/en-US/docs/Web/API/Response
     // ala https://stackoverflow.com/questions/41946457/getting-text-from-fetch-response-object
     let use_promise = false
-    if (use_promise) {
-        fetch(filePath)
+    if (use_promise) {  // can't work unless caller is also expecting promise, right?
+        fetch(url)
             .then(handleErrors)
             .then(
                 function(response) {
@@ -36,12 +36,12 @@ function loadFile(filePath) {
     } else {
         var result = null;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", filePath, false);
+        xmlhttp.open("GET", url, false);
 
         try {
             xmlhttp.send()
         } catch (e) {
-            console.warn(`Failed to send loadFile ${e.toString()}`)
+            console.warn(`Failed to send loadResponse ${e.toString()}`)
         }
         if (xmlhttp.status === 200) {
             result = xmlhttp.responseText;
@@ -57,7 +57,8 @@ export const get_Conf = () => {
     let result = {}
     let yaml_str = ''
     let ls_conf = null
-    yaml_str = loadFile('/ui/admin/admin.yaml')
+    // yaml_str = loadResponse('http://localhost:5656/ui/admin/admin.yaml')  // for debug
+    yaml_str = loadResponse('/ui/admin/admin.yaml')                      // for release
 
     if (typeof yaml_str !== 'undefined' && yaml_str !== null) {
       yaml_str = yaml_str.replace('<pre>','')
@@ -66,10 +67,6 @@ export const get_Conf = () => {
       // ls_conf = JSON.parse(lsc_str)
       result = ls_conf // ? ls_conf : JSON.parse(JSON.stringify(config)) || {};
       Object.entries(result.resources)
-      // delete result.info
-      // delete result.about
-      // delete result.properties_ref
-      // delete result.settings
       resources = result.resources
     } else {
       ls_conf = null
@@ -91,7 +88,7 @@ export const get_Conf = () => {
     }
 
     for(let [resource_name, resource] of Object.entries(resources||{})){
-        if (resource.hasOwnProperty('attributes')) {  // convert attr format
+        if (resource.hasOwnProperty('attributes')) {  // convert attr -> col format
           // use npm start, launches browswer at http://localhost:3000/admin-app#/Home
           resource.columns = []
           resource.relationships = []
@@ -130,8 +127,8 @@ export const get_Conf = () => {
             }
             resource.relationships.push(relationship_object)
           }
-          // delete resource.attributes  // save some memory
-          // delete resource.tab_groups
+          delete resource.attributes  // save some memory
+          delete resource.tab_groups
         }
         // link relationship to FK column
         if(!(resource.columns instanceof Array || resource.relationships instanceof Array)){
@@ -144,21 +141,22 @@ export const get_Conf = () => {
 
         resource.search_cols = []
         result.resources[resource_name].name = resource_name
+        let attributes = resource.columns || []
 
-        for(let col of resource.columns){
+        for(let attr of attributes){
             for(let rel of resource.relationships || []){
                 for(let fk of rel.fks || []){
-                    if(col.name === fk){
-                        col.relationship = rel;
-                        col.relationship.target_resource = result.resources[col.relationship.target]
+                    if(attr.name === fk){
+                        attr.relationship = rel;
+                        attr.relationship.target_resource = result.resources[attr.relationship.target]
                     }
                 }
             }
-            if(col.search){
-                resource.search_cols.push(col);
+            if(attr.search){
+                resource.search_cols.push(attr);
             }
         }
-        console.log(`${resource_name} search cols`, resource.search_cols)
+        resource.attributes = resource.columns
     }
     let returning = result || reset_Conf()
     // let returning_str = JSON.stringify(returning)
