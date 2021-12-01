@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.20"
+__version__ = "3.50.21"
 
 from contextlib import closing
 
@@ -61,12 +61,13 @@ api_logic_server_info_file = open(api_logic_server_info_file_name)
 api_logic_server_info_file_dict = yaml.load(api_logic_server_info_file, Loader=yaml.FullLoader)
 api_logic_server_info_file.close()
 
+
 last_created_project_name = api_logic_server_info_file_dict["last_created_project_name"]
 default_db = "<default -- nw.sqlite>"
-default_project_name = "api_logic_server"
+default_project_name = "ApiLogicProject"
 default_fab_host = "localhost"
 if os.path.exists('/home/api_logic_server'):  # docker?
-    default_project_name = "/localhost/api_logic_server"
+    default_project_name = "/localhost/ApiLogicProject"
     default_fab_host = "0.0.0.0"
 nw_db_status = ""
 """ '', nw, nw+, nw- """
@@ -846,6 +847,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t11/30/2021 - 03.50.21: default project name changed to ApiLogicProject, yaml target->resource  \n"
             "\t11/26/2021 - 03.50.20: default search for favorite attr (* label), yaml url fix, resource.attrs too  \n"
             "\t11/25/2021 - 03.50.17: working search support in Config.js, admin chooser  \n"
             "\t11/25/2021 - 03.50.16: patch to work with WSL as workaround for https://bugs.python.org/issue38633  \n"
@@ -1098,7 +1100,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
 \b
         ex
 \b
-        ApiLogicServer rebuild-from-database --project_name=~/dev/servers/api_logic_server --db_url=nw
+        ApiLogicServer rebuild-from-database --project_name=~/dev/servers/ApiLogicProject --db_url=nw
 
     """
     global command
@@ -1213,7 +1215,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
         Example
 
 \b
-            ApiLogicServer run --project_name=/localhost/api_logic_server
+            ApiLogicServer run --project_name=/localhost/ApiLogicProject
             ApiLogicServer run --project_name=    # runs last-created project
     """
     global command
@@ -1296,7 +1298,7 @@ def run_ui(ctx, project_name: str, host: str="localhost", port: str="5002"):
         Example
 
 \b
-            ApiLogicServer run-ui --project_name=/localhost/api_logic_server
+            ApiLogicServer run-ui --project_name=/localhost/ApiLogicProject
             ApiLogicServer run-ui --project_name=    # runs last-created project
     """
     global command
@@ -1417,7 +1419,7 @@ def start():               # target of setup.py
 command = "not set"
 if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
-    # unix: python api_logic_server_cli/cli.py create --project_name=/home/api_logic_server
+    # unix: python api_logic_server_cli/cli.py create --project_name=/home/ApiLogicProject
 
     print(f'\nWelcome to API Logic Server, {__version__}\n')  #  at {local_ip} ')
     hostname, local_ip = check_ports()

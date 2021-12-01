@@ -8,44 +8,20 @@ const init_Conf = () => {
     }
 }
 
-function handleErrors(response) {  // https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
-    if (!response.ok) {
-        throw Error(response.statusText);
-    }
-    return response;
-}
-
 function loadResponse(url) {
     // see https://stackoverflow.com/questions/36921947/read-a-server-side-file-using-javascript
     // revise to https://developer.mozilla.org/en-US/docs/Web/API/Response
     // ala https://stackoverflow.com/questions/41946457/getting-text-from-fetch-response-object
-    let use_promise = false
-    if (use_promise) {  // can't work unless caller is also expecting promise, right?
-        fetch(url)
-            .then(handleErrors)
-            .then(
-                function(response) {
-                    return response.text().then(function(text) {
-                        console.log('loadfile - fetach response working')
-                        result = text;
-                    });
-            })
-            .catch(
-                err => console.log('loadfile - error detection [no server, url] ok (for non-ALS operation: ' + err));
-        console.log('loadfile - fetch issued... now what?  Must rest of config.js be in callback??')
-    } else {
-        var result = null;
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", url, false);
-
-        try {
-            xmlhttp.send()
-        } catch (e) {
-            console.warn(`Failed to send loadResponse ${e.toString()}`)
-        }
-        if (xmlhttp.status === 200) {
-            result = xmlhttp.responseText;
-        }
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", url, false);
+    try {
+        xmlhttp.send()
+    } catch (e) {
+        console.warn(`Failed to send loadResponse ${e.toString()}`)
+    }
+    if (xmlhttp.status === 200) {
+        result = xmlhttp.responseText;
     }
     return result;
 }
@@ -57,8 +33,8 @@ export const get_Conf = () => {
     let result = {}
     let yaml_str = ''
     let ls_conf = null
-    // yaml_str = loadResponse('http://localhost:5656/ui/admin/admin.yaml')  // for debug
-    yaml_str = loadResponse('/ui/admin/admin.yaml')                      // for release
+    yaml_str = loadResponse('http://localhost:5656/ui/admin/admin.yaml')  // for debug
+    // yaml_str = loadResponse('/ui/admin/admin.yaml')                      // for release
 
     if (typeof yaml_str !== 'undefined' && yaml_str !== null) {
       yaml_str = yaml_str.replace('<pre>','')
@@ -67,6 +43,13 @@ export const get_Conf = () => {
       // ls_conf = JSON.parse(lsc_str)
       result = ls_conf // ? ls_conf : JSON.parse(JSON.stringify(config)) || {};
       Object.entries(result.resources)
+      let delete_unused_debug = true
+      if (delete_unused_debug) {
+          delete result.info
+          delete result.about
+          delete result.properties_ref
+          delete result.settings
+      }
       resources = result.resources
     } else {
       ls_conf = null
@@ -100,13 +83,18 @@ export const get_Conf = () => {
                 resource.columns.push(each_column_object)
             } else if (typeof each_attribute == 'object' && each_attribute !== null) {
                 let each_column_object = {}
+                let attr_props_debug = false
                 let attr_name = Object.keys(each_attribute)[0]
-                each_column_object.name = Object.keys(each_attribute)[0]
-                if (each_attribute[attr_name].hasOwnProperty("search")) {
-                    each_column_object.search = each_attribute[attr_name].search
-                }
-                if (each_attribute[attr_name].hasOwnProperty("label")) {
-                    each_column_object.label = each_attribute[attr_name].label
+                if (attr_props_debug) {
+                    each_column_object.name = Object.keys(each_attribute)[0]
+                    if (each_attribute[attr_name].hasOwnProperty("search")) {
+                        each_column_object.search = each_attribute[attr_name].search
+                    }
+                    if (each_attribute[attr_name].hasOwnProperty("label")) {
+                        each_column_object.label = each_attribute[attr_name].label
+                    }
+                } else {
+                    each_column_object.name = attr_name
                 }
                 resource.columns.push(each_column_object)
             } else {
@@ -118,13 +106,7 @@ export const get_Conf = () => {
             relationship_object.name = each_tab_name
             relationship_object.fks = each_tab_group.fks
             relationship_object.direction = each_tab_group.direction
-            if (each_tab_group.direction === "toone") {
-                relationship_object.target = each_tab_group.target
-            } else if (each_tab_group.direction === "tomany") {
-                relationship_object.target = each_tab_group.resource
-            } else {
-                relationship_object.target = each_tab_group.resource
-            }
+            relationship_object.target = each_tab_group.resource
             resource.relationships.push(relationship_object)
           }
           delete resource.attributes  // save some memory
@@ -141,22 +123,22 @@ export const get_Conf = () => {
 
         resource.search_cols = []
         result.resources[resource_name].name = resource_name
-        let attributes = resource.columns || []
 
-        for(let attr of attributes){
+        for(let col of resource.columns){  // debug - differs from TP code
             for(let rel of resource.relationships || []){
                 for(let fk of rel.fks || []){
-                    if(attr.name === fk){
-                        attr.relationship = rel;
-                        attr.relationship.target_resource = result.resources[attr.relationship.target]
+                    if(col.name === fk){
+                        col.relationship = rel;
+                        col.relationship.target_resource = result.resources[col.relationship.target]
                     }
                 }
             }
-            if(attr.search){
-                resource.search_cols.push(attr);
+            if(col.search){
+                resource.search_cols.push(col);
             }
         }
-        resource.attributes = resource.columns
+
+        console.log(`${resource_name} search cols`, resource.search_cols)
     }
     let returning = result || reset_Conf()
     // let returning_str = JSON.stringify(returning)
