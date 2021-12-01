@@ -1,0 +1,316 @@
+about:
+  date: December 01, 2021 08:01:59
+  recent_changes: works with modified safrs-react-admin
+  version: 3.50.22
+api_root: http://localhost:5656/api
+info:
+  number_relationships: 16
+  number_tables: 28
+properties_ref:
+  attribute:
+    group: name
+    hidden: exp
+    label: caption for display
+    search: true | false
+    style:
+      color: blue
+      font_weight: 0
+  resource:
+    allow_delete: exp
+    allow_insert: exp
+    allow_update: exp
+    info: long html / rich text
+    menu: False | name
+  tab:
+    label: text
+    lookup: boolean
+resources:
+  Category:
+    attributes:
+    - Id
+    - CategoryName:
+        label: CategoryName*
+        search: true
+    - Description
+    type: Category
+    user_key: CategoryName
+  Customer:
+    attributes:
+    - Id
+    - CompanyName:
+        label: CompanyName*
+        search: true
+    - ContactName
+    - ContactTitle
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - Phone
+    - Fax
+    - Balance
+    - CreditLimit
+    - OrderCount
+    - UnpaidOrderCount
+    tab_groups:
+      CustomerCustomerDemoList:
+        direction: tomany
+        fks:
+        - CustomerTypeId
+        resource: CustomerCustomerDemo
+      OrderList:
+        direction: tomany
+        fks:
+        - CustomerId
+        resource: Order
+    type: Customer
+    user_key: CompanyName
+  CustomerCustomerDemo:
+    attributes:
+    - Id:
+        label: Id*
+        search: true
+    - CustomerTypeId
+    tab_groups:
+      Customer:
+        direction: toone
+        fks:
+        - CustomerTypeId
+        name: Customer
+        target: Customer
+    type: CustomerCustomerDemo
+    user_key: Id
+  CustomerDemographic:
+    attributes:
+    - Id:
+        label: Id*
+        search: true
+    - CustomerDesc
+    type: CustomerDemographic
+    user_key: Id
+  Employee:
+    attributes:
+    - Id
+    - LastName:
+        label: LastName*
+        search: true
+    - FirstName
+    - Title
+    - TitleOfCourtesy
+    - BirthDate
+    - HireDate
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - HomePhone
+    - Extension
+    - Photo
+    - Notes
+    - ReportsTo
+    - PhotoPath
+    - IsCommissioned
+    - Salary
+    tab_groups:
+      EmployeeAuditList:
+        direction: tomany
+        fks:
+        - EmployeeId
+        resource: EmployeeAudit
+      EmployeeTerritoryList:
+        direction: tomany
+        fks:
+        - EmployeeId
+        resource: EmployeeTerritory
+      OrderList:
+        direction: tomany
+        fks:
+        - EmployeeId
+        resource: Order
+    type: Employee
+    user_key: LastName
+  EmployeeAudit:
+    attributes:
+    - Id
+    - Title
+    - Salary
+    - LastName:
+        label: LastName*
+        search: true
+    - FirstName
+    - EmployeeId
+    - CreatedOn
+    tab_groups:
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        name: Employee
+        target: Employee
+    type: EmployeeAudit
+    user_key: LastName
+  EmployeeTerritory:
+    attributes:
+    - Id:
+        label: Id*
+        search: true
+    - EmployeeId
+    - TerritoryId
+    tab_groups:
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        name: Employee
+        target: Employee
+      Territory:
+        direction: toone
+        fks:
+        - TerritoryId
+        name: Territory
+        target: Territory
+    type: EmployeeTerritory
+    user_key: Id
+  Order:
+    attributes:
+    - Id
+    - CustomerId
+    - EmployeeId
+    - OrderDate
+    - RequiredDate
+    - ShippedDate
+    - ShipVia
+    - Freight
+    - ShipName:
+        label: ShipName*
+        search: true
+    - ShipAddress
+    - ShipCity
+    - ShipRegion
+    - ShipPostalCode
+    - ShipCountry
+    - AmountTotal
+    tab_groups:
+      Customer:
+        direction: toone
+        fks:
+        - CustomerId
+        name: Customer
+        target: Customer
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        name: Employee
+        target: Employee
+      OrderDetailList:
+        direction: tomany
+        fks:
+        - OrderId
+        resource: OrderDetail
+    type: Order
+    user_key: ShipName
+  OrderDetail:
+    attributes:
+    - Id:
+        label: Id*
+        search: true
+    - OrderId
+    - ProductId
+    - UnitPrice
+    - Quantity
+    - Discount
+    - Amount
+    - ShippedDate
+    tab_groups:
+      Order:
+        direction: toone
+        fks:
+        - OrderId
+        name: Order
+        target: Order
+      Product:
+        direction: toone
+        fks:
+        - ProductId
+        name: Product
+        target: Product
+    type: OrderDetail
+    user_key: Id
+  Product:
+    attributes:
+    - Id
+    - ProductName:
+        label: ProductName*
+        search: true
+    - SupplierId
+    - CategoryId
+    - QuantityPerUnit
+    - UnitPrice
+    - UnitsInStock
+    - UnitsOnOrder
+    - ReorderLevel
+    - Discontinued
+    - UnitsShipped
+    tab_groups:
+      OrderDetailList:
+        direction: tomany
+        fks:
+        - ProductId
+        resource: OrderDetail
+    type: Product
+    user_key: ProductName
+  Region:
+    attributes:
+    - Id
+    - RegionDescription:
+        label: RegionDescription*
+        search: true
+    type: Region
+    user_key: RegionDescription
+  Shipper:
+    attributes:
+    - Id
+    - CompanyName:
+        label: CompanyName*
+        search: true
+    - Phone
+    type: Shipper
+    user_key: CompanyName
+  Supplier:
+    attributes:
+    - Id
+    - CompanyName:
+        label: CompanyName*
+        search: true
+    - ContactName
+    - ContactTitle
+    - Address
+    - City
+    - Region
+    - PostalCode
+    - Country
+    - Phone
+    - Fax
+    - HomePage
+    type: Supplier
+    user_key: CompanyName
+  Territory:
+    attributes:
+    - Id
+    - TerritoryDescription:
+        label: TerritoryDescription*
+        search: true
+    - RegionId
+    tab_groups:
+      EmployeeTerritoryList:
+        direction: tomany
+        fks:
+        - TerritoryId
+        resource: EmployeeTerritory
+    type: Territory
+    user_key: TerritoryDescription
+settings:
+  max_list_columns: '7'

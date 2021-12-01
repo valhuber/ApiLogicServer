@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.21"
+__version__ = "3.50.22"
 
 from contextlib import closing
 
@@ -847,6 +847,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/01/2021 - 03.50.22: new yaml - see admin3-53.22.yaml  \n"
             "\t11/30/2021 - 03.50.21: default project name changed to ApiLogicProject, isolated child grid failure  \n"
             "\t11/26/2021 - 03.50.20: default search for favorite attr (* label), yaml url fix, resource.attrs too  \n"
             "\t11/25/2021 - 03.50.17: working search support in Config.js, admin chooser  \n"

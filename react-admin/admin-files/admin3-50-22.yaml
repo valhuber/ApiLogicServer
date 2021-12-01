@@ -1,0 +1,308 @@
+about:
+  date: December 01, 2021 10:42:40
+  recent_changes: works with modified safrs-react-admin
+  version: 3.50.22
+api_root: http://localhost:5656/api
+info:
+  number_relationships: 16
+  number_tables: 28
+properties_ref:
+  attribute:
+    group: name
+    hidden: exp
+    label: caption for display
+    search: true | false
+    style:
+      color: blue
+      font_weight: 0
+  resource:
+    allow_delete: exp
+    allow_insert: exp
+    allow_update: exp
+    info: long html / rich text
+    menu: False | name
+  tab:
+    label: text
+    lookup: boolean
+resources:
+  Category:
+    attributes:
+    - name: Id
+    - label: CategoryName*
+      name: CategoryName
+      search: true
+    - name: Description
+    type: Category
+    user_key: CategoryName
+  Customer:
+    attributes:
+    - name: Id
+    - label: CompanyName*
+      name: CompanyName
+      search: true
+    - name: ContactName
+    - name: ContactTitle
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: Phone
+    - name: Fax
+    - name: Balance
+    - name: CreditLimit
+    - name: OrderCount
+    - name: UnpaidOrderCount
+    tab_groups:
+      CustomerCustomerDemoList:
+        direction: tomany
+        fks:
+        - CustomerTypeId
+        resource: CustomerCustomerDemo
+      OrderList:
+        direction: tomany
+        fks:
+        - CustomerId
+        resource: Order
+    type: Customer
+    user_key: CompanyName
+  CustomerCustomerDemo:
+    attributes:
+    - label: Id*
+      name: Id
+      search: true
+    - name: CustomerTypeId
+    tab_groups:
+      Customer:
+        direction: toone
+        fks:
+        - CustomerTypeId
+        resource: Customer
+    type: CustomerCustomerDemo
+    user_key: Id
+  CustomerDemographic:
+    attributes:
+    - label: Id*
+      name: Id
+      search: true
+    - name: CustomerDesc
+    type: CustomerDemographic
+    user_key: Id
+  Employee:
+    attributes:
+    - name: Id
+    - label: LastName*
+      name: LastName
+      search: true
+    - name: FirstName
+    - name: Title
+    - name: TitleOfCourtesy
+    - name: BirthDate
+    - name: HireDate
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: HomePhone
+    - name: Extension
+    - name: Photo
+    - name: Notes
+    - name: ReportsTo
+    - name: PhotoPath
+    - name: IsCommissioned
+    - name: Salary
+    tab_groups:
+      EmployeeAuditList:
+        direction: tomany
+        fks:
+        - EmployeeId
+        resource: EmployeeAudit
+      EmployeeTerritoryList:
+        direction: tomany
+        fks:
+        - EmployeeId
+        resource: EmployeeTerritory
+      OrderList:
+        direction: tomany
+        fks:
+        - EmployeeId
+        resource: Order
+    type: Employee
+    user_key: LastName
+  EmployeeAudit:
+    attributes:
+    - name: Id
+    - name: Title
+    - name: Salary
+    - label: LastName*
+      name: LastName
+      search: true
+    - name: FirstName
+    - name: EmployeeId
+    - name: CreatedOn
+    tab_groups:
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        resource: Employee
+    type: EmployeeAudit
+    user_key: LastName
+  EmployeeTerritory:
+    attributes:
+    - label: Id*
+      name: Id
+      search: true
+    - name: EmployeeId
+    - name: TerritoryId
+    tab_groups:
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        resource: Employee
+      Territory:
+        direction: toone
+        fks:
+        - TerritoryId
+        resource: Territory
+    type: EmployeeTerritory
+    user_key: Id
+  Order:
+    attributes:
+    - name: Id
+    - name: CustomerId
+    - name: EmployeeId
+    - name: OrderDate
+    - name: RequiredDate
+    - name: ShippedDate
+    - name: ShipVia
+    - name: Freight
+    - label: ShipName*
+      name: ShipName
+      search: true
+    - name: ShipAddress
+    - name: ShipCity
+    - name: ShipRegion
+    - name: ShipPostalCode
+    - name: ShipCountry
+    - name: AmountTotal
+    tab_groups:
+      Customer:
+        direction: toone
+        fks:
+        - CustomerId
+        resource: Customer
+      Employee:
+        direction: toone
+        fks:
+        - EmployeeId
+        resource: Employee
+      OrderDetailList:
+        direction: tomany
+        fks:
+        - OrderId
+        resource: OrderDetail
+    type: Order
+    user_key: ShipName
+  OrderDetail:
+    attributes:
+    - label: Id*
+      name: Id
+      search: true
+    - name: OrderId
+    - name: ProductId
+    - name: UnitPrice
+    - name: Quantity
+    - name: Discount
+    - name: Amount
+    - name: ShippedDate
+    tab_groups:
+      Order:
+        direction: toone
+        fks:
+        - OrderId
+        resource: Order
+      Product:
+        direction: toone
+        fks:
+        - ProductId
+        resource: Product
+    type: OrderDetail
+    user_key: Id
+  Product:
+    attributes:
+    - name: Id
+    - label: ProductName*
+      name: ProductName
+      search: true
+    - name: SupplierId
+    - name: CategoryId
+    - name: QuantityPerUnit
+    - name: UnitPrice
+    - name: UnitsInStock
+    - name: UnitsOnOrder
+    - name: ReorderLevel
+    - name: Discontinued
+    - name: UnitsShipped
+    tab_groups:
+      OrderDetailList:
+        direction: tomany
+        fks:
+        - ProductId
+        resource: OrderDetail
+    type: Product
+    user_key: ProductName
+  Region:
+    attributes:
+    - name: Id
+    - label: RegionDescription*
+      name: RegionDescription
+      search: true
+    type: Region
+    user_key: RegionDescription
+  Shipper:
+    attributes:
+    - name: Id
+    - label: CompanyName*
+      name: CompanyName
+      search: true
+    - name: Phone
+    type: Shipper
+    user_key: CompanyName
+  Supplier:
+    attributes:
+    - name: Id
+    - label: CompanyName*
+      name: CompanyName
+      search: true
+    - name: ContactName
+    - name: ContactTitle
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: Phone
+    - name: Fax
+    - name: HomePage
+    type: Supplier
+    user_key: CompanyName
+  Territory:
+    attributes:
+    - name: Id
+    - label: TerritoryDescription*
+      name: TerritoryDescription
+      search: true
+    - name: RegionId
+    tab_groups:
+      EmployeeTerritoryList:
+        direction: tomany
+        fks:
+        - TerritoryId
+        resource: EmployeeTerritory
+    type: Territory
+    user_key: TerritoryDescription
+settings:
+  max_list_columns: '7'

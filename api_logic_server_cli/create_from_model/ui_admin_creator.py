@@ -159,29 +159,33 @@ class AdminCreator(object):
             - ContactName
         """
         owner.attributes = []
-        attributes = set()
+        attributes_dict = []  # DotMap()
         if admin_col_tab_columns:
             attributes = self.mod_gen.get_show_attributes(resource)
         else:
             attributes = self.mod_gen.get_attributes(resource)
         for each_attribute in attributes:
-            if "." not in each_attribute:
+            if "." not in each_attribute:   # not a parent join
                 if each_attribute == self.mod_gen.favorite_attribute_name(resource):
                     attribute_with_search = DotMap()
                     search = DotMap()
+                    search.name = each_attribute
                     search.search = True
                     search.label = f'{each_attribute}*'  # adding space causes newline, so omit for now
-                    attribute_with_search[each_attribute] = search
-                    owner.attributes.append(attribute_with_search)
+                    # attribute_with_search[each_attribute] = search
+                    attributes_dict.append(search)  # attribute_with_search)
                 else:
-                    owner.attributes.append(each_attribute)
-            else:
+                    admin_attribute = DotMap()
+                    admin_attribute.name = each_attribute
+                    attributes_dict.append(admin_attribute)
+            else:                           # parent join
                 relationship = self.new_relationship_to_parent(resource, each_attribute, owner_resource)
                 if relationship is not None:  # skip redundant master join
                     rel = DotMap()
                     parent_role_name = each_attribute.split('.')[0]
                     rel[parent_role_name] = relationship.toDict()
                     owner.attributes.append(rel)
+        owner.attributes = attributes_dict
 
     def create_resource_in_admin_col(self, resource: Resource):
         """ self.admin_yaml.resources += resource DotMap for given resource
@@ -282,15 +286,12 @@ class AdminCreator(object):
         """
         build tabs for related children
 
-            tab_groups:
-              CustomerCustomerDemoList:
-                attributes:
-                - Id
-                - CustomerTypeId
-                fkeys:
-                  source_delete_me: '?'
-                  target: CustomerTypeId
-                resource: CustomerCustomerDemo
+        tab_groups:
+          CustomerCustomerDemoList:
+            direction: tomany
+            fks:
+            - CustomerTypeId
+            resource: CustomerCustomerDemo
         """
         if len(self.mod_gen.resource_list) == 0:   # almost always, use_model false (we create)
             return self.create_child_tabs_no_model(resource)
@@ -307,12 +308,6 @@ class AdminCreator(object):
             each_resource_tab.fks = []
             for each_pair in each_resource_relationship.parent_child_key_pairs:
                 each_resource_tab.fks.append(each_pair[1])
-                """
-                key_pair = DotMap()
-                key_pair.target = each_pair[1]
-                key_pair.source_delete_me = each_pair[0]
-                each_resource_tab.fks = key_pair
-                """
 
             each_resource_tab.resource = str(each_child)
             each_resource_tab.direction = "tomany"
@@ -325,9 +320,8 @@ class AdminCreator(object):
         if admin_relationships_with_parents:
             for each_resource_relationship in resource.parents:
                 each_resource_tab = DotMap()
-                each_resource_tab.name = each_resource_relationship.parent_role_name
                 each_parent = each_resource_relationship.parent_resource
-                each_resource_tab.target = str(each_parent)
+                each_resource_tab.resource = str(each_parent)
                 each_resource_tab.direction = "toone"
                 each_resource_tab.fks = []
                 for each_pair in each_resource_relationship.parent_child_key_pairs:
