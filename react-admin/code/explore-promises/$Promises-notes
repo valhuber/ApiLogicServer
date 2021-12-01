@@ -1,0 +1,5 @@
+I have tried 2 approaches to promises for Conf.js - await, and return from .then
+
+Neither work - we proceed (with no yaml) in either case
+
+Appears that if {a} is aysnc, then all callers of {a} must also be async
