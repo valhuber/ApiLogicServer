@@ -1,0 +1,22 @@
+Customer:
+    type: Customer
+    user_component: CustomerLabel
+    attributes:
+      Id : null
+      CompanyName: null
+      ContactName:
+        search: true
+      ContactTitle:
+        search: true
+    tab_groups:
+      CustomerCustomerDemoList:
+        direction: tomany
+        fks:
+          - CustomerTypeId
+        resource: CustomerCustomerDemo
+      OrderList:
+        direction: tomany
+        fks:
+          - CustomerId
+        resource: Order
+    label: null

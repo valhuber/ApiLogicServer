@@ -34,9 +34,6 @@ app_logger.propagate = True
 app_logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
 app_logger.info(f'app started: {__file__}\n')
 
-import threading
-import time
-import requests
 from typing import TypedDict
 
 import safrs
@@ -49,7 +46,7 @@ import socket
 from api import expose_api_models, customize_api
 from logic import declare_logic
 
-from flask import render_template, request, jsonify, Flask, redirect, send_from_directory
+from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase
 
 
@@ -172,13 +169,21 @@ def index():
     app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
     return redirect('/admin-app/index.html')
 
-
+"""
 @flask_app.route('/ui/admin/admin.yaml')
 def admin(path=None):  # test http://localhost/ui/admin/admin.yaml
     with open("ui/admin/admin.yaml", "r") as f:
         content = f.read()
     app_logger.debug(f'loading ui/admin/admin.yaml')
     return render_template('content.html', content=content)
+"""
+
+
+@flask_app.route('/ui/admin/admin.yaml')
+def admin_yaml():
+    response = send_file("ui/admin/admin.yaml", mimetype='text/yaml')
+    return response
+
 
 
 @flask_app.route("/admin-app/<path:path>")

@@ -17,8 +17,8 @@ if [ $# -eq 0 ]
     pushd ../../safrs-react-admin
     git reset --hard origin/master
     ls ../ApiLogicServer/react-admin/code
-    cp ../ApiLogicServer/react-admin/code/Home.js src/components/.
-    # cp ../ApiLogicServer/react-admin/code/Config.js src/.
+    cp ../ApiLogicServer/react-admin/code/Home-als.js src/components/Home.js
+    cp ../ApiLogicServer/react-admin/code/Config-als.js src/Config.js
     npm run build
     rm -rf ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
     cp -a ./build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
