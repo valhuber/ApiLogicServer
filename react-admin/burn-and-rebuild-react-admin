@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+  then
+    echo " "
+    echo "Deletes and rebuilds react-admin into ApiLogicServer/api_logic_server_cli/safrs-react-admin-npm-build"
+    echo " "
+    echo " IMPORTANT - overwrites safrs-react-admin from react-admin/code - make sure that's up to date"
+    echo " "
+    echo "  sh rebuild-react-admin go"
+    echo " "
+    exit 0
+  else
+    echo " "
+    read -p "Verify react-admin/code is current, correct yaml url, and [Enter] rebuild react-admin for API Logic Server"
+    set -x
+    # sudo chown $USER:$USER ../../safrs-react-admin
+    sudo rm -r ../../safrs-react-admin
+    cd ../../
+    pwd
+    read -p "Verify you are at dev, and [Enter] rebuild react-admin for API Logic Server"
+    git clone https://github.com/thomaxxl/safrs-react-admin
+    cd safrs-react-admin
+    ls ../ApiLogicServer/react-admin/code
+    cp ../ApiLogicServer/react-admin/code/Home-als.js src/components/Home.js
+    cp ../ApiLogicServer/react-admin/code/Config-als.js src/Config.js
+    npm install
+    pwd
+    ls
+    read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server"
+    npm run build
+    rm -rf ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
+    cp -a ./build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+    exit 0
+fi

@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.22"
+__version__ = "3.50.24"
 
 from contextlib import closing
 
@@ -847,22 +847,13 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/02/2021 - 03.50.24: new safrs-react-admin, Config-als.js (parent/child joins working)  \n"
             "\t12/01/2021 - 03.50.23: new safrs-react-admin, Config-als.js (not working)  \n"
             "\t12/01/2021 - 03.50.22: new yaml - see admin3-53.22.yaml  \n"
             "\t11/30/2021 - 03.50.21: default project name changed to ApiLogicProject, isolated child grid failure  \n"
             "\t11/26/2021 - 03.50.20: default search for favorite attr (* label), yaml url fix, resource.attrs too  \n"
             "\t11/25/2021 - 03.50.17: working search support in Config.js, admin chooser  \n"
             "\t11/25/2021 - 03.50.16: patch to work with WSL as workaround for https://bugs.python.org/issue38633  \n"
-            "\t11/25/2021 - 03.50.15: folder rename - safrs-react-admin-npm-build, url for starting browser  \n"
-            "\t11/24/2021 - 03.50.14: constraint retry, pathlib fix  \n"
-            "\t11/23/2021 - 03.50.12: fix admin - resource type bug.  Parent & child joins, admin-attr  \n"
-            "\t11/22/2021 - 03.50.11: fixed config.js, child grids work.  No parent joins  \n"
-            "\t11/22/2021 - 03.50.10: upd build, web page default now admin (not swagger); detail grids still blank  \n"
-            "\t11/21/2021 - 03.50.09: web page default now admin (not swagger); detail grids still blank  \n"
-            "\t11/20/2021 - 03.50.08: safrs-admn join included, use table-name as resource-name; detail grids blank \n"
-            "\t11/20/2021 - 03.50.07: admin.yaml loaded/used by admin app, runs directly *and* ApiLogicServer run \n"
-            "\t11/19/2021 - 03.50.06: admin.yaml loaded/accepted by admin app, runs \n"
-            "\t11/18/2021 - 03.50.05: creates runnable admin-col.yaml, doc & console log info \n"
             "\t11/16/2021 - 03.50.03: safrs-react-admin fixes \n"
             "\t11/15/2021 - 03.50.02: minor diagnostics \n"
             "\t11/13/2021 - 03.50.01: port conflict warning (not failure) for Docker \n"

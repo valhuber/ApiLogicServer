@@ -18,6 +18,12 @@ Update 11/26
     * added code to obtain the search property (it works!)
     * altered directory structure (react-admin is now a top-level project folder)
 
+Update 12/2
+    * Safrs-react-admin (non-NPM) works with https://github.com/thomaxxl/safrs-react-admin
+        ** paste, and manage/load
+    * Safrs-react-admin (non-NPM) works with created admin.yml
+        ** paste
+
 Avoiding redundant parent joins - better approach than "use these attributes"
     * Instead, "skip these attributes" - better...
         * smaller raml to read
@@ -31,13 +37,13 @@ Proposed Release criteria (Val)
     + Admin page has link to swagger
     +- Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
     + Joins - parent & child, any sensible default
-    + Filter (working, 3.50.17)
+    - Filter (working, 3.50.17, failing 3.50.24)
     + Constraint retry (show message, return to page, retype all changes, but way better than flask appBuilder)
     - All pages work for test DBs; many issues - see...
         https://docs.google.com/document/d/1DzJXwVQoTGgJcfXvvPGCczgEVG-s9g72vB6AfJSJIVc/edit#heading=h.z54llfjeay3x)
     - Pagination not showing up for sample db
-    ? Might be nice to add style to grid headers
-    ? Might be nice to limit grids to @7 cols
+    ? Might be nice to add just a bit of style to grid headers
+    ? Might be nice to limit grids to @7 cols (there is a settingsmax_list_columns object in admin.yaml)
     ? Custom home component
 * Announcement (articles, videos etc)
     - Lookups!!

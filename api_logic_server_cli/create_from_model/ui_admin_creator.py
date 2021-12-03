@@ -23,10 +23,9 @@ log.addHandler(handler)
 log.propagate = True
 
 # temp hacks for admin app migration to attributes
-admin_col_is_active = True
-admin_col_is_join_active = False
-admin_col_tab_columns = False
-admin_user_key_is_active = True  # resource property, in lieu of admin_col_tab_columns
+
+
+admin_attr_ordering = False
 admin_relationships_with_parents = True
 
 # have to monkey patch to work with WSL as workaround for https://bugs.python.org/issue38633
@@ -117,8 +116,6 @@ class AdminCreator(object):
         for each_resource_name in self.mod_gen.resource_list:
             each_resource = self.mod_gen.resource_list[each_resource_name]
             self.create_resource_in_admin(each_resource)
-            if admin_col_is_active:
-                self.create_resource_in_admin_col(each_resource)
 
         self.create_about()
         self.create_info()
@@ -141,8 +138,7 @@ class AdminCreator(object):
             new_resource = DotMap()
             self.num_pages_generated += 1
             new_resource.type = str(resource.name)
-            if admin_user_key_is_active:
-                new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
+            new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
 
             self.create_attributes_in_owner(new_resource, resource, None)
             child_tabs = self.create_child_tabs(resource)
@@ -160,7 +156,7 @@ class AdminCreator(object):
         """
         owner.attributes = []
         attributes_dict = []  # DotMap()
-        if admin_col_tab_columns:
+        if admin_attr_ordering:
             attributes = self.mod_gen.get_show_attributes(resource)
         else:
             attributes = self.mod_gen.get_attributes(resource)
@@ -186,49 +182,6 @@ class AdminCreator(object):
                     rel[parent_role_name] = relationship.toDict()
                     owner.attributes.append(rel)
         owner.attributes = attributes_dict
-
-    def create_resource_in_admin_col(self, resource: Resource):
-        """ self.admin_yaml.resources += resource DotMap for given resource
-        """
-        resource_name = resource.name
-        if self.do_process_resource(resource_name):
-            new_resource = DotMap()
-            self.num_pages_generated += 1
-            new_resource.type = str(resource.name)
-            new_resource.label = resource.name + " - label"
-            if admin_user_key_is_active:
-                new_resource.user_key = str(self.mod_gen.favorite_attribute_name(resource))
-
-            self.create_columns_in_owner(new_resource, resource, None)
-            child_tabs = self.create_child_tabs_col(resource)
-            new_resource.relationships = child_tabs
-
-            self.admin_yaml_col.resources[resource_name] = new_resource.toDict()
-
-    def create_columns_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
-        """ create columns in owner (DotMap - of resource or tab)
-        """
-        owner.columns = []
-        attributes = set()
-        if admin_col_tab_columns:
-            attributes = self.mod_gen.get_show_attributes(resource)
-        else:
-            attributes = self.mod_gen.get_attributes(resource)
-        for each_attribute in attributes:
-            if "." not in each_attribute:
-                col_def = DotMap()
-                col_def.name = each_attribute
-                owner.columns.append(col_def)
-            elif admin_col_is_join_active:
-                relationship = self.new_relationship_to_parent(resource, each_attribute, owner_resource)
-                if relationship is not None:  # skip redundant master join
-                    rel = DotMap()
-                    parent_role_name = each_attribute.split('.')[0]
-                    rel[parent_role_name] = relationship.toDict()
-                    owner.columns.append(rel)
-            else:
-                log.debug(f'column skipped since admin_col_is_join_active is false: '
-                          f'{resource.name}.{each_attribute} ')
 
     def new_relationship_to_parent(self, a_child_resource: Resource, parent_attribute_reference,
                                    a_master_parent_resource) -> (None, DotMap):
@@ -314,7 +267,7 @@ class AdminCreator(object):
             tab_name = each_resource_relationship.child_role_name
 
             each_child_resource = self.mod_gen.resource_list[each_child]
-            if admin_col_tab_columns:
+            if admin_attr_ordering:
                 self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
             tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
         if admin_relationships_with_parents:
@@ -330,52 +283,6 @@ class AdminCreator(object):
 
                 # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
                 tab_group[tab_name] = each_resource_tab
-        return tab_group
-
-    def create_child_tabs_col(self, resource: Resource) -> DotMap:
-        """
-        build tabs for all related children, col style
-        """
-        if len(self.mod_gen.resource_list) == 0:   # almost always, use_model false (we create)
-            return self.create_child_tabs_no_model(resource)
-
-        children_seen = set()
-        tab_group = []  # ??  DotMap()
-        for each_resource_relationship in resource.children:
-            each_resource_tab = DotMap()
-            each_resource_tab.name = each_resource_relationship.child_role_name
-            self.num_related += 1
-            each_child = each_resource_relationship.child_resource
-            if each_child in children_seen:
-                pass  # it's ok, we are using the child_role_name now
-            each_resource_tab.target = str(each_child)
-            each_resource_tab.direction = "tomany"
-            children_seen.add(each_child)
-            each_resource_tab.fks = []
-            for each_pair in each_resource_relationship.parent_child_key_pairs:
-                each_resource_tab.fks.append(each_pair[1])
-            tab_name = each_resource_relationship.child_role_name
-
-            each_child_resource = self.mod_gen.resource_list[each_child]
-            if admin_col_tab_columns:
-                self.create_columns_in_owner(each_resource_tab, each_child_resource, resource)
-
-            # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
-            tab_group.append(each_resource_tab)
-        if admin_relationships_with_parents:
-            for each_resource_relationship in resource.parents:
-                each_resource_tab = DotMap()
-                each_resource_tab.name = each_resource_relationship.parent_role_name
-                each_parent = each_resource_relationship.parent_resource
-                each_resource_tab.target = str(each_parent)
-                each_resource_tab.direction = "toone"
-                each_resource_tab.fks = []
-                for each_pair in each_resource_relationship.parent_child_key_pairs:
-                    each_resource_tab.fks.append(each_pair[1])
-                tab_name = each_resource_relationship.parent_role_name
-
-                # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
-                tab_group.append(each_resource_tab)
         return tab_group
 
     def do_process_resource(self, resource_name: str)-> bool:
@@ -500,12 +407,6 @@ class AdminCreator(object):
         if not self.mod_gen.command.startswith("rebuild"):
             with open(yaml_file_name, 'w') as yaml_file:
                 yaml_file.write(admin_yaml)
-            if admin_col_is_active:
-                yaml_file_name_col = self.mod_gen.fix_win_path(
-                    self.mod_gen.project_directory + f'/ui/admin/admin-col.yaml')
-                print(f'.. .. .. ..Creating temp {yaml_file_name_col}')
-                with open(yaml_file_name_col, 'w') as yaml_file_col:
-                    yaml_file_col.write(admin_yaml_col)
 
         yaml_created_file_name = \
             self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin-created.yaml')

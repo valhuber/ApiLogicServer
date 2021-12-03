@@ -1,4 +1,5 @@
 import config from './Config.json'
+import als_config from './Config.als.json'
 
 const init_Conf = () => {
     if(! "raconf" in localStorage){
@@ -31,9 +32,12 @@ export const get_Conf = () => {
     const resources = result.resources
 
     for(let [resource_name, resource] of Object.entries(resources||{})){
-        
+        resource.relationships = resource.relationships || []
+        for(let [tab_group_name, tab_group] of Object.entries(resource.tab_groups || {}) ){
+            resource.relationships.push(Object.assign(tab_group, {name: tab_group_name, target: tab_group.resource}))
+        }
         // link relationship to FK column
-        if(!(resource.columns instanceof Array || resource.relationships instanceof Array)){
+        if(!(resource.attributes instanceof Array || resource.relationships instanceof Array)){
             continue
         }
 
@@ -43,9 +47,13 @@ export const get_Conf = () => {
 
         resource.search_cols = []
         result.resources[resource_name].name = resource_name
-        let attributes = resource.columns || []
+        let attributes = resource.attributes || []
 
         for(let attr of attributes){
+            if(!(attr.constructor == Object)){
+                console.warn(`Invalid attribute ${attr}`)
+                continue
+            }
             for(let rel of resource.relationships || []){
                 for(let fk of rel.fks || []){
                     if(attr.name == fk){
@@ -58,15 +66,21 @@ export const get_Conf = () => {
                 resource.search_cols.push(attr);
             }
         }
-        resource.attributes = resource.columns
+        //resource.attributes = resource.columns
     }
-    
+
     return result || reset_Conf()
 }
 
 export const reset_Conf = (reload) => {
+    const configs = {}
     console.log("Resetting conf", config)
     localStorage.setItem("raconf", JSON.stringify(config));
+    configs[config.api_root] = config
+    configs[als_config.api_root] = als_config
+
+    localStorage.setItem("raconfigs", JSON.stringify(configs));
+
     if(reload){
         window.location.reload()
     }
