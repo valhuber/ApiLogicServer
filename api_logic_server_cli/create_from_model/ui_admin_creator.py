@@ -25,7 +25,8 @@ log.propagate = True
 # temp hacks for admin app migration to attributes
 
 
-admin_attr_ordering = False
+admin_attr_ordering = True
+admin_child_grids = False
 admin_relationships_with_parents = True
 
 # have to monkey patch to work with WSL as workaround for https://bugs.python.org/issue38633
@@ -147,7 +148,7 @@ class AdminCreator(object):
             self.admin_yaml.resources[resource.table_name] = new_resource.toDict()
 
     def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
-        """ create attribute in owner (DotMap - of resource or tab)
+        """ create attribute in owner (owner is a DotMap -- of resource, or tab)
 
           Customer:
             attributes:
@@ -261,13 +262,12 @@ class AdminCreator(object):
             each_resource_tab.fks = []
             for each_pair in each_resource_relationship.parent_child_key_pairs:
                 each_resource_tab.fks.append(each_pair[1])
-
-            each_resource_tab.resource = str(each_child)
+            each_child_resource = self.mod_gen.resource_list[each_child]
+            each_resource_tab.resource = each_child_resource.table_name
             each_resource_tab.direction = "tomany"
             tab_name = each_resource_relationship.child_role_name
-
             each_child_resource = self.mod_gen.resource_list[each_child]
-            if admin_attr_ordering:
+            if admin_child_grids:
                 self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
             tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
         if admin_relationships_with_parents:
@@ -275,6 +275,8 @@ class AdminCreator(object):
                 each_resource_tab = DotMap()
                 each_parent = each_resource_relationship.parent_resource
                 each_resource_tab.resource = str(each_parent)
+                each_parent_resource = self.mod_gen.resource_list[each_parent]
+                each_resource_tab.resource = each_parent_resource.table_name
                 each_resource_tab.direction = "toone"
                 each_resource_tab.fks = []
                 for each_pair in each_resource_relationship.parent_child_key_pairs:

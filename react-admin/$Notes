@@ -44,6 +44,7 @@ Proposed Release criteria (Val)
     - Pagination not showing up for sample db
     ? Might be nice to add just a bit of style to grid headers
     ? Might be nice to limit grids to @7 cols (there is a settingsmax_list_columns object in admin.yaml)
+    ? Currency display (decimal digits)
     ? Custom home component
 * Announcement (articles, videos etc)
     - Lookups!!
