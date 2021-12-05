@@ -7,7 +7,7 @@ from os.path import abspath
 import importlib.util
 import sys
 import os
-from typing import NewType
+from typing import NewType, Type
 import sqlalchemy
 import sqlalchemy.ext
 from sqlalchemy import MetaData
@@ -33,11 +33,27 @@ MetaDataTable = NewType('MetaDataTable', object)
 
 
 class ResourceAttribute():
-    def __init__(self, name):
+    def __init__(self, name: str, resource: Type['Resource'], type: str):
         self.name = name
+        self.type = None  # none means not interesting, default display to simple text
+        if type == "DECIMAL":
+            self.type = "DECIMAL"
+        elif type == "DECIMAL":
+            self.type = "DATE"
+        self.non_favorite = False
+        lower_name = name.lower()
+        non_favs = resource.create_from_model._non_favorite_names_list
+        for each_non_fav in non_favs:
+            if lower_name.endswith(each_non_fav):
+                self.non_favorite = True
+                break
+        resource.attributes.append(self)
 
     def __str__(self):
-        return self.name
+        result = self.name
+        if self.type is not None:
+            result += " - " + self.type
+        return result
 
 
 class ResourceRelationship():
@@ -57,16 +73,43 @@ class ResourceRelationship():
 
 
 class Resource():
-    def __init__(self, name):
+    def __init__(self, name: str, create_from_model):
         self.name = name        # class name (which != safrs resource name)
         self.table_name = name  # safrs resource name; this is just default, overridden in create_model
         self.type = name        # just default, overridden in create_model
         self.children: List[ResourceRelationship] = list()
         self.parents: List[ResourceRelationship] = list()
         self.attributes: List[ResourceAttribute] = list()
+        self.create_from_model = create_from_model  # to find favorite names etc.
 
     def __str__(self):
         return f'Resource: {self.name}, table_name: {self.table_name}, type: {self.type}'
+
+    def get_favorite_attribute(self) -> ResourceAttribute:
+        """
+             returns ResourceAttribute of first attribute that is...
+                 named <favorite_name> (default to "name"), else
+                 containing <favorite_name>, else
+                 (or first column)
+
+             Parameters
+                 argument1 a_table_name - str
+
+             Returns
+                 string of column name that is favorite (e.g., first in list)
+         """
+        favorite_names = self.create_from_model._favorite_names_list
+        for each_favorite_name in favorite_names:
+            for each_attribute in self.attributes:
+                attribute_name = each_attribute.name.lower()
+                if attribute_name == each_favorite_name:
+                    return each_attribute
+            for each_attribute in self.attributes:
+                attribute_name = each_attribute.name.lower()
+                if each_favorite_name in attribute_name:
+                    return each_attribute
+        for each_attribute in self.attributes:  # no favorites, just return 1st
+            return each_attribute
 
 
 class CreateFromModel(object):
@@ -669,7 +712,7 @@ class CreateFromModel(object):
                         resource_name = each_cls_member[0]
                         resource_class = each_cls_member[1]
                         table_name = resource_class._s_collection_name
-                        resource = Resource(name=resource_name)
+                        resource = Resource(name=resource_name, create_from_model=self)
                         self.metadata = resource_class.metadata
                         self.table_to_class_map.update({table_name: resource_name})   # required for ui_basic_web_app
                         if resource_name not in resource_list:
@@ -679,15 +722,17 @@ class CreateFromModel(object):
                         resource_data = {"type": resource_class._s_type}  # todo what's this?
                         resource_data = {"type": resource_name}
                         for each_attribute in resource_class._s_columns:
-                            resource_attribute = ResourceAttribute(name=str(each_attribute.name))
-                            resource.attributes.append(resource_attribute)
+                            attr_type = str(each_attribute.type)
+                            resource_attribute = ResourceAttribute(name=str(each_attribute.name),
+                                                                   resource=resource,
+                                                                   type=attr_type)
                         for rel_name, rel in resource_class._s_relationships.items():
                             relation = {}
                             relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
                             if rel.direction == MANYTOONE:  # process only parents of this child
                                 relationship = ResourceRelationship(rel_name, rel.backref)
                                 for each_fkey in rel._calculated_foreign_keys:
-                                    pair = ( "?", each_fkey.description)
+                                    pair = ("?", each_fkey.description)
                                     relationship.parent_child_key_pairs.append(pair)
                                 resource.parents.append(relationship)
                                 relationship.child_resource = resource_name
@@ -695,7 +740,7 @@ class CreateFromModel(object):
                                 parent_resource_name = rel.mapper.class_._s_class_name
                                 relationship.parent_resource = parent_resource_name
                                 if parent_resource_name not in resource_list:
-                                    parent_resource = Resource(name=parent_resource_name)
+                                    parent_resource = Resource(name=parent_resource_name, create_from_model=self)
                                     resource_list[parent_resource_name] = parent_resource
                                 parent_resource = resource_list[parent_resource_name]
                                 parent_resource.children.append(relationship)

@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.26"
+__version__ = "3.50.27"
 
 from contextlib import closing
 
@@ -847,6 +847,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"
             "\t12/03/2021 - 03.50.26: empty grids fixed missing child grids - but not pagination, search, some DBs  \n"
             "\t12/02/2021 - 03.50.25: fixed missing child grids (e.g., sakila, some grids still empty)  \n"
             "\t12/02/2021 - 03.50.24: new safrs-react-admin, Config-als.js (parent/child joins working)  \n"

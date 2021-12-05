@@ -24,9 +24,9 @@ log.propagate = True
 
 # temp hacks for admin app migration to attributes
 
-
 admin_attr_ordering = True
-admin_child_grids = False
+admin_parent_joins_implicit = True  # True => id's displayed as joins, False => explicit parent join attrs
+admin_child_grids = False  # True => identify each child grid attr explicitly, False => use main grid definition
 admin_relationships_with_parents = True
 
 # have to monkey patch to work with WSL as workaround for https://bugs.python.org/issue38633
@@ -42,7 +42,6 @@ def patched_copyxattr(src, dst, *, follow_symlinks=True):
 
 
 shutil._copyxattr = patched_copyxattr
-
 
 
 #  MetaData = NewType('MetaData', object)
@@ -93,7 +92,6 @@ class AdminCreator(object):
         self.connection = None
         self.app = None
         self.admin_yaml = DotMap()
-        self.admin_yaml_col = DotMap()
         self.max_list_columns = 7  # maybe make this a param
 
         self._non_favorite_names_list = self.non_favorite_names.split()
@@ -112,7 +110,6 @@ class AdminCreator(object):
         sys.path.append(cwd)
 
         self.admin_yaml.api_root = "http://localhost:5656/api"
-        self.admin_yaml_col.api_root = "http://localhost:5656/api"
         self.admin_yaml.resources = {}
         for each_resource_name in self.mod_gen.resource_list:
             each_resource = self.mod_gen.resource_list[each_resource_name]
@@ -125,10 +122,8 @@ class AdminCreator(object):
 
         admin_yaml_dict = self.admin_yaml.toDict()
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
-        admin_yaml_dict_col = self.admin_yaml_col.toDict()
-        admin_yaml_dump_col = yaml.dump(admin_yaml_dict_col)
         if self.mod_gen.command != "create-ui":
-            self.write_yaml_files(admin_yaml_dump, admin_yaml_dump_col)
+            self.write_yaml_files(admin_yaml_dump)
         return admin_yaml_dump
 
     def create_resource_in_admin(self, resource: Resource):
@@ -148,12 +143,90 @@ class AdminCreator(object):
             self.admin_yaml.resources[resource.table_name] = new_resource.toDict()
 
     def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
-        """ create attribute in owner (owner is a DotMap -- of resource, or tab)
+        """ create attributes in owner (owner is a DotMap -- of resource, or tab)
+
+            Order:
+                attributes:  1 Favorite,  2 Joins,  3 Others / not favs,  4 Not Favs
+                - label: ShipName*
+                  name: ShipName
+                  search: true
+                - name: OrderDate
+                - name: RequiredDate
+                - name: Id
+                - name: CustomerId
+            """
+        owner.attributes = []
+        attributes_dict = []  # DotMap()
+        processed_attributes = set()
+
+        # Step 1 - favorite attribute
+        favorite_attribute = resource.get_favorite_attribute()
+        processed_attributes.add(favorite_attribute.name)
+        admin_attribute = self.create_admin_attribute(favorite_attribute)
+        admin_attribute.search = True
+        admin_attribute.label = f"{favorite_attribute.name}*"
+        attributes_dict.append(admin_attribute)
+
+        # Step 2 - Parent Joins
+        for each_parent in resource.parents:
+            if admin_parent_joins_implicit:  # temp hack - just do the FK
+                fk_pair = each_parent.parent_child_key_pairs[0]  # assume single-field keys
+                fk_attr_name = fk_pair[1]
+                processed_attributes.add(fk_attr_name)
+                admin_attribute = self.create_admin_attribute(fk_attr_name)
+                attributes_dict.append(admin_attribute)
+            else:
+                pass
+                """  perhaps something like this:
+                      - Location:     <— this is the parent resource name
+                          fks:
+                          - City       <- child FKs
+                          - Country
+                          attributes:  <- parent attrs to display
+                          - name: city
+                          - name: country
+
+                """
+
+        # Step 3 - Other fields, except non-favorites
+        for each_attribute in resource.attributes:
+            if each_attribute.name not in processed_attributes:
+                if not each_attribute.non_favorite:
+                    processed_attributes.add(each_attribute.name)
+                    admin_attribute = self.create_admin_attribute(each_attribute)
+                    attributes_dict.append(admin_attribute)
+
+        # Step 4 - Non-favorites
+        for each_attribute in resource.attributes:
+            if each_attribute.name not in processed_attributes:
+                if each_attribute.non_favorite:
+                    processed_attributes.add(each_attribute.name)
+                    admin_attribute = self.create_admin_attribute(each_attribute)
+                    attributes_dict.append(admin_attribute)
+
+        owner.attributes = attributes_dict
+
+    @staticmethod
+    def create_admin_attribute(resource_attribute) -> DotMap:
+        attribute_name = resource_attribute if isinstance(resource_attribute, str) else resource_attribute.name
+        admin_attribute = DotMap()
+        admin_attribute.name = attribute_name
+        if not isinstance(resource_attribute, str):
+            if resource_attribute.type in ["DECIMAL", "DATE"]:
+                admin_attribute.type = resource_attribute.type
+        return admin_attribute
+
+
+    def create_attributes_in_owner_zz(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
+        """ create attributes in owner (owner is a DotMap -- of resource, or tab)
 
           Customer:
             attributes:
-            - CompanyName
-            - ContactName
+            - label: CompanyName*
+              name: CompanyName
+              search: true
+            - name: ContactName
+            - name: ContactTitle
         """
         owner.attributes = []
         attributes_dict = []  # DotMap()
@@ -163,43 +236,43 @@ class AdminCreator(object):
             attributes = self.mod_gen.get_attributes(resource)
         for each_attribute in attributes:
             if "." not in each_attribute:   # not a parent join
+                admin_attribute = DotMap()
+                admin_attribute.name = each_attribute
                 if each_attribute == self.mod_gen.favorite_attribute_name(resource):
-                    attribute_with_search = DotMap()
-                    search = DotMap()
-                    search.name = each_attribute
-                    search.search = True
-                    search.label = f'{each_attribute}*'  # adding space causes newline, so omit for now
-                    # attribute_with_search[each_attribute] = search
-                    attributes_dict.append(search)  # attribute_with_search)
-                else:
-                    admin_attribute = DotMap()
-                    admin_attribute.name = each_attribute
-                    attributes_dict.append(admin_attribute)
-            else:                           # parent join
+                    admin_attribute.search = True
+                    admin_attribute.label = f"{each_attribute}*"
+                """
+                if each_attribute.type in ["DECIMAL", "DATE"]:
+                    admin_attribute.type = each_attribute.type
+                """
+                attributes_dict.append(admin_attribute)
+            else:                           # parent join (disabled code - overwritten at end)
                 relationship = self.new_relationship_to_parent(resource, each_attribute, owner_resource)
                 if relationship is not None:  # skip redundant master join
                     rel = DotMap()
                     parent_role_name = each_attribute.split('.')[0]
                     rel[parent_role_name] = relationship.toDict()
                     owner.attributes.append(rel)
-        owner.attributes = attributes_dict
+        owner.attributes = attributes_dict  # for now, just attrs, no parent joins since safrs-react autojoins FKs
 
     def new_relationship_to_parent(self, a_child_resource: Resource, parent_attribute_reference,
-                                   a_master_parent_resource) -> (None, DotMap):
+                                      a_master_parent_resource) -> (None, DotMap):
         """
         given a_child_table_def.parent_column_reference, create relationship: attrs, fKeys (for *js* client (no meta))
 
           Order:
             attributes:
             - ShipName
+            - Amount
             - Location:
                 fks:
                 - City
                 - Country
-                show_attributes: []
-                type: Location
+                attributes:
+                - name: city
+                - name: country
 
-        :param a_child_resource: a child table (not class), eg, Employees
+        :param a_child_resource: a child resource (not class), eg, Employees
         :param parent_attribute_reference: parent ref, eg, Department1.DepartmentName
         :param a_master_parent_resource: the master of master/detail - skip joins for this
         """
@@ -224,8 +297,8 @@ class AdminCreator(object):
             if parent_role_name not in self.multi_reln_exceptions:
                 self.multi_reln_exceptions.append(parent_role_name)
                 log.warning(f'Error - please search ui/admin/admin.yaml for: Unable to find role')
-        relationship.type = str(parent_relationship.parent_resource)
-        relationship.show_attributes = []
+        relationship.resource = str(parent_relationship.parent_resource)  # redundant??
+        relationship.attributes = []
         relationship.fks = []
         if a_child_resource.name == "Employee":
             log.debug("Parents for special table - debug")
@@ -402,7 +475,7 @@ class AdminCreator(object):
         parent_path = parent_path.parent
         return parent_path
 
-    def write_yaml_files(self, admin_yaml, admin_yaml_col):
+    def write_yaml_files(self, admin_yaml):
         """ write admin.yaml, with backup, with additional nw customized backup
         """
         yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
