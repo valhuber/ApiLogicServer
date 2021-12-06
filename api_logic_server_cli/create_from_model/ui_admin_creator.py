@@ -109,7 +109,12 @@ class AdminCreator(object):
         cwd = os.getcwd()
         sys.path.append(cwd)
 
-        self.admin_yaml.api_root = "http://localhost:5656/api"
+        self.admin_yaml.api_root = f'http://localhost:5656/api'
+        if self.host != "localhost":
+            if self.port !="":
+                self.admin_yaml.api_root = f'http://{self.host}:{self.port}/api'
+            else:
+                self.admin_yaml.api_root = f'http://{self.host}/api'
         self.admin_yaml.resources = {}
         for each_resource_name in self.mod_gen.resource_list:
             each_resource = self.mod_gen.resource_list[each_resource_name]
