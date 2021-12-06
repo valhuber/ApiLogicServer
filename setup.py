@@ -69,7 +69,7 @@ setup(
         "Flask-AppBuilder==3.3.0",
         "logicbankutils==0.6.0",
         "inflect==5.0.2",
-        "safrs>=2.11.4",
+        "safrs>=2.12.0",
         "Flask-Admin==1.5.7",
         "Flask-Cors==3.0.0",
         "Flask==1.1.2",

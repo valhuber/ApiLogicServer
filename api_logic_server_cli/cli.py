@@ -848,7 +848,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t12/06/2021 - 03.50.30: tbd  \n"
+            "\t12/06/2021 - 03.50.30: proper safrs version, still Config-als.js  \n"
             "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"
             "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"
             "\t11/15/2021 - 03.50.02: minor diagnostics \n"
