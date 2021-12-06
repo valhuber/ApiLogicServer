@@ -12,8 +12,8 @@
     "runtime-main.js": "/admin-app/static/js/runtime-main.65d7dfe6.js",
     "runtime-main.js.map": "/admin-app/static/js/runtime-main.65d7dfe6.js.map",
     "static/css/5.c1dc66b4.chunk.css": "/admin-app/static/css/5.c1dc66b4.chunk.css",
-    "static/js/5.6720ff7c.chunk.js": "/admin-app/static/js/5.6720ff7c.chunk.js",
-    "static/js/5.6720ff7c.chunk.js.map": "/admin-app/static/js/5.6720ff7c.chunk.js.map",
+    "static/js/5.aad8f42a.chunk.js": "/admin-app/static/js/5.aad8f42a.chunk.js",
+    "static/js/5.aad8f42a.chunk.js.map": "/admin-app/static/js/5.aad8f42a.chunk.js.map",
     "static/js/6.a9426d25.chunk.js": "/admin-app/static/js/6.a9426d25.chunk.js",
     "static/js/6.a9426d25.chunk.js.map": "/admin-app/static/js/6.a9426d25.chunk.js.map",
     "static/js/7.26d61b9f.chunk.js": "/admin-app/static/js/7.26d61b9f.chunk.js",
@@ -175,14 +175,14 @@
     "index.html": "/admin-app/index.html",
     "static/css/5.c1dc66b4.chunk.css.map": "/admin-app/static/css/5.c1dc66b4.chunk.css.map",
     "static/css/main.388f9ee7.chunk.css.map": "/admin-app/static/css/main.388f9ee7.chunk.css.map",
-    "static/js/5.6720ff7c.chunk.js.LICENSE.txt": "/admin-app/static/js/5.6720ff7c.chunk.js.LICENSE.txt",
+    "static/js/5.aad8f42a.chunk.js.LICENSE.txt": "/admin-app/static/js/5.aad8f42a.chunk.js.LICENSE.txt",
     "static/js/76.79cd9f97.chunk.js.LICENSE.txt": "/admin-app/static/js/76.79cd9f97.chunk.js.LICENSE.txt",
     "static/media/codicon.css": "/admin-app/static/media/codicon.aeb98e0b.ttf"
   },
   "entrypoints": [
     "static/js/runtime-main.65d7dfe6.js",
     "static/css/5.c1dc66b4.chunk.css",
-    "static/js/5.6720ff7c.chunk.js",
+    "static/js/5.aad8f42a.chunk.js",
     "static/css/main.388f9ee7.chunk.css",
     "static/js/main.7ca6ae85.chunk.js"
   ]

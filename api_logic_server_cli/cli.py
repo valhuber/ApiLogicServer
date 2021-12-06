@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Given a database url,
-create ApiLogicServer project by cloning prototype,
+create ApiLogicProject by cloning prototype,
 in particular create the ui/basic_web_app/app/views.py
 and api/expose_api_models.
 
@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.29"
+__version__ = "3.50.30"
 
 from contextlib import closing
 
@@ -848,26 +848,14 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/06/2021 - 03.50.30: tbd  \n"
             "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"
             "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"
-            "\t12/03/2021 - 03.50.26: empty grids fixed missing child grids - but not pagination, search, some DBs  \n"
-            "\t12/02/2021 - 03.50.25: fixed missing child grids (e.g., sakila, some grids still empty)  \n"
-            "\t12/02/2021 - 03.50.24: new safrs-react-admin, Config-als.js (parent/child joins working)  \n"
-            "\t12/01/2021 - 03.50.23: new safrs-react-admin, Config-als.js (not working)  \n"
-            "\t12/01/2021 - 03.50.22: new yaml - see admin3-53.22.yaml  \n"
-            "\t11/30/2021 - 03.50.21: default project name changed to ApiLogicProject, isolated child grid failure  \n"
-            "\t11/26/2021 - 03.50.20: default search for favorite attr (* label), yaml url fix, resource.attrs too  \n"
-            "\t11/25/2021 - 03.50.17: working search support in Config.js, admin chooser  \n"
-            "\t11/25/2021 - 03.50.16: patch to work with WSL as workaround for https://bugs.python.org/issue38633  \n"
-            "\t11/16/2021 - 03.50.03: safrs-react-admin fixes \n"
             "\t11/15/2021 - 03.50.02: minor diagnostics \n"
-            "\t11/13/2021 - 03.50.01: port conflict warning (not failure) for Docker \n"
-            "\t11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support \n"
+            "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"
             "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"
-            "\t10/18/2021 - 03.20.11: Readme Tutorial for IDE users \n"
             "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
             "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
-            "\t09/25/2021 - 03.01.10: run command for Docker, pyodbc, fab create-by-copy, localhost swagger \n"
             "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
             "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
         )
