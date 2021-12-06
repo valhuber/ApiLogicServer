@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.27"
+__version__ = "3.50.28"
 
 from contextlib import closing
 
@@ -843,10 +843,12 @@ def about(ctx):
     print_at('on hostname', hostname)
     print_at('cwd', os. getcwd())
     print_at("Python version", create_utils.run_command(f'python --version', msg="no-msg"))
+    print_at("Docker", is_docker())
 
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/05/2021 - 03.50.28: pythonanywhere fixes (admin.yaml loads from current server, use build --host)  \n"
             "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"
             "\t12/03/2021 - 03.50.26: empty grids fixed missing child grids - but not pagination, search, some DBs  \n"
             "\t12/02/2021 - 03.50.25: fixed missing child grids (e.g., sakila, some grids still empty)  \n"

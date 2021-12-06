@@ -34,8 +34,8 @@ export const get_Conf = () => {
     let yaml_str = ''
     let lsc_str = null
     let als_admin_loaded = false
-    yaml_str = loadResponse('http://localhost:5656/ui/admin/admin.yaml')  // for debug
-    // yaml_str = loadResponse('/ui/admin/admin.yaml')                      // for release
+    // yaml_str = loadResponse('http://localhost:5656/ui/admin/admin.yaml')  // for debug
+    yaml_str = loadResponse('/ui/admin/admin.yaml')                      // for release
 
     if (typeof yaml_str !== 'undefined' && yaml_str !== null) {
         try {

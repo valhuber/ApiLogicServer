@@ -147,7 +147,7 @@ if sys.argv[1:]:
     host = sys.argv[1]  # you many need to enable cors support, below
     app_logger.debug(f'==> Network Diagnostic - using specified host: {sys.argv[1]}')
 else:
-    host = "localhost"
+    host = "api_logic_server_host"
     app_logger.debug(f'==> Network Diagnostic - defaulting host: {host}')
 flask_host = host
 if is_docker() and host == "localhost":
