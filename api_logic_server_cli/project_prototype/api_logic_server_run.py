@@ -52,9 +52,7 @@ from safrs import ValidationError, SAFRSBase
 
 def is_docker():
     path = '/home/api_logic_server'
-    return (
-        os.path.isfile(path) and any('docker' in line for line in open(path))
-    )
+    return os.path.isdir(path)
 
 
 def setup_logging(flask_app):
