@@ -747,7 +747,7 @@ class CreateFromModel(object):
                     pass
                 pass
                 log.debug(f'setting resource_list: {str(resource_list)}')
-                self.resource_list = resource_list  # currently, you can disable this to bypass errors
+                self.resource_list = resource_list  # model loaded - excellent breakpoint location
 
                 if orm_class is not None:
                     log.debug(f'.. .. ..Dynamic model import successful '
