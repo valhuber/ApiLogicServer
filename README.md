@@ -393,12 +393,8 @@ source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 ```
 
-#### Cloud (reduced functionality)
-The cloud demo is less recommended, since you don't get to use Swagger or the Basic Web App.
-But you just want to take a quick look the the API, [run the demo using a cloud-based (MyBinder) install](https://github.com/valhuber/ApiLogicServerTutorial).
-
-For your own projects, follow normal procedures to deploy them to the cloud.
-
+#### Cloud Install - Pythonanwhere
+API Logic Server runs well on [pythonanywhere](http://pythonanywhere.com/).  See [these instructions](https://github.com/valhuber/ApiLogicServer/wiki/Python-Verify-and-Install#pythonanywhere).
 
 ### Heads up - Certificate Issues
 We sometimes see Python / Flask AppBuilder Certificate issues - see [Troubleshooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#certificate-failures).
