@@ -18,7 +18,7 @@ if [ $# -eq 0 ]
     sudo rm -r ../../safrs-react-admin
     cd ../../
     pwd
-    read -p "Verify you are at dev, and [Enter] rebuild react-admin for API Logic Server"
+    # read -p "Verify you are at dev, and [Enter] rebuild react-admin for API Logic Server"
     git clone https://github.com/thomaxxl/safrs-react-admin
     cd safrs-react-admin
     ls ../ApiLogicServer/react-admin/code
