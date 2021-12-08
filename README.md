@@ -393,7 +393,7 @@ source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 ```
 
-#### Cloud Install - Pythonanwhere
+## Cloud Install - Pythonanwhere
 API Logic Server runs well on [pythonanywhere](http://pythonanywhere.com/).  See [these instructions](https://github.com/valhuber/ApiLogicServer/wiki/Python-Verify-and-Install#pythonanywhere).
 
 ### Heads up - Certificate Issues
