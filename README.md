@@ -383,7 +383,7 @@ See the link above for more information on install and execution.
 
 ## Local Installation
 Caution: Python install is rather more than running an installer.
-Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicServer/wiki/Python-Verify-and-Install).
+Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide).
 
 Then, install the ApiLogicServer CLI in the usual manner:
 
@@ -394,7 +394,7 @@ pip install ApiLogicServer # you may need to use pip3, or restart your terminal 
 ```
 
 ## Cloud Install - Pythonanwhere
-API Logic Server runs well on [pythonanywhere](http://pythonanywhere.com/).  See [these instructions](https://github.com/valhuber/ApiLogicServer/wiki/Python-Verify-and-Install#pythonanywhere).
+API Logic Server runs well on [pythonanywhere](http://pythonanywhere.com/).  See [these instructions](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide#pythonanywhere).
 
 ## Installation Notes
 
