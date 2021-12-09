@@ -245,6 +245,9 @@ This element is for technology exploration - it is _not_ production ready.
 [See here](https://github.com/meera/apilogicserver-react-admin-genned#readme)
 for more information.
 
+# Project Operations
+Please [see the wiki](https://github.com/valhuber/ApiLogicServer/wiki) for 
+details on project operations.
 
 # Architectural Overview
 <details>
