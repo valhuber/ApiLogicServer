@@ -50,7 +50,8 @@ from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase
 
 
-def is_docker():
+def is_docker() -> bool:
+    """ running docker?  dir exists: /home/api_logic_server """
     path = '/home/api_logic_server'
     return os.path.isdir(path)
 
@@ -227,7 +228,7 @@ if __name__ == "__main__":
     user_host = flask_host
     if is_docker():
         user_host = "localhost"
-    msg = f'Starting ApiLogicServer project, version api_logic_server_version on http://{user_host}:{port}'
+    msg = f'Starting ApiLogicServer project, version api_logic_server_version, available at http://{user_host}:{port}'
     if is_docker():
         msg += f' on docker container'
     app_logger.info(msg)

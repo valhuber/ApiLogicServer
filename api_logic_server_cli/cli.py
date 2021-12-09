@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.31"
+__version__ = "3.50.32"
 
 from contextlib import closing
 
@@ -610,13 +610,9 @@ def start_open_with(open_with: str, project_name: str):
 
 
 def is_docker() -> bool:
-    """ running docker?  path exists: /home/api_logic_server
-    """
+    """ running docker?  dir exists: /home/api_logic_server """
     path = '/home/api_logic_server'
-    return (
-        # os.path.exists('/.dockerenv') or
-        os.path.isdir(path)
-    )
+    return os.path.isdir(path)
 
 
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
@@ -848,6 +844,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/09/2021 - 03.50.32: fix is_docker check  \n"
             "\t12/08/2021 - 03.50.31: recent safrs-react-admin version, still Config-als.js  \n"
             "\t12/06/2021 - 03.50.30: proper safrs version, still Config-als.js  \n"
             "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"
