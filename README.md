@@ -341,7 +341,7 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 <details>
   <summary>How It Works</summary>
 
-The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below - for more information, [see here](https://github.com/valhuber/ApiLogicServer/wiki/Internal-Debug-Execution).
+The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below - for more information, [see here](https://github.com/valhuber/ApiLogicServer/wiki/Internals).
 
 The executables are shown in blue, corresponding to Run, above.  Your customizations are done to the files noted in green.
 
