@@ -73,6 +73,11 @@ def fix_generated(code, args):
     if "mysql" in args.url:
         code = code.replace("Numeric", "String")
         code = code.replace(", 'utf8_bin'","")
+    if "mssql" in args.url:
+        bad_import = "from sqlalchemy.dialects.mysql import *"  # prevents safrs bool not iterable
+        line1 = "# coding: utf-8\n"
+        code = code.replace(bad_import,"# " + bad_import)
+        code = code.replace(line1, line1 + bad_import + "\n")
     return code
 
 

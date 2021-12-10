@@ -8,9 +8,9 @@ SQLAlchemy-Utils
 six
 email-validator
 LogicBank>=1.0.2
-safrs>=2.12.0
+safrs>=2.12.1
 logicbankutils
-flask-appbuilder
+flask-appbuilder>=3.3.4
 PyMySQL
 cryptography
 requests
