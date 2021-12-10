@@ -21,33 +21,48 @@ You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
 ## Run
 
-Created projects are instantly executable.  Let's explore the Admin App and the API.
+Created ApiLogicProjects are instantly executable.  Let's explore the Admin App and the API.
 
-### Admin App
-To run the Web App, follow these steps:
+### Admin App: Multi-Page, Multi-Table, Automatic Joins
+To run the Admin App, follow these steps:
 
 1. Click **Run and Debug**
    * *Note:* these steps are highlighted in the diagram below
 2. Select the `ApiLogicServer` Launch Configuration
 3. Press the green run button
-   * The app should start, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and run the app with user **admin**, password **p**.
-4. Explore the app - multi-page, multi-table, automatic joins
-5. **TBD - Customize label or something ??**
-6. (Leave the app and server running)
+   * The app should start, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
+4. Explore the app: multi-page, multi-table, automatic joins
+   * Navigate to `Customer`
+   * Click the Customer row  to see Customer Details
+   * Click the `OrderList` tab at the bottom right
+   * Click the first Order row
+   * Click the `OrderDetailList` tab at the bottom right
+6. (Close the app, but leave the server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/basic-web-app.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
+&nbsp;&nbsp;&nbsp;
 
-### JSON:API - Swagger
+  > **Key Take-away:** instant multi-page / multi-table admin apps, suitable for back office and instant agile collaboration.
+
+&nbsp;
+
+### JSON:API - Filtering, Sorting, Pagination, Swagger
 Your API is instantly ready to support ui and integration
 development, available in swagger, as shown below.  JSON:APIs are interesting because they
 are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
 
-The creation process builds not only the API, but swagger so you can explore it, like this:
-1. Click **Home** (upper left) 
-2. Click **Resources > Swagger**
-3. Explore the swagger
-4. (Leave the app and server running)
+The creation process builds not only the API, but swagger so you can explore it.  The Admin App provides a link to the swagger, but it doesn't work in VS Code's simple browser.  So, we'll launch a new Simple Browser, like this:
+1. Click __View > Command__ to open the Command Palette
+   * Enter command: `Simple Browser: Show`
+   * Specify the URL: `localhost:5656/api`
+2. Explore the swagger
+3. (Leave the swagger and server running)
+
+&nbsp;&nbsp;&nbsp;
+
+  > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  Custom App Dev is unblocked.
+
 
 &nbsp;&nbsp;&nbsp;
 
@@ -57,7 +72,7 @@ That's quite a good start on a project.  But we've all seen generators that get 
 
 Let's examine how API Logic Server projects can be customized for both APIs and logic.  We'll first have a quick look at the created project structure, then some typical customizations.
 
-> The API and web app you just reviewed above were ***not*** customized - they were created completely from the database structure.  For the sample project, we've injected some API and logic customizations, so you can explore them in this tutorial, as described below.
+> The API and admin app you just reviewed above were ***not*** customized - they were created completely from the database structure.  For the sample project, we've injected some API and logic customizations, so you can explore them in this tutorial, as described below.
 
 
 ### Project Structure
@@ -68,9 +83,21 @@ Use VS Code's **Project Explorer** to see the project structure:
 | ```api``` | JSON:API                      | ```api/customize_api.py```         | Add new end points / services                                                         |
 | ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema                       |
 | ```logic``` | Transactional Logic           | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and events such as send mail / messages |
-| ```ui``` | Admin App                     | ```ui/admin/admin.py```            | Control field display, ordering, etc.                                                 |
+| ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display, ordering, etc.                                                 |
 
 Let's now explore some examples.
+
+### Admin App Customization
+There is no code for the Admin app - it's behavior is declared in the `admin.yaml` model file.  Alter this file to control labels, hide fields, change display order, etc:
+
+1. Open **Explorer > [ui/admin/admin.yaml](./ui/admin/admin.yaml)**
+   * Find and alter the string `- label: ShipName*` (e.g, insert a space)
+   * Click Save
+2. Use **View > Command** to launch another `Simple Browser: Show`
+   * Enter URL: `localhost:5656`
+3. Observe the new label
+4. Close the Admin App Browser
+
 
 ### API Customization
 
@@ -84,7 +111,7 @@ To review the implementation:
    1. **Try it out**, then 
    2. **execute**
 
-You can examine the variables, step, etc.
+Your breakpoint will be hit; you can examine the variables, step, etc.
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
 
@@ -114,7 +141,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 ## Wrap up
 Let's recap what you've seen:
 
-* **Working software now** - a database API and a Web App - created automatically from a database, in moments instead of weeks or months.
+* **Working software now** - a database API and a Admin App - created automatically from a database, in moments instead of weeks or months.
 
 
 * **Customization** - for both the API and Logic - using Visual Studio code, for both editing and debugging
@@ -197,18 +224,18 @@ This project was created with the following directory structure:
 | ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display - order, captions etc.                                          |
 
 In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
-the created API, Logic and Web App.  Since they are separate files, the project can be
+the created API, Logic and Admin App.  Since they are separate files, the project can be
 recreated (e.g., synchronized with a revised schema), and these files can be easily copied
 into the new project, without line-by-line merges.
 
 
-| Feature                                             | Providing  | Why it Matters                                   | Learn More                                                                                                                                      |
-|:----------------------------------------------------|:--------------|:-------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1. [JSON:**API** and Swagger](#jsonapi---swagger)   | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                                                                                 |
-| 2. [Transactional **Logic**](#logic)                | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)                                                          |                                                         |
-| 3. [Basic **Web App**](#basic-web-app)              | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin       | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
-| 4. [**Customizable Project**](#customize-and-debug) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ...                                                                                                                         |
-| 5. Model Creation                                   | Python-friendly ORM | Custom Data Access<br>Used by API and Admin App  | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
+| Feature                                                               | Providing  | Why it Matters                                   | Learn More                                                                              |
+|:----------------------------------------------------------------------|:--------------|:-------------------------------------------------|:----------------------------------------------------------------------------------------|
+| 1. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                         |
+| 2. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)  |                                                         |
+| 3. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin       | [Admin App](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App) |
+| 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ...                                                                |
+| 5. Model Creation                                                     | Python-friendly ORM | Custom Data Access<br>Used by API and Admin App  | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                       |
 
 ## Appendix 2 - Project Information
 
