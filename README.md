@@ -40,7 +40,7 @@ After you've explored the tutorial, try out our [dockerized test databases](http
 
 # Feature Summary
 
-| Feature | Providing  | Why it Matters | Learn More
+| Feature | Providing  | Why it Matters | Learn More |
 | :-------------- |:--------------| :------|  :------|
 | 1. [JSON:**API** and Swagger](#jsonapi---swagger) | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
 | 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) |
