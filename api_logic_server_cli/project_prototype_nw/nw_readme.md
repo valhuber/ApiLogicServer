@@ -33,17 +33,18 @@ To run the Admin App, follow these steps:
    * The app should start, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
 4. Explore the app: multi-page, multi-table, automatic joins
    * Navigate to `Customer`
+     * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
    * Click the Customer row  to see Customer Details
    * Click the `OrderList` tab at the bottom right
    * Click the first Order row
    * Click the `OrderDetailList` tab at the bottom right
-6. (Close the app, but leave the server running)
+6. (Close the app (browser), but leave the server running)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;&nbsp;
 
-  > **Key Take-away:** instant multi-page / multi-table admin apps, suitable for back office and instant agile collaboration.
+  > **Key Take-away:** instant multi-page / multi-table admin apps, suitable for **back office, and instant agile collaboration.**
 
 &nbsp;
 
@@ -55,13 +56,14 @@ are client configurable to **reduce network traffic** and **minimize organizatio
 The creation process builds not only the API, but swagger so you can explore it.  The Admin App provides a link to the swagger, but it doesn't work in VS Code's simple browser.  So, we'll launch a new Simple Browser, like this:
 1. Click __View > Command__ to open the Command Palette
    * Enter command: `Simple Browser: Show`
-   * Specify the URL: `localhost:5656/api`
+   * Specify the URL: `http://localhost:5656/api`
 2. Explore the swagger
+   * Note: you can drag windows to arrange your viewing area as shown below
 3. (Leave the swagger and server running)
 
 &nbsp;&nbsp;&nbsp;
 
-  > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  Custom App Dev is unblocked.
+  > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
 
 
 &nbsp;&nbsp;&nbsp;
@@ -93,10 +95,16 @@ There is no code for the Admin app - it's behavior is declared in the `admin.yam
 1. Open **Explorer > [ui/admin/admin.yaml](./ui/admin/admin.yaml)**
    * Find and alter the string `- label: ShipName*` (e.g, insert a space)
    * Click Save
-2. Use **View > Command** to launch another `Simple Browser: Show`
-   * Enter URL: `localhost:5656`
-3. Observe the new label
-4. Close the Admin App Browser
+2. Launch the app: [http://localhost:5656](http://localhost:5656)
+3. Refresh your Browser window to reload the altered definition
+4. Click the **Order** menu to observe the new label
+
+&nbsp;&nbsp;&nbsp;
+
+  > **Key Take-away:** you can alter labels, which fields are displayed and their order, etc -- via a simple model - no need to learn a new framework, or deal with low-level code or html
+
+
+&nbsp;&nbsp;&nbsp;
 
 
 ### API Customization
@@ -110,8 +118,9 @@ To review the implementation:
 4. Use the swagger to access the `ServicesEndPoint > add_order`, and
    1. **Try it out**, then 
    2. **execute**
-
-Your breakpoint will be hit; you can examine the variables, step, etc.
+5. Your breakpoint will be hit
+   1. You can examine the variables, step, etc.
+6. Click **Continue** on the floating debug menu (upper right in screen shot below)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
 

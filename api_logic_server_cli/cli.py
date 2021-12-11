@@ -844,12 +844,10 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
-            "\t12/10/2021 - 03.50.36: Refresh safrs-react-admin, SqlServer models import order, safrs 2.12.1 \n"
-            "\t12/10/2021 - 03.50.35: SqlServer models import order, safrs 2.12.1 \n"
+            "\t12/10/2021 - 03.50.37: Refresh safrs-react-admin, SqlServer models import order, safrs 2.12.1, image \n"
             "\t12/09/2021 - 03.50.34: fix is_docker(), safrs/react-admin version, still Config-als.js, nw readme \n"
             "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"
             "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"
-            "\t11/15/2021 - 03.50.02: minor diagnostics \n"
             "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"
             "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"
             "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
