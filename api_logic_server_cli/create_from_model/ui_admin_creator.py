@@ -166,8 +166,11 @@ class AdminCreator(object):
 
         # Step 1 - favorite attribute
         favorite_attribute = resource.get_favorite_attribute()
-        processed_attributes.add(favorite_attribute.name)
         admin_attribute = self.create_admin_attribute(favorite_attribute)
+        if admin_attribute is None:
+            favorite_attribute = resource.attributes[0]
+            admin_attribute = self.create_admin_attribute(favorite_attribute)
+        processed_attributes.add(favorite_attribute.name)
         admin_attribute.search = True
         admin_attribute.label = f"{favorite_attribute.name}*"
         attributes_dict.append(admin_attribute)
@@ -179,7 +182,8 @@ class AdminCreator(object):
                 fk_attr_name = fk_pair[1]
                 processed_attributes.add(fk_attr_name)
                 admin_attribute = self.create_admin_attribute(fk_attr_name)
-                attributes_dict.append(admin_attribute)
+                if admin_attribute is not None:
+                    attributes_dict.append(admin_attribute)
             else:
                 pass
                 """  perhaps something like this:
@@ -199,7 +203,8 @@ class AdminCreator(object):
                 if not each_attribute.non_favorite:
                     processed_attributes.add(each_attribute.name)
                     admin_attribute = self.create_admin_attribute(each_attribute)
-                    attributes_dict.append(admin_attribute)
+                    if admin_attribute is not None:
+                        attributes_dict.append(admin_attribute)
 
         # Step 4 - Non-favorites
         for each_attribute in resource.attributes:
@@ -207,7 +212,8 @@ class AdminCreator(object):
                 if each_attribute.non_favorite:
                     processed_attributes.add(each_attribute.name)
                     admin_attribute = self.create_admin_attribute(each_attribute)
-                    attributes_dict.append(admin_attribute)
+                    if admin_attribute is not None:
+                        attributes_dict.append(admin_attribute)
 
         owner.attributes = attributes_dict
 
@@ -216,9 +222,13 @@ class AdminCreator(object):
         attribute_name = resource_attribute if isinstance(resource_attribute, str) else resource_attribute.name
         admin_attribute = DotMap()
         admin_attribute.name = attribute_name
+        if attribute_name == "Picture":
+            log.debug("Good breakpoint location")
         if not isinstance(resource_attribute, str):
             if resource_attribute.type in ["DECIMAL", "DATE"]:
                 admin_attribute.type = resource_attribute.type
+            if resource_attribute.type in ["NTEXT", "IMAGE"]:
+                admin_attribute = None
         return admin_attribute
 
 

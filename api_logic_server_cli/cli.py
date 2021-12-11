@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.36"
+__version__ = "3.50.37"
 
 from contextlib import closing
 

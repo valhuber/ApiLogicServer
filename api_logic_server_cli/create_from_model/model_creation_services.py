@@ -36,10 +36,16 @@ class ResourceAttribute():
     def __init__(self, name: str, resource: Type['Resource'], type: str):
         self.name = name
         self.type = None  # none means not interesting, default display to simple text
+        if name == "Picture":
+            log.debug("Nice breakpoint")
         if type == "DECIMAL":
             self.type = "DECIMAL"
-        elif type == "DECIMAL":
+        elif type == "DATE":
             self.type = "DATE"
+        elif type == "IMAGE":
+            self.type = "IMAGE"
+        elif type.startswith("NTEXT") == "NTEXT":
+            self.type = "NTEXT"
         self.non_favorite = False
         lower_name = name.lower()
         non_favs = resource.create_from_model._non_favorite_names_list
