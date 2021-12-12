@@ -92,7 +92,7 @@ class AdminCreator(object):
         self.connection = None
         self.app = None
         self.admin_yaml = DotMap()
-        self.max_list_columns = 7  # maybe make this a param
+        self.max_list_columns = 8  # maybe make this a param
 
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
