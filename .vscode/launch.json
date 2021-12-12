@@ -9,14 +9,14 @@
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_cli/cli.py",
-            "args": ["create","--project_name=../servers/api_logic_server","--db_url="],
+            "args": ["create","--project_name=../servers/ApiLogicProject","--db_url="],
             "console": "integratedTerminal"
         },
         {
-            "name": "api_logic_server",
+            "name": "RUN",
             "type": "python",
             "request": "launch",
-            "program": "${fileWorkspaceFolder}/../servers/api_logic_server/api_logic_server_run.py",
+            "program": "${fileWorkspaceFolder}/../servers/ApiLogicProject/api_logic_server_run.py",
             "console": "integratedTerminal"
         },
         {
