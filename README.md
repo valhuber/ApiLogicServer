@@ -73,11 +73,12 @@ cd ~/Desktop                       # directory of API Logic Server projects on l
 # Start API Logic Server container
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create --project_name=/localhost/api_logic_server --db_url=  # RETURN for sample database
+ApiLogicServer create --project_name=/localhost/ApliLogicProject --db_url=  # RETURN for sample database
 
-# start VS Code, and open ~/Desktop/api_logic_server
-#   1. install the remote-container extension if asked
-#   2. re-open in container when asked
+# start VS Code, and open ~/Desktop/ApliLogicProject
+#   1. code ApiLogicProject -g ApliLogicProject/readme.md
+#   2. install the remote-container extension if asked
+#   3. re-open in container when asked
 
 ```
 To begin:

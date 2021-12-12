@@ -23,7 +23,7 @@ if [ $# -eq 0 ]
     cd safrs-react-admin
     ls ../ApiLogicServer/react-admin/code
     cp ../ApiLogicServer/react-admin/code/Home-als.js src/components/Home.js
-    cp ../ApiLogicServer/react-admin/code/Config-als.js src/Config.js
+    # cp ../ApiLogicServer/react-admin/code/Config-als.js src/Config.js
     npm install
     pwd
     ls

@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_cli/cli.py",
-            "args": ["create","--project_name=~/dev/servers/api_logic_server","--db_url="],
+            "args": ["create","--project_name=../servers/api_logic_server","--db_url="],
             "console": "integratedTerminal"
         },
         {

@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.37"
+__version__ = "3.50.38"
 
 from contextlib import closing
 
@@ -844,6 +844,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/12/2021 - 03.50.38: safrs/Config.js (requires clear local storage?) \n"
             "\t12/10/2021 - 03.50.37: Refresh safrs-react-admin, SqlServer models import order, safrs 2.12.1, image \n"
             "\t12/09/2021 - 03.50.34: fix is_docker(), safrs/react-admin version, still Config-als.js, nw readme \n"
             "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"
