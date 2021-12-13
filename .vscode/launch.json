@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "API Logic Server",
+            "name": "1 - Create ApiLogicProject",
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_cli/cli.py",
@@ -13,7 +13,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "RUN",
+            "name": "2 - RUN ApiLogicProject",
             "type": "python",
             "request": "launch",
             "program": "${fileWorkspaceFolder}/../servers/ApiLogicProject/api_logic_server_run.py",
