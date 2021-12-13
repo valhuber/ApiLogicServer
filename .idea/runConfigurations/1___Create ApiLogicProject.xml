@@ -13,7 +13,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/api_logic_server_cli/cli.py" />
-    <option name="PARAMETERS" value="create --project_name=../../servers/ApiLogicServerProject --db_url=sqlite:///nw.sqlite" />
+    <option name="PARAMETERS" value="create --project_name=../../servers/ApiLogicProject --db_url=sqlite:///nw.sqlite" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
