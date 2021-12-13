@@ -271,7 +271,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
             code_loc = str(get_api_logic_server_dir())
             from_dir = (Path(code_loc)).\
                 joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
-        print(f'{msg} copy {from_dir} -> {project_directory}')
+        print(f'{msg} copy {from_dir} -> {os.path.realpath(project_directory)}')
         cloned_from = from_dir
         try:
             if project_name != ".":
