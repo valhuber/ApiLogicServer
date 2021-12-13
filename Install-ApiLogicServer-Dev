@@ -13,21 +13,21 @@ if [ $# -eq 0 ]
   else
     ls
     echo " "
-    read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer"
+    read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for $1"
     set -x
     mkdir servers    # good place to create ApiLogicProjects
     git clone https://github.com/valhuber/ApiLogicServer
     git clone https://github.com/thomaxxl/safrs-react-admin
     cd ApiLogicServer
-    virtualenv venv            # may require python3 -m venv venv
-    source venv/bin/activate   # windows venv\Scripts\activate
-    pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
     #
     #
     # read -p "Installed - ready to launch IDE..."
     if [[ "$1" = "vscode" ]]
       then
-        code ApiLogicServer
+        virtualenv venv            # may require python3 -m venv venv
+        source venv/bin/activate   # windows venv\Scripts\activate
+        pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
+        code .
         set +x
         echo ""
         echo "  * Right click Explorer - Add Folder to Workspace -- servers, safrs-react-admin"
@@ -36,9 +36,12 @@ if [ $# -eq 0 ]
         echo "  * Run 2 - RUN ApiLogicProject"
     elif [[ "$1" = "charm" ]]
     then
-        charm ApiLogicServer
+        charm .
         set +x
-        echo "  * set your virtual machine (IMPORTANT - NOT DOCKER)"
+        echo "  * Python Interpeter > Add New Environment (default, to create venv)"
+        echo "     IMPORTANT - NOT DOCKER"
+        echo "  * then open requirements.txt - PyCharm should **Install Requirements**"
+        echo "     If this fails, use a terminal to run pip install -r requirements.txt"
     else
       set +x
     fi
