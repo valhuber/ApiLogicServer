@@ -1,0 +1,51 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+  then
+    echo " "
+    echo "Installs dev version of ApiLogicServer and safrs-react-admin"
+    echo " "
+    echo " IMPORTANT - run this from empty folder"
+    echo " "
+    echo "  sh Install-ApiLogicServer-Dev [ code | charm | x ]"
+    echo " "
+    exit 0
+  else
+    ls
+    echo " "
+    read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer"
+    set -x
+    mkdir servers    # good place to create ApiLogicProjects
+    git clone https://github.com/valhuber/ApiLogicServer
+    git clone https://github.com/thomaxxl/safrs-react-admin
+    cd ApiLogicServer
+    virtualenv venv            # may require python3 -m venv venv
+    source venv/bin/activate   # windows venv\Scripts\activate
+    pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
+    #
+    #
+    # read -p "Installed - ready to launch IDE..."
+    if [[ "$1" = "vscode" ]]
+      then
+        code ApiLogicServer
+        set +x
+        echo ""
+        echo "  * Right click Explorer - Add Folder to Workspace -- servers, safrs-react-admin"
+        echo "  * Open the launch configuration (initializes vscode), then..."
+        echo "  * Run 1 - Create ApiLogicProject, then..."
+        echo "  * Run 2 - RUN ApiLogicProject"
+    elif [[ "$1" = "charm" ]]
+    then
+        charm ApiLogicServer
+        set +x
+        echo "  * set your virtual machine (IMPORTANT - NOT DOCKER)"
+    else
+      set +x
+    fi
+    echo ""
+    echo "IDEs are preconfigured with run/launch commands to create and run the sample"
+    echo ""
+    echo "ApiLogicServer/react-admin contains shell burn-and-rebuild-react-admin"
+    echo ""
+    exit 0
+fi

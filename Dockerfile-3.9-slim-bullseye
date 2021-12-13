@@ -1,4 +1,4 @@
-# docker build -t -f Dockerfile-3.9-slim-bullseye apilogicserver/api_logic_server --rm .
+# docker build -f Dockerfile-3.9-slim-bullseye apilogicserver/api_logic_server --rm .
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:version3.01.00
 # docker push apilogicserver/api_logic_server
 
