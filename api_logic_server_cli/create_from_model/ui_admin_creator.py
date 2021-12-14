@@ -324,7 +324,7 @@ class AdminCreator(object):
         # todo - verify fullname is table name (e.g, multiple relns - emp.worksFor/onLoan)
         return relationship
 
-    def create_child_tabs(self, resource: Resource) -> DotMap:
+    def create_child_tabs(self, resource: Resource) -> List:
         """
         build tabs for related children
 
@@ -338,8 +338,10 @@ class AdminCreator(object):
         if len(self.mod_gen.resource_list) == 0:   # almost always, use_model false (we create)
             return self.create_child_tabs_no_model(resource)
 
+        if resource.name == "Order":
+            log.debug(f'Relationships for {resource.name}')
         children_seen = set()
-        tab_group = DotMap()
+        tab_group = []
         for each_resource_relationship in resource.children:
             each_resource_tab = DotMap()
             self.num_related += 1
@@ -353,11 +355,11 @@ class AdminCreator(object):
             each_child_resource = self.mod_gen.resource_list[each_child]
             each_resource_tab.resource = each_child_resource.table_name
             each_resource_tab.direction = "tomany"
-            tab_name = each_resource_relationship.child_role_name
+            each_resource_tab.name = each_resource_relationship.child_role_name
             each_child_resource = self.mod_gen.resource_list[each_child]
             if admin_child_grids:
                 self.create_attributes_in_owner(each_resource_tab, each_child_resource, resource)
-            tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
+            tab_group.append(each_resource_tab)  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
         if admin_relationships_with_parents:
             for each_resource_relationship in resource.parents:
                 each_resource_tab = DotMap()
@@ -369,10 +371,10 @@ class AdminCreator(object):
                 each_resource_tab.fks = []
                 for each_pair in each_resource_relationship.parent_child_key_pairs:
                     each_resource_tab.fks.append(each_pair[1])
-                tab_name = each_resource_relationship.parent_role_name
+                each_resource_tab.name = each_resource_relationship.parent_role_name
 
                 # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept
-                tab_group[tab_name] = each_resource_tab
+                tab_group.append(each_resource_tab)
         return tab_group
 
     def do_process_resource(self, resource_name: str)-> bool:
@@ -525,7 +527,7 @@ class AdminCreator(object):
 
     def create_settings(self):
         self.admin_yaml.settings = DotMap()
-        self.admin_yaml.settings.max_list_columns = str(self.max_list_columns)
+        self.admin_yaml.settings.max_list_columns = self.max_list_columns
         return
 
     def create_about(self):
