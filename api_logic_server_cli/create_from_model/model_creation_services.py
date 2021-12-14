@@ -36,11 +36,13 @@ class ResourceAttribute():
     def __init__(self, name: str, resource: Type['Resource'], type: str):
         self.name = name
         self.type = None  # none means not interesting, default display to simple text
-        if name == "Picture":
+        if name == "InvoiceDate":
             log.debug("Nice breakpoint")
         if type == "DECIMAL":
             self.type = "DECIMAL"
         elif type == "DATE":
+            self.type = "DATE"
+        elif type == "DATETIME":
             self.type = "DATE"
         elif type == "IMAGE":
             self.type = "IMAGE"

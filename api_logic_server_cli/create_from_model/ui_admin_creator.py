@@ -222,7 +222,7 @@ class AdminCreator(object):
         attribute_name = resource_attribute if isinstance(resource_attribute, str) else resource_attribute.name
         admin_attribute = DotMap()
         admin_attribute.name = attribute_name
-        if attribute_name == "Picture":
+        if attribute_name == "InvoiceDate":
             log.debug("Good breakpoint location")
         if not isinstance(resource_attribute, str):
             if resource_attribute.type in ["DECIMAL", "DATE"]:

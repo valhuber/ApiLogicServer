@@ -9,7 +9,7 @@ See: main driver
 
 """
 
-__version__ = "3.50.40"
+__version__ = "3.50.41"
 
 from contextlib import closing
 
@@ -844,6 +844,7 @@ def about(ctx):
     click.echo(
         click.style(
             f'\n\nRecent Changes:\n'
+            "\t12/14/2021 - 03.50.41: safrs-react-admin styling, dates \n"
             "\t12/14/2021 - 03.50.40: Relationships as list (not dict) \n"
             "\t12/13/2021 - 03.50.39: safrs/Config.js force-reload 12/13 \n"
             "\t12/12/2021 - 03.50.38: safrs/Config.js (requires clear local storage?) \n"
