@@ -4,12 +4,12 @@
 
 # API Logic Server
 
-### TL;DR - Executable Software, *now*... Customizable
+### TL;DR - Working Software, *now*... Customizable
 
 With 1 command, you get:
-* Working Software, ***Now***
-  * a **database API,** to unblock UI development
-  * a **multi-page web app,** to engage Business Users - early in the project
+* ***Extreme Business Agility*** -- Working Software, ***Now***
+  * a **database API,** to jumpstart your project, unblocking custom UI development and integration
+  * a **multi-page admin app,** for back-office data administration, and to engage Business Users - _early_ in the project
   * Declarative logic using **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
 * A **_Customizable_ Project,** using a standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
 

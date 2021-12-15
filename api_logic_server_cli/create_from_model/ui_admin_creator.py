@@ -528,6 +528,13 @@ class AdminCreator(object):
     def create_settings(self):
         self.admin_yaml.settings = DotMap()
         self.admin_yaml.settings.max_list_columns = self.max_list_columns
+        home_js = "http://localhost:5656/admin-app/home.js"
+        if self.host != "localhost":
+            if self.port !="":
+                home_js = f'http://{self.host}:{self.port}/admin-app/home.js'
+            else:
+                home_js = f'http://{self.host}/admin-app/home.js'
+        self.admin_yaml.settings.HomeJS = home_js
         return
 
     def create_about(self):
@@ -591,6 +598,9 @@ class AdminCreator(object):
         print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
         # self.mod_gen.recursive_overwrite(from_proto_dir, to_project_dir)
         shutil.copytree(from_proto_dir, to_project_dir)
+        home_js = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
+                                                       "/create_from_model/templates/home.js")
+        shutil.copyfile(home_js, f'{to_project_dir}/home.js')
 
 
 def create(model_creation_services: create_from_model.CreateFromModel):
