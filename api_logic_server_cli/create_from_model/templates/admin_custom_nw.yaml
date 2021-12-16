@@ -1,7 +1,7 @@
 about:
-  date: December 02, 2021 19:22:54
-  recent_changes: altered order for Customer attributes
-  version: 3.50.24
+  date: December 15, 2021 07:38:30
+  recent_changes: 'Customer/Orders: tab order, label;  Customer search name & ID; Employees: HireDate type'
+  version: 3.50.42
 api_root: http://localhost:5656/api
 info:
   number_relationships: 8
@@ -36,12 +36,12 @@ resources:
     user_key: CategoryName
   Customer:
     attributes:
-    - label: CompanyName*
+    - label: Company Name*
       name: CompanyName
       search: true
-    - name: Balance
-    - name: CreditLimit
+      sort: true
     - name: ContactName
+      search: true
     - name: ContactTitle
     - name: Address
     - name: City
@@ -50,43 +50,25 @@ resources:
     - name: Country
     - name: Phone
     - name: Fax
+    - name: Balance
+      type: DECIMAL
+    - name: CreditLimit
+      type: DECIMAL
     - name: OrderCount
-    - name: Id
     - name: UnpaidOrderCount
+    - name: Id
     tab_groups:
-      CustomerCustomerDemoList:
-        attributes:
-        - label: Id*
-          name: Id
-          search: true
-        - name: CustomerTypeId
-        direction: tomany
-        fks:
-        - CustomerTypeId
-        resource: CustomerCustomerDemo
-      OrderList:
-        attributes:
-        - label: ShipName*
-          name: ShipName
-          search: true
-        - name: OrderDate
-        - name: RequiredDate
-        - name: ShippedDate
-        - name: ShipVia
-        - name: Freight
-        - name: ShipAddress
-        - name: ShipCity
-        - name: ShipRegion
-        - name: ShipPostalCode
-        - name: ShipCountry
-        - name: AmountTotal
-        - name: EmployeeId
-        - name: CustomerId
-        - name: Id
-        direction: tomany
-        fks:
-        - CustomerId
-        resource: Order
+    - direction: tomany
+      fks:
+      - CustomerId
+      name: OrderList
+      label: Order List
+      resource: Order
+    - direction: tomany
+      fks:
+      - CustomerTypeId
+      name: CustomerCustomerDemoList
+      resource: CustomerCustomerDemo
     type: Customer
     user_key: CompanyName
   CustomerCustomerDemo:
@@ -96,11 +78,11 @@ resources:
       search: true
     - name: CustomerTypeId
     tab_groups:
-      Customer:
-        direction: toone
-        fks:
-        - CustomerTypeId
-        resource: Customer
+    - direction: toone
+      fks:
+      - CustomerTypeId
+      name: Customer
+      resource: Customer
     type: CustomerCustomerDemo
     user_key: Id
   CustomerDemographic:
@@ -121,6 +103,7 @@ resources:
     - name: TitleOfCourtesy
     - name: BirthDate
     - name: HireDate
+      type: DATE
     - name: Address
     - name: City
     - name: Region
@@ -134,57 +117,24 @@ resources:
     - name: PhotoPath
     - name: IsCommissioned
     - name: Salary
+      type: DECIMAL
     - name: Id
     tab_groups:
-      EmployeeAuditList:
-        attributes:
-        - label: LastName*
-          name: LastName
-          search: true
-        - name: Title
-        - name: Salary
-        - name: FirstName
-        - name: CreatedOn
-        - name: EmployeeId
-        - name: Id
-        direction: tomany
-        fks:
-        - EmployeeId
-        resource: EmployeeAudit
-      EmployeeTerritoryList:
-        attributes:
-        - label: Id*
-          name: Id
-          search: true
-        - name: EmployeeId
-        - name: TerritoryId
-        direction: tomany
-        fks:
-        - EmployeeId
-        resource: EmployeeTerritory
-      OrderList:
-        attributes:
-        - label: ShipName*
-          name: ShipName
-          search: true
-        - name: OrderDate
-        - name: RequiredDate
-        - name: ShippedDate
-        - name: ShipVia
-        - name: Freight
-        - name: ShipAddress
-        - name: ShipCity
-        - name: ShipRegion
-        - name: ShipPostalCode
-        - name: ShipCountry
-        - name: AmountTotal
-        - name: EmployeeId
-        - name: CustomerId
-        - name: Id
-        direction: tomany
-        fks:
-        - EmployeeId
-        resource: Order
+    - direction: tomany
+      fks:
+      - EmployeeId
+      name: EmployeeAuditList
+      resource: EmployeeAudit
+    - direction: tomany
+      fks:
+      - EmployeeId
+      name: EmployeeTerritoryList
+      resource: EmployeeTerritory
+    - direction: tomany
+      fks:
+      - EmployeeId
+      name: OrderList
+      resource: Order
     type: Employee
     user_key: LastName
   EmployeeAudit:
@@ -192,18 +142,19 @@ resources:
     - label: LastName*
       name: LastName
       search: true
+    - name: EmployeeId
     - name: Title
     - name: Salary
+      type: DECIMAL
     - name: FirstName
     - name: CreatedOn
-    - name: EmployeeId
     - name: Id
     tab_groups:
-      Employee:
-        direction: toone
-        fks:
-        - EmployeeId
-        resource: Employee
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      resource: Employee
     type: EmployeeAudit
     user_key: LastName
   EmployeeTerritory:
@@ -214,16 +165,16 @@ resources:
     - name: EmployeeId
     - name: TerritoryId
     tab_groups:
-      Employee:
-        direction: toone
-        fks:
-        - EmployeeId
-        resource: Employee
-      Territory:
-        direction: toone
-        fks:
-        - TerritoryId
-        resource: Territory
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      resource: Employee
+    - direction: toone
+      fks:
+      - TerritoryId
+      name: Territory
+      resource: Territory
     type: EmployeeTerritory
     user_key: Id
   Order:
@@ -231,47 +182,37 @@ resources:
     - label: ShipName*
       name: ShipName
       search: true
+    - name: CustomerId
+    - name: EmployeeId
     - name: OrderDate
     - name: RequiredDate
     - name: ShippedDate
     - name: ShipVia
     - name: Freight
+      type: DECIMAL
     - name: ShipAddress
     - name: ShipCity
     - name: ShipRegion
     - name: ShipPostalCode
     - name: ShipCountry
     - name: AmountTotal
-    - name: EmployeeId
-    - name: CustomerId
     - name: Id
     tab_groups:
-      Customer:
-        direction: toone
-        fks:
-        - CustomerId
-        resource: Customer
-      Employee:
-        direction: toone
-        fks:
-        - EmployeeId
-        resource: Employee
-      OrderDetailList:
-        attributes:
-        - label: Id*
-          name: Id
-          search: true
-        - name: UnitPrice
-        - name: Quantity
-        - name: Discount
-        - name: Amount
-        - name: ShippedDate
-        - name: ProductId
-        - name: OrderId
-        direction: tomany
-        fks:
-        - OrderId
-        resource: OrderDetail
+    - direction: tomany
+      fks:
+      - OrderId
+      name: OrderDetailList
+      resource: OrderDetail
+    - direction: toone
+      fks:
+      - CustomerId
+      name: Customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      resource: Employee
     type: Order
     user_key: ShipName
   OrderDetail:
@@ -279,24 +220,26 @@ resources:
     - label: Id*
       name: Id
       search: true
+    - name: OrderId
+    - name: ProductId
     - name: UnitPrice
+      type: DECIMAL
     - name: Quantity
     - name: Discount
     - name: Amount
+      type: DECIMAL
     - name: ShippedDate
-    - name: ProductId
-    - name: OrderId
     tab_groups:
-      Order:
-        direction: toone
-        fks:
-        - OrderId
-        resource: Order
-      Product:
-        direction: toone
-        fks:
-        - ProductId
-        resource: Product
+    - direction: toone
+      fks:
+      - OrderId
+      name: Order
+      resource: Order
+    - direction: toone
+      fks:
+      - ProductId
+      name: Product
+      resource: Product
     type: OrderDetail
     user_key: Id
   Product:
@@ -306,31 +249,21 @@ resources:
       search: true
     - name: QuantityPerUnit
     - name: UnitPrice
+      type: DECIMAL
     - name: UnitsInStock
     - name: UnitsOnOrder
     - name: ReorderLevel
     - name: Discontinued
     - name: UnitsShipped
     - name: Id
-    - name: CategoryId
     - name: SupplierId
+    - name: CategoryId
     tab_groups:
-      OrderDetailList:
-        attributes:
-        - label: Id*
-          name: Id
-          search: true
-        - name: UnitPrice
-        - name: Quantity
-        - name: Discount
-        - name: Amount
-        - name: ShippedDate
-        - name: ProductId
-        - name: OrderId
-        direction: tomany
-        fks:
-        - ProductId
-        resource: OrderDetail
+    - direction: tomany
+      fks:
+      - ProductId
+      name: OrderDetailList
+      resource: OrderDetail
     type: Product
     user_key: ProductName
   Region:
@@ -373,21 +306,16 @@ resources:
     - label: TerritoryDescription*
       name: TerritoryDescription
       search: true
-    - name: RegionId
     - name: Id
+    - name: RegionId
     tab_groups:
-      EmployeeTerritoryList:
-        attributes:
-        - label: Id*
-          name: Id
-          search: true
-        - name: EmployeeId
-        - name: TerritoryId
-        direction: tomany
-        fks:
-        - TerritoryId
-        resource: EmployeeTerritory
+    - direction: tomany
+      fks:
+      - TerritoryId
+      name: EmployeeTerritoryList
+      resource: EmployeeTerritory
     type: Territory
     user_key: TerritoryDescription
 settings:
-  max_list_columns: '7'
+  HomeJS: http://localhost:5656/admin-app/home.js
+  max_list_columns: 8

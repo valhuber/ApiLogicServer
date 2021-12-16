@@ -1,15 +1,38 @@
 # -*- coding: utf-8 -*-
 """
-Given a database url,
-create ApiLogicProject by cloning prototype,
-in particular create the ui/basic_web_app/app/views.py
-and api/expose_api_models.
+Given a database url, create [and run] ApiLogicProject.
 
-See: main driver
+Basically clone prototype project, and create:
+* database/models.py
+* ui/admin/admin.yaml
+* api/expose_api_models
+
+Special provisions for NW Sample, to show customizations.
+
+See end for key module map quick links.
 
 """
 
-__version__ = "3.50.42"
+__version__ = "3.50.43"
+
+recent_changes = \
+    f'\n\nRecent Changes:\n' +\
+    "\t12/15/2021 - 03.50.43: nw custom home and admin \n"\
+    "\t12/14/2021 - 03.50.42: safrs-react-admin search, working configurable home \n"\
+    "\t12/14/2021 - 03.50.41: safrs-react-admin styling, dates \n"\
+    "\t12/14/2021 - 03.50.40: Relationships as list (not dict) \n"\
+    "\t12/13/2021 - 03.50.39: safrs/Config.js force-reload 12/13 \n"\
+    "\t12/12/2021 - 03.50.38: safrs/Config.js (requires clear local storage?) \n"\
+    "\t12/10/2021 - 03.50.37: Refresh safrs-react-admin, SqlServer models import order, safrs 2.12.1, image \n"\
+    "\t12/09/2021 - 03.50.34: fix is_docker(), safrs/react-admin version, still Config-als.js, nw readme \n"\
+    "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"\
+    "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"\
+    "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
+    "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
+    "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"\
+    "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"\
+    "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"\
+    "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
 
 from contextlib import closing
 
@@ -816,6 +839,8 @@ def about(ctx):
         Recent Changes, system information.
     """
     # print_info()
+    global recent_changes
+
     print(f'\tInstalled at {abspath(__file__)}\n')
     print(f'\thttps://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
 
@@ -842,24 +867,7 @@ def about(ctx):
     print_at("Docker", is_docker())
 
     click.echo(
-        click.style(
-            f'\n\nRecent Changes:\n'
-            "\t12/14/2021 - 03.50.42: safrs-react-admin search, working configurable home \n"
-            "\t12/14/2021 - 03.50.41: safrs-react-admin styling, dates \n"
-            "\t12/14/2021 - 03.50.40: Relationships as list (not dict) \n"
-            "\t12/13/2021 - 03.50.39: safrs/Config.js force-reload 12/13 \n"
-            "\t12/12/2021 - 03.50.38: safrs/Config.js (requires clear local storage?) \n"
-            "\t12/10/2021 - 03.50.37: Refresh safrs-react-admin, SqlServer models import order, safrs 2.12.1, image \n"
-            "\t12/09/2021 - 03.50.34: fix is_docker(), safrs/react-admin version, still Config-als.js, nw readme \n"
-            "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"
-            "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"
-            "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"
-            "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"
-            "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"
-            "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"
-            "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"
-            "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
-        )
+        click.style(recent_changes)
     )
 
 

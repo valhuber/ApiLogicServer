@@ -514,7 +514,7 @@ class AdminCreator(object):
             admin_file = open(nw_backup_file_name, 'w')
             admin_file.write(admin_custom_nw)
             admin_file.close()
-            dev_temp_do_not_overwrite = True  # fixme remove this when the files are stable
+            dev_temp_do_not_overwrite = False
             if not dev_temp_do_not_overwrite:
                 admin_file = open(yaml_file_name, 'w')
                 admin_file.write(admin_custom_nw)
@@ -599,7 +599,10 @@ class AdminCreator(object):
         # self.mod_gen.recursive_overwrite(from_proto_dir, to_project_dir)
         shutil.copytree(from_proto_dir, to_project_dir)
         home_js = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
-                                                       "/create_from_model/templates/home.js")
+                                            "/create_from_model/templates/home.js")
+        if self.mod_gen.nw_db_status in ["nw", "nw-"]:
+            home_js = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
+                                                "/create_from_model/templates/home_nw.js")
         shutil.copyfile(home_js, f'{to_project_dir}/home.js')
 
 
