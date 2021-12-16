@@ -185,6 +185,10 @@ related_views = []
 ```
 </details>
 
+### Admin App
+
+Customize the admin app by editing the `admin.yaml` file.
+
 ### API Customization
 
 While a standards-based API is a great start, sometimes you need custom endpoints tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for `add_order`.
