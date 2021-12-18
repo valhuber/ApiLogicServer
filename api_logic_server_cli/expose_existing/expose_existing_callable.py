@@ -100,7 +100,7 @@ def create_models_from_db(args) -> str:
     generator = CodeGenerator(metadata, args.noindexes, args.noconstraints,
                               args.nojoined, args.noinflect, args.noclasses, args.model_creation_services)
     args.model_creation_services.metadata = generator.metadata
-    generator.render(capture)
+    generator.render(capture)  # generates (preliminary) models in memory
     models_py = capture.getvalue()
     models_py = fix_generated(models_py, args)
     return models_py

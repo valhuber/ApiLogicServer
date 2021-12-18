@@ -12,7 +12,7 @@ flask-cors
 flask
 python-dotenv
 email-validator
-LogicBank>=1.0.2
+LogicBank>=1.0.7
 PyMySQL
 # pyodbc==4.0.30
 cryptography

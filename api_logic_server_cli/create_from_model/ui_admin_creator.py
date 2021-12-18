@@ -123,7 +123,7 @@ class AdminCreator(object):
         self.create_about()
         self.create_info()
         self.create_settings()
-        self.doc_properties()
+        # self.doc_properties()
 
         admin_yaml_dict = self.admin_yaml.toDict()
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
@@ -171,7 +171,7 @@ class AdminCreator(object):
             favorite_attribute = resource.attributes[0]
             admin_attribute = self.create_admin_attribute(favorite_attribute)
         processed_attributes.add(favorite_attribute.name)
-        admin_attribute.search = True
+        admin_attribute.search = "True"
         admin_attribute.label = f"{favorite_attribute.name}*"
         attributes_dict.append(admin_attribute)
 
@@ -221,7 +221,7 @@ class AdminCreator(object):
     def create_admin_attribute(resource_attribute) -> DotMap:
         attribute_name = resource_attribute if isinstance(resource_attribute, str) else resource_attribute.name
         admin_attribute = DotMap()
-        admin_attribute.name = attribute_name
+        admin_attribute.name = str(attribute_name)
         if attribute_name == "InvoiceDate":
             log.debug("Good breakpoint location")
         if not isinstance(resource_attribute, str):
@@ -315,7 +315,7 @@ class AdminCreator(object):
         relationship.resource = str(parent_relationship.parent_resource)  # redundant??
         relationship.attributes = []
         relationship.fks = []
-        if a_child_resource.name == "Employee":
+        if a_child_resource.name == "Order":
             log.debug("Parents for special table - debug")
         for each_column in parent_relationship.parent_child_key_pairs:  # XXX FIXME
             # key_column = DotMap()
@@ -351,7 +351,7 @@ class AdminCreator(object):
             children_seen.add(each_child)
             each_resource_tab.fks = []
             for each_pair in each_resource_relationship.parent_child_key_pairs:
-                each_resource_tab.fks.append(each_pair[1])
+                each_resource_tab.fks.append(str(each_pair[1]))
             each_child_resource = self.mod_gen.resource_list[each_child]
             each_resource_tab.resource = each_child_resource.table_name
             each_resource_tab.direction = "tomany"
@@ -370,7 +370,7 @@ class AdminCreator(object):
                 each_resource_tab.direction = "toone"
                 each_resource_tab.fks = []
                 for each_pair in each_resource_relationship.parent_child_key_pairs:
-                    each_resource_tab.fks.append(each_pair[1])
+                    each_resource_tab.fks.append(str(each_pair[1]))
                 each_resource_tab.name = each_resource_relationship.parent_role_name
 
                 # tab_group[tab_name] = each_resource_tab  # disambiguate multi-relns, eg Employee OnLoan/WorksForDept

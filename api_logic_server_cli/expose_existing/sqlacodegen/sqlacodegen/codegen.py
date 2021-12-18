@@ -105,6 +105,9 @@ class Model(object):
                 if "sqlite_sequence" not in format(column):
                     print("#Failed to get col type for {}".format(column))
 
+    def __str__(self):
+        return f'Model for table: {self.table} (in schema: {self.schema})'
+
     def _get_adapted_type(self, coltype, bind):
         compiled_type = coltype.compile(bind.dialect)
         for supercls in coltype.__class__.__mro__:
@@ -212,6 +215,8 @@ class ModelClass(Model):
         self.children = []
         self.attributes = OrderedDict()
         self.foreign_key_relationships = list()
+        self.rendered_model = ""                # ApiLogicServer
+        self.rendered_model_relationships = ""  # appended at end ( render() )
 
         # Assign attribute names for columns
         for column in table.columns:
@@ -377,7 +382,7 @@ class CodeGenerator(object):
 
 
 {models}"""
-    do_model_creation_services_hack = False
+    do_model_creation_services_hack = False  # fixme remove
 
     def __init__(self, metadata, noindexes=False, noconstraints=False, nojoined=False,
                  noinflect=False, noclasses=False, model_creation_services = None,
@@ -392,6 +397,7 @@ class CodeGenerator(object):
         self.noinflect = noinflect
         self.noclasses = noclasses
         self.model_creation_services = model_creation_services  # ApiLogicServer
+        self.generate_relationships_on = "parent"  # "child"
         self.indentation = indentation
         self.model_separator = model_separator
         self.ignored_tables = ignored_tables
@@ -423,7 +429,7 @@ class CodeGenerator(object):
         # Iterate through the tables and create model classes when possible
         self.models = []
         self.collector = ImportCollector()
-        classes = {}
+        self.classes = {}
         for table in metadata.sorted_tables:
             # Support for Alembic and sqlalchemy-migrate -- never expose the schema version tables
             if table.name in self.ignored_tables:
@@ -472,15 +478,15 @@ class CodeGenerator(object):
             else:
                 model = self.class_model(table, links[table.name], self.inflect_engine,
                                          not nojoined)  # computes attrs (+ roles)
-                classes[model.name] = model
+                self.classes[model.name] = model
 
             self.models.append(model)
             model.add_imports(self.collector)
 
         # Nest inherited classes in their superclasses to ensure proper ordering
-        for model in classes.values():
+        for model in self.classes.values():
             if model.parent_name != 'Base':
-                classes[model.parent_name].children.append(model)
+                self.classes[model.parent_name].children.append(model)
                 self.models.remove(model)
 
         # Add either the MetaData or declarative_base import depending on whether there are mapped
@@ -675,9 +681,27 @@ from sqlalchemy.dialects.mysql import *
             (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
         ))
 
-    def render_relationship(self, relationship):
+    def render_relationship(self, relationship) -> str:
+        ''' returns string like: Department = relationship(\'Department\', remote_side=[Id])
+        '''
         rendered = 'relationship('
         args = [repr(relationship.target_cls)]
+
+        if 'secondaryjoin' in relationship.kwargs:
+            rendered += '\n{0}{0}'.format(self.indentation)
+            delimiter, end = (',\n{0}{0}'.format(self.indentation),
+                              '\n{0})'.format(self.indentation))
+        else:
+            delimiter, end = ', ', ')'
+
+        args.extend([key + '=' + value for key, value in relationship.kwargs.items()])
+        return rendered + delimiter.join(args) + end
+
+    def render_relationship_on_parent(self, relationship) -> str:
+        ''' returns string like: Department = relationship(\'Department\', remote_side=[Id])
+        '''
+        rendered = 'relationship('
+        args = [repr(relationship.source_cls)]
 
         if 'secondaryjoin' in relationship.kwargs:
             rendered += '\n{0}{0}'.format(self.indentation)
@@ -788,88 +812,119 @@ from sqlalchemy.dialects.mysql import *
                 rendered += '{0}{1} = {2}\n'.format(
                     self.indentation, attr, self.render_column(column, show_name))
         if not autonum_col:
-            rendered += '{0}{1}'.format(self.indentation, "allow_client_generated_ids = True")
+            rendered += '{0}{1}'.format(self.indentation, "allow_client_generated_ids = True\n")
 
 
-        # Render relationships (declared in child class, backref to parent)
+        # Render relationships (declared in parent class, backref to child)
         if any(isinstance(value, Relationship) for value in model.attributes.values()):
             rendered += '\n'
         backrefs = {}
         for attr, relationship in model.attributes.items():
             if isinstance(relationship, Relationship):  # ApiLogicServer changed to insert backref
-                rel_render = "{0}{1} = {2}\n".format(self.indentation, attr, self.render_relationship(relationship))
-                rel_parts = rel_render.split(")")
+                attr_to_render = attr
+                if self.generate_relationships_on != "child":
+                    attr_to_render = "# see backref on parent: " + attr  # relns not created on child; comment out
+                rel_render = "{0}{1} = {2}\n".format(self.indentation, attr_to_render, self.render_relationship(relationship))
+                rel_parts = rel_render.split(")")  #eg, '    Department = relationship(\'Department\', remote_side=[Id]'
                 backref_name = model.name + "List"
                 """ disambiguate multi-relns, eg, in the Employee child class, 2 relns to Department:
                         Department =  relationship('Department', primaryjoin='Employee.OnLoanDepartmentId == Department.Id', cascade_backrefs=True, backref='EmployeeList')
-                        Department1 = 'Department', primaryjoin='Employee.WorksForDepartmentId == Department.Id', cascade_backrefs=True, backref='EmployeeList_Department1')
+                        Department1 = relationship('Department', primaryjoin='Employee.WorksForDepartmentId == Department.Id', cascade_backrefs=True, backref='EmployeeList_Department1')
                     cascade_backrefs=True, backref='EmployeeList_Department1'   <== need to append that "1"
                 """
                 unique_name = relationship.target_cls + '.' + backref_name
                 if unique_name in backrefs:  # disambiguate
                     backref_name += "_" + attr
-                backrefs[unique_name] = backref_name
                 back_ref = f', cascade_backrefs=True, backref=\'{backref_name}\''
                 rel_render_with_backref = rel_parts[0] + \
                                           back_ref + \
                                           ")" + rel_parts[1]
                 # rendered += "{0}{1} = {2}\n".format(self.indentation, attr, self.render_relationship(relationship))
+
+                """ disambiguate multi-relns, eg, in the Department parent class, 2 relns to Employee:
+                        EmployeeList =  relationship('Employee', primaryjoin='Employee.OnLoanDepartmentId == Department.Id', cascade_backrefs=True, backref='Department')
+                        EmployeeList1 = relationship('Employee', primaryjoin='Employee.WorksForDepartmentId == Department.Id', cascade_backrefs=True, backref='Department1')
+                    cascade_backrefs=True, backref='EmployeeList_Department1'   <== need to append that "1"
+                """
+                parent_model = self.classes[relationship.target_cls]  # eg, Department
+                parent_relationship_def = self.render_relationship_on_parent(relationship)
+                parent_relationship_def = parent_relationship_def[:-1]
+                # eg, for Dept: relationship('Employee', primaryjoin='Employee.OnLoanDepartmentId == Department.Id')
+                child_role_name = model.name + "List"
+                parent_role_name = attr
+                if unique_name in backrefs:  # disambiguate
+                    child_role_name += '1'  # FIXME - fails for 3 relns
+                parent_relationship = f'{child_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{parent_role_name}\')'
+                if self.generate_relationships_on != "parent":  # relns not created on parent; comment out
+                    parent_relationship = "# see backref on child: " + parent_relationship
+                parent_model.rendered_model_relationships += "    " + parent_relationship + "\n"
+                if model.name == "OrderDetail":
+                    debug_str = "nice breakpoint"
                 rendered += rel_render_with_backref
+                backrefs[unique_name] = backref_name
                 if relationship.source_cls.startswith("Ab"):
                     pass
                 elif isinstance(relationship, ManyToManyRelationship):  # eg, chinook:PlayList->PlayListTrack
                     pass  # fixme: admin.yaml not seeing ManyToManyRelationship
                 elif not self.do_model_creation_services_hack:
                     pass
-                else:
-                    resource = self.model_creation_services.resource_list[relationship.source_cls]
-                    resource_relationship = ResourceRelationship(parent_role_name = attr,
-                                                                 child_role_name = backref_name)
-                    resource_relationship.child_resource = relationship.source_cls
-                    resource_relationship.parent_resource = relationship.target_cls
-                    # gen key pairs
-                    for each_pair in relationship.foreign_key_constraint.elements:
-                        pair = ( str(each_pair.column.name), str(each_pair.parent.name) )
-                        resource_relationship.parent_child_key_pairs.append(pair)
+                else:  # fixme dump all this, right?
+                    use_old_code = False  # so you can elide this
+                    if use_old_code:
+                        resource = self.model_creation_services.resource_list[relationship.source_cls]
+                        resource_relationship = ResourceRelationship(parent_role_name = attr,
+                                                                     child_role_name = backref_name)
+                        resource_relationship.child_resource = relationship.source_cls
+                        resource_relationship.parent_resource = relationship.target_cls
+                        # gen key pairs
+                        for each_pair in relationship.foreign_key_constraint.elements:
+                            pair = ( str(each_pair.column.name), str(each_pair.parent.name) )
+                            resource_relationship.parent_child_key_pairs.append(pair)
 
-                        resource.parents.append(resource_relationship)
-                        parent_resource = self.model_creation_services.resource_list[relationship.target_cls]
-                        parent_resource.children.append(resource_relationship)
-
-                        use_old_code = True  # so you can elide this
-                        if use_old_code:
-                            if relationship.source_cls not in self.parents_map:   # todo old code remove
-                                self.parents_map[relationship.source_cls] = list()
-                            self.parents_map[relationship.source_cls].append(
-                                (
-                                    attr,          # to parent, eg, Department, Department1
-                                    backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
-                                    relationship.foreign_key_constraint
-                                ) )
-                            if relationship.target_cls not in self.children_map:
-                                self.children_map[relationship.target_cls] = list()
-                            self.children_map[relationship.target_cls].append(
-                                (
-                                    attr,          # to parent, eg, Department, Department1
-                                    backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
-                                    relationship.foreign_key_constraint
-                                ) )
+                            resource.parents.append(resource_relationship)
+                            parent_resource = self.model_creation_services.resource_list[relationship.target_cls]
+                            parent_resource.children.append(resource_relationship)
+                            if use_old_code:
+                                if relationship.source_cls not in self.parents_map:   # todo old code remove
+                                    self.parents_map[relationship.source_cls] = list()
+                                self.parents_map[relationship.source_cls].append(
+                                    (
+                                        attr,          # to parent, eg, Department, Department1
+                                        backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
+                                        relationship.foreign_key_constraint
+                                    ) )
+                                if relationship.target_cls not in self.children_map:
+                                    self.children_map[relationship.target_cls] = list()
+                                self.children_map[relationship.target_cls].append(
+                                    (
+                                        attr,          # to parent, eg, Department, Department1
+                                        backref_name,  # to children, eg, EmployeeList, EmployeeList_Department1
+                                        relationship.foreign_key_constraint
+                                    ) )
                 pass
 
         # Render subclasses
         for child_class in model.children:
             rendered += self.model_separator + self.render_class(child_class)
-
+        # rendered += "\n    # END RENDERED CLASS\n"  # useful for debug, as required
         return rendered
 
     def render(self, outfile=sys.stdout):
-        """ create model from db, and write models.py file to disk
+        """ create model from db, and write models.py file to in-memory buffer (outfile)
         """
-        rendered_models = []
         for model in self.models:
             if isinstance(model, self.class_model):
-                rendered_models.append(self.render_class(model))
-            elif isinstance(model, self.table_model):
+                # rendered_models.append(self.render_class(model))
+                model.rendered_model = self.render_class(model)  # also sets parent_model.rendered_model_relationships
+
+        rendered_models = []  # now append the rendered_model + rendered_model_relationships
+        for model in self.models:
+            if isinstance(model, self.class_model):
+                # rendered_models.append(self.render_class(model))
+                if model.rendered_model_relationships != "":
+                    model.rendered_model_relationships = "\n" + model.rendered_model_relationships
+                rendered_models.append(model.rendered_model + model.rendered_model_relationships)
+            elif isinstance(model, self.table_model):  # eg, views, database id generators, etc
                 rendered_models.append(self.render_table(model))
 
         output = self.template.format(

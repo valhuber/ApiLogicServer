@@ -720,6 +720,8 @@ class CreateFromModel(object):
                         resource_name = each_cls_member[0]
                         resource_class = each_cls_member[1]
                         table_name = resource_class._s_collection_name
+                        if table_name == "Order":
+                            log.debug("Excellent breakpoint")
                         resource = Resource(name=resource_name, create_from_model=self)
                         self.metadata = resource_class.metadata
                         self.table_to_class_map.update({table_name: resource_name})   # required for ui_basic_web_app
@@ -737,8 +739,10 @@ class CreateFromModel(object):
                         for rel_name, rel in resource_class._s_relationships.items():
                             relation = {}
                             relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
-                            if rel.direction == MANYTOONE:  # process only parents of this child
-                                relationship = ResourceRelationship(rel_name, rel.backref)
+                            if rel.direction == ONETOMANY:  # process only parents of this child
+                                log.debug("onetomany")
+                            else:  # many to one (parents for this child) - version <= 3.50.43
+                                relationship = ResourceRelationship(rel_name, rel.back_populates)
                                 for each_fkey in rel._calculated_foreign_keys:
                                     pair = ("?", each_fkey.description)
                                     relationship.parent_child_key_pairs.append(pair)
