@@ -65,7 +65,7 @@ class ResourceAttribute():
 
 
 class ResourceRelationship():
-    def __init__(self, parent_role_name, child_role_name):
+    def __init__(self, parent_role_name: str, child_role_name: str):
         self.parent_role_name = parent_role_name
         self.child_role_name = child_role_name
         self.parent_resource = None
@@ -720,7 +720,7 @@ class CreateFromModel(object):
                         resource_name = each_cls_member[0]
                         resource_class = each_cls_member[1]
                         table_name = resource_class._s_collection_name
-                        if table_name == "Order":
+                        if table_name == "Department":
                             log.debug("Excellent breakpoint")
                         resource = Resource(name=resource_name, create_from_model=self)
                         self.metadata = resource_class.metadata
@@ -742,7 +742,14 @@ class CreateFromModel(object):
                             if rel.direction == ONETOMANY:  # process only parents of this child
                                 log.debug("onetomany")
                             else:  # many to one (parents for this child) - version <= 3.50.43
-                                relationship = ResourceRelationship(rel_name, rel.back_populates)
+                                debug_rel = True
+                                if debug_rel:
+                                    debug_rel_str = f'Debug resource_class._s_relationships {resource_name}: ' \
+                                                    f'parent_role_name:=rel_name: {rel_name} ' \
+                                                    f'child_role_name:=rel.back_populates: {rel.back_populates}'
+                                    print(debug_rel_str)
+                                relationship = ResourceRelationship(parent_role_name=rel_name,
+                                                                    child_role_name=rel.back_populates)  # backward for self-reln
                                 for each_fkey in rel._calculated_foreign_keys:
                                     pair = ("?", each_fkey.description)
                                     relationship.parent_child_key_pairs.append(pair)

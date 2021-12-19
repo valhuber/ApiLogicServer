@@ -415,16 +415,21 @@ class CodeGenerator(object):
         # Pick association tables from the metadata into their own set, don't process them normally
         links = defaultdict(lambda: [])
         association_tables = set()
+        skip_association_table = True
         for table in metadata.tables.values():
             # Link tables have exactly two foreign key constraints and all columns are involved in
             # them
             fk_constraints = [constr for constr in table.constraints
                               if isinstance(constr, ForeignKeyConstraint)]
             if len(fk_constraints) == 2 and all(col.foreign_keys for col in table.columns):
-                association_tables.add(table.name)
-                tablename = sorted(
-                    fk_constraints, key=_get_constraint_sort_key)[0].elements[0].column.table.name
-                links[tablename].append(table)
+                if skip_association_table:  # Chinook playlist tracks, SqlSvr, Postgres Emp Territories
+                    debug_str = f'skipping associate table: {table.name}'
+                    debug_str += "... treated as normal table, with automatic joins"
+                else:
+                    association_tables.add(table.name)
+                    tablename = sorted(
+                        fk_constraints, key=_get_constraint_sort_key)[0].elements[0].column.table.name
+                    links[tablename].append(table)
 
         # Iterate through the tables and create model classes when possible
         self.models = []
@@ -865,7 +870,7 @@ from sqlalchemy.dialects.mysql import *
                 if relationship.source_cls.startswith("Ab"):
                     pass
                 elif isinstance(relationship, ManyToManyRelationship):  # eg, chinook:PlayList->PlayListTrack
-                    pass  # fixme: admin.yaml not seeing ManyToManyRelationship
+                    debug_str = "many to many breakpoint"# fixme: admin.yaml not seeing ManyToManyRelationship
                 elif not self.do_model_creation_services_hack:
                     pass
                 else:  # fixme dump all this, right?

@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "3.50.44"
+__version__ = "3.50.45"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t12/18/2021 - 03.50.45: n:m fixed (Chinook playlistTracks, SqlSvr, Postgres Emp Territories); self reln info  \n"\
     "\t12/17/2021 - 03.50.44: delete order, new safrs-admin - SqlServer pagination (but fails)  \n"\
     "\t12/15/2021 - 03.50.43: nw custom home and admin \n"\
     "\t12/14/2021 - 03.50.42: safrs-react-admin search, working configurable home \n"\

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Album</OriginalElement>
+  <nodes>
+    <node x="396.63006099165415" y="46.62439169788698">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Artist</node>
+    <node x="521.9698668168969" y="486.38410043575107">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Track</node>
+    <node x="359.93653348356355" y="766.3841004357511">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.InvoiceLine</node>
+    <node x="537.4698668168969" y="239.38410043575112">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Genre</node>
+    <node x="753.44589183427" y="486.38410043575107">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Playlist</node>
+    <node x="712.4698668168968" y="239.38410043575112">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.MediaType</node>
+    <node x="166.46986681689685" y="118.38410043575115">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Customer</node>
+    <node x="145.96986681689685" y="486.38410043575107">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Invoice</node>
+    <node x="662.3433156404845" y="799.8841004357511">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.PlaylistTrack</node>
+    <node x="371.46986681689685" y="228.38410043575112">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Album</node>
+    <node x="-38.530133183103146" y="11.845929086599881">8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Employee</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Track" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.MediaType" relationship="REFERENCES">
+      <point x="62.0" y="-115.0" />
+      <point x="676.9698668168969" y="461.38410043575107" />
+      <point x="789.9698668168968" y="461.38410043575107" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Customer" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Employee" relationship="REFERENCES">
+      <point x="0.0" y="-159.0" />
+      <point x="258.96986681689685" y="93.3841004357511" />
+      <point x="88.14637611455794" y="93.3841004357511" />
+      <point x="88.14637611455794" y="229.97558261583646" />
+      <point x="100.21986681689685" y="229.97558261583646" />
+      <point x="46.25" y="181.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Invoice" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Customer" relationship="REFERENCES">
+      <point x="0.0" y="-115.0" />
+      <point x="0.0" y="159.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.PlaylistTrack" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Playlist" relationship="REFERENCES">
+      <point x="34.25" y="-37.5" />
+      <point x="765.0933156404845" y="741.3841004357511" />
+      <point x="830.94589183427" y="741.3841004357511" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Album" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Artist" relationship="REFERENCES">
+      <point x="0.0" y="-49.0" />
+      <point x="444.46986681689685" y="76.8841004357511" />
+      <point x="474.13006099165415" y="76.8841004357511" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.InvoiceLine" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Track" relationship="REFERENCES">
+      <point x="45.75" y="-71.0" />
+      <point x="497.18653348356355" y="741.3841004357511" />
+      <point x="614.9698668168969" y="741.3841004357511" />
+      <point x="0.0" y="115.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Track" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Genre" relationship="REFERENCES">
+      <point x="0.0" y="-115.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.InvoiceLine" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Invoice" relationship="REFERENCES">
+      <point x="-45.75" y="-71.0" />
+      <point x="405.68653348356355" y="741.3841004357511" />
+      <point x="258.96986681689685" y="741.3841004357511" />
+      <point x="0.0" y="115.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Employee" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Employee" relationship="REFERENCES">
+      <point x="-46.25" y="181.0" />
+      <point x="7.719866816896854" y="393.8459290865999" />
+      <point x="-58.530133183103146" y="393.8459290865999" />
+      <point x="-58.530133183103146" y="192.84592908659988" />
+      <point x="-92.5" y="-0.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Track" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Album" relationship="REFERENCES">
+      <point x="-62.0" y="-115.0" />
+      <point x="552.9698668168969" y="461.38410043575107" />
+      <point x="444.46986681689685" y="461.38410043575107" />
+      <point x="0.0" y="49.0" />
+    </edge>
+    <edge source="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.PlaylistTrack" target="8f7be1a0-7e2c-4a2a-baf6-3441c24a4960.TABLE:Chinook.Track" relationship="REFERENCES">
+      <point x="-34.25" y="-37.5" />
+      <point x="696.5933156404845" y="741.3841004357511" />
+      <point x="614.9698668168969" y="741.3841004357511" />
+      <point x="0.0" y="115.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8243044189852701" showDependencies="false" x="540.0" y="449.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

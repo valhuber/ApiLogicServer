@@ -338,7 +338,7 @@ class AdminCreator(object):
         if len(self.mod_gen.resource_list) == 0:   # almost always, use_model false (we create)
             return self.create_child_tabs_no_model(resource)
 
-        if resource.name == "Order":
+        if resource.name == "Department":  # excellent breakpoint location
             log.debug(f'Relationships for {resource.name}')
         children_seen = set()
         tab_group = []
