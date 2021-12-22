@@ -1,35 +1,18 @@
 about:
-  date: December 15, 2021 07:38:30
-  recent_changes: 'Customer/Orders: tab order, label;  Customer search name & ID; Employees: HireDate type'
-  version: 3.50.42
+  date: December 21, 2021 17:22:34
+  recent_changes: 'Customer/Orders: tab order, label'
+  version: 3.50.46
 api_root: http://localhost:5656/api
 info:
   number_relationships: 8
   number_tables: 14
-properties_ref:
-  attribute:
-    group: name
-    hidden: exp
-    label: caption for display
-    search: true | false
-    style:
-      color: blue
-      font_weight: 0
-  resource:
-    allow_delete: exp
-    allow_insert: exp
-    allow_update: exp
-    info: long html / rich text
-    menu: False | name
-  tab:
-    label: text
-    lookup: boolean
 resources:
   Category:
     attributes:
     - label: CategoryName*
       name: CategoryName
       search: true
+      sort: true
     - name: Description
     - name: Id
     type: Category
@@ -76,6 +59,7 @@ resources:
     - label: Id*
       name: Id
       search: true
+      sort: true
     - name: CustomerTypeId
     tab_groups:
     - direction: toone
@@ -90,6 +74,7 @@ resources:
     - label: Id*
       name: Id
       search: true
+      sort: true
     - name: CustomerDesc
     type: CustomerDemographic
     user_key: Id
@@ -98,6 +83,7 @@ resources:
     - label: LastName*
       name: LastName
       search: true
+      sort: true
     - name: FirstName
     - name: Title
     - name: TitleOfCourtesy
@@ -142,6 +128,7 @@ resources:
     - label: LastName*
       name: LastName
       search: true
+      sort: true
     - name: EmployeeId
     - name: Title
     - name: Salary
@@ -162,6 +149,7 @@ resources:
     - label: Id*
       name: Id
       search: true
+      sort: true
     - name: EmployeeId
     - name: TerritoryId
     tab_groups:
@@ -182,10 +170,12 @@ resources:
     - label: ShipName*
       name: ShipName
       search: true
+      sort: true
     - name: CustomerId
     - name: EmployeeId
     - name: OrderDate
     - name: RequiredDate
+      type: DATE
     - name: ShippedDate
     - name: ShipVia
     - name: Freight
@@ -220,8 +210,9 @@ resources:
     - label: Id*
       name: Id
       search: true
-    - name: OrderId
+      sort: true
     - name: ProductId
+    - name: OrderId
     - name: UnitPrice
       type: DECIMAL
     - name: Quantity
@@ -232,14 +223,14 @@ resources:
     tab_groups:
     - direction: toone
       fks:
-      - OrderId
-      name: Order
-      resource: Order
-    - direction: toone
-      fks:
       - ProductId
       name: Product
       resource: Product
+    - direction: toone
+      fks:
+      - OrderId
+      name: Order
+      resource: Order
     type: OrderDetail
     user_key: Id
   Product:
@@ -247,6 +238,7 @@ resources:
     - label: ProductName*
       name: ProductName
       search: true
+      sort: true
     - name: QuantityPerUnit
     - name: UnitPrice
       type: DECIMAL
@@ -271,6 +263,7 @@ resources:
     - label: RegionDescription*
       name: RegionDescription
       search: true
+      sort: true
     - name: Id
     type: Region
     user_key: RegionDescription
@@ -279,6 +272,7 @@ resources:
     - label: CompanyName*
       name: CompanyName
       search: true
+      sort: true
     - name: Phone
     - name: Id
     type: Shipper
@@ -288,6 +282,7 @@ resources:
     - label: CompanyName*
       name: CompanyName
       search: true
+      sort: true
     - name: ContactName
     - name: ContactTitle
     - name: Address
@@ -306,6 +301,7 @@ resources:
     - label: TerritoryDescription*
       name: TerritoryDescription
       search: true
+      sort: true
     - name: Id
     - name: RegionId
     tab_groups:

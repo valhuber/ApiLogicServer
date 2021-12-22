@@ -37,7 +37,7 @@ class ResourceAttribute():
         self.name = name
         self.type = None  # none means not interesting, default display to simple text
         if name == "InvoiceDate":
-            log.debug("Nice breakpoint")
+            debug_str = "Nice breakpoint"
         if type == "DECIMAL":
             self.type = "DECIMAL"
         elif type == "DATE":
@@ -483,7 +483,7 @@ class CreateFromModel(object):
         """
         result = list()
         if a_resource.name == "Order":  # for debug
-            log.debug("predictive_joins for: " + a_resource.name)
+            debug_str = "predictive_joins for: " + a_resource.name
         for each_parent in a_resource.parents:
             each_parent_resource = self.resource_list[each_parent.parent_resource]
             favorite_attribute_name = self.favorite_attribute_name(each_parent_resource)
@@ -506,7 +506,7 @@ class CreateFromModel(object):
         result = list()
         foreign_keys = a_table_def.foreign_key_constraints
         if a_table_def.name == "Order":  # for debug
-            log.debug("predictive_joins for: " + a_table_def.name)
+            debug_str = "predictive_joins for: " + a_table_def.name
         for each_foreign_key in foreign_keys:
             """ remove old code
             each_parent_name = each_foreign_key.referred_table.name + "." + each_foreign_key.column_keys[0]
@@ -562,7 +562,7 @@ class CreateFromModel(object):
             parents = each_possible_child.foreign_keys
             if (a_table_def.name == "Customer" and
                     each_possible_child.name == "Order"):
-                log.debug(a_table_def)
+                debug_str = a_table_def
             for each_parent in parents:
                 each_parent_name = each_parent.target_fullname
                 loc_dot = each_parent_name.index(".")
@@ -659,7 +659,7 @@ class CreateFromModel(object):
         if table_name in self.table_to_class_map:
             return self.table_to_class_map[table_name]
         else:
-            log.debug("skipping view: " + table_name)
+            debug_str = "skipping view: " + table_name
             return None
 
     def find_meta_data(self, cwd: str, log_info: bool=False) -> MetaData:
@@ -721,7 +721,7 @@ class CreateFromModel(object):
                         resource_class = each_cls_member[1]
                         table_name = resource_class._s_collection_name
                         if table_name == "Department":
-                            log.debug("Excellent breakpoint")
+                            debug_str = "Excellent breakpoint"
                         resource = Resource(name=resource_name, create_from_model=self)
                         self.metadata = resource_class.metadata
                         self.table_to_class_map.update({table_name: resource_name})   # required for ui_basic_web_app
@@ -740,9 +740,9 @@ class CreateFromModel(object):
                             relation = {}
                             relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
                             if rel.direction == ONETOMANY:  # process only parents of this child
-                                log.debug("onetomany")
+                                debug_str = "onetomany"
                             else:  # many to one (parents for this child) - version <= 3.50.43
-                                debug_rel = True
+                                debug_rel = False
                                 if debug_rel:
                                     debug_rel_str = f'Debug resource_class._s_relationships {resource_name}: ' \
                                                     f'parent_role_name:=rel_name: {rel_name} ' \
@@ -765,7 +765,7 @@ class CreateFromModel(object):
                                 parent_resource.children.append(relationship)
                     pass
                 pass
-                log.debug(f'setting resource_list: {str(resource_list)}')
+                debug_str = f'setting resource_list: {str(resource_list)}'
                 self.resource_list = resource_list  # model loaded - excellent breakpoint location
 
                 if orm_class is not None:

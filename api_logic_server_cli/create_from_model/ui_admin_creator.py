@@ -2,6 +2,7 @@ import logging
 import shutil
 import sys
 import os
+import pathlib
 from pathlib import Path
 from typing import NewType, List
 
@@ -171,7 +172,8 @@ class AdminCreator(object):
             favorite_attribute = resource.attributes[0]
             admin_attribute = self.create_admin_attribute(favorite_attribute)
         processed_attributes.add(favorite_attribute.name)
-        admin_attribute.search = "True"
+        admin_attribute.search = True
+        admin_attribute.sort = True
         admin_attribute.label = f"{favorite_attribute.name}*"
         attributes_dict.append(admin_attribute)
 
@@ -516,12 +518,8 @@ class AdminCreator(object):
             admin_file.close()
             dev_temp_do_not_overwrite = False
             if not dev_temp_do_not_overwrite:
+                print('.. .. ..Using customized admin_custom_nw.yaml - compare to admin-created.yaml')
                 admin_file = open(yaml_file_name, 'w')
-                admin_file.write(admin_custom_nw)
-                admin_file.close()
-
-                nw_backup_file_name = yaml_file_name.replace("admin.yaml", "admin_custom_nw_backup.yaml")
-                admin_file = open(nw_backup_file_name, 'w')
                 admin_file.write(admin_custom_nw)
                 admin_file.close()
 
@@ -594,16 +592,30 @@ class AdminCreator(object):
         if from_proto_dir == "":
             from_proto_dir = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
                                                        "/create_from_model/safrs-react-admin-npm-build")
-        to_project_dir = self.mod_gen.fix_win_path(self.mod_gen.project_directory + "/ui/admin")
+            from_proto_dir = pathlib.Path(self.get_create_from_model_dir()).\
+                joinpath("create_from_model", "safrs-react-admin-npm-build")
+            # os.mkdir()
+        to_project_dir = self.mod_gen.fix_win_path(self.mod_gen.project_directory + "/ui/safrs-react-admin")
+        to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "safrs-react-admin")
         print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
         # self.mod_gen.recursive_overwrite(from_proto_dir, to_project_dir)
         shutil.copytree(from_proto_dir, to_project_dir)
+
+        os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
+
+        home_js_file = "home.js"  # get the welcome screen, presumably shared for all admin apps
+        if self.mod_gen.nw_db_status in ["nw", "nw-"]:
+            home_js_file = "home_nw.js"
         home_js = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
                                             "/create_from_model/templates/home.js")
         if self.mod_gen.nw_db_status in ["nw", "nw-"]:
             home_js = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
                                                 "/create_from_model/templates/home_nw.js")
-        shutil.copyfile(home_js, f'{to_project_dir}/home.js')
+        home_js = pathlib.Path(self.get_create_from_model_dir()).\
+            joinpath("create_from_model", "templates", home_js_file)
+        # shutil.copyfile(home_js, f'{to_project_dir}/home.js')
+        to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
+        shutil.copyfile(home_js, to_project_dir.joinpath("home.js"))
 
 
 def create(model_creation_services: create_from_model.CreateFromModel):

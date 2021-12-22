@@ -183,11 +183,13 @@ def admin_yaml():
     return response
 
 
-
 @flask_app.route("/admin-app/<path:path>")
 def send_spa(path=None):
     global did_send_spa
-    directory = 'ui/admin'
+    if path == "home.js":
+        directory = "ui/admin"
+    else:
+        directory = 'ui/safrs-react-admin'
     if not did_send_spa:
         did_send_spa = True
         app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
