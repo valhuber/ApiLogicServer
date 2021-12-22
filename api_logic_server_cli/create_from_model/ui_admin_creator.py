@@ -590,30 +590,19 @@ class AdminCreator(object):
         """
         from_proto_dir = from_git
         if from_proto_dir == "":
-            from_proto_dir = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
-                                                       "/create_from_model/safrs-react-admin-npm-build")
             from_proto_dir = pathlib.Path(self.get_create_from_model_dir()).\
                 joinpath("create_from_model", "safrs-react-admin-npm-build")
-            # os.mkdir()
-        to_project_dir = self.mod_gen.fix_win_path(self.mod_gen.project_directory + "/ui/safrs-react-admin")
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "safrs-react-admin")
         print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
-        # self.mod_gen.recursive_overwrite(from_proto_dir, to_project_dir)
         shutil.copytree(from_proto_dir, to_project_dir)
 
         os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
 
-        home_js_file = "home.js"  # get the welcome screen, presumably shared for all admin apps
+        home_js_file = "home.js"  # get the welcome screen
         if self.mod_gen.nw_db_status in ["nw", "nw-"]:
             home_js_file = "home_nw.js"
-        home_js = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
-                                            "/create_from_model/templates/home.js")
-        if self.mod_gen.nw_db_status in ["nw", "nw-"]:
-            home_js = self.mod_gen.fix_win_path(str(self.get_create_from_model_dir()) +
-                                                "/create_from_model/templates/home_nw.js")
         home_js = pathlib.Path(self.get_create_from_model_dir()).\
             joinpath("create_from_model", "templates", home_js_file)
-        # shutil.copyfile(home_js, f'{to_project_dir}/home.js')
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
         shutil.copyfile(home_js, to_project_dir.joinpath("home.js"))
 
