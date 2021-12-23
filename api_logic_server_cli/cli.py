@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "3.50.49"
+__version__ = "3.50.50"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t12/23/2021 - 03.50.50: gunicorn-friendly host/port, delete confirmation dialog  \n"\
     "\t12/23/2021 - 03.50.49: using safrs-react-admin build, dept self-reln workaround  \n"\
     "\t12/22/2021 - 03.50.48: pycharm run, readme cleanup \n"\
     "\t12/22/2021 - 03.50.47: safrs-react-admin @ 4PM \n"\

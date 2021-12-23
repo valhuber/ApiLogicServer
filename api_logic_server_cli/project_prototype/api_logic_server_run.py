@@ -141,21 +141,21 @@ def create_app(config_filename=None):
 network_diagnostics = True
 hostname = socket.gethostname()
 local_ip = socket.gethostbyname(hostname)
-if sys.argv[1:]:
-    host = sys.argv[1]  # you many need to enable cors support, below
-    app_logger.debug(f'==> Network Diagnostic - using specified host: {sys.argv[1]}')
-else:
-    host = "api_logic_server_host"
-    app_logger.debug(f'==> Network Diagnostic - defaulting host: {host}')
-flask_host = host
-if is_docker() and host == "localhost":
-    flask_host = "0.0.0.0"
-    app_logger.debug(f'==> Network Diagnostic - using docker flask_host: {flask_host}')
-if sys.argv[2:]:
-    port = sys.argv[2]  # you many need to enable cors support, below
-    app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
-else:
-    port = "api_logic_server_port"
+host = "api_logic_server_host"
+port = "api_logic_server_port"
+if __name__ == "__main__":  # gunicorn-friendly host/port settings
+    if sys.argv[1:]:
+        host = sys.argv[1]  # you many need to enable cors support, below
+        app_logger.debug(f'==> Network Diagnostic - using specified host: {sys.argv[1]}')
+    else:
+        app_logger.debug(f'==> Network Diagnostic - defaulting host: {host}')
+    flask_host = host
+    if is_docker() and host == "localhost":
+        flask_host = "0.0.0.0"
+        app_logger.debug(f'==> Network Diagnostic - using docker flask_host: {flask_host}')
+    if sys.argv[2:]:
+        port = sys.argv[2]  # you many need to enable cors support, below
+        app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
 
 API_PREFIX = "/api"
 did_send_spa = False
