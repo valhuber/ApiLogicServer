@@ -599,7 +599,7 @@ class AdminCreator(object):
         os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
 
         home_js_file = "home.js"  # get the welcome screen
-        if self.mod_gen.nw_db_status in ["nw", "nw-"]:  # explains nw-specific customizations
+        if self.mod_gen.nw_db_status in ["nw", "nw+"]:  # explains nw-specific customizations
             home_js_file = "home_nw.js"
         home_js = pathlib.Path(self.get_create_from_model_dir()).\
             joinpath("create_from_model", "templates", home_js_file)

@@ -737,19 +737,25 @@ class CreateFromModel(object):
                                                                    resource=resource,
                                                                    type=attr_type)
                         for rel_name, rel in resource_class._s_relationships.items():
-                            relation = {}
-                            relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
+                            # relation = {}
+                            # relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
                             if rel.direction == ONETOMANY:  # process only parents of this child
                                 debug_str = "onetomany"
-                            else:  # many to one (parents for this child) - version <= 3.50.43
+                            else:  # many to one (parent for this child) - version <= 3.50.43
                                 debug_rel = False
                                 if debug_rel:
                                     debug_rel_str = f'Debug resource_class._s_relationships {resource_name}: ' \
-                                                    f'parent_role_name:=rel_name: {rel_name} ' \
-                                                    f'child_role_name:=rel.back_populates: {rel.back_populates}'
+                                                    f'parent_role_name (aka rel_name): {rel_name},    ' \
+                                                    f'child_role_name (aka rel.back_populates): {rel.back_populates}'
                                     print(debug_rel_str)
-                                relationship = ResourceRelationship(parent_role_name=rel_name,
-                                                                    child_role_name=rel.back_populates)  # backward for self-reln
+
+                                parent_role_name = rel_name
+                                child_role_name = rel.back_populates
+                                if resource_name == rel.mapper.class_._s_class_name:  # backward for self-reln
+                                    parent_role_name = rel.back_populates
+                                    child_role_name = rel_name
+                                relationship = ResourceRelationship(parent_role_name=parent_role_name,
+                                                                    child_role_name=child_role_name)
                                 for each_fkey in rel._calculated_foreign_keys:
                                     pair = ("?", each_fkey.description)
                                     relationship.parent_child_key_pairs.append(pair)
