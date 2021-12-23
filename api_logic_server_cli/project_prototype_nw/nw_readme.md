@@ -150,10 +150,10 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 ## Wrap up
 Let's recap what you've seen:
 
-* **Working software now** - a database API and a Admin App - created automatically from a database, in moments instead of weeks or months.
+* **ApiLogicProject Creation and Execution** - a database API and an Admin App - created automatically from a database, in moments instead of weeks or months
 
 
-* **Customization** - for both the API and Logic - using Visual Studio code, for both editing and debugging
+* **Customizable** - both the API and Logic - using Visual Studio code, for both editing and debugging
 
 ### Docker cleanup
 VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-api_logic_server...`.
@@ -238,13 +238,13 @@ recreated (e.g., synchronized with a revised schema), and these files can be eas
 into the new project, without line-by-line merges.
 
 
-| Feature                                                               | Providing  | Why it Matters                                   | Learn More                                                                              |
-|:----------------------------------------------------------------------|:--------------|:-------------------------------------------------|:----------------------------------------------------------------------------------------|
-| 1. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                         |
-| 2. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)  |                                                         |
-| 3. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin       | [Admin App](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App) |
-| 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | PyCharm <br> VS Code ...                                                                |
-| 5. Model Creation                                                     | Python-friendly ORM | Custom Data Access<br>Used by API and Admin App  | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                       |
+| Feature                                                               | Providing  | Why it Matters                                          | Learn More                                                                              |
+|:----------------------------------------------------------------------|:--------------|:--------------------------------------------------------|:----------------------------------------------------------------------------------------|
+| 1. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev                                  | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                         |
+| 2. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Business Agility                                        | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)  |                                                         |
+| 3. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin              | [Admin App](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App) |
+| 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic | Customize, run and debug <br>Re-creation *not* required | PyCharm <br> VS Code ...                                                                |
+| 5. Model Creation                                                     | Python-friendly ORM | Custom Data Access<br>Used by API and Admin App         | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                       |
 
 ## Appendix 2 - Project Information
 

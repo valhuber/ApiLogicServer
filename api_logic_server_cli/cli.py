@@ -13,24 +13,14 @@ See end for key module map quick links.
 
 """
 
-__version__ = "3.50.47"
+__version__ = "3.50.48"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t12/22/2021 - 03.50.48: pycharm run, readme cleanup \n"\
     "\t12/22/2021 - 03.50.47: safrs-react-admin @ 4PM \n"\
-    "\t12/21/2021 - 03.50.46: default sort, directory cleanup \n"\
     "\t12/18/2021 - 03.50.45: n:m fixed (Chinook playlistTracks, SqlSvr, Postgres Emp Territories); self reln info  \n"\
-    "\t12/17/2021 - 03.50.44: delete order, new safrs-admin - SqlServer pagination (but fails)  \n"\
-    "\t12/15/2021 - 03.50.43: nw custom home and admin \n"\
-    "\t12/14/2021 - 03.50.42: safrs-react-admin search, working configurable home \n"\
-    "\t12/14/2021 - 03.50.41: safrs-react-admin styling, dates \n"\
-    "\t12/14/2021 - 03.50.40: Relationships as list (not dict) \n"\
-    "\t12/13/2021 - 03.50.39: safrs/Config.js force-reload 12/13 \n"\
-    "\t12/12/2021 - 03.50.38: safrs/Config.js (requires clear local storage?) \n"\
-    "\t12/10/2021 - 03.50.37: Refresh safrs-react-admin, SqlServer models import order, safrs 2.12.1, image \n"\
-    "\t12/09/2021 - 03.50.34: fix is_docker(), safrs/react-admin version, still Config-als.js, nw readme \n"\
     "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"\
-    "\t12/04/2021 - 03.50.27: revised attr order, ready for data types ($, date etc)  \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
     "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
     "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"\

@@ -38,5 +38,5 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
     app_logger.info(f'*** Customizable ApiLogicServer project created -- '
              f'open it in your IDE at {project_dir}')
     app_logger.info(f'*** Server now running -- '
-             f'explore with OpenAPI (Swagger) at http://{HOST}:{PORT}/')
+             f'explore your data and API at http://{HOST}:{PORT}/')
     app_logger.info("\n")
