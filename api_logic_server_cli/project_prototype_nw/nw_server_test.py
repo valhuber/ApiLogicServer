@@ -5,6 +5,7 @@ import logging
 # import util
 import subprocess
 import socket
+import json
 
 
 """
@@ -19,6 +20,7 @@ patch_test = True  # Updates a Customer with intentionally bad data to illustrat
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
 custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order
+self_reln_test = True  # verify dept subDepts, headDept
 
 
 def prt(msg: any) -> None:
@@ -47,7 +49,7 @@ def server_tests(host, port, version):
     prt(f' verify good GET, PATCH, POST, DELETE and Custom Service')
     prt(f'===============+====\n')
 
-    add_order_uri = f'http://{host}:{port}/ServicesEndPoint/add_order'
+    add_order_uri = f'http://{host}:{port}/api/ServicesEndPoint/add_order'
     add_order_args = {
         "meta": {
             "method": "add_order",
@@ -71,11 +73,9 @@ def server_tests(host, port, version):
         }
     }
 
-
-
     # use swagger to get uri
     if get_test:
-        get_order_uri = f'http://{host}:{port}/Order/?' \
+        get_order_uri = f'http://{host}:{port}/api/Order/?' \
                         f'fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CAmountTotal' \
                         f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
         r = requests.get(url=get_order_uri)
@@ -84,8 +84,22 @@ def server_tests(host, port, version):
 
         prt(f'\nGET DIAGNOSTICS PASSED for table Order... now verify PATCH Customer...')
 
+    if self_reln_test:
+        get_dept_uri = f'http://{host}:{port}/api/Department/?' \
+                        f'include=DepartmentList%2CEmployeeList%2CEmployeeList1%2CDepartment' \
+                       f'&fields%5BDepartment%5D=Id%2CDepartmentId%2CDepartmentName'
+        r = requests.get(url=get_dept_uri)
+        response_text = r.text
+        # result_data = json.load(response_text)  # 'str' object has no attribute 'read'
+        assert "Sales" in response_text and \
+                "Engineering" in response_text and \
+                "CEO" in response_text,\
+                f'Error - "Sales or Engineering or CEO noy in {response_text}'
+
+        prt(f'\nGET DIAGNOSTICS PASSED for table Department... now verify PATCH Customer...')
+
     if patch_test:
-        patch_cust_uri = f'http://{host}:{port}/Customer/ALFKI/'
+        patch_cust_uri = f'http://{host}:{port}/api/Customer/ALFKI/'
         patch_args = \
             {
                 "data": {
@@ -102,7 +116,7 @@ def server_tests(host, port, version):
         prt(f'\nPATCH DIAGNOSTICS PASSED for table Customer... now verify POST Customer...')
 
     if post_test:
-        post_cust_uri = f'http://{host}:{port}/Customer/'
+        post_cust_uri = f'http://{host}:{port}/api/Customer/'
         post_args = \
             {
                 "data": {
@@ -120,7 +134,7 @@ def server_tests(host, port, version):
         prt(f'\nPOST DIAGNOSTICS PASSED for table Customer... now verify DELETE Customer...')
 
     if delete_test:
-        delete_cust_uri = f'http://{host}:{port}/Customer/ALFKJ/'
+        delete_cust_uri = f'http://{host}:{port}/api/Customer/ALFKJ/'
         r = requests.delete(url=delete_cust_uri, json={})
         # Generic Error: Entity body in unsupported format
         response_text = r.text
