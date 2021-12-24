@@ -34,6 +34,9 @@ app_logger.propagate = True
 app_logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
 app_logger.info(f'app started: {__file__}\n')
 
+logging.getLogger('safrs').setLevel(logging.INFO)
+logging.getLogger('safrs.safrs_init').setLevel(logging.INFO)
+
 from typing import TypedDict
 
 import safrs
