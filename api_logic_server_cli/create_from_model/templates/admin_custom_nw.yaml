@@ -215,6 +215,7 @@ resources:
     - name: EmployeeId
     - name: OrderDate
     - name: RequiredDate
+      type: DATE
     - name: ShippedDate
     - name: ShipVia
     - name: Freight
