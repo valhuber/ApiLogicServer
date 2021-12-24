@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "3.50.51"
+__version__ = "3.50.52"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t12/23/2021 - 03.50.52: nw+ -- Order.RequiredDate is defined as a date  \n"\
     "\t12/23/2021 - 03.50.51: codegen fix for dept self-reln, nw+ default, nw tests for self-reln  \n"\
     "\t12/23/2021 - 03.50.50: gunicorn-friendly host/port, delete confirmation dialog  \n"\
     "\t12/23/2021 - 03.50.49: using safrs-react-admin build, dept self-reln workaround  \n"\

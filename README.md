@@ -439,18 +439,18 @@ These do not affect existing projects.  However, we've not updated all the docs 
 
 Many thanks to
 
+- [Thomas Pollet](https://www.linkedin.com/in/pollet/), for SAFRS, SAFRS-react-admin, and invaluable design partnership
 - Armin Ronacher, for Flask
 - Mike Bayer, for SQLAlchemy
-- [Thomas Pollet](https://www.linkedin.com/in/pollet/), for SAFRS, and invaluable design assistance
-- Daniel Gaspar, for Flask AppBuilder
 - Alex Grönholm, for Sqlacodegen
-- [Meera Datey](https://www.linkedin.com/in/meeradatey/), for creating React Admin user interface
+- [Meera Datey](https://www.linkedin.com/in/meeradatey/), for React Admin prototyping
 - Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration and testing
 - Max Tardiveau, for testing and help with Docker
 - Michael Holleran, for design collaboration and testing
 - Nishanth Shyamsundar, for review and testing
 - Thomas Peters, for review and testing
+- Daniel Gaspar, for Flask AppBuilder
 - Gloria Huber and Denny McKinney, for doc review
 
 ### Articles
