@@ -498,6 +498,11 @@ class AdminCreator(object):
         """ write admin.yaml, with backup, with additional nw customized backup
         """
         yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
+        """  todo - overwrite if never altered
+        import os.path, time
+        print("Last modified: %s" % time.ctime(os.path.getmtime("test.txt")))
+        print("Created: %s" % time.ctime(os.path.getctime("test.txt")))
+        """
         if not self.mod_gen.command.startswith("rebuild"):
             with open(yaml_file_name, 'w') as yaml_file:
                 yaml_file.write(admin_yaml)

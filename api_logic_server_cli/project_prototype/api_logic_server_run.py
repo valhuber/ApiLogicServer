@@ -31,7 +31,7 @@ handler.setFormatter(formatter)
 app_logger.addHandler(handler)
 app_logger.propagate = True
 
-app_logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
+app_logger.setLevel(logging.INFO)  # use WARNING to reduce output
 app_logger.info(f'app started: {__file__}\n')
 
 logging.getLogger('safrs').setLevel(logging.INFO)

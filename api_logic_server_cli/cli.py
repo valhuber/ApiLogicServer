@@ -13,22 +13,13 @@ See end for key module map quick links.
 
 """
 
-__version__ = "3.50.53"
+__version__ = "4.00.00"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/23/2021 - 03.50.53: reduced safrs logging  \n"\
-    "\t12/23/2021 - 03.50.52: nw+ -- Order.RequiredDate is defined as a date  \n"\
-    "\t12/23/2021 - 03.50.51: codegen fix for dept self-reln, nw+ default, nw tests for self-reln  \n"\
-    "\t12/23/2021 - 03.50.50: gunicorn-friendly host/port, delete confirmation dialog  \n"\
-    "\t12/23/2021 - 03.50.49: using safrs-react-admin build, dept self-reln workaround  \n"\
-    "\t12/22/2021 - 03.50.48: pycharm run, readme cleanup \n"\
-    "\t12/22/2021 - 03.50.47: safrs-react-admin @ 4PM \n"\
-    "\t12/18/2021 - 03.50.45: n:m fixed (Chinook playlistTracks, SqlSvr, Postgres Emp Territories); self reln info  \n"\
-    "\t12/05/2021 - 03.50.29: pythonanywhere fixes (admin.yaml from current server, use build --host)  \n"\
+    "\t12/24/2021 - 04.00.00: introducing the admin app  \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
     "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
-    "\t10/16/2021 - 03.20.07: dev-network no longer required (reduce errors) \n"\
     "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"\
     "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"\
     "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
