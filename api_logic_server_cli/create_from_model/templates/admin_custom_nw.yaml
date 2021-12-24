@@ -47,28 +47,8 @@ resources:
       name: OrderList
       label: Order List
       resource: Order
-    - direction: tomany
-      fks:
-      - CustomerTypeId
-      name: CustomerCustomerDemoList
-      resource: CustomerCustomerDemo
     type: Customer
     user_key: CompanyName
-  CustomerCustomerDemo:
-    attributes:
-    - label: Id*
-      name: Id
-      search: true
-      sort: true
-    - name: CustomerTypeId
-    tab_groups:
-    - direction: toone
-      fks:
-      - CustomerTypeId
-      name: Customer
-      resource: Customer
-    type: CustomerCustomerDemo
-    user_key: Id
   CustomerDemographic:
     attributes:
     - label: Id*
