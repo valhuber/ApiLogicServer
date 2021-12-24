@@ -830,7 +830,7 @@ from sqlalchemy.dialects.mysql import *
                 if self.generate_relationships_on != "child":
                     attr_to_render = "# see backref on parent: " + attr  # relns not created on child; comment out
                 rel_render = "{0}{1} = {2}\n".format(self.indentation, attr_to_render, self.render_relationship(relationship))
-                rel_parts = rel_render.split(")")  #eg, '    Department = relationship(\'Department\', remote_side=[Id]'
+                rel_parts = rel_render.split(")")  # eg, Department = relationship(\'Department\', remote_side=[Id]
                 backref_name = model.name + "List"
                 """ disambiguate multi-relns, eg, in the Employee child class, 2 relns to Department:
                         Department =  relationship('Department', primaryjoin='Employee.OnLoanDepartmentId == Department.Id', cascade_backrefs=True, backref='EmployeeList')
@@ -859,7 +859,16 @@ from sqlalchemy.dialects.mysql import *
                 parent_role_name = attr
                 if unique_name in backrefs:  # disambiguate
                     child_role_name += '1'  # FIXME - fails for 3 relns
-                parent_relationship = f'{child_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{parent_role_name}\')'
+                if model.name != parent_model.name:
+                    parent_relationship = f'{child_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{parent_role_name}\')'
+                else:  # work-around for self relns
+                    """
+                    special case self relns:
+                        not DepartmentList = relationship('Department', remote_side=[Id], cascade_backrefs=True, backref='Department')
+                        but Department     = relationship('Department', remote_side=[Id], cascade_backrefs=True, backref='DepartmentList')
+                    """
+                    parent_relationship = f'{parent_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{child_role_name}\')'
+                    parent_relationship += "  # special handling for self-relationships"
                 if self.generate_relationships_on != "parent":  # relns not created on parent; comment out
                     parent_relationship = "# see backref on child: " + parent_relationship
                 parent_model.rendered_model_relationships += "    " + parent_relationship + "\n"
@@ -870,7 +879,7 @@ from sqlalchemy.dialects.mysql import *
                 if relationship.source_cls.startswith("Ab"):
                     pass
                 elif isinstance(relationship, ManyToManyRelationship):  # eg, chinook:PlayList->PlayListTrack
-                    debug_str = "many to many breakpoint"# fixme: admin.yaml not seeing ManyToManyRelationship
+                    print(f'many to many should not occur on: {model.name}.{unique_name}')
                 elif not self.do_model_creation_services_hack:
                     pass
                 else:  # fixme dump all this, right?
@@ -916,6 +925,7 @@ from sqlalchemy.dialects.mysql import *
 
     def render(self, outfile=sys.stdout):
         """ create model from db, and write models.py file to in-memory buffer (outfile)
+            relns created from not-yet-seen children, so save *all* class info, then append rendered_model_relationships
         """
         for model in self.models:
             if isinstance(model, self.class_model):

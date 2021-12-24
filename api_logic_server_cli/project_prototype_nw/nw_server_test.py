@@ -85,17 +85,19 @@ def server_tests(host, port, version):
         prt(f'\nGET DIAGNOSTICS PASSED for table Order... now verify PATCH Customer...')
 
     if self_reln_test:
-        get_dept_uri = f'http://{host}:{port}/api/Department/?' \
+        get_dept_uri = f'http://{host}:{port}/api/Department/2/?' \
                         f'include=DepartmentList%2CEmployeeList%2CEmployeeList1%2CDepartment' \
                        f'&fields%5BDepartment%5D=Id%2CDepartmentId%2CDepartmentName'
         r = requests.get(url=get_dept_uri)
         response_text = r.text
-        # result_data = json.load(response_text)  # 'str' object has no attribute 'read'
-        assert "Sales" in response_text and \
-                "Engineering" in response_text and \
-                "CEO" in response_text,\
-                f'Error - "Sales or Engineering or CEO noy in {response_text}'
-
+        result_data = json.loads(response_text)  # 'str' object has no attribute 'read'
+        relationships = result_data["data"]["relationships"]
+        relationships_department = relationships["Department"]
+        relationships_department_list = relationships["DepartmentList"]
+        ceo_check = relationships_department["data"]["id"]  # should be '1'
+        ne_sales_check = relationships_department_list["data"][0]["id"]  # should be 4
+        assert ceo_check == '1' and ne_sales_check == '4',\
+            f'Error - "CEO not in Department or NE Sales not in DepartmentList: {response_text}'
         prt(f'\nGET DIAGNOSTICS PASSED for table Department... now verify PATCH Customer...')
 
     if patch_test:

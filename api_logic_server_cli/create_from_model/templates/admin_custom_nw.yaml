@@ -1,11 +1,11 @@
 about:
-  date: December 21, 2021 17:22:34
+  date: December 23, 2021 16:26:25
   recent_changes: 'Customer/Orders: tab order, label'
-  version: 3.50.46
+  version: 3.50.51
 api_root: http://localhost:5656/api
 info:
-  number_relationships: 8
-  number_tables: 14
+  number_relationships: 11
+  number_tables: 15
 resources:
   Category:
     attributes:
@@ -78,18 +78,50 @@ resources:
     - name: CustomerDesc
     type: CustomerDemographic
     user_key: Id
+  Department:
+    attributes:
+    - label: DepartmentName*
+      name: DepartmentName
+      search: true
+      sort: true
+    - name: DepartmentId
+    - name: Id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - DepartmentId
+      name: DepartmentList
+      resource: Department
+    - direction: tomany
+      fks:
+      - OnLoanDepartmentId
+      name: EmployeeList
+      resource: Employee
+    - direction: tomany
+      fks:
+      - WorksForDepartmentId
+      name: EmployeeList1
+      resource: Employee
+    - direction: toone
+      fks:
+      - DepartmentId
+      name: Department
+      resource: Department
+    type: Department
+    user_key: DepartmentName
   Employee:
     attributes:
     - label: LastName*
       name: LastName
       search: true
       sort: true
+    - name: OnLoanDepartmentId
+    - name: WorksForDepartmentId
     - name: FirstName
     - name: Title
     - name: TitleOfCourtesy
     - name: BirthDate
     - name: HireDate
-      type: DATE
     - name: Address
     - name: City
     - name: Region
@@ -121,6 +153,16 @@ resources:
       - EmployeeId
       name: OrderList
       resource: Order
+    - direction: toone
+      fks:
+      - OnLoanDepartmentId
+      name: Department
+      resource: Department
+    - direction: toone
+      fks:
+      - WorksForDepartmentId
+      name: Department1
+      resource: Department
     type: Employee
     user_key: LastName
   EmployeeAudit:
@@ -150,21 +192,38 @@ resources:
       name: Id
       search: true
       sort: true
-    - name: EmployeeId
     - name: TerritoryId
+    - name: EmployeeId
     tab_groups:
-    - direction: toone
-      fks:
-      - EmployeeId
-      name: Employee
-      resource: Employee
     - direction: toone
       fks:
       - TerritoryId
       name: Territory
       resource: Territory
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      resource: Employee
     type: EmployeeTerritory
     user_key: Id
+  Location:
+    attributes:
+    - label: country*
+      name: country
+      search: true
+      sort: true
+    - name: city
+    - name: notes
+    tab_groups:
+    - direction: tomany
+      fks:
+      - Country
+      - City
+      name: OrderList
+      resource: Order
+    type: Location
+    user_key: country
   Order:
     attributes:
     - label: ShipName*
@@ -172,10 +231,10 @@ resources:
       search: true
       sort: true
     - name: CustomerId
+    - name: Country
     - name: EmployeeId
     - name: OrderDate
     - name: RequiredDate
-      type: DATE
     - name: ShippedDate
     - name: ShipVia
     - name: Freight
@@ -186,6 +245,7 @@ resources:
     - name: ShipPostalCode
     - name: ShipCountry
     - name: AmountTotal
+    - name: City
     - name: Id
     tab_groups:
     - direction: tomany
@@ -198,6 +258,12 @@ resources:
       - CustomerId
       name: Customer
       resource: Customer
+    - direction: toone
+      fks:
+      - Country
+      - City
+      name: Location
+      resource: Location
     - direction: toone
       fks:
       - EmployeeId

@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "3.50.50"
+__version__ = "3.50.51"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t12/23/2021 - 03.50.51: codegen fix for dept self-reln, nw+ default, nw tests for self-reln  \n"\
     "\t12/23/2021 - 03.50.50: gunicorn-friendly host/port, delete confirmation dialog  \n"\
     "\t12/23/2021 - 03.50.49: using safrs-react-admin build, dept self-reln workaround  \n"\
     "\t12/22/2021 - 03.50.48: pycharm run, readme cleanup \n"\
@@ -732,7 +733,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     abs_db_url = db_url
     """ non-relative db location - we work with this (but NB: we copy sqlite db to <project>/database) """
     if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:
-        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+        # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
         nw_db_status = "nw"
     elif db_url == "nw-":
         abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'

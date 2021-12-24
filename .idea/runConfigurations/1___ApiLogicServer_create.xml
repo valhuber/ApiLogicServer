@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="1 - Create ApiLogicProject" type="PythonConfigurationType" factoryName="Python">
+  <configuration default="false" name="1 - ApiLogicServer create" type="PythonConfigurationType" factoryName="Python">
     <module name="ApiLogicServer" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

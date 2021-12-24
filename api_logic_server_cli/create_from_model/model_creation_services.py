@@ -751,7 +751,8 @@ class CreateFromModel(object):
 
                                 parent_role_name = rel_name
                                 child_role_name = rel.back_populates
-                                if resource_name == rel.mapper.class_._s_class_name:  # backward for self-reln
+                                do_patch_self_reln = False  # roles backward for self-relns, but addressed in codegen
+                                if do_patch_self_reln and resource_name == rel.mapper.class_._s_class_name:
                                     parent_role_name = rel.back_populates
                                     child_role_name = rel_name
                                 relationship = ResourceRelationship(parent_role_name=parent_role_name,
