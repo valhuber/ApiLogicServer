@@ -35,14 +35,14 @@ To run the Admin App, follow these steps:
    * Navigate to `Customer`
      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
    * Click the Customer row  to see Customer Details
-   * Click the `OrderList` tab at the bottom right
+   * Click the `OrderList` tab at the bottom
    * Click the first Order row
-   * Click the `OrderDetailList` tab at the bottom right
+   * Click the `OrderDetailList` tab at the bottom
 6. (Close the app (browser), but leave the server running)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
-&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
 
   > **Key Take-away:** instant multi-page / multi-table admin apps, suitable for **back office, and instant agile collaboration.**
 
@@ -53,7 +53,7 @@ Your API is instantly ready to support ui and integration
 development, available in swagger, as shown below.  JSON:APIs are interesting because they
 are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
 
-The creation process builds not only the API, but swagger so you can explore it.  The Admin App provides a link to the swagger, but it doesn't work in VS Code's simple browser.  So, we'll launch a new Simple Browser, like this:
+The creation process builds not only the API, but swagger so you can explore it.  The Admin App Home page provides a link to the swagger, but it doesn't work in VS Code's simple browser.  So, we'll launch a new Simple Browser, like this:
 1. Click __View > Command__ to open the Command Palette
    * Enter command: `Simple Browser: Show`
    * Specify the URL: `http://localhost:5656/api`
