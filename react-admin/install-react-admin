@@ -3,33 +3,58 @@
 if [ $# -eq 0 ]
   then
     echo " "
-    echo "Deletes and rebuilds react-admin into ApiLogicServer/api_logic_server_cli/safrs-react-admin-npm-build"
+    echo "  Deletes and rebuilds react-admin into ApiLogicServer/api_logic_server_cli/safrs-react-admin-npm-build, e.g."
     echo " "
-    echo " IMPORTANT - overwrites safrs-react-admin from react-admin/code - make sure that's up to date"
+    echo "      sh rebuild-react-admin [go | rebuild | no-pull]"
     echo " "
-    echo "  sh rebuild-react-admin go"
+    echo "   Use the no-pull option to use existing safrs-react-admin"
+    echo " "
+    echo "   Use the rebuild option to rebuild the safrs-react-admin/build folder"
+    echo " "
+    echo "       IMPORTANT - overwrites safrs-react-admin from react-admin/code - make sure that's up to date"
     echo " "
     exit 0
-  else
-    echo " "
-    read -p "Verify react-admin/code is current, correct yaml url, and [Enter] rebuild react-admin for API Logic Server"
-    set -x
+  fi
+
+echo " "
+if [[ "$1" != "no-pull" ]]
+  then
     # sudo chown $USER:$USER ../../safrs-react-admin
+    read -p "Press [Enter] to delete / pull safrs-react-admin>"
     sudo rm -r ../../safrs-react-admin
     cd ../../
     pwd
-    # read -p "Verify you are at dev, and [Enter] rebuild react-admin for API Logic Server"
     git clone https://github.com/thomaxxl/safrs-react-admin
+    cd ApiLogicServer
+  else
+    echo ".. using existing safrs-react-admin"
+    cd ../
+fi
+set +x
+if [[ "$1" = "rebuild" ]]
+  then
+    echo " "
     cd safrs-react-admin
     ls ../ApiLogicServer/react-admin/code
+    read -p "Verify you are at dev (see ls above), and [Enter] to rebuild react-admin for API Logic Server>"
+    set -x
     # cp ../ApiLogicServer/react-admin/code/Home-als.js src/components/Home.js
     # cp ../ApiLogicServer/react-admin/code/Config-als.js src/Config.js
-    # npm install
-    # pwd
-    # ls
-    # read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server"
-    # npm run build
-    rm -rf ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
-    cp -a ./build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
-    exit 0
-fi
+    npm install
+    pwd
+    ls
+    read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server"
+    npm run build
+    set +x
+    cd ../ApiLogicServer/react-admin
+  fi
+echo " "
+pwd
+echo " "
+echo "..rm -rf  ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*"
+set +x
+rm -rf api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
+set -x
+cp -a ../safrs-react-admin/build/. api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+exit 0
+
