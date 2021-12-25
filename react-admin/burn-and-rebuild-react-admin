@@ -24,11 +24,11 @@ if [ $# -eq 0 ]
     ls ../ApiLogicServer/react-admin/code
     # cp ../ApiLogicServer/react-admin/code/Home-als.js src/components/Home.js
     # cp ../ApiLogicServer/react-admin/code/Config-als.js src/Config.js
-    npm install
-    pwd
-    ls
-    read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server"
-    npm run build
+    # npm install
+    # pwd
+    # ls
+    # read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server"
+    # npm run build
     rm -rf ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
     cp -a ./build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     exit 0
