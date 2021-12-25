@@ -40,13 +40,13 @@ After you've explored the tutorial, try out our [dockerized test databases](http
 
 # Feature Summary
 
-| Feature | Providing  | Why it Matters | Learn More |
-| :-------------- |:--------------| :------|  :------|
-| 1. [JSON:**API** and Swagger](#jsonapi---swagger) | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev | [SAFRS](https://github.com/thomaxxl/safrs/wiki) |
-| 2. [Transactional **Logic**](#logic)| *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Strategic Business Agility | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) |
-| 3. [Basic **Web App**](#basic-web-app) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin | [Flask App Builder](https://flask-appbuilder.readthedocs.io/en/latest/), <br>[fab-quickstart](https://github.com/valhuber/fab-quick-start/wiki) |
-| 4. [**Customizable Project**](#customize-and-debug) | Custom Data Model, Endpoints, Logic | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
-| 5. Model Creation | Python-friendly ORM | Custom Data Access<br>Used by API and Basic Web App | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html) |
+| Feature                                                               | Providing                                                                                                                                       | Why it Matters                                   | Learn More                                                                                 |
+|:----------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------|:-------------------------------------------------------------------------------------------|
+| 1. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** app                                                                                                         | Engage Business Users<br>Back-office Admin       | [safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)                         |
+| 2. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock Client App Dev                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                            |
+| 3. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Strategic Business Agility                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)     |
+| 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic                                                                                                             | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
+| 5. Model Creation                                                     | Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
 
 The following tutorial is a good way to explore API Logic Server.
 
