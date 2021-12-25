@@ -51,10 +51,11 @@ if [[ "$1" = "rebuild" ]]
 echo " "
 pwd
 echo " "
-echo "..rm -rf  ../ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*"
+echo "..rm -rf  api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*"
 set +x
 rm -rf api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
 set -x
 cp -a ../safrs-react-admin/build/. api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+echo " "
 exit 0
 
