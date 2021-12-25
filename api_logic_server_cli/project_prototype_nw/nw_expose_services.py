@@ -30,7 +30,7 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
         """
         This is inserted to illustrate that APIs not limited to database objects, but are extensible.
 
-        See: https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#customize-api
+        See: https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 
         See: https://github.com/thomaxxl/safrs/wiki/Customization
         """

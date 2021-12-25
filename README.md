@@ -310,7 +310,7 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 
 ### Tutorials
 There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
-* [Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Tutorial) walks you through the steps of creating a server
+* [Tutorial](#api-logic-server---sample-tutorial) walks you through the steps of creating a server
 * [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
 
 

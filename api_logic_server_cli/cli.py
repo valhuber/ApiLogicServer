@@ -833,7 +833,7 @@ def about(ctx):
     global recent_changes
 
     print(f'\tInstalled at {abspath(__file__)}\n')
-    print(f'\thttps://github.com/valhuber/ApiLogicServer/wiki/Tutorial\n')
+    print(f'\thttps://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-logic-server---sample-tutorial\n')
 
     def print_at(label: str, value: str):
         tab_to = 30 - len(label)

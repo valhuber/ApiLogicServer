@@ -19,7 +19,7 @@ get_test = True  # Performs a basic get, with Fields and Filter
 patch_test = True  # Updates a Customer with intentionally bad data to illustrate logic
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
-custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order
+custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 api_logic_server_summary = True  # Prints a banner
 
 

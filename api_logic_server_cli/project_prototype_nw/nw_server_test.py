@@ -10,7 +10,6 @@ import json
 
 """
     These are server tests for the default Sample DB.
-    See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#customize-server-startup
 
     These verify the following, and are useful coding examples of API Usage:
 """
@@ -19,7 +18,7 @@ get_test = True  # Performs a basic get, with Fields and Filter
 patch_test = True  # Updates a Customer with intentionally bad data to illustrate logic
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
-custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order
+custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 self_reln_test = True  # verify dept subDepts, headDept
 
 
@@ -154,7 +153,7 @@ def server_tests(host, port, version):
         prt(f''
             f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
             f'Logic Log shows proper detection of Customer Constraint Failure...\n'
-            f' - see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#services-add-order\n'
+            f' - see https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization\n'
             f'.. The logic illustrates MULTI-TABLE CHAINING (note indents):\n'
             f'....FORMULA OrderDetail.Amount (19998), which...\n'
             f'......ADJUSTS Order.AmountTotal (19998), which...\n'
