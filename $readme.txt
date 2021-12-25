@@ -1,3 +1,6 @@
+nw_readme.md -> README.md
+    * remove internal IDE links
+
 Creating the ApiLogicServer dev environment
 
     Directory Presumption

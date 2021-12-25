@@ -97,23 +97,25 @@ In this tutorial, we will explore:
 
 Created projects are instantly executable.  Let's explore the Basic Web App and the API.
 
-### Basic Web App
-To run the Web App, follow these steps:
+### Admin App
+To run the Admin App, follow these steps:
 
 1. Click **Run and Debug**
    * *Note:* these steps are highlighted in the diagram below
-2. Select the `Basic Web App` Launch Configuration
+2. Select the `ApiLogicServer` Launch Configuration
 3. Press the green run button
-   * The app should start, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and run the app with user **admin**, password **p**.
+   * The server should start, and 
+   * VS Code may suggest opening a Browser (the _preview_ browser is shown below).
+      * If not, you can use __View > Command palette > Simple Browser__
+      * Or. launch your local browser
+   * Start the Admin App at [localhost:5656](localhost:5656)
+   * Login with the default credentials
 4. Explore the app - multi-page, multi-table, automatic joins
-5. Stop the server
+   * The screen shows the result from selecting __Customer > Click a company > Click an order__
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/basic-web-app.png"></figure>
 
-##### Preparing Flask AppBuilder
-Before you run the basic web app on your own database, you must create admin data,
-and address certain restrictions (not required for this tutorial).  For more information, see
-[Working with Flask AppBuilder](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder).
+<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/admin-app.png"></figure>
+
 
 ### JSON:API - Swagger
 Your API is instantly ready to support ui and integration
@@ -121,7 +123,7 @@ development, available in swagger, as shown below.  JSON:APIs are interesting be
 are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
 
 The creation process builds not only the API, but swagger so you can explore it, like this:
-1. Select the `ApiLogicServer` Launch Configuration
+1. Click __Home > Swagger__
 2. Press the green run button
    * The app should start, and VS Code will suggest opening a Browser.
 3. Explore the swagger

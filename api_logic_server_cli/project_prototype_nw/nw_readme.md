@@ -8,7 +8,7 @@ In this tutorial, we will explore:
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
 
-This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here](https://github.com/valhuber/ApiLogicServer/wiki#use-pycharm-pro) for more information.
+This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution) for more information.
 
 The diagram below summarizes the create / run / customize process:
 
