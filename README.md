@@ -115,8 +115,7 @@ The creation process builds not only the API, but swagger so you can explore it.
    * Note: you can drag windows to arrange your viewing area as shown below
 3. (Leave the swagger and server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/swagger
-.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/swagger.png?raw=true"></figure>
 &nbsp;&nbsp;&nbsp;
 
   > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
@@ -148,7 +147,7 @@ Let's now explore some examples.
 ### Admin App Customization
 There is no code for the Admin app - it's behavior is declared in the `admin.yaml` model file.  Alter this file to control labels, hide fields, change display order, etc:
 
-1. Open **Explorer > [ui/admin/admin.yaml](./ui/admin/admin.yaml)**
+1. Open **Explorer > [ui/admin/admin.yaml]()**
    * Find and alter the string `- label: ShipName*` (e.g, insert a space)
    * Click Save
 2. Launch the app: [http://localhost:5656](http://localhost:5656)
