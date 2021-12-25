@@ -147,7 +147,7 @@ Let's now explore some examples.
 ### Admin App Customization
 There is no code for the Admin app - it's behavior is declared in the `admin.yaml` model file.  Alter this file to control labels, hide fields, change display order, etc:
 
-1. Open **Explorer > [ui/admin/admin.yaml]()**
+1. Open **Explorer > [ui/admin/admin.yaml]**
    * Find and alter the string `- label: ShipName*` (e.g, insert a space)
    * Click Save
 2. Launch the app: [http://localhost:5656](http://localhost:5656)
