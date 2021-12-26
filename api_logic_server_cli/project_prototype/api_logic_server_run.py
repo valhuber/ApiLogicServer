@@ -72,7 +72,7 @@ def setup_logging(flask_app):
             logic_logger.handlers = []
             logic_logger.addHandler(handler)
             app_logger.warning("\nLog width truncated for readability -- "
-                               "see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#word-wrap-on-the-log")
+                               "see https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging\n")
         else:
             formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
         handler.setFormatter(formatter)

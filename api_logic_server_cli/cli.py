@@ -13,17 +13,42 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.00.01"
+__version__ = "4.00.02"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/24/2021 - 04.00.01: introducing the admin app, with readme  \n"\
+    "\t12/24/2021 - 04.00.02: introducing the admin app, with readme and admin config autoload  \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
     "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
     "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"\
     "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"\
     "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
 
+uri_info = [
+    '',
+    'Creates and optionally runs a customizable ApiLogicServer project',
+    '',
+    'Examples:',
+    '  ApiLogicServer create-and-run',
+    '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
+    '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
+    '--project_name=/localhost/docker_db_project',
+    '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
+    'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
+    '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
+    '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
+    '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
+    '  ApiLogicServer create --project_name=Chinook \\',
+    '    --host=ApiLogicServer.pythonanywhere.com --port= \\',
+    '    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook',
+    '',
+    'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
+    '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
+    '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
+    '   Install Guide:                https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide',
+    ' ',
+    'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
+]
 from contextlib import closing
 
 import yaml
@@ -76,7 +101,7 @@ api_logic_server_info_file.close()
 
 
 last_created_project_name = api_logic_server_info_file_dict["last_created_project_name"]
-default_db = "<default -- nw.sqlite>"
+default_db = "default = nw.sqlite, ? for help"
 default_project_name = "ApiLogicProject"
 default_fab_host = "localhost"
 if os.path.exists('/home/api_logic_server'):  # docker?
@@ -632,7 +657,11 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
                   extended_builder: str):
-    """ Creating ApiLogicServer with options:"""
+    """ Creating ApiLogicServer with options: (or uri helo) """
+    if db_url == "?":
+        print_uri_info()
+        exit(0)
+
     print_options = True
     if print_options:
         print(f'\n\nCreating ApiLogicServer with options:')
@@ -720,6 +749,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                   flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
                   react_admin=react_admin, admin_app=admin_app,
                   extended_builder=extended_builder)
+
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
     nw_db_status = ""  # presume not northwind
@@ -829,7 +859,6 @@ def about(ctx):
     """
         Recent Changes, system information.
     """
-    # print_info()
     global recent_changes
 
     print(f'\tInstalled at {abspath(__file__)}\n')
@@ -863,14 +892,14 @@ def about(ctx):
 
 
 @main.command("create")
-@click.option('--db_url',
-              default=f'{default_db}',
-              prompt="SQLAlchemy Database URI",
-              help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
               default=f'{default_project_name}',
               prompt="Project to create",
               help="Create new directory here")
+@click.option('--db_url',
+              default=f'{default_db}',
+              prompt="SQLAlchemy Database URI",
+              help="SQLAlchemy Database URL - see above\n")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -887,7 +916,7 @@ def about(ctx):
               default=True, is_flag=True,
               help="Creates ui/react app (yaml model)")
 @click.option('--flask_appbuilder/--no_flask_appbuilder',
-              default=True, is_flag=True,
+              default=False, is_flag=True,
               help="Creates ui/basic_web_app")
 @click.option('--react_admin/--no_react_admin',
               default=False, is_flag=True,
@@ -929,7 +958,6 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     """
     global command
     command = "create"
-    # print_info()
     db_types = ""
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
@@ -941,14 +969,14 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 
 
 @main.command("create-and-run")
+@click.option('--project_name',
+              default=f'{default_project_name}',
+              prompt="Project to create",
+              help="Create new directory here")
 @click.option('--db_url',
               default=f'{default_db}',
               prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
-@click.option('--project_name',
-              default=f'{default_project_name}',
-              prompt="Project to create and run",
-              help="Create new directory here")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -965,7 +993,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               default=True, is_flag=True,
               help="Creates ui/react app (yaml model)")
 @click.option('--flask_appbuilder/--no_flask_appbuilder',
-              default=True, is_flag=True,
+              default=False, is_flag=True,
               help="Creates ui/basic_web_app")
 @click.option('--react_admin/--no_react_admin',
               default=False, is_flag=True,
@@ -1007,7 +1035,6 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
     """
     global command
     command = "create-and-run"
-    # print_info()
     db_types = ""
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
@@ -1019,14 +1046,14 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
 
 
 @main.command("rebuild-from-database")
-@click.option('--db_url',
-              default=f'{default_db}',
-              prompt="SQLAlchemy Database URI",
-              help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
               default=f'{default_project_name}',
               prompt="Project to create",
               help="Create new directory here")
+@click.option('--db_url',
+              default=f'{default_db}',
+              prompt="SQLAlchemy Database URI",
+              help="SQLAlchemy Database URL - see above\n")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -1043,7 +1070,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
               default=True, is_flag=True,
               help="Creates ui/react app (yaml model)")
 @click.option('--flask_appbuilder/--no_flask_appbuilder',
-              default=True, is_flag=True,
+              default=False, is_flag=True,
               help="Creates ui/basic_web_app")
 @click.option('--react_admin/--no_react_admin',
               default=False, is_flag=True,
@@ -1091,7 +1118,6 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
     """
     global command
     command = "rebuild-from-database"
-    # print_info()
     db_types = ""
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
@@ -1103,14 +1129,14 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
 
 
 @main.command("rebuild-from-model")
-@click.option('--db_url',
-              default=f'{default_db}',
-              prompt="SQLAlchemy Database URI",
-              help="SQLAlchemy Database URL - see above\n")
 @click.option('--project_name',
               default=f'{default_project_name}',
               prompt="Project to create",
               help="Create new directory here")
+@click.option('--db_url',
+              default=f'{default_db}',
+              prompt="SQLAlchemy Database URI",
+              help="SQLAlchemy Database URL - see above\n")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -1127,7 +1153,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
               default=True, is_flag=True,
               help="Creates ui/react app (yaml model)")
 @click.option('--flask_appbuilder/--no_flask_appbuilder',
-              default=True, is_flag=True,
+              default=False, is_flag=True,
               help="Creates ui/basic_web_app")
 @click.option('--react_admin/--no_react_admin',
               default=False, is_flag=True,
@@ -1169,7 +1195,6 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, not_exposed: str,
     """
     global command
     command = "rebuild-from-model"
-    # print_info()
     db_types = ""
     api_logic_server(project_name=project_name, db_url=db_url,
                      not_exposed=not_exposed,
@@ -1304,60 +1329,21 @@ def examples(ctx):
     """
     Example commands, including SQLAlchemy URIs.
     """
-    info = [
-        'Examples:',
-        '  ApiLogicServer create-and-run',
-        '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
-        '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
-        '--project_name=/localhost/docker_db_project',
-        '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
-        'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
-        '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
-        '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
-        '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
-        '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
-        '',
-        'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
-        '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
-        '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
-        ' ',
-        'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
-    ]
-    for each_line in info:
-        print(each_line)
+    print_uri_info()
+
 
 log = logging.getLogger(__name__)
 
 
-def print_info():
+def print_uri_info():
     """
     Creates and optionally runs a customizable ApiLogicServer project, Example
 
     URI examples, Docs URL
     """
-    info = [
-        '',
-        'Creates and optionally runs a customizable ApiLogicServer project',
-        '',
-        'Examples:',
-        '  ApiLogicServer create-and-run',
-        '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
-        '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
-        '--project_name=/localhost/docker_db_project',
-        '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
-        'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
-        '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
-        '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
-        '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
-        '  ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=',
-        '',
-        'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
-        '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
-        '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
-        ' ',
-        'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
-    ]
-    for each_line in info:
+
+    global uri_info
+    for each_line in uri_info:
         sys.stdout.write(each_line + '\n')
     sys.stdout.write('\n')
 

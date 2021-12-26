@@ -1,6 +1,6 @@
 about:
-  date: December 23, 2021 16:26:25
-  recent_changes: 'Customer/Orders: tab order, label'
+  date: December 26, 2021 09:00:00
+  recent_changes: altered tab captions
   version: 3.50.51
 api_root: http://localhost:5656/api
 info:
@@ -9,7 +9,7 @@ info:
 resources:
   Category:
     attributes:
-    - label: CategoryName*
+    - label: ' Category Name*'
       name: CategoryName
       search: true
       sort: true
@@ -19,12 +19,11 @@ resources:
     user_key: CategoryName
   Customer:
     attributes:
-    - label: Company Name*
+    - label: ' Company Name*'
       name: CompanyName
       search: true
       sort: true
     - name: ContactName
-      search: true
     - name: ContactTitle
     - name: Address
     - name: City
@@ -45,13 +44,13 @@ resources:
       fks:
       - CustomerId
       name: OrderList
-      label: Order List
+      label: 'Placed Order List'
       resource: Order
     type: Customer
     user_key: CompanyName
   CustomerDemographic:
     attributes:
-    - label: Id*
+    - label: ' Id*'
       name: Id
       search: true
       sort: true
@@ -60,7 +59,7 @@ resources:
     user_key: Id
   Department:
     attributes:
-    - label: DepartmentName*
+    - label: ' Department Name*'
       name: DepartmentName
       search: true
       sort: true
@@ -91,7 +90,7 @@ resources:
     user_key: DepartmentName
   Employee:
     attributes:
-    - label: LastName*
+    - label: ' Last Name*'
       name: LastName
       search: true
       sort: true
@@ -147,7 +146,7 @@ resources:
     user_key: LastName
   EmployeeAudit:
     attributes:
-    - label: LastName*
+    - label: ' Last Name*'
       name: LastName
       search: true
       sort: true
@@ -168,7 +167,7 @@ resources:
     user_key: LastName
   EmployeeTerritory:
     attributes:
-    - label: Id*
+    - label: ' Id*'
       name: Id
       search: true
       sort: true
@@ -189,7 +188,7 @@ resources:
     user_key: Id
   Location:
     attributes:
-    - label: country*
+    - label: ' country*'
       name: country
       search: true
       sort: true
@@ -206,7 +205,7 @@ resources:
     user_key: country
   Order:
     attributes:
-    - label: ShipName*
+    - label: ' Ship Name*'
       name: ShipName
       search: true
       sort: true
@@ -233,6 +232,7 @@ resources:
       fks:
       - OrderId
       name: OrderDetailList
+      label: 'Order Detail List'
       resource: OrderDetail
     - direction: toone
       fks:
@@ -254,7 +254,7 @@ resources:
     user_key: ShipName
   OrderDetail:
     attributes:
-    - label: Id*
+    - label: ' Id*'
       name: Id
       search: true
       sort: true
@@ -282,7 +282,7 @@ resources:
     user_key: Id
   Product:
     attributes:
-    - label: ProductName*
+    - label: ' Product Name*'
       name: ProductName
       search: true
       sort: true
@@ -307,7 +307,7 @@ resources:
     user_key: ProductName
   Region:
     attributes:
-    - label: RegionDescription*
+    - label: ' Region Description*'
       name: RegionDescription
       search: true
       sort: true
@@ -316,7 +316,7 @@ resources:
     user_key: RegionDescription
   Shipper:
     attributes:
-    - label: CompanyName*
+    - label: ' Company Name*'
       name: CompanyName
       search: true
       sort: true
@@ -326,7 +326,7 @@ resources:
     user_key: CompanyName
   Supplier:
     attributes:
-    - label: CompanyName*
+    - label: ' Company Name*'
       name: CompanyName
       search: true
       sort: true
@@ -345,7 +345,7 @@ resources:
     user_key: CompanyName
   Territory:
     attributes:
-    - label: TerritoryDescription*
+    - label: ' Territory Description*'
       name: TerritoryDescription
       search: true
       sort: true

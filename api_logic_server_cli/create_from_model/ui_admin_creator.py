@@ -174,7 +174,7 @@ class AdminCreator(object):
         processed_attributes.add(favorite_attribute.name)
         admin_attribute.search = True
         admin_attribute.sort = True
-        admin_attribute.label = f"{favorite_attribute.name}*"
+        admin_attribute.label = f"{self.cap_space(favorite_attribute.name)}*"
         attributes_dict.append(admin_attribute)
 
         # Step 2 - Parent Joins
@@ -233,6 +233,14 @@ class AdminCreator(object):
                 admin_attribute = None
         return admin_attribute
 
+    @staticmethod
+    def cap_space(text):
+        new_text = ' '
+        for i, letter in enumerate(text):
+            if i and letter.isupper():
+                new_text += ' '
+            new_text += letter
+        return new_text
 
     def create_attributes_in_owner_zz(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
         """ create attributes in owner (owner is a DotMap -- of resource, or tab)
@@ -599,6 +607,9 @@ class AdminCreator(object):
                 joinpath("create_from_model", "safrs-react-admin-npm-build")
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "safrs-react-admin")
         print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
+        if not os.path.isdir(from_proto_dir):
+            print(f'\n==> Error - prototype admin project... did you complete setup: https://github.com/valhuber/ApiLogicServer/wiki/Internals')
+            exit(1)
         shutil.copytree(from_proto_dir, to_project_dir)
 
         os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
