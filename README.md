@@ -148,7 +148,7 @@ Let's now explore some examples.
 There is no code for the Admin app - it's behavior is declared in the `admin.yaml` model file.  Alter this file to control labels, hide fields, change display order, etc:
 
 1. Open **Explorer > [ui/admin/admin.yaml]**
-   * Find and alter the string `- label: ShipName*` (e.g, insert a space)
+   * Find and alter the string `- label: 'Placed Order List*'` (e.g, make it plural)
    * Click Save
 2. Launch the app: [http://localhost:5656](http://localhost:5656)
 3. Refresh your Browser window to reload the altered definition
@@ -357,11 +357,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-12/26/2021 - 04.00.00: admin app generally released - technology preview below
+12/26/2021 - 04.00.04: admin app generally released
 
-```
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==4.00.00 
-```
 11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support 
 
 11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002

@@ -95,7 +95,7 @@ Let's now explore some examples.
 There is no code for the Admin app - it's behavior is declared in the `admin.yaml` model file.  Alter this file to control labels, hide fields, change display order, etc:
 
 1. Open **Explorer > [ui/admin/admin.yaml](./ui/admin/admin.yaml)**
-   * Find and alter the string `- label: ShipName*` (e.g, insert a space)
+   * Find and alter the string `- label: 'Placed Order List*'` (e.g, make it plural)
    * Click Save
 2. Launch the app: [http://localhost:5656](http://localhost:5656)
 3. Refresh your Browser window to reload the altered definition
