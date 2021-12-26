@@ -13,11 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.00.02"
+__version__ = "4.00.03"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/24/2021 - 04.00.02: introducing the admin app, with readme and admin config autoload  \n"\
+    "\t12/24/2021 - 04.00.03: introducing the admin app, with readme and admin config autoload. \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
     "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
     "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"\
@@ -375,6 +375,8 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
 
         print(f'.. ..Copied sqlite db to: {target_db_loc_actual} and '
               f'updated db_uri in {project_directory}/config.py')
+        if nw_db_status != "":
+            print(f'.. .. ..Using nw sample db: {db_loc}')
 
     return target_db_loc_actual
 
