@@ -361,7 +361,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support 
 
-11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002
+11/04/2021 - 03.40.01: Per macOS Monterey, default ports to 5001, 5002
 
 10/18/2021 - 03.20.11: Readme Tutorial for IDE users
 
