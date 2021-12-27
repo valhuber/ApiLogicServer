@@ -94,7 +94,7 @@ Let's now explore some examples.
 ### Admin App Customization
 There is no code for the Admin app - it's behavior is declared in the `admin.yaml` model file.  Alter this file to control labels, hide fields, change display order, etc:
 
-1. Open **Explorer > [ui/admin/admin.yaml](./ui/admin/admin.yaml)**
+1. Open **Explorer > ui/admin/admin.yaml**
    * Find and alter the string `- label: 'Placed Order List*'` (e.g, make it plural)
    * Click Save
 2. Launch the app: [http://localhost:5656](http://localhost:5656)
@@ -115,7 +115,7 @@ While a standards-based API is a great start, sometimes you need custom endpoint
 
 To review the implementation: 
 
-1. Open **Explorer > [api/customize_api.py](./api/customize_api.py)**:
+1. Open **Explorer > api/customize_api.py**:
 3. Set the breakpoint as shown
 4. Use the swagger to access the `ServicesEndPoint > add_order`, and
    1. **Try it out**, then 
@@ -137,7 +137,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
 
 [Logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
-1. Open **Explorer > [logic/declare_logic.py](./logic/declare_logic.py)**:
+1. Open **Explorer > logic/declare_logic.py**:
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown
    * This event illustrates that logic is mainly _rules,_ extensible with standard _Python code_

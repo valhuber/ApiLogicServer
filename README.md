@@ -357,7 +357,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-12/26/2021 - 04.00.04: admin app generally released
+12/26/2021 - 04.00.05: Introducing the Admin app, with Readme Tutorial
 
 11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support 
 
