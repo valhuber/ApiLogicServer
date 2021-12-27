@@ -94,7 +94,7 @@ Please see the ```nw``` sample for examples of typical customizations.
 If not using Docker, install your projects' virtual environment:
 ```
 cd <your project>
-virtualenv venv
+python3 -m venv venv  # may require python -m venv venv
 source venv/bin/activate  # windows venv\Scripts\activate
 pip install -r requirements.txt
 ```

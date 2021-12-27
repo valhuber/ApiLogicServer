@@ -17,7 +17,7 @@ Creating the ApiLogicServer dev environment
     -----------------------
     cd dev
     git clone https://github.com/valhuber/ApiLogicServer.git
-    virtualenv venv
+    python3 -m venv venv       # may require python -m venv venv
     source venv/bin/activate   # windows: venv\Scripts\activate
     pip install -r requirements.txt
     code ApiLogicServer

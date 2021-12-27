@@ -24,7 +24,7 @@ if [ $# -eq 0 ]
     # read -p "Installed - ready to launch IDE..."
     if [[ "$1" = "vscode" ]]
       then
-        virtualenv venv            # may require python3 -m venv venv
+        python3 -m venv venv       # may require python -m venv venv
         source venv/bin/activate   # windows venv\Scripts\activate
         pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
         code .
