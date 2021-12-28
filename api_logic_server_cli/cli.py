@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Given a database url, create [and run] ApiLogicProject.
+ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogicProject.
 
 Basically clone prototype project, and create:
-* database/models.py
-* ui/admin/admin.yaml
-* api/expose_api_models
+* database/models. for SQLAlchemy
+* ui/admin/admin.yaml for the Admin App
+* api/expose_api_models for a safrs api
 
 Special provisions for NW Sample, to show customizations.
 
