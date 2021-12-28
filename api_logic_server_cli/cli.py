@@ -13,11 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.00.06"
+__version__ = "4.00.07"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/26/2021 - 04.00.06: Performance enhancement to list screen \n"\
+    "\t12/27/2021 - 04.00.07: Performance enhancement to list screen, tutorial corrections \n"\
     "\t12/26/2021 - 04.00.05: Introducing the admin app, with Readme Tutorial \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
     "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\

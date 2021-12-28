@@ -93,9 +93,10 @@ To run the Admin App, follow these steps:
    * Navigate to `Customer`
      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
    * Click the Customer row  to see Customer Details
-   * Click the `OrderList` tab at the bottom
+   * Observe the `Placed Order List` tab at the bottom
    * Click the first Order row
-   * Click the `OrderDetailList` tab at the bottom
+   * Click the `Order Detail List` tab at the bottom
+   * Click the first __Product Id__ to see its detail information
 6. (Close the app (browser), but leave the server running)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/run-admin-app.png?raw=true"></figure>
@@ -116,10 +117,11 @@ The creation process builds not only the API, but swagger so you can explore it.
    * Enter command: `Simple Browser: Show`
    * Specify the URL: `http://localhost:5656/api`
 2. Explore the swagger
-   * Note: you can drag windows to arrange your viewing area as shown below
+   * Note: you can drag windows to arrange your viewing area
 3. (Leave the swagger and server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/swagger.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/swagger
+.png?raw=true"></figure>
 &nbsp;&nbsp;&nbsp;
 
   > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
@@ -151,16 +153,16 @@ Let's now explore some examples.
 ### Admin App Customization
 There is no code for the Admin app - it's behavior is declared in the `admin.yaml` model file.  Alter this file to control labels, hide fields, change display order, etc:
 
-1. Open **Explorer > [ui/admin/admin.yaml]**
+1. Open **Explorer > ui/admin/admin.yaml**
    * Find and alter the string `- label: 'Placed Order List*'` (e.g, make it plural)
    * Click Save
 2. Launch the app: [http://localhost:5656](http://localhost:5656)
-3. Refresh your Browser window to reload the altered definition
-4. Click the **Order** menu to observe the new label
+3. Load the updated configuration: click __Configuration > Reset__
+4. Revisit **Customer > Order** to observe the new label
 
 &nbsp;&nbsp;&nbsp;
 
-  > **Key Take-away:** you can alter labels, which fields are displayed and their order, etc -- via a simple model - no need to learn a new framework, or deal with low-level code or html
+  > **Key Take-away:** you can alter labels, which fields are displayed and their order, etc -- via a simple model.  No need to learn a new framework, or deal with low-level code or html.
 
 
 &nbsp;&nbsp;&nbsp;
@@ -172,7 +174,7 @@ While a standards-based API is a great start, sometimes you need custom endpoint
 
 To review the implementation: 
 
-1. Open **Explorer > [api/customize_api.py]**:
+1. Open **Explorer > api/customize_api.py**:
 3. Set the breakpoint as shown
 4. Use the swagger to access the `ServicesEndPoint > add_order`, and
    1. **Try it out**, then 
@@ -194,7 +196,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.
 
 [Logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
-1. Open **Explorer > [logic/declare_logic.py]**:
+1. Open **Explorer > logic/declare_logic.py**:
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown
    * This event illustrates that logic is mainly _rules,_ extensible with standard _Python code_
@@ -212,7 +214,7 @@ Let's recap what you've seen:
 * **ApiLogicProject Creation and Execution** - a database API and an Admin App - created automatically from a database, in moments instead of weeks or months
 
 
-* **Customizable** - both the API and Logic - using Visual Studio code, for both editing and debugging
+* **Customizable** - the UI, API and Logic - using Visual Studio code, for both editing and debugging
 
 ### Docker cleanup
 VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-api_logic_server...`.
