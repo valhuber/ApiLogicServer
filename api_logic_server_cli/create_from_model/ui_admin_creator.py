@@ -609,6 +609,7 @@ class AdminCreator(object):
         print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
         if not os.path.isdir(from_proto_dir):
             print(f'\n==> Error - prototype admin project... did you complete setup: https://github.com/valhuber/ApiLogicServer/wiki/Internals')
+            print(".. Setup required.  Really.")
             exit(1)
         shutil.copytree(from_proto_dir, to_project_dir)
 

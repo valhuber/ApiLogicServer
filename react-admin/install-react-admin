@@ -43,7 +43,7 @@ if [[ "$1" = "rebuild" ]]
     npm install
     pwd
     ls
-    read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server"
+    read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server>"
     npm run build
     set +x
     cd ../ApiLogicServer/react-admin
@@ -56,6 +56,8 @@ set +x
 rm -rf api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
 set -x
 cp -a ../safrs-react-admin/build/. api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+echo " "
+echo "you may wish to run:    git remote rm origin"
 echo " "
 exit 0
 
