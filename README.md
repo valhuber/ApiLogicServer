@@ -86,7 +86,7 @@ To run the Admin App, follow these steps:
    * *Note:* these steps are highlighted in the diagram below
 2. Select the `ApiLogicServer` Launch Configuration
 3. Press the green run button to start the server
-   * If you are runnig Docker / VS Code, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
+   * If you are running Docker / VS Code, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
    * Otherwise, you can:
       * Open a browser at [localhost:5656](localhost_5656), or
       * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
