@@ -25,6 +25,12 @@ resources:
       sort: true
     - name: ContactName
     - name: ContactTitle
+    - name: Balance
+      type: DECIMAL
+    - name: CreditLimit
+      type: DECIMAL
+    - name: OrderCount
+    - name: UnpaidOrderCount
     - name: Address
     - name: City
     - name: Region
@@ -32,12 +38,6 @@ resources:
     - name: Country
     - name: Phone
     - name: Fax
-    - name: Balance
-      type: DECIMAL
-    - name: CreditLimit
-      type: DECIMAL
-    - name: OrderCount
-    - name: UnpaidOrderCount
     - name: Id
     tab_groups:
     - direction: tomany
@@ -215,16 +215,17 @@ resources:
     - name: OrderDate
     - name: RequiredDate
       type: DATE
-    - name: ShippedDate
-    - name: ShipVia
+    - name: AmountTotal
+      type: DECIMAL
     - name: Freight
       type: DECIMAL
+    - name: ShippedDate
+    - name: ShipVia
     - name: ShipAddress
     - name: ShipCity
     - name: ShipRegion
     - name: ShipPostalCode
     - name: ShipCountry
-    - name: AmountTotal
     - name: City
     - name: Id
     tab_groups:
