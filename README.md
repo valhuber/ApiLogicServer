@@ -29,6 +29,8 @@ Your API is running - explore it with [swagger](http://localhost:5656).
 
 VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide).
 
+In addition to Docker, you can [install](#installation) locally, or on the cloud.
+
 You can picture the process as follows, as shown by this short [**tutorial**](#api-logic-server---sample-tutorial) video showing complete project creation, execution, customization and debugging.
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
@@ -273,8 +275,8 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 Please see [Architecture - How It Works](https://github.com/valhuber/ApiLogicServer/wiki/Architecture#internals---how-it-works).
 
 # Installation
-As of release 3.00.00, you can install using Docker (recommended), or standard
-`pip` install.
+As of release 3.00.00, you can install using Docker (recommended), standard
+`pip` install, or PytonAnywhere.
 
 ## Docker Installation
 [Docker installation](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker)
