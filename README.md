@@ -278,7 +278,9 @@ Please see [Architecture - How It Works](https://github.com/valhuber/ApiLogicSer
 As of release 3.00.00, you can install using Docker (recommended), standard
 `pip` install, or PytonAnywhere.
 
-## Docker Installation
+## Installation Options
+
+#### Docker Installation
 [Docker installation](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide#docker-install)
 enables you to bypass sometimes-tricky Python installs by using Docker.
 
@@ -287,7 +289,7 @@ you can use with your IDE.  It is described above.
 
 See the link above for more information on install and execution.
 
-## Local Installation
+#### Local Installation
 Caution: Python install is rather more than running an installer.
 Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide).
 
@@ -299,8 +301,13 @@ source venv/bin/activate   # windows venv\Scripts\activate
 pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 ```
 
-## Cloud Install - Pythonanwhere
+#### Cloud Install - Pythonanwhere
 API Logic Server runs well on [pythonanywhere](http://pythonanywhere.com/).  See [these instructions](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide#pythonanywhere).
+
+## Quick Start
+
+Once installed, use the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start) to create and load the sample project.
+
 
 ## Installation Notes
 
