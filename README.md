@@ -279,7 +279,7 @@ As of release 3.00.00, you can install using Docker (recommended), standard
 `pip` install, or PytonAnywhere.
 
 ## Docker Installation
-[Docker installation](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker)
+[Docker installation](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide#docker-install)
 enables you to bypass sometimes-tricky Python installs by using Docker.
 
 Docker support provides not only ApiLogicServer, but a Python environment
