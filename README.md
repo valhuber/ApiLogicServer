@@ -19,7 +19,7 @@ To create the sample API and web-app project in a *minute or two --*  start Dock
 cd ~/Desktop                       # directory of API Logic Server projects on local host
 
 # Start (install if required) the API Logic Server docker container
-docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server:4.00.07
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=  # Working Software, Now
 
@@ -37,7 +37,7 @@ You can picture the process as follows, as shown by this short [**tutorial**](#a
 
 After you've explored the tutorial, try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (4.00.07): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (4.00.09): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
 
 # Feature Summary
