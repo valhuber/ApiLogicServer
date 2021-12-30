@@ -1,0 +1,15 @@
+This folder is to simplify recreating the nw project on PythonAnywhere:
+
+1. Rebuild the dev/venv folder as necessary, and create the project:
+
+        https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide#pythonanywhere
+
+        cd dev
+        rm -r venv
+        python3 -m venv venv
+        source venv/bin/activate
+        python3 -m pip install ApiLogicServer
+
+        ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=
+
+3. Update the project files from this directory
