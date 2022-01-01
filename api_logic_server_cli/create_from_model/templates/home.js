@@ -1,19 +1,24 @@
-const sla_doc = '<div class="MuiTypography-root"><center><h1>Welcome to API Logic Server</h1></center><br>' +
+const sla_doc =
+    '<div class="MuiTypography-root jss4" style="color: rgba(0, 0, 0, 0.66)">' +
+    '<div style="text-align:center">' +
+    '<h1>Welcome to API Logic Server</h1>' +
+    '</div><br>' +
     '<h2>Automatic Admin App, Designed For</h2>' +
-    '<ul><li>Instant Business User Collaboration - Working Software <i>Now</i></li>' +
+    '<ul><li>Instant Agile Collaboration with Business Users</li>' +
     '<li>Back Office Data Maintenance</li></ul>' +
     '<br><h2>Key Features</h2>' +
     '<ul>' +
     '<li><strong>Multi-page:</strong> screen transitions</li>' +
-    '<li><strong>Multi-table:</strong> child grids, parent joins</li>' +
+    '<li><strong>Multi-table:</strong> child grids, parent joins and lookups</li>' +
     '<li><strong>Logic aware:</strong> multi-table derivations and constraints, extensible with Python events for email, messages, etc</li>' +
     '<li><strong>Customizable:</strong> see ui/admin/admin.yaml.  Use SAFRS API for custom apps.</li></ul>' +
     '<br><h2>Resources</h2>' +
-    '<ul>' +
-    '<li><a class="custom" rel="nofollow" href="http://localhost:5656/api" target="_blank">Swagger</a></li>' +
-    '<li><a class="custom" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server Docs</a></li>' +
-    '<li><a class="custom" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App/" target="_blank">Admin App Customization Docs</a></li>' +
-    '</ul>' +
+    '<div><ul>' +
+    '<li><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="http://localhost:5656/api" target="_blank">Swagger</a></li>' +
+    '<li><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/" target="_blank">Admin App Tour</a></li>' +
+    '<li><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server Docs</a></li>' +
+    '<li><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App/" target="_blank">Admin App Customization Docs</a></li>' +
+    '</ul></div>' +
     '</div>'
 
 
