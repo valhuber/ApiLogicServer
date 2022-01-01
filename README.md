@@ -27,7 +27,7 @@ ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_ur
 
 Your API is running - explore it with [swagger](http://localhost:5656).
 
-VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide).
+VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
 In addition to Docker, you can [install](#installation) locally, or on the cloud.
 
