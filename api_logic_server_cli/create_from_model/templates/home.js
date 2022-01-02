@@ -7,14 +7,14 @@ const sla_doc =
     'creates <i>customizable</i> systems, instantly from your ' +
     'database:' +
     '</h3>' +
-    '<h4>1. Automatic Admin App, Designed For</h4>' +
+    '<h4>1. Automatic Admin App</h4>' +
     '<ul>' +
     '   <li>For instant collaboration and Back Office data maintenance</li>' +
     '   <li>Rich functionality: multi-page, multi-table</li>' +
     '   <li>Explore this Admin App, ' +
     '        and how to <a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App" target="_blank">customize it</a></li>' +
     '</ul>' +
-    '<h4>2. API, with <a class="custom" style="color: #3f51b5;"  rel="nofollow" href="http://localhost:5656/api" target="_blank">Swagger</a></h4>' +
+    '<h4>2. API, with <a class="custom" style="color: #3f51b5;"  rel="nofollow" href="/api" target="_blank">oas/Swagger</a></h4>' +
     '<ul>' +
     '   <li>For custom app dev, integration</li>' +
     '   <li>Rich functionality: endpoint for each table, with filtering, pagination, related data</li>' +
