@@ -3,8 +3,10 @@ const sla_doc =
     '<div style="text-align:center">' +
     '<h2>Welcome to API Logic Server - PythonAnywhere Sample</h2>' +
     '</div><br>' +
-    '<br><h3><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server</a> ' +
-    'creates <i>customizable</i> systems, instantly from your database:</h3>' +
+    '<h3><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server</a> ' +
+    'creates <i>customizable</i> systems, instantly from your ' +
+    '<a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database" target="_blank">database:</a>' +
+    '</h3>' +
     '<h4>1. Automatic Admin App, Designed For</h4>' +
     '<ul>' +
     '   <li>For instant collaboration and Back Office data maintenance</li>' +
