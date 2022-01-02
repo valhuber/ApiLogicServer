@@ -4,16 +4,31 @@
 
 # API Logic Server
 
-### TL;DR - Working Software, *now*... Customizable
+### TL;DR - creates customizable database systems, instantly from your database
 
-With 1 command, you get:
-* ***Extreme Business Agility*** -- Working Software, ***Now***
-  * a **database API,** to jumpstart your project, unblocking custom UI development and integration
-  * a **multi-page admin app,** for back-office data administration, and to engage Business Users - _early_ in the project
-  * Declarative logic using **unique spreadsheet-like rules** - 40X more concise than code, extensible with Python - for remarkable business agility.
-* A **_Customizable_ Project,** using a standard language and tools, in an cleanly isolated, containerized environment that matches your deployment architecture.
+The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
 
-To create the sample API and web-app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
+1. **Automatic Admin App** [(running here)](https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/) designed For
+
+   * For instant collaboration and Back Office data maintenance
+   * Rich functionality: multi-page, multi-table
+   * [Explore](https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/) this Admin App, and how to [customize it](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#admin-app)
+
+
+2. **API,** with [Swagger](http://localhost:5656/api)
+
+   * For custom app dev, integration
+   * Rich functionality: endpoint for each table, with filtering, pagination, related data
+   * [Customizable:](http://localhost:5656/api) add your own endpoints
+
+
+3. **Business Logic,** for backend processing
+
+   * Spreadsheet-like rules for multi-table derivations and constraints
+   * Extensible with Python events for email, messages, etc
+   * [Explore](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) how logic can meaningfully improve [conciseness](https://github.com/valhuber/LogicBank/wiki/by-code) and quality
+
+To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
 ```
 cd ~/Desktop                       # directory of API Logic Server projects on local host
@@ -37,7 +52,7 @@ You can picture the process as follows, as shown by this short [**tutorial**](#a
 
 After you've explored the tutorial, try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (4.00.09): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (4.00.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
 
 # Feature Summary
