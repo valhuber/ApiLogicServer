@@ -8,7 +8,7 @@
 
 The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
 
-1. **Automatic Admin App** [(running here)](https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/) designed For
+1. **Automatic Admin App** [(running here pn PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) designed for
 
    * For instant collaboration and Back Office data maintenance
    * Rich functionality: multi-page, multi-table
