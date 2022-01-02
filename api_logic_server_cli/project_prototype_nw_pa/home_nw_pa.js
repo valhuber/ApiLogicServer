@@ -16,7 +16,7 @@ const sla_doc =
     '<ul>' +
     '   <li>For custom app dev, integration</li>' +
     '   <li>Rich functionality: endpoint for each table, with filtering, pagination, related data</li>' +
-    '   <li><a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization" target="_blank">Customizable</a>: add your own endpoints</li>' +
+    '   <li><a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki#customize-the-api-with-expose_servicespy-add-rpcs-services" target="_blank">Customizable</a>: add your own endpoints</li>' +
     '</ul>' +
     '<h4>3. Business Logic, for <span class="JoinedField" title="Often nearly half the app -- automation required"><span>backend processing</span> </span></h4>' +
     '<ul>' +

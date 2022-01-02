@@ -19,7 +19,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 
    * For custom app dev, integration
    * Rich functionality: endpoint for each table, with filtering, pagination, related data
-   * [Customizable:](http://localhost:5656/api) add your own endpoints
+   * [Customizable:](https://github.com/valhuber/ApiLogicServer/wiki#customize-the-api-with-expose_servicespy-add-rpcs-services) add your own endpoints
 
 
 3. **Business Logic,** for backend processing
