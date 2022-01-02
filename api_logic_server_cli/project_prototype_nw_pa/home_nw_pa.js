@@ -10,7 +10,7 @@ const sla_doc =
     '   <li>For instant collaboration and Back Office data maintenance</li>' +
     '   <li>Rich functionality: multi-page, multi-table</li>' +
     '   <li><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/" target="_blank">Explore</a> this Admin App, ' +
-    '        and how to <a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md#admin-app" target="_blank">customize it</a></li>' +
+    '        and how to <a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App" target="_blank">customize it</a></li>' +
     '</ul>' +
     '<h4>2. API, with <a class="custom" style="color: #3f51b5;"  rel="nofollow" href="http://localhost:5656/api" target="_blank">Swagger</a></h4>' +
     '<ul>' +

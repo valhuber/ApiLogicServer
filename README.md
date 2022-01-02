@@ -12,7 +12,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 
    * For instant collaboration and Back Office data maintenance
    * Rich functionality: multi-page, multi-table
-   * [Explore](https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/) this Admin App, and how to [customize it](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#admin-app)
+   * [Explore](https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/) this Admin App, and how to [customize it](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App)
 
 
 2. **API,** with [Swagger](http://localhost:5656/api)
