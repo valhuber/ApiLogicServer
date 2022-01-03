@@ -7,9 +7,9 @@ const sla_doc =
     'The ' +
     '<a class="custom" style="font-family: Courier; font-weight:bold; " rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" title="Instead of weeks or months" target="_blank">ApiLogicServer</a>' +
     '<a class="custom" style="font-family: Courier; font-weight:bold; text-decoration: none;" rel="nofollow" href="#" title="Instead of weeks or months" target="_blank"> create-and-run</a>' +
-    ' command created this customizable system - automatically from your ' +
-    '<a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database" target="_blank">database</a>' +
-    ' - consisting of:' +
+    ' command created this customizable system, automatically from the ' +
+    '<a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database" target="_blank">sample database.</a>' +
+    '<br><br>To illustrate customization, we added 20 rules and 10 lines of code for a custom endpoint.  The system includes:' +
     '</p>' +
     '<h4>1. Automatic Admin App (you are running it now)</h4>' +
     '<ul>' +
