@@ -164,6 +164,8 @@ Use VS Code's **Project Explorer** to see the project structure:
 | ```logic``` | Transactional Logic           | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and events such as send mail / messages |
 | ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display, ordering, etc.                                                 |
 
+<figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/generated-project.png"></figure>
+
 Let's now explore some examples.
 
 ### Admin App Customization
