@@ -182,15 +182,13 @@ class AdminCreator(object):
             if admin_parent_joins_implicit:  # temp hack - just do the FK
                 fk_pair = each_parent.parent_child_key_pairs[0]  # assume single-field keys
                 fk_attr_name = fk_pair[1]
-                parent_resource_name = each_parent.parent_resource
-                parent_resource = self.mod_gen.resource_list[parent_resource_name]  # FIXME NOPE
                 resource_attribute = None
                 for each_attribute in resource.attributes:
                     if each_attribute.name == fk_attr_name:
                         resource_attribute = each_attribute
                         break
                 if resource_attribute is None:
-                    raise Exception(f'System Error: unable to find {fk_attr_name} in {parent_resource.name}')
+                    raise Exception(f'System Error: unable to find {fk_attr_name} in {resource.name}')
                 processed_attributes.add(fk_attr_name)
                 admin_attribute = self.create_admin_attribute(resource_attribute)
                 if admin_attribute is not None:
@@ -236,18 +234,17 @@ class AdminCreator(object):
         admin_attribute.name = str(attribute_name)
         if nullable == False:
             admin_attribute.required = True
-        if attribute_name == "CustomerId":
+        if attribute_name == "xShippedDate":
             log.debug("Good breakpoint location")
         if isinstance(resource_attribute, str) == True:
             log.debug("Just a string")
-        else:
-            log.debug("Object")
+            raise Exception(f'System Error - expected resource_attribute, got string: {resource_attribute}')
         if not isinstance(resource_attribute, str):
             if resource_attribute.type in ["DECIMAL", "DATE"]:
                 admin_attribute.type = resource_attribute.type
             if resource_attribute.type in ["NTEXT", "IMAGE"]:
                 admin_attribute = None
-        return admin_attribute
+        return admin_attribute  #.toDict()  hmm... sometimes a "shape" property slips in...?
 
     @staticmethod
     def cap_space(text):

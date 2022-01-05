@@ -227,7 +227,6 @@ resources:
         required: true
         type: DECIMAL
       - name: ShippedDate
-        required: true
       - name: CustomerId
         required: true
       - name: Country
