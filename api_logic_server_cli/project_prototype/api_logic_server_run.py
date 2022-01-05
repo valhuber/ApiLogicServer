@@ -11,6 +11,7 @@
 """
 import os
 import sys
+
 if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
     print("API Logic Server - run instructions (default is localhost):")
@@ -24,9 +25,10 @@ project_dir = str(current_path)
 os.chdir(project_dir)  # so admin app can find images, code
 
 import logging
+
 app_logger = logging.getLogger('api_logic_server_app')
 handler = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter('%(message)s')     # lead tag - '%(name)s: %(message)s')
+formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
 app_logger.addHandler(handler)
 app_logger.propagate = True
@@ -62,7 +64,7 @@ def is_docker() -> bool:
 def setup_logging(flask_app):
     setup_logic_logger = True
     if setup_logic_logger:
-        logic_logger = logging.getLogger('logic_logger')   # for debugging user logic
+        logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.DEBUG)
         if flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
@@ -96,7 +98,6 @@ def setup_logging(flask_app):
         logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
-
 class ValidationErrorExt(ValidationError):
     """
     This exception is raised when invalid input has been detected (client side input)
@@ -112,29 +113,88 @@ class ValidationErrorExt(ValidationError):
         self.detail: TypedDict = detail
 
 
-def create_app(config_filename=None):
+import sys
+from flask import Flask, request
+from flask_sqlalchemy import SQLAlchemy
+from safrs import SAFRSBase, SAFRSAPI
 
+db = safrs.DB  # opens database per config, setting session
+
+
+class User(SAFRSBase, db.Model):
+    """
+    description: Users
+    """
+
+    __tablename__ = "Users"
+    __bind_key__ = 'admin'
+    id = db.Column(db.String, primary_key=True)
+    name = db.Column(db.String, default="")
+    email = db.Column(db.String, default="")
+    _password_hash = db.Column(db.String(200))
+    apis = db.relationship("Api", back_populates="owner", lazy="dynamic")
+
+
+class Api(SAFRSBase, db.Model):
+    """
+    description: Api configuration info
+    """
+
+    __tablename__ = "Apis"
+    __bind_key__ = 'admin'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, default="")
+    connection_string = db.Column(db.String, default="")
+    owner_id = db.Column(db.String, db.ForeignKey("Users.id"))
+    owner = db.relationship("User", back_populates="apis")
+
+
+# create the api endpoints
+def create_admin_api(app, host="localhost", port=5000, api_prefix="/admin-api"):
+    from flask_swagger_ui import get_swaggerui_blueprint
+
+    api_spec_url = f"/admin_swagger"
+    swaggerui_blueprint = get_swaggerui_blueprint(
+        api_prefix, f"{api_prefix}/{api_spec_url}.json", config={"docExpansion": "none", "defaultModelsExpandDepth": -1}
+    )
+    swaggerui_blueprint.name = "zefar"
+
+    app.register_blueprint(swaggerui_blueprint, url_prefix=api_prefix)
+    api = SAFRSAPI(app, host=host, port=port, prefix=api_prefix, swaggerui_blueprint=swaggerui_blueprint,
+                   api_spec_url=api_spec_url, add_api_spec_resource=False)
+    api.expose_object(User)
+    api.expose_object(Api)
+    print(f"Created API: http://{host}:{port}/{api_prefix}")
+
+
+def create_app(config_filename=None):
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
             detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
         else:
             detail = {"model": logic_row.name}
-        raise ValidationErrorExt(message= message, detail=detail)
+        raise ValidationErrorExt(message=message, detail=detail)
 
     flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
     flask_app.config.from_object("config.Config")
+    flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
+    # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
     setup_logging(flask_app)
-    db = safrs.DB  # opens database per config, setting session
+    # ?? db = safrs.DB  # opens database per config, setting session
     Base: declarative_base = db.Model
     session: Session = db.session
 
     LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
 
+    db.init_app(flask_app)
     with flask_app.app_context():
-        db.init_app(flask_app)
-        safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port, API_PREFIX = API_PREFIX)
-        customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)    # custom services
+        db.create_all()
+        db.create_all(bind='admin')
+        session.commit()
+        safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port, API_PREFIX=API_PREFIX)
+        customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)  # custom services
         SAFRSBase._s_auto_commit = False
+        create_admin_api(flask_app)
         session.close()
 
     return flask_app, safrs_api
@@ -201,17 +261,18 @@ def send_spa(path=None):
 
 @flask_app.errorhandler(ValidationError)
 def handle_exception(e: ValidationError):
-
     res = {'code': e.status_code,
            'errorType': 'Validation Error',
            'errorMessage': e.message}
-#    if debug:
-#        res['errorMessage'] = e.message if hasattr(e, 'message') else f'{e}'
+    #    if debug:
+    #        res['errorMessage'] = e.message if hasattr(e, 'message') else f'{e}'
 
     return res, 400
 
 
 """ uncomment to disable cors support"""
+
+
 @flask_app.after_request
 def after_request(response):
     '''
@@ -226,6 +287,8 @@ def after_request(response):
         "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
     # print(f'cors aftter_request - response: {str(response)}')
     return response
+
+
 """ """
 
 

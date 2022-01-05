@@ -4,7 +4,7 @@ const sla_doc =
     '<h2>Welcome to API Logic Server</h2>' +
     '</div><br>' +
     '<h3><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server</a> ' +
-    'creates <i>customizable</i> systems, instantly from your ' +
+    'creates <i>customizable</i> model-driven systems, instantly from your ' +
     'database:' +
     '</h3>' +
     '<h4>1. Automatic Admin App</h4>' +

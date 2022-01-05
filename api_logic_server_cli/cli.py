@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.00.12"
+__version__ = "4.00.15"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t01/04/2022 - 04.00.15: Integrated /admin-api, required fields, no redundant join, attr info \n"\
     "\t01/02/2022 - 04.00.12: Fixed reposition after update, Home screen fonts and links \n"\
     "\t12/26/2021 - 04.00.05: Introducing the admin app, with Readme Tutorial \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\

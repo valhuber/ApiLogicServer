@@ -33,10 +33,11 @@ MetaDataTable = NewType('MetaDataTable', object)
 
 
 class ResourceAttribute():
-    def __init__(self, name: str, resource: Type['Resource'], type: str):
+    def __init__(self, name: str, resource: Type['Resource'], type: str, nullable: bool):
         self.name = name
         self.type = None  # none means not interesting, default display to simple text
-        if name == "InvoiceDate":
+        self.nullable = nullable
+        if name == "CustomerId":
             debug_str = "Nice breakpoint"
         if type == "DECIMAL":
             self.type = "DECIMAL"
@@ -735,7 +736,8 @@ class CreateFromModel(object):
                             attr_type = str(each_attribute.type)
                             resource_attribute = ResourceAttribute(name=str(each_attribute.name),
                                                                    resource=resource,
-                                                                   type=attr_type)
+                                                                   type=attr_type,
+                                                                   nullable=each_attribute.nullable)
                         for rel_name, rel in resource_class._s_relationships.items():
                             # relation = {}
                             # relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"

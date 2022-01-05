@@ -4,13 +4,13 @@ const sla_doc =
     '<h2>Welcome to API Logic Server - Sample</h2>' +
     '</div><br>' +
     '<h3><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server</a> ' +
-    'creates <i>customizable</i> systems, instantly from your ' +
+    'creates <i>customizable</i> model-driven systems, instantly from your ' +
     '<a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database" target="_blank">database:</a>' +
     '</h3>' +
     '<h4>1. Automatic Admin App</h4>' +
     '<ul>' +
     '   <li>For instant collaboration and Back Office data maintenance</li>' +
-    '   <li>Rich functionality: multi-page, multi-table</li>' +
+    '   <li>Rich functionality: multi-page, multi-table, automatic joins</li>' +
     '   <li><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/" target="_blank">Explore</a> this Admin App, ' +
     '        and how to <a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App" target="_blank">customize it</a></li>' +
     '</ul>' +

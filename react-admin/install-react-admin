@@ -20,9 +20,10 @@ echo " "
 if [[ "$1" != "no-pull" ]]
   then
     # sudo chown $USER:$USER ../../safrs-react-admin
-    read -p "Press [Enter] to delete / pull safrs-react-admin>"
-    sudo rm -r ../../safrs-react-admin
     cd ../../
+    pwd  # at dev
+    read -p "Press [Enter] to delete / pull safrs-react-admin>"
+    sudo rm -r safrs-react-admin
     pwd
     git clone https://github.com/thomaxxl/safrs-react-admin
     cd ApiLogicServer
@@ -34,11 +35,12 @@ set +x
 if [[ "$1" = "rebuild" ]]
   then
     echo " "
-    cd safrs-react-admin
+    cd ../safrs-react-admin
     ls ../ApiLogicServer/react-admin/code
-    read -p "Verify you are at dev (see ls above), and [Enter] to rebuild react-admin for API Logic Server>"
+    read -p "Verify ls contains als code, and [Enter] to rebuild safrs-react-admin for API Logic Server>"
     set -x
     # cp ../ApiLogicServer/react-admin/code/Home-als.js src/components/Home.js
+    cp ../ApiLogicServer/react-admin/code/Home-als.js src/components/ValH.js
     # cp ../ApiLogicServer/react-admin/code/Config-als.js src/Config.js
     npm install
     pwd
@@ -46,11 +48,27 @@ if [[ "$1" = "rebuild" ]]
     read -p "npm install complete - check node_modules, and [Enter] rebuild react-admin for API Logic Server>"
     npm run build
     set +x
-    cd ../ApiLogicServer/react-admin
+    cd ../ApiLogicServer
   fi
 echo " "
 pwd
 echo " "
+echo "copying build to als"
+if [ -r tvf.txt ]
+  then
+    echo ".. correctly current in ApiLogicServer"
+  else
+    echo ".. Error - wrong directory"
+    exit 1
+fi
+if [ -d ../safrs-react-admin/build ]
+  then
+    echo ".. safrs-react-admin/build exists"
+    echo " "
+  else
+    echo ".. Error - safrs-react-admin/build NOT FOUND"
+    exit 1
+fi
 echo "..rm -rf  api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*"
 set +x
 rm -rf api_logic_server_cli/create_from_model/safrs-react-admin-npm-build/*
