@@ -362,6 +362,7 @@ These do not affect existing projects.  However, we've not updated all the docs 
 Many thanks to
 
 - [Thomas Pollet](https://www.linkedin.com/in/pollet/), for SAFRS, SAFRS-react-admin, and invaluable design partnership
+- [Marelab](https://marmelab.com/en/), for [react-admin](https://marmelab.com/react-admin/)
 - Armin Ronacher, for Flask
 - Mike Bayer, for SQLAlchemy
 - Alex Grönholm, for Sqlacodegen
