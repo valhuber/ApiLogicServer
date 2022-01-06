@@ -81,11 +81,7 @@ In this tutorial, we will explore:
 
 This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution) for more information.
 
-The diagram below summarizes the create / run / customize process:
-
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/creates-and-runs.png"></figure>
-
-You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
+The diagram above summarizes the create / run / customize process.  You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
 
 &nbsp;&nbsp;&nbsp;
