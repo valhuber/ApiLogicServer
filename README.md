@@ -203,7 +203,7 @@ To review the implementation:
 ### Logic
 We've all seen excellent technology that can create great User Interfaces. But for transactional systems, their approach to logic is basically "your code goes here".
 
-> That's a problem - for transaction systems, the backend constraint and derivation logic is often *half* the system.
+> That's a problem - for transaction systems, the backend constraint and derivation logic is often nearly *half* the system.
  
 The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for multi-table constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 
