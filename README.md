@@ -40,7 +40,7 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 
 ```
 
-Your API is running - explore it with [swagger](http://localhost:5656).
+Your system is running - explore [the data and API](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
 
 VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
