@@ -71,7 +71,7 @@ The following tutorial is a good way to explore API Logic Server.
 
 # API Logic Server - Sample Tutorial
 
-You've already completed the `Create` step below, and are now viewing the readme in the created ApiLogicProject - the sample tutorial, created from [this database.](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)  
+After completing the `Create` step below, you can view the readme in the created ApiLogicProject.  It contains the sample tutorial, created from [this database.](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)  
 
 In this tutorial, we will explore:
 
