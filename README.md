@@ -4,7 +4,7 @@
 
 # API Logic Server
 
-### TL;DR - creates customizable database systems, instantly from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
+### TL;DR - creates customizable, model-driven database systems, instantly from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
 
 The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
 
