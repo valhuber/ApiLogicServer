@@ -4,14 +4,14 @@
 
 # API Logic Server
 
-### TL;DR - creates customizable, model-driven database systems, instantly from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
+### TL;DR - creates customizable, model-driven database systems - instantly - from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
 
 The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
 
-1. **Automatic Admin App** [(running here pn PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)
+1. **Automatic Admin App** [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)
 
    * For instant collaboration and Back Office data maintenance
-   * Rich functionality: multi-page, multi-table
+   * Rich functionality: multi-page, multi-table, automatic joins
    * [Explore](https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/) this Admin App, and how to [customize it](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App)
 
 
@@ -40,13 +40,15 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 
 ```
 
-Your system is running - explore [the data and API](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
+Your system is running - explore the data and api 
+[locally](localhost:5656),
+or [on this deployed systems](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
 
-VSCode and PyCharm users can follow [these simplified steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
+VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
 In addition to Docker, you can [install](#installation) locally, or on the cloud.
 
-You can picture the process as follows, as shown by this short [**tutorial**](#api-logic-server---sample-tutorial) video showing complete project creation, execution, customization and debugging.
+You can picture the process as shown in the diagram below; click it for a video tutorial, showing complete project creation, execution, customization and debugging.
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/Zo0dUIgRYFg "Using VS Code with the ApiLogicServer container")
 
@@ -99,7 +101,7 @@ To run the Admin App, follow these steps:
 3. Press the green run button to start the server
    * If you are running Docker / VS Code, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
    * Otherwise, you can:
-      * Open a browser at [localhost:5656](localhost_5656), or
+      * Open a browser at [localhost:5656](localhost:5656), or
       * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
          * Note: be aware that we have seen some issue where the _simple browser_ fails to start; just use your normal browser  
 4. Explore the app: multi-page, multi-table, automatic joins
