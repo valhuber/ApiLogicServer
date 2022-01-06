@@ -74,6 +74,8 @@ def declare_logic():
             sales_rep = row.Employee
             if sales_rep is None:
                 logic_row.log("no salesrep for this order")
+            elif sales_rep.Manager is None:
+                logic_row.log("no manager for this order's salesrep")
             else:
                 logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
                               f'Congratulate {sales_rep.FirstName} on their new order')

@@ -64,14 +64,14 @@ export default function CustomizedAccordions() {
         <AccordionDetails>
           <Typography>
           <ul>
-            <li><i>Automation - </i>create executable systems with this single command:
+            <li><i>Automated: </i>create executable systems with this single command...
               <pre>
               &nbsp;&nbsp;&nbsp;ApiLogicServer <strong>create-and-run</strong> \<br></br>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--project_name=ApiLogicProject \  # customize with Python and your IDE<br></br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--db_url==sqlite:///nw.sqlite     # your db here
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--db_url=sqlite:///nw.sqlite      # your db here
               </pre>
               </li>
-            <li><i>Model-driven - </i>creation builds executable&nbsp;
+            <li><i>Model-driven: </i>creation builds executable&nbsp;
             <a rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Architecture#customizable-declarative-models" target="_blank">models</a>
               , not code
                 <ul>
@@ -80,9 +80,9 @@ export default function CustomizedAccordions() {
                     </li>
                 </ul>
               <Typography>&nbsp;</Typography></li>
-            <li><i>Customizable - </i>models are created into a project;&nbsp;
+            <li><i>Customizable: </i>models are created into a project;&nbsp;
               <a rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki#customizing-apilogicprojects" target="_blank">customize</a>
-              &nbsp;with Python and your IDE 
+              &nbsp;with Python and your IDE
               <ul>
                   <li>This system has about 20 rules, and 20 lines of code</li>
               </ul>
@@ -94,7 +94,7 @@ export default function CustomizedAccordions() {
       <Typography><br></br>
       1.&nbsp;
           <a href="https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/" target="_blank">Automatic Admin App</a>
-          &nbsp;- you are running it now
+          , you are running it now
       <ul>
          <li>For instant collaboration and Back Office data maintenance</li>
          <li>Rich functionality: multi-page, multi-table, automatic joins</li>
