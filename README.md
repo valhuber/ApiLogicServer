@@ -36,7 +36,7 @@ cd ~/Desktop                       # directory of API Logic Server projects on l
 # Start (install if required) the API Logic Server docker container
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=  # Working Software, Now
+ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=  # Working Software, Now
 
 ```
 
@@ -235,7 +235,7 @@ Let's recap what you've seen:
 * **Customizable** - the UI, API and Logic - using Visual Studio code, for both editing and debugging
 
 ### Docker cleanup
-VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-api_logic_server...`.
+VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-ApiLogicProject...`.
 
 &nbsp;&nbsp;&nbsp;
 
