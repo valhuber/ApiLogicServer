@@ -19,6 +19,8 @@ resources:
     type: Category
     user_key: CategoryName
   Customer:
+    info: Click the customer name to zoom to detail (multi-page apps),
+          observe the Paid Order List (multi-table pages)
     attributes:
       - label: ' Company Name*'
         name: CompanyName
