@@ -30,7 +30,7 @@ const sla_doc =
     '       and quality</li>' +
     '</ul><br/><br/>' +
     '<h4>Explore this app</h4>' +
-    'Start with Customer (at left), and watch for the Info icons (upper right)' +
+    '   <ul><li>Start with Customer (at left), and watch for the Info icons (upper right)</li></ul>' +
     '</div>'
 
 
