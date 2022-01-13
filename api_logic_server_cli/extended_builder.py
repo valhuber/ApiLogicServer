@@ -52,13 +52,14 @@ from safrs import JABase, DB
 from safrs import SAFRSBase
 
 import safrs
-db = safrs.DB
+#db = safrs.DB
+Base = declarative_base()
 
-Base = db.Model
+#Base = db.Model
 metadata = Base.metadata
 
-NullType = db.String  # datatype fixup
-TIMESTAMP= db.TIMESTAMP
+#NullType = db.String  # datatype fixup
+#TIMESTAMP= db.TIMESTAMP
 
 from sqlalchemy.dialects.mysql import *
 
