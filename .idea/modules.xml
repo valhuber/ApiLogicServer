@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/ApiLogicServer.iml" filepath="$PROJECT_DIR$/.idea/ApiLogicServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ApiLogicServer.wiki/.idea/ApiLogicServer.wiki.iml" filepath="$PROJECT_DIR$/../ApiLogicServer.wiki/.idea/ApiLogicServer.wiki.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tutorial/api_logic_server/.idea/api_logic_server.iml" filepath="$PROJECT_DIR$/../tutorial/api_logic_server/.idea/api_logic_server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../apilogicserver-react-admin/.idea/apilogicserver-react-admin.iml" filepath="$PROJECT_DIR$/../apilogicserver-react-admin/.idea/apilogicserver-react-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../apilogicserver-react-admin-genned/.idea/apilogicserver-react-admin-genned.iml" filepath="$PROJECT_DIR$/../apilogicserver-react-admin-genned/.idea/apilogicserver-react-admin-genned.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../safrs-react-admin/.idea/safrs-react-admin.iml" filepath="$PROJECT_DIR$/../safrs-react-admin/.idea/safrs-react-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../servers/.idea/servers.iml" filepath="$PROJECT_DIR$/../servers/.idea/servers.iml" />
+    </modules>
+  </component>
+</project>
