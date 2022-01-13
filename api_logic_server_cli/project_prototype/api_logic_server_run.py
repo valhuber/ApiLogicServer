@@ -121,50 +121,6 @@ from safrs import SAFRSBase, SAFRSAPI
 db = safrs.DB  # opens database per config, setting session
 
 
-class User(SAFRSBase, db.Model):
-    """
-    description: Users
-    """
-
-    __tablename__ = "Users"
-    __bind_key__ = 'admin'
-    id = db.Column(db.String, primary_key=True)
-    name = db.Column(db.String, default="")
-    email = db.Column(db.String, default="")
-    _password_hash = db.Column(db.String(200))
-    apis = db.relationship("Api", back_populates="owner", lazy="dynamic")
-
-
-class Api(SAFRSBase, db.Model):
-    """
-    description: Api configuration info
-    """
-
-    __tablename__ = "Apis"
-    __bind_key__ = 'admin'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, default="")
-    connection_string = db.Column(db.String, default="")
-    owner_id = db.Column(db.String, db.ForeignKey("Users.id"))
-    owner = db.relationship("User", back_populates="apis")
-
-
-# create the api endpoints
-def create_admin_api(app, host="localhost", port=5000, api_prefix="/admin-api"):
-    from flask_swagger_ui import get_swaggerui_blueprint
-
-    api_spec_url = f"/admin_swagger"
-    swaggerui_blueprint = get_swaggerui_blueprint(
-        api_prefix, f"{api_prefix}/{api_spec_url}.json", config={"docExpansion": "none", "defaultModelsExpandDepth": -1}
-    )
-    swaggerui_blueprint.name = "zefar"
-
-    app.register_blueprint(swaggerui_blueprint, url_prefix=api_prefix)
-    api = SAFRSAPI(app, host=host, port=port, prefix=api_prefix, swaggerui_blueprint=swaggerui_blueprint,
-                   api_spec_url=api_spec_url, add_api_spec_resource=False)
-    api.expose_object(User)
-    api.expose_object(Api)
-    print(f"Created API: http://{host}:{port}/{api_prefix}")
 
 
 def create_app(config_filename=None):
@@ -194,7 +150,6 @@ def create_app(config_filename=None):
         safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port, API_PREFIX=API_PREFIX)
         customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)  # custom services
         SAFRSBase._s_auto_commit = False
-        create_admin_api(flask_app)
         session.close()
 
     return flask_app, safrs_api

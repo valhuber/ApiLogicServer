@@ -38,7 +38,9 @@ class TvfBuilder(object):
         ''' TVFs have cols, SCFs do not '''
 
         self.tvf_contents = """# coding: utf-8
+from sqlalchemy.dialects.mysql import *
 from sqlalchemy import Boolean, Column, DECIMAL, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Table, Text, UniqueConstraint, text
+from sqlalchemy import *
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.ext.declarative import declarative_base
@@ -52,16 +54,8 @@ from safrs import JABase, DB
 from safrs import SAFRSBase
 
 import safrs
-#db = safrs.DB
 Base = declarative_base()
-
-#Base = db.Model
 metadata = Base.metadata
-
-#NullType = db.String  # datatype fixup
-#TIMESTAMP= db.TIMESTAMP
-
-from sqlalchemy.dialects.mysql import *
 
 ########################################################################################################################
 
