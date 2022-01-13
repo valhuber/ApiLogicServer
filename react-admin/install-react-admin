@@ -3,23 +3,38 @@
 if [ $# -eq 0 ]
   then
     echo " "
-    echo "  Deletes and rebuilds react-admin into ApiLogicServer/api_logic_server_cli/safrs-react-admin-npm-build, e.g."
+    echo "  [Deletes and] Pulls [and rebuilds] react-admin ==> ApiLogicServer/api_logic_server_cli/safrs-react-admin-npm-build"
     echo " "
-    echo "      sh rebuild-react-admin [go | rebuild | no-pull]"
+    echo "      sh rebuild-react-admin [pull | go | clean ] [als-overlay]"
     echo " "
-    echo "   Use the no-pull option to use existing safrs-react-admin"
+    echo "          pull    - pull git/safrs-react-admin                   (no als overlays)  <=="
+    echo "          go      - use existing git/safrs-react-admin folder    (no als overlays)"
+    echo "          clone   - delete and clone  git/safrs-react-admin      (no als overlays)"
     echo " "
-    echo "   Use the rebuild option to rebuild the safrs-react-admin/build folder"
+    echo "          als-overlay   - delete / rebuild the safrs-react-admin folder, with als overlays"
     echo " "
-    echo "       IMPORTANT - overwrites safrs-react-admin from react-admin/code - make sure that's up to date"
+    echo "      IMPORTANT - overwrites safrs-react-admin from react-admin/code - make sure that's up to date"
     echo " "
     exit 0
   fi
 
-echo " "
-if [[ "$1" != "no-pull" ]]
+if [[ "$1" = "pull" ]]
   then
     # sudo chown $USER:$USER ../../safrs-react-admin
+    echo ""
+    cd ../../safrs-react-admin
+    pwd  # at safrs-react-admin
+    read -p "Press [Enter] to pull safrs-react-admin>"
+    pwd
+    git pull
+    cd ../ApiLogicServer
+fi
+
+echo " "
+if [[ "$1" = "clone" ]]
+  then
+    # sudo chown $USER:$USER ../../safrs-react-admin
+    echo ""
     cd ../../
     pwd  # at dev
     read -p "Press [Enter] to delete / pull safrs-react-admin>"
@@ -27,12 +42,16 @@ if [[ "$1" != "no-pull" ]]
     pwd
     git clone https://github.com/thomaxxl/safrs-react-admin --depth=1
     cd ApiLogicServer
-  else
-    echo ".. using existing safrs-react-admin"
-    cd ../
 fi
+
+if [[ "$1" = "go" ]]
+  then
+    echo "using existing safrs-react-admin"
+    cd ..
+fi
+
 set +x
-if [[ "$1" = "rebuild" ]]
+if [[ "$2" = "als-overlay" ]]
   then
     echo " "
     cd ../safrs-react-admin
@@ -50,6 +69,7 @@ if [[ "$1" = "rebuild" ]]
     set +x
     cd ../ApiLogicServer
   fi
+
 echo " "
 pwd
 echo " "

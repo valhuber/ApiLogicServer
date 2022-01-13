@@ -28,7 +28,9 @@ const sla_doc =
     '       how logic can meaningfully improve ' +
     '       <a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/LogicBank/wiki/by-code" title="Rules are 40X more concise than code, and address over 95% of database logic" target="_blank">conciseness</a> ' +
     '       and quality</li>' +
-    '</ul>' +
+    '</ul><br/><br/>' +
+    '<h4>Explore this app</h4>' +
+    'Start with Customer (at left), and watch for the Info icons (upper right)' +
     '</div>'
 
 

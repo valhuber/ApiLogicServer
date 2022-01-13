@@ -1,7 +1,7 @@
 about:
-  date: January 04, 2022 18:59:13
-  recent_changes: altered Customer/Order attribute ordering, tab captions
-  version: 4.00.15
+  date: January 12, 2022 18:59:13
+  recent_changes: altered Customer/Order attribute ordering, tab captions, info
+  version: 4.00.20
 api_root: https://apilogicserver.pythonanywhere.com/api
 info:
   number_relationships: 11
@@ -19,6 +19,31 @@ resources:
     type: Category
     user_key: CategoryName
   Customer:
+    info_list: <h1>Tour</h1>
+          In the <span style="font-family:'Courier New'">ui/admin/admin.yaml</span> file,
+          use <span style="font-family:'Courier New'">info_list</span> and 
+          <span style="font-family:'Courier New'">info_show</span> to provide user information.<br><br>
+          In this
+          <a target="_blank" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database">Northwind demo,</a>      
+          Info provides Tour suggestions.  On this page...
+          <ul>
+            <li> Try <strong>search</strong></li>
+            <li> <strong>Sort</strong> by column headers</li>
+            <li> Note <strong>pagination</strong> (at bottom) </li>
+            <li> <strong>Multi-page - </strong>
+              <ul>
+                <li>Reset your search / sort so that
+                  <span style="font-family:'Courier New'">Alfreds</span> is at the top </li>
+                <li>Click <span style="font-family:'Courier New'">Alfreds,</span>
+                    to "zoom in" to the <i>show</i> page for details (more info there)</li>
+              </ul>
+            </li>
+          </ul>
+    info_show: <h1>Tour</h1>
+          <ul>
+            <li><strong>Multi-table - </strong> note the list of related orders</li>
+            <li>Click the first order</li>
+          </ul>
     attributes:
       - label: ' Company Name*'
         name: CompanyName
@@ -214,6 +239,33 @@ resources:
     type: Location
     user_key: country
   Order:
+    info_show: <h1>Tour</h1>
+          <h3>Automatic Joins</strong><h3>
+          <ul>
+            <li> Observe the Product Name in the Order Detail list</li>
+            <li> In the
+              <a target="_blank" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database">sample database,</a>      
+              the Order Detail is related to the Product by ProductId,
+              which makes no sense to End Users.<br>
+              So, the system joins a suitable field, automatically.
+            </li>
+            <li> 
+              Automatic joins are configurable.
+            </li>
+          </ul>
+          <h3>Update Support</strong><h3>
+          <ul>
+            <li> <strong>Edit</strong> the first Order Detail, and....</li>
+            <li> Use <strong>Lookup</strong> to select a different product </li>
+            <li> After save, observe the altered Amount.
+                <ul>
+                  <li>
+                    This is not from code, but from
+                    <a target="_blank" href="https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour#logic-enforcement">these rules</a>
+                  </li>
+                </ul>
+            </li>
+          </ul>
     attributes:
       - name: Id
       - name: EmployeeId
@@ -393,5 +445,5 @@ resources:
     type: Territory
     user_key: TerritoryDescription
 settings:
-  HomeJS: https://apilogicserver.pythonanywhere.com/admin-app/home.js
+  HomeJS: http://localhost:5656/admin-app/homeZZ.js
   max_list_columns: 8

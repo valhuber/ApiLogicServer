@@ -13,3 +13,8 @@ This folder is to simplify recreating the nw project on PythonAnywhere:
         ApiLogicServer create --host=ApiLogicServer.pythonanywhere.com --port=
 
 3. Update the project files from this directory
+
+
+Note: yaml is from admin_custom_nw.yaml, but
+    api_root: https://apilogicserver.pythonanywhere.com/api
+    HomeJS: https://apilogicserver.pythonanywhere.com/admin-app/homeZZ.js  # force use of ValH.js

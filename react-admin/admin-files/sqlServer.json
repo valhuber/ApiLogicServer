@@ -1,0 +1,529 @@
+{
+  "about": {
+    "date": "December 06, 2021 16:39:55",
+    "recent_changes": "works with modified safrs-react-admin",
+    "version": "3.50.30"
+  },
+  "api_root": "http://localhost:5656/api",
+  "info": {
+    "number_relationships": 9,
+    "number_tables": 11
+  },
+  "properties_ref": {
+    "attribute": {
+      "group": "name",
+      "hidden": "exp",
+      "label": "caption for display",
+      "search": "true | false",
+      "style": {
+        "color": "blue",
+        "font_weight": 0
+      }
+    },
+    "resource": {
+      "allow_delete": "exp",
+      "allow_insert": "exp",
+      "allow_update": "exp",
+      "info": "long html / rich text",
+      "menu": "False | name"
+    },
+    "tab": {
+      "label": "text",
+      "lookup": "boolean"
+    }
+  },
+  "resources": {
+    "Categories": {
+      "attributes": [
+        {
+          "label": "CategoryName*",
+          "name": "CategoryName",
+          "search": true
+        },
+        {
+          "name": "Description"
+        },
+        {
+          "name": "Picture"
+        },
+        {
+          "name": "CategoryID"
+        }
+      ],
+      "tab_groups": {
+        "ProductList": {
+          "direction": "tomany",
+          "fks": [
+            "CategoryID"
+          ],
+          "resource": "Products"
+        }
+      },
+      "type": "Category",
+      "user_key": "CategoryName"
+    },
+    "CustomerDemographics": {
+      "attributes": [
+        {
+          "label": "CustomerTypeID*",
+          "name": "CustomerTypeID",
+          "search": true
+        },
+        {
+          "name": "CustomerDesc"
+        }
+      ],
+      "type": "CustomerDemographic",
+      "user_key": "CustomerTypeID"
+    },
+    "Customers": {
+      "attributes": [
+        {
+          "label": "CompanyName*",
+          "name": "CompanyName",
+          "search": true
+        },
+        {
+          "name": "ContactName"
+        },
+        {
+          "name": "ContactTitle"
+        },
+        {
+          "name": "Address"
+        },
+        {
+          "name": "City"
+        },
+        {
+          "name": "Region"
+        },
+        {
+          "name": "PostalCode"
+        },
+        {
+          "name": "Country"
+        },
+        {
+          "name": "Phone"
+        },
+        {
+          "name": "Fax"
+        },
+        {
+          "name": "CustomerID"
+        }
+      ],
+      "tab_groups": {
+        "OrderList": {
+          "direction": "tomany",
+          "fks": [
+            "CustomerID"
+          ],
+          "resource": "Orders"
+        }
+      },
+      "type": "Customer",
+      "user_key": "CompanyName"
+    },
+    "Employees": {
+      "attributes": [
+        {
+          "label": "LastName*",
+          "name": "LastName",
+          "search": true
+        },
+        {
+          "name": "ReportsTo"
+        },
+        {
+          "name": "FirstName"
+        },
+        {
+          "name": "Title"
+        },
+        {
+          "name": "TitleOfCourtesy"
+        },
+        {
+          "name": "BirthDate"
+        },
+        {
+          "name": "HireDate"
+        },
+        {
+          "name": "Address"
+        },
+        {
+          "name": "City"
+        },
+        {
+          "name": "Region"
+        },
+        {
+          "name": "PostalCode"
+        },
+        {
+          "name": "Country"
+        },
+        {
+          "name": "HomePhone"
+        },
+        {
+          "name": "Extension"
+        },
+        {
+          "name": "Photo"
+        },
+        {
+          "name": "Notes"
+        },
+        {
+          "name": "PhotoPath"
+        },
+        {
+          "name": "EmployeeID"
+        }
+      ],
+      "tab_groups": {
+        "EmployeeList": {
+          "direction": "tomany",
+          "fks": [
+            "ReportsTo"
+          ],
+          "resource": "Employees"
+        },
+        "OrderList": {
+          "direction": "tomany",
+          "fks": [
+            "EmployeeID"
+          ],
+          "resource": "Orders"
+        },
+        "parent": {
+          "direction": "toone",
+          "fks": [
+            "ReportsTo"
+          ],
+          "resource": "Employees"
+        }
+      },
+      "type": "Employee",
+      "user_key": "LastName"
+    },
+    "Order Details": {
+      "attributes": [
+        {
+          "label": "OrderID*",
+          "name": "OrderID",
+          "search": true
+        },
+        {
+          "name": "OrderID"
+        },
+        {
+          "name": "ProductID"
+        },
+        {
+          "name": "UnitPrice"
+        },
+        {
+          "name": "Quantity"
+        },
+        {
+          "name": "Discount"
+        }
+      ],
+      "tab_groups": {
+        "Order": {
+          "direction": "toone",
+          "fks": [
+            "OrderID"
+          ],
+          "resource": "Orders"
+        },
+        "Product": {
+          "direction": "toone",
+          "fks": [
+            "ProductID"
+          ],
+          "resource": "Products"
+        }
+      },
+      "type": "OrderDetail",
+      "user_key": "OrderID"
+    },
+    "Orders": {
+      "attributes": [
+        {
+          "label": "ShipName*",
+          "name": "ShipName",
+          "search": true
+        },
+        {
+          "name": "CustomerID"
+        },
+        {
+          "name": "EmployeeID"
+        },
+        {
+          "name": "ShipVia"
+        },
+        {
+          "name": "OrderDate"
+        },
+        {
+          "name": "RequiredDate"
+        },
+        {
+          "name": "ShippedDate"
+        },
+        {
+          "name": "Freight"
+        },
+        {
+          "name": "ShipAddress"
+        },
+        {
+          "name": "ShipCity"
+        },
+        {
+          "name": "ShipRegion"
+        },
+        {
+          "name": "ShipPostalCode"
+        },
+        {
+          "name": "ShipCountry"
+        },
+        {
+          "name": "OrderID"
+        }
+      ],
+      "tab_groups": {
+        "Customer": {
+          "direction": "toone",
+          "fks": [
+            "CustomerID"
+          ],
+          "resource": "Customers"
+        },
+        "Employee": {
+          "direction": "toone",
+          "fks": [
+            "EmployeeID"
+          ],
+          "resource": "Employees"
+        },
+        "OrderDetailList": {
+          "direction": "tomany",
+          "fks": [
+            "OrderID"
+          ],
+          "resource": "Order Details"
+        },
+        "Shipper": {
+          "direction": "toone",
+          "fks": [
+            "ShipVia"
+          ],
+          "resource": "Shippers"
+        }
+      },
+      "type": "Order",
+      "user_key": "ShipName"
+    },
+    "Products": {
+      "attributes": [
+        {
+          "label": "ProductName*",
+          "name": "ProductName",
+          "search": true
+        },
+        {
+          "name": "CategoryID"
+        },
+        {
+          "name": "SupplierID"
+        },
+        {
+          "name": "QuantityPerUnit"
+        },
+        {
+          "name": "UnitPrice"
+        },
+        {
+          "name": "UnitsInStock"
+        },
+        {
+          "name": "UnitsOnOrder"
+        },
+        {
+          "name": "ReorderLevel"
+        },
+        {
+          "name": "Discontinued"
+        },
+        {
+          "name": "ProductID"
+        }
+      ],
+      "tab_groups": {
+        "Category": {
+          "direction": "toone",
+          "fks": [
+            "CategoryID"
+          ],
+          "resource": "Categories"
+        },
+        "OrderDetailList": {
+          "direction": "tomany",
+          "fks": [
+            "ProductID"
+          ],
+          "resource": "Order Details"
+        },
+        "Supplier": {
+          "direction": "toone",
+          "fks": [
+            "SupplierID"
+          ],
+          "resource": "Suppliers"
+        }
+      },
+      "type": "Product",
+      "user_key": "ProductName"
+    },
+    "Region": {
+      "attributes": [
+        {
+          "label": "RegionDescription*",
+          "name": "RegionDescription",
+          "search": true
+        },
+        {
+          "name": "RegionID"
+        }
+      ],
+      "tab_groups": {
+        "TerritoryList": {
+          "direction": "tomany",
+          "fks": [
+            "RegionID"
+          ],
+          "resource": "Territories"
+        }
+      },
+      "type": "Region",
+      "user_key": "RegionDescription"
+    },
+    "Shippers": {
+      "attributes": [
+        {
+          "label": "CompanyName*",
+          "name": "CompanyName",
+          "search": true
+        },
+        {
+          "name": "Phone"
+        },
+        {
+          "name": "ShipperID"
+        }
+      ],
+      "tab_groups": {
+        "OrderList": {
+          "direction": "tomany",
+          "fks": [
+            "ShipVia"
+          ],
+          "resource": "Orders"
+        }
+      },
+      "type": "Shipper",
+      "user_key": "CompanyName"
+    },
+    "Suppliers": {
+      "attributes": [
+        {
+          "label": "CompanyName*",
+          "name": "CompanyName",
+          "search": true
+        },
+        {
+          "name": "ContactName"
+        },
+        {
+          "name": "ContactTitle"
+        },
+        {
+          "name": "Address"
+        },
+        {
+          "name": "City"
+        },
+        {
+          "name": "Region"
+        },
+        {
+          "name": "PostalCode"
+        },
+        {
+          "name": "Country"
+        },
+        {
+          "name": "Phone"
+        },
+        {
+          "name": "Fax"
+        },
+        {
+          "name": "HomePage"
+        },
+        {
+          "name": "SupplierID"
+        }
+      ],
+      "tab_groups": {
+        "ProductList": {
+          "direction": "tomany",
+          "fks": [
+            "SupplierID"
+          ],
+          "resource": "Products"
+        }
+      },
+      "type": "Supplier",
+      "user_key": "CompanyName"
+    },
+    "Territories": {
+      "attributes": [
+        {
+          "label": "TerritoryDescription*",
+          "name": "TerritoryDescription",
+          "search": true
+        },
+        {
+          "name": "RegionID"
+        },
+        {
+          "name": "TerritoryID"
+        }
+      ],
+      "tab_groups": {
+        "Region": {
+          "direction": "toone",
+          "fks": [
+            "RegionID"
+          ],
+          "resource": "Region"
+        }
+      },
+      "type": "Territory",
+      "user_key": "TerritoryDescription"
+    }
+  },
+  "settings": {
+    "max_list_columns": "7"
+  }
+}
