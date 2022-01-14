@@ -387,6 +387,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix
+
 12/26/2021 - 04.00.05: Introducing the Admin app, with Readme Tutorial
 
 11/13/2021 - 03.50.00: rebuild-from-database/model, improved relationship support 
