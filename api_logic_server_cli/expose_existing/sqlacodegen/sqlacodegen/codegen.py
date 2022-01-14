@@ -478,6 +478,8 @@ class CodeGenerator(object):
 
             # Only form model classes for tables that have a primary key and are not association
             # tables
+            if "Alphabetical" in (table.name + ""):
+                debug_str = "target table located"
             if noclasses or not table.primary_key or table.name in association_tables:
                 model = self.table_model(table)
             else:

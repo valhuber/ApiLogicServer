@@ -13,11 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.00.21"
+__version__ = "4.00.22"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/13/2022 - 04.00.21: add admin_api, info-disp/show cleanup\n"\
+    "\t01/14/2022 - 04.00.22: add admin_api, info-disp/show, date fix\n"\
     "\t01/05/2022 - 04.00.18: Integrated /admin-api, required fields, no redundant join, attr info, sample home rb \n"\
     "\t01/04/2022 - 04.00.15: Integrated /admin-api, required fields, no redundant join, attr info \n"\
     "\t01/02/2022 - 04.00.12: Fixed reposition after update, Home screen fonts and links \n"\
@@ -826,9 +826,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         print("\n\nApiLogicServer customizable project created.  Next steps:")
         print("\nRun API Logic Server:")
         print(f'  ApiLogicServer run --project_name={project_name}')
-        print(f'  python {project_name}/api_logic_server_run.py       # equivalent to above')
-        print("\nRun basic web app:")
-        print(f'  python {project_name}/ui/basic_web_app/run.py')
+        print(f'  cd {project_name};  python api_logic_server_run.py       # equivalent to above')
         if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
