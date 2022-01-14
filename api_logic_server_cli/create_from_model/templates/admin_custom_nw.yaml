@@ -57,10 +57,14 @@ resources:
       - name: ContactTitle
       - name: Balance
         type: DECIMAL
+        info: derived as sum(Order.AmountTotal where ShippedDate is None)
       - name: CreditLimit
         type: DECIMAL
+        info: Balance may not exceed this value
       - name: OrderCount
+        info: derived as sum(Order)
       - name: UnpaidOrderCount
+        info: derived as count(Order where ShippedDate is None)
       - name: Address
       - name: City
       - name: Region
@@ -285,6 +289,7 @@ resources:
         type: DATE
       - name: AmountTotal
         type: DECIMAL
+        info: derived as sum(OrderDetail.Amount)
       - name: Freight
         required: true
         type: DECIMAL
@@ -340,6 +345,7 @@ resources:
       - name: OrderId
         required: true
       - name: UnitPrice
+        info: derived as copy(Product.UnitPrice)
         required: true
         type: DECIMAL
       - name: Quantity
@@ -348,7 +354,9 @@ resources:
         required: true
       - name: Amount
         type: DECIMAL
+        info: derived as UnitPrice * Quantity
       - name: ShippedDate
+        info: derived as Order.ShippedDate
     tab_groups:
       - direction: toone
         fks:
@@ -374,6 +382,7 @@ resources:
         type: DECIMAL
       - name: UnitsInStock
         required: true
+        info: derived as UnitsInStock - (UnitsShipped - old_row.UnitsShipped)
       - name: UnitsOnOrder
         required: true
       - name: ReorderLevel
@@ -383,6 +392,7 @@ resources:
       - name: UnitsShipped
       - name: Id
         required: true
+        info: derived as sum(OrderDetail.Quantity where ShippedDate is not None)
       - name: SupplierId
         required: true
       - name: CategoryId
