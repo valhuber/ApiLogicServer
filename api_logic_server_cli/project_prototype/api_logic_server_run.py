@@ -168,6 +168,7 @@ def create_admin_api(app, host="localhost", port=5000, api_prefix="/admin-api"):
 
 
 def create_app(config_filename=None):
+    admin_enabled = os.name != "nt"
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
             detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
@@ -177,7 +178,8 @@ def create_app(config_filename=None):
 
     flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
     flask_app.config.from_object("config.Config")
-    flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
+    if admin_enabled:
+        flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
     # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
     setup_logging(flask_app)
     # ?? db = safrs.DB  # opens database per config, setting session
@@ -188,9 +190,10 @@ def create_app(config_filename=None):
 
     db.init_app(flask_app)
     with flask_app.app_context():
-        db.create_all()
-        db.create_all(bind='admin')
-        session.commit()
+        if admin_enabled:
+            db.create_all()
+            db.create_all(bind='admin')
+            session.commit()
         safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port, API_PREFIX=API_PREFIX)
         customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)  # custom services
         SAFRSBase._s_auto_commit = False

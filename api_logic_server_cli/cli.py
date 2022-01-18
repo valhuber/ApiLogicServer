@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.00"
+__version__ = "4.01.01"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
     "\t01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix \n"\
     "\t01/05/2022 - 04.00.18: Integrated /admin-api, required fields, no redundant join, attr info, sample home rb \n"\
     "\t01/04/2022 - 04.00.15: Integrated /admin-api, required fields, no redundant join, attr info \n"\
