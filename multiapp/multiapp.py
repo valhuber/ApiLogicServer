@@ -9,6 +9,7 @@ from safrs import SAFRSAPI as SafrsApi, DB as db
 from flask import Flask, abort
 from flask_swagger_ui import get_swaggerui_blueprint
 from pathlib import Path
+from flask import request
 import yaml
 import importlib
 import sys
@@ -26,27 +27,27 @@ log = logging.getLogger()
 #
 # safrs-react-admin flask app: host frontend react files from ./ui
 #
-def create_sra_app(config_filename=None):
-    sra_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
-    if not Path('ui').exists():
-        log.critical("UI directory does not exist!")
-        exit(1)
+def create_sra_app(config_filename=None, ui_path=Path('ui')):
     
+    sra_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
+    if not Path(ui_path).exists():
+        log.error(f"UI directory does not exist: {ui_path.resolve()}")
+        
     @sra_app.route('/')
     def index():
         return redirect('/admin-app/index.html')
 
     @sra_app.route('/ui/admin/admin.yaml')
     def admin_yaml():
-        response = send_file("ui/admin/admin.yaml", mimetype='text/yaml')
+        response = send_file(f"{ui_path}/admin/admin.yaml", mimetype='text/yaml')
         return response
 
     @sra_app.route("/admin-app/<path:path>")
     def send_spa(path=None):
         if path == "home.js":
-            directory = "ui/admin"
+            directory = f"{ui_path}/admin"
         else:
-            directory = 'ui/safrs-react-admin'
+            directory = f'{ui_path}/safrs-react-admin'
         return send_from_directory(directory, path)
 
     return sra_app
@@ -128,18 +129,9 @@ def project_2_app(project, host, port):
                         api_spec_url=api_spec_url,
                         custom_swagger={"basePath" : f"{api_app_prefix}{api_prefix}"})
 
-    api_app.config.update(
-        SQLALCHEMY_POOL_RECYCLE=280,
-        SQLALCHEMY_POOL_SIZE=20,
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SQLALCHEMY_COMMIT_ON_TEARDOWN=True,
-        SQLALCHEMY_POOL_TIMEOUT=True)
-    
     @api_app.after_request
     def after_request(response):
-        '''
-        Enable CORS. Disable it if you don't need CORS or install Cors Libaray
-        '''
+        #Enable CORS. Disable it if you don't need CORS or install Cors Libaray
         response.headers["Access-Control-Allow-Origin"] = "*"
         response.headers["Access-Control-Allow-Credentials"] = "true"
         response.headers["Access-Control-Max-Age"] = "7200"
@@ -175,7 +167,6 @@ def create_app(args):
     # MultiApp initialization: 
     # => Create admin apps and api apps
     #
-    sra_app = create_sra_app()
     host = args.hostname
     port = args.port_ext
     
@@ -185,18 +176,24 @@ def create_app(args):
     admin_app = create_admin_api_app(host=host)
     with admin_app.app_context():
         create_api(admin_app, host=host, port=port, app_prefix="/admin", api_prefix="/api", models = [User,Api])
+        apis = admin_app.db.session.query(Api).all()
     
     api_apps= {'/admin': admin_app}
-    for project in args.projects:
-        sys.path.insert(0, str(Path(project).resolve()))
-        api_app_prefix, api_app = project_2_app(project, host, port)
+    #for project in args.projects:
+    for api in apis:
+        sys.path.insert(0, str(Path(api.path).resolve()))
+        api_app_prefix, api_app = project_2_app(api.path, host, port)
         sys.path.pop(0)
         if api_app:
             api_apps[api_app_prefix] = api_app
     
+    sra_app = create_sra_app()
     with sra_app.app_context():
         create_api(sra_app, api_prefix="/api")
     # wsgi application
+    print('#'*60)
+    print('#'*60)
+    print('#'*60)
     print(api_apps)
     application = DispatcherMiddleware(sra_app, api_apps)
     

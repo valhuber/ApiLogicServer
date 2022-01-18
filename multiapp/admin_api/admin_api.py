@@ -10,14 +10,14 @@ Cookies because it's easier to use the swagger
 import logging
 import time
 import flask_login as login
+import subprocess
 from flask_login import UserMixin, LoginManager
 from flask import Flask, request, has_request_context, abort, g, url_for, current_app
 from flask_sqlalchemy import SQLAlchemy
-from safrs import SAFRSBase, SAFRSAPI, jsonapi_rpc
+from safrs import SAFRSBase, SAFRSAPI, jsonapi_rpc, jsonapi_attr
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
-import subprocess
-
+from pathlib import Path
 
 db = SQLAlchemy()
 logging.basicConfig(level=logging.DEBUG)
@@ -178,6 +178,10 @@ class Api(SAFRSBase, db.Model):
         print('OUT '*40)
         print(output)
         return output
+    
+    @jsonapi_attr
+    def path(self):
+        return f"{self.name}"
 
 
 def create_app(config_filename=None, host="localhost", port="5656", app_prefix="/admin"):
@@ -186,8 +190,11 @@ def create_app(config_filename=None, host="localhost", port="5656", app_prefix="
                       SESSION_COOKIE_SAMESITE="Strict",
                       SECRET_KEY = "Change me for PROD !!",
                       SQLALCHEMY_TRACK_MODIFICATIONS=False,
-                      FLASK_DEBUG=True)
+                      FLASK_DEBUG=True,
+                      SQLALCHEMY_COMMIT_ON_TEARDOWN=True)
+
     db.init_app(app)
+    app.db = db
     # address where the api will be hosted, change this if you're not running the app on localhost!
     login_manager = LoginManager(app)
 
@@ -234,6 +241,10 @@ def create_app(config_filename=None, host="localhost", port="5656", app_prefix="
         """
             Execute the request callbacks
         """
+        engine_container = db.get_engine(app)    
+        db.session.close()
+        engine_container.dispose()
+        
         response.headers["Access-Control-Allow-Origin"] = "*"
         response.headers["Access-Control-Allow-Methods"] = "*"
         response.headers["Access-Control-Allow-Headers"] = "*"
