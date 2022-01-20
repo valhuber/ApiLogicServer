@@ -6,3 +6,4 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+api_logic_server_cli/api_logic_server_info.yaml

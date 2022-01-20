@@ -320,6 +320,8 @@ pip install ApiLogicServer # you may need to use pip3, or restart your terminal 
 #### Cloud Install - Pythonanwhere
 API Logic Server runs well on [pythonanywhere](http://pythonanywhere.com/).  See [these instructions](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide#pythonanywhere).
 
+Here is the [sample on PythonAnywhere.](http://apilogicserver.pythonanywhere.com/admin-app/index.html)
+
 ## Quick Start
 
 Once installed, use the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start) to create and load the sample project.
