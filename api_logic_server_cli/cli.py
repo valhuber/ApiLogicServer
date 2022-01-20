@@ -100,12 +100,15 @@ import create_from_model.api_logic_server_utils as create_utils
 
 
 api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
-api_logic_server_info_file = open(api_logic_server_info_file_name)
-api_logic_server_info_file_dict = yaml.load(api_logic_server_info_file, Loader=yaml.FullLoader)
-api_logic_server_info_file.close()
+
+api_logic_server_info_file_dict = {}
+if Path(api_logic_server_info_file_name).is_file():
+    api_logic_server_info_file = open(api_logic_server_info_file_name)
+    api_logic_server_info_file_dict = yaml.load(api_logic_server_info_file, Loader=yaml.FullLoader)
+    api_logic_server_info_file.close()
 
 
-last_created_project_name = api_logic_server_info_file_dict["last_created_project_name"]
+last_created_project_name = api_logic_server_info_file_dict.get("last_created_project_name","")
 default_db = "default = nw.sqlite, ? for help"
 default_project_name = "ApiLogicProject"
 default_fab_host = "localhost"
