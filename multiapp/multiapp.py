@@ -182,10 +182,14 @@ def create_app(args):
     #for project in args.projects:
     for api in apis:
         sys.path.insert(0, str(Path(api.path).resolve()))
-        api_app_prefix, api_app = project_2_app(api.path, host, port)
+        try:
+            api_app_prefix, api_app = project_2_app(api.path, host, port)
+            if api_app:
+                api_apps[api_app_prefix] = api_app
+        except Exception as exc:
+            log.exception(exc)
+            log.error("Failed to create project app!")
         sys.path.pop(0)
-        if api_app:
-            api_apps[api_app_prefix] = api_app
     
     sra_app = create_sra_app()
     with sra_app.app_context():
@@ -212,7 +216,7 @@ def get_args():
     argparser.add_argument("-a", "--access-log", default="-", help="Access Log", type=str)
     argparser.add_argument("-v", "--verbose", default=logging.INFO, help="LogLevel (0-50)", type=int)
     argparser.add_argument("-o", "--options", default=None, help="Project options")
-    argparser.add_argument("projects", action="store", nargs='+')
+    argparser.add_argument("projects", action="store", nargs='*', default=[])
     args = argparser.parse_args()
    
     return args

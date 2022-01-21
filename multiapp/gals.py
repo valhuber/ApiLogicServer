@@ -7,7 +7,6 @@ from multiapp import get_args
 
 
 class ServerApp(gunicorn.app.base.BaseApplication):
-    # gunicorn -w 4 app:application -b 0.0.0.0:5656  --threads 5 --error-logfile - --access-logfile - --reload
     application = None
 
     def __init__(self, args, options=None):
@@ -30,6 +29,10 @@ class ServerApp(gunicorn.app.base.BaseApplication):
         print("\n\n  # Loading MA\n\n")
         from multiapp import create_app
         return create_app(self.args)
+    
+    def post_response(worker, req, environ, resp):
+        fdsqfdsq
+        worker.log.debug("%s", worker.pid)
 
 
 if __name__ == '__main__':
