@@ -1,0 +1,46 @@
+api_root: //localhost:5656/admin/api
+resources:
+  Apis:
+    components:
+      show: ApiShow
+    ino_list: <h1>List Info</h1>
+    info_show: <h1>Show Info</h1>
+    attributes:
+      - name: name
+      - name: prefix
+        label: Url Prefix
+      - name: port
+      - name: hostname
+      - name: connection_string
+      - name: owner_id
+        label: Owner
+      - name: Create
+        component: ApiGenerateField
+      - name: path
+    tab_groups:
+      - direction: toone
+        fks:
+          - owner_id
+        name: owner
+        resource: Users
+    type: Api
+  Users:
+    user_key: username
+    attributes:
+      - name: username
+        search: true
+      - name: name
+        search: true
+      - name: email
+        search: true
+      - name: _password
+        label: ' - '
+        hidden: list
+        component: UserPasswordField
+    tab_groups:
+      - direction: tomany
+        fks:
+          - owner_id
+        name: apis
+        resource: Apis
+    type: User

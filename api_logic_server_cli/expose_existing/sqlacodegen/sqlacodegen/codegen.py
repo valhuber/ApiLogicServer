@@ -523,16 +523,14 @@ class CodeGenerator(object):
 from safrs import SAFRSBase
 
 import safrs
-db = safrs.DB
 
-Base = db.Model
+Base = declarative_base()
 metadata = Base.metadata
 
-NullType = db.String  # datatype fixup
-TIMESTAMP= db.TIMESTAMP
+#NullType = db.String  # datatype fixup
+#TIMESTAMP= db.TIMESTAMP
 
 from sqlalchemy.dialects.mysql import *
-
 ########################################################################################################################
 """
             # return 'Base = declarative_base()\nmetadata = Base.metadata'
