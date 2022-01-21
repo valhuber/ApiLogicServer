@@ -196,8 +196,6 @@ def create_app(args):
         create_api(sra_app, api_prefix="/api")
     # wsgi application
     print('#'*60)
-    print('#'*60)
-    print('#'*60)
     print(api_apps)
     application = DispatcherMiddleware(sra_app, api_apps)
     
