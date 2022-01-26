@@ -11,6 +11,8 @@ import logging
 import time
 import flask_login as login
 import subprocess
+import os
+import signal
 from flask_login import UserMixin, LoginManager
 from flask import Flask, request, has_request_context, abort, g, url_for, current_app
 from flask_sqlalchemy import SQLAlchemy
@@ -174,7 +176,7 @@ class Api(SAFRSBase, db.Model):
 
 
     @jsonapi_rpc(http_methods=["POST"], valid_jsonapi=False)
-    def generate():
+    def generate(self):
         output  = "Creating API"
         als_args = {
             "--project_name" : self.name,
@@ -193,6 +195,8 @@ class Api(SAFRSBase, db.Model):
         output += str(process.stderr)
         print('OUT '*40)
         print(output)
+        # restart gunicorn
+        os.kill(os.getppid(), signal.SIGHUP)
         return output
     
     @jsonapi_attr

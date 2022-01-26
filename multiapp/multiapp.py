@@ -102,7 +102,13 @@ def project_2_app(project, host, port):
     als_spec = importlib.util.spec_from_file_location("api_logic_server_run_proj", alsr_py)
     api_logic_server_run_proj = importlib.util.module_from_spec(als_spec)
     cwd = os.getcwd()
-    als_spec.loader.exec_module(api_logic_server_run_proj)
+    try:
+        als_spec.loader.exec_module(api_logic_server_run_proj)
+    except Exception as exc:
+        log.exception(exc)
+        log.error(f"Failed to load spec: {exc}")
+        os.chdir(cwd)
+        return None, None
     os.chdir(cwd)
     db = api_logic_server_run_proj.db
     
@@ -223,7 +229,7 @@ def get_args():
 def main(*args):
     #
     # example gunicorn cli invocation:
-    # gunicorn -w 1 "multiapp:main('nw')" -b 0.0.0.0:5656  --threads 1 --error-logfile - --access-logfile - --reload
+    # gunicorn -w 5 "multiapp:main()" -b 0.0.0.0:5656  --threads 1 --error-logfile - --access-logfile - --reload
     #
     Args = collections.namedtuple('args',['hostname', 'port_ext', 'projects'])
     args = Args(hostname='localhost', port_ext=5656, projects=args)
