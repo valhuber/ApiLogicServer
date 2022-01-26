@@ -157,8 +157,24 @@ class Api(SAFRSBase, db.Model):
     owner_id = db.Column(db.String, db.ForeignKey("Users.id"))
     owner = db.relationship("User", back_populates="apis")
     
+    @staticmethod
     @jsonapi_rpc(http_methods=["POST"], valid_jsonapi=False)
-    def generate(self):
+    def test_conn(connection_string = ""):
+        print(connection_string)
+        from sqlalchemy import create_engine, inspect
+        try:
+            engine = create_engine(connection_string)
+            with engine.connect() as conn:
+                pass
+            insp = inspect(engine)
+            tablenames = "\n".join(insp.get_table_names())
+            return f"# Tables:\n{tablenames}" if tablenames else "# Empty DB"
+        except Exception as exc:
+            return str(exc)
+
+
+    @jsonapi_rpc(http_methods=["POST"], valid_jsonapi=False)
+    def generate():
         output  = "Creating API"
         als_args = {
             "--project_name" : self.name,
