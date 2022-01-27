@@ -520,7 +520,10 @@ class AdminCreator(object):
         """
         yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
-        enable_rebuild_unaltered = False  # is not working on mac
+        enable_rebuild_unaltered = False
+        ''' is not working on mac - always appears unaltered
+            https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
+        '''
         write_file = "Write"
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
