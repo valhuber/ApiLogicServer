@@ -103,7 +103,7 @@ class AdminCreator(object):
         """
         if self.mod_gen.command == "create-ui" or self.mod_gen.command.startswith("rebuild"):
             if self.mod_gen.command.startswith("rebuild"):
-                print(".. .. ..Use existing ui/admin")
+                print(".. .. ..Use existing ui/admin directory")
         else:
             self.create_admin_app(msg=".. .. ..Create ui/admin")
 
@@ -519,12 +519,20 @@ class AdminCreator(object):
         """ write admin.yaml, with backup, with additional nw customized backup
         """
         yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
-        """  todo - overwrite if never altered
-        import os.path, time
-        print("Last modified: %s" % time.ctime(os.path.getmtime("test.txt")))
-        print("Created: %s" % time.ctime(os.path.getctime("test.txt")))
-        """
-        if not self.mod_gen.command.startswith("rebuild"):
+        yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
+        enable_rebuild_unaltered = False  # is not working on mac
+        write_file = "Write"
+        if self.mod_gen.command.startswith("rebuild"):
+            write_file = "Rebuild - preserve"
+            created_time = os.path.getctime(yaml_file_name)
+            birth_time = os.stat(yaml_file_name).st_birthtime
+            modified_time = os.path.getmtime(yaml_file_name)
+            if enable_rebuild_unaltered and created_time == modified_time:
+                write_file = "Rebuild - overwrite unaltered"
+        if write_file == "Rebuild - preserve":
+            print(f'.. .. ..{write_file} {yaml_file_name}')
+        else:
+            print(f'.. .. ..{write_file} {yaml_file_name}')
             with open(yaml_file_name, 'w') as yaml_file:
                 yaml_file.write(admin_yaml)
 
