@@ -630,12 +630,15 @@ class AdminCreator(object):
             from_proto_dir = pathlib.Path(self.get_create_from_model_dir()).\
                 joinpath("create_from_model", "safrs-react-admin-npm-build")
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "safrs-react-admin")
-        print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
-        if not os.path.isdir(from_proto_dir):
-            print(f'\n==> Error - prototype admin project... did you complete setup: https://github.com/valhuber/ApiLogicServer/wiki/Internals')
-            print(".. Setup required.  Really.")
-            exit(1)
-        shutil.copytree(from_proto_dir, to_project_dir)
+        if self.mod_gen.multi_api:
+            print(f'{msg} multi_api - do NOT copy prototype admin project {from_proto_dir} -> {to_project_dir}')
+        else:
+            print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
+            if not os.path.isdir(from_proto_dir):
+                print(f'\n==> Error - prototype admin project... did you complete setup: https://github.com/valhuber/ApiLogicServer/wiki/Internals')
+                print(".. Setup required.  Really.")
+                exit(1)
+            shutil.copytree(from_proto_dir, to_project_dir)
 
         os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
 

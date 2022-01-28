@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.01"
+__version__ = "4.01.02"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t01/28/2022 - 04.01.02: cli param: multi_api \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
     "\t01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix \n"\
     "\t01/05/2022 - 04.00.18: Integrated /admin-api, required fields, no redundant join, attr info, sample home rb \n"\
@@ -666,7 +667,7 @@ def is_docker() -> bool:
 def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
-                  extended_builder: str):
+                  extended_builder: str, multi_api: bool):
     """ Creating ApiLogicServer with options: (or uri helo) """
     if db_url == "?":
         print_uri_info()
@@ -676,7 +677,7 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
     if print_options:
         print(f'\n\nCreating ApiLogicServer with options:')
         print(f'  --db_url={db_url}')
-        print(f'  --project_name={project_name}')
+        print(f'  --project_name={project_name}   (pwd: {os.getcwd()})')
         print(f'  --admin_app={admin_app}')
         print(f'  --react_admin={react_admin}')
         print(f'  --flask_appbuilder={flask_appbuilder}')
@@ -691,6 +692,7 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
         print(f'  --favorites={favorites}')
         print(f'  --non_favorites={non_favorites}')
         print(f'  --extended_builder={extended_builder}')
+        print(f'  --multi_api={multi_api}')
 
 
 def invoke_extended_builder(builder_path, db_url, project_directory):
@@ -739,13 +741,13 @@ def invoke_creators(model_creation_services: CreateFromModel):
 def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
-                     extended_builder: str):
+                     extended_builder: str, multi_api: bool):
     """
     Creates logic-enabled Python JSON_API project, options for FAB and execution
 
     main driver
 
-    :param project_name maybe ~, or volume - create this folder
+    :param project_name could be ~, or volume - create this folder
     :param db_url SQLAlchemy url
     :param host where safrs finds the api
     :param port where safrs finds the port
@@ -758,7 +760,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
                   from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
                   flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
                   react_admin=react_admin, admin_app=admin_app,
-                  extended_builder=extended_builder)
+                  extended_builder=extended_builder, multi_api=multi_api)
 
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
@@ -808,7 +810,7 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         host=host, port=port, use_model = use_model,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
-        react_admin=react_admin, version = __version__)
+        react_admin=react_admin, version = __version__, multi_api=multi_api)
     fix_database_models__inject_db_types(project_directory, db_types)
     invoke_creators(model_creation_services)  # creates api/expose_api_models, ui/admin & basic_web_app
     if extended_builder is not None and extended_builder != "":
@@ -923,6 +925,9 @@ def about(ctx):
 @click.option('--admin_app/--no_admin_app',
               default=True, is_flag=True,
               help="Creates ui/react app (yaml model)")
+@click.option('--multi_api/--no_multi_api',
+              default=False, is_flag=True,
+              help="Create multiple APIs")
 @click.option('--flask_appbuilder/--no_flask_appbuilder',
               default=False, is_flag=True,
               help="Creates ui/basic_web_app")
@@ -960,7 +965,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
            host: str,
            port: str,
            favorites: str, non_favorites: str,
-           extended_builder: str):
+           extended_builder: str,
+           multi_api: click.BOOL):
     """
         Creates new customizable project (overwrites).
     """
@@ -973,7 +979,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder)
+                     extended_builder=extended_builder, multi_api=multi_api)
 
 
 @main.command("create-and-run")
@@ -1006,6 +1012,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
 @click.option('--react_admin/--no_react_admin',
               default=False, is_flag=True,
               help="Creates ui/react_admin app")
+@click.option('--multi_api/--no_multi_api',
+              default=False, is_flag=True,
+              help="Create multiple APIs")
 @click.option('--favorites',
               default="name description",
               help="Columns named like this displayed first")
@@ -1037,7 +1046,8 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
         host: str,
         port: str,
         favorites: str, non_favorites: str,
-        extended_builder: str):
+        extended_builder: str,
+        multi_api: click.BOOL):
     """
         Creates new project and runs it (overwrites).
     """
@@ -1050,7 +1060,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder)
+                     extended_builder=extended_builder, multi_api=multi_api)
 
 
 @main.command("rebuild-from-database")
@@ -1133,7 +1143,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder)
+                     extended_builder=extended_builder, multi_api=False)
 
 
 @main.command("rebuild-from-model")
@@ -1210,7 +1220,7 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, not_exposed: str,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder)
+                     extended_builder=extended_builder, multi_api=False)
 
 
 @main.command("run")

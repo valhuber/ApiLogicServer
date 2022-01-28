@@ -170,7 +170,8 @@ class CreateFromModel(object):
                  favorite_names: str = "name description",
                  non_favorite_names: str = "id",
                  command: str = "",
-                 version: str = "0.0.0"):
+                 version: str = "0.0.0",
+                 multi_api: bool = False):
         self.project_directory = None
         if project_directory:
             self.project_directory = self.get_windows_path_with_slashes(project_directory)
@@ -198,6 +199,7 @@ class CreateFromModel(object):
         self.flask_appbuilder = flask_appbuilder
         self.react_admin = react_admin
         self.version = version
+        self.multi_api = multi_api
 
         self.table_to_class_map = {}
         """ keys are table[.column], values are class / attribute """
