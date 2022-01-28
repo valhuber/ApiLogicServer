@@ -50,7 +50,7 @@ In addition to Docker, you can [install](#installation) locally, or on the cloud
 
 You can picture the process as shown in the diagram below; click it for a video tutorial, showing complete project creation, execution, customization and debugging.
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/blob/main/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
 After you've explored the tutorial, try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
@@ -114,7 +114,7 @@ To run the Admin App, follow these steps:
    * Click the first __Product Id__ to see its detail information
 6. (Close the app (browser), but leave the server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/run-admin-app.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -135,7 +135,7 @@ The creation process builds not only the API, but swagger so you can explore it.
    * Note: you can drag windows to arrange your viewing area
 3. (Leave the swagger and server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/swagger.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/swagger.png?raw=true"></figure>
 &nbsp;&nbsp;&nbsp;
 
   > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**

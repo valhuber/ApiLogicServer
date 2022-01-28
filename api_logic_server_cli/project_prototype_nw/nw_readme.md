@@ -45,7 +45,7 @@ To run the Admin App, follow these steps:
    * Click the first __Product Id__ to see its detail information
 6. (Close the app (browser), but leave the server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/run-admin-app.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -66,7 +66,7 @@ The creation process builds not only the API, but swagger so you can explore it.
    * Note: you can drag windows to arrange your viewing area
 3. (Leave the swagger and server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/blob/main/images/ui-admin/swagger
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/swagger
 .png?raw=true"></figure>
 &nbsp;&nbsp;&nbsp;
 
