@@ -4,9 +4,9 @@
 
   Created on api_logic_server_created_on
 
-  $ python3 api_logic_server_run.py [Listener-IP]
+  $ python3 api_logic_server_run.py [Listener-IP] [port]  # this starts your ApiLogicServer project
 
-  This will run on http://Listener-Ip:api_logic_server_port
+  Access the server via the Browser: http://Listener-Ip:api_logic_server_port
 
 """
 import os
