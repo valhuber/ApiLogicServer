@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.02"
+__version__ = "4.01.03"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t02/03/2022 - 04.01.03: minor fix_win_path removal, cli param: multi_api \n"\
     "\t01/28/2022 - 04.01.02: cli param: multi_api \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
     "\t01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix \n"\

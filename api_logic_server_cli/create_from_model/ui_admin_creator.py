@@ -518,7 +518,6 @@ class AdminCreator(object):
     def write_yaml_files(self, admin_yaml):
         """ write admin.yaml, with backup, with additional nw customized backup
         """
-        yaml_file_name = self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin.yaml')
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
         enable_rebuild_unaltered = False
         ''' is not working on mac - always appears unaltered
@@ -540,7 +539,7 @@ class AdminCreator(object):
                 yaml_file.write(admin_yaml)
 
         yaml_created_file_name = \
-            self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin-created.yaml')
+            os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-created.yaml'))
         with open(yaml_created_file_name, 'w') as yaml_copy_file:
             yaml_copy_file.write(admin_yaml)
 
@@ -549,7 +548,7 @@ class AdminCreator(object):
                 os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
             admin_custom_nw = admin_custom_nw_file.read()
             nw_backup_file_name = \
-                self.mod_gen.fix_win_path(self.mod_gen.project_directory + f'/ui/admin/admin_custom_nw.yaml')
+                os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin_custom_nw.yaml'))
             admin_file = open(nw_backup_file_name, 'w')
             admin_file.write(admin_custom_nw)
             admin_file.close()
@@ -630,12 +629,14 @@ class AdminCreator(object):
             from_proto_dir = pathlib.Path(self.get_create_from_model_dir()).\
                 joinpath("create_from_model", "safrs-react-admin-npm-build")
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "safrs-react-admin")
-        if self.mod_gen.multi_api:
-            print(f'{msg} multi_api - do NOT copy prototype admin project {from_proto_dir} -> {to_project_dir}')
+        multi_api_skip_copy_safrs_react_admin = True  # set False if alsdock/build copies this folder
+        if multi_api_skip_copy_safrs_react_admin and self.mod_gen.multi_api:
+            print(f'{msg} multi_api - do NOT copy safrs-react-admin {from_proto_dir} -> {to_project_dir}')
+            print(f'{msg} -- alternatively, copy from different location')
         else:
-            print(f'{msg} copy prototype admin project {from_proto_dir} -> {to_project_dir}')
+            print(f'{msg} copy safrs-react-admin: {from_proto_dir} -> {to_project_dir}')
             if not os.path.isdir(from_proto_dir):
-                print(f'\n==> Error - prototype admin project... did you complete setup: https://github.com/valhuber/ApiLogicServer/wiki/Internals')
+                print(f'\n==> Error - safrs-react-admin... did you complete setup: https://github.com/valhuber/ApiLogicServer/wiki/Internals')
                 print(".. Setup required.  Really.")
                 exit(1)
             shutil.copytree(from_proto_dir, to_project_dir)
