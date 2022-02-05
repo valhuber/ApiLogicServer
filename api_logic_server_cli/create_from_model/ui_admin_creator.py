@@ -10,7 +10,8 @@ import sqlalchemy
 import yaml
 from sqlalchemy import MetaData
 import datetime
-import create_from_model.model_creation_services as create_from_model
+import api_logic_server_cli.create_from_model.model_creation_services as create_from_model
+import api_logic_server_cli.create_from_model.api_logic_server_utils as create_utils
 from dotmap import DotMap
 
 from api_logic_server_cli.create_from_model.model_creation_services import Resource
@@ -110,12 +111,12 @@ class AdminCreator(object):
         cwd = os.getcwd()
         sys.path.append(cwd)
 
-        self.admin_yaml.api_root = f'http://localhost:5656/api'
+        self.admin_yaml.api_root = f'http://localhost:5656/{self.mod_gen.api_name}'
         if self.host != "localhost":
             if self.port !="":
-                self.admin_yaml.api_root = f'http://{self.host}:{self.port}/api'
+                self.admin_yaml.api_root = f'http://{self.host}:{self.port}/{self.mod_gen.api_name}'
             else:
-                self.admin_yaml.api_root = f'http://{self.host}/api'
+                self.admin_yaml.api_root = f'http://{self.host}/{self.mod_gen.api_name}'
         self.admin_yaml.resources = {}
         for each_resource_name in self.mod_gen.resource_list:
             each_resource = self.mod_gen.resource_list[each_resource_name]
@@ -543,7 +544,7 @@ class AdminCreator(object):
         with open(yaml_created_file_name, 'w') as yaml_copy_file:
             yaml_copy_file.write(admin_yaml)
 
-        if self.mod_gen.nw_db_status in ["nw", "nw-"]:
+        if self.mod_gen.nw_db_status in ["nw", "nw-"] and self.mod_gen.api_name == "api":
             admin_custom_nw_file = open(
                 os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
             admin_custom_nw = admin_custom_nw_file.read()
@@ -650,6 +651,9 @@ class AdminCreator(object):
             joinpath("create_from_model", "templates", home_js_file)
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
         shutil.copyfile(home_js, to_project_dir.joinpath("home.js"))
+        create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
+                                            replace_with=self.mod_gen.api_name,
+                                            in_file=to_project_dir.joinpath("home.js"))
 
 
 def create(model_creation_services: create_from_model.CreateFromModel):

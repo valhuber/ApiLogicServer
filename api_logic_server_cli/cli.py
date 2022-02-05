@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.03"
+__version__ = "4.01.04"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t02/04/2022 - 04.01.04: cli param: api_name, multi_api, minor fix_win_path removal,  \n"\
     "\t02/03/2022 - 04.01.03: minor fix_win_path removal, cli param: multi_api \n"\
     "\t01/28/2022 - 04.01.02: cli param: multi_api \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
@@ -552,7 +553,8 @@ def fix_database_models__inject_db_types(project_directory: str, db_types: str):
         create_utils.insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
 
 
-def final_project_fixup(msg, project_name, project_directory, host, port, use_model, copy_to_project_directory) -> str:
+def final_project_fixup(msg, project_name, project_directory, api_name,
+                        host, port, use_model, copy_to_project_directory) -> str:
     print(msg)  # "7. Final project fixup"
 
     if use_model == "" and command != "rebuild-from-model":
@@ -564,8 +566,8 @@ def final_project_fixup(msg, project_name, project_directory, host, port, use_mo
         pass
     else:
         print(f' b.   Update api_logic_server_run.py with '
-              f'project_name={project_name} and host, port')
-        update_api_logic_server_run(project_name, project_directory, host, port)
+              f'project_name={project_name} and api_name, host, port')
+        update_api_logic_server_run(project_name, project_directory, api_name, host, port)
 
         fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project_directory, host, port)
 
@@ -592,7 +594,7 @@ def fix_database_models__import_customize_models(project_directory: str, msg: st
     models_file.close()
 
 
-def update_api_logic_server_run(project_name, project_directory, host, port):
+def update_api_logic_server_run(project_name, project_directory, api_name, host, port):
     """
     Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
 
@@ -612,6 +614,9 @@ def update_api_logic_server_run(project_name, project_directory, host, port):
         project_directory_fix = get_windows_path_with_slashes(str(project_directory_actual))
     create_utils.replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
                            replace_with='"' + project_directory_fix + '"',
+                           in_file=api_logic_server_run_py)
+    create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
+                           replace_with=api_name,
                            in_file=api_logic_server_run_py)
     create_utils.replace_string_in_file(search_for="api_logic_server_host",  # server host
                            replace_with=host,
@@ -665,7 +670,7 @@ def is_docker() -> bool:
     return os.path.isdir(path)
 
 
-def print_options(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
+def print_options(project_name: str, api_name: str, db_url: str, host: str, port: str, not_exposed: str,
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
                   extended_builder: str, multi_api: bool):
@@ -679,6 +684,7 @@ def print_options(project_name: str, db_url: str, host: str, port: str, not_expo
         print(f'\n\nCreating ApiLogicServer with options:')
         print(f'  --db_url={db_url}')
         print(f'  --project_name={project_name}   (pwd: {os.getcwd()})')
+        print(f'  --api_name={api_name}')
         print(f'  --admin_app={admin_app}')
         print(f'  --react_admin={react_admin}')
         print(f'  --flask_appbuilder={flask_appbuilder}')
@@ -739,7 +745,7 @@ def invoke_creators(model_creation_services: CreateFromModel):
     model_creation_services.close_app()  # this may no longer be required
 
 
-def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_exposed: str,
+def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, port: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
                      extended_builder: str, multi_api: bool):
@@ -757,7 +763,8 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
     """
 
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
-    print_options(project_name = project_name, db_url=db_url, host=host, port=port, not_exposed=not_exposed,
+    print_options(project_name = project_name, db_url=db_url, api_name=api_name,
+                  host=host, port=port, not_exposed=not_exposed,
                   from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
                   flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
                   react_admin=react_admin, admin_app=admin_app,
@@ -803,10 +810,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
 
     print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
     model_creation_services = CreateFromModel(  # Create database/models.py from db
-        project_directory=project_directory,
-        command = command,
+        project_directory=project_directory, command = command,
         copy_to_project_directory = copy_to_project_directory,
-        api_logic_server_dir = get_api_logic_server_dir(),
+        api_logic_server_dir = get_api_logic_server_dir(), api_name=api_name,
         abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
         host=host, port=port, use_model = use_model,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
@@ -818,8 +824,9 @@ def api_logic_server(project_name: str, db_url: str, host: str, port: str, not_e
         print(f'4. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
         invoke_extended_builder(extended_builder, db_url, project_directory)
 
-    copy_project_result = final_project_fixup("4. Final project fixup", project_name, project_directory, host, port,
-                        use_model, copy_to_project_directory)
+    copy_project_result = final_project_fixup("4. Final project fixup", project_name, project_directory, api_name,
+                                              host, port,
+                                              use_model, copy_to_project_directory)
 
     if open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
         start_open_with(open_with=open_with, project_name=project_name)
@@ -911,6 +918,9 @@ def about(ctx):
               default=f'{default_db}',
               prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
+@click.option('--api_name',
+              default=f'api',
+              help="Last node of API Logic Server url\n")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -954,7 +964,7 @@ def about(ctx):
               default=f'',
               help="your_code.py for additional build automation")
 @click.pass_context
-def create(ctx, project_name: str, db_url: str, not_exposed: str,
+def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            from_git: str,
            # db_types: str,
            open_with: str,
@@ -974,7 +984,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
     global command
     command = "create"
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url,
+    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,
@@ -992,6 +1002,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'{default_db}',
               prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
+@click.option('--api_name',
+              default=f'api',
+              help="Last node of API Logic Server url\n")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -1035,7 +1048,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'',
               help="your_code.py for additional build automation")
 @click.pass_context
-def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
+def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
         from_git: str,
         # db_types: str,
         open_with: str,
@@ -1055,7 +1068,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str,
     global command
     command = "create-and-run"
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url,
+    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,

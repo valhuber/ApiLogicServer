@@ -178,7 +178,7 @@ if __name__ == "__main__":  # gunicorn-friendly host/port settings
         port = sys.argv[2]  # you many need to enable cors support, below
         app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
 
-API_PREFIX = "/api"
+API_PREFIX = "/api_logic_server_api_name"
 did_send_spa = False
 flask_app, safrs_api = create_app()
 

@@ -153,6 +153,7 @@ class CreateFromModel(object):
 
     def __init__(self,
                  project_directory: str = "~/Desktop/my_project",
+                 api_name: str = "api",
                  copy_to_project_directory: str = "",
                  api_logic_server_dir: str = "",
                  abs_db_url: str = "sqlite:///nw.sqlite",
@@ -173,6 +174,7 @@ class CreateFromModel(object):
                  version: str = "0.0.0",
                  multi_api: bool = False):
         self.project_directory = None
+        self.api_name = api_name
         if project_directory:
             self.project_directory = self.get_windows_path_with_slashes(project_directory)
         self.copy_to_project_directory = ""
