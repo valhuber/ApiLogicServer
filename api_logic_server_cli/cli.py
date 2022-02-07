@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.04"
+__version__ = "4.01.05"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t02/06/2022 - 04.01.05: cli param: api_name (. option), multi_api; minor fix_win_path removal \n"\
     "\t02/04/2022 - 04.01.04: cli param: api_name, multi_api, minor fix_win_path removal,  \n"\
     "\t02/03/2022 - 04.01.03: minor fix_win_path removal, cli param: multi_api \n"\
     "\t01/28/2022 - 04.01.02: cli param: multi_api \n"\
@@ -288,7 +289,7 @@ def copy_if_mounted(project_directory):
     return return_project_directory, return_copy_to_directory
 
 
-def clone_prototype_project_with_nw_samples(project_directory: str, project_name: str,
+def clone_prototype_project_with_nw_samples(project_directory: str, project_name: str, api_name: str,
                                             from_git: str, msg: str,
                                             abs_db_url: str, nw_db_status: str) -> str:
     """
@@ -349,6 +350,12 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
                            replace_with=__version__,
                            in_file=f'{project_directory}/readme.md')
     create_utils.replace_string_in_file(search_for="api_logic_server_template",
+                           replace_with=f'{from_dir}',
+                           in_file=f'{project_directory}/readme.md')
+    create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
+                           replace_with=f'{project_directory}',
+                           in_file=f'{project_directory}/readme.md')
+    create_utils.replace_string_in_file(search_for="api_logic_server_api_name",
                            replace_with=f'{from_dir}',
                            in_file=f'{project_directory}/readme.md')
 
@@ -514,6 +521,28 @@ def resolve_home(name: str) -> str:
     return result
 
 
+def get_project_directory_and_api_name(project_name: str, api_name: str, multi_api: bool):
+    """
+    user-supplied project_name, less the twiddle (which might be in project_name); typically relative to cwd.
+
+    :param project_name: a file name, eg, ~/Desktop/a.b
+    :param api_name: defaults to 'api'
+    :param multi_api: cli arg - e.g., set by alsdock
+    :return: /users/you/Desktop/a.b -- removes the ~.................
+           api_name -- api_name, or last node of project_name if multi_api or api_name is "."
+    """
+
+    rtn_project_directory = project_name
+    rtn_api_name = api_name
+    if rtn_project_directory.startswith("~"):
+        rtn_project_directory = str(Path.home()) + rtn_project_directory[1:]
+    project_path = Path(rtn_project_directory)
+    project_path_last_node = project_path.parts[-1]
+    if multi_api or api_name == ".":
+        rtn_api_name = project_path_last_node
+    return rtn_project_directory, rtn_api_name
+
+
 def fix_basic_web_app_run__python_path(project_directory):  # TODO remove these 2
     """ overwrite ui/basic_web_app/run.py (enables run.py) with logic_bank_utils call to fixup python path """
     project_ui_basic_web_app_run_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
@@ -670,6 +699,32 @@ def is_docker() -> bool:
     return os.path.isdir(path)
 
 
+def get_abs_db_url(db_url):
+    """
+    non-relative db location - we work with this (but NB: we copy sqlite db to <project>/database)
+
+    returns abs_db_url - the real url (e.g., for nw), and whether it's really nw
+    """
+    rtn_nw_db_status = ""  # presume not northwind
+    rtn_abs_db_url = db_url
+
+    if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:
+        # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
+        rtn_nw_db_status = "nw"
+    elif db_url == "nw-":
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+        rtn_nw_db_status = "nw-"
+    elif db_url == "nw+":
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
+        rtn_nw_db_status = "nw+"
+    elif db_url.startswith('sqlite:///'):
+        url = db_url[10: len(db_url)]
+        rtn_abs_db_url = abspath(url)
+        rtn_abs_db_url = 'sqlite:///' + rtn_abs_db_url
+    return rtn_abs_db_url, rtn_nw_db_status
+
+
 def print_options(project_name: str, api_name: str, db_url: str, host: str, port: str, not_exposed: str,
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
@@ -772,35 +827,22 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
 
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
-    nw_db_status = ""  # presume not northwind
-    abs_db_url = db_url
-    """ non-relative db location - we work with this (but NB: we copy sqlite db to <project>/database) """
-    if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:
-        # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
-        nw_db_status = "nw"
-    elif db_url == "nw-":
-        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-        nw_db_status = "nw-"
-    elif db_url == "nw+":
-        abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
-        nw_db_status = "nw+"
-    elif db_url.startswith('sqlite:///'):
-        url = db_url[10: len(db_url)]
-        abs_db_url = abspath(url)
-        abs_db_url = 'sqlite:///' + abs_db_url
+    global nw_db_status
+    abs_db_url, nw_db_status = get_abs_db_url(db_url)
 
     if extended_builder == "*":
         extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/extended_builder.py')
         print(f'0. Using default extended_builder: {extended_builder}')
 
-    project_directory = resolve_home(project_name)
-    """user-supplied project_name, less the twiddle (which might be in project_name). Typically relative to cwd. """
+    project_directory, api_name = get_project_directory_and_api_name(project_name=project_name,
+                                                                     api_name=api_name,
+                                                                     multi_api=multi_api)
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
     if not command.startswith("rebuild"):
         abs_db_url = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
                                                              project_name,      # actual user parameter
+                                                             api_name,
                                                              from_git, "2. Create Project",
                                                              abs_db_url,        # sqlite DBs are copied to proj/database
                                                              nw_db_status)
@@ -838,9 +880,12 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
         create_utils.run_command(f'python {run_file}', msg="\nRun created ApiLogicServer project")
     else:
         print("\n\nApiLogicServer customizable project created.  Next steps:")
-        print("\nRun API Logic Server:")
-        print(f'  ApiLogicServer run --project_name={project_name}')
-        print(f'  cd {project_name};  python api_logic_server_run.py       # equivalent to above')
+        if multi_api:
+            print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
+        else:
+            print("\nRun API Logic Server:")
+            print(f'  ApiLogicServer run --project_name={project_name}')
+            print(f'  cd {project_name};  python api_logic_server_run.py       # equivalent to above')
         if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/

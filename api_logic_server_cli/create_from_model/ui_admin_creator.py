@@ -630,10 +630,15 @@ class AdminCreator(object):
             from_proto_dir = pathlib.Path(self.get_create_from_model_dir()).\
                 joinpath("create_from_model", "safrs-react-admin-npm-build")
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "safrs-react-admin")
-        multi_api_skip_copy_safrs_react_admin = True  # set False if alsdock/build copies this folder
-        if multi_api_skip_copy_safrs_react_admin and self.mod_gen.multi_api:
-            print(f'{msg} multi_api - do NOT copy safrs-react-admin {from_proto_dir} -> {to_project_dir}')
-            print(f'{msg} -- alternatively, copy from different location')
+        use_alsdock_sra = True
+        '''
+        set False if alsdock/dockerfile copies this folder:
+        RUN cp -r /app/ui/safrs-react-admin /app/ApiLogicServer-main/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+        '''
+        if use_alsdock_sra and self.mod_gen.multi_api:
+            print(f'{msg} multi_api - copy safrs-react-admin {from_proto_dir} -> {to_project_dir}')
+            from_proto_dir = pathlib.Path("/app/ui/safrs-react-admin")  # enables debug for alsdock projects
+            shutil.copytree(from_proto_dir, to_project_dir)
         else:
             print(f'{msg} copy safrs-react-admin: {from_proto_dir} -> {to_project_dir}')
             if not os.path.isdir(from_proto_dir):

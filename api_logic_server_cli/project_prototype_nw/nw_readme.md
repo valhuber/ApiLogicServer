@@ -258,10 +258,13 @@ into the new project, without line-by-line merges.
 
 ## Appendix 2 - Project Information
 
-| About | Info  |
-|:--------------|:--------------|
-| Created | creation-date |
-| API Logic Server Version | api_logic_server_version |
+
+| About                    | Info                               |
+|:-------------------------|:-----------------------------------|
+| Created                  | creation-date                      |
+| API Logic Server Version | api_logic_server_version           |
+| Created in               | api_logic_server_project_directory |
+| API Name                 | api_logic_server_api_name          |
 
 
 
