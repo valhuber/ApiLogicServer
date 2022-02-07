@@ -17,7 +17,7 @@ __version__ = "4.01.05"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/06/2022 - 04.01.05: cli param: api_name (. option), multi_api; minor fix_win_path removal \n"\
+    "\t02/06/2022 - 04.01.06: cli param: api_name (. option), multi_api; minor fix_win_path removal \n"\
     "\t02/04/2022 - 04.01.04: cli param: api_name, multi_api, minor fix_win_path removal,  \n"\
     "\t02/03/2022 - 04.01.03: minor fix_win_path removal, cli param: multi_api \n"\
     "\t01/28/2022 - 04.01.02: cli param: multi_api \n"\
@@ -356,7 +356,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
                            replace_with=f'{project_directory}',
                            in_file=f'{project_directory}/readme.md')
     create_utils.replace_string_in_file(search_for="api_logic_server_api_name",
-                           replace_with=f'{from_dir}',
+                           replace_with=f'{api_name}',
                            in_file=f'{project_directory}/readme.md')
 
     project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)

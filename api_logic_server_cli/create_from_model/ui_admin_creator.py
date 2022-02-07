@@ -656,8 +656,11 @@ class AdminCreator(object):
             joinpath("create_from_model", "templates", home_js_file)
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
         shutil.copyfile(home_js, to_project_dir.joinpath("home.js"))
+        swagger_name = self.mod_gen.api_name
+        if self.mod_gen.multi_api:
+            swagger_name += "/api"
         create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
-                                            replace_with=self.mod_gen.api_name,
+                                            replace_with=swagger_name,
                                             in_file=to_project_dir.joinpath("home.js"))
 
 
