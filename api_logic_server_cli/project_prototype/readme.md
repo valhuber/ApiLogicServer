@@ -6,7 +6,7 @@
 |:-------------------------|:-----------------------------------|
 | Created                  | creation-date                      |
 | API Logic Server Version | api_logic_server_version           |
-| Created in               | api_logic_server_project_directory |
+| Created in directory     | api_logic_server_project_directory |
 | API Name                 | api_logic_server_api_name          |
 
 # Key Technologies

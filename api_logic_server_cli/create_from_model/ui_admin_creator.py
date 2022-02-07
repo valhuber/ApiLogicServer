@@ -659,6 +659,7 @@ class AdminCreator(object):
         swagger_name = self.mod_gen.api_name
         if self.mod_gen.multi_api:
             swagger_name += "/api"
+            print(f'.. ui/admin/home.js updated url: {swagger_name}')
         create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
                                             replace_with=swagger_name,
                                             in_file=to_project_dir.joinpath("home.js"))

@@ -263,7 +263,7 @@ into the new project, without line-by-line merges.
 |:-------------------------|:-----------------------------------|
 | Created                  | creation-date                      |
 | API Logic Server Version | api_logic_server_version           |
-| Created in               | api_logic_server_project_directory |
+| Created in Directory     | api_logic_server_project_directory |
 | API Name                 | api_logic_server_api_name          |
 
 
