@@ -13,14 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.05"
+__version__ = "4.01.08"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/06/2022 - 04.01.06: cli param: api_name (. option), multi_api; minor fix_win_path removal \n"\
-    "\t02/04/2022 - 04.01.04: cli param: api_name, multi_api, minor fix_win_path removal,  \n"\
-    "\t02/03/2022 - 04.01.03: minor fix_win_path removal, cli param: multi_api \n"\
-    "\t01/28/2022 - 04.01.02: cli param: multi_api \n"\
+    "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
     "\t01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix \n"\
     "\t01/05/2022 - 04.00.18: Integrated /admin-api, required fields, no redundant join, attr info, sample home rb \n"\
@@ -33,31 +30,6 @@ recent_changes = \
     "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"\
     "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
 
-uri_info = [
-    '',
-    'Creates and optionally runs a customizable ApiLogicServer project',
-    '',
-    'Examples:',
-    '  ApiLogicServer create-and-run',
-    '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
-    '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
-    '--project_name=/localhost/docker_db_project',
-    '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
-    'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
-    '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
-    '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
-    '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
-    '  ApiLogicServer create --project_name=Chinook \\',
-    '    --host=ApiLogicServer.pythonanywhere.com --port= \\',
-    '    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook',
-    '',
-    'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
-    '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
-    '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
-    '   Install Guide:                https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide',
-    ' ',
-    'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
-]
 from contextlib import closing
 
 import yaml
@@ -1418,9 +1390,16 @@ def print_uri_info():
 
     URI examples, Docs URL
     """
+    header = [
+        '',
+        'Creates and optionally runs a customizable ApiLogicServer project',
+        ''
+    ]
 
-    global uri_info
-    for each_line in uri_info:
+    for each_line in header:
+        sys.stdout.write(each_line + '\n')
+
+    for each_line in expose_existing_callable.uri_info:
         sys.stdout.write(each_line + '\n')
     sys.stdout.write('\n')
 

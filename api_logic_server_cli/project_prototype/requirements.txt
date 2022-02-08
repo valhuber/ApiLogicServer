@@ -10,7 +10,7 @@ email-validator
 LogicBank>=1.0.7
 safrs>=2.12.2
 logicbankutils
-flask-appbuilder>=3.3.4
+flask-appbuilder>=3.4.4
 PyMySQL
 cryptography
 requests

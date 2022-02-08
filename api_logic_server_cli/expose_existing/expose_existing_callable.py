@@ -3,6 +3,8 @@
 # A lot of dirty things going on here because we have to handle all sorts of edge cases
 #
 import sys, logging, inspect, builtins, os, argparse, tempfile, atexit, shutil, io
+import traceback
+
 import safrs
 from sqlalchemy import CHAR, Column, DateTime, Float, ForeignKey, Index, Integer, String, TIMESTAMP, Table, Text, UniqueConstraint, text
 from sqlalchemy.sql.sqltypes import NullType
@@ -18,6 +20,7 @@ from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 from flask_cors import CORS
 from expose_existing.sqlacodegen.sqlacodegen.codegen import CodeGenerator
+
 
 MODEL_DIR = tempfile.mkdtemp()  # directory where the generated models.py will be saved
 on_import = False
@@ -81,6 +84,43 @@ def fix_generated(code, args):
     return code
 
 
+uri_info = [
+    'Examples:',
+    '  ApiLogicServer create-and-run',
+    '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
+    '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
+    '--project_name=/localhost/docker_db_project',
+    '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
+    'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
+    '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
+    '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
+    '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
+    '  ApiLogicServer create --project_name=Chinook \\',
+    '    --host=ApiLogicServer.pythonanywhere.com --port= \\',
+    '    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook',
+    '',
+    'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
+    '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
+    '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
+    '   Install Guide:                https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide',
+    ' ',
+    'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
+]
+
+
+def print_uri_info():
+    """
+    Creates and optionally runs a customizable ApiLogicServer project, Example
+
+    URI examples, Docs URL
+    """
+
+    global uri_info
+    for each_line in uri_info:
+        sys.stdout.write(each_line + '\n')
+    sys.stdout.write('\n')
+
+
 def create_models_from_db(args) -> str:
     """ called by ApiLogicServer CLI - ModelCreationServices - to create return models_py string
 
@@ -90,7 +130,15 @@ def create_models_from_db(args) -> str:
 
     metadata = MetaData(engine)
     tables = args.tables.split(",") if args.tables else None
-    metadata.reflect(engine, args.schema, not args.noviews, tables)  # load metadata
+    try:
+        metadata.reflect(engine, args.schema, not args.noviews, tables)  # load metadata - this opens the db
+    except:
+        track = traceback.format_exc()
+        print(track)
+        print(f'\n***** Database failed to open: {args.url} *****\n')
+        print(f'.. Here are some examples:\n')
+        print_uri_info()
+        exit(1)
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite
         engine.execute("""PRAGMA journal_mode = OFF""")
