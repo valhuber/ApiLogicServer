@@ -91,7 +91,7 @@ uri_info = [
     '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
     '--project_name=/localhost/docker_db_project',
     '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
-    'driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no',
+    'driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no',
     '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
     '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
     '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
@@ -131,13 +131,15 @@ def create_models_from_db(args) -> str:
     metadata = MetaData(engine)
     tables = args.tables.split(",") if args.tables else None
     try:
-        metadata.reflect(engine, args.schema, not args.noviews, tables)  # load metadata - this opens the db
+        # metadata.reflect(engine, args.schema, not args.noviews, tables)  # load metadata - this opens the db
+        metadata.reflect(engine)
     except:
         track = traceback.format_exc()
         print(track)
         print(f'\n***** Database failed to open: {args.url} *****\n')
         print(f'.. Here are some examples:\n')
         print_uri_info()
+        print(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
         exit(1)
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite
