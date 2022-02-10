@@ -3,11 +3,11 @@ Flask-Admin
 PyJWT
 python-dateutil
 python-dotenv
-SQLAlchemy==1.3.24
+SQLAlchemy>=1.4.29
 SQLAlchemy-Utils
 six
 email-validator
-LogicBank>=1.0.7
+LogicBank>=1.04.02
 safrs>=2.12.2
 logicbankutils
 flask-appbuilder>=3.4.4
