@@ -13,13 +13,13 @@ if [ $# -eq 0 ]
   else
     ls
     echo " "
-    read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for $1>"
+    read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for $1> "
     set -x
     mkdir servers    # good place to create ApiLogicProjects
     git clone https://github.com/valhuber/ApiLogicServer
     git clone https://github.com/thomaxxl/safrs-react-admin
     cd ApiLogicServer
-    cp -r safrs-react-admin/build ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+    cp -r ../safrs-react-admin/build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     #
     #
     # read -p "Installed - ready to launch IDE..."
@@ -27,7 +27,7 @@ if [ $# -eq 0 ]
       then
         python3 -m venv venv       # may require python -m venv venv
         source venv/bin/activate   # windows venv\Scripts\activate
-        read -p "venv created; do optional pre-installs now $1>"
+        # read -p "venv created; do optional pre-installs now $1> "
         pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
         code .
         set +x
