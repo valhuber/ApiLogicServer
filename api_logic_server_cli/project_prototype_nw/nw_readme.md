@@ -130,7 +130,7 @@ To review the implementation:
    1. You can examine the variables, step, etc.
 6. Click **Continue** on the floating debug menu (upper right in screen shot below)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/nw-readme/customize-api.png"></figure>
 
 
 ### Logic
