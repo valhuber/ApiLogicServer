@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../servers"
+		},
+		{
+			"path": "../../ApiLogicServer.wiki"
 		}
 	],
 	"settings": {}
