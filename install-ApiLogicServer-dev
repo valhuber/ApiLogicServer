@@ -29,11 +29,10 @@ if [ $# -eq 0 ]
         source venv/bin/activate   # windows venv\Scripts\activate
         # read -p "venv created; do optional pre-installs now $1> "
         pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
-        code .
+        code .vscode/workspace.code-workspace
         set +x
         echo ""
-        echo "  * Right click Explorer - Add Folder to Workspace -- servers, safrs-react-admin"
-        echo "  * Open the launch configuration (initializes vscode), then..."
+        echo "Workspace opened; use pre-created Launch Configurations:"
         echo "  * Run 1 - Create ApiLogicProject, then..."
         echo "  * Run 2 - RUN ApiLogicProject"
     elif [[ "$1" = "charm" ]]
@@ -50,7 +49,7 @@ if [ $# -eq 0 ]
     echo ""
     echo "IDEs are preconfigured with run/launch commands to create and run the sample"
     echo ""
-    echo "ApiLogicServer/react-admin contains shell burn-and-rebuild-react-admin"
+    echo "Altered react-admin, then: sh ApiLogicServer/react-admin/install-react-admin"
     echo ""
     exit 0
 fi

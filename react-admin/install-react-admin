@@ -5,7 +5,7 @@ if [ $# -eq 0 ]
     echo " "
     echo "  [Deletes and] Pulls [and rebuilds] react-admin ==> ApiLogicServer/api_logic_server_cli/safrs-react-admin-npm-build"
     echo " "
-    echo "      sh rebuild-react-admin [pull | go | clean ] [als-overlay]"
+    echo "      sh install-react-admin [pull | go | clean ] [als-overlay]"
     echo " "
     echo "          pull    - pull git/safrs-react-admin                   (no als overlays)  <=="
     echo "          go      - use existing git/safrs-react-admin folder    (no als overlays)"
