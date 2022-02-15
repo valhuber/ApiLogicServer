@@ -667,13 +667,17 @@ from sqlalchemy.dialects.mysql import *
 
             server_default = 'Computed({!r}{})'.format(expression, persist_arg)
         elif column.server_default:
-            # The quote escaping does not cover pathological cases but should mostly work
-            default_expr = self._get_compiled_expression(column.server_default.arg)
-            if '\n' in default_expr:
-                server_default = 'server_default=text("""\\\n{0}""")'.format(default_expr)
+            # The quote escaping does not cover pathological cases but should mostly work FIXME SqlSvr no .arg
+            # not used for postgres/mysql; for sqlite, text is '0'
+            if not hasattr( column.server_default, 'arg' ):
+                server_default = 'server_default=text("{0}")'.format('0')
             else:
-                default_expr = default_expr.replace('"', '\\"')
-                server_default = 'server_default=text("{0}")'.format(default_expr)
+                default_expr = self._get_compiled_expression(column.server_default.arg)
+                if '\n' in default_expr:
+                    server_default = 'server_default=text("""\\\n{0}""")'.format(default_expr)
+                else:
+                    default_expr = default_expr.replace('"', '\\"')
+                    server_default = 'server_default=text("{0}")'.format(default_expr)
 
         comment = getattr(column, 'comment', None)
         return 'Column({0})'.format(', '.join(
