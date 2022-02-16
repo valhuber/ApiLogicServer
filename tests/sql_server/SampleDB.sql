@@ -20,17 +20,20 @@ create table "Plus+Table"
 )
 go
 
-create view "Plus+View" as select * from "Plus+Table"
-go
+CREATE TABLE [dbo].[Plus+Table](
+	[Id] [int] IDENTITY(1,1) NOT NULL
+	    , [Name] [nvarchar](50) NULL
+	    , [Location] [nvarchar](50) NULL
+        , QtyAvailable smallint
+        , UnitPrice money
+        , InventoryValue AS QtyAvailable * UnitPrice) ON [PRIMARY]
+GO
 
-create table Employees
+ALTER TABLE [dbo].[Plus+Table] ADD PRIMARY KEY CLUSTERED
 (
-	Id int identity
-		primary key,
-	Name nvarchar(50),
-	Location nvarchar(50)
-)
-go
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
 
 
 CREATE FUNCTION udfEmployeeInLocation (

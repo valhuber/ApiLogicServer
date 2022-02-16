@@ -478,7 +478,7 @@ class CodeGenerator(object):
 
             # Only form model classes for tables that have a primary key and are not association
             # tables
-            if "Alphabetical" in (table.name + ""):
+            if "Plus+Table" in (table.name + ""):
                 debug_str = "target table located"
             if noclasses or not table.primary_key or table.name in association_tables:
                 model = self.table_model(table)
@@ -724,11 +724,11 @@ from sqlalchemy.dialects.mysql import *
 
     def render_table(self, model):
         # Manual edit:
-        # replace invalid chars  TODO review ApiLogicServer
+        # replace invalid chars for views etc  TODO review ApiLogicServer
         table_name = model.table.name.replace("$", "_S_")
         table_name = table_name.replace(" ", "_")
         table_name = table_name.replace("+", "_")
-        if model.table.name == "Alphabetical list of products DEBUG ONLY":
+        if model.table.name == "Plus+Table":
             print("Debug Stop on table")
         rendered = "t_{0} = Table(\n{1}{0!r}, metadata,\n".format(table_name, self.indentation)
 

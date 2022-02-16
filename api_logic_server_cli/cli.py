@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.12"
+__version__ = "4.01.14"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t02/16/2022 - 04.01.14: Enable --use_model (use pre-existing / repaired models.py) \n"\
     "\t02/15/2022 - 04.01.12: SqlServer fix: AttributeError: 'Identity' object has no attribute 'arg', '+' in names \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
@@ -384,10 +385,12 @@ def create_models(db_url: str, project: str, use_model: str, model_creation_serv
     """
     create model.py, normally via expose_existing.expose_existing_callable (sqlacodegen)
 
+    FIX ME unused
+
     or, use_model -- then just copy
 
     :param db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
-    :param project: project dictory
+    :param project: project directory
     :param use_model: file name of existing models file ("" means create_models)
     :returns dict - key is table name, value is list of (role-name, relationship)
     """

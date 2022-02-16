@@ -840,10 +840,11 @@ class CreateFromModel(object):
         rtn_my_parents_map = None
         model_file_name = "*"
         if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
-            if False and self.use_model != "":  # use-model (todo - disabled)
+            if self.use_model != "":  # use pre-existing (or repaired) existing model file
                 model_file_name = project_directory + '/database/models.py'
-                print(f' a.  Use existing {self.use_model} - copy to {project_directory + "/database/models.py"}')
-                copyfile(self.use_model, model_file_name)
+                use_model_path = Path(self.use_model).absolute()
+                print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
+                copyfile(use_model_path, model_file_name)
             else:
                 print(f' a.  Create Models - create database/models.py, using sqlcodegen for database: {abs_db_url}')
                 code_gen_args = get_codegen_args()
