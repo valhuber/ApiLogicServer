@@ -727,6 +727,7 @@ from sqlalchemy.dialects.mysql import *
         # replace invalid chars  TODO review ApiLogicServer
         table_name = model.table.name.replace("$", "_S_")
         table_name = table_name.replace(" ", "_")
+        table_name = table_name.replace("+", "_")
         if model.table.name == "Alphabetical list of products DEBUG ONLY":
             print("Debug Stop on table")
         rendered = "t_{0} = Table(\n{1}{0!r}, metadata,\n".format(table_name, self.indentation)

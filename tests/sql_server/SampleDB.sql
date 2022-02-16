@@ -11,6 +11,18 @@ create table DataTypes
 )
 go
 
+create table "Plus+Table"
+(
+	Id int identity
+		primary key,
+	Name nvarchar(50),
+	Location nvarchar(50)
+)
+go
+
+create view "Plus+View" as select * from "Plus+Table"
+go
+
 create table Employees
 (
 	Id int identity

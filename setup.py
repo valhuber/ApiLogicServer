@@ -79,7 +79,7 @@ setup(
         "email-validator==1.1.1",
         "LogicBank>=1.04.02",
         "PyMySQL>=1.0.2",
-        # "pyodbc==4.0.30",
+        "pyodbc==4.0.32",
         "cryptography>=3.3.1",
         "requests>=2.25.1",
         "dotmap==1.3.25",
