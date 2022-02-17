@@ -189,12 +189,13 @@ class Model(object):
             name = '_' + name
         elif name == 'metadata':
             name = 'metadata_'
-        name = name.replace("$", "_S_")   # ApiLogicServer valid name fixes
+        name = name.replace("$", "_S_")   # ApiLogicServer valid name fixes for superclass version (why override?)
         name = name.replace(" ", "_")
         name = name.replace("+", "_")
         name = name.replace("-", "_")
 
-        return _re_invalid_identifier.sub('_', name)
+        result = _re_invalid_identifier.sub('_', name)
+        return result
 
 
 class ModelTable(Model):
@@ -252,9 +253,17 @@ class ModelClass(Model):
 
     @classmethod
     def _tablename_to_classname(cls, tablename, inflect_engine):
+        """
+        camel-case and singlularize, with provisions for reserved word (Date) and collisions (Dates & _Dates)
+        """
         tablename = cls._convert_to_valid_identifier(tablename)
+        if tablename in ["Dates"]:  # ApiLogicServer
+            tablename = tablename + "Classs"
         camel_case_name = ''.join(part[:1].upper() + part[1:] for part in tablename.split('_'))
-        return inflect_engine.singular_noun(camel_case_name) or camel_case_name
+        if camel_case_name in ["Dates"]:
+            camel_case_name = camel_case_name + "_Classs"
+        result = inflect_engine.singular_noun(camel_case_name) or camel_case_name
+        return result
 
     @staticmethod
     def _convert_to_valid_identifier(name):  # TODO review
@@ -263,12 +272,13 @@ class ModelClass(Model):
             name = "_" + name
         elif name == "metadata":
             name = "metadata_"
-        name = name.replace("$", "_S_")   # ApiLogicServer valid name fixes
+        name = name.replace("$", "_S_")   # ApiLogicServer valid name fixes, ModelClass version
         name = name.replace(" ", "_")
         name = name.replace("+", "_")
         name = name.replace("-", "_")
 
-        return _re_invalid_identifier.sub("_", name)
+        result = _re_invalid_identifier.sub("_", name)
+        return result
 
     def _add_attribute(self, attrname, value):
         """ add table column/relationship to attributes
@@ -689,7 +699,7 @@ from sqlalchemy.dialects.mysql import *
                     server_default = 'server_default=text("{0}")'.format(default_expr)
 
         comment = getattr(column, 'comment', None)
-        if (column.name + "") == "s112":
+        if (column.name + "") == "debug_column_name":
             db = 'Column({0})'.format(', '.join(
             ([repr(column.name)] if show_name else []) +
             ([self.render_column_type(column.type)] if render_coltype else []) +
@@ -699,7 +709,7 @@ from sqlalchemy.dialects.mysql import *
             ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
             (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
             ))
-            print("Debug Stop")
+            print("Debug Stop")  # ApiLogicServer fix for putting this at end:  index=True
         return 'Column({0})'.format(', '.join(
             ([repr(column.name)] if show_name else []) +
             ([self.render_column_type(column.type)] if render_coltype else []) +
