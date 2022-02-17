@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.14"
+__version__ = "4.01.15"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t02/16/2022 - 04.01.15: Test fix for Computed/Indexed cols, adventuresome sql names \n"\
     "\t02/16/2022 - 04.01.14: Enable --use_model (use pre-existing / repaired models.py) \n"\
     "\t02/15/2022 - 04.01.12: SqlServer fix: AttributeError: 'Identity' object has no attribute 'arg', '+' in names \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\

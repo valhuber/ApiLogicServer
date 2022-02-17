@@ -11,14 +11,6 @@ create table DataTypes
 )
 go
 
-create table "Plus+Table"
-(
-	Id int identity
-		primary key,
-	Name nvarchar(50),
-	Location nvarchar(50)
-)
-go
 
 CREATE TABLE [dbo].[Plus+Table](
 	[Id] [int] IDENTITY(1,1) NOT NULL
@@ -34,6 +26,75 @@ ALTER TABLE [dbo].[Plus+Table] ADD PRIMARY KEY CLUSTERED
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
+
+
+CREATE TABLE [dbo].[Dash-Table](
+	[Id] [int] IDENTITY(1,1) NOT NULL
+	    , [Name] [nvarchar](50) NULL
+	    , [Location] [nvarchar](50) NULL
+        , QtyAvailable smallint
+        , UnitPrice money
+        , InventoryValue AS QtyAvailable * UnitPrice) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Dash-Table] ADD PRIMARY KEY CLUSTERED
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+
+create view "Dash-View" as select * from [dbo].[Dash-Table]
+
+CREATE TABLE [dbo].[productvariantsoh-20190423](
+	[id] [varchar](55) NULL,
+	[product_id] [varchar](55) NULL,
+	[qty_brisbane] [int] NULL,
+	[qty_chadstone] [int] NULL,
+	[qty_melbourne] [int] NULL,
+	[qty_parramatta] [int] NULL,
+	[qty_perth] [int] NULL,
+	[qty_southport] [int] NULL,
+	[qty_sydney] [int] NULL,
+	[qty_goldcoast] [int] NULL,
+	[qty_warehouse] [int] NULL
+)
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Dates](
+	[dt] [date] NOT NULL,
+	[d]  AS (datepart(day,[dt])),
+	[y]  AS (datepart(year,[dt])),
+	[q]  AS (datepart(quarter,[dt])),
+	[m]  AS (datepart(month,[dt])),
+	[fm]  AS (dateadd(month,datediff(month,(0),[dt]),(0))),
+	[w]  AS (datepart(week,[dt])),
+	[wd]  AS (datepart(weekday,[dt])),
+	[mn]  AS (datename(month,[dt])),
+	[s101]  AS (CONVERT([char](10),[dt],(101))),
+	[s103]  AS (CONVERT([char](10),[dt],(103))),
+	[s112]  AS (CONVERT([char](8),[dt],(112))),
+PRIMARY KEY CLUSTERED
+(
+	[dt] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+)
+GO
+SET ARITHABORT ON
+SET CONCAT_NULL_YIELDS_NULL ON
+SET QUOTED_IDENTIFIER ON
+SET ANSI_NULLS ON
+SET ANSI_PADDING ON
+SET ANSI_WARNINGS ON
+SET NUMERIC_ROUNDABORT OFF
+GO
+CREATE NONCLUSTERED INDEX [i1] ON [dbo].[Dates]
+(
+	[s112] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 
 
 CREATE FUNCTION udfEmployeeInLocation (

@@ -189,6 +189,10 @@ class Model(object):
             name = '_' + name
         elif name == 'metadata':
             name = 'metadata_'
+        name = name.replace("$", "_S_")   # ApiLogicServer valid name fixes
+        name = name.replace(" ", "_")
+        name = name.replace("+", "_")
+        name = name.replace("-", "_")
 
         return _re_invalid_identifier.sub('_', name)
 
@@ -259,6 +263,10 @@ class ModelClass(Model):
             name = "_" + name
         elif name == "metadata":
             name = "metadata_"
+        name = name.replace("$", "_S_")   # ApiLogicServer valid name fixes
+        name = name.replace(" ", "_")
+        name = name.replace("+", "_")
+        name = name.replace("-", "_")
 
         return _re_invalid_identifier.sub("_", name)
 
@@ -478,7 +486,7 @@ class CodeGenerator(object):
 
             # Only form model classes for tables that have a primary key and are not association
             # tables
-            if "Plus+Table" in (table.name + ""):
+            if "productvariantsoh-20190423" in (table.name + ""):
                 debug_str = "target table located"
             if noclasses or not table.primary_key or table.name in association_tables:
                 model = self.table_model(table)
@@ -666,6 +674,7 @@ from sqlalchemy.dialects.mysql import *
                 persist_arg = ', persisted={}'.format(column.server_default.persisted)
 
             server_default = 'Computed({!r}{})'.format(expression, persist_arg)
+
         elif column.server_default:
             # The quote escaping does not cover pathological cases but should mostly work FIXME SqlSvr no .arg
             # not used for postgres/mysql; for sqlite, text is '0'
@@ -680,13 +689,24 @@ from sqlalchemy.dialects.mysql import *
                     server_default = 'server_default=text("{0}")'.format(default_expr)
 
         comment = getattr(column, 'comment', None)
+        if (column.name + "") == "s112":
+            db = 'Column({0})'.format(', '.join(
+            ([repr(column.name)] if show_name else []) +
+            ([self.render_column_type(column.type)] if render_coltype else []) +
+            [self.render_constraint(x) for x in dedicated_fks] +
+            [repr(x) for x in column.constraints] +
+            ([server_default] if server_default else []) +
+            ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
+            (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
+            ))
+            print("Debug Stop")
         return 'Column({0})'.format(', '.join(
             ([repr(column.name)] if show_name else []) +
             ([self.render_column_type(column.type)] if render_coltype else []) +
             [self.render_constraint(x) for x in dedicated_fks] +
             [repr(x) for x in column.constraints] +
-            ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
             ([server_default] if server_default else []) +
+            ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
             (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
         ))
 
@@ -724,8 +744,13 @@ from sqlalchemy.dialects.mysql import *
 
     def render_table(self, model):
         # Manual edit:
-        # replace invalid chars for views etc  TODO review ApiLogicServer
-        table_name = model.table.name.replace("$", "_S_")
+        # replace invalid chars for views etc  TODO review ApiLogicServer -- using model.name vs model.table.name
+        table_name = model.name
+        bad_chars = r"$-+ "
+        if any(elem in table_name for elem in bad_chars):
+            print("sys error")
+
+        table_name = table_name.replace("$", "_S_")
         table_name = table_name.replace(" ", "_")
         table_name = table_name.replace("+", "_")
         if model.table.name == "Plus+Table":
