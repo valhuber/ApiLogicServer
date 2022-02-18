@@ -533,7 +533,7 @@ class AdminCreator(object):
             if enable_rebuild_unaltered and created_time == modified_time:
                 write_file = "Rebuild - overwrite unaltered"
         if write_file == "Rebuild - preserve":
-            print(f'.. .. ..{write_file} {yaml_file_name}')
+            print(f'.. .. ..{write_file} {yaml_file_name} - (merge/replace admin-created.yaml as nec)')
         else:
             print(f'.. .. ..{write_file} {yaml_file_name}')
             with open(yaml_file_name, 'w') as yaml_file:

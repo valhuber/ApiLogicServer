@@ -13,10 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.01.16"
+__version__ = "4.01.17"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t02/17/2022 - 04.01.17: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/17/2022 - 04.01.16: Allow for Dates and _Dates \n"\
     "\t02/16/2022 - 04.01.15: Test fix for Computed/Indexed cols, frisky sql names \n"\
     "\t02/16/2022 - 04.01.14: Enable --use_model (use pre-existing / repaired models.py) \n"\
@@ -744,7 +745,7 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
 
 
 def invoke_creators(model_creation_services: CreateFromModel):
-    """ uses model_creation_services (resource_list, model iterator functions) to create api, apps
+    """ MAJOR: uses model_creation_services (resource_list, model iterator functions) to create api, apps
     """
 
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
@@ -839,7 +840,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__, multi_api=multi_api)
     fix_database_models__inject_db_types(project_directory, db_types)
-    invoke_creators(model_creation_services)  # creates api/expose_api_models, ui/admin & basic_web_app
+    invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
     if extended_builder is not None and extended_builder != "":
         print(f'4. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
         invoke_extended_builder(extended_builder, db_url, project_directory)
@@ -1192,6 +1193,9 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'{default_db}',
               prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
+@click.option('--api_name',
+              default=f'api',
+              help="Last node of API Logic Server url\n")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -1232,7 +1236,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
               default=f'',
               help="your_code.py for additional build automation")
 @click.pass_context
-def rebuild_from_model(ctx, project_name: str, db_url: str, not_exposed: str,
+def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_exposed: str,
            from_git: str,
            # db_types: str,
            open_with: str,
@@ -1251,7 +1255,7 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, not_exposed: str,
     global command
     command = "rebuild-from-model"
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url,
+    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,

@@ -1,7 +1,9 @@
 import logging
+import shutil
 import sys
 import os
 import datetime
+from pathlib import Path
 from typing import NewType
 
 import create_from_model.model_creation_services as create_from_model
@@ -14,7 +16,7 @@ MetaDataTable = NewType('MetaDataTable', object)
 __version__ = "0.0"
 
 
-def create_expose_api_models(model_creation_services):
+def create_expose_api_models(model_creation_services: create_from_model.CreateFromModel):
     """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
     cwd = os.getcwd()
@@ -63,10 +65,22 @@ def create_expose_api_models(model_creation_services):
     result_apis += f'    safrs.log.setLevel(safrs_log_level)\n'
     result_apis += f'    return api\n'
     # self.session.close()
-    text_file = open(model_creation_services.project_directory + '/api/expose_api_models.py', 'a')
-    text_file.write(result_apis)
-    text_file.close()
-
+    expose_api_models_path = Path(model_creation_services.project_directory).joinpath('api/expose_api_models.py')
+    if not model_creation_services.command.startswith("rebuild"):
+        expose_api_models_file = open(expose_api_models_path, 'a')
+        expose_api_models_file.write(result_apis)
+        expose_api_models_file.close()
+    else:
+        expose_api_models_path = Path(model_creation_services.project_directory).\
+            joinpath('api/expose_api_models_created.py')
+        print(f'.. .. ..Rebuild - new api at api/expose_api_models_created (merge/replace expose_api_models as nec)')
+        src = Path(model_creation_services.api_logic_server_dir)
+        src = src.joinpath("project_prototype/api/expose_api_models.py")
+        assert src.is_file()
+        shutil.copyfile(src, expose_api_models_path)
+        expose_api_models_file = open(expose_api_models_path, 'a')
+        expose_api_models_file.write(result_apis)
+        expose_api_models_file.close()
     return
 
 
