@@ -140,6 +140,7 @@ def create_models_from_db(args) -> str:
         print(f'.. Here are some examples:\n')
         print_uri_info()
         print(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
+        print(f'\n...see https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
         exit(1)
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite

@@ -17,7 +17,7 @@ __version__ = "4.01.17"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/17/2022 - 04.01.17: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
+    "\t02/18/2022 - 04.01.17: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/17/2022 - 04.01.16: Allow for Dates and _Dates \n"\
     "\t02/16/2022 - 04.01.15: Test fix for Computed/Indexed cols, frisky sql names \n"\
     "\t02/16/2022 - 04.01.14: Enable --use_model (use pre-existing / repaired models.py) \n"\

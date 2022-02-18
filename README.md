@@ -390,7 +390,6 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
-02/15/2022 - 04.01.14: Enable [--use_model](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair) (use pre-existing / repaired models.py)
 
 02/15/2022 - 04.01.12: SqlServer fix: AttributeError: 'Identity' object has no attribute 'arg', '+' in names
 

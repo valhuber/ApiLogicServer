@@ -712,7 +712,7 @@ class CreateFromModel(object):
         orm_class = None
         if not model_imported:
             print('.. .. ..Creation proceeding to enable manual database/models.py fixup')
-            print('.. .. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair')
+            print('.. .. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
         else:
             try:
                 resource_list: Dict[str, Resource] = dict()
