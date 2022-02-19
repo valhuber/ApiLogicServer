@@ -55,7 +55,7 @@
             "console": "integratedTerminal"
         },
                 {
-            "name": "Rebuild",
+            "name": "Rebuild-from-model",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/api_logic_server_cli",
