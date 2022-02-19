@@ -521,9 +521,10 @@ class AdminCreator(object):
         """
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
         enable_rebuild_unaltered = False
+        write_file = "Rebuild - preserve"
         ''' is not working on mac - always appears unaltered
             https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
-        '''
+        
         write_file = "Write"
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
@@ -532,6 +533,7 @@ class AdminCreator(object):
             modified_time = os.path.getmtime(yaml_file_name)
             if enable_rebuild_unaltered and created_time == modified_time:
                 write_file = "Rebuild - overwrite unaltered"
+        '''
         if write_file == "Rebuild - preserve":
             print(f'.. .. ..{write_file} {yaml_file_name} - (merge/replace admin-created.yaml as nec)')
         else:

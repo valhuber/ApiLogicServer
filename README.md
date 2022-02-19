@@ -391,7 +391,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-02/18/2022 - 04.02.00: SqlServer fixes, rebuild creates '-created' versions for data model repair
+02/18/2022 - 04.02.01: SqlServer fixes, rebuild creates '-created' versions for data model repair
 
 01/18/2022 - 04.01.01: fix [startup failure](https://github.com/valhuber/ApiLogicServer/issues/32) on created app (windows pip-install version only)
 
