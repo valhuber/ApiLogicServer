@@ -219,10 +219,15 @@ class CreateFromModel(object):
     def get_windows_path_with_slashes(url: str) -> str:
         """ idiotic fix for windows (\ --> \\\\)
         https://stackoverflow.com/questions/1347791/unicode-error-unicodeescape-codec-cant-decode-bytes-cannot-open-text-file"""
+        """ old code
         full_path = os.path.abspath(url)
         result = full_path.replace('\\', '\\\\')
         if os.name == "nt":  # windows
             result = full_path.replace('/', '\\')
+        print(f'*** DEBUG - how about url_path={url_path}')
+        """
+        url_path = Path(url)
+        result = str(url_path)
         return result
 
     def recursive_overwrite(self, src, dest, ignore=None):
@@ -694,12 +699,26 @@ class CreateFromModel(object):
         """
         creates self.resource_list via dynamic import of models.py  (drives create_from_model modules)
         """
-        project_abs_path = abspath(self.project_directory)
+        """ old code
+        # project_abs_path = abspath(self.project_directory)
+        # project_abs_path = str(Path(self.project_directory).absolute())
+        """
+        project_path = self.project_directory
+        debug_dynamic_loader = False
+        if debug_dynamic_loader:
+            print(f'\n\n ### INSTALL cwd = {os.getcwd()}')
+            print(f'\n*** DEBUG/import - self.project_directory={self.project_directory}')
+            print(f'*** DEBUG/import - project_abs_path={project_path}')
         model_imported = False
-        path_to_add = project_abs_path if self.command == "create-ui" else \
-            project_abs_path + "/database"  # for Api Logic Server projects
-        sys.path.insert(0, path_to_add)  # e.g., adds /Users/val/Desktop/my_project/database
-        print(msg)  #    b.  Create resource_list - import database/models.py, inspect each class
+        path_to_add = project_path if self.command == "create-ui" else \
+            project_path + "/database"  # for Api Logic Server projects
+        sys.path.insert(0, self.project_directory)    # e.g., /Users/val/dev/servers/install/ApiLogicServer
+        sys.path.insert(0, path_to_add)    # e.g., /Users/val/dev/servers/install/ApiLogicServer/database
+        print(msg + " in " + path_to_add)
+        # sys.path.insert( 0, '/Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject/database')
+        # sys.path.insert( 0, '/Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject')  # AH HA!!
+        # sys.path.insert( 0, 'ApiLogicProject')  # or, AH HA!!
+        # print(f'*** DEBUG - sys.path={sys.path}')
         try:
             # credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             importlib.import_module('models')

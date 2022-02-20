@@ -517,14 +517,17 @@ class AdminCreator(object):
         return parent_path
 
     def write_yaml_files(self, admin_yaml):
-        """ write admin.yaml, with backup, with additional nw customized backup
+        """ write admin.yaml, with -created backup, with additional nw customized backup
         """
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
-        enable_rebuild_unaltered = False
-        write_file = "Rebuild - preserve"
+        write_file = "Write"
+        if self.mod_gen.command.startswith("rebuild"):
+            write_file = "Rebuild - preserve"
+
         ''' is not working on mac - always appears unaltered
             https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
-        
+
+        enable_rebuild_unaltered = False        
         write_file = "Write"
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
@@ -543,24 +546,25 @@ class AdminCreator(object):
 
         yaml_created_file_name = \
             os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-created.yaml'))
-        with open(yaml_created_file_name, 'w') as yaml_copy_file:
-            yaml_copy_file.write(admin_yaml)
+        with open(yaml_created_file_name, 'w') as yaml_created_file:
+            yaml_created_file.write(admin_yaml)
 
         if self.mod_gen.nw_db_status in ["nw", "nw-"] and self.mod_gen.api_name == "api":
-            admin_custom_nw_file = open(
-                os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
-            admin_custom_nw = admin_custom_nw_file.read()
-            nw_backup_file_name = \
-                os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin_custom_nw.yaml'))
-            admin_file = open(nw_backup_file_name, 'w')
-            admin_file.write(admin_custom_nw)
-            admin_file.close()
-            dev_temp_do_not_overwrite = False
-            if not dev_temp_do_not_overwrite:
-                print('.. .. ..Using customized admin_custom_nw.yaml - compare to admin-created.yaml')
-                admin_file = open(yaml_file_name, 'w')
+            if not self.mod_gen.command.startswith("rebuild"):
+                admin_custom_nw_file = open(
+                    os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
+                admin_custom_nw = admin_custom_nw_file.read()
+                nw_backup_file_name = \
+                    os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin_custom_nw.yaml'))
+                admin_file = open(nw_backup_file_name, 'w')
                 admin_file.write(admin_custom_nw)
                 admin_file.close()
+                dev_temp_do_not_overwrite = False
+                if not dev_temp_do_not_overwrite:
+                    print('.. .. ..Using customized admin_custom_nw.yaml - compare to admin-created.yaml')
+                    admin_file = open(yaml_file_name, 'w')
+                    admin_file.write(admin_custom_nw)
+                    admin_file.close()
 
     def create_settings(self):
         self.admin_yaml.settings = DotMap()

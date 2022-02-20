@@ -13,11 +13,11 @@ See end for key module map quick links.
 
 """
 
-__version__ = "4.02.03"
+__version__ = "4.02.06"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/18/2022 - 04.02.03: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
+    "\t02/20/2022 - 04.02.06: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
     "\t01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix \n"\
@@ -511,6 +511,8 @@ def get_project_directory_and_api_name(project_name: str, api_name: str, multi_a
     rtn_api_name = api_name
     if rtn_project_directory.startswith("~"):
         rtn_project_directory = str(Path.home()) + rtn_project_directory[1:]
+    if rtn_project_directory == './':
+        rtn_project_directory = os.getcwd()
     project_path = Path(rtn_project_directory)
     project_path_last_node = project_path.parts[-1]
     if multi_api or api_name == ".":
