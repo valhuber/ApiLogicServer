@@ -9,6 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_run.py",
+            "redirectOutput": true,
             "args": ["localhost", "5656"],
             "console": "integratedTerminal"
         },
@@ -18,6 +19,7 @@
             "request": "launch",
             "program": "run.py",
             "args": ["localhost", "5002"],
+            "redirectOutput": true,
             "cwd": "${workspaceFolder}/ui/basic_web_app",
             "console": "integratedTerminal"
         },
@@ -25,6 +27,7 @@
             "name": "Python: Module",
             "type": "python",
             "request": "launch",
+            "redirectOutput": true,
             "module": "enter-your-module-name"
         },
         {
@@ -32,6 +35,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
+            "redirectOutput": true,
             "console": "integratedTerminal"
         }
     ]

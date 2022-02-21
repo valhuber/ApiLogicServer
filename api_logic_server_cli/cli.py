@@ -17,6 +17,7 @@ __version__ = "4.02.06"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t02/21/2022 - 04.02.07: vscode redirectOutput for debugger \n"\
     "\t02/20/2022 - 04.02.06: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
