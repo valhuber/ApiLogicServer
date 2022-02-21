@@ -13,7 +13,7 @@ See end for key module map quick links...
 
 """
 
-__version__ = "4.02.06"
+__version__ = "4.02.07"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
