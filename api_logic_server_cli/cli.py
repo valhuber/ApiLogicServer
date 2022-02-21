@@ -9,7 +9,7 @@ Basically clone prototype project, and create:
 
 Special provisions for NW Sample, to show customizations.
 
-See end for key module map quick links.
+See end for key module map quick links...
 
 """
 
