@@ -63,7 +63,7 @@ After you've explored the tutorial, try out our [dockerized test databases](http
 |:----------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------|:-------------------------------------------------------------------------------------------|
 | 1. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** app                                                                                                         | Engage Business Users<br>Back-office Admin       | [safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)                         |
 | 2. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                            |
-| 3. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Strategic Business Agility                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)     |
+| 3. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation - nearly half the system                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)     |
 | 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic                                                                                                             | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
 | 5. Model Creation                                                     | Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
 
@@ -203,9 +203,9 @@ To review the implementation:
 
 
 ### Logic
-We've all seen excellent technology that can create great User Interfaces. But for transactional systems, their approach to logic is basically "your code goes here".
+API and UI automation are impressive answers to familiar challenges.  Logic automation is a _unique_ answer to a significant and unaddressed problem:
 
-> That's a problem - for transaction systems, the backend constraint and derivation logic is often nearly *half* the system.
+> For transaction systems, backend constraint and derivation logic is often nearly *half* the system.  This is not addressed by conventional approaches of "your code goes here".
  
 The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for multi-table constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 
