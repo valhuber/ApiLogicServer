@@ -23,7 +23,7 @@ if [ $# -eq 0 ]
     #
     #
     # read -p "Installed - ready to launch IDE..."
-    if [[ "$1" = "vscode" ]]
+    if [ "$1" = "vscode" ]
       then
         python3 -m venv venv       # may require python -m venv venv
         source venv/bin/activate   # windows venv\Scripts\activate
@@ -35,7 +35,7 @@ if [ $# -eq 0 ]
         echo "Workspace opened; use pre-created Launch Configurations:"
         echo "  * Run 1 - Create ApiLogicProject, then..."
         echo "  * Run 2 - RUN ApiLogicProject"
-    elif [[ "$1" = "charm" ]]
+    elif [ "$1" = "charm" ]
     then
         charm .
         set +x
@@ -49,7 +49,7 @@ if [ $# -eq 0 ]
     echo ""
     echo "IDEs are preconfigured with run/launch commands to create and run the sample"
     echo ""
-    echo "Altered react-admin, then: sh ApiLogicServer/react-admin/install-react-admin"
+    echo "ApiLogicServer/react-admin contains shell burn-and-rebuild-react-admin"
     echo ""
     exit 0
 fi
