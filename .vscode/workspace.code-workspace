@@ -13,5 +13,58 @@
 			"path": "../../ApiLogicServer.wiki"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"git.ignoreLimitWarning": true,
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "MySQL",
+				"group": "G",
+				"database": "Chinook",
+				"username": "vscode",
+				"password": "p"
+			},
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "Postgres",
+				"group": "G",
+				"username": "postgres",
+				"password": "p",
+				"database": "postgres"
+			},
+			{
+				"mssqlOptions": {
+					"appName": "SQLTools",
+					"useUTC": true,
+					"encrypt": true
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 1433,
+				"driver": "MSSQL",
+				"name": "Sql/Server",
+				"group": "G",
+				"database": "NORTHWND",
+				"username": "sa",
+				"password": "posey386!"
+			},
+			{
+				"previewLimit": 50,
+				"driver": "SQLite",
+				"name": "Sample",
+				"group": "G",
+				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/project_prototype_nw/nw.sqlite"
+			}
+		],
+		"sqltools.useNodeRuntime": true
+	}
 }
