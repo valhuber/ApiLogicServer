@@ -92,15 +92,10 @@ Please see the ```nw``` sample for examples of typical customizations.
 
 
 # Installation and Execution
-If not using Docker, install your projects' virtual environment:
-```
-cd <your project>
-python3 -m venv venv  # may require python -m venv venv
-source venv/bin/activate  # windows venv\Scripts\activate
-pip install -r requirements.txt
-```
+Install your projects' virtual environment
+as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
-Then, start the API, either by IDE launch configurations (for Docker), or by command line:
+Then, start the API, either by IDE launch configurations, or by command line:
 ```
 python api_logic_server_run.py
 ```

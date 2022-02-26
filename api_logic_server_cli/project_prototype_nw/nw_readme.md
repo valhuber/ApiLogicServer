@@ -8,7 +8,7 @@ In this tutorial, we will explore:
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
 
-This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution) for more information.
+This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  
 
 The diagram below summarizes the create / run / customize process:
 
@@ -19,6 +19,12 @@ You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
 &nbsp;&nbsp;&nbsp;
 
+## Establish your virtual environment
+Install your projects' virtual environment
+as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
+
+
+
 ## Run
 
 Created ApiLogicProjects are instantly executable.  Let's explore the Admin App and the API.
@@ -28,7 +34,7 @@ To run the Admin App, follow these steps:
 
 1. Click **Run and Debug**
    * *Note:* these steps are highlighted in the diagram below
-2. Select the `ApiLogicServer` Launch Configuration
+2. Select the `ApiLogicProject` Launch Configuration
 3. Press the green run button to start the server
    * If you are runnig Docker / VS Code, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
    * Otherwise, you can:
@@ -197,7 +203,7 @@ swagger/OpenAPI and JSON:API compliant API implementation.
 
 [Transaction Logic for SQLAlchemy Object Models](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)
 
-Use Logic Bank to govern SQLAlchemy update transaction logic - 
+Use Logic Bank (nothing to do with banking!) to govern SQLAlchemy update transaction logic - 
 multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
 
 *   **Rules - 40X** more concise using a spreadsheet-like paradigm, and

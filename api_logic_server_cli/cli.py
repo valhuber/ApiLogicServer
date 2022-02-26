@@ -2,10 +2,10 @@
 """
 ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogicProject.
 
-Basically clone prototype project, and create:
-* database/models. for SQLAlchemy
+Basically clones prototype project, and creates:
+* database/models.py for SQLAlchemy
 * ui/admin/admin.yaml for the Admin App
-* api/expose_api_models for a safrs api
+* api/expose_api_models.py for a safrs api
 
 Special provisions for NW Sample, to show customizations.
 
@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "4.02.07"
+__version__ = "4.02.08"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/21/2022 - 04.02.07: vscode redirectOutput for debugger \n"\
+    "\t02/21/2022 - 04.02.08: vscode redirectOutput for debugger, /bin for venv, readme install \n"\
     "\t02/20/2022 - 04.02.06: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
     "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\

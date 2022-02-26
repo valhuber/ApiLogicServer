@@ -14,6 +14,10 @@ from safrs import SAFRSBase, SAFRSAPI, jsonapi_rpc
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
 
+"""
+As of release 4.20, this file is for future expansion, not currently used.
+"""
+
 db = SQLAlchemy()
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger()
