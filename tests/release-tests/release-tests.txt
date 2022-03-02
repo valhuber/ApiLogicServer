@@ -9,6 +9,7 @@ ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://roo
 
 ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
 
+ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/Desktop/database.sqlite
 
 docker
 ======
@@ -33,8 +34,10 @@ ApiLogicServer rebuild-from-model --project_name=ApiLogicProject --db_url=
 ApiLogicServer rebuild-from-model --project_name=/localhost/ApiLogicProject-d --db_url=
 
 cd /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
-ApiLogicServer rebuild-from-model --project_name=./ --db_url=
+ApiLogicServer rebuild-from-model --project_name=./ --db_url=Allocation/database/db-sqlite
 
+/Users/val/dev/servers/install/ApiLogicServer
+ApiLogicServer rebuild-from-model --project_name=Allocation --db_url=/Users/val/dev/servers/install/ApiLogicServer/Allocation/database/db.sqlite
 
 
         {

@@ -63,6 +63,20 @@
 				"name": "Sample",
 				"group": "G",
 				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/project_prototype_nw/nw.sqlite"
+			},
+			{
+				"previewLimit": 50,
+				"driver": "SQLite",
+				"name": "LogicBank - allocation",
+				"group": "G",
+				"database": "/Users/val/dev/servers/install/ApiLogicServer/Allocation/database/db.sqlite"
+			},
+			{
+				"previewLimit": 50,
+				"driver": "SQLite",
+				"name": "Allocation",
+				"group": "G",
+				"database": "${workspaceFolder:servers}/install/ApiLogicServer/Allocation/database/db.sqlite"
 			}
 		],
 		"sqltools.useNodeRuntime": true

@@ -229,11 +229,13 @@ class AdminCreator(object):
 
     @staticmethod
     def create_admin_attribute(resource_attribute) -> DotMap:
+        """ create attribute entry for admin.yaml
+        """
         attribute_name = resource_attribute if isinstance(resource_attribute, str) else resource_attribute.name
-        nullable = True if isinstance(resource_attribute, str) else resource_attribute.nullable
+        required = False if isinstance(resource_attribute, str) else resource_attribute.is_required
         admin_attribute = DotMap()
         admin_attribute.name = str(attribute_name)
-        if nullable == False:
+        if required:
             admin_attribute.required = True
         if attribute_name == "xShippedDate":
             log.debug("Good breakpoint location")

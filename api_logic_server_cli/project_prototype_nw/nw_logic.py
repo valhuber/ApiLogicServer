@@ -83,7 +83,9 @@ def declare_logic():
     Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 
     """
-        More complex rules follow - see: https://github.com/valhuber/LogicBank/wiki/Examples
+        More complex rules follow - see: 
+            https://github.com/valhuber/LogicBank/wiki/Examples
+            https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility
     """
 
     Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")

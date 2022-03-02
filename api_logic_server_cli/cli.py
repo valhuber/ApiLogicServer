@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "4.02.08"
+__version__ = "4.03.00"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t03/02/2022 - 04.03.00: proper required (issue 34), allocate fixes (issue 39) \n"\
     "\t02/21/2022 - 04.02.08: vscode redirectOutput for debugger, /bin for venv, readme install \n"\
     "\t02/20/2022 - 04.02.06: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\

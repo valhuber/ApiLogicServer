@@ -33,12 +33,13 @@ MetaDataTable = NewType('MetaDataTable', object)
 
 
 class ResourceAttribute():
-    def __init__(self, name: str, resource: Type['Resource'], type: str, nullable: bool):
-        self.name = name
-        self.type = None  # none means not interesting, default display to simple text
-        self.nullable = nullable
-        if name == "CustomerId":
+    def __init__(self, each_attribute: object, resource: Type['Resource']):
+        self.name = str(each_attribute.name)
+        if self.name == "extension":
             debug_str = "Nice breakpoint"
+        # self.nullable = each_attribute.nullable
+        type = str(each_attribute.type)
+        self.type = None  # none means not interesting, default display to simple text
         if type == "DECIMAL":
             self.type = "DECIMAL"
         elif type == "DATE":
@@ -50,7 +51,14 @@ class ResourceAttribute():
         elif type.startswith("NTEXT") == "NTEXT":
             self.type = "NTEXT"
         self.non_favorite = False
-        lower_name = name.lower()
+        self.is_required = not each_attribute.nullable
+        if self.is_required and each_attribute.primary_key:
+            if type in ["Integer", "INTEGER", "MEDIUMINT", "SMALLINT", "TINYINT"]:
+                self.is_required = False  # this is autonum... so
+            else:
+                debug_str = "Alpha Pkey"
+        # self.is_autonum = each_attribute.autoincrement=='auto'
+        lower_name = self.name.lower()
         non_favs = resource.create_from_model._non_favorite_names_list
         for each_non_fav in non_favs:
             if lower_name.endswith(each_non_fav):
@@ -757,10 +765,8 @@ class CreateFromModel(object):
                         resource_data = {"type": resource_name}
                         for each_attribute in resource_class._s_columns:
                             attr_type = str(each_attribute.type)
-                            resource_attribute = ResourceAttribute(name=str(each_attribute.name),
-                                                                   resource=resource,
-                                                                   type=attr_type,
-                                                                   nullable=each_attribute.nullable)
+                            resource_attribute = ResourceAttribute(each_attribute=each_attribute,
+                                                                   resource=resource)
                         for rel_name, rel in resource_class._s_relationships.items():
                             # relation = {}
                             # relation["direction"] = "toone" if rel.direction == MANYTOONE else "tomany"
