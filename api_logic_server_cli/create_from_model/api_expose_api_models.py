@@ -61,7 +61,7 @@ def create_expose_api_models(model_creation_services: create_from_model.CreateFr
             # result_apis +=  "# skip sqlite_sequence table: " + resource_name + "\n"
             continue
         else:
-            result_apis += f'    api.expose_object(models.{each_resource_name})\n'
+            result_apis += f'    api.expose_object(database.models.{each_resource_name})\n'
     result_apis += f'    safrs.log.setLevel(safrs_log_level)\n'
     result_apis += f'    return api\n'
     # self.session.close()

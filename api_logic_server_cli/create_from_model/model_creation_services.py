@@ -54,10 +54,9 @@ class ResourceAttribute():
         self.is_required = not each_attribute.nullable
         if self.is_required and each_attribute.primary_key:
             if type in ["Integer", "INTEGER", "MEDIUMINT", "SMALLINT", "TINYINT"]:
-                self.is_required = False  # this is autonum... so
+                self.is_required = False  # this is autonum... so not required (affects admin.yaml - required)
             else:
-                debug_str = "Alpha Pkey"
-        # self.is_autonum = each_attribute.autoincrement=='auto'
+                debug_str = "Alpha Pkey"  # nothing to do, this for debug verification
         lower_name = self.name.lower()
         non_favs = resource.create_from_model._non_favorite_names_list
         for each_non_fav in non_favs:
