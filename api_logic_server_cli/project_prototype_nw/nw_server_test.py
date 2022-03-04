@@ -7,6 +7,14 @@ import subprocess
 import socket
 import json
 
+# print(f'args: {sys.argv}')
+if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1].__contains__("help")):
+    print("")
+    print("Test server functions (including logic), on localhost:5656")
+    print("  python server_test.py go")
+    print("")
+    sys.exit()
+
 
 """
     These are server tests for the default Sample DB.
@@ -227,5 +235,4 @@ def server_tests(host, port, version):
 
 
 if __name__ == "__main__":
-   # only to run when not called via 'import' here
    server_tests("localhost", "5656", "v0")

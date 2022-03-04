@@ -5,11 +5,13 @@ if [ $# -eq 0 ]
     then
         echo " "
         echo "\n Runs logic audit test - using shell scripts for testing"
+        echo "   1. Run Launch-Config: 0 - Create and Run"
         echo " "
-        echo " IMPORTANT:"
-        echo "   1. Server running on localhost:5656 "
-        echo "   2. This runs ${project}/test/server_test.sh "
+        echo " This runs:"
+        echo "   1. ${project}/test/server_test.sh "
+        echo "   2. ${project}/test/server_test.py "
         echo " "
+        echo " Example:"
         echo "  sh sample_tests.sh [ go ]"
         echo " "
         exit 0
@@ -17,6 +19,7 @@ if [ $# -eq 0 ]
 
 pushd ${project}/test
 sh server_test.sh go
+python server_test.py go
 popd
 
 pwd
