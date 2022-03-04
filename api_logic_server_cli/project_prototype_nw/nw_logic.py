@@ -94,7 +94,7 @@ def declare_logic():
         result = row.UnitsInStock - (row.UnitsShipped - old_row.UnitsShipped)
         return result
     Rule.sum(derive=models.Product.UnitsShipped, as_sum_of=models.OrderDetail.Quantity,
-             where="row.ShippedDate is not None")
+             where=lambda row: row.ShippedDate is None)
     Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)
 
     Rule.count(derive=models.Customer.UnpaidOrderCount, as_count_of=models.Order,
