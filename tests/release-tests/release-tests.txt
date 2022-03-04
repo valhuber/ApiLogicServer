@@ -27,6 +27,21 @@ ApiLogicServer create --project_name=/localhost/postgres-d --db_url=postgresql:/
 ApiLogicServer create --project_name=/localhost/sqlserver-d --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
 
 
+
+Logic
+=====
+
+cd tests/allocation  # from dev env (no venv)
+sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
+cd ../../../servers/install/ApiLogicServer/Allocation-test/test  # on different terminal
+sh test.sh  # verifies tests/results.txt, console should say pass
+# stop server
+
+Run Launch-Config: 0 - Create and Run
+sh sample_tests.sh go
+
+
+
 Rebuild
 =======
 cd /Users/val/dev/servers/install/ApiLogicServer

@@ -39,7 +39,7 @@ if [ $# -eq 0 ]
             set +x
         fi
         echo "\nStarting server... ${project}/api_logic_server_run.py"
-        echo ".. Test: sh test.sh at ${project}/test/test.sh \n"
+        echo ".. Test: cd ${project}/test;  sh test.sh \n"
         set -x
         ls ${project}
         pushd ${project}
