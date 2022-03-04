@@ -1,35 +1,42 @@
+Creation tests
+==============
 
-pip
-===
-ApiLogicServer create --project_name=ApiLogicProject --db_url=
+cd dev/server/install/ApiLogicServer
 
-ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
-
-ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
-
-ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
-
-ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/Desktop/database.sqlite
-
-docker
-======
-
-ApiLogicServer create --project_name=/localhost/ApiLogicProject-d --db_url=
-
-ApiLogicServer create --project_name=/localhost/classicmodels-d --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
-
-ApiLogicServer create --project_name=/localhost/sakila-d --db_url=mysql+pymysql://root:p@mysql-container/sakila
-
-ApiLogicServer create --project_name=/localhost/chinook-d --db_url=mysql+pymysql://root:p@mysql-container/Chinook
-
-ApiLogicServer create --project_name=/localhost/postgres-d --db_url=postgresql://postgres:p@postgresql-container/postgres
-
-ApiLogicServer create --project_name=/localhost/sqlserver-d --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+run each script below, verify app and swagger
 
 
+    pip
+    ===
+    ApiLogicServer create --project_name=ApiLogicProject --db_url=
 
-Logic
-=====
+    ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+
+    ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
+
+    ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
+
+    ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/Desktop/database.sqlite
+
+    docker
+    ======
+
+    ApiLogicServer create --project_name=/localhost/ApiLogicProject-d --db_url=
+
+    ApiLogicServer create --project_name=/localhost/classicmodels-d --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
+
+    ApiLogicServer create --project_name=/localhost/sakila-d --db_url=mysql+pymysql://root:p@mysql-container/sakila
+
+    ApiLogicServer create --project_name=/localhost/chinook-d --db_url=mysql+pymysql://root:p@mysql-container/Chinook
+
+    ApiLogicServer create --project_name=/localhost/postgres-d --db_url=postgresql://postgres:p@postgresql-container/postgres
+
+    ApiLogicServer create --project_name=/localhost/sqlserver-d --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+
+
+
+Logic - Allocation
+==================
 
 cd tests/allocation  # from dev env (no venv)
 sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
@@ -37,7 +44,12 @@ cd ../../../servers/install/ApiLogicServer/Allocation-test/test  # on different 
 sh test.sh  # verifies tests/results.txt, console should say pass
 # stop server
 
+
+Logic - Sample
+==============
+
 Run Launch-Config: 0 - Create and Run
+cd tests/sample_tests
 sh sample_tests.sh go
 
 
