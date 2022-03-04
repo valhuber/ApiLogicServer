@@ -25,8 +25,16 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
      """
 
+
+    app_logger = logging.getLogger("api_logic_server_app")
+    app_logger.info(f'\n*** Customizable ApiLogicServer project created -- '
+             f'open it with your IDE at {project_dir}')
+    app_logger.info(f'*** Server now running -- '
+             f'explore sample data and API at http://{HOST}:{PORT}/')
+
+
     @app.route('/hello_world')
-    def hello_world():  # test it with: http://api_logic_server_host:api_logic_server_port/hello_world?user=ApiLogicServer
+    def hello_world():  # test it with: http://localhost:5656/hello_world?user=ApiLogicServer
         """
         This is inserted to illustrate that APIs not limited to database objects, but are extensible.
 
@@ -35,13 +43,19 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
         See: https://github.com/thomaxxl/safrs/wiki/Customization
         """
         user = request.args.get('user')
+        # app_logger.info(f'hello_world returning:  hello, {user}')
+        app_logger.info(f'{user}')
         return jsonify({"result": f'hello, {user}'})
 
-    app_logger = logging.getLogger("api_logic_server_app")
-    app_logger.info(f'\n*** Customizable ApiLogicServer project created -- '
-             f'open it with your IDE at {project_dir}')
-    app_logger.info(f'*** Server now running -- '
-             f'explore sample data and API at http://{HOST}:{PORT}/')
+
+    @app.route('/server_log')
+    def server_log():
+        """
+        Used by test/server_test.py - enables client app to log msg into server
+        """
+        msg = request.args.get('msg')
+        app_logger.info(f'{msg}')
+        return jsonify({"result": f'ok'})
 
     app_logger.info("api/expose_service.py - Exposing custom services")
     api.expose_object(ServicesEndPoint)

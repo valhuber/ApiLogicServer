@@ -20,10 +20,16 @@ post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
 custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 self_reln_test = True  # verify dept subDepts, headDept
+cascade_update_test = True  # verify Order.ShippedDate 2013-10-13 adjusts balance 2102-1086->1016, product onhand
 
 
 def prt(msg: any) -> None:
+    '''
+    print to console, and server log (see api/customize_api.py)
+    '''
     print(msg)
+    msg_url = f'http://localhost:5656/server_log?msg={msg}'
+    r = requests.get(msg_url)
 
 
 def get_project_dir() -> str:
@@ -43,10 +49,20 @@ def server_tests(host, port, version):
             port - server port
             version - ApiLogicServer version
     """
-    prt(f'\n\n===================+')
-    prt(f'SAMPLEDB DIAGNOSTICS')
-    prt(f' verify good GET, PATCH, POST, DELETE and Custom Service')
-    prt(f'===============+====\n')
+
+    def get_ALFKI():
+        get_cust_uri = f'http://{host}:{port}/api/Customer/ALFKI?' \
+                            f'fields%5B=Id%2CBalance' \
+                            f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
+        r = requests.get(url=get_cust_uri)
+        response_text = r.text
+        return response_text
+
+    prt(f'\n\n====================\n'
+        f'SAMPLEDB DIAGNOSTICS\n'
+        f'verify good GET, PATCH, POST, DELETE and Custom Service\n'
+        f'includes deliberate errors, to test constraints (these log strack traces, which are *NOT* errors\n'
+        f'====================\n')
 
     add_order_uri = f'http://{host}:{port}/api/ServicesEndPoint/add_order'
     add_order_args = {
@@ -74,16 +90,19 @@ def server_tests(host, port, version):
 
     # use swagger to get uri
     if get_test:
+        test_name = "GET test on Order"
+        prt(f'\n\n\n{test_name} - verify VINET returned...\n')
         get_order_uri = f'http://{host}:{port}/api/Order/?' \
                         f'fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CAmountTotal' \
                         f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
         r = requests.get(url=get_order_uri)
         response_text = r.text
         assert "VINET" in response_text, f'Error - "VINET not in {response_text}'
-
-        prt(f'\nGET DIAGNOSTICS PASSED for table Order... now verify PATCH Customer...')
+        prt(f'\n{test_name} PASSED\n')
 
     if self_reln_test:
+        test_name = "GET self-reln test on Department/DepartmentList"
+        prt(f'\n\n\n{test_name}...\n\n')
         get_dept_uri = f'http://{host}:{port}/api/Department/2/?' \
                         f'include=DepartmentList%2CEmployeeList%2CEmployeeList1%2CDepartment' \
                        f'&fields%5BDepartment%5D=Id%2CDepartmentId%2CDepartmentName'
@@ -97,9 +116,11 @@ def server_tests(host, port, version):
         ne_sales_check = relationships_department_list["data"][0]["id"]  # should be 4
         assert ceo_check == '1' and ne_sales_check == '4',\
             f'Error - "CEO not in Department or NE Sales not in DepartmentList: {response_text}'
-        prt(f'\nGET DIAGNOSTICS PASSED for table Department... now verify PATCH Customer...')
+        prt(f'\n{test_name} PASSED\n')
 
     if patch_test:
+        test_name = "PATCH test"
+        prt(f'\n\n\n{test_name}... deliberate errror - set credit_limit low to verify check credit constraint\n\n')
         patch_cust_uri = f'http://{host}:{port}/api/Customer/ALFKI/'
         patch_args = \
             {
@@ -114,9 +135,11 @@ def server_tests(host, port, version):
         response_text = r.text
         assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
 
-        prt(f'\nPATCH DIAGNOSTICS PASSED for table Customer... now verify POST Customer...')
+        prt(f'\n{test_name} PASSED\n')
 
     if post_test:
+        test_name = "POST test"
+        prt(f'\n\n\n{test_name}... create a customer\n\n')
         post_cust_uri = f'http://{host}:{port}/api/Customer/'
         post_args = \
             {
@@ -132,23 +155,64 @@ def server_tests(host, port, version):
         response_text = r.text
         assert r.status_code == 201, f'Error - "status_code != 200 in this response:\n{response_text}'
 
-        prt(f'\nPOST DIAGNOSTICS PASSED for table Customer... now verify DELETE Customer...')
+        prt(f'\n{test_name} PASSED\n')
 
     if delete_test:
+        test_name = "DELETE test"
+        prt(f'\n\n\n{test_name}... delete the customer just created\n\n')
         delete_cust_uri = f'http://{host}:{port}/api/Customer/ALFKJ/'
         r = requests.delete(url=delete_cust_uri, json={})
         # Generic Error: Entity body in unsupported format
         response_text = r.text
         assert r.status_code == 204, f'Error - "status_code != 204 in this response:\n{response_text}'
 
-        prt(f'\nDELETE DIAGNOSTICS PASSED for table Customer... now verify Custom Service add_order - check credit logic...')
+        prt(f'\n{test_name} PASSED\n')
 
+    if cascade_update_test:
+        test_name = "CASCADE UPDATE test"
+        prt(f'\n\n\n{test_name}... verify Order.ShippedDate (2013-10-13) adjusts balance 2102-1086->1016, product onhand\n\n')
+        patch_uri = f'http://{host}:{port}/api/Order/10643/'
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "ShippedDate": "2013-10-13",
+                        "Id": 10643},
+                    "type": "Order",
+                    "id": 10643
+                }}
+        r = requests.patch(url=patch_uri, json=patch_args)
+        # response_text = r.text
+        prt(response_text)
+        response_text = get_ALFKI()
+        # prt(f'\nget_ALFKI: {response_text}')
+        assert '"Balance": 1016.0' in response_text, f'Error - "Balance": 1026.0 not in this response:\n{response_text}'
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "ShippedDate": None,
+                        "Id": 10643},
+                    "type": "Order",
+                    "id": 10643
+                }}
+        r = requests.patch(url=patch_uri, json=patch_args)
+        response_text = r.text
+        # prt(response_text)
+        response_text = get_ALFKI()
+        # prt(f'\nget_ALFKI after nullify: {response_text}')
+        assert '"Balance": 2102.0' in response_text, f'Error - "Balance": 2102.0 not in this response:\n{response_text}'
+
+        prt(f'\n{test_name} PASSED\n')
+        
     if custom_service_test:
+        test_name = "CUSTOM SERVICE  test"
+        prt(f'\n\n\n{test_name}... post too-big an order to deliberately exceed credit - note multi-table logic chaining\n\n')
         r = requests.post(url=add_order_uri, json=add_order_args)
         response_text = r.text
         assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
 
-        prt(f'\nADD ORDER CHECK CREDIT - DIAGNOSTICS PASSED')
+        prt(f'\n{test_name} PASSED\n')
         prt(f'===========================================\n')
         prt(f''
             f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
@@ -160,7 +224,6 @@ def server_tests(host, port, version):
             f'........ADJUSTS Customer.Balance (21014), which...\n'
             f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n\n'
             f'All from just 5 rules in ({get_project_dir()}/logic/declare_logic.py)\n\n')
-
 
 
 if __name__ == "__main__":

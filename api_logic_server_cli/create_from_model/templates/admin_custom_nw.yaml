@@ -1,8 +1,8 @@
 about:
-  date: Mar 2, 2022 18:59:13
+  date: Mar 3, 2022 18:59:13
   recent_changes: altered Customer/Order attribute ordering, tab captions, info
 # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
-  version: 4.00.21
+  version: 4.03.00
 api_root: http://localhost:5656/api
 # for deployed apps, you might use a different uri, such as https://apilogicserver.pythonanywhere.com/api
 info:
@@ -285,8 +285,9 @@ resources:
       - name: Id
       - name: EmployeeId
         required: true
+      - name: ShippedDate
+        info: set reduces Customer Balance, decreases Product Stock
       - name: OrderDate
-      - name: RequiredDate
         type: DATE
       - name: AmountTotal
         type: DECIMAL
@@ -295,11 +296,12 @@ resources:
         required: true
         type: DECIMAL
       - name: Country
+        label: Country
       - name: City
-      - name: ShippedDate
+        label: City
+      - name: RequiredDate
       - name: CustomerId
         required: true
-      - name: Country
       - label: ' Ship Name*'
         name: ShipName
         search: true

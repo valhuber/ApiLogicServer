@@ -349,6 +349,8 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
         db_loc = abs_db_url.replace("sqlite:///", "")
         target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
         copyfile(db_loc, target_db_loc_actual)
+        backup_db = project_directory_actual + '/database/db-backup.sqlite'
+        copyfile(db_loc, backup_db)
 
         if os.name == "nt":  # windows
             # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
@@ -473,6 +475,12 @@ def replace_server_test_with_nw_server_test(project_name):
     """ replace test/server_tests.py with nw version """
     tests_file = open(project_name + '/test/server_test.py', 'w')
     nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_server_test.py")
+    nw_tests_file_data = nw_tests_file.read()
+    tests_file.write(nw_tests_file_data)
+    tests_file.close()
+
+    tests_file = open(project_name + '/test/server_test.sh', 'w')
+    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_server_test.sh")
     nw_tests_file_data = nw_tests_file.read()
     tests_file.write(nw_tests_file_data)
     tests_file.close()
