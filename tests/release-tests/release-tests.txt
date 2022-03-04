@@ -1,13 +1,16 @@
 Creation tests
 ==============
 
-cd dev/server/install/ApiLogicServer
+cd tests/creation_tests
+sh rebuild_servers_install sh go  # rebuilds the venv
+# follow directions to pip install
 
 run each script below, verify app and swagger
 
 
     pip
     ===
+
     ApiLogicServer create --project_name=ApiLogicProject --db_url=
 
     ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
@@ -16,10 +19,14 @@ run each script below, verify app and swagger
 
     ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
 
-    ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/Desktop/database.sqlite
+    ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/dev/ApiLogicServer/tests/allocation/allocation.sqlite
+
 
     docker
     ======
+
+    cd ~/dev/servers/install/ApiLogicServer
+    docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
     ApiLogicServer create --project_name=/localhost/ApiLogicProject-d --db_url=
 
