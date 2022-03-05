@@ -1,0 +1,95 @@
+Creation tests
+==============
+
+cd tests/creation_tests
+sh rebuild_servers_install sh go  # rebuilds the venv
+# follow directions to pip install
+
+run each script below, verify app and swagger
+
+
+    pip
+    ===
+
+    ApiLogicServer create --project_name=ApiLogicProject --db_url=
+
+    ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+
+    ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
+
+    ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
+
+    ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/dev/ApiLogicServer/tests/allocation/allocation.sqlite
+
+    use vsc to run api_logic_server_run.py (Launch Config: Python: Current File)
+
+
+    docker
+    ======
+
+    cd ~/dev/servers/install/ApiLogicServer
+    docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
+
+    then, in Docker terminal, for each <project>...
+        cd <project>
+        python api_logic_server_run.py
+
+    ApiLogicServer create --project_name=/localhost/ApiLogicProject-d --db_url=
+        for ApiLogicProject-d, you can run the tests   
+            non-Docker terminal
+            cd ApiLogicProject-d/test
+            python server_test.py go
+            sh server_test.sh go
+
+    ApiLogicServer create --project_name=/localhost/classicmodels-d --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
+
+    ApiLogicServer create --project_name=/localhost/sakila-d --db_url=mysql+pymysql://root:p@mysql-container/sakila
+
+    ApiLogicServer create --project_name=/localhost/chinook-d --db_url=mysql+pymysql://root:p@mysql-container/Chinook
+
+    ApiLogicServer create --project_name=/localhost/postgres-d --db_url=postgresql://postgres:p@postgresql-container/postgres
+
+    ApiLogicServer create --project_name=/localhost/sqlserver-d --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+
+
+
+Logic - Allocation
+==================
+
+cd tests/allocation  # from dev env (no venv)
+sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
+cd ../../../servers/install/ApiLogicServer/Allocation-test/test  # on different terminal
+sh test.sh  # verifies tests/results.txt, console should say pass
+# stop server
+
+
+Logic - Sample
+==============
+
+Run Launch-Config: 0 - Create and Run
+cd tests/sample_tests
+sh sample_tests.sh go
+
+
+
+Rebuild
+=======
+cd /Users/val/dev/servers/install/ApiLogicServer
+ApiLogicServer rebuild-from-model --project_name=ApiLogicProject --db_url=
+ApiLogicServer rebuild-from-model --project_name=/localhost/ApiLogicProject-d --db_url=
+
+cd /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
+ApiLogicServer rebuild-from-model --project_name=./ --db_url=Allocation/database/db-sqlite
+
+/Users/val/dev/servers/install/ApiLogicServer
+ApiLogicServer rebuild-from-model --project_name=Allocation --db_url=/Users/val/dev/servers/install/ApiLogicServer/Allocation/database/db.sqlite
+
+Sakalia -insert on category (tiny), city (small), inventory (medium)
+
+        {
+            "name": "Rebuild from Model",
+            "type":  "python",
+            "request": "launch",
+            "preLaunchTask": "rebuild-from-model",
+            "console": "integratedTerminal"
+        }
