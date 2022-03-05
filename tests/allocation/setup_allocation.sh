@@ -38,13 +38,16 @@ if [ $# -eq 0 ]
             echo "\nCreated, Starting server...\n"
             set +x
         fi
+        echo "\n\n*******************************"
         echo "\nStarting server... ${project}/api_logic_server_run.py"
+        echo " "
         echo ".. Test: cd ${project}/test;  sh test.sh \n"
+        echo "\*******************************\n\n"
         set -x
         ls ${project}
         pushd ${project}
         python api_logic_server_run.py
         popd
         set +x
-        echo "Here I am"
+        echo "Server stopped"
     fi
