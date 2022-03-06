@@ -232,6 +232,12 @@ Let's recap what you've seen:
 
 * **Customizable** - the UI, API and Logic - using Visual Studio code, for both editing and debugging
 
+
+### Next Steps
+
+Explore the [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial).
+
+
 ### Docker cleanup
 VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-ApiLogicProject...`.
 
