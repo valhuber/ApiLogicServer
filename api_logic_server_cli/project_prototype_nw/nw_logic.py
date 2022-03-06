@@ -103,7 +103,7 @@ def declare_logic():
     Rule.count(derive=models.Customer.OrderCount, as_count_of=models.Order)
 
     def raise_over_20_percent(row: models.Employee, old_row: models.Employee, logic_row: LogicRow):
-        if logic_row.ins_upd_dlt == "upd" and row.Salary != old_row.Salary:
+        if logic_row.ins_upd_dlt == "upd" and row.Salary > old_row.Salary:
             return row.Salary >= Decimal('1.20') * old_row.Salary
         else:
             return True

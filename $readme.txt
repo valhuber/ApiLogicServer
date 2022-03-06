@@ -102,7 +102,13 @@ INNER JOIN sys.parameters AS P ON SO.OBJECT_ID = P.OBJECT_ID
 ORDER BY [Schema], SO.name, P.parameter_id
 
 
-SQLAlchemy 1.4.11
-=================
-Have LogicBank branch that works with it, as does ApiLogicServer.
-But SAFRS.JABase fails, as does Flask AppBuilder.
+Fix OrderDetail
+===============
+
+update OrderDetail
+      set  ShippedDate =
+          (select ShippedDate
+          from "Order"
+          where Id = OrderId)
+2156 rows
+Id 10643; OrderDetails are blank on load.  ugh

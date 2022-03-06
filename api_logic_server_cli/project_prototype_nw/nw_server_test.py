@@ -15,7 +15,6 @@ if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1].__contains__("help")
     print("")
     sys.exit()
 
-
 """
     These are server tests for the default Sample DB.
 
@@ -23,12 +22,13 @@ if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1].__contains__("help")
 """
 
 get_test = True  # Performs a basic get, with Fields and Filter
+self_reln_test = True  # verify dept subDepts, headDept
 patch_test = True  # Updates a Customer with intentionally bad data to illustrate logic
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
-custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
-self_reln_test = True  # verify dept subDepts, headDept
+audit_test = True  # alter salary, check for audit row
 cascade_update_test = True  # verify Order.ShippedDate 2013-10-13 adjusts balance 2102-1086->1016, product onhand
+custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 
 
 def prt(msg: any) -> None:
@@ -60,8 +60,8 @@ def server_tests(host, port, version):
 
     def get_ALFKI():
         get_cust_uri = f'http://{host}:{port}/api/Customer/ALFKI?' \
-                            f'fields%5B=Id%2CBalance' \
-                            f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
+                       f'fields%5B=Id%2CBalance' \
+                       f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
         r = requests.get(url=get_cust_uri)
         response_text = r.text
         return response_text
@@ -112,7 +112,7 @@ def server_tests(host, port, version):
         test_name = "GET self-reln test on Department/DepartmentList"
         prt(f'\n\n\n{test_name}...\n\n')
         get_dept_uri = f'http://{host}:{port}/api/Department/2/?' \
-                        f'include=DepartmentList%2CEmployeeList%2CEmployeeList1%2CDepartment' \
+                       f'include=DepartmentList%2CEmployeeList%2CEmployeeList1%2CDepartment' \
                        f'&fields%5BDepartment%5D=Id%2CDepartmentId%2CDepartmentName'
         r = requests.get(url=get_dept_uri)
         response_text = r.text
@@ -122,7 +122,7 @@ def server_tests(host, port, version):
         relationships_department_list = relationships["DepartmentList"]
         ceo_check = relationships_department["data"]["id"]  # should be '1'
         ne_sales_check = relationships_department_list["data"][0]["id"]  # should be 4
-        assert ceo_check == '1' and ne_sales_check == '4',\
+        assert ceo_check == '1' and ne_sales_check == '4', \
             f'Error - "CEO not in Department or NE Sales not in DepartmentList: {response_text}'
         prt(f'\n{test_name} PASSED\n')
 
@@ -140,6 +140,25 @@ def server_tests(host, port, version):
                     "id": "ALFKI"
                 }}
         r = requests.patch(url=patch_cust_uri, json=patch_args)
+        response_text = r.text
+        assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
+
+        prt(f'\n{test_name} PASSED\n')
+
+    if audit_test:
+        test_name = "AUDIT test"
+        prt(f'\n\n\n{test_name}... alter salary, ensure audit row created (also available in shell script\n\n')
+        patch_emp_uri = f'http://{host}:{port}/api/Employee/5/'
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "Salary": 200000,
+                        "Id": 5},
+                    "type": "Employee",
+                    "id": 5
+                }}
+        r = requests.patch(url=patch_emp_uri, json=patch_args)
         response_text = r.text
         assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
 
@@ -195,6 +214,8 @@ def server_tests(host, port, version):
         response_text = get_ALFKI()
         # prt(f'\nget_ALFKI: {response_text}')
         assert '"Balance": 1016.0' in response_text, f'Error - "Balance": 1026.0 not in this response:\n{response_text}'
+
+        prt(f'\n{test_name}... return DB to original state\n')
         patch_args = \
             {
                 "data": {
@@ -212,7 +233,7 @@ def server_tests(host, port, version):
         assert '"Balance": 2102.0' in response_text, f'Error - "Balance": 2102.0 not in this response:\n{response_text}'
 
         prt(f'\n{test_name} PASSED\n')
-        
+
     if custom_service_test:
         test_name = "CUSTOM SERVICE  test"
         prt(f'\n\n\n{test_name}... post too-big an order to deliberately exceed credit - note multi-table logic chaining\n\n')
@@ -235,4 +256,4 @@ def server_tests(host, port, version):
 
 
 if __name__ == "__main__":
-   server_tests("localhost", "5656", "v0")
+    server_tests("localhost", "5656", "v0")
