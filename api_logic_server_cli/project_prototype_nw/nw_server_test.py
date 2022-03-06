@@ -27,6 +27,7 @@ patch_test = True  # Updates a Customer with intentionally bad data to illustrat
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
 audit_test = True  # alter salary, check for audit row
+prune_test = True  # observe rules pruned for Order.RequiredDate (2013-10-13)
 cascade_update_test = True  # verify Order.ShippedDate 2013-10-13 adjusts balance 2102-1086->1016, product onhand
 custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 
@@ -214,6 +215,24 @@ def server_tests(host, port, version):
         assert r.status_code == 204, f'Error - "status_code != 204 in this response:\n{response_text}'
 
         prt(f'\n{test_name} PASSED\n')
+
+    if prune_test:
+        test_name = "PRUNE test"
+        prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n')
+        patch_uri = f'http://{host}:{port}/api/Order/10643/'
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "RequiredDate": "2013-10-13",
+                        "Id": 10643},
+                    "type": "Order",
+                    "id": 10643
+                }}
+        r = requests.patch(url=patch_uri, json=patch_args)
+        # response_text = r.text
+        prt(response_text)
+        response_text = get_ALFKI()
 
     if cascade_update_test:
         test_name = "CASCADE UPDATE test"
