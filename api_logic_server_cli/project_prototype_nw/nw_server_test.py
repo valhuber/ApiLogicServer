@@ -160,7 +160,12 @@ def server_tests(host, port, version):
                 }}
         r = requests.patch(url=patch_emp_uri, json=patch_args)
         response_text = r.text
-        assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
+        assert '"Salary": 200000.0' in response_text, f'Error - "Salary": 200000.0 not in patch response:\n{response_text}'
+
+        audit_uri = f'http://{host}:{port}/api/EmployeeAudit/?include=Employee&fields%5BEmployeeAudit%5D=Id%2CTitle%2CSalary%2CLastName%2CFirstName%2CEmployeeId%2CCreatedOn&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=Id%2CTitle%2CSalary%2CLastName%2CFirstName%2CEmployeeId%2CCreatedOn%2Cid'
+        r = requests.get(url=audit_uri)
+        response_text = r.text
+        assert '"Salary": 200000.0' in response_text, f'Error - "Salary": 200000.0 not in audit response:\n{response_text}'
 
         prt(f'\n{test_name} PASSED\n')
 
