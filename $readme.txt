@@ -112,3 +112,30 @@ update OrderDetail
           where Id = OrderId)
 2156 rows
 Id 10643; OrderDetails are blank on load.  ugh
+
+{
+  "data": {
+    "attributes": {
+      "Id": 0,
+      "CustomerId": "ALFKI",
+      "EmployeeId": 5,
+      "OrderDate": "",
+      "RequiredDate": "0001-01-01",
+      "ShippedDate": "",
+      "ShipVia": 0,
+      "Freight": 0,
+      "ShipName": "",
+      "ShipAddress": "",
+      "ShipCity": "",
+      "ShipRegion": "",
+      "ShipPostalCode": "",
+      "ShipCountry": "",
+      "AmountTotal": 0,
+      "Country": "France",
+      "City": "Paris",
+      "Ready": false,
+      "OrderDetailCount": 0
+    },
+    "type": "Order"
+  }
+}

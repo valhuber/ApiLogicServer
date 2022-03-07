@@ -35,7 +35,7 @@ MetaDataTable = NewType('MetaDataTable', object)
 class ResourceAttribute():
     def __init__(self, each_attribute: object, resource: Type['Resource']):
         self.name = str(each_attribute.name)
-        if self.name == "extension":
+        if self.name == "Ready":
             debug_str = "Nice breakpoint"
         # self.nullable = each_attribute.nullable
         type = str(each_attribute.type)
