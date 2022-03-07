@@ -22,8 +22,9 @@ if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1].__contains__("help")
 """
 
 get_test = True  # Performs a basic get, with Fields and Filter
-self_reln_test = True  # verify dept subDepts, headDept
-patch_test = True  # Updates a Customer with intentionally bad data to illustrate logic
+self_reln_test = True  # Get dept, verify subDepts, headDept
+patch_test = True  # Updates a Customer with intentionally bad data to illustrate simple constraint
+adjust_test = True  # Update Order Detail with intentionally bad data to illustrate chaining, constraint, reuse
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
 audit_test = True  # alter salary, check for audit row
@@ -48,7 +49,7 @@ def get_project_dir() -> str:
     path = Path(__file__)
     parent_path = path.parent
     parent_path = parent_path.parent
-    return parent_path
+    return str(parent_path)
 
 
 def server_tests(host, port, version):
@@ -142,7 +143,29 @@ def server_tests(host, port, version):
                 }}
         r = requests.patch(url=patch_cust_uri, json=patch_args)
         response_text = r.text
-        assert "exceeds credit" in response_text, f'Error - "exceeds credit not in this response:\n{response_text}'
+        assert "exceeds credit" in response_text, f'Error - "exceeds credit" not in this response:\n{response_text}'
+
+        prt(f'\n{test_name} PASSED\n')
+
+    if adjust_test:
+        test_name = "ADJUST test"
+        prt(f'\n\n\n{test_name}... deliberate error - update Order Detail with intentionally bad data '
+            f'to illustrate chaining, constraint, reuse\n\n')
+        patch_cust_uri = f'http://{host}:{port}/api/OrderDetail/1040/'
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "Id": 1040,
+                        "Quantity": 1110
+                    },
+                    "type": "OrderDetail",
+                    "id": "1040"
+                }
+            }
+        r = requests.patch(url=patch_cust_uri, json=patch_args)
+        response_text = r.text
+        assert "exceeds credit" in response_text, f'Error - "exceeds credit" not in this response:\n{response_text}'
 
         prt(f'\n{test_name} PASSED\n')
 
@@ -230,7 +253,7 @@ def server_tests(host, port, version):
                     "id": 10643
                 }}
         r = requests.patch(url=patch_uri, json=patch_args)
-        # response_text = r.text
+        response_text = r.text
         prt(response_text)
         response_text = get_ALFKI()
 
@@ -248,7 +271,7 @@ def server_tests(host, port, version):
                     "id": 10643
                 }}
         r = requests.patch(url=patch_uri, json=patch_args)
-        # response_text = r.text
+        response_text = r.text
         prt(response_text)
         response_text = get_ALFKI()
         # prt(f'\nget_ALFKI: {response_text}')
@@ -296,3 +319,5 @@ def server_tests(host, port, version):
 
 if __name__ == "__main__":
     server_tests("localhost", "5656", "v0")
+
+    # todo - empty order test, credit-limit from Order Detail change
