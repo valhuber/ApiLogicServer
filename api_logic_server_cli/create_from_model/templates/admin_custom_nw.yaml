@@ -292,6 +292,8 @@ resources:
       - name: AmountTotal
         type: DECIMAL
         info: derived as sum(OrderDetail.Amount)
+      - name: Ready
+      - name: OrderDetailCount
       - name: Freight
         required: true
         type: DECIMAL

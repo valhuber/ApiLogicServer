@@ -254,7 +254,7 @@ def server_tests(host, port, version):
                 }}
         r = requests.patch(url=patch_uri, json=patch_args)
         response_text = r.text
-        prt(response_text)
+        # prt(response_text)
         response_text = get_ALFKI()
 
     if cascade_update_test:
@@ -272,7 +272,7 @@ def server_tests(host, port, version):
                 }}
         r = requests.patch(url=patch_uri, json=patch_args)
         response_text = r.text
-        prt(response_text)
+        # prt(response_text)
         response_text = get_ALFKI()
         # prt(f'\nget_ALFKI: {response_text}')
         assert '"Balance": 1016.0' in response_text, f'Error - "Balance": 1026.0 not in this response:\n{response_text}'
