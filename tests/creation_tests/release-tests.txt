@@ -24,26 +24,17 @@ run each script below, verify app and swagger
     cd ~/dev/servers/install/ApiLogicServer
     docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-    then, in Docker terminal, for each <project>...
-        cd <project>
+    (at cd ~/dev/ApiLogicServer/tests/creation_tests)
+    sh create-dockers.sh go
+    # copy/paste the "run this in docker: sh /localhost/docker-commands.sh"
+    # should see the following projects in ~/dev/servers/install/ApiLogicServer/dockers:
+        ApiLogicServer chinook  classicmodels	docker-commands.sh  postgres  sakila  sqlserver
+
+    then, in Docker terminal, for <each dockers project>...
+        cd /localhost/<each dockers project>
         python api_logic_server_run.py
 
-    ApiLogicServer create --project_name=/localhost/ApiLogicProject-d --db_url=
-        for ApiLogicProject-d, you can run the tests   
-            non-Docker terminal
-            cd ApiLogicProject-d/test
-            python server_test.py go
-            sh server_test.sh go
-
-    ApiLogicServer create --project_name=/localhost/classicmodels-d --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
-
-    ApiLogicServer create --project_name=/localhost/sakila-d --db_url=mysql+pymysql://root:p@mysql-container/sakila
-
-    ApiLogicServer create --project_name=/localhost/chinook-d --db_url=mysql+pymysql://root:p@mysql-container/Chinook
-
-    ApiLogicServer create --project_name=/localhost/postgres-d --db_url=postgresql://postgres:p@postgresql-container/postgres
-
-    ApiLogicServer create --project_name=/localhost/sqlserver-d --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+    exit the docker container
 
 
 Logic - Sample
@@ -57,13 +48,12 @@ sh sample_tests.sh go
 Logic - Allocation
 ==================
 
-cd /Users/val/dev/ApiLogicServer/tests/allocation_test  # runs from dev env (no venv)
+cd ~/dev/ApiLogicServer/tests/allocation_test  # runs from dev env (no venv)
 sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
 
-cd /Users/val/dev/servers/install/ApiLogicServer/Allocation/test  # ../../../servers/install/ApiLogicServer/Allocation/test
+cd ~/dev/servers/install/ApiLogicServer/Allocation/test  # ../../../servers/install/ApiLogicServer/Allocation/test
 sh test.sh  # verifies tests/results.txt, console should say pass
 # stop server
-
 
 
 
