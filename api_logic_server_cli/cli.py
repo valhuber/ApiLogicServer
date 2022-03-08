@@ -17,7 +17,7 @@ __version__ = "4.03.03"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t03/05/2022 - 04.03.03: server_test.py bugfix and audit example \n"\
+    "\t03/05/2022 - 04.03.03: server_test.py bugfix and additional examples \n"\
     "\t03/04/2022 - 04.03.02: proper required (issue 34), allocate fixes (issue 39), tests \n"\
     "\t02/21/2022 - 04.02.08: vscode redirectOutput for debugger, /bin for venv, readme install \n"\
     "\t02/20/2022 - 04.02.06: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\

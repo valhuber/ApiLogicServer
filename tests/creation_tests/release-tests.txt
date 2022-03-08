@@ -2,7 +2,7 @@ Creation tests
 ==============
 
 cd tests/creation_tests
-sh rebuild_servers_install sh go  # rebuilds the venv
+sh create_servers.sh venv  # rebuilds the venv
 # follow directions to pip install
 
 run each script below, verify app and swagger
@@ -11,17 +11,11 @@ run each script below, verify app and swagger
     pip
     ===
 
-    ApiLogicServer create --project_name=ApiLogicProject --db_url=
-
-    ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
-
-    ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
-
-    ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
-
-    ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/dev/ApiLogicServer/tests/allocation/allocation.sqlite
-
-    use vsc to run api_logic_server_run.py (Launch Config: Python: Current File)
+    sh create_servers.sh create  # rebuilds ApiLogicProject, classicmodels, postgres, sqlserver
+    
+    test the servers
+        
+        use vsc to run each api_logic_server_run.py (Launch Config: Python: Current File)
 
 
     docker
@@ -52,17 +46,6 @@ run each script below, verify app and swagger
     ApiLogicServer create --project_name=/localhost/sqlserver-d --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
 
 
-
-Logic - Allocation
-==================
-
-cd tests/allocation  # from dev env (no venv)
-sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
-cd ../../../servers/install/ApiLogicServer/Allocation-test/test  # on different terminal
-sh test.sh  # verifies tests/results.txt, console should say pass
-# stop server
-
-
 Logic - Sample
 ==============
 
@@ -71,9 +54,22 @@ cd tests/sample_tests
 sh sample_tests.sh go
 
 
+Logic - Allocation
+==================
 
-Rebuild
-=======
+cd /Users/val/dev/ApiLogicServer/tests/allocation_test  # runs from dev env (no venv)
+sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
+
+cd /Users/val/dev/servers/install/ApiLogicServer/Allocation/test  # ../../../servers/install/ApiLogicServer/Allocation/test
+sh test.sh  # verifies tests/results.txt, console should say pass
+# stop server
+
+
+
+
+Rebuild-from-model
+==================
+
 cd /Users/val/dev/servers/install/ApiLogicServer
 ApiLogicServer rebuild-from-model --project_name=ApiLogicProject --db_url=
 ApiLogicServer rebuild-from-model --project_name=/localhost/ApiLogicProject-d --db_url=

@@ -1,6 +1,6 @@
 #!/bin/bash
 export target="../../../servers/install/ApiLogicServer"
-export project=${target}/Allocation-test
+export project=${target}/Allocation
 # ls $target
 # ls $project  ../../../servers/install/ApiLogicServer/Allocation-test
 
@@ -9,7 +9,7 @@ if [ $# -eq 0 ]
         echo " "
         echo "\nRebuilds Allocation at ${project}, from dev env (no venv)"
         echo " "
-        echo " IMPORTANT - ApiLogicServer/tests/allocation folder"
+        echo " IMPORTANT - cd ApiLogicServer/tests/allocation folder"
         echo " "
         echo "  sh setup-allocation.sh [ create | x ]"
         echo " "
@@ -31,11 +31,13 @@ if [ $# -eq 0 ]
             echo "now running: pip install -r ${project}/requirements.txt"
             pip install -r ${project}/requirements.txt
 
+            echo "\n\nNow running: pip install -r ${project}/requirements.txt"
             set -x
-            cp -rf Allocation-test/* ${project}
+            pwd
+            cp -rf Allocation-src/* ${project}
             rm ${project}/Dockerfile
 
-            echo "\nCreated, Starting server...\n"
+            echo "\nProject / venv created, Logic copied from Allocation-src, Starting server...\n"
             set +x
         fi
         echo "\n\n*******************************"

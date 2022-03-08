@@ -5,7 +5,7 @@ if [ $# -eq 0 ]
     then
         echo " "
         echo "\n Runs logic audit test - using shell scripts for testing"
-        echo "   1. Run Launch-Config: 0 - Create and Run"
+        echo "   1. Run Launch-Config to start the server: 2 - Debug ApiLogicProject"
         echo " "
         echo " This runs:"
         echo "   1. ${project}/test/server_test.sh "
