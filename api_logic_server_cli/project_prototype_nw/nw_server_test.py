@@ -314,7 +314,8 @@ def server_tests(host, port, version):
             f'......ADJUSTS Order.AmountTotal (19998), which...\n'
             f'........ADJUSTS Customer.Balance (21014), which...\n'
             f'........Properly fails CONSTRAINT (balance exceeds limit of 2000), as intended.\n\n'
-            f'Per the rules in ({get_project_dir()}/logic/declare_logic.py)\n\n')
+            f'Per the rules in ({get_project_dir()}/logic/declare_logic.py)\n\n'
+            f'\n\nNote: Log is truncated by default; override as desired in api_logic_server_run.py')
 
 
 if __name__ == "__main__":
