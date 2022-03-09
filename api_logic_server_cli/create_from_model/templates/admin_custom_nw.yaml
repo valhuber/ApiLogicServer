@@ -17,7 +17,6 @@ resources:
         sort: true
       - name: Description
       - name: Id
-        required: true
     type: Category
     user_key: CategoryName
   Customer:
@@ -74,7 +73,6 @@ resources:
       - name: Phone
       - name: Fax
       - name: Id
-        required: true
     tab_groups:
       - direction: tomany
         fks:
@@ -88,7 +86,6 @@ resources:
     attributes:
       - label: ' Id*'
         name: Id
-        required: true
         search: true
         sort: true
       - name: CustomerDesc
@@ -102,7 +99,6 @@ resources:
         sort: true
       - name: DepartmentId
       - name: Id
-        required: true
     tab_groups:
       - direction: tomany
         fks:
@@ -154,7 +150,6 @@ resources:
       - name: Salary
         type: DECIMAL
       - name: Id
-        required: true
     tab_groups:
       - direction: tomany
         fks:
@@ -196,7 +191,6 @@ resources:
       - name: FirstName
       - name: CreatedOn
       - name: Id
-        required: true
     tab_groups:
       - direction: toone
         fks:
@@ -209,7 +203,6 @@ resources:
     attributes:
       - label: ' Id*'
         name: Id
-        required: true
         search: true
         sort: true
       - name: TerritoryId
@@ -284,7 +277,6 @@ resources:
     attributes:
       - name: Id
       - name: EmployeeId
-        required: true
       - name: ShippedDate
         info: set reduces Customer Balance, decreases Product Stock
       - name: OrderDate
@@ -343,7 +335,6 @@ resources:
     attributes:
       - label: ' Id*'
         name: Id
-        required: true
         search: true
         sort: true
       - name: ProductId
@@ -397,7 +388,6 @@ resources:
         required: true
       - name: UnitsShipped
       - name: Id
-        required: true
         info: derived as sum(OrderDetail.Quantity where ShippedDate is not None)
       - name: SupplierId
         required: true
@@ -418,7 +408,6 @@ resources:
         search: true
         sort: true
       - name: Id
-        required: true
     type: Region
     user_key: RegionDescription
   Shipper:
@@ -429,7 +418,6 @@ resources:
         sort: true
       - name: Phone
       - name: Id
-        required: true
     type: Shipper
     user_key: CompanyName
   Supplier:
@@ -449,7 +437,6 @@ resources:
       - name: Fax
       - name: HomePage
       - name: Id
-        required: true
     type: Supplier
     user_key: CompanyName
   Territory:
@@ -459,7 +446,6 @@ resources:
         search: true
         sort: true
       - name: Id
-        required: true
       - name: RegionId
         required: true
     tab_groups:
