@@ -1,5 +1,12 @@
 #!/bin/bash
 
+contains()
+  # echo contains check $1 in $2
+  case "$1" in
+    (*"$2"*) true;;
+    (*) false;;
+  esac
+
 if [ $# -eq 0 ]
   then
     echo " "
@@ -26,7 +33,16 @@ if [ $# -eq 0 ]
     if [ "$1" = "vscode" ]
       then
         python3 -m venv venv       # may require python -m venv venv
-        source venv/bin/activate   # windows venv\Scripts\activate
+        # pwd
+        # ls
+        ostype=$(uname -a)
+        if contains "ubuntu" $ostype; then
+          echo $ostype contains ubuntu
+          . venv/bin/activate
+        else
+          echo $ostype does not contain ubuntu
+          source venv/bin/activate   # windows venv\Scripts\activate
+        fi
         # read -p "venv created; do optional pre-installs now $1> "
         pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
         code .vscode/workspace.code-workspace
