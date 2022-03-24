@@ -33,6 +33,10 @@
             "program": "${workspaceFolder}/test/api_logic_server_behave/report_behave_logic.py",
             "redirectOutput": true,
             "justMyCode": false,            
+            "args": ["run"
+                ,"--prepend_wiki=TTD Logic Report Intro micro.md"
+                ,"--wiki=TTD Logic Report.md"
+            ],
             "console": "integratedTerminal"
         },
         {

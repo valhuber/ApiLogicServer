@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 import ast
 import sys
+import click
 
 """
 Creates wiki file from test/behave/behave.log, with rule use.
@@ -36,18 +37,17 @@ def line_spacer():
     wiki_data.append("\n")
 
 
-def get_current_readme():
+def get_current_readme(prepend_wiki: str):
     """ initialize wiki_data with readme up to 'TDD Report' """
-    TDD_report_name = "TDD Report"
-    readme_file_name = '../../readme.md'
-    with open(readme_file_name) as readme:
+    TDD_report_name = "TDD Logic Report"
+    with open(prepend_wiki) as readme:
         readme_lines = readme.readlines()
     for each_readme_line in readme_lines:
         if '# ' + TDD_report_name in each_readme_line:
             break
         wiki_data.append(each_readme_line[0:-1])
     line_spacer()
-    wiki_data.append("# TDD Report")
+    wiki_data.append("# TDD Logic Report")
 
 def get_truncated_scenario_name(scenario_name: str) -> str:
     """ address max file length (chop at 26), illegal characters """
@@ -153,10 +153,11 @@ def get_docStrings(steps_dir: str):
     # print("that's all, folks")
 
 
-def main(behave_log: str):
+def main(behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):
+    """ main driver """
     get_docStrings(steps_dir="features/steps")
 
-    get_current_readme()
+    get_current_readme(prepend_wiki=prepend_wiki)
 
     contents = None
     with open(behave_log) as f:
@@ -196,11 +197,57 @@ def main(behave_log: str):
         
         wiki_data.append(each_line)
 
-    report_name = 'report_behave_logic.md'
-    with open(report_name, 'w') as rpt:
+    with open(wiki, 'w') as rpt:
         rpt.write('\n'.join(wiki_data))
-    print(f'* Output: {report_name}\n***\n\n')
+    print(f'* Output: {wiki}\n***\n\n')
 
-if __name__ == "__main__":
-    print(f'\n***\n* Begin:  starting Behave Logic Report.py, at {os.getcwd()}')
-    main(behave_log = 'behave.log')
+
+
+def print_args(args, msg):
+    print(msg)
+    for each_arg in args:
+        print(f'  {each_arg}')
+    print(" ")
+
+
+@click.group()
+@click.pass_context
+def cli(ctx):
+    """
+    Combine behave.log and scenario_logic_logs to create TDD Logic Report
+
+    """
+    pass
+
+
+@cli.command("run")
+@click.pass_context
+@click.option('--behave_log',
+              default=f'behave.log',
+              # prompt="Log from behave test suite run [behave.log]",
+              help="Help")
+@click.option('--scenario_logs',
+              default=f'behave.log',
+              # prompt="Logic Log directory from ",
+              help="Help")
+@click.option('--wiki',
+              default=f'api_logic_server_behave',
+              # prompt="Log from behave test suite run [api_logic_server_behave]",
+              help="Help")
+@click.option('--prepend_wiki',
+              default=f'TDD Logic Report Intro',
+              # prompt="Log from behave test suite run [TDD Logic Report Intro]",
+              help="Help")
+def run(ctx, behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):
+    main(behave_log = behave_log, scenario_logs = scenario_logs, wiki = wiki, prepend_wiki = prepend_wiki)
+
+
+if __name__ == '__main__':  # debugger & python command line start here
+    # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
+    # unix: python api_logic_server_cli/cli.py create --project_name=/home/ApiLogicProject
+
+    print(f'\n***TDD Logic Report, at {os.getcwd()}')
+    commands = sys.argv
+    if len(sys.argv) > 1:
+        print_args(commands, f'\n\nCommand Line Arguments:')
+    cli()
