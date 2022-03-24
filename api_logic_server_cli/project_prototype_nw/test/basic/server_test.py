@@ -23,22 +23,22 @@ if len(sys.argv) == 1 or (len(sys.argv) > 1 and sys.argv[1].__contains__("help")
 
 get_test = True  # Performs a basic get, with Fields and Filter
 self_reln_test = True  # Get dept, verify subDepts, headDept
-patch_test = True  # Updates a Customer with intentionally bad data to illustrate simple constraint
-adjust_test = True  # Update Order Detail with intentionally bad data to illustrate chaining, constraint, reuse
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
+
+adjust_test = True  # Update Order Detail with intentionally bad data to illustrate chaining, constraint, reuse
 audit_test = True  # alter salary, check for audit row
 prune_test = True  # observe rules pruned for Order.RequiredDate (2013-10-13)
 cascade_update_test = True  # verify Order.ShippedDate 2013-10-13 adjusts balance 2102-1086->1016, product onhand
 custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 
 
-def prt(msg: any) -> None:
-    '''
-    print to console, and server log (see api/customize_api.py)
-    '''
+def prt(msg: any, test: str= None) -> None:
+    """
+    print to console, and server_log (see api/customize_api.py)
+    """
     print(msg)
-    msg_url = f'http://localhost:5656/server_log?msg={msg}'
+    msg_url = f'http://localhost:5656/server_log?msg={msg}&test={test}&dir=test/basic/results'
     r = requests.get(msg_url)
 
 
@@ -72,7 +72,7 @@ def server_tests(host, port, version):
         f'SAMPLEDB DIAGNOSTICS\n'
         f'verify good GET, PATCH, POST, DELETE and Custom Service\n'
         f'includes deliberate errors, to test constraints (these log strack traces, which are *NOT* errors\n'
-        f'====================\n')
+        f'====================\n', "BEGIN")
 
     add_order_uri = f'http://{host}:{port}/api/ServicesEndPoint/add_order'
     add_order_args = {
@@ -101,7 +101,7 @@ def server_tests(host, port, version):
     # use swagger to get uri
     if get_test:
         test_name = "GET test on Order"
-        prt(f'\n\n\n{test_name} - verify VINET returned...\n')
+        prt(f'\n\n\n{test_name} - verify VINET returned...\n', test_name)
         get_order_uri = f'http://{host}:{port}/api/Order/?' \
                         f'fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CAmountTotal' \
                         f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
@@ -111,8 +111,8 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if self_reln_test:
-        test_name = "GET self-reln test on Department/DepartmentList"
-        prt(f'\n\n\n{test_name}...\n\n')
+        test_name = "GET self-reln Dept-SubDepts"
+        prt(f'\n\n\n{test_name}...\n\n', test_name)
         get_dept_uri = f'http://{host}:{port}/api/Department/2/?' \
                        f'include=DepartmentList%2CEmployeeList%2CEmployeeList1%2CDepartment' \
                        f'&fields%5BDepartment%5D=Id%2CDepartmentId%2CDepartmentName'
@@ -129,8 +129,8 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if patch_test:
-        test_name = "PATCH test"
-        prt(f'\n\n\n{test_name}... deliberate errror - set credit_limit low to verify check credit constraint\n\n')
+        test_name = "PATCH - low credit"
+        prt(f'\n\n\n{test_name}... deliberate errror - set credit_limit low to verify check credit constraint\n\n', test_name)
         patch_cust_uri = f'http://{host}:{port}/api/Customer/ALFKI/'
         patch_args = \
             {
@@ -148,9 +148,9 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if adjust_test:
-        test_name = "ADJUST test"
+        test_name = "ADJUST test - OrderDetail Qty"
         prt(f'\n\n\n{test_name}... deliberate error - update Order Detail with intentionally bad data '
-            f'to illustrate chaining, constraint, reuse\n\n')
+            f'to illustrate chaining, constraint, reuse\n\n', test_name)
         patch_cust_uri = f'http://{host}:{port}/api/OrderDetail/1040/'
         patch_args = \
             {
@@ -170,8 +170,8 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if audit_test:
-        test_name = "AUDIT test"
-        prt(f'\n\n\n{test_name}... alter salary, ensure audit row created (also available in shell script\n\n')
+        test_name = "AUDIT test - Emp Sal"
+        prt(f'\n\n\n{test_name}... alter salary, ensure audit row created (also available in shell script\n\n', test_name)
         patch_emp_uri = f'http://{host}:{port}/api/Employee/5/'
         patch_args = \
             {
@@ -209,8 +209,8 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if post_test:
-        test_name = "POST test"
-        prt(f'\n\n\n{test_name}... create a customer\n\n')
+        test_name = "POST test - Cust"
+        prt(f'\n\n\n{test_name}... create a customer\n\n', test_name)
         post_cust_uri = f'http://{host}:{port}/api/Customer/'
         post_args = \
             {
@@ -229,8 +229,8 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if delete_test:
-        test_name = "DELETE test"
-        prt(f'\n\n\n{test_name}... delete the customer just created\n\n')
+        test_name = "DELETE test - Cust"
+        prt(f'\n\n\n{test_name}... delete the customer just created\n\n', test_name)
         delete_cust_uri = f'http://{host}:{port}/api/Customer/ALFKJ/'
         r = requests.delete(url=delete_cust_uri, json={})
         # Generic Error: Entity body in unsupported format
@@ -240,8 +240,8 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if prune_test:
-        test_name = "PRUNE test"
-        prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n')
+        test_name = "PRUNE test - ReqdDate"
+        prt(f'\n\n\n{test_name}... observe rules pruned for Order.RequiredDate (2013-10-13) \n\n', test_name)
         patch_uri = f'http://{host}:{port}/api/Order/10643/'
         patch_args = \
             {
@@ -258,8 +258,8 @@ def server_tests(host, port, version):
         response_text = get_ALFKI()
 
     if cascade_update_test:
-        test_name = "CASCADE UPDATE test"
-        prt(f'\n\n\n{test_name}... verify Order.ShippedDate (2013-10-13) adjusts balance 2102-1086->1016, product onhand\n\n')
+        test_name = "CASCADE UPDATE - ShippedDate"
+        prt(f'\n\n\n{test_name}... verify Order.ShippedDate (2013-10-13) adjusts balance 2102-1086->1016, product onhand\n\n', test_name)
         patch_uri = f'http://{host}:{port}/api/Order/10643/'
         patch_args = \
             {
@@ -297,8 +297,8 @@ def server_tests(host, port, version):
         prt(f'\n{test_name} PASSED\n')
 
     if custom_service_test:
-        test_name = "CUSTOM SERVICE  test"
-        prt(f'\n\n\n{test_name}... post too-big an order to deliberately exceed credit - note multi-table logic chaining\n\n')
+        test_name = "CUSTOM SERVICE Bad Order"
+        prt(f'\n\n\n{test_name}... post too-big an order to deliberately exceed credit - note multi-table logic chaining\n\n', test_name)
         r = requests.post(url=add_order_uri, json=add_order_args)
         response_text = r.text
         assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'

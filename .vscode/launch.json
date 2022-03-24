@@ -64,6 +64,27 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Behave run",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/../servers/ApiLogicProject/test/api_logic_server_behave",
+            "program": "debug_behave.py",
+            "redirectOutput": true,
+            "args": [ ">", "behaveDEV.log"],
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Behave logic report",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/../servers/ApiLogicProject/test/api_logic_server_behave",
+            "program": "report_behave_logic.py",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
             "name": "megapilos create",
             "type": "python",
             "request": "launch",

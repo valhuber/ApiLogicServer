@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "4.03.03"
+__version__ = "5.00.00"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t03/23/2022 - 05.00.00: LogicBank bugfix, intoducing Behave test framework \n"\
     "\t03/05/2022 - 04.03.03: server_test.py bugfix and additional examples \n"\
     "\t03/04/2022 - 04.03.02: proper required (issue 34), allocate fixes (issue 39), tests \n"\
     "\t02/21/2022 - 04.02.08: vscode redirectOutput for debugger, /bin for venv, readme install \n"\
@@ -195,7 +196,9 @@ def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
 
 
 def recursive_overwrite(src, dest, ignore=None):
-    """ copyTree, with overwrite
+    """
+    copyTree, with overwrite
+    thanks: https://stackoverflow.com/questions/12683834/how-to-copy-directory-recursively-in-python-and-overwrite-all
     """
     if os.path.isdir(src):
         if not os.path.isdir(dest):
@@ -239,7 +242,9 @@ def copy_project_to_local(project_directory, copy_to_project_directory, message)
 def copy_if_mounted(project_directory):
     """
     fab is unable to create-app in mounted path
-    so, if mounted, create files in "created_project" and later copy to project_directory
+    so, if mounted, create files in "created_project" and later copy to 
+    
+    this approach is superceded by not using fab.create-app, now just copy the fab skeleton project files
 
     :param project_directory: name of project created
     :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
@@ -310,14 +315,21 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
                   f'Suggestions:\n'
                   f'.. Verify the --project_name argument\n'
                   f'.. If you are using Docker, verify the -v argument\n\n')
-
+    nw_copy = "recursive_overwrite"
     if nw_db_status in ["nw", "nw+"]:
-        print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, services")
-        replace_readme_with_nw_readme(project_directory)
-        replace_logic_with_nw_logic(project_directory)
-        replace_customize_models_with_nw_customize_models(project_directory)
-        replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
-        replace_server_test_with_nw_server_test(project_directory)
+        if nw_copy == "recursive_overwrite":
+            print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
+            code_loc = str(get_api_logic_server_dir())
+            nw_dir = (Path(code_loc)).\
+                joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/project_prototype
+            recursive_overwrite(nw_dir, project_directory)
+        else:
+            print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, services")
+            replace_readme_with_nw_readme(project_directory)
+            replace_logic_with_nw_logic(project_directory)
+            replace_customize_models_with_nw_customize_models(project_directory)
+            replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
+            replace_server_test_with_nw_server_test(project_directory)
 
     create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
@@ -560,14 +572,19 @@ def fix_basic_web_app_run__create_admin(project_directory):
                            in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
 
-def fix_database_models__inject_db_types(project_directory: str, db_types: str):
-    """ injecting <db_types file> into database/models.py """
+def fix_database_models(project_directory: str, db_types: str, nw_db_status: str):
+    """ injecting <db_types file> into database/models.py, fix nw cascade delete """
     models_file_name = f'{project_directory}/database/models.py'
     if db_types != "":
         print(f'.. .. ..Injecting file {db_types} into database/models.py')
         with open(db_types, 'r') as file:
             db_types_data = file.read()
         create_utils.insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
+    if nw_db_status in ["nw", "nw+"]:
+        print(f'.. .. ..setting cascade delete for sample database database/models.py')
+        create_utils.replace_string_in_file(in_file=models_file_name,
+            search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
+            replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
 
 
 def final_project_fixup(msg, project_name, project_directory, api_name,
@@ -689,7 +706,11 @@ def is_docker() -> bool:
 
 def get_abs_db_url(db_url):
     """
-    non-relative db location - we work with this (but NB: we copy sqlite db to <project>/database)
+    non-relative db location - we work with this
+
+    but NB: we copy sqlite db to <project>/database - see clone_prototype_project_with_nw_samples
+
+    also: compute physical nw db name (usually nw-gold-plus) to be used for copy
 
     returns abs_db_url - the real url (e.g., for nw), and whether it's really nw
     """
@@ -698,13 +719,13 @@ def get_abs_db_url(db_url):
 
     if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:
         # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold-plus.sqlite'
         rtn_nw_db_status = "nw"
     elif db_url == "nw-":
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw.sqlite'
         rtn_nw_db_status = "nw-"
     elif db_url == "nw+":
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw-gold-plus.sqlite'
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/nw-gold-plus.sqlite'
         rtn_nw_db_status = "nw+"
     elif db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
@@ -848,7 +869,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
         react_admin=react_admin, version = __version__, multi_api=multi_api)
-    fix_database_models__inject_db_types(project_directory, db_types)
+    fix_database_models(project_directory, db_types, nw_db_status)
     invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
     if extended_builder is not None and extended_builder != "":
         print(f'4. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')

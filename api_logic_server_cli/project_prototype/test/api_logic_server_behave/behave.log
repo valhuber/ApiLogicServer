@@ -1,0 +1,71 @@
+Feature: About Sample # features/about.feature:1
+
+  Scenario: Transaction Processing                           # features/about.feature:3
+    Given Sample Database                                    # features/steps/about.py:9
+    When Transactions are submitted                          # features/steps/about.py:13
+    Then Enforce business policies with Logic (rules + code) # features/steps/about.py:17
+
+Feature: Application Integration # features/api.feature:1
+
+  Scenario: GET Customer          # features/api.feature:3
+    Given Customer Account: VINET # features/steps/api.py:8
+    When GET Orders API           # features/steps/api.py:12
+    Then VINET retrieved          # features/steps/api.py:24
+
+  Scenario: GET Department                      # features/api.feature:9
+    Given Department 2                          # features/steps/api.py:30
+    When GET Department with SubDepartments API # features/steps/api.py:34
+    Then SubDepartments returned                # features/steps/api.py:38
+
+Feature: Place Order # features/place_order.feature:1
+
+  Scenario: Good Order Custom Service                  # features/place_order.feature:3
+    Given Customer Account: ALFKI                      # features/steps/place_order.py:18
+    When Good Order Placed                             # features/steps/place_order.py:24
+    Then Logic adjusts Balance (demo: chain up)        # features/steps/place_order.py:83
+    Then Logic adusts Products Reordered               # features/steps/place_order.py:92
+    Then Logic adjusts aggregates down on delete order # features/steps/place_order.py:96
+
+  Scenario: Bad Order Custom Service          # features/place_order.feature:11
+    Given Customer Account: ALFKI             # features/steps/place_order.py:18
+    When Order Placed with excessive quantity # features/steps/place_order.py:122
+    Then Rejected per Credit Limit            # features/steps/place_order.py:156
+    Then exceeds credit in response           # features/steps/place_order.py:163
+
+  Scenario: Alter Item Qty to exceed credit      # features/place_order.feature:18
+    Given Customer Account: ALFKI                # features/steps/place_order.py:18
+    When Order Detail Quantity altered very high # features/steps/place_order.py:175
+    Then Rejected per Credit Limit               # features/steps/place_order.py:156
+    Then exceeds credit in response              # features/steps/place_order.py:163
+
+  Scenario: Alter Required Date - adjust logic pruned  # features/place_order.feature:25
+    Given Customer Account: ALFKI                      # features/steps/place_order.py:18
+    When Order RequiredDate altered (2013-10-13)       # features/steps/place_order.py:201
+    Then Balance not adjusted                          # features/steps/place_order.py:227
+
+  Scenario: Set Shipped - adjust logic reuse    # features/place_order.feature:31
+    Given Customer Account: ALFKI               # features/steps/place_order.py:18
+    When Order ShippedDate altered (2013-10-13) # features/steps/place_order.py:238
+    Then Balance reduced 1086                   # features/steps/place_order.py:266
+
+  Scenario: Reset Shipped - adjust logic reuse  # features/place_order.feature:37
+    Given Shipped Order                         # features/steps/place_order.py:276
+    When Order ShippedDate set to None          # features/steps/place_order.py:281
+    Then Logic adjusts Balance by -1086         # features/steps/place_order.py:304
+
+Feature: Salary Change # features/salary_change.feature:1
+
+  Scenario: Audit Salary Change              # features/salary_change.feature:3
+    Given Employee 5 (Buchanan) - Salary 95k # features/steps/salary_change.py:9
+    When Patch Salary to 200k                # features/steps/salary_change.py:13
+    Then Salary_audit row created            # features/steps/salary_change.py:46
+
+  Scenario: Raise Must be Meaningful         # features/salary_change.feature:8
+    Given Employee 5 (Buchanan) - Salary 95k # features/steps/salary_change.py:9
+    When Patch Salary to 96k                 # features/steps/salary_change.py:74
+    Then Reject - Raise too small            # features/steps/salary_change.py:98
+
+4 features passed, 0 failed, 0 skipped
+11 scenarios passed, 0 failed, 0 skipped
+37 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 0m1.745s

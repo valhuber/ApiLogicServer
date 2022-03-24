@@ -1,0 +1,461 @@
+about:
+  date: Mar 24, 2022 18:59:13
+  recent_changes: altered Customer/Order/Employee attribute ordering, tab captions, info
+# this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
+  version: 5.00.00
+api_root: http://localhost:5656/api
+# for deployed apps, you might use a different uri, such as https://apilogicserver.pythonanywhere.com/api
+info:
+  number_relationships: 11
+  number_tables: 15
+resources:
+  Category:
+    attributes:
+      - label: ' Category Name*'
+        name: CategoryName
+        search: true
+        sort: true
+      - name: Description
+      - name: Id
+    type: Category
+    user_key: CategoryName
+  Customer:
+    info_list: <h1>Tour</h1>
+          In the <span style="font-family:'Courier New'">ui/admin/admin.yaml</span> file,
+          use <span style="font-family:'Courier New'">info_list</span> and 
+          <span style="font-family:'Courier New'">info_show</span> to provide user information.<br><br>
+          In this
+          <a target="_blank" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database">Northwind demo,</a>      
+          Info provides Tour suggestions.  On this page...
+          <ul>
+            <li> <strong>Search</strong> on multiple fields (Company, Contact Name) -- try z</li>
+            <li> <strong>Sort</strong> by column headers</li>
+            <li> <strong>Pagination</strong> (at bottom) to handle large result sets</li>
+            <li> <strong>Multi-page</strong>
+              <ul>
+                <li>Reset your search / sort so that
+                  <span style="font-family:'Courier New'">Alfreds</span> is at the top </li>
+                <li>Click <span style="font-family:'Courier New'">Alfreds,</span>
+                    to "zoom in" to the <i>show</i> page
+                      <ul><li>More info there</li></ul></li>
+              </ul>
+            </li>
+          </ul>
+    info_show: <h1>Tour</h1>
+          <h3>Multi-table</h3>
+          <ul>
+            <li>Note the list of related orders</li>
+            <li>Click the first order</li>
+          </ul>
+    attributes:
+      - label: ' Company Name*'
+        name: CompanyName
+        search: true
+        sort: true
+      - name: ContactName
+        search: true
+      - name: ContactTitle
+      - name: Balance
+        type: DECIMAL
+        info: derived as sum(Order.AmountTotal where ShippedDate is None)
+      - name: CreditLimit
+        type: DECIMAL
+        info: Balance may not exceed this value
+      - name: OrderCount
+        info: derived as sum(Order)
+      - name: UnpaidOrderCount
+        info: derived as count(Order where ShippedDate is None)
+      - name: Address
+      - name: City
+      - name: Region
+      - name: PostalCode
+      - name: Country
+      - name: Phone
+      - name: Fax
+      - name: Id
+    tab_groups:
+      - direction: tomany
+        fks:
+          - CustomerId
+        name: OrderList
+        label: Placed Order List
+        resource: Order
+    type: Customer
+    user_key: CompanyName
+  CustomerDemographic:
+    attributes:
+      - label: ' Id*'
+        name: Id
+        search: true
+        sort: true
+      - name: CustomerDesc
+    type: CustomerDemographic
+    user_key: Id
+  Department:
+    attributes:
+      - label: ' Department Name*'
+        name: DepartmentName
+        search: true
+        sort: true
+      - name: DepartmentId
+      - name: Id
+    tab_groups:
+      - direction: tomany
+        fks:
+          - DepartmentId
+        name: DepartmentList
+        resource: Department
+      - direction: tomany
+        fks:
+          - OnLoanDepartmentId
+        name: EmployeeList
+        resource: Employee
+      - direction: tomany
+        fks:
+          - WorksForDepartmentId
+        name: EmployeeList1
+        resource: Employee
+      - direction: toone
+        fks:
+          - DepartmentId
+        name: Department
+        resource: Department
+    type: Department
+    user_key: DepartmentName
+  Employee:
+    attributes:
+      - label: ' Last Name*'
+        name: LastName
+        search: true
+        sort: true
+      - name: OnLoanDepartmentId
+      - name: WorksForDepartmentId
+      - name: FirstName
+      - name: Salary
+        type: DECIMAL
+      - name: Title
+      - name: TitleOfCourtesy
+      - name: BirthDate
+      - name: HireDate
+      - name: Address
+      - name: City
+      - name: Region
+      - name: PostalCode
+      - name: Country
+      - name: HomePhone
+      - name: Extension
+      - name: Photo
+      - name: Notes
+      - name: ReportsTo
+      - name: PhotoPath
+      - name: IsCommissioned
+      - name: Id
+    tab_groups:
+      - direction: tomany
+        fks:
+          - EmployeeId
+        name: EmployeeAuditList
+        resource: EmployeeAudit
+      - direction: tomany
+        fks:
+          - EmployeeId
+        name: EmployeeTerritoryList
+        resource: EmployeeTerritory
+      - direction: tomany
+        fks:
+          - EmployeeId
+        name: OrderList
+        resource: Order
+      - direction: toone
+        fks:
+          - OnLoanDepartmentId
+        name: Department
+        resource: Department
+      - direction: toone
+        fks:
+          - WorksForDepartmentId
+        name: Department1
+        resource: Department
+    type: Employee
+    user_key: LastName
+  EmployeeAudit:
+    attributes:
+      - label: ' Last Name*'
+        name: LastName
+        search: true
+        sort: true
+      - name: EmployeeId
+      - name: Title
+      - name: Salary
+        type: DECIMAL
+      - name: FirstName
+      - name: CreatedOn
+      - name: Id
+    tab_groups:
+      - direction: toone
+        fks:
+          - EmployeeId
+        name: Employee
+        resource: Employee
+    type: EmployeeAudit
+    user_key: LastName
+  EmployeeTerritory:
+    attributes:
+      - label: ' Id*'
+        name: Id
+        search: true
+        sort: true
+      - name: TerritoryId
+      - name: EmployeeId
+        required: true
+    tab_groups:
+      - direction: toone
+        fks:
+          - TerritoryId
+        name: Territory
+        resource: Territory
+      - direction: toone
+        fks:
+          - EmployeeId
+        name: Employee
+        resource: Employee
+    type: EmployeeTerritory
+    user_key: Id
+  Location:
+    attributes:
+      - label: ' country*'
+        name: country
+        required: true
+        search: true
+        sort: true
+      - name: city
+        required: true
+      - name: notes
+    tab_groups:
+      - direction: tomany
+        fks:
+          - Country
+          - City
+        name: OrderList
+        resource: Order
+    type: Location
+    user_key: country
+  Order:
+    info_show: <h1>Tour</h1>
+          <h3>Automatic Joins</h3>
+          <ul>
+            <li> Observe the Product Name in the Order Detail list.</li>
+            <li> In the
+              <a target="_blank" href="https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database">sample database,</a>      
+              the Order Detail is related to the Product by
+              <span style="font-family:'Courier New'">ProductId.</span>
+              which makes no sense to End Users.<br>
+              So, the system joins a suitable field, automatically.
+            </li>
+            <li> 
+              Automatic joins are configurable
+              <a target="_blank" href="https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App">configurable.</a>
+            </li>
+          </ul>
+          <h3>Update Support - Lookups, Logic</h3>
+          <ul>
+            <li> <strong>Edit</strong> the first Order Detail, and....
+              <ul>
+                <li> Use <strong>Lookup</strong> to select a different product. </li>
+              </ul>
+            </li>
+            <li> After save, observe the altered 
+                <span style="font-family:'Courier New'">Amount Total.</span>
+                <ul>
+                  <li>
+                    This is not from code, but from
+                    <a target="_blank" href="https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour#logic-enforcement">this logic.</a>
+                  </li>
+                </ul>
+            </li>
+          </ul>
+    attributes:
+      - name: Id
+      - name: EmployeeId
+      - name: ShippedDate
+        info: set reduces Customer Balance, decreases Product Stock
+      - name: OrderDate
+        type: DATE
+      - name: AmountTotal
+        type: DECIMAL
+        info: derived as sum(OrderDetail.Amount)
+      - name: Ready
+      - name: OrderDetailCount
+      - name: Freight
+        required: true
+        type: DECIMAL
+      - name: Country
+        label: Country
+      - name: City
+        label: City
+      - name: RequiredDate
+      - name: CustomerId
+        required: true
+      - label: ' Ship Name*'
+        name: ShipName
+        search: true
+        sort: true
+      - name: ShipVia
+      - name: ShipAddress
+      - name: ShipCity
+      - name: ShipRegion
+      - name: ShipPostalCode
+      - name: ShipCountry
+    tab_groups:
+      - direction: tomany
+        fks:
+          - OrderId
+        name: OrderDetailList
+        label: Order Detail List
+        resource: OrderDetail
+      - direction: toone
+        fks:
+          - CustomerId
+        name: Customer
+        resource: Customer
+      - direction: toone
+        fks:
+          - Country
+          - City
+        name: Location
+        resource: Location
+      - direction: toone
+        fks:
+          - EmployeeId
+        name: Employee
+        resource: Employee
+    type: Order
+    user_key: Id
+  OrderDetail:
+    attributes:
+      - label: ' Id*'
+        name: Id
+        search: true
+        sort: true
+      - name: ProductId
+        required: true
+      - name: OrderId
+        required: true
+      - name: UnitPrice
+        info: derived as copy(Product.UnitPrice)
+        required: true
+        type: DECIMAL
+      - name: Quantity
+        required: true
+      - name: Discount
+        required: true
+      - name: Amount
+        type: DECIMAL
+        info: derived as UnitPrice * Quantity
+      - name: ShippedDate
+        info: derived as Order.ShippedDate
+    tab_groups:
+      - direction: toone
+        fks:
+          - ProductId
+        name: Product
+        resource: Product
+      - direction: toone
+        fks:
+          - OrderId
+        name: Order
+        resource: Order
+    type: OrderDetail
+    user_key: Id
+  Product:
+    attributes:
+      - label: ' Product Name*'
+        name: ProductName
+        search: true
+        sort: true
+      - name: QuantityPerUnit
+      - name: UnitPrice
+        required: true
+        type: DECIMAL
+      - name: UnitsInStock
+        required: true
+        info: derived as UnitsInStock - (UnitsShipped - old_row.UnitsShipped)
+      - name: UnitsOnOrder
+        required: true
+      - name: ReorderLevel
+        required: true
+      - name: Discontinued
+        required: true
+      - name: UnitsShipped
+      - name: Id
+        info: derived as sum(OrderDetail.Quantity where ShippedDate is not None)
+      - name: SupplierId
+        required: true
+      - name: CategoryId
+        required: true
+    tab_groups:
+      - direction: tomany
+        fks:
+          - ProductId
+        name: OrderDetailList
+        resource: OrderDetail
+    type: Product
+    user_key: ProductName
+  Region:
+    attributes:
+      - label: ' Region Description*'
+        name: RegionDescription
+        search: true
+        sort: true
+      - name: Id
+    type: Region
+    user_key: RegionDescription
+  Shipper:
+    attributes:
+      - label: ' Company Name*'
+        name: CompanyName
+        search: true
+        sort: true
+      - name: Phone
+      - name: Id
+    type: Shipper
+    user_key: CompanyName
+  Supplier:
+    attributes:
+      - label: ' Company Name*'
+        name: CompanyName
+        search: true
+        sort: true
+      - name: ContactName
+      - name: ContactTitle
+      - name: Address
+      - name: City
+      - name: Region
+      - name: PostalCode
+      - name: Country
+      - name: Phone
+      - name: Fax
+      - name: HomePage
+      - name: Id
+    type: Supplier
+    user_key: CompanyName
+  Territory:
+    attributes:
+      - label: ' Territory Description*'
+        name: TerritoryDescription
+        search: true
+        sort: true
+      - name: Id
+      - name: RegionId
+        required: true
+    tab_groups:
+      - direction: tomany
+        fks:
+          - TerritoryId
+        name: EmployeeTerritoryList
+        resource: EmployeeTerritory
+    type: Territory
+    user_key: TerritoryDescription
+settings:
+  HomeJS: http://localhost:5656/admin-app/home.js
+  max_list_columns: 8

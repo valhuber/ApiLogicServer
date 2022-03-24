@@ -1,8 +1,8 @@
 about:
-  date: Mar 3, 2022 18:59:13
-  recent_changes: altered Customer/Order attribute ordering, tab captions, info
+  date: Mar 24, 2022 18:59:13
+  recent_changes: altered Customer/Order/Employee attribute ordering, tab captions, info
 # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
-  version: 4.03.00
+  version: 5.00.00
 api_root: http://localhost:5656/api
 # for deployed apps, you might use a different uri, such as https://apilogicserver.pythonanywhere.com/api
 info:
@@ -131,6 +131,8 @@ resources:
       - name: OnLoanDepartmentId
       - name: WorksForDepartmentId
       - name: FirstName
+      - name: Salary
+        type: DECIMAL
       - name: Title
       - name: TitleOfCourtesy
       - name: BirthDate
@@ -147,8 +149,6 @@ resources:
       - name: ReportsTo
       - name: PhotoPath
       - name: IsCommissioned
-      - name: Salary
-        type: DECIMAL
       - name: Id
     tab_groups:
       - direction: tomany

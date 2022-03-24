@@ -28,6 +28,8 @@ const sla_doc =
     '       how logic can meaningfully improve ' +
     '       <a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/LogicBank/wiki/by-code" title="Rules are 40X more concise than code, and address over 95% of database logic" target="_blank">conciseness</a> ' +
     '       and quality</li>' +
+    '   <li><a class="custom" style="color: #3f51b5" rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki/Working-with-TDD" target="_blank">Test</a> ' +
+    '       using Behave, a TDD (Test Driven Design) framework </li>' +
     '</ul><br/><br/>' +
     '<h4>Explore this app</h4>' +
     '   <ul><li>Start with Customer (at left), and watch for the Info icons (upper right)</li></ul>' +

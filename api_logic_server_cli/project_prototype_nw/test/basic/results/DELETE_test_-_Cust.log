@@ -1,0 +1,8 @@
+Logic Phase:		ROW LOGIC(session=0x10f0b9d60) (sqlalchemy before_flush)			 - 2022-03-12 18:12:55,855 - logic_logger - INFO
+..Customer[ALFKJ] {delete - client} Id: ALFKJ, CompanyName: None, ContactName: None, ContactTitle: None, Address: None, City: None, Region: None, PostalCode: None, Country: None, Phone: None, Fax: None, Balance: 0E-10, CreditLimit: 10.0000000000, OrderCount: 0, UnpaidOrderCount: 0  row: 0x10f12b520  session: 0x10f0b9d60 - 2022-03-12 18:12:55,855 - logic_logger - INFO
+Logic Phase:		COMMIT(session=0x10f0b9d60)   										 - 2022-03-12 18:12:55,855 - logic_logger - INFO
+
+Rules Fired: - 2022-03-12 18:12:55,856 - logic_logger - INFO
+
+ - 2022-03-12 18:12:55,856 - logic_logger - INFO
+Logic Phase:		FLUSH(session=0x10f0b9d60)   (sqlalchemy flush processing)       	 - 2022-03-12 18:12:55,856 - logic_logger - INFO

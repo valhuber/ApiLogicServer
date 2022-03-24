@@ -553,6 +553,11 @@ class AdminCreator(object):
 
         if self.mod_gen.nw_db_status in ["nw", "nw-"] and self.mod_gen.api_name == "api":
             if not self.mod_gen.command.startswith("rebuild"):
+                pass
+                src = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin_custom_nw.yaml'))
+                dest = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
+                shutil.copyfile(src, dest)
+                """  nw fixup (not required, since all copied from prototype_nw)
                 admin_custom_nw_file = open(
                     os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
                 admin_custom_nw = admin_custom_nw_file.read()
@@ -567,6 +572,7 @@ class AdminCreator(object):
                     admin_file = open(yaml_file_name, 'w')
                     admin_file.write(admin_custom_nw)
                     admin_file.close()
+                """
 
     def create_settings(self):
         self.admin_yaml.settings = DotMap()
@@ -655,20 +661,23 @@ class AdminCreator(object):
                 exit(1)
             shutil.copytree(from_proto_dir, to_project_dir)
 
-        os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
+        # os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
 
         home_js_file = "home.js"  # get the welcome screen
         if self.mod_gen.nw_db_status in ["nw", "nw+"]:  # explains nw-specific customizations
-            home_js_file = "home_nw.js"
-        home_js = pathlib.Path(self.get_create_from_model_dir()).\
-            joinpath("create_from_model", "templates", home_js_file)
-        to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
-        shutil.copyfile(home_js, to_project_dir.joinpath("home.js"))
+            pass  # already copied from prototype_nw
+        else:
+            home_js = pathlib.Path(self.get_create_from_model_dir()).\
+                joinpath("create_from_model", "templates", home_js_file)
+            to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
+            shutil.copyfile(home_js, to_project_dir.joinpath("home.js"))
+
         swagger_name = self.mod_gen.api_name
         if self.mod_gen.multi_api:
             swagger_name += "/api"
             print(f'.. ui/admin/home.js updated url: {swagger_name}')
-        create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
+        if self.mod_gen.nw_db_status not in ["nw", "nw+"]:
+            create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
                                             replace_with=swagger_name,
                                             in_file=to_project_dir.joinpath("home.js"))
 
