@@ -2,6 +2,19 @@
 [![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 
+# Alert
+
+Recent updates to included libs have broken API Logic Server.  After installing, you can repair it like this (your venv should be active):
+
+```
+pip install MarkupSafe==1.1.1
+pip install Jinja2==2.11.2
+```
+
+A new version is planned for this weekend that incorporates a [new testing process](https://github.com/valhuber/TDD#readme).
+
+&nbsp;&nbsp;
+
 # API Logic Server
 
 ### TL;DR - creates customizable, model-driven database systems - instantly - from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
