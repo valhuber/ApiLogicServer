@@ -1,0 +1,15 @@
+Logic Phase:		ROW LOGIC(session=0x103d04490) (sqlalchemy before_flush)			 - 2022-03-24 19:22:59,087 - logic_logger - INFO
+..Order[10643] {Update - client} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate:  [2013-10-13-->] 2013-10-13 00:00:00, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x103d1e250  session: 0x103d04490 - 2022-03-24 19:22:59,087 - logic_logger - INFO
+Logic Phase:		COMMIT(session=0x103d04490)   										 - 2022-03-24 19:22:59,088 - logic_logger - INFO
+..Order[10643] {Commit Event} Id: 10643, CustomerId: ALFKI, EmployeeId: 6, OrderDate: 2013-08-25, RequiredDate:  [2013-10-13-->] 2013-10-13 00:00:00, ShippedDate: None, ShipVia: 1, Freight: 29.4600000000, ShipName: Alfreds Futterkiste, ShipAddress: Obere Str. 57, ShipCity: Berlin, ShipRegion: Western Europe, ShipPostalCode: 12209, ShipCountry: Germany, AmountTotal: 1086.00, Country: None, City: None, Ready: True, OrderDetailCount: 3  row: 0x103d1e250  session: 0x103d04490 - 2022-03-24 19:22:59,088 - logic_logger - INFO
+
+Rules Fired:		## - 2022-03-24 19:22:59,088 - logic_logger - INFO
+  Customer		## - 2022-03-24 19:22:59,089 - logic_logger - INFO
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1036389d0>)		## - 2022-03-24 19:22:59,089 - logic_logger - INFO
+    2. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)		## - 2022-03-24 19:22:59,089 - logic_logger - INFO
+    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x103623c10>)		## - 2022-03-24 19:22:59,089 - logic_logger - INFO
+  Order		## - 2022-03-24 19:22:59,089 - logic_logger - INFO
+    4. RowEvent Order.congratulate_sales_rep() 		## - 2022-03-24 19:22:59,089 - logic_logger - INFO
+
+ - 2022-03-24 19:22:59,089 - logic_logger - INFO
+Logic Phase:		FLUSH(session=0x103d04490)   (sqlalchemy flush processing)       	 - 2022-03-24 19:22:59,089 - logic_logger - INFO

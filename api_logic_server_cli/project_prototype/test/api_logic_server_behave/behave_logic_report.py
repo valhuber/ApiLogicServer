@@ -18,7 +18,6 @@ tab = "&emsp;"
 debug_info = "# features"
 wiki_data = []
 debug_scenario = "Custom Service: add_order - good"
-logic_logs_dir = "scenario_logic_logs"
 
 scenario_doc_strings = {}
 """ dict of scenario_name, array of strings """
@@ -58,7 +57,7 @@ def get_truncated_scenario_name(scenario_name: str) -> str:
     return scenario_trunc
 
 
-def show_logic(scenario: str):
+def show_logic(scenario: str, logic_logs_dir: str):
     """ insert s{logic_logs_dir}/scenario.log into wiki_data as disclosure area """
     scenario_trunc = get_truncated_scenario_name(scenario)
     logic_file_name = f'{logic_logs_dir}/{scenario_trunc}.log'
@@ -167,7 +166,7 @@ def main(behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):
     current_scenario = ""
     for each_line in contents:
         if just_saw_then and each_line == "\n":
-            show_logic(current_scenario)
+            show_logic(scenario=current_scenario, logic_logs_dir=scenario_logs)
         just_saw_then = False
         if each_line.startswith("Feature"):
             wiki_data.append("&nbsp;")
@@ -199,7 +198,7 @@ def main(behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):
 
     with open(wiki, 'w') as rpt:
         rpt.write('\n'.join(wiki_data))
-    print(f'* Output: {wiki}\n***\n\n')
+    print(f'Wiki Output: {wiki}\n\n')
 
 
 
@@ -223,19 +222,19 @@ def cli(ctx):
 @cli.command("run")
 @click.pass_context
 @click.option('--behave_log',
-              default=f'behave.log',
+              default=f'logs/behave.log',  # cwd set to test/api_logic_server_behave
               # prompt="Log from behave test suite run [behave.log]",
               help="Help")
 @click.option('--scenario_logs',
-              default=f'behave.log',
+              default=f'logs/scenario_logic_logs',
               # prompt="Logic Log directory from ",
               help="Help")
 @click.option('--wiki',
-              default=f'api_logic_server_behave',
+              default=f'tdd_logic_reports/api_logic_server_behave',
               # prompt="Log from behave test suite run [api_logic_server_behave]",
               help="Help")
 @click.option('--prepend_wiki',
-              default=f'TDD Logic Report Intro',
+              default=f'reports/TDD Logic Report Intro micro',
               # prompt="Log from behave test suite run [TDD Logic Report Intro]",
               help="Help")
 def run(ctx, behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):

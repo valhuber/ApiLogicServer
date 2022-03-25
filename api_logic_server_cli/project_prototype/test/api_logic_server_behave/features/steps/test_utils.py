@@ -8,7 +8,7 @@ def prt(msg: any, test: str= None) -> None:
     test_val = test
     if test is not None and len(test) >= 26:
         test_val = test[0:25]
-    msg_url = f'http://localhost:5656/server_log?msg={msg}&test={test}&dir=test/api_logic_server_behave/scenario_logic_logs'
+    msg_url = f'http://localhost:5656/server_log?msg={msg}&test={test}&dir=test/api_logic_server_behave/logs/scenario_logic_logs'
     r = requests.get(msg_url)
 
 if __name__ == "__main__":

@@ -19,9 +19,9 @@
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/test/api_logic_server_behave",
-            "program": "${workspaceFolder}/test/api_logic_server_behave/debug_behave.py",
+            "program": "${workspaceFolder}/test/api_logic_server_behave/behave_run.py",
             "redirectOutput": true,
-            "args": [ ">", "${workspaceFolder}/test/api_logic_server_behave/behave.log"],
+            "args": [ ">", "${workspaceFolder}/test/api_logic_server_behave/logs/behave.log"],
             "justMyCode": false,            
             "console": "integratedTerminal"
         },
@@ -30,13 +30,23 @@
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/test/api_logic_server_behave",
-            "program": "${workspaceFolder}/test/api_logic_server_behave/report_behave_logic.py",
+            "program": "${workspaceFolder}/test/api_logic_server_behave/behave_logic_report.py",
             "redirectOutput": true,
             "justMyCode": false,            
             "args": ["run"
-                ,"--prepend_wiki=TTD Logic Report Intro micro.md"
-                ,"--wiki=TTD Logic Report.md"
+                ,"--prepend_wiki=reports/Behave Logic Report Intro micro.md"
+                ,"--wiki=reports/Behave Logic Report.md"
             ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Basic Server Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test/basic/server_test.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["go"],
             "console": "integratedTerminal"
         },
         {

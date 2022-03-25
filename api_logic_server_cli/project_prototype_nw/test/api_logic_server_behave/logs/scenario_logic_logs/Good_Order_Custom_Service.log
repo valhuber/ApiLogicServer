@@ -1,0 +1,29 @@
+Logic Phase:		ROW LOGIC(session=0x103cbd0d0) (sqlalchemy before_flush)			 - 2022-03-24 19:22:58,911 - logic_logger - INFO
+..Order[11081] {Delete - client} Id: 11081, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2  row: 0x103cbd580  session: 0x103cbd0d0 - 2022-03-24 19:22:58,911 - logic_logger - INFO
+....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2158.0000000000-->] 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [16-->] 15, UnpaidOrderCount:  [11-->] 10  row: 0x103cf3040  session: 0x103cbd0d0 - 2022-03-24 19:22:58,913 - logic_logger - INFO
+..OrderDetail[2163] {Delete - client} Id: 2163, OrderId: 11081, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1, Discount: 0.0, Amount: 18.0000000000, ShippedDate: None  row: 0x103ce8d30  session: 0x103cbd0d0 - 2022-03-24 19:22:58,914 - logic_logger - INFO
+....Product[1] {Update - Adjusting Product: UnitsShipped} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock: 39, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] -1  row: 0x103cf33d0  session: 0x103cbd0d0 - 2022-03-24 19:22:58,915 - logic_logger - INFO
+....Product[1] {Formula UnitsInStock} Id: 1, ProductName: Chai, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 10 boxes x 20 bags, UnitPrice: 18.0000000000, UnitsInStock:  [39-->] 40, UnitsOnOrder: 0, ReorderLevel: 10, Discontinued: 0, UnitsShipped:  [0-->] -1  row: 0x103cf33d0  session: 0x103cbd0d0 - 2022-03-24 19:22:58,916 - logic_logger - INFO
+..OrderDetail[2163] {No adjustment on deleted parent: Order} Id: 2163, OrderId: 11081, ProductId: 1, UnitPrice: 18.0000000000, Quantity: 1, Discount: 0.0, Amount: 18.0000000000, ShippedDate: None  row: 0x103ce8d30  session: 0x103cbd0d0 - 2022-03-24 19:22:58,916 - logic_logger - INFO
+..OrderDetail[2164] {Delete - client} Id: 2164, OrderId: 11081, ProductId: 2, UnitPrice: 19.0000000000, Quantity: 2, Discount: 0.0, Amount: 38.0000000000, ShippedDate: None  row: 0x103ce8cd0  session: 0x103cbd0d0 - 2022-03-24 19:22:58,917 - logic_logger - INFO
+....Product[2] {Update - Adjusting Product: UnitsShipped} Id: 2, ProductName: Chang, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 24 - 12 oz bottles, UnitPrice: 19.0000000000, UnitsInStock: 15, UnitsOnOrder: 40, ReorderLevel: 25, Discontinued: 0, UnitsShipped:  [2-->] 0  row: 0x103cfa2b0  session: 0x103cbd0d0 - 2022-03-24 19:22:58,917 - logic_logger - INFO
+....Product[2] {Formula UnitsInStock} Id: 2, ProductName: Chang, SupplierId: 1, CategoryId: 1, QuantityPerUnit: 24 - 12 oz bottles, UnitPrice: 19.0000000000, UnitsInStock:  [15-->] 17, UnitsOnOrder: 40, ReorderLevel: 25, Discontinued: 0, UnitsShipped:  [2-->] 0  row: 0x103cfa2b0  session: 0x103cbd0d0 - 2022-03-24 19:22:58,918 - logic_logger - INFO
+..OrderDetail[2164] {No adjustment on deleted parent: Order} Id: 2164, OrderId: 11081, ProductId: 2, UnitPrice: 19.0000000000, Quantity: 2, Discount: 0.0, Amount: 38.0000000000, ShippedDate: None  row: 0x103ce8cd0  session: 0x103cbd0d0 - 2022-03-24 19:22:58,919 - logic_logger - INFO
+Logic Phase:		COMMIT(session=0x103cbd0d0)   										 - 2022-03-24 19:22:58,919 - logic_logger - INFO
+..Order[11081] {Commit Event} Id: 11081, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipPostalCode: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2  row: 0x103cbd580  session: 0x103cbd0d0 - 2022-03-24 19:22:58,919 - logic_logger - INFO
+
+Rules Fired:		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+  Customer		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x1036389d0>)		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    2. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    3. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x103623c10>)		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+  Order		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    4. Derive Order.AmountTotal as Sum(OrderDetail.Amount Where None)		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    5. Derive Order.OrderDetailCount as Count(<class 'database.models.OrderDetail'> Where None)		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    6. RowEvent Order.congratulate_sales_rep() 		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+  Product		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    7. Derive Product.UnitsInStock as Formula (1): <function>		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+    8. Derive Product.UnitsShipped as Sum(OrderDetail.Quantity Where <function declare_logic.<locals>.<lambda> at 0x103638790>)		## - 2022-03-24 19:22:58,920 - logic_logger - INFO
+
+ - 2022-03-24 19:22:58,920 - logic_logger - INFO
+Logic Phase:		FLUSH(session=0x103cbd0d0)   (sqlalchemy flush processing)       	 - 2022-03-24 19:22:58,920 - logic_logger - INFO

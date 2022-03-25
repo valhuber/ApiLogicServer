@@ -1,8 +1,8 @@
-Logic Phase:		ROW LOGIC(session=0x10f128940) (sqlalchemy before_flush)			 - 2022-03-12 18:12:55,826 - logic_logger - INFO
-..Customer[ALFKJ] {Insert - client} Id: ALFKJ, CompanyName: None, ContactName: None, ContactTitle: None, Address: None, City: None, Region: None, PostalCode: None, Country: None, Phone: None, Fax: None, Balance: 0, CreditLimit: 10, OrderCount: None, UnpaidOrderCount: None  row: 0x10f128b20  session: 0x10f128940 - 2022-03-12 18:12:55,827 - logic_logger - INFO
-Logic Phase:		COMMIT(session=0x10f128940)   										 - 2022-03-12 18:12:55,827 - logic_logger - INFO
+Logic Phase:		ROW LOGIC(session=0x1097ffd00) (sqlalchemy before_flush)			 - 2022-03-24 18:48:24,301 - logic_logger - INFO
+..Customer[ALFKJ] {Insert - client} Id: ALFKJ, CompanyName: None, ContactName: None, ContactTitle: None, Address: None, City: None, Region: None, PostalCode: None, Country: None, Phone: None, Fax: None, Balance: 0, CreditLimit: 10, OrderCount: None, UnpaidOrderCount: None  row: 0x1097ff940  session: 0x1097ffd00 - 2022-03-24 18:48:24,302 - logic_logger - INFO
+Logic Phase:		COMMIT(session=0x1097ffd00)   										 - 2022-03-24 18:48:24,302 - logic_logger - INFO
 
-Rules Fired: - 2022-03-12 18:12:55,828 - logic_logger - INFO
+Rules Fired:		## - 2022-03-24 18:48:24,302 - logic_logger - INFO
 
- - 2022-03-12 18:12:55,828 - logic_logger - INFO
-Logic Phase:		FLUSH(session=0x10f128940)   (sqlalchemy flush processing)       	 - 2022-03-12 18:12:55,828 - logic_logger - INFO
+ - 2022-03-24 18:48:24,303 - logic_logger - INFO
+Logic Phase:		FLUSH(session=0x1097ffd00)   (sqlalchemy flush processing)       	 - 2022-03-24 18:48:24,303 - logic_logger - INFO

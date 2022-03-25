@@ -26,9 +26,10 @@ self_reln_test = True  # Get dept, verify subDepts, headDept
 post_test = True  # Posts a customer
 delete_test = True  # Deletes the posted customer
 
+patch_test = True   # simple constraint test (set credit limit low)
 adjust_test = True  # Update Order Detail with intentionally bad data to illustrate chaining, constraint, reuse
-audit_test = True  # alter salary, check for audit row
-prune_test = True  # observe rules pruned for Order.RequiredDate (2013-10-13)
+audit_test = True   # alter salary, check for audit row
+prune_test = True   # observe rules pruned for Order.RequiredDate (2013-10-13)
 cascade_update_test = True  # verify Order.ShippedDate 2013-10-13 adjusts balance 2102-1086->1016, product onhand
 custom_service_test = True  # See https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
 
