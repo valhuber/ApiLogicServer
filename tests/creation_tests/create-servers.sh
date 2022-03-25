@@ -48,7 +48,7 @@ if [ "$1" = "venv" ]
         echo ""
         echo "venv created, now..."
         echo "  source ${ApiLogicServer}/venv/bin/activate  # ;a"
-        echo "  pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==5.00.00"
+        echo "  pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==5.00.03"
 
         echo " "
     fi

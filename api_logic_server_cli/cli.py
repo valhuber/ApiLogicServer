@@ -13,7 +13,7 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.00.00"
+__version__ = "5.00.03"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
@@ -270,7 +270,7 @@ def copy_if_mounted(project_directory):
     return return_project_directory, return_copy_to_directory
 
 
-def clone_prototype_project_with_nw_samples(project_directory: str, project_name: str, api_name: str,
+def create_project_with_nw_samples(project_directory: str, project_name: str, api_name: str,
                                             from_git: str, msg: str,
                                             abs_db_url: str, nw_db_status: str) -> str:
     """
@@ -389,7 +389,7 @@ def clone_prototype_project_with_nw_samples(project_directory: str, project_name
     return target_db_loc_actual
 
 
-def create_basic_web_app(db_url, project_name, msg):  # remove
+def create_basic_web_app(db_url, project_name, msg):  # remove - now creating by simple copy directory
     project_abs_path = abspath(project_name)
     fab_project = project_abs_path + "/ui/basic_web_app"
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
@@ -849,12 +849,12 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
     if not command.startswith("rebuild"):
-        abs_db_url = clone_prototype_project_with_nw_samples(project_directory, # no twiddle, resolve .
-                                                             project_name,      # actual user parameter
-                                                             api_name,
-                                                             from_git, "2. Create Project",
-                                                             abs_db_url,        # sqlite DBs are copied to proj/database
-                                                             nw_db_status)
+        abs_db_url = create_project_with_nw_samples(project_directory, # no twiddle, resolve .
+                                                    project_name,      # actual user parameter
+                                                    api_name,
+                                                    from_git, "2. Create Project",
+                                                    abs_db_url,        # sqlite DBs are copied to proj/database
+                                                    nw_db_status)
     else:
         print("1. Not Deleting Existing Project")
         print("2. Using Existing Project")

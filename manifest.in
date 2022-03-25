@@ -2,4 +2,5 @@ recursive-include api_logic_server_cli/project_prototype *.*
 recursive-include api_logic_server_cli/project_prototype_nw *.*
 recursive-include api_logic_server_cli/expose_existing *.*
 recursive-include api_logic_server_cli/create_from_model *.*
+recursive-include api_logic_server_cli/database *.*
 include api_logic_server_cli/api_logic_server_info.yaml
