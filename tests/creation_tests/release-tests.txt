@@ -34,6 +34,12 @@ run each script below, verify app and swagger
         cd /localhost/<each dockers project>
         python api_logic_server_run.py
 
+    and, verify that it works in vscode
+        exit the docker container
+        cd ~/dev/servers/install/ApiLogicServer/dockers
+        code ApiLogicServer
+        
+
     exit the docker container
 
 
