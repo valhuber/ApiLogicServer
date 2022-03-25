@@ -2,7 +2,7 @@ Creation tests
 ==============
 
 cd tests/creation_tests
-sh create_servers.sh venv  # rebuilds the venv
+sh create-servers.sh venv  # rebuilds the venv
 # follow directions to pip install
 
 run each script below, verify app and swagger
@@ -11,7 +11,7 @@ run each script below, verify app and swagger
     pip
     ===
 
-    sh create_servers.sh create  # rebuilds ApiLogicProject, classicmodels, postgres, sqlserver
+    sh create-servers.sh create  # rebuilds ApiLogicProject, classicmodels, postgres, sqlserver
     
     test the servers
         
