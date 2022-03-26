@@ -9,6 +9,8 @@ import logging
 app_logger = logging.getLogger("api_logic_server_app")
 app_logger.info("logic/declare_logic.py - importing declare_logic")
 
+declared_rules = []
+
 def declare_logic():
     """
     Logic declared here, using code completion.
@@ -42,28 +44,42 @@ def declare_logic():
         * delete order
         * move order to new customer, etc
     This reuse is how 5 rules replace 200 lines of legacy code: https://github.com/valhuber/LogicBank/wiki/by-code
-
-    Rules are listed below to best illustrate chaining
     """
 
-    # get Product Price (e,g., on insert, or ProductId change)
-    Rule.copy(derive=models.OrderDetail.UnitPrice,
-              from_parent=models.Product.UnitPrice)
-    # compute price * qty
-    Rule.formula(derive=models.OrderDetail.Amount,
-                 as_expression=lambda row: row.UnitPrice * row.Quantity)
+    """
+    Feature: Place Order
+        Scenario: Bad Order Custom Service
+            When Order Placed with excessive quantity
+            Then Rejected per Credit Limit
 
-    # adjust AmountTotal iff Amount changes
-    Rule.sum(derive=models.Order.AmountTotal,
-             as_sum_of=models.OrderDetail.Amount)
-
-    # adjust Balance iff AmountTotal or ShippedDate or CustomerID changes
-    Rule.sum(derive=models.Customer.Balance,
-             as_sum_of=models.Order.AmountTotal,
-             where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
+    Logic Specification ("Cocktail Napkin Design")
+        Customer.Balance <= CreditLimit
+        Customer.Balance = Sum(Order.AmountTotal where unshipped)
+        Order.AmountTotal = Sum(OrderDetail.Amount)
+        OrderDetail.Amount = Quantity * UnitPrice
+        OrderDetail.UnitPrice = copy from Product
+    """
+    
     Rule.constraint(validate=models.Customer,
                     as_condition=lambda row: row.Balance <= row.CreditLimit,
                     error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+
+    # adjust Balance iff AmountTotal or ShippedDate or CustomerID changes
+    Rule.sum(derive=models.Customer.Balance,
+        as_sum_of=models.Order.AmountTotal,
+        where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
+
+    # adjust AmountTotal iff Amount changes
+    Rule.sum(derive=models.Order.AmountTotal,
+        as_sum_of=models.OrderDetail.Amount)
+
+    # compute price * qty
+    Rule.formula(derive=models.OrderDetail.Amount,
+        as_expression=lambda row: row.UnitPrice * row.Quantity)
+
+    # get Product Price (e,g., on insert, or ProductId change)
+    Rule.copy(derive=models.OrderDetail.UnitPrice,
+        from_parent=models.Product.UnitPrice)
 
     """
         Demonstrate that logic == rules + Python
@@ -80,7 +96,7 @@ def declare_logic():
                 logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
                               f'Congratulate {sales_rep.FirstName} on their new order')
 
-    Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
+    email = Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 
     """
         More complex rules follow - see: 
@@ -88,21 +104,21 @@ def declare_logic():
             https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility
     """
 
-    Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")
+    shipped_date = Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")
 
     def units_in_stock(row: models.Product, old_row: models.Product, logic_row: LogicRow):
         result = row.UnitsInStock - (row.UnitsShipped - old_row.UnitsShipped)
         return result
-    Rule.sum(derive=models.Product.UnitsShipped, as_sum_of=models.OrderDetail.Quantity,
+    units_shipped = Rule.sum(derive=models.Product.UnitsShipped, as_sum_of=models.OrderDetail.Quantity,
              where=lambda row: row.ShippedDate is None)
-    Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)
+    units_in_stock = Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)
 
-    Rule.count(derive=models.Customer.UnpaidOrderCount, as_count_of=models.Order,
+    unpaid_order_count = Rule.count(derive=models.Customer.UnpaidOrderCount, as_count_of=models.Order,
              where=lambda row: row.ShippedDate is None)  # *not* a sql select sum...
 
-    Rule.count(derive=models.Customer.OrderCount, as_count_of=models.Order)
+    order_count = Rule.count(derive=models.Customer.OrderCount, as_count_of=models.Order)
 
-    Rule.count(derive=models.Order.OrderDetailCount, as_count_of=models.OrderDetail)
+    order_detail_count = Rule.count(derive=models.Order.OrderDetailCount, as_count_of=models.OrderDetail)
 
     def raise_over_20_percent(row: models.Employee, old_row: models.Employee, logic_row: LogicRow):
         if logic_row.ins_upd_dlt == "upd" and row.Salary > old_row.Salary:
@@ -110,7 +126,7 @@ def declare_logic():
         else:
             return True
 
-    Rule.constraint(validate=models.Employee,
+    good_raise = Rule.constraint(validate=models.Employee,
                     calling=raise_over_20_percent,
                     error_msg="{row.LastName} needs a more meaningful raise")
 
@@ -122,7 +138,6 @@ def declare_logic():
                 copy_to_logic_row.link(to_parent=logic_row)
                 copy_to_logic_row.set_same_named_attributes(logic_row)
                 copy_to_logic_row.insert(reason="Manual Copy " + copy_to_logic_row.name)  # triggers rules...
-                # logic_row.log("audit_by_event (Manual Copy) complete")
 
     Rule.commit_row_event(on_class=models.Employee, calling=audit_by_event)
 
@@ -136,7 +151,6 @@ def declare_logic():
             row.CreatedOn = datetime.datetime.now()
             logic_row.log("early_row_event_all_classes - handle_all sets 'Created_on"'')
 
-    Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
+    time_stamp = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
 
     app_logger.debug("\n\nlogic/logic_bank.py: declare_logic complete")
-

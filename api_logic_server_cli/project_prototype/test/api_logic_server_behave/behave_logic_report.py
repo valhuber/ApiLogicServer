@@ -37,16 +37,19 @@ def line_spacer():
 
 
 def get_current_readme(prepend_wiki: str):
-    """ initialize wiki_data with readme up to 'TDD Report' """
-    TDD_report_name = "TDD Logic Report"
+    """ initialize wiki_data with readme up to {report_name} """
+    report_name = "Behave Logic Report"
     with open(prepend_wiki) as readme:
         readme_lines = readme.readlines()
+    need_spacer = True
     for each_readme_line in readme_lines:
-        if '# ' + TDD_report_name in each_readme_line:
+        if '# ' + report_name in each_readme_line:
+            need_spacer = False
             break
         wiki_data.append(each_readme_line[0:-1])
-    line_spacer()
-    wiki_data.append("# TDD Logic Report")
+    if need_spacer:
+        line_spacer()
+    wiki_data.append(f'# {report_name}')
 
 def get_truncated_scenario_name(scenario_name: str) -> str:
     """ address max file length (chop at 26), illegal characters """

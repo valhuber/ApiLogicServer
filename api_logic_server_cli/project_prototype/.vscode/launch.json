@@ -21,7 +21,7 @@
             "cwd": "${workspaceFolder}/test/api_logic_server_behave",
             "program": "${workspaceFolder}/test/api_logic_server_behave/behave_run.py",
             "redirectOutput": true,
-            "args": [ ">", "${workspaceFolder}/test/api_logic_server_behave/logs/behave.log"],
+            "args": [ "--outfile=${workspaceFolder}/test/api_logic_server_behave/logs/behave.log"],
             "justMyCode": false,            
             "console": "integratedTerminal"
         },
@@ -37,6 +37,18 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Behave Scenario",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/test/api_logic_server_behave",
+            "program": "${workspaceFolder}/test/api_logic_server_behave/behave_run.py",
+            "redirectOutput": true,
+            "args": [ "--outfile=${workspaceFolder}/test/api_logic_server_behave/logs/behave.log",
+                "--name=Bad Order Custom Service"],
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Behave Logic Report",
             "type": "python",
             "request": "launch",
@@ -45,7 +57,7 @@
             "redirectOutput": true,
             "justMyCode": false,            
             "args": ["run"
-                ,"--prepend_wiki=reports/Behave Logic Report Intro micro.md"
+                ,"--prepend_wiki=reports/Behave Logic Report Intro.md"
                 ,"--wiki=reports/Behave Logic Report.md"
             ],
             "console": "integratedTerminal"

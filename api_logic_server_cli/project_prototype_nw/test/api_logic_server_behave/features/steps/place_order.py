@@ -29,7 +29,7 @@ def step_impl(context):
     Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
     Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
 
-    <figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png?raw=true"></figure>
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/declare-logic.png?raw=true"></figure>
 
     > **Key Takeaway:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
 
@@ -39,6 +39,8 @@ def step_impl(context):
     [Extensibility](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility) 
     - using Python to provide logic not covered by rules, 
     like non-database operations such as sending email or messages.
+
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/send-email.png?raw=true"></figure>
 
     There are actually multiple kinds of events:
 
@@ -92,6 +94,12 @@ def step_impl(context):
 @then('Logic adusts Products Reordered')
 def step_impl(context):
     assert True is not False
+
+
+@then('Logic sends email to salesrep')
+def step_impl(context):
+    assert 'Order.congratulate_sales_rep()' in context.response_text, \
+        "Logic Log does not contain 'Order.congratulate_sales_rep()'"
 
 @then('Logic adjusts aggregates down on delete order')
 def step_impl(context):
@@ -240,7 +248,12 @@ def step_impl(context):
     """
     We set `Order.ShippedDate`.
 
-    This cascades to the Order Details, where it adjusts the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
+    This cascades to the Order Details, per the `derive=models.OrderDetail.ShippedDate` rule.
+    
+    This chains to adjust the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
+
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/order-shipped-date.png?raw=true"></figure>
+
 
     > **Key Takeaway:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
 
