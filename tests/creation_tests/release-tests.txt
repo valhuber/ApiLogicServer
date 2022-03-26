@@ -38,7 +38,7 @@ run each script below, verify app and swagger
         exit the docker container
         cd ~/dev/servers/install/ApiLogicServer/dockers
         code ApiLogicServer
-        
+
 
     exit the docker container
 
@@ -85,3 +85,13 @@ Sakalia -insert on category (tiny), city (small), inventory (medium)
             "preLaunchTask": "rebuild-from-model",
             "console": "integratedTerminal"
         }
+
+
+Platforms
+=========
+
+Create, test admin + swagger, Behave:
+
+    Windows: ApiLogicServer, for pip and docker
+
+    Linux: ApiLogicServer

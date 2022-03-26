@@ -26,6 +26,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Windows Behave Run",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}\\test\\api_logic_server_behave\\features",
+            "program": "${workspaceFolder}\\test\\api_logic_server_behave\\behave_run.py",
+            "redirectOutput": true,
+            "args": [ "--outfile=${workspaceFolder}\\test\\api_logic_server_behave\\logs\\behave.log"],
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Behave Logic Report",
             "type": "python",
             "request": "launch",

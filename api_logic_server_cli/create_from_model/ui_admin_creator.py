@@ -661,26 +661,14 @@ class AdminCreator(object):
                 exit(1)
             shutil.copytree(from_proto_dir, to_project_dir)
 
-        # os.mkdir(pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin"))
-        """  FIXME DEAD CODE
-        home_js_file = "home.js"  # get the welcome screen
-        if self.mod_gen.nw_db_status in ["nw", "nw+"]:  # explains nw-specific customizations
-            pass  # already copied from prototype_nw
-        else:
-            home_js = pathlib.Path(self.get_create_from_model_dir()).\
-                joinpath("create_from_model", "templates", home_js_file)
-            to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
-            shutil.copyfile(home_js, to_project_dir.joinpath("home.js"))
-        """
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
         swagger_name = self.mod_gen.api_name
         if self.mod_gen.multi_api:
             swagger_name += "/api"
             print(f'.. ui/admin/home.js updated url: {swagger_name}')
-        if self.mod_gen.nw_db_status not in ["nw", "nw+"]:
-            create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
-                                            replace_with=swagger_name,
-                                            in_file=to_project_dir.joinpath("home.js"))
+        create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
+                                        replace_with=swagger_name,
+                                        in_file=to_project_dir.joinpath("home.js"))
 
 def create(model_creation_services: create_from_model.CreateFromModel):
     """ called by ApiLogicServer CLI -- creates ui/admin application (ui/admin folder, admin.yaml)

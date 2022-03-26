@@ -15,7 +15,7 @@ Tips
 """
 
 tab = "&emsp;"
-debug_info = "# features"
+behave_debug_info = " # "
 wiki_data = []
 debug_scenario = "Custom Service: add_order - good"
 
@@ -182,7 +182,7 @@ def main(behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):
             each_line = tab + tab + each_line
 
         each_line = each_line[:-1]
-        debug_loc = each_line.find(debug_info)
+        debug_loc = each_line.find(behave_debug_info)
         if debug_loc > 0:
             each_line = each_line[0 : debug_loc]
         each_line = each_line.rstrip()

@@ -18,8 +18,8 @@ if [ $# -eq 0 ]
     fi
 
 pushd ${project}/test
-sh server_test.sh go
-python server_test.py go
+sh basic/server_test.sh go
+python basic/server_test.py go
 popd
 
 pwd
