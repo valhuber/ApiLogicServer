@@ -17,7 +17,7 @@ Tips
 tab = "&emsp;"
 behave_debug_info = " # "
 wiki_data = []
-debug_scenario = "Good Order Custom Service"
+debug_scenario = "XXGood Order Custom Service"
 
 scenario_doc_strings = {}
 """ dict of scenario_name, array of strings """
