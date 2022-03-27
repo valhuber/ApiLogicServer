@@ -2,9 +2,9 @@
 
 You can optionally use the Behave test framework to:
 
-1. **Create and Run an Executable Test Suite:** in your IDE, create test definitions (similar to what is shown above), and Python code to execute tests.  You can then execute the tests with 1 command.
+1. **Create and Run an Executable Test Suite:** in your IDE, create test definitions (similar to what is shown in the report below), and Python code to execute tests.  You can then execute your test suite with 1 command.
 
-2. **Requirements and Test Documentation:** as shown above, Test Suite Exeuction creates a wiki report that documents your requirements, and the tests (**Scenarios**) that confirm their proper operation
+2. **Requirements and Test Documentation:** as shown below, you can then create a wiki report that documents your requirements, and the tests (**Scenarios**) that confirm their proper operation.
 
 3. **Logic Documentation:** the report integrates your logic, including a logic report showing your logic (rules and Python), and a Logic Log that shows exactly how the rules executed.  Logic Doc can further contribute to Agile Collaboration.
 
