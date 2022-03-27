@@ -14,7 +14,7 @@ pip install Jinja2==2.11.2
 A new version is planned for this weekend that incorporates a [new testing process](https://github.com/valhuber/TDD#readme).  Available now in pre-release:
 
 ```
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==5.00.03
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==5.00.05
 ```
 
 &nbsp;&nbsp;
