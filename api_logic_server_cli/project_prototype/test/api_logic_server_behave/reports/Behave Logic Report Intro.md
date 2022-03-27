@@ -1,7 +1,24 @@
+# Behave Creates Executable Test Suite, Documentation
+
+You can optionally use the Behave test framework to:
+
+1. **Create and Run an Executable Test Suite:** in your IDE, create test definitions (similar to what is shown above), and Python code to execute tests.  You can then execute the tests with 1 command.
+
+2. **Requirements and Test Documentation:** as shown above, Test Suite Exeuction creates a wiki report that documents your requirements, and the tests (**Scenarios**) that confirm their proper operation
+
+3. **Logic Documentation:** the report integrates your logic, including a logic report showing your logic (rules and Python), and a Logic Log that shows exactly how the rules executed.  Logic Doc can further contribute to Agile Collaboration.
+
 <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/behave-summary.png?raw=true"></figure>
 
-# Automation: Agile, TDD Process
+# Appendices
 
+## Behave
+Behave...
+
+## TDD
+TDD...
+
+# Process
 This project illustrates how [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) Extensible Automation, coupled with an Agile (TDD) Process, can dramatically improve Time to Market and Reduce Risk:
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/introduction.png?raw=true"></figure>
