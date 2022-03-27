@@ -421,11 +421,7 @@ Logic Phase:		COMMIT(session=0x1030bf1c0)   										 - 2022-03-26 19:20:21,353
 
 **Logic Doc** for scenario: Bad Order Custom Service
    
-Familiar logic pattern: constrain a derived result
-
-
-&nbsp;
-&nbsp;
+Familiar logic pattern: **constrain a derived result**
 
 
 **Rules Used** in Scenario: Bad Order Custom Service
