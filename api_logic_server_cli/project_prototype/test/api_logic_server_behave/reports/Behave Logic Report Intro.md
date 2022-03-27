@@ -1,16 +1,18 @@
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/behave-summary.png?raw=true"></figure>
+
 # Automation: Agile, TDD Process
 
-This project  illustrates how [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) Extensible Automation, coupled with an Agile (TDD) Process, can dramatically improve Time to Market and Reduce Risk:
+This project illustrates how [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) Extensible Automation, coupled with an Agile (TDD) Process, can dramatically improve Time to Market and Reduce Risk:
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/introduction.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/introduction.png?raw=true"></figure>
   
 1. **Instant App:** API Logic Server creates an Admin App (and underlying API) with a single command.
 
 1. **Customer Collaboration:** the app (Working Software, _Now_) drives collaboration, resulting in *Features* (Stories), *Scenarios* (tests), and *Design Specifications* that define how data is computed, validated, and processed (e.g., issues email or messages, auditing, etc.).
 
-1. **Iteration:** the Design Specifications often translate directly into ***Executable* Rules,** automated in API Logic Server.    These can be easily altered as further collaboration uncovers clarifications (no archaeology).
+1. **Iteration:** the Design Specifications often translate directly into ***Executable* Rules,** automated in API Logic Server.  These can be easily altered as further collaboration uncovers clarifications (no archaeology).
 
-2. **Transparency:** the [Behave Report](#behave-report) documents the functionality of the system as Features (Stories) and Scenarios (tests) that confirm its operation.  The report includes the underlying Rules, extending transparency to the implementation level.
+2. **Transparency:** the [**TDD** (Test Driven Development) Report](#tdd-report) documents the functionality of the system as Features (Stories) and Scenarios (tests) that confirm its operation.  The report includes the underlying Rules, extending transparency to the implementation level.
 
 &nbsp;&nbsp;
 
@@ -36,7 +38,7 @@ You can confirm its working by installing and running [as described here](https:
 
 The created project provides the User Interface and API described below, and implements the transactional logic described in the [TDD Report](#tdd-report).  It was created, customized and tested as described in the subsections below.
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-process.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/TDD-process.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -115,7 +117,7 @@ TDD is designed for business user collaboration by making Features and Scenarios
 
 For example, see the `place_order.feature`, as tested by the `Bad Order: Custom Service` Scenario, below.
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/scenario.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/scenario.png?raw=true"></figure>
 
 For more on TDD, [see here](https://github.com/valhuber/TDD/wiki/Stories-And-Behaviors).
 
@@ -133,7 +135,7 @@ We now choose a scenario (e.g, `Bad Order`), and engage business users for a cle
 
 Note this "cocktail napkin spec" is short, yet clear.  That's because instead of diving unto unecessary technical detail of _how_ (such as pseudocode), it focuses on ***what***.
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/logic-spec.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/logic-spec.png?raw=true"></figure>
   
 
 &nbsp;&nbsp;
@@ -159,7 +161,7 @@ So, [instead of several hundred lines of code](https://github.com/valhuber/Logic
 
 Rules are entered in Python, with code completion.  5 key rules are shown below.  Oserve how they exactly correspond to our specification, and are executable by the API Logic Server rules engine:
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/declare-logic.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/declare-logic.png?raw=true"></figure>
 
 Unlike manual code, logic is ***declarative:***
 * **automatically reused** - it is enforced as part of the API, so automatically shared across *all* screens and services.
@@ -181,7 +183,7 @@ Unlike manual code, logic is ***declarative:***
 
 Implement the actual scenarios (tests) in Python (`place_order.py`), using annotations (`@when`) to match scenarios and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
 
-<figure><img src="https://github.com/valhuber/TDD/blob/main/images/TDD-ide.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/TDD-ide.png?raw=true"></figure>
 
 Execute the tests using the pre-supplied Launch Configurations (shown at the bottom):
 
@@ -219,3 +221,6 @@ To run it, use Launch Configuration `Report Behave Logic`:
 &nbsp;&nbsp;
 
 >  **Key Takeaway:** TDD makes *requirements and tests* transparent; rules make your *logic* transparent; combine them both into the [**TDD Report.**](#tdd-report)
+
+&nbsp;
+&nbsp;
