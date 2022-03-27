@@ -17,7 +17,7 @@ Tips
 tab = "&emsp;"
 behave_debug_info = " # "
 wiki_data = []
-debug_scenario = "Custom Service: add_order - good"
+debug_scenario = "Good Order Custom Service"
 
 scenario_doc_strings = {}
 """ dict of scenario_name, array of strings """
@@ -74,8 +74,6 @@ def show_logic(scenario: str, logic_logs_dir: str):
             logic_file_name = '{logic_logs_dir}/test.log'
             with open(logic_file_name) as logic:
                 logic_lines = logic.readlines()
-            # finder:  /Users/val/dev/TDD/test/api_logic_server_behave/{logic_logs_dir}
-            # seeking: /Users/val/dev/TDD/test/api_logic_server_behave/{logic_logs_dir}/Custom Service: add_order - good.log
     else:
         logic_log = []
         rules_used = []
@@ -149,6 +147,8 @@ def get_docStrings(steps_dir: str):
                             scenario_name_end = scenario_code_line[scenario_name_start+1:].find("'")
                             scenario_name = scenario_code_line[scenario_name_start: 
                                 scenario_name_end + scenario_name_start+1]
+                            if scenario_name == debug_scenario:
+                                print(f'got {debug_scenario}')
                             scenario_trunc = get_truncated_scenario_name(scenario_name)
                             # print(f'.... truncated scenario_name: {scenario_trunc} in {scenario_code_line}')
                             scenario_doc_strings[scenario_trunc] = doc_string
@@ -216,7 +216,7 @@ def print_args(args, msg):
 @click.pass_context
 def cli(ctx):
     """
-    Combine behave.log and scenario_logic_logs to create TDD Logic Report
+    Combine behave.log and scenario_logic_logs to create Behave Logic Report
 
     """
     pass
@@ -233,12 +233,12 @@ def cli(ctx):
               # prompt="Logic Log directory from ",
               help="Help")
 @click.option('--wiki',
-              default=f'tdd_logic_reports/api_logic_server_behave',
+              default=f'reports/Behave Logic Report.md',
               # prompt="Log from behave test suite run [api_logic_server_behave]",
               help="Help")
 @click.option('--prepend_wiki',
-              default=f'reports/TDD Logic Report Intro micro',
-              # prompt="Log from behave test suite run [TDD Logic Report Intro]",
+              default=f'reports/Behave Logic Report Intro micro.md',
+              # prompt="Log from behave test suite run [Behave Logic Report Intro]",
               help="Help")
 def run(ctx, behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):
     main(behave_log = behave_log, scenario_logs = scenario_logs, wiki = wiki, prepend_wiki = prepend_wiki)
@@ -248,7 +248,7 @@ if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
     # unix: python api_logic_server_cli/cli.py create --project_name=/home/ApiLogicProject
 
-    print(f'\n***TDD Logic Report, at {os.getcwd()}')
+    print(f'\nBehave Logic Report, started at {os.getcwd()}')
     commands = sys.argv
     if len(sys.argv) > 1:
         print_args(commands, f'\n\nCommand Line Arguments:')
