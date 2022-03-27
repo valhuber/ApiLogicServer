@@ -226,7 +226,7 @@ To run it, use Launch Configuration `Report Behave Logic`:
 &nbsp;
 
 
-# TDD Logic Report
+# Behave Logic Report
 &nbsp;
 &nbsp;
 ## Feature: About Sample  
