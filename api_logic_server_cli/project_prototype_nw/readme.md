@@ -159,6 +159,12 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
 
+&nbsp;&nbsp;
+
+## Test
+
+You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
+
 &nbsp;&nbsp;&nbsp;
 
 ## Wrap up

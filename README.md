@@ -4,18 +4,14 @@
 
 # Alert
 
-Recent updates to included libs have broken API Logic Server.  After installing, you can repair it like this (your venv should be active):
+Recent updates to included libs have broken previous versions of API Logic Server.  After installing, you can repair your existing install like this (your venv should be active):
 
 ```
 pip install MarkupSafe==1.1.1
 pip install Jinja2==2.11.2
 ```
 
-A new version is planned for this weekend that incorporates a [new testing process](https://github.com/valhuber/TDD#readme).  Available now in pre-release:
-
-```
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==5.00.05
-```
+A new version (5.00.06) is now available, and recommended.
 
 &nbsp;&nbsp;
 
@@ -71,7 +67,7 @@ You can picture the process as shown in the diagram below; click it for a video 
 
 After you've explored the tutorial, try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (4.03.02): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (5.00.06): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
 
 # Feature Summary
@@ -238,6 +234,11 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
+&nbsp;&nbsp;
+
+## Test
+
+You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
 
 &nbsp;&nbsp;&nbsp;
 
@@ -414,6 +415,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+
+03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix
 
 02/18/2022 - 04.02.03: SqlServer fixes, rebuild creates '-created' versions for data model repair
 

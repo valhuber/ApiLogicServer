@@ -3,8 +3,13 @@ import requests
 def prt(msg: any, test: str= None) -> None:
     """
     print to console, and logic_logger / server_log (see api/customize_api.py)
+
+    @see api/customize_api/py for implementation.
+
+    :param msg: message to be written to logs.  Value "Rules Report" writes rules report to logs
+    :param test: name of test (scenario) - directs output to test/logs
+    :return:
     """
-    # print(msg)
     test_val = test
     if test is not None and len(test) >= 26:
         test_val = test[0:25]

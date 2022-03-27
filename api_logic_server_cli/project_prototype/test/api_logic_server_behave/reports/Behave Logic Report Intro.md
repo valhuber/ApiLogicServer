@@ -46,9 +46,9 @@ Key points:
 
 * Link your scenario / implementations with annotations, as shown for _Order Placed with excessive quantity_.
 
-* Include the `test_utils.prt()` call; be sure to use specfigy the scenario name as the 2nd argument.  This is what drives the name of the Logic Log file, discussed below.
+* Include the `test_utils.prt()` call; be sure to use specify the scenario name as the 2nd argument.  This is what drives the name of the Logic Log file, discussed below.
 
-* Optionally, include a Python docstring on your `when` implementation as shown abpve, delimited by `"""` strings (see _"Familiar logic pattern"_ in the screen shot, above). If provided, this will be written into the wiki report
+* Optionally, include a Python docstring on your `when` implementation as shown above, delimited by `"""` strings (see _"Familiar logic pattern"_ in the screen shot, above). If provided, this will be written into the wiki report.
 
 * Important: the system assumes the following line identifies the scenario_name; be sure to include it.
 

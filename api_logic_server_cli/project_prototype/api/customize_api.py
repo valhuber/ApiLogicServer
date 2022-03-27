@@ -39,6 +39,9 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
 
     def rules_report():
+        """
+        writes the rules report into the logs
+        """
         rules_bank = RuleBank()
         logic_logger = logging.getLogger("logic_logger")
         rule_count = 0
@@ -53,7 +56,9 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
     @app.route('/server_log')
     def server_log():
         """
-        Used by test/server_test.py - enables client app to log msg into server
+        Used by test/api_logic_server_behave/features/steps/test_utils.py - enables client app to log msg into server
+
+        Special support for the msg parameter -- Rules Report
         """
         import os
         import datetime
