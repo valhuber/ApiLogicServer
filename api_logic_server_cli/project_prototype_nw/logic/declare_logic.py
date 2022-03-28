@@ -52,7 +52,7 @@ def declare_logic():
             When Order Placed with excessive quantity
             Then Rejected per Credit Limit
 
-    Logic Specification ("Cocktail Napkin Design")
+    Logic Design ("Cocktail Napkin Design")
         Customer.Balance <= CreditLimit
         Customer.Balance = Sum(Order.AmountTotal where unshipped)
         Order.AmountTotal = Sum(OrderDetail.Amount)
