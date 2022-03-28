@@ -238,7 +238,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 ## Test
 
-You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
+You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).  This can be used as part of an overall agil approach as described in the [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial).
 
 &nbsp;&nbsp;&nbsp;
 
@@ -416,7 +416,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix
+03/27/2022 - 05.00.06: Introducing [Behave test framework](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial), LogicBank bugfix
 
 02/18/2022 - 04.02.03: SqlServer fixes, rebuild creates '-created' versions for data model repair
 
