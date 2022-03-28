@@ -4,14 +4,14 @@
 
 # Alert
 
-Recent updates to included libs have broken previous versions of API Logic Server.  After installing, you can repair your existing install like this (your venv should be active):
+Recent updates to included libs have broken previous versions of API Logic Server.  This is fixed in a new version (5.00.06) is now available, and recommended.
+
+If you are unable to upgrade to the new version, you can repair your existing install like this (your venv should be active):
 
 ```
 pip install MarkupSafe==1.1.1
 pip install Jinja2==2.11.2
 ```
-
-A new version (5.00.06) is now available, and recommended.
 
 &nbsp;&nbsp;
 
