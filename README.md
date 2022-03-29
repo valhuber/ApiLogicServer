@@ -2,19 +2,6 @@
 [![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 
-# Alert
-
-Recent updates to included libs have broken previous versions of API Logic Server.  This is fixed in a new version (5.00.06) is now available, and recommended.
-
-If you are unable to upgrade to the new version, you can repair your existing install like this (your venv should be active):
-
-```
-pip install MarkupSafe==1.1.1
-pip install Jinja2==2.11.2
-```
-
-&nbsp;&nbsp;
-
 # API Logic Server
 
 ### TL;DR - creates customizable, model-driven database systems - instantly - from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
@@ -79,6 +66,7 @@ After you've explored the tutorial, try out our [dockerized test databases](http
 | 3. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation - nearly half the system                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)     |
 | 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic                                                                                                             | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
 | 5. Model Creation                                                     | Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
+| 6. Behave **Test Framework** Integration                                 | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile Process                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial)                          |
 
 The following tutorial is a good way to explore API Logic Server.
 
@@ -353,6 +341,10 @@ Once installed, use the [Quick Start](https://github.com/valhuber/ApiLogicServer
 
 
 ## Installation Notes
+
+### Alert - Project fails to start
+
+Recent updates to included libs have broken previous versions of API Logic Server.  This is fixed in a new version (5.00.06), and is strongly recommended.  You can also repair broken installations as described in [Troubleshooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting).
 
 ### Heads up - Certificate Issues
 We sometimes see Python / Flask AppBuilder Certificate issues - see [Troubleshooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#certificate-failures).
