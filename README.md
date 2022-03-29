@@ -4,7 +4,7 @@
 
 # API Logic Server
 
-### TL;DR - creates customizable, model-driven database systems - instantly - from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
+### TL;DR - creates customizable database systems - instantly - from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
 
 The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
 
@@ -66,7 +66,7 @@ After you've explored the tutorial, try out our [dockerized test databases](http
 | 3. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation - nearly half the system                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)     |
 | 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic                                                                                                             | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
 | 5. Model Creation                                                     | Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
-| 6. Behave **Test Framework** Integration                                 | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile Process                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial)                          |
+| 6. Behave **Test Framework**                                 | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile Process                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial)                          |
 
 The following tutorial is a good way to explore API Logic Server.
 
