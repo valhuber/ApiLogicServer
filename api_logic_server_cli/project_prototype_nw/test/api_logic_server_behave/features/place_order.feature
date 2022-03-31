@@ -4,7 +4,7 @@ Feature: Place Order
      Given Customer Account: ALFKI
       When Good Order Placed
       Then Logic adjusts Balance (demo: chain up)
-      Then Logic adusts Products Reordered
+      Then Logic adjusts Products Reordered
       Then Logic sends email to salesrep
       Then Logic adjusts aggregates down on delete order
 
