@@ -104,7 +104,7 @@ def step_impl(context):
     assert before.Balance + expected_adjustment == after.Balance, \
         f'On add, before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
 
-@then('Logic adusts Products Reordered')
+@then('Logic adjusts Products Reordered')
 def step_impl(context):
     assert True is not False
 
@@ -156,7 +156,17 @@ def step_impl(context):
 @when('Order Placed with excessive quantity')
 def step_impl(context):
     """
-    Familiar logic pattern: constrain a derived result
+    Familiar logic pattern:
+    * constrain a derived result
+    * chain up, to adjust parent sum/count aggregates
+
+    Logic Design ("Cocktail Napkin Design")
+    * Customer.Balance <= CreditLimit
+    * Customer.Balance = Sum(Order.AmountTotal where unshipped)
+    * Order.AmountTotal = Sum(OrderDetail.Amount)
+    * OrderDetail.Amount = Quantity * UnitPrice
+    * OrderDetail.UnitPrice = copy from Product
+
     """
     scenario_name = 'Bad Order Custom Service'
     add_order_uri = f'http://localhost:5656/api/ServicesEndPoint/add_order'
