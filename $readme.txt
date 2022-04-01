@@ -139,3 +139,5 @@ Id 10643; OrderDetails are blank on load.  ugh
     "type": "Order"
   }
 }
+
+python -m venv venv; source venv/bin/activate; pip install -r requirements.txt
