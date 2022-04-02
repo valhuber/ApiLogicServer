@@ -204,13 +204,6 @@ def step_impl(context):
     assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
     # behave.log_capture.capture("THIS IS behave.log_capture.capture")
 
-@then('exceeds credit in response')
-def step_impl(context):
-    response_text = context.response_text
-    print( "one last thing", "by the way", "\n")
-    assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'
-    # behave.log_capture.capture("THIS IS behave.log_capture.capture")
-
 def after_step(context, step):
     print("\nflush1 \n\n")
     print("\nflush2 \n\n")
