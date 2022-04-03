@@ -197,7 +197,7 @@ def step_impl(context):
     r = requests.post(url=add_order_uri, json=add_order_args)
     context.response_text = r.text
 
-@then('Rejected per Credit Limit')
+@then('Rejected per Check Credit')
 def step_impl(context):
     response_text = context.response_text
     print( "one last thing", "by the way", "\n")

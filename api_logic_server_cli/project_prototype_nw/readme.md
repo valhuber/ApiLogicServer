@@ -163,7 +163,19 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 ## Test
 
-You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
+You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).  This can be used as part of an overall agil approach as described in the [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial).
+
+TL;DR - features and test scripts are predefined in the sample; to run them (with the server running):
+
+1. Run Launch Configuration `Run Behave Logic` 
+2. Run Launch Configuration ``Behave Logic Report`` 
+3. Open `test/api_logic_server_behave/reports/Behave Logic Report.md`
+
+&nbsp;&nbsp;
+
+   > The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
+
+For more information, see [Working with Behave](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
 
 &nbsp;&nbsp;&nbsp;
 

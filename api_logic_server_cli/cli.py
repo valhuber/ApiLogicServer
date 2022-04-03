@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.00.07"
+__version__ = "5.00.08"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t04/02/2022 - 05.00.08: Run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.07: Fix breaking lib: Werkzeug==2.0.3 \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
     "\t03/05/2022 - 04.03.03: server_test.py bugfix and additional examples \n"\

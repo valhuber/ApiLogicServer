@@ -12,13 +12,13 @@ Feature: Place Order
   Scenario: Bad Order Custom Service
      Given Customer Account: ALFKI
       When Order Placed with excessive quantity
-      Then Rejected per Credit Limit
+      Then Rejected per Check Credit
 
 
   Scenario: Alter Item Qty to exceed credit
      Given Customer Account: ALFKI
       When Order Detail Quantity altered very high
-      Then Rejected per Credit Limit
+      Then Rejected per Check Credit
 
 
   Scenario: Alter Required Date - adjust logic pruned
