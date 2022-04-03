@@ -17,6 +17,7 @@ __version__ = "5.00.09"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t04/03/2022 - 05.00.10: Minor bugfix: behave.log datetime \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.07: Fix breaking lib: Werkzeug==2.0.3 \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
