@@ -66,6 +66,7 @@ setup(
         "six==1.16.0",
         "SQLAlchemy==1.4.29",
         "SQLAlchemy-Utils==0.38.2",
+        "Werkzeug==2.0.3",
         "Flask-AppBuilder==3.4.4",
         "logicbankutils==0.6.0",
         "inflect==5.0.2",
