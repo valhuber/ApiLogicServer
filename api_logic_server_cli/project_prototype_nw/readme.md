@@ -158,7 +158,6 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
-
 &nbsp;&nbsp;
 
 ## Test
@@ -172,6 +171,12 @@ TL;DR - features and test scripts are predefined in the sample; to run them (wit
 3. Open `test/api_logic_server_behave/reports/Behave Logic Report.md`
 
 &nbsp;&nbsp;
+
+   > The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
+
+For more information, see [Working with Behave](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
+
+&nbsp;&nbsp;&nbsp;
 
    > The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
 

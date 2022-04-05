@@ -1506,7 +1506,7 @@ def key_module_map():
     import create_from_model.ui_admin_creator as ui_admin_creator
     import create_from_model.api_expose_api_models as api_expose_api_models
 
-    api_logic_server()                                          # main driver, calls...
+    api_logic_server()                                          # main driver, calls...  Ctl- to return to last loc
     model_creation_services = CreateFromModel()                 # creates database/models.py by calling...
     model_creation_services.create_models()                     # creates database/models.py
     model_creation_services.create_resource_list_from_safrs()   # creates resource_list via dynamic import of models.py

@@ -7,6 +7,15 @@ from dotmap import DotMap
 
 logic_logs_dir = "logs/scenario_logic_logs"
 
+"""
+These tests can be re-run -- they restore the data to original state
+
+Rows used for testing:
+* customer: ALFKI, with a balance of 2102
+* order: 10643, with an amount 1086
+* orderdetail: 1040
+* employee: Buchanan (5), with a salary of 95k
+"""
 
 def get_ALFLI():
     get_uri = 'http://localhost:5656/api/Customer/ALFKI/?include=OrderList&fields%5BCustomer%5D=Id%2CCompanyName%2CBalance%2CCreditLimit%2COrderCount%2CUnpaidOrderCount'
@@ -156,9 +165,9 @@ def step_impl(context):
 @when('Order Placed with excessive quantity')
 def step_impl(context):
     """
-    Familiar logic pattern:
-    * constrain a derived result
-    * chain up, to adjust parent sum/count aggregates
+    Familiar logic patterns:
+    * Constrain a derived result
+    * Chain up, to adjust parent sum/count aggregates
 
     Logic Design ("Cocktail Napkin Design")
     * Customer.Balance <= CreditLimit
@@ -205,7 +214,7 @@ def step_impl(context):
     # behave.log_capture.capture("THIS IS behave.log_capture.capture")
 
 def after_step(context, step):
-    print("\nflush1 \n\n")
+    print("\nflush1 \n\n")  # ensure print statements work
     print("\nflush2 \n\n")
 
 

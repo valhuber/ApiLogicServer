@@ -50,7 +50,7 @@ def declare_logic():
     Feature: Place Order
         Scenario: Bad Order Custom Service
             When Order Placed with excessive quantity
-            Then Rejected per Credit Limit
+            Then Rejected per Credit Limit
 
     Logic Design ("Cocktail Napkin Design")
         Customer.Balance <= CreditLimit
@@ -96,7 +96,7 @@ def declare_logic():
                 logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
                               f'Congratulate {sales_rep.FirstName} on their new order')
 
-    email = Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
+    Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 
     """
         More complex rules follow - see: 
@@ -104,21 +104,23 @@ def declare_logic():
             https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility
     """
 
-    shipped_date = Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")
+    Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")
 
     def units_in_stock(row: models.Product, old_row: models.Product, logic_row: LogicRow):
         result = row.UnitsInStock - (row.UnitsShipped - old_row.UnitsShipped)
         return result
-    units_shipped = Rule.sum(derive=models.Product.UnitsShipped, as_sum_of=models.OrderDetail.Quantity,
-             where=lambda row: row.ShippedDate is None)
-    units_in_stock = Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)
 
-    unpaid_order_count = Rule.count(derive=models.Customer.UnpaidOrderCount, as_count_of=models.Order,
-             where=lambda row: row.ShippedDate is None)  # *not* a sql select sum...
+    Rule.sum(derive=models.Product.UnitsShipped, as_sum_of=models.OrderDetail.Quantity,
+        where=lambda row: row.ShippedDate is None)
 
-    order_count = Rule.count(derive=models.Customer.OrderCount, as_count_of=models.Order)
+    Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)
 
-    order_detail_count = Rule.count(derive=models.Order.OrderDetailCount, as_count_of=models.OrderDetail)
+    Rule.count(derive=models.Customer.UnpaidOrderCount, as_count_of=models.Order,
+        where=lambda row: row.ShippedDate is None)  # *not* a sql select sum...
+
+    Rule.count(derive=models.Customer.OrderCount, as_count_of=models.Order)
+
+    Rule.count(derive=models.Order.OrderDetailCount, as_count_of=models.OrderDetail)
 
     def raise_over_20_percent(row: models.Employee, old_row: models.Employee, logic_row: LogicRow):
         if logic_row.ins_upd_dlt == "upd" and row.Salary > old_row.Salary:
@@ -126,7 +128,7 @@ def declare_logic():
         else:
             return True
 
-    good_raise = Rule.constraint(validate=models.Employee,
+    Rule.constraint(validate=models.Employee,
                     calling=raise_over_20_percent,
                     error_msg="{row.LastName} needs a more meaningful raise")
 
@@ -151,6 +153,6 @@ def declare_logic():
             row.CreatedOn = datetime.datetime.now()
             logic_row.log("early_row_event_all_classes - handle_all sets 'Created_on"'')
 
-    time_stamp = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
+    Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
 
     app_logger.debug("\n\nlogic/logic_bank.py: declare_logic complete")
