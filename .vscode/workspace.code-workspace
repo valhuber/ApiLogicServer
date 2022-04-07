@@ -81,16 +81,16 @@
 			{
 				"previewLimit": 50,
 				"driver": "SQLite",
-				"name": "nw-gold-plus",
+				"name": "nw-gold",
 				"group": "G",
-				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/project_prototype_nw/database/nw-gold-plus.sqlite"
+				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/project_prototype_nw/database/nw-gold.sqlite"
 			},
 			{
 				"previewLimit": 50,
 				"driver": "SQLite",
-				"name": "nw-gold",
+				"name": "nw-gold-plus",
 				"group": "G",
-				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/project_prototype_nw/database/nw-gold.sqlite"
+				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/database/nw-gold-plus.sqlite"
 			}
 		],
 		"sqltools.useNodeRuntime": true

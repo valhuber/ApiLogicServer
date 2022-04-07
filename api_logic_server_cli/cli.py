@@ -283,6 +283,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
 
     :param project_directory: name of project created
     :param project_name: actual user parameter (might have ~, .)
+    :param api_name: node in rest uri
     :param from_git: name of git project to clone (blank for default)
     :param msg printed, such as Create Project
     :param abs_db_url: non-relative location of db

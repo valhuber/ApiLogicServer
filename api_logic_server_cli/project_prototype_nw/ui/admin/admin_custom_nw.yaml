@@ -1,8 +1,8 @@
 about:
-  date: Mar 24, 2022 18:59:13
-  recent_changes: altered Customer/Order/Employee attribute ordering, tab captions, info
+  date: Apr 7 24, 2022 18:59:13
+  recent_changes: altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType
 # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
-  version: 5.00.00
+  version: 5.00.09
 api_root: http://localhost:5656/api
 # for deployed apps, you might use a different uri, such as https://apilogicserver.pythonanywhere.com/api
 info:
@@ -130,9 +130,13 @@ resources:
         sort: true
       - name: OnLoanDepartmentId
       - name: WorksForDepartmentId
-      - name: FirstName
       - name: Salary
         type: DECIMAL
+      - name: EmployeeType
+      - name: Dues
+        type: DECIMAL
+      - name: FirstName
+      - name: Id
       - name: Title
       - name: TitleOfCourtesy
       - name: BirthDate
@@ -149,7 +153,6 @@ resources:
       - name: ReportsTo
       - name: PhotoPath
       - name: IsCommissioned
-      - name: Id
     tab_groups:
       - direction: tomany
         fks:
@@ -176,6 +179,11 @@ resources:
           - WorksForDepartmentId
         name: Department1
         resource: Department
+      - direction: toone
+        fks:
+        - UnionId
+        name: Union
+        resource: Union
     type: Employee
     user_key: LastName
   EmployeeAudit:
@@ -456,6 +464,21 @@ resources:
         resource: EmployeeTerritory
     type: Territory
     user_key: TerritoryDescription
+  Union:
+    attributes:
+    - label: ' Name*'
+      name: Name
+      search: true
+      sort: true
+    - name: Id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - UnionId
+      name: EmployeeList
+      resource: Employee
+    type: Union
+    user_key: Name
 settings:
   HomeJS: http://localhost:5656/admin-app/home.js
   max_list_columns: 8
