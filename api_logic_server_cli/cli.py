@@ -711,7 +711,7 @@ def get_abs_db_url(db_url):
     """
     non-relative db location - we work with this
 
-    but NB: we copy sqlite db to <project>/database - see clone_prototype_project_with_nw_samples
+    but NB: we copy sqlite db to <project>/database - see create_project_with_nw_samples
 
     also: compute physical nw db name (usually nw-gold-plus) to be used for copy
 
@@ -817,11 +817,11 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
                      extended_builder: str, multi_api: bool):
     """
-    Creates logic-enabled Python JSON_API project, options for FAB and execution
+    Creates logic-enabled Python safrs api/admin project, options for FAB and execution
 
     main driver
 
-    :param project_name could be ~, or volume - create this folder
+    :param project_name could be ~, or volume - creates this folder
     :param db_url SQLAlchemy url
     :param host where safrs finds the api
     :param port where safrs finds the port
