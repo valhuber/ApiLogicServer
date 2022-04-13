@@ -9,7 +9,7 @@ import logging
 app_logger = logging.getLogger("api_logic_server_app")
 app_logger.info("logic/declare_logic.py - importing declare_logic")
 
-declared_rules = []
+declared_rules = []  # rules are objects, you can collect them if you like (see @ end)
 
 def declare_logic():
     """
@@ -153,6 +153,7 @@ def declare_logic():
             row.CreatedOn = datetime.datetime.now()
             logic_row.log("early_row_event_all_classes - handle_all sets 'Created_on"'')
 
-    Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
+    time_stamp_rule = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
+    declared_rules.append(time_stamp_rule)  # print ala api/customize_api#rules_report()
 
     app_logger.debug("\n\nlogic/logic_bank.py: declare_logic complete")

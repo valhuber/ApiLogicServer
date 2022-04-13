@@ -36,6 +36,9 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
 
     def rules_report():
+        """
+        logs report of all rules, using rules_bank.__str__()
+        """
         rules_bank = RuleBank()
         logic_logger = logging.getLogger("logic_logger")
         rule_count = 0
@@ -64,13 +67,12 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
     @app.route('/server_log')
     def server_log():
         """
-        Used by test/server_test.py - enables client app to log msg into server
+        Used by test/*.py - enables client app to log msg into server
         """
         import os
         import datetime
         from pathlib import Path
         import logging
-        # import logging.Logger as Logger
 
 
         def add_file_handler(logger, name: str, log_dir):

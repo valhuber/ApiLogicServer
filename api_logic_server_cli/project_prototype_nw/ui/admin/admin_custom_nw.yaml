@@ -135,6 +135,7 @@ resources:
       - name: EmployeeType
       - name: Dues
         type: DECIMAL
+        show_when: record["EmployeeType"] == "Hourly"
       - name: FirstName
       - name: Id
       - name: Title
