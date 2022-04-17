@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.00.09"
+__version__ = "5.00.10"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t04/03/2022 - 05.00.10: Minor bugfix: behave.log datetime \n"\
+    "\t04/16/2022 - 05.00.10: wip - minor bugfix: behave.log datetime, SampleDBVersion \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.07: Fix breaking lib: Werkzeug==2.0.3 \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
@@ -708,27 +708,28 @@ def is_docker() -> bool:
     return os.path.isdir(path)
 
 
-def get_abs_db_url(db_url):
+def get_abs_db_url(msg, db_url):
     """
     non-relative db location - we work with this
 
     but NB: we copy sqlite db to <project>/database - see create_project_with_nw_samples
 
-    also: compute physical nw db name (usually nw-gold-plus) to be used for copy
+    also: compute physical nw db name (usually nw-gold) to be used for copy
 
     returns abs_db_url - the real url (e.g., for nw), and whether it's really nw
     """
     rtn_nw_db_status = ""  # presume not northwind
     rtn_abs_db_url = db_url
 
-    if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:
+    if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
         # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold-plus.sqlite'
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold.sqlite'
         rtn_nw_db_status = "nw"
-    elif db_url == "nw-":
+        print(f'{msg} from: {rtn_abs_db_url}')
+    elif db_url == "nw-":                                           # nw:           just in case
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw.sqlite'
         rtn_nw_db_status = "nw-"
-    elif db_url == "nw+":
+    elif db_url == "nw+":                                           # nw-gold-plus: next version
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/nw-gold-plus.sqlite'
         rtn_nw_db_status = "nw+"
     elif db_url.startswith('sqlite:///'):
@@ -841,7 +842,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
     global nw_db_status
-    abs_db_url, nw_db_status = get_abs_db_url(db_url)
+    abs_db_url, nw_db_status = get_abs_db_url("0. Using Sample DB", db_url)
 
     if extended_builder == "*":
         extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/extended_builder.py')
@@ -1514,3 +1515,4 @@ def key_module_map():
     invoke_creators()                                           # creates api, ui via create_from_model...
     api_expose_api_models.create()                              # creates api/expose_api_models from resource_list
     ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
+    get_abs_db_url()                                            # nw set here

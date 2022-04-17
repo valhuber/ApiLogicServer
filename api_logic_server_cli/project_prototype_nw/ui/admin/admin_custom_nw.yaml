@@ -1,6 +1,6 @@
 about:
-  date: Apr 7 24, 2022 18:59:13
-  recent_changes: altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType
+  date: Apr 16 24, 2022 18:59:13
+  recent_changes: altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, SampleDBVersion
 # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
   version: 5.00.09
 api_root: http://localhost:5656/api
@@ -419,6 +419,15 @@ resources:
       - name: Id
     type: Region
     user_key: RegionDescription
+  SampleDBVersion:
+    attributes:
+    - label: ' Id*'
+      name: Id
+      search: true
+      sort: true
+    - name: Notes
+    type: SampleDBVersion
+    user_key: Id
   Shipper:
     attributes:
       - label: ' Company Name*'
