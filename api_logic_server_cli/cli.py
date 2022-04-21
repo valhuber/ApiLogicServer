@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.00.10"
+__version__ = "5.01.00"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t04/16/2022 - 05.00.10: wip - minor bugfix: behave.log datetime, SampleDBVersion \n"\
+    "\t04/21/2022 - 05.01.00: Basic version copy_children \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.07: Fix breaking lib: Werkzeug==2.0.3 \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
@@ -730,8 +730,9 @@ def get_abs_db_url(msg, db_url):
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw.sqlite'
         rtn_nw_db_status = "nw-"
     elif db_url == "nw+":                                           # nw-gold-plus: next version
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/nw-gold-plus.sqlite'
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold-plus.sqlite'
         rtn_nw_db_status = "nw+"
+        print(f'{msg} from: {rtn_abs_db_url}')
     elif db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         rtn_abs_db_url = abspath(url)

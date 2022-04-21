@@ -360,3 +360,56 @@ def step_impl(context):
     context.alfki_after = after
     assert before.Balance + expected_adjustment == after.Balance, \
         f'Before balance {before.Balance} + {expected_adjustment} != new Balance {after.Balance}'
+
+@when('Cloning Existing Order')
+def step_impl(context):
+    """
+    We create an order, setting CloneFromOrder.
+
+    This copies the CloneFromOrder OrderDetails to our new Order.
+    
+    The copy operation is automated using `logic_row.copy_children()`:
+
+    1. `place_order.feature` defines the test
+
+    2. `place_order.py` implements the test.  It uses the API to Post an Order, setting `CloneFromOrder` to trigger the copy logic
+
+    3. `declare_logic.py` implements the logic, by invoking `logic_row.copy_children()`.  `which` defines which children to copy, here just `OrderDetailList`
+
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/clone_order.png?raw=true"></figure>
+
+
+    > **Key Takeaway:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
+
+    > **Key Takeaway:** Automatic Reuse (_design one, solve many_)
+
+    Illustrate use of copy_children
+    https://github.com/valhuber/LogicBank/wiki/Copy-Children
+    """
+    scenario_name = "Clone Existing Order"
+    test_utils.prt(f'\n\n\n{scenario_name}... Clone Order per CloneFromOrder 10643 ($1086), for ALFKI ($2102, limit of $2200)) \n\n', scenario_name)
+    add_order_uri = f'http://localhost:5656/api/ServicesEndPoint/add_order'
+    clone_of_10643 = {
+        "meta": {
+            "method": "add_order",
+            "args": {
+                "CustomerId": "ALFKI",
+                "EmployeeId": 1,
+                "Freight": 11,
+                "CloneFromOrder": 10643
+            }
+        }
+    }
+    """
+        ALFKI - Balance: 2102, CreditLimit = 2200
+        Order 10643
+    """
+    test_utils.prt(f'\n\n\n{scenario_name} - verify adjustments...\n',\
+    scenario_name)
+    r = requests.post(url=add_order_uri, json=clone_of_10643)
+    context.response_text = r.text
+
+@then('Logic Copies ClonedFrom OrderDetails')
+def step_impl(context):
+    response_text = context.response_text
+    assert "exceeds credit" in response_text, f'Error - "exceeds credit not in {response_text}'

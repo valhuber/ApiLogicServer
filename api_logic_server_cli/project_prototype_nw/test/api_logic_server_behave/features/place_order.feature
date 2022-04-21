@@ -37,3 +37,9 @@ Feature: Place Order
      Given Shipped Order
       When Order ShippedDate set to None
       Then Logic adjusts Balance by -1086
+
+
+  Scenario: Clone Existing Order
+     Given Shipped Order
+      When Cloning Existing Order
+      Then Logic Copies ClonedFrom OrderDetails

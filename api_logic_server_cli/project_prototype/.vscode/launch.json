@@ -44,7 +44,7 @@
             "program": "${workspaceFolder}/test/api_logic_server_behave/behave_run.py",
             "redirectOutput": true,
             "args": [ "--outfile=${workspaceFolder}/test/api_logic_server_behave/logs/behave.log",
-                "--name=Bad Order Custom Service"],
+                "--name=Clone Existing Order"],
             "justMyCode": false,            
             "console": "integratedTerminal"
         },
