@@ -420,6 +420,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+04/21/2022 - 05.01.00: Basic version copy_children
+
 03/27/2022 - 05.00.06: Introducing [Behave test framework](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial), LogicBank bugfix
 
 02/18/2022 - 04.02.03: SqlServer fixes, rebuild creates '-created' versions for data model repair
