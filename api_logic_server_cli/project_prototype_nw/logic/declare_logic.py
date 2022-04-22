@@ -143,6 +143,10 @@ def declare_logic():
 
     Rule.commit_row_event(on_class=models.Employee, calling=audit_by_event)
 
+    RuleExtension.copy_row(copy_from=models.Employee,
+                           copy_to=models.EmployeeAudit,
+                           copy_when=lambda logic_row: logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]))
+
     def clone_order(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         if row.CloneFromOrder is not None and logic_row.nest_level == 0:
             which = dict(OrderDetailList = None)

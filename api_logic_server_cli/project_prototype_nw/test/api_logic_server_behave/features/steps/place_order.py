@@ -376,17 +376,13 @@ def step_impl(context):
 
     3. `declare_logic.py` implements the logic, by invoking `logic_row.copy_children()`.  `which` defines which children to copy, here just `OrderDetailList`
 
-    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/clone_order.png?raw=true"></figure>
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/clone-order.png?raw=true"></figure>
 
 
-    > **Key Takeaway:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
+    > **Key Takeaway:** copy_children provides a deep-copy service.
 
-    > **Key Takeaway:** Automatic Reuse (_design one, solve many_)
-
-    Illustrate use of copy_children
-    https://github.com/valhuber/LogicBank/wiki/Copy-Children
     """
-    scenario_name = "Clone Existing Order"
+    scenario_name = 'Clone Existing Order'
     test_utils.prt(f'\n\n\n{scenario_name}... Clone Order per CloneFromOrder 10643 ($1086), for ALFKI ($2102, limit of $2200)) \n\n', scenario_name)
     add_order_uri = f'http://localhost:5656/api/ServicesEndPoint/add_order'
     clone_of_10643 = {
