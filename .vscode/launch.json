@@ -78,9 +78,9 @@
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/../servers/ApiLogicProject/test/api_logic_server_behave",
-            "program": "debug_behave.py",
+            "program": "behave_run.py",
             "redirectOutput": true,
-            "args": [ ">", "behaveDEV.log"],
+            "args": [ "--outfile=${workspaceFolder}/../servers/ApiLogicProject/test/api_logic_server_behave/logs/behave.log"],
             "justMyCode": false,            
             "console": "integratedTerminal"
         },
