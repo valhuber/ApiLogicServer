@@ -19,24 +19,19 @@ recent_changes = \
     f'\n\nRecent Changes:\n' +\
     "\t04/22/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
-    "\t03/27/2022 - 05.00.07: Fix breaking lib: Werkzeug==2.0.3 \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
     "\t03/05/2022 - 04.03.03: server_test.py bugfix and additional examples \n"\
     "\t03/04/2022 - 04.03.02: proper required (issue 34), allocate fixes (issue 39), tests \n"\
-    "\t02/21/2022 - 04.02.08: vscode redirectOutput for debugger, /bin for venv, readme install \n"\
     "\t02/20/2022 - 04.02.06: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
-    "\t01/18/2022 - 04.01.01: fix startup failure on created app (windows pip-install version only) \n"\
     "\t01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix \n"\
     "\t01/05/2022 - 04.00.18: Integrated /admin-api, required fields, no redundant join, attr info, sample home rb \n"\
-    "\t01/04/2022 - 04.00.15: Integrated /admin-api, required fields, no redundant join, attr info \n"\
     "\t01/02/2022 - 04.00.12: Fixed reposition after update, Home screen fonts and links \n"\
     "\t12/26/2021 - 04.00.05: Introducing the admin app, with Readme Tutorial \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
     "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
     "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"\
     "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"\
-    "\t09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging\n"
 
 from contextlib import closing
 
