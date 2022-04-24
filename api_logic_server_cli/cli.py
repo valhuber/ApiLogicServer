@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.01.00"
+__version__ = "5.01.01"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t04/21/2022 - 05.01.00: Basic version copy_children \n"\
+    "\t04/22/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.07: Fix breaking lib: Werkzeug==2.0.3 \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\

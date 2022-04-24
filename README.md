@@ -420,7 +420,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-04/21/2022 - 05.01.00: Basic version copy_children
+04/24/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.)
 
 03/27/2022 - 05.00.06: Introducing [Behave test framework](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial), LogicBank bugfix
 

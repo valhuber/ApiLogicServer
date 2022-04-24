@@ -378,6 +378,24 @@ def step_impl(context):
 
     <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/clone-order.png?raw=true"></figure>
 
+    `CopyChildren` For more information, [see here](https://github.com/valhuber/LogicBank/wiki/Copy-Children)
+
+        Useful in row event handlers to copy multiple children types to self from copy_from children.
+
+        child-spec := < ‘child-list-name’ | < ‘child-list-name = parent-list-name’ >
+        child-list-spec := [child-spec | (child-spec, child-list-spec)]
+
+        Eg. RowEvent on Order
+            which = ["OrderDetailList"]
+            logic_row.copy_children(copy_from=row.parent, which_children=which)
+
+        Eg, test/copy_children:
+            child_list_spec = [
+                ("MileStoneList",
+                    ["DeliverableList"]  # for each Milestone, get the Deliverables
+                ),
+                "StaffList"
+            ]
 
     > **Key Takeaway:** copy_children provides a deep-copy service.
 
