@@ -17,6 +17,7 @@ __version__ = "5.01.01"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t04/27/2022 - 05.01.02: copy_children, with support for nesting, log cleanup \n"\
     "\t04/22/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
