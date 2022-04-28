@@ -22,7 +22,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
    * [Customizable:](https://github.com/valhuber/ApiLogicServer/wiki#customize-the-api-with-expose_servicespy-add-rpcs-services) add your own endpoints
 
 
-3. **Business Logic,** for backend processing :trophy:
+3. **Business Logic,** for backend processing &nbsp; :trophy:
 
    * Spreadsheet-like rules for multi-table derivations and constraints
    * Extensible with Python events for email, messages, etc
