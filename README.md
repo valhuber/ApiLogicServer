@@ -22,7 +22,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 
 To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
-```
+```bash
 cd ~/Desktop                       # directory of API Logic Server projects on local host
 
 # Start the API Logic Server docker container
@@ -37,11 +37,12 @@ or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/
 VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
 In addition to Docker, you can [install](#installation) locally, typically:
-```
-python -m venv venv
-source venv/bin/activate
-pip install ApiLogicServer
-ApiLogicServer create-and-run
+
+```bash
+python3 -m venv venv       # may require python -m venv venv
+source venv/bin/activate   # windows venv\Scripts\activate
+apt install unixodbc-dev   # Linux only
+pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 ```
 
 &nbsp;
