@@ -31,8 +31,7 @@ docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:
 ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=
 ```
 
-Your system is running - explore the data and api at
-[localhost:5656](htttp://localhost:5656),
+Your system is running - explore the data and api at [localhost:5656](http://localhost:5656),
 or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
 
 VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
