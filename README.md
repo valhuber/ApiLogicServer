@@ -27,7 +27,6 @@ cd ~/Desktop                       # directory of API Logic Server projects on l
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=  # Working Software, Now
-
 ```
 
 Your system is running - explore the data and api 
@@ -37,6 +36,8 @@ or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/
 VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
 In addition to Docker, you can [install](#installation) locally, or on the cloud.
+
+### Process Overview
 
 You can picture the process as shown in the diagram below; click it for a video tutorial, showing complete project creation, execution, customization and debugging.
 
