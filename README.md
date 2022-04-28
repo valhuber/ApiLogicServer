@@ -8,25 +8,15 @@
 
 The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
 
-1. **Automatic Admin App** [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)
-
-   * For instant collaboration and Back Office data maintenance
-   * Rich functionality: multi-page, multi-table, automatic joins
-   * [Explore](https://github.com/valhuber/ApiLogicServer/wiki/Admin-Tour/) this Admin App, and how to [customize it](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App)
+1. **Automatic Admin App** [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
 
 
-2. **API,** with [Swagger](http://localhost:5656/api)
-
-   * For custom app dev, integration
-   * Rich functionality: endpoint for each table, with filtering, pagination, related data
-   * [Customizable:](https://github.com/valhuber/ApiLogicServer/wiki#customize-the-api-with-expose_servicespy-add-rpcs-services) add your own endpoints
+2. **API,** with [Swagger](http://localhost:5656/api) - endpoint for each table, with filtering, pagination, related data
 
 
-3. **Business Logic,** for backend processing &nbsp; :trophy:
+3. **Business Logic,** 40X more concise multi-table derivations and constraints &nbsp; :trophy:
 
-   * Spreadsheet-like rules for multi-table derivations and constraints
-   * Extensible with Python events for email, messages, etc
-   * [Explore](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) how logic can meaningfully improve [conciseness](https://github.com/valhuber/LogicBank/wiki/by-code) and quality
+&nbsp;&nbsp;
 
 To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
@@ -62,11 +52,11 @@ After you've explored the tutorial, try out our [dockerized test databases](http
 | Feature                                                               | Providing                                                                                                                                       | Why it Matters                                   | Learn More                                                                                 |
 |:----------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------|:-------------------------------------------------------------------------------------------|
 | 1. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** app                                                                                                         | Engage Business Users<br>Back-office Admin       | [safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)                         |
-| 2. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                            |
-| 3. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation - nearly half the system                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)     |
-| 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic                                                                                                             | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
+| 2. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                            |
+| 3. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* <br> **40X more concise** <br>Compare with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation <br> ... nearly half the system                       | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)     |
+| 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic with Python and your IDE                                                                                                            | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
 | 5. Model Creation                                                     | Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
-| 6. Behave **Test Framework**                                 | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile Process                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial)                          |
+| 6. Behave **Test Framework**                                 | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial)                          |
 
 The following tutorial is a good way to explore API Logic Server.
 
