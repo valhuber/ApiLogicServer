@@ -25,10 +25,10 @@ To create the sample API and app project in a *minute or two --*  start Docker, 
 ```
 cd ~/Desktop                       # directory of API Logic Server projects on local host
 
-# Start (install if required) the API Logic Server docker container
+# Start the API Logic Server docker container
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
-ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=  # Working Software, Now
+ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=
 ```
 
 Your system is running - explore the data and api 
