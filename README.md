@@ -37,7 +37,13 @@ or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/
 
 VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
-In addition to Docker, you can [install](#installation) locally, or on the cloud.
+In addition to Docker, you can [install](#installation) locally, typically:
+```
+python -m venv venv
+source venv/bin/activate
+pip install ApiLogicServer
+ApiLogicServer create-and-run --project_name= --db_url=
+```
 
 &nbsp;
 
