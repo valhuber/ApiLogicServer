@@ -32,7 +32,7 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 
 Your system is running - explore the data and api 
 [locally](localhost:5656),
-or [on this deployed systems](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
+or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
 
 VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
