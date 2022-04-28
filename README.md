@@ -11,7 +11,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 1. **Automatic Admin App** [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
 
 
-2. **API,** with [Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) - endpoint for each table, with filtering, pagination, related data
+2. **API,** with [Swagger](http://apilogicserver.pythonanywhere.com/api) - endpoint for each table, with filtering, pagination, related data
 
 
 3. **Business Logic,** [40X more concise](#logic) multi-table derivations and constraints - unique to API Logic Server &nbsp; :trophy:
