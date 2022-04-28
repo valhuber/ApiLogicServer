@@ -16,7 +16,8 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 
 3. **Business Logic,** 40X more concise multi-table derivations and constraints &nbsp; :trophy:
 
-&nbsp;
+### Single Command Project Creation
+
 To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
 ```
