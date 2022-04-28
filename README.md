@@ -44,7 +44,7 @@ source venv/bin/activate   # windows venv\Scripts\activate
 apt install unixodbc-dev   # Linux only
 pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
 
-ApiLogicServer create      # defaults provided
+ApiLogicServer create      # create, or create-and-run; defaults provided
 ```
 
 &nbsp;
