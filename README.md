@@ -39,6 +39,8 @@ VSCode and PyCharm users can execute within their IDE with [these steps](https:/
 
 In addition to Docker, you can [install](#installation) locally, or on the cloud.
 
+&nbsp;
+
 ### Process Overview
 
 You can picture the process as shown in the diagram below; click it for a video tutorial, showing complete project creation, execution, customization and debugging.
