@@ -51,6 +51,7 @@ After you've explored the tutorial, try out our [dockerized test databases](http
 
 > Already installed?  Upgrade to the latest (5.00.06): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
+&nbsp;
 
 # Feature Summary
 
