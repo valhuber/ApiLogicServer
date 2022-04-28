@@ -41,7 +41,7 @@ In addition to Docker, you can [install](#installation) locally, typically:
 python -m venv venv
 source venv/bin/activate
 pip install ApiLogicServer
-ApiLogicServer create-and-run --project_name= --db_url=
+ApiLogicServer create-and-run
 ```
 
 &nbsp;

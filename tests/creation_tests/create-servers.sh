@@ -9,7 +9,7 @@ if [ $# -eq 0 ]
         echo "Creates venv and servers at ${ApiLogicServer}"
         # ls ${ApiLogicServer}
         echo ""
-        echo "  sh create-servers.sh [ venv | run ]"
+        echo "  sh create-servers.sh [ create | venv ]"
         # ls ${ApiLogicServer}
         echo ""
         exit 0
