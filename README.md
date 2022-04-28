@@ -14,7 +14,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 2. **API,** with [Swagger](http://localhost:5656/api) - endpoint for each table, with filtering, pagination, related data
 
 
-3. **Business Logic,** 40X more concise multi-table derivations and constraints - unique to API Logic Server &nbsp; :trophy:
+3. **Business Logic,** [40X more concise](#logic) multi-table derivations and constraints - unique to API Logic Server &nbsp; :trophy:
 
 &nbsp;
 
