@@ -89,7 +89,8 @@ setup(
         "requests==2.27.1",
         "dotmap==1.3.25",
         "psycopg2-binary==2.9.3",
-        "WTForms==2.3.3"
+        "WTForms==2.3.3",
+        "alembic==1.7.7"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",

@@ -206,6 +206,7 @@ def admin_yaml():
 
 @flask_app.route("/admin-app/<path:path>")
 def send_spa(path=None):
+    """ send minified safrs-react-admin app """
     global did_send_spa
     if path == "home.js":
         directory = "ui/admin"

@@ -17,6 +17,7 @@ __version__ = "5.01.02"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t05/02/2022 - 05.02.00: alembic \n"\
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting, log cleanup \n"\
     "\t04/22/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
@@ -355,6 +356,9 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
         create_utils.replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
+        create_utils.replace_string_in_file(search_for="replace_db_url",
+                               replace_with=db_uri,
+                               in_file=f'{project_directory}/database/alembic.ini')
     else:
         """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
         """
@@ -373,6 +377,9 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
         create_utils.replace_string_in_file(search_for="replace_db_url",
                                replace_with=db_uri,
                                in_file=f'{project_directory}/config.py')
+        create_utils.replace_string_in_file(search_for="replace_db_url",
+                               replace_with=db_uri,
+                               in_file=f'{project_directory}/database/alembic.ini')
         api_config_file_name = \
             os.path.dirname(os.path.realpath(__file__)) +"/create_from_model/templates/api_config.txt"
         with open(api_config_file_name, 'r') as file:
