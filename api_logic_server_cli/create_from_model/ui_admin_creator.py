@@ -4,7 +4,7 @@ import sys
 import os
 import pathlib
 from pathlib import Path
-from typing import NewType, List
+from typing import NewType, List, Tuple, Dict
 
 import sqlalchemy
 import yaml
@@ -147,7 +147,7 @@ class AdminCreator(object):
                 new_resource.tab_groups = child_tabs
             self.admin_yaml.resources[resource.table_name] = new_resource.toDict()
 
-    def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
+    def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource) -> Dict[None, Resource]:
         """ create attributes in owner (owner is a DotMap -- of resource, or tab)
 
             Order:
@@ -256,46 +256,8 @@ class AdminCreator(object):
             new_text += letter
         return new_text
 
-    def create_attributes_in_owner_zz(self, owner: DotMap, resource: Resource, owner_resource: (None, Resource)):
-        """ create attributes in owner (owner is a DotMap -- of resource, or tab)
-
-          Customer:
-            attributes:
-            - label: CompanyName*
-              name: CompanyName
-              search: true
-            - name: ContactName
-            - name: ContactTitle
-        """
-        owner.attributes = []
-        attributes_dict = []  # DotMap()
-        if admin_attr_ordering:
-            attributes = self.mod_gen.get_show_attributes(resource)
-        else:
-            attributes = self.mod_gen.get_attributes(resource)
-        for each_attribute in attributes:
-            if "." not in each_attribute:   # not a parent join
-                admin_attribute = DotMap()
-                admin_attribute.name = each_attribute
-                if each_attribute == self.mod_gen.favorite_attribute_name(resource):
-                    admin_attribute.search = True
-                    admin_attribute.label = f"{each_attribute}*"
-                """
-                if each_attribute.type in ["DECIMAL", "DATE"]:
-                    admin_attribute.type = each_attribute.type
-                """
-                attributes_dict.append(admin_attribute)
-            else:                           # parent join (disabled code - overwritten at end)
-                relationship = self.new_relationship_to_parent(resource, each_attribute, owner_resource)
-                if relationship is not None:  # skip redundant master join
-                    rel = DotMap()
-                    parent_role_name = each_attribute.split('.')[0]
-                    rel[parent_role_name] = relationship.toDict()
-                    owner.attributes.append(rel)
-        owner.attributes = attributes_dict  # for now, just attrs, no parent joins since safrs-react autojoins FKs
-
     def new_relationship_to_parent(self, a_child_resource: Resource, parent_attribute_reference,
-                                      a_master_parent_resource) -> (None, DotMap):
+                                      a_master_parent_resource) -> DotMap:
         """
         given a_child_table_def.parent_column_reference, create relationship: attrs, fKeys (for *js* client (no meta))
 
@@ -314,6 +276,7 @@ class AdminCreator(object):
         :param a_child_resource: a child resource (not class), eg, Employees
         :param parent_attribute_reference: parent ref, eg, Department1.DepartmentName
         :param a_master_parent_resource: the master of master/detail - skip joins for this
+        :returns DotMap relationship
         """
         parent_role_name = parent_attribute_reference.split('.')[0]  # careful - is role (class) name, not table name
         if a_master_parent_resource is not None and parent_role_name == a_master_parent_resource.name:
@@ -464,7 +427,7 @@ class AdminCreator(object):
         return tab_group
 
     def new_relationship_to_parent_no_model(self, a_child_table_def: MetaDataTable, parent_column_reference,
-                                   a_master_parent_table_def) -> (None, DotMap):
+                                   a_master_parent_table_def) -> DotMap:
         """
         Rarely used, now broken.  Ignore for now.
 
