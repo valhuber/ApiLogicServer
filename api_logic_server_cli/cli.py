@@ -1149,6 +1149,9 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
               default=f'{default_db}',
               prompt="SQLAlchemy Database URI",
               help="SQLAlchemy Database URL - see above\n")
+@click.option('--api_name',
+              default=f'api',
+              help="Last node of API Logic Server url\n")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -1189,7 +1192,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
               default=f'',
               help="your_code.py for additional build automation")
 @click.pass_context
-def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
+def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, not_exposed: str,
            from_git: str,
            # db_types: str,
            open_with: str,
@@ -1214,7 +1217,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, not_exposed: str,
     global command
     command = "rebuild-from-database"
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url,
+    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port,

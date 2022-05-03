@@ -544,11 +544,10 @@ class AdminCreator(object):
                 write_file = "Rebuild - overwrite unaltered"
         '''
         if write_file == "Rebuild - preserve":
-            print(f'.. .. ..{write_file} {yaml_file_name} - (merge/replace admin-created.yaml as nec)')
-            merge_yaml = self.create_yaml_merge()
             yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
+            print(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
+            merge_yaml = self.create_yaml_merge()
             admin_merge_yaml_dump = yaml.dump(merge_yaml)
-            print(f'.. .. ..{write_file} {yaml_file_name} - merge created at {yaml_merge_file_name}')
             with open(yaml_merge_file_name, 'w') as yaml_merge_file:
                 yaml_merge_file.write(admin_merge_yaml_dump)
         else:
@@ -595,8 +594,12 @@ class AdminCreator(object):
             merge_yaml_dict = yaml.load(file_descriptor, Loader=yaml.SafeLoader)
         merge_resources = merge_yaml_dict['resources']
         current_resources = self.admin_yaml.resources
+        new_resources = ''
+        new_attributes = ''
+        new_tab_groups = ''
         for each_resource_name, each_resource in current_resources.items():
             if each_resource_name not in merge_resources:
+                new_resources = new_resources + f'{each_resource_name} '
                 merge_resources[each_resource_name] = each_resource
             else:
                 current_attributes = each_resource['attributes']
@@ -609,7 +612,28 @@ class AdminCreator(object):
                             attribute_found = True
                             break
                     if not attribute_found:
+                        new_attributes = new_attributes + f'{each_resource_name}.{attribute_name} '
                         merge_attributes.append(each_current_attribute)
+                if 'tab_groups' in each_resource:
+                    current_tab_groups = each_resource['tab_groups']
+                    if 'tab_groups' not in merge_resources[each_resource_name]:
+                        merge_resources[each_resource_name]['tab_groups'] = []
+                    merge_tab_groups = merge_resources[each_resource_name]['tab_groups']
+                    for each_current_tab_group in current_tab_groups:
+                        tab_group_name = each_current_tab_group['name']
+                        tab_group_found = False
+                        for each_merge_tab_group in merge_tab_groups:
+                            if tab_group_name == each_merge_tab_group['name']:
+                                tab_group_found = True
+                                break
+                        if not tab_group_found:
+                            new_tab_groups = new_tab_groups +f'{each_resource_name}.{tab_group_name} '
+                            merge_tab_groups.append(each_current_tab_group)
+        merge_yaml_dict['about']['merged'] = {}
+        merge_yaml_dict['about']['merged']['at'] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
+        merge_yaml_dict['about']['merged']['new_resources'] = new_resources
+        merge_yaml_dict['about']['merged']['new_attributes'] = new_attributes
+        merge_yaml_dict['about']['merged']['new_tab_groups'] = new_tab_groups
         return merge_yaml_dict
 
     def create_settings(self):
