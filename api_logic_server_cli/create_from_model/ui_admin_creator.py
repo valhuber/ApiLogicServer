@@ -8,7 +8,7 @@ from typing import NewType, List
 
 import sqlalchemy
 import yaml
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, false
 import datetime
 import api_logic_server_cli.create_from_model.model_creation_services as create_from_model
 import api_logic_server_cli.create_from_model.api_logic_server_utils as create_utils
@@ -99,7 +99,7 @@ class AdminCreator(object):
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
 
-    def create_admin_application(self) -> str:
+    def create_admin_application(self):
         """ main driver - loop through resources, write admin.yaml - with backup, nw customization
         """
         if self.mod_gen.command == "create-ui" or self.mod_gen.command.startswith("rebuild"):
@@ -127,11 +127,9 @@ class AdminCreator(object):
         self.create_settings()
         # self.doc_properties()
 
-        admin_yaml_dict = self.admin_yaml.toDict()
-        admin_yaml_dump = yaml.dump(admin_yaml_dict)
         if self.mod_gen.command != "create-ui":
-            self.write_yaml_files(admin_yaml_dump)
-        return admin_yaml_dump
+            self.write_yaml_files()
+
 
     def create_resource_in_admin(self, resource: Resource):
         """ self.admin_yaml.resources += resource DotMap for given resource
@@ -518,9 +516,15 @@ class AdminCreator(object):
         parent_path = parent_path.parent
         return parent_path
 
-    def write_yaml_files(self, admin_yaml):
-        """ write admin.yaml, with -created backup, with additional nw customized backup
+    def write_yaml_files(self):
         """
+        write admin.yaml from self.admin_yaml.toDict()
+
+        with -created backup, with additional nw customized backup
+        """
+        admin_yaml_dict = self.admin_yaml.toDict()
+        admin_yaml_dump = yaml.dump(admin_yaml_dict)
+
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
         write_file = "Write"
         if self.mod_gen.command.startswith("rebuild"):
@@ -541,15 +545,21 @@ class AdminCreator(object):
         '''
         if write_file == "Rebuild - preserve":
             print(f'.. .. ..{write_file} {yaml_file_name} - (merge/replace admin-created.yaml as nec)')
+            merge_yaml = self.create_yaml_merge()
+            yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
+            admin_merge_yaml_dump = yaml.dump(merge_yaml)
+            print(f'.. .. ..{write_file} {yaml_file_name} - merge created at {yaml_merge_file_name}')
+            with open(yaml_merge_file_name, 'w') as yaml_merge_file:
+                yaml_merge_file.write(admin_merge_yaml_dump)
         else:
             print(f'.. .. ..{write_file} {yaml_file_name}')
             with open(yaml_file_name, 'w') as yaml_file:
-                yaml_file.write(admin_yaml)
+                yaml_file.write(admin_yaml_dump)
 
         yaml_created_file_name = \
             os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-created.yaml'))
         with open(yaml_created_file_name, 'w') as yaml_created_file:
-            yaml_created_file.write(admin_yaml)
+            yaml_created_file.write(admin_yaml_dump)
 
         if self.mod_gen.nw_db_status in ["nw", "nw-"] and self.mod_gen.api_name == "api":
             if not self.mod_gen.command.startswith("rebuild"):
@@ -573,6 +583,34 @@ class AdminCreator(object):
                     admin_file.write(admin_custom_nw)
                     admin_file.close()
                 """
+
+    def create_yaml_merge(self) -> dict:
+        """
+        return admin_merge.yaml from self.admin_yaml.toDict() and ui/admin/admin.yaml
+        xxx
+        """
+        yaml_admin_file_name = \
+            os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
+        with open(yaml_admin_file_name,'r')as file_descriptor: # new rsc, attr
+            merge_yaml_dict = yaml.load(file_descriptor, Loader=yaml.SafeLoader)
+        merge_resources = merge_yaml_dict['resources']
+        current_resources = self.admin_yaml.resources
+        for each_resource_name, each_resource in current_resources.items():
+            if each_resource_name not in merge_resources:
+                merge_resources[each_resource_name] = each_resource
+            else:
+                current_attributes = each_resource['attributes']
+                merge_attributes = merge_resources[each_resource_name]['attributes']
+                for each_current_attribute in current_attributes:
+                    attribute_name = each_current_attribute['name']
+                    attribute_found = False
+                    for each_merge_attribute in merge_attributes:
+                        if attribute_name == each_merge_attribute['name']:
+                            attribute_found = True
+                            break
+                    if not attribute_found:
+                        merge_attributes.append(each_current_attribute)
+        return merge_yaml_dict
 
     def create_settings(self):
         self.admin_yaml.settings = DotMap()
@@ -678,5 +716,5 @@ def create(model_creation_services: create_from_model.CreateFromModel):
                                  not_exposed=model_creation_services.not_exposed + " ",
                                  favorite_names=model_creation_services.favorite_names,
                                  non_favorite_names=model_creation_services.non_favorite_names)
-    return admin_creator.create_admin_application()
+    admin_creator.create_admin_application()
 
