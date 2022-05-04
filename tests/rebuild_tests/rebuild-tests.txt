@@ -5,7 +5,9 @@ First, run creation tests, or at least create-install.sh
 
 Then, run rebuild_tests.sh go
 
-Other manual tests...
+
+Other manual tests
+==================
 
 pushd /Users/val/dev/servers/install/ApiLogicServer
 

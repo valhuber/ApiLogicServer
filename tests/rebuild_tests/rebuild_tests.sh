@@ -81,6 +81,14 @@ if [ $# -eq 0 ]
                     read -p "Error - file admin-merge.yaml not in ${project}/ui/admin -- Press [Enter] to proceed> "
                     exit 1
                 fi
+            
+            echo "\nalembic test"
+            pushd $project/database
+            pwd
+            alembic revision --autogenerate -m "Added Tables and Columns"
+            alembic upgrade head
+            popd
+
             popd
             pwd
             set +x

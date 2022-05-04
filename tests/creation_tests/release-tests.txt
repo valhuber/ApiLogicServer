@@ -2,7 +2,7 @@ Creation tests
 ==============
 
 cd tests/creation_tests
-sh create-servers.sh venv  # rebuilds the venv
+sh create-install.sh venv  # rebuilds the venv
 # follow directions to pip install
 
 run each script below, verify app and swagger
@@ -13,7 +13,7 @@ run each script below, verify app and swagger
 
     sh create-servers.sh create  # rebuilds ApiLogicProject, classicmodels, postgres, sqlserver
     
-    test the servers
+    then, to test the servers...
         
         use vsc to run each api_logic_server_run.py (Launch Config: Python: Current File)
 
