@@ -2,16 +2,19 @@
 export installrel="../../../../dev/servers/install"
 export install=$(cd "$(dirname "${installrel}")"; pwd)/$(basename "${installrel}")
 export dockers=${install}/ApiLogicServer/dockers
+
+echo ""
+echo "Creates docker servers at ${dockers}"
+
 if [ $# -eq 0 ]
     then
-        echo ""
-        echo "Creates docker servers at ${dockers}"
         echo ""
         echo "  sh create-dockers.sh [ go ]"
         echo ""
         exit 0
     fi
 
+echo ""
 read -p "Press [Enter] for docker server creation at ${dockers}> "
 
 set -x

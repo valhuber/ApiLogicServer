@@ -25,6 +25,7 @@
 #   Piotr Maślewski https://medium.com/swlh/dockerize-your-python-command-line-program-6a273f5c5544
 
 # python:3.9-slim-bullseye (Debian Linux 11) is 638MB, with SqlServer (here) is 1.04G
+
 FROM python:3.9-slim-bullseye
 
 USER root
