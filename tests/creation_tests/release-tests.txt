@@ -51,6 +51,13 @@ cd tests/sample_tests
 sh sample_tests.sh go
 
 
+Rebuild
+=======
+
+cd ~/dev/ApiLogicServer/tests/rebuild_tests  # after creation tests - uses install/ApiLogicServer/venv
+sh rebuild.sh go  # creates ApiLogicProject, rebuild-from-database, rebuild-from-model
+
+
 Logic - Allocation
 ==================
 
@@ -60,31 +67,6 @@ sh setup_allocation.sh create  # creates/starts server, then follow directions t
 cd ~/dev/servers/install/ApiLogicServer/Allocation/test  # ../../../servers/install/ApiLogicServer/Allocation/test
 sh test.sh  # verifies tests/results.txt, console should say pass
 # stop server
-
-
-
-Rebuild-from-model
-==================
-
-cd /Users/val/dev/servers/install/ApiLogicServer
-ApiLogicServer rebuild-from-model --project_name=ApiLogicProject --db_url=
-ApiLogicServer rebuild-from-model --project_name=/localhost/ApiLogicProject-d --db_url=
-
-cd /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
-ApiLogicServer rebuild-from-model --project_name=./ --db_url=Allocation/database/db-sqlite
-
-/Users/val/dev/servers/install/ApiLogicServer
-ApiLogicServer rebuild-from-model --project_name=Allocation --db_url=/Users/val/dev/servers/install/ApiLogicServer/Allocation/database/db.sqlite
-
-Sakalia -insert on category (tiny), city (small), inventory (medium)
-
-        {
-            "name": "Rebuild from Model",
-            "type":  "python",
-            "request": "launch",
-            "preLaunchTask": "rebuild-from-model",
-            "console": "integratedTerminal"
-        }
 
 
 Platforms

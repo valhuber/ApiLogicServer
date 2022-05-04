@@ -1,0 +1,31 @@
+Rebuild tests
+=============
+
+First, run creation tests, or at least create-install.sh
+
+Then, run rebuild_tests.sh go
+
+Other manual tests...
+
+pushd /Users/val/dev/servers/install/ApiLogicServer
+
+ApiLogicServer rebuild-from-model --project_name=ApiLogicProject --db_url=
+ApiLogicServer rebuild-from-model --project_name=/localhost/ApiLogicProject-d --db_url=
+
+cd /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
+ApiLogicServer rebuild-from-model --project_name=./ --db_url=Allocation/database/db-sqlite
+
+/Users/val/dev/servers/install/ApiLogicServer
+ApiLogicServer rebuild-from-model --project_name=Allocation --db_url=/Users/val/dev/servers/install/ApiLogicServer/Allocation/database/db.sqlite
+
+popd
+
+Sakalia -insert on category (tiny), city (small), inventory (medium)
+
+        {
+            "name": "Rebuild from Model",
+            "type":  "python",
+            "request": "launch",
+            "preLaunchTask": "rebuild-from-model",
+            "console": "integratedTerminal"
+        }
