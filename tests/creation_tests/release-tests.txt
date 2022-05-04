@@ -15,14 +15,15 @@ run each script below, verify app and swagger
     
     then, to test the servers...
         
-        use vsc to run each api_logic_server_run.py (Launch Config: Python: Current File)
+        $ # using that venv....
+        $ pushd ../../../../dev/servers/install/ApiLogicServer
+        $ cd <each project>
+        $ python api_logic_server_run.py
+        $ popd
 
 
     docker
     ======
-
-    cd ~/dev/servers/install/ApiLogicServer/dockers
-    docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
     (at cd ~/dev/ApiLogicServer/tests/creation_tests)
     sh create-dockers.sh go
@@ -46,16 +47,23 @@ run each script below, verify app and swagger
 Logic - Sample
 ==============
 
-Run Launch-Config: 0 - Create and Run
-cd tests/sample_tests
-sh sample_tests.sh go
+open project
+    open vsc in /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
+    prepare the venv
+        python -m venv venv; source venv/bin/activate; pip install -r requirements.txt
+Run Launch-Config: ApiLogicServer
+Run Launch-Config: Behave Run
+Run Launch-Config: Behave Logic Report
+Run Launch-Config: Basic Server Test
+cd test/basic
+sh server_test.sh go
 
 
 Rebuild
 =======
 
 cd ~/dev/ApiLogicServer/tests/rebuild_tests  # after creation tests - uses install/ApiLogicServer/venv
-sh rebuild.sh go  # creates ApiLogicProject, rebuild-from-database, rebuild-from-model
+sh rebuild_tests.sh go  # creates ApiLogicProject, rebuild-from-database, rebuild-from-model
 
 
 Logic - Allocation
@@ -64,6 +72,7 @@ Logic - Allocation
 cd ~/dev/ApiLogicServer/tests/allocation_test  # runs from dev env (no venv)
 sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
 
+open another cmd window...
 cd ~/dev/servers/install/ApiLogicServer/Allocation/test  # ../../../servers/install/ApiLogicServer/Allocation/test
 sh test.sh  # verifies tests/results.txt, console should say pass
 # stop server
