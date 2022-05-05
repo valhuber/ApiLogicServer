@@ -47,5 +47,7 @@ class CategoryNew(SAFRSBase, Base):
 
 Then, comment out the NewCol line, and repeat the migration.
 
+   > Note: this generates a number of warnings for the sample database.  These are caused by _autonum_ columns declared as _null allowed_.  These warnings are benign, and should not affect your own databases.
+
 ## Next steps
 Consider using [API Logic Server `rebuild`](https://github.com/valhuber/ApiLogicServer/wiki#rebuilding) services to upgrade your API and admin app.
