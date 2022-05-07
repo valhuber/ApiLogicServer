@@ -13,7 +13,6 @@ if [ $# -eq 0 ]
         exit 0
     fi
 
-set +x
-python3 -m venv venv
+python3 -m venv venv   # you may need to use python instead of python3
 source venv/bin/activate
 pip install -r requirements.txt
