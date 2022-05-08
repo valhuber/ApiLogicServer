@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.03"
+__version__ = "5.02.04"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t05/08/2022 - 05.02.04: Minor doc cleanup \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting, log cleanup \n"\
     "\t04/22/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
@@ -1492,7 +1493,6 @@ def start():               # target of setup.py
     sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n")
     hostname, local_ip = check_ports()  #  = socket.gethostname()
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
-    # sys.stdout.write("    Other examples are at:        https://github.com/valhuber/ApiLogicServer/wiki/Testing\n\n")
     main(obj={})
 
 

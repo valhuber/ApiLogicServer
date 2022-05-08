@@ -279,7 +279,7 @@ Please see [Architecture](https://github.com/valhuber/ApiLogicServer/wiki/Archit
   <summary>Click to see Docker run argument descriptions, and how to inspect Docker environment</summary>
 
 ### Install - `docker run`
-Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
+Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/Testing#working-with-docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
 * the `v ${PWD}:/localhost` argument is what enables the ApiLogicServer to create / access the project on your local host
    * Windows - Powershell must be used (due to the `$(PWD)` syntax)
    * if you use Command Prompt, specify the local directory completely 
