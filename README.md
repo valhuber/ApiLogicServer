@@ -324,7 +324,7 @@ As of release 3.00.00, you can install using Docker (recommended), standard
 ## Installation Options
 
 #### Docker Installation
-[Docker installation](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide#docker-install)
+[Docker installation](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#docker-install)
 enables you to bypass sometimes-tricky Python installs by using Docker.
 
 Docker support provides not only ApiLogicServer, but a Python environment
@@ -334,7 +334,7 @@ See the link above for more information on install and execution.
 
 #### Local Installation
 Caution: Python install is rather more than running an installer.
-Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide).
+Use this page to [Verify / Install Python](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#install-guide).
 
 Then, install the ApiLogicServer CLI in the usual manner:
 

@@ -102,7 +102,7 @@ uri_info = [
     'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
     '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
     '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
-    '   Install Guide:                https://github.com/valhuber/ApiLogicServer/wiki/Install-Guide',
+    '   Install Guide:                https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#install-guide',
     ' ',
     'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
 ]
