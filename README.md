@@ -14,7 +14,10 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 2. **API,** with [Swagger](http://apilogicserver.pythonanywhere.com/api) - endpoint for each table, with filtering, pagination, related data
 
 
-3. **Business Logic,** [spreadsheet-like rules](#logic) for multi-table derivations and constraints - 40X more concise than code, extensible with Python.  Unique to API Logic Server &nbsp; :trophy:
+3. **Business Logic,** [rules](#logic) for multi-table derivations and constraints, extensible with Python.
+   * spreadsheet-like rules are 40X more concise than code
+   * Unique to API Logic Server &nbsp; :trophy:
+
 
 &nbsp;
 
