@@ -977,7 +977,7 @@ def about(ctx):
 @click.option('--project_name',
               default=f'{default_project_name}',
               prompt="Project to create",
-              help="Create new directory here")
+              help="Create new directory here")  # option text shown on create --help
 @click.option('--db_url',
               default=f'{default_db}',
               prompt="SQLAlchemy Database URI",
