@@ -15,7 +15,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 
 
 3. **Business Logic,** using [rules](#logic) for multi-table derivations and constraints, extensible with Python
-   * Declare rules as in a spreadsheet, 40X more concise than code
+   * Declare rules as in a spreadsheet - 40X more concise than code
    * Unique to API Logic Server &nbsp; :trophy:
 
 
