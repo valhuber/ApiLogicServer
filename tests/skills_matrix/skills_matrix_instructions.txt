@@ -1,0 +1,11 @@
+To recreate the issue:
+    1 - create db/schema (postgres) in docker db
+    2 - load ddl/data from create_skills_matrix_db.sql
+    3 - create project
+            ApiLogicServer create --project_name=skills_matrix --db_url=postgresql://postgres:p@localhost/skills_matrix
+    4 - create venv and run project > admin app
+    5 - click role_role_level
+    6 - open the > for row 194 to see in-grid data
+    7 - click successor hyperlink -- it says 195/195
+    8 - resulting dialog shows row_level 276/senior
+            ==> think it should say 276 / principal (see screen shot)
