@@ -7,12 +7,19 @@ if [ $# -eq 0 ]
         echo " .. Windows: https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start"
         echo " "
         echo "Usage:"
-        echo "  cd ApiLogicProject  # your project directory"
-        echo "  sh bin/venv.sh go"
+        echo "  cd ApiLogicProject     # your project directory"
+        echo "  sh bin/venv.sh go      # for python3, or..."
+        echo "  sh bin/venv.sh python  # for python"
         echo " "
         exit 0
     fi
 
-python3 -m venv venv   # you may need to use python instead of python3
+if [ "$1" = "python" ]
+    then
+        python -m venv venv
+    else
+        python3 -m venv venv
+fi
+
 source venv/bin/activate
 pip install -r requirements.txt

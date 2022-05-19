@@ -37,6 +37,7 @@ def get_api_logic_server_dir() -> str:
 
 def python_status():
     # print("\nPython Status here, 3.XXX (add -path for PYTHONPATH)\n")
+    print(" ")
     dir = get_api_logic_server_dir()
     test_env = "/workspaces/../home/api_logic_server/"
     if os.path.exists(test_env):
@@ -77,6 +78,9 @@ def python_status():
     print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login admin, p")
     print("  ApiLogicServer sys-info")
     print("  ApiLogicServer version")
+    print("")
+    if command != "sys-info":
+        print("For more information, use python py.py sys-info")
     print("")
 
 if __name__ == '__main__':
