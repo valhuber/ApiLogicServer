@@ -13,14 +13,13 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.04"
+__version__ = "5.02.05"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/08/2022 - 05.02.04: Minor doc cleanup \n"\
+    "\t05/18/2022 - 05.02.05: Minor enhancements: docs, examples (db_url), /bin for venv creation \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
-    "\t04/27/2022 - 05.01.02: copy_children, with support for nesting, log cleanup \n"\
-    "\t04/22/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
+    "\t04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
     "\t03/05/2022 - 04.03.03: server_test.py bugfix and additional examples \n"\

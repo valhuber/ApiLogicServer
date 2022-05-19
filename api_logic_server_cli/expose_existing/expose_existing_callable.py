@@ -93,7 +93,8 @@ uri_info = [
     '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'
     'driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no',
     '  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres',
-    '  ApiLogicServer create-and-run --db_url=postgresql+psycopg2:'
+    '  ApiLogicServer create --project_name=my_schema --db_url=postgresql://postgres:p@localhost/my_schema',
+    '  ApiLogicServer create --db_url=postgresql+psycopg2:'
     '//postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema',
     '  ApiLogicServer create --project_name=Chinook \\',
     '    --host=ApiLogicServer.pythonanywhere.com --port= \\',
