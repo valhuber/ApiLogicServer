@@ -1,11 +1,11 @@
-#!/bin/xxx
+#!/bin/bash
 
 if [ $# -eq 0 ]
     then
         echo " "
         echo "Installs virtual environment (as venv)"
         echo " "
-        echo " IMPORTANT - Mac only, not required for docker-based projects"
+        echo " IMPORTANT - Linux only, not required for docker-based projects"
         echo " .. Windows: https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start"
         echo " "
         echo "Usage:"
@@ -23,5 +23,7 @@ if [ "$1" = "python" ]
         python3 -m venv venv
 fi
 
-source venv/bin/activate   # ubuntu/linux uses . venv/bin/activate 
+
+. venv/bin/activate  # linux uses  uses source venv/bin/activate
+
 pip install -r requirements.txt
