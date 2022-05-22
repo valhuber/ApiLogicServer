@@ -26,6 +26,7 @@ run each script below, verify app and swagger
     ======
 
     (at cd ~/dev/ApiLogicServer/tests/creation_tests)
+        5/22 -- works, but dates are old, so, should delete docker projects here
     sh create-dockers.sh go
     # copy/paste the "run this in docker: sh /localhost/docker-commands.sh"
     # should see the following projects in ~/dev/servers/install/ApiLogicServer/dockers:
