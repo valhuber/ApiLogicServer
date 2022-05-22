@@ -74,7 +74,7 @@ sh setup_allocation.sh create  # creates/starts server, then follow directions t
 
 open another cmd window...
 cd ~/dev/servers/install/ApiLogicServer/Allocation/test  # ../../../servers/install/ApiLogicServer/Allocation/test
-sh test.sh  # verifies tests/results.txt, console should say pass
+sh test.sh  # verifies tests/results.txt, console should say pass (no behave test)
 # stop server
 
 

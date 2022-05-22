@@ -43,7 +43,12 @@ def python_status():
     if os.path.exists(test_env):
         dir = test_env
     sys.path.append(dir)  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
-    import api_logic_server_cli.cli as cli
+
+    try:
+        import api_logic_server_cli.cli as cli
+    except Exception as e:
+        cli = None
+        pass
     # show("pyenv --version")  # does not exist in docker...
     # show("pyenv global")
     # show("pyenv version-name")
@@ -66,7 +71,10 @@ def python_status():
     import socket
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname(hostname)
-    print_at('ApiLogicServer version', cli.__version__)
+    if cli:
+        print_at('ApiLogicServer version', cli.__version__)
+    else:
+        print_at('ApiLogicServer version', f'*** ApiLogicServer not installed in this environment ***')
     if command == "sys-info":
         print_at('ip (gethostbyname)', local_ip)
         print_at('on hostname', hostname)

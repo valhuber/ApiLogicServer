@@ -13,12 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.07"
+__version__ = "5.02.09"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/21/2022 - 05.02.07: Minor enhancements: docs, examples (db_url), /bin venv creation, simple req.txt \n"\
-    "\t05/18/2022 - 05.02.05: Minor enhancements: docs, examples (db_url), /bin for venv creation \n"\
+    "\t05/21/2022 - 05.02.09: Minor enhancements: docs, examples (db_url), venv_setup, simple req.txt \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
