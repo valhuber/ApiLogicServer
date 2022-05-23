@@ -19,7 +19,8 @@ if [ "$1" = "venv" ]
     then
         read -p "Press [Enter] to remove / reinstall ${ApiLogicServer}/venv (deactivate first) > "
 
-        rm -r ${ApiLogicServer}/venv
+        rm -r ${ApiLogicServer}
+        mkdir ${install}/ApiLogicServer
         python3 -m venv ${ApiLogicServer}/venv
 
         echo ""
