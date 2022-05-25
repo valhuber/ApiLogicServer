@@ -1,4 +1,4 @@
-# docker build -f Dockerfile-main -t apilogicserver/api_logic_server --rm .
+# docker build -f Dockerfile-main.Dockerfile -t apilogicserver/api_logic_server --rm .
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:5.02.10
 # docker push apilogicserver/api_logic_server:5.02.10
 

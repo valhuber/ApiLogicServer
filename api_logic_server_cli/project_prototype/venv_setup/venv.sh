@@ -19,9 +19,10 @@ if [ $# -eq 0 ]
 if [ "$1" = "python" ]
     then
         python -m venv venv
+        source venv/bin/activate   # ubuntu/linux uses . venv/bin/activate
+        python -m pip install -r requirements.txt
     else
         python3 -m venv venv
+        source venv/bin/activate   # ubuntu/linux uses . venv/bin/activate 
+        python3 -m pip install -r requirements.txt
 fi
-
-source venv/bin/activate   # ubuntu/linux uses . venv/bin/activate 
-pip install -r requirements.txt
