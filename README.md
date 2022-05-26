@@ -60,7 +60,7 @@ You can picture the process as shown in the diagram below; click it for a video 
 
 After you've explored the tutorial, try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (5.02.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (5.02.12): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
 &nbsp;
 
@@ -427,6 +427,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+
+05/25/2022 - 05.02.12: Verified for Python 3.10, improved support for configuring `venv`
 
 05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml
 

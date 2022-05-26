@@ -21,7 +21,7 @@ You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
 ## Establish your virtual environment
 Install your projects' virtual environment
-as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
+as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start). See also the `venv_setup` directory in your API Logic Project.
 
 
 
@@ -40,7 +40,7 @@ To run the Admin App, follow these steps:
    * Otherwise, you can:
       * Open a browser at [localhost:5656](localhost_5656), or
       * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
-         * Note: be aware that we have seen some issue where the _simple browser_ fails to start; just use your normal browser  
+         * Note: be aware that we have seen some issues where the _simple browser_ fails to start; just use your normal browser  
 4. Explore the app: multi-page, multi-table, automatic joins
    * Navigate to `Customer`
      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
@@ -49,7 +49,7 @@ To run the Admin App, follow these steps:
    * Click the first Order row
    * Click the `Order Detail List` tab at the bottom
    * Click the first __Product Id__ to see its detail information
-6. (Close the app (browser), but leave the server running)
+6. Close the app (browser), but __leave the server running__
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
@@ -61,10 +61,10 @@ To run the Admin App, follow these steps:
 
 ### JSON:API - Related Data, Filtering, Sorting, Pagination, Swagger
 Your API is instantly ready to support ui and integration
-development, available in swagger, as shown below.  JSON:APIs are interesting because they
+development, available in swagger as shown below.  JSON:APIs are interesting because they
 are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
 
-The creation process builds not only the API, but swagger so you can explore it.  The Admin App Home page provides a link to the swagger, but it doesn't work in VS Code's simple browser.  So, we'll launch a new Simple Browser, like this:
+The creation process builds not only the API, but swagger so you can explore it.  The Admin App __Home__ page provides a link to the swagger, but it doesn't work in VS Code's simple browser.  So, we'll launch a new Simple Browser, like this:
 1. Click __View > Command__ to open the Command Palette
    * Enter command: `Simple Browser: Show`
    * Specify the URL: `http://localhost:5656/api`
@@ -170,13 +170,7 @@ TL;DR - features and test scripts are predefined in the sample; to run them (wit
 2. Run Launch Configuration ``Behave Logic Report`` 
 3. Open `test/api_logic_server_behave/reports/Behave Logic Report.md`
 
-&nbsp;&nbsp;
-
-   > The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
-
-For more information, see [Working with Behave](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
-
-&nbsp;&nbsp;&nbsp;
+&nbsp;
 
    > The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
 
@@ -191,6 +185,8 @@ Let's recap what you've seen:
 
 
 * **Customizable** - the UI, API and Logic - using Visual Studio code, for both editing and debugging
+
+* **Declarative Business Logic** - unique to API Logic Server, can provide remarkable reductions in time and cost
 
 
 ### Next Steps
@@ -292,13 +288,12 @@ into the new project, without line-by-line merges.
 
 ## Appendix 2 - Project Information
 
-
 | About                    | Info                               |
 |:-------------------------|:-----------------------------------|
-| Created                  | creation-date                      |
-| API Logic Server Version | api_logic_server_version           |
-| Created in Directory     | api_logic_server_project_directory |
-| API Name                 | api_logic_server_api_name          |
+| Created                  | May 25, 2022 16:30:50                      |
+| API Logic Server Version | 5.02.11           |
+| Created in Directory     | ApiLogicProject |
+| API Name                 | api          |
 
 
 

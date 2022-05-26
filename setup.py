@@ -103,5 +103,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    python_requires="~=3.8"
+    python_requires="~=3.8",
+    setup_requires=['wheel']
+
 )

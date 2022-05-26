@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.11"
+__version__ = "5.02.12"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/23/2022 - 05.02.11: Python 3.10 \n"\
+    "\t05/25/2022 - 05.02.12: Python 3.10 \n"\
     "\t05/22/2022 - 05.02.10: Minor enhancements: docs, examples (db_url), venv_setup, simple req.txt \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
