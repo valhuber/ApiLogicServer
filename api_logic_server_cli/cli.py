@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.12"
+__version__ = "5.02.14"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/25/2022 - 05.02.12: Python 3.10 \n"\
+    "\t05/27/2022 - 05.02.14: Python 3.10, Dockerfile include \n"\
     "\t05/22/2022 - 05.02.10: Minor enhancements: docs, examples (db_url), venv_setup, simple req.txt \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
@@ -928,10 +928,9 @@ def main(ctx):
     Examples:
 
 \b
-        ApiLogicServer create         --project_name=/localhost/api_logic_server   --db_url=
-        ApiLogicServer run            --project_name=/localhost/api_logic_server
-        ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login with: admin, p
-        ApiLogicServer create-and-run --project_name=/localhost/api_logic_server   --db_url=
+        ApiLogicServer create                                                        # Local install
+        ApiLogicServer create-and-run --project_name=ApiLogicProject   --db_url=     # Tutorial
+        ApiLogicServer create         --project_name=/localhost/ApiLogicProject      # Docker install
     """
 
 
@@ -1390,6 +1389,7 @@ def create_ui(ctx, use_model: str,
     with open(admin_out, 'w') as yaml_file:
         yaml_file.write(admin_yaml_dump)
 
+'''
 
 @main.command("run-ui")
 @click.option('--project_name',
@@ -1423,7 +1423,7 @@ def run_ui(ctx, project_name: str, host: str="localhost", port: str="5002"):
         proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
     run_file = f'{proj_dir}/ui/basic_web_app/run.py'   # this fails to open: {host} 8080
     create_utils.run_command(f'python {run_file} {host} {port}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
-
+'''
 
 @main.command("examples")
 @click.pass_context
