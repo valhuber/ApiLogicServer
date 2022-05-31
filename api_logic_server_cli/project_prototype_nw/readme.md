@@ -16,14 +16,13 @@ The diagram below summarizes the create / run / customize process:
 
 You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
+&nbsp;&nbsp;
 
-&nbsp;&nbsp;&nbsp;
-
-## Establish your virtual environment
+## Establish your Python environment
 Install your projects' virtual environment
 as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start). See also the `venv_setup` directory in your API Logic Project.
 
-
+&nbsp;&nbsp;
 
 ## Run
 
@@ -38,7 +37,7 @@ To run the Admin App, follow these steps:
 3. Press the green run button to start the server
    * If you are runnig Docker / VS Code, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
    * Otherwise, you can:
-      * Open a browser at [localhost:5656](localhost_5656), or
+      * Open a browser at [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home), or
       * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
          * Note: be aware that we have seen some issues where the _simple browser_ fails to start; just use your normal browser  
 4. Explore the app: multi-page, multi-table, automatic joins
@@ -109,7 +108,7 @@ There is no code for the Admin app - it's behavior is declared in the `admin.yam
 1. Open **Explorer > ui/admin/admin.yaml**
    * Find and alter the string `- label: 'Placed Order List*'` (e.g, make it plural)
    * Click Save
-2. Launch the app: [http://localhost:5656](http://localhost:5656)
+2. Launch the app: [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home)
 3. Load the updated configuration: click __Configuration > Reset__
 4. Revisit **Customer > Order** to observe the new label
 
@@ -172,7 +171,7 @@ TL;DR - features and test scripts are predefined in the sample; to run them (wit
 
 &nbsp;
 
-   > The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
+   > The sample Scenarios were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
 
 For more information, see [Working with Behave](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
 
@@ -290,10 +289,7 @@ into the new project, without line-by-line merges.
 
 | About                    | Info                               |
 |:-------------------------|:-----------------------------------|
-| Created                  | May 25, 2022 16:30:50                      |
-| API Logic Server Version | 5.02.11           |
+| Created                  | May 30, 2022 16:30:50                      |
+| API Logic Server Version | 5.02.15           |
 | Created in Directory     | ApiLogicProject |
 | API Name                 | api          |
-
-
-

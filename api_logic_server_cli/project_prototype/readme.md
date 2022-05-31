@@ -1,5 +1,26 @@
 # API Logic Server
 
+This project was created by API Logic Server.  Edit / extend this readme as desired.
+
+&nbsp;&nbsp;
+
+# Setup and Run
+
+### Establish your Python environment
+Install your projects' virtual environment
+as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start). See also the `venv_setup` directory in your API Logic Project.
+
+### Run
+Then, start the API, either by IDE launch configurations, or by command line:
+```
+python api_logic_server_run.py
+```
+
+* **Open the Admin App -** [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home)
+
+
+&nbsp;&nbsp;
+
 # Project Information
 
 | About                    | Info                               |
@@ -8,6 +29,9 @@
 | API Logic Server Version | api_logic_server_version           |
 | Created in directory     | api_logic_server_project_directory |
 | API Name                 | api_logic_server_api_name          |
+
+&nbsp;&nbsp;
+
 
 # Key Technologies
 
@@ -70,6 +94,7 @@ This generated project also contains a React Admin app:
 * Intelligent layout - favorite fields first, predictive joins, etc
 * Logic Aware - updates are monitored by business logic
 
+&nbsp;&nbsp;
 
 # Project Structure
 This project was created with the following directory structure:
@@ -89,17 +114,3 @@ recreated (e.g., synchronized with a revised schema), and these files can be eas
 into the new project, without line-by-line merges.
 
 Please see the ```nw``` sample for examples of typical customizations.
-
-
-# Installation and Execution
-Install your projects' virtual environment
-as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
-
-Then, start the API, either by IDE launch configurations, or by command line:
-```
-python api_logic_server_run.py
-```
-* **Open API (Swagger) -** [localhost:5656](localhost:5656)
-
-
-
