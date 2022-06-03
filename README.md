@@ -52,9 +52,9 @@ ApiLogicServer create      # create, or create-and-run; defaults provided
 
 &nbsp;
 
-### Process Overview - Creation from Database Introspection
+### Process Overview - Project Creation from Database Introspection
 
-Project creation is based on database introspection as shown below - click for a video tutorial, showing complete project creation, execution, customization and debugging.
+Project creation is based on database introspection as shown below.  Click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
