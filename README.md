@@ -4,7 +4,7 @@
 
 # API Logic Server
 
-### TL;DR - creates customizable database systems - instantly - from your [database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
+### TL;DR - create customizable database projects
 
 The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
 
@@ -52,13 +52,13 @@ ApiLogicServer create      # create, or create-and-run; defaults provided
 
 &nbsp;
 
-### Process Overview
+### Process Overview - Creation from Database Introspection
 
-You can picture the process as shown in the diagram below; click it for a video tutorial, showing complete project creation, execution, customization and debugging.
+Project creation is based on database introspection as shown below - click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
-After you've explored the tutorial, try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
+After you've explored the tutorial (using [this database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
 > Already installed?  Upgrade to the latest (5.02.16): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
