@@ -39,7 +39,7 @@ or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/
 
 VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
 
-In addition to Docker, you can install locally; if Python 3.8 [is installed](#installation), it's typically:
+In addition to Docker, you can install locally; if Python 3.7+ [is installed](#installation), it's typically:
 
 ```bash
 python3 -m venv venv       # may require python -m venv venv
