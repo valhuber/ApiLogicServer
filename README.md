@@ -4,11 +4,11 @@
 
 # API Logic Server
 
-### TL;DR - Create Customizable Database Projects
+### TL;DR - Creates Customizable,  Executable Database Projects
 
-The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project providing:
+The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project that provides:
 
-1. **Automatic Admin App** [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
+1. **Admin App** [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
 
 
 2. **API,** with [Swagger](http://apilogicserver.pythonanywhere.com/api) - endpoint for each table, with filtering, pagination, related data
@@ -54,11 +54,11 @@ ApiLogicServer create      # create, or create-and-run; defaults provided
 
 ### Process Overview - Project Creation from Database Introspection
 
-Project creation is based on database introspection as shown below.  Click for a video tutorial, showing complete project creation, execution, customization and debugging.
+Project creation is based on database schema introspection as shown below.  Click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
 [![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
-After you've explored the tutorial (using [this database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
+After you've explored the tutorial (created from [this database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
 > Already installed?  Upgrade to the latest (5.02.16): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
