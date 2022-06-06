@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.16"
+__version__ = "5.02.17"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t06/05/2022 - 05.02.17: Model customizations simplified, better logging \n"\
     "\t05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info \n"\
     "\t05/22/2022 - 05.02.10: Minor enhancements: docs, examples (db_url), venv_setup, simple req.txt \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
@@ -599,7 +600,7 @@ def final_project_fixup(msg, project_name, project_directory, api_name,
                         host, port, use_model, copy_to_project_directory) -> str:
     print(msg)  # "7. Final project fixup"
 
-    if use_model == "" and command != "rebuild-from-model":
+    if False and use_model == "" and command != "rebuild-from-model":  # TODO remove dead code
         msg = f' a.   Appending "from database import customize_models" to database/models.py'
         fix_database_models__import_customize_models(project_directory, msg)
 
@@ -892,35 +893,36 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
     if open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
         start_open_with(open_with=open_with, project_name=project_name)
 
+    print("\n\nApiLogicProject customizable project created.  Next steps:")
+    print("==========================================================")
+    if multi_api:
+        print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
+    else:
+        print("\nRun API Logic Server:")
+        print(f'  cd {project_name};  python api_logic_server_run.py')
+    if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
+        print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
+        # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
+    if (is_docker()):
+        print(f'\nCustomize Docker project using IDE on local machine:')
+        docker_project_name = project_name
+        if project_name.startswith('/localhost/'):
+            docker_project_name = project_name[11:]
+        else:
+            docker_project_name = f'<local machine directory for: {project_name}>'
+        print(f'  exit  # exit the Docker container ')
+        print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
+    else:
+        print(f'\nCustomize using your IDE:')
+        print(f'  code {project_name}  # e.g., open VSCode on created project')
+    print(f'  Establish your Python environment - see https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution')
+    print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
+    
     if run:  # synchronous run of server - does not return
         # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
         # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
         run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
-        create_utils.run_command(f'python {run_file}', msg="\nRun created ApiLogicServer project")
-    else:
-        print("\n\nApiLogicProject customizable project created.  Next steps:")
-        if multi_api:
-            print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
-        else:
-            print("\nRun API Logic Server:")
-            print(f'  cd {project_name};  python api_logic_server_run.py')
-        if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
-            print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
-            # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
-        if (is_docker()):
-            print(f'\nCustomize Docker project using IDE on local machine:')
-            docker_project_name = project_name
-            if project_name.startswith('/localhost/'):
-                docker_project_name = project_name[11:]
-            else:
-                docker_project_name = f'<local machine directory for: {project_name}>'
-            print(f'  exit  # exit the Docker container ')
-            print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
-        else:
-            print(f'\nCustomize using your IDE:')
-            print(f'  code {project_name}  # e.g., open VSCode on created project')
-        print(f'  Establish your Python environment - see https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution')
-        print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
+        create_utils.run_command(f'python {run_file}', msg="\nStarting created API Logic Project")
 
 
 @click.group()

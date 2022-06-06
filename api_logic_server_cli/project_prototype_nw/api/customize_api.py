@@ -29,9 +29,9 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
 
     app_logger = logging.getLogger("api_logic_server_app")
-    app_logger.info(f'\n*** Customizable ApiLogicServer project created -- '
+    app_logger.debug(f'\n*** Customizable ApiLogicServer project created -- '
              f'open it with your IDE at {project_dir}')
-    app_logger.info(f'*** Server now running -- '
+    app_logger.debug(f'*** Server now running -- '
              f'explore sample data and API at http://{HOST}:{PORT}/')
 
 
@@ -136,16 +136,9 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
             app_logger.info(f'{msg}')
         return jsonify({"result": f'ok'})
 
-
-    app_logger.info(f'*** Customizable ApiLogicServer project created -- '
-             f'open it in your IDE at {project_dir}')
-    app_logger.info(f'*** Server now running -- '
-             f'explore your data and API at http://{HOST}:{PORT}/')
-    app_logger.info("\n")
     
-    app_logger.info("api/expose_service.py - Exposing custom services")
+    app_logger.info("\napi/expose_service.py - Exposing custom services")
     api.expose_object(ServicesEndPoint)
-    app_logger.info("\n")
 
 
 class ServicesEndPoint(safrs.JABase):

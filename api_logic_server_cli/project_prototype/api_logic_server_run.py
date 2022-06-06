@@ -34,7 +34,7 @@ app_logger.addHandler(handler)
 app_logger.propagate = True
 
 app_logger.setLevel(logging.INFO)  # use WARNING to reduce output
-app_logger.info(f'app started: {__file__}\n')
+app_logger.info(f'\nAPI Logic Project Starting: {__file__}\n')
 
 logging.getLogger('safrs').setLevel(logging.INFO)
 logging.getLogger('safrs.safrs_init').setLevel(logging.INFO)
@@ -91,6 +91,11 @@ def setup_logging(flask_app):
         handler.setFormatter(formatter)
         engine_logger.addHandler(handler)
         engine_logger.setLevel(logging.DEBUG)
+
+    do_safrs_logging = True
+    if do_safrs_logging:
+        safrs_logger = logging.getLogger('safrs.safrs_init')
+        safrs_logger.setLevel(logging.CRITICAL)
 
     do_sqlalchemy_info = False  # True will log SQLAlchemy SQLs
     if do_sqlalchemy_info:
@@ -151,7 +156,11 @@ def create_app(config_filename=None):
             db.create_all(bind='admin')
             session.commit()
         safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port, API_PREFIX=API_PREFIX)
+
         customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)  # custom services
+        from database import customize_models
+        app_logger.debug(f'Customizations for API and Model activated\n')
+
         SAFRSBase._s_auto_commit = False
         session.close()
 
@@ -255,7 +264,7 @@ if __name__ == "__main__":
     user_host = flask_host
     if is_docker():
         user_host = "localhost"
-    msg = f'Starting ApiLogicServer project, version api_logic_server_version, available at http://{user_host}:{port}'
+    msg = f'API Logic Project Started, version api_logic_server_version, available at http://{user_host}:{port}'
     if is_docker():
         msg += f' on docker container'
     app_logger.info(msg)

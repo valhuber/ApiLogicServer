@@ -28,8 +28,6 @@ def proper_salary(row, value):
     # print(f'_proper_salary={row._proper_salary}')
     pass
 
-
 models.Employee.ProperSalary = proper_salary
 
-app_logger.info("database/customize_models.py successfully adds relationship: "
-                "models.Employee.Manager = relationship('Employee', cascade_backrefs=True, backref='Manages'")
+app_logger.info("database/customize_models.py - models.Employee.Manager(manages), Employee.ProperSalary\n")

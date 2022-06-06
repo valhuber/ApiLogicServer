@@ -60,7 +60,7 @@ Project creation is based on database schema introspection as shown below.  Clic
 
 After you've explored the tutorial (created from [this database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (5.02.16): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (5.02.17): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
 &nbsp;
 
@@ -427,6 +427,10 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+
+06/05/2022 - 05.02.17: Model customizations simplified, better logging
+
+05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info
 
 05/25/2022 - 05.02.12: Verified for Python 3.10, improved support for configuring `venv`
 

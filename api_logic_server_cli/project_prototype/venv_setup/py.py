@@ -38,6 +38,7 @@ def get_api_logic_server_dir() -> str:
 def python_status():
     # print("\nPython Status here, 3.XXX (add -path for PYTHONPATH)\n")
     print(" ")
+    print("\nPython Status here, 4.0\n")
     dir = get_api_logic_server_dir()
     test_env = "/workspaces/../home/api_logic_server/"
     if os.path.exists(test_env):
@@ -67,6 +68,8 @@ def python_status():
         for p in sys.path:
             print(".." + p)
         print("")
+        print(f'sys.prefix (venv): {sys.prefix}\n\n')
+
 
     import socket
     hostname = socket.gethostname()
@@ -81,10 +84,11 @@ def python_status():
         show("python --version")
     print("")
     print("Typical commands:")
-    print("  ApiLogicServer create         --project_name=ApiLogicProject")
-    print("     or, for Docker...")
-    print("  ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=")
-    print("  ApiLogicServer about")
+    print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")
+    print("  ApiLogicServer run-api        --project_name=/localhost/api_logic_server")
+    print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login admin, p")
+    print("  ApiLogicServer sys-info")
+    print("  ApiLogicServer version")
     print("")
     if command != "sys-info":
         print("For more information, use python py.py sys-info")

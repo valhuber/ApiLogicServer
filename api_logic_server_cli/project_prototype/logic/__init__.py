@@ -5,7 +5,7 @@ from logic_bank.rule_type import constraint
 from safrs import ValidationError
 
 app_logger = logging.getLogger("api_logic_server_app")
-app_logger.info("logic/__init__ begin")
+app_logger.debug("logic/__init__ begin")
 
 import database.db
 from logic.declare_logic import declare_logic
@@ -15,4 +15,4 @@ def constraint_handler(message: str, constraint: constraint, logic_row: logic_ro
     raise ValidationError(message)
 
 
-app_logger.info("logic/__init__ end\n")
+app_logger.debug("logic/__init__ end\n")
