@@ -1,4 +1,4 @@
-# API Logic Server - Sample Tutorial
+# Sample Tutorial - API Logic Server
 
 You've already completed the `Create` step below, and are now viewing the readme in the created ApiLogicProject - the sample tutorial, created from [this database.](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)  
 

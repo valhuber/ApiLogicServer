@@ -79,7 +79,7 @@ The following tutorial is a good way to explore API Logic Server.
 
 &nbsp;&nbsp;
 
-# API Logic Server - Sample Tutorial
+# Sample Tutorial - API Logic Server
 
 After completing the `create` step, you can view the readme in the created ApiLogicProject.  It contains the sample tutorial, created from [this database.](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)  
 
@@ -322,7 +322,7 @@ Please see [Architecture - How It Works](https://github.com/valhuber/ApiLogicSer
 
 # Installation
 As of release 3.00.00, you can install using Docker (recommended), standard
-`pip` install, or PytonAnywhere.
+`pip` install, or PythonAnywhere.
 
 ## Installation Options
 

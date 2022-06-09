@@ -1,4 +1,4 @@
-# docker build -f Dockerfile-main.Dockerfile -t apilogicserver/api_logic_server --rm .
+# docker build -f Dockerfile-1-step.Dockerfile -t apilogicserver/api_logic_server --rm .
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:5.02.17
 # docker push apilogicserver/api_logic_server:5.02.17
 
@@ -26,29 +26,27 @@
 
 # python:3.9-slim-bullseye (Debian Linux 11) is 638MB, with SqlServer (here) is 1.04G
 
-# if builds fails, check for renamed targets by breaking up Run commands
-
 FROM python:3.9-slim-bullseye
 
 USER root
-RUN apt-get update \
-  && apt-get install -y curl \
-  && apt-get install -y git \
-  && apt-get -y install gcc gnupg2 \
-  && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-  && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \
-  && apt install -y \
-		libltdl7 libodbc1 odbcinst odbcinst1debian2 unixodbc wget \
-  && wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.5_amd64.deb \
-  && apt-get install ./multiarch-support_2.27-3ubuntu1.5_amd64.deb \
-  && wget https://packages.microsoft.com/debian/10/prod/pool/main/m/msodbcsql17/msodbcsql17_17.8.1.1-1_amd64.deb \
-  && ACCEPT_EULA=Y dpkg -i msodbcsql17_17.8.1.1-1_amd64.deb;
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y git
+RUN apt-get -y install gcc gnupg2
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list 
+RUN apt install -y \
+		libltdl7 libodbc1 odbcinst odbcinst1debian2 unixodbc wget
+RUN wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/multiarch-support_2.27-3ubuntu1.5_amd64.deb
+RUN apt-get install ./multiarch-support_2.27-3ubuntu1.5_amd64.deb
+RUN wget https://packages.microsoft.com/debian/10/prod/pool/main/m/msodbcsql17/msodbcsql17_17.8.1.1-1_amd64.deb
+RUN ACCEPT_EULA=Y dpkg -i msodbcsql17_17.8.1.1-1_amd64.deb
 
 # TODO RUN wget https://packages.microsoft.com/debian/10/prod/pool/main/m/mssql-tools/mssql-tools_17.8.1.1-1_amd64.deb;
 
-RUN apt-get -y install unixodbc-dev \
-  && apt-get -y install python3-pip \
-  && pip install pyodbc
+RUN apt-get -y install unixodbc-dev
+RUN apt-get -y install python3-pip
+RUN pip install pyodbc
 
 RUN useradd --create-home --shell /bin/bash api_logic_server
 WORKDIR /home/api_logic_server

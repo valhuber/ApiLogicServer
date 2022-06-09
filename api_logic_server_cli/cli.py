@@ -13,7 +13,7 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.17"
+__version__ = "5.02.17d"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
@@ -917,7 +917,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
         print(f'  code {project_name}  # e.g., open VSCode on created project')
     print(f'  Establish your Python environment - see https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution')
     print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
-    
+
     if run:  # synchronous run of server - does not return
         # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
         # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
