@@ -60,7 +60,7 @@ Project creation is based on database schema introspection as shown below.  Clic
 
 After you've explored the tutorial (created from [this database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (5.02.17): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (5.02.21): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
 &nbsp;
 
