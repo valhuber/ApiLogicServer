@@ -10,6 +10,9 @@ This project was created by API Logic Server.  Edit / extend this readme as desi
 Install your projects' virtual environment
 as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start). See also the `venv_setup` directory in your API Logic Project.
 
+### For SqlServer, install `pyodbc`
+Not required for docker-based projects.  For local installs, see the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#sqlserver---install-pyodbc).
+
 ### Run
 Then, start the API, either by IDE launch configurations, or by command line:
 ```
