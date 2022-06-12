@@ -141,3 +141,22 @@ Id 10643; OrderDetails are blank on load.  ugh
 }
 
 python -m venv venv; source venv/bin/activate; pip install -r requirements.txt
+
+
+Removal of pyodbc (else brew + unixodbc)
+========================================
+
+Req'd for sqlserver...
+Verify other DBs don't require pyodbc
+
+  pip
+  ===
+    sqlserver   fails: ModuleNotFoundError: No module named 'pyodbc'
+    postgres    runs:  tho, many not-impl on startup
+    mysql       runs:  tho updates fail for customer vs Customer 
+
+  docker
+  ======
+    sqlserver   runs: with updates
+    postgres    runs (as above)
+    mysql       runs

@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.02.17"
+__version__ = "5.02.21"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/05/2022 - 05.02.17: Model customizations simplified, better logging \n"\
+    "\t06/10/2022 - 05.02.21: No pyodbc by default, model customizations simplified, better logging \n"\
     "\t05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info \n"\
     "\t05/22/2022 - 05.02.10: Minor enhancements: docs, examples (db_url), venv_setup, simple req.txt \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\

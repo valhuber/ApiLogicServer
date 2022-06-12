@@ -21,6 +21,11 @@ run each script below, verify app and swagger
         $ python api_logic_server_run.py
         $ popd
 
+    pyodbc is not installed by default, so
+        sqlserver fails
+        postgres/mysql logs many errors on start, retrieves data, but updates fail
+
+
 
     docker
     ======
