@@ -36,9 +36,8 @@ def get_api_logic_server_dir() -> str:
 
 
 def python_status():
-    # print("\nPython Status here, 3.XXX (add -path for PYTHONPATH)\n")
     print(" ")
-    print("\nPython Status here, 4.0\n")
+    print("\nPython Status here, 4.1\n")
     dir = get_api_logic_server_dir()
     test_env = "/workspaces/../home/api_logic_server/"
     if os.path.exists(test_env):
@@ -50,10 +49,6 @@ def python_status():
     except Exception as e:
         cli = None
         pass
-    # show("pyenv --version")  # does not exist in docker...
-    # show("pyenv global")
-    # show("pyenv version-name")
-    # show("virtualenv --version")
     command = "?"
     if sys.argv[1:]:
         if sys.argv[1] == "welcome":
@@ -61,7 +56,8 @@ def python_status():
         elif sys.argv[1] == "sys-info":
             command = "sys-info"
         else:
-            print("unknown command - using welcome")
+            print("unknown command - using sys-info")
+            command = "sys-info"
 
     if command == "sys-info":
         print("PYTHONPATH..")
