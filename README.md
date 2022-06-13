@@ -428,7 +428,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
-06/10/2022 - 05.02.21: No pyodbc by default, model customizations simplified, better logging
+06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging
 
 05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info
 
