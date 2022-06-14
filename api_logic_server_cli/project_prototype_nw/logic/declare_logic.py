@@ -16,11 +16,13 @@ def declare_logic():
     Logic declared here, using code completion.
 
     This logic pre-created for default database, nw.sqlite.
-        You would normally declare your *own* rules, using code completion.
-        For details on these rules, see https://github.com/valhuber/LogicBank/wiki/Examples
+        You would normally declare your *own* rules.
+        For details on these rules, see
+            https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python
+            https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial
 
     This logic is *activated* in api_logic_server_run.py:
-        LogicBank.activate(session=session, activator=logic_bank.declare_logic, constraint_event=constraint_handler)
+        LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
 
     Logic *runs* in response to transaction commits,
       for multi-table derivations and constraints,
@@ -34,7 +36,7 @@ def declare_logic():
             SQL is automated, and optimized (e.g., adjust vs. select sum)
 
     Rules are automatically invoked, with
-    execution ordered per their dependencies
+        execution ordered per their dependencies
 
     These 5 rules apply to all transactions (automatic re-use), eg.
         * place order
@@ -44,9 +46,8 @@ def declare_logic():
         * delete order
         * move order to new customer, etc
     This reuse is how 5 rules replace 200 lines of legacy code: https://github.com/valhuber/LogicBank/wiki/by-code
-    """
 
-    """
+
     Feature: Place Order
         Scenario: Bad Order Custom Service
             When Order Placed with excessive quantity
@@ -59,33 +60,29 @@ def declare_logic():
         OrderDetail.Amount = Quantity * UnitPrice
         OrderDetail.UnitPrice = copy from Product
     """
-    
-    Rule.constraint(validate=models.Customer,
-                    as_condition=lambda row: row.Balance <= row.CreditLimit,
-                    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
 
-    # adjust Balance iff AmountTotal or ShippedDate or CustomerID changes
-    Rule.sum(derive=models.Customer.Balance,
+    Rule.constraint(validate=models.Customer,       # logic design translates directly into rules
+        as_condition=lambda row: row.Balance <= row.CreditLimit,
+        error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+
+    Rule.sum(derive=models.Customer.Balance,        # adjust iff AmountTotal or ShippedDate or CustomerID changes
         as_sum_of=models.Order.AmountTotal,
         where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
 
-    # adjust AmountTotal iff Amount changes
-    Rule.sum(derive=models.Order.AmountTotal,
+    Rule.sum(derive=models.Order.AmountTotal,       # adjust iff Amount or OrderID changes
         as_sum_of=models.OrderDetail.Amount)
 
-    # compute price * qty
-    Rule.formula(derive=models.OrderDetail.Amount,
+    Rule.formula(derive=models.OrderDetail.Amount,  # compute price * qty
         as_expression=lambda row: row.UnitPrice * row.Quantity)
 
-    # get Product Price (e,g., on insert, or ProductId change)
-    Rule.copy(derive=models.OrderDetail.UnitPrice,
+    Rule.copy(derive=models.OrderDetail.UnitPrice,  # get Product Price (e,g., on insert, or ProductId change)
         from_parent=models.Product.UnitPrice)
 
     """
         Demonstrate that logic == rules + Python
     """
     def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: LogicRow):
-        """ demonstrate that logic == rules, plus Python """
+        """ use events for sending email, messages, etc. """
         if logic_row.ins_upd_dlt == "ins":  # logic engine fills parents for insert
             sales_rep = row.Employee
             if sales_rep is None:
