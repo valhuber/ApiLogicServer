@@ -79,7 +79,7 @@ def declare_logic():
         from_parent=models.Product.UnitPrice)
 
     """
-        Demonstrate that logic == rules + Python
+        Demonstrate that logic == Rules + Python (for extensibility)
     """
     def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         """ use events for sending email, messages, etc. """
@@ -101,18 +101,22 @@ def declare_logic():
             https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility
     """
 
-    Rule.formula(derive=models.OrderDetail.ShippedDate, as_exp="row.Order.ShippedDate")
-
     def units_in_stock(row: models.Product, old_row: models.Product, logic_row: LogicRow):
         result = row.UnitsInStock - (row.UnitsShipped - old_row.UnitsShipped)
-        return result
+        return result  # use lambdas for simple expressions, functions for complex logic (if/else etc)
 
-    Rule.sum(derive=models.Product.UnitsShipped, as_sum_of=models.OrderDetail.Quantity,
+    Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)  # compute reorder required
+
+    Rule.sum(derive=models.Product.UnitsShipped,
+        as_sum_of=models.OrderDetail.Quantity,
         where=lambda row: row.ShippedDate is None)
 
-    Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)
+    Rule.formula(derive=models.OrderDetail.ShippedDate,  # unlike copy, referenced parent values cascade to children
+        as_exp="row.Order.ShippedDate")
 
-    Rule.count(derive=models.Customer.UnpaidOrderCount, as_count_of=models.Order,
+
+    Rule.count(derive=models.Customer.UnpaidOrderCount,
+        as_count_of=models.Order,
         where=lambda row: row.ShippedDate is None)  # *not* a sql select sum...
 
     Rule.count(derive=models.Customer.OrderCount, as_count_of=models.Order)
