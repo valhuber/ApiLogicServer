@@ -315,10 +315,22 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 ```
 
 </details>
-    
 
-# Internals - How It Works
-Please see [Architecture - How It Works](https://github.com/valhuber/ApiLogicServer/wiki/Architecture#internals---how-it-works).
+&nbsp; &nbsp;
+
+# Contributions
+This is an open source project, and we encourage contributions to the components noted below:
+
+| Component           | Provides         | Consider Adding                                                                |
+|:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
+| [1. safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)      | Admin App        | [Hide/Show, Cascade Add](https://github.com/thomaxxl/safrs-react-admin/issues) |
+| 2. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) | API Execution    | Security                                                                       | 
+| 3. [Transactional **Logic**](#logic)   | Rule Enforcement | New rule types                                                                 |
+
+
+To get started, please see [Architecture - How It Works](https://github.com/valhuber/ApiLogicServer/wiki/Architecture#internals---how-it-works).
+
+&nbsp; &nbsp;
 
 # Installation
 As of release 3.00.00, you can install using Docker (recommended), standard
@@ -373,6 +385,7 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 * making ```python3``` the default Python, or
 * using ```ApiLogicServer create```, and running ```python3 api_logic_server_run.py```
 
+&nbsp; &nbsp;
 
 # Project Information
 
