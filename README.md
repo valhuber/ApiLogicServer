@@ -324,8 +324,9 @@ This is an open source project, and we encourage contributions to the components
 | Component           | Provides         | Consider Adding                                                                |
 |:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
 | [1. safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)      | Admin App        | [Hide/Show, Cascade Add](https://github.com/thomaxxl/safrs-react-admin/issues) |
-| 2. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) | API Execution    | Security                                                                       | 
-| 3. [Transactional **Logic**](#logic)   | Rule Enforcement | New rule types                                                                 |
+| 2. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) | API Execution    | Security, Serverless, Kubernetes                                                                       | 
+| 3. [Transactional **Logic**](#logic)   | Rule Enforcement | New rule types        |
+| 4. This project | API Logic Project Creation | Support for features described above |
 
 
 To get started, please see [Architecture - How It Works](https://github.com/valhuber/ApiLogicServer/wiki/Architecture#internals---how-it-works).
