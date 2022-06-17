@@ -17,7 +17,7 @@ __version__ = "5.02.23"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/??/2022 - 05.02.23: TBD \n"\
+    "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\
     "\t05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info \n"\
     "\t05/22/2022 - 05.02.10: Minor enhancements: docs, examples (db_url), venv_setup, simple req.txt \n"\
@@ -1527,6 +1527,7 @@ def key_module_map():
     import create_from_model.api_expose_api_models as api_expose_api_models
 
     api_logic_server()                                          # main driver, calls...  Ctl- to return to last loc
+    create_project_with_nw_samples()                            # clone project, overlay nw
     model_creation_services = CreateFromModel()                 # creates database/models.py by calling...
     model_creation_services.create_models()                     # creates database/models.py
     model_creation_services.create_resource_list_from_safrs()   # creates resource_list via dynamic import of models.py
