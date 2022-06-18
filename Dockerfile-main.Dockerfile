@@ -9,6 +9,7 @@
 #   docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 #   docker image inspect apilogicserver/api_logic_server
 #   docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
+#   docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server sh /localhost/Start.sh hullo
 
 # The software auto-prompts you for the next steps:
 # ApiLogicServer run --project_name=/localhost/api_logic_server --db_url=
