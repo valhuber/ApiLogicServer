@@ -36,17 +36,19 @@ def get_api_logic_server_dir() -> str:
 
 
 def python_status():
-    # print("\nPython Status here, 3.XXX (add -path for PYTHONPATH)\n")
+    print(" ")
+    print("\nPython Status here, 4.1\n")
     dir = get_api_logic_server_dir()
     test_env = "/workspaces/../home/api_logic_server/"
     if os.path.exists(test_env):
         dir = test_env
     sys.path.append(dir)  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
-    import api_logic_server_cli.cli as cli
-    # show("pyenv --version")  # does not exist in docker...
-    # show("pyenv global")
-    # show("pyenv version-name")
-    # show("virtualenv --version")
+
+    try:
+        import api_logic_server_cli.cli as cli
+    except Exception as e:
+        cli = None
+        pass
     command = "?"
     if sys.argv[1:]:
         if sys.argv[1] == "welcome":
@@ -54,29 +56,38 @@ def python_status():
         elif sys.argv[1] == "sys-info":
             command = "sys-info"
         else:
-            print("unknown command - using welcome")
+            print("unknown command - using sys-info")
+            command = "sys-info"
 
     if command == "sys-info":
         print("PYTHONPATH..")
         for p in sys.path:
             print(".." + p)
         print("")
+        print(f'sys.prefix (venv): {sys.prefix}\n\n')
+
 
     import socket
     hostname = socket.gethostname()
     local_ip = socket.gethostbyname(hostname)
-    print_at('ApiLogicServer version', cli.__version__)
+    if cli:
+        print_at('ApiLogicServer version', cli.__version__)
+    else:
+        print_at('ApiLogicServer version', f'*** ApiLogicServer not installed in this environment ***')
     if command == "sys-info":
         print_at('ip (gethostbyname)', local_ip)
         print_at('on hostname', hostname)
         show("python --version")
     print("")
     print("Typical commands:")
-    print("  ApiLogicServer create-and-run --project_name=/localhost/docker_project --db_url=")
-    print("  ApiLogicServer run-api        --project_name=/localhost/docker_project")
-    print("  ApiLogicServer run-ui         --project_name=/localhost/docker_project   # login admin, p")
+    print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")
+    print("  ApiLogicServer run-api        --project_name=/localhost/api_logic_server")
+    print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login admin, p")
     print("  ApiLogicServer sys-info")
     print("  ApiLogicServer version")
+    print("")
+    if command != "sys-info":
+        print("For more information, use python py.py sys-info")
     print("")
 
 if __name__ == '__main__':
