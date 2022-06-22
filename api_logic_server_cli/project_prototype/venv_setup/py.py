@@ -37,7 +37,7 @@ def get_api_logic_server_dir() -> str:
 
 def python_status():
     print(" ")
-    print("\nPython Status here, 4.1\n")
+    print("\nPython Status here, 4.2\n")
     dir = get_api_logic_server_dir()
     test_env = "/workspaces/../home/api_logic_server/"
     if os.path.exists(test_env):
@@ -60,9 +60,15 @@ def python_status():
             command = "sys-info"
 
     if command == "sys-info":
-        print("PYTHONPATH..")
+        print("\nEnvironment Variables...")
+        env = os.environ
+        for each_variable in os.environ:
+             print(f'.. {each_variable} = {env[each_variable]}')
+
+        print("\nPYTHONPATH..")
         for p in sys.path:
             print(".." + p)
+            
         print("")
         print(f'sys.prefix (venv): {sys.prefix}\n\n')
 
@@ -79,7 +85,7 @@ def python_status():
         print_at('on hostname', hostname)
         show("python --version")
     print("")
-    print("Typical commands:")
+    print("Typical API Logic Server commands:")
     print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")
     print("  ApiLogicServer run-api        --project_name=/localhost/api_logic_server")
     print("  ApiLogicServer run-ui         --project_name=/localhost/api_logic_server   # login admin, p")

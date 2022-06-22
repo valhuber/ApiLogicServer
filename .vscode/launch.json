@@ -160,6 +160,16 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Python Status",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/api_logic_server_cli/project_prototype/venv_setup/py.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["go"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "ApiLogicServer about",
             "type": "python",
             "request": "launch",
