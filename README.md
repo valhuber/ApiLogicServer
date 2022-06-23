@@ -443,6 +443,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image
+
 06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation
 
 06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging
