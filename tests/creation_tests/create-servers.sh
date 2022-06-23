@@ -27,11 +27,18 @@ if [ "$1" = "create" ]
 
         ApiLogicServer create --project_name=ApiLogicProject --db_url=
 
-        ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+        ApiLogicServer create --project_name=sqlserver \
+           --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
 
-        ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
+        ApiLogicServer create --project_name=classicmodels \
+           --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
 
-        ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
+        ApiLogicServer create --project_name=postgres \
+           --db_url=postgresql://postgres:p@localhost/postgres
+
+        ApiLogicServer create --project_name=sqlserver-types \
+           --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no' \
+           --extended_builder=*
 
         popd
 

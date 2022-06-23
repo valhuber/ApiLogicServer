@@ -82,7 +82,7 @@ setup(
         "python-dotenv==0.15.0",
         "gunicorn==20.1.0",
         "email-validator==1.1.1",
-        "LogicBank>=1.07.00",
+        "LogicBank>=1.07.01",
         "PyMySQL==1.0.2",
 #         "pyodbc==4.0.32",
         "cryptography==36.0.1",
