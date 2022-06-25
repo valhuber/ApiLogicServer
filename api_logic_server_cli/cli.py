@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.00"
+__version__ = "5.03.01"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t06/22/2022 - 05.03.01: Clarify nw+- creation logs, explore customize_test (failing) \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\
@@ -286,10 +287,10 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
     :param project_name: actual user parameter (might have ~, .)
     :param api_name: node in rest uri
     :param from_git: name of git project to clone (blank for default)
-    :param msg printed, such as Create Project
+    :param msg printed, such as Create Project:
     :param abs_db_url: non-relative location of db
     :param nw_db_status one of ["", "nw", "nw+", "nw-"]
-    :return: abs_db_url (e.g., reflects sqlite copy to project/database dir)
+    :return: return_abs_db_url (e.g., reflects sqlite copy to project/database dir)
     """
     cloned_from = from_git
     remove_project_debug = True
@@ -353,7 +354,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
                            in_file=f'{project_directory}/readme.md')
 
     project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
-    target_db_loc_actual = abs_db_url
+    return_abs_db_url = abs_db_url
     copy_sqlite = True
     if copy_sqlite == False or "sqlite" not in abs_db_url:
         db_uri = get_windows_path_with_slashes(abs_db_url)
@@ -376,13 +377,13 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
         if os.name == "nt":  # windows
             # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
             target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
-        db_uri = f'sqlite:///{target_db_loc_actual}'
-        target_db_loc_actual = db_uri
+        # db_uri = f'sqlite:///{target_db_loc_actual}'
+        return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
         create_utils.replace_string_in_file(search_for="replace_db_url",
-                               replace_with=db_uri,
+                               replace_with=return_abs_db_url,
                                in_file=f'{project_directory}/config.py')
         create_utils.replace_string_in_file(search_for="replace_db_url",
-                               replace_with=db_uri,
+                               replace_with=return_abs_db_url,
                                in_file=f'{project_directory}/database/alembic.ini')
         api_config_file_name = \
             os.path.dirname(os.path.realpath(__file__)) +"/create_from_model/templates/api_config.txt"
@@ -392,12 +393,11 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
                                      at="override SQLALCHEMY_DATABASE_URI here as required",
                                      file_name=f'{project_directory}/config.py')
 
-        print(f'.. ..Copied sqlite db to: {target_db_loc_actual} and '
-              f'updated db_uri in {project_directory}/config.py')
-        if nw_db_status != "":
-            print(f'.. .. ..Using nw sample db: {db_loc}')
+        print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
+        print(f'.. .. ..From {db_loc}')
+        print(f'.. .. ..db_uri set to: {return_abs_db_url} in {project_directory}/config.py')
 
-    return target_db_loc_actual
+    return return_abs_db_url
 
 
 def create_basic_web_app(db_url, project_name, msg):  # remove - now creating by simple copy directory
@@ -734,6 +734,9 @@ def get_abs_db_url(msg, db_url):
         rtn_nw_db_status = "nw"
         print(f'{msg} from: {rtn_abs_db_url}')
     elif db_url == "nw-":                                           # nw:           just in case
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold.sqlite'
+        rtn_nw_db_status = "nw-"
+    elif db_url == "nw--":                                           # nw:           unused - avoid
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw.sqlite'
         rtn_nw_db_status = "nw-"
     elif db_url == "nw+":                                           # nw-gold-plus: next version
@@ -865,7 +868,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
         abs_db_url = create_project_with_nw_samples(project_directory, # no twiddle, resolve .
                                                     project_name,      # actual user parameter
                                                     api_name,
-                                                    from_git, "2. Create Project",
+                                                    from_git, "2. Create Project:",
                                                     abs_db_url,        # sqlite DBs are copied to proj/database
                                                     nw_db_status)
     else:
@@ -1523,7 +1526,9 @@ if __name__ == '__main__':  # debugger & python command line start here
 
 
 def key_module_map():
-    """ not called - just index of key code - use this for hover, goto etc """
+    """ not called - just index of key code - use this for hover, goto etc 
+        ctl-l for last edit
+    """
     import create_from_model.ui_admin_creator as ui_admin_creator
     import create_from_model.api_expose_api_models as api_expose_api_models
 
@@ -1533,6 +1538,6 @@ def key_module_map():
     model_creation_services.create_models()                     # creates database/models.py
     model_creation_services.create_resource_list_from_safrs()   # creates resource_list via dynamic import of models.py
     invoke_creators()                                           # creates api, ui via create_from_model...
-    api_expose_api_models.create()                              # creates api/expose_api_models from resource_list
+    api_expose_api_models.create()        
     ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
     get_abs_db_url()                                            # nw set here
