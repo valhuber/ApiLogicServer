@@ -17,7 +17,7 @@ __version__ = "5.03.01"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/22/2022 - 05.03.01: Clarify nw+- creation logs, explore customize_test (failing) \n"\
+    "\t06/22/2022 - 05.03.01: Clarify nw+- creation logs, explore customize_test \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\
