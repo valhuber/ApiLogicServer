@@ -64,7 +64,7 @@ def backup_file(proj_dir: Path, folder: str, file: str):
 
 def perform_customizations():
     print(" ")
-    print("\nShow Customizations here, 1.01\n")
+    print("\nPerform Customizations here, 1.02\n")
     dir = get_api_logic_project_path()
     do_test_env = False
     if do_test_env:
@@ -78,6 +78,7 @@ def perform_customizations():
 
     try:
         import api_logic_server_cli.cli as cli
+        import api_logic_server_cli.create_from_model.api_logic_server_utils as create_utils
     except Exception as e:
         cli = None
         pass
@@ -102,6 +103,11 @@ def perform_customizations():
  
     nw_dir = cli_path.joinpath('project_prototype_nw')
     recursive_overwrite(nw_dir, dir)
+
+    home_js_file = dir.joinpath('ui').joinpath('admin').joinpath('home.js')
+    create_utils.replace_string_in_file(search_for="api_logic_server_api_name",
+                        replace_with=f'api',
+                        in_file=home_js_file)
 
     print("\n*** Customizations applied - explore the files above\n\n")
     print("\n*** See Tutorial: https://github.com/valhuber/ApiLogicServer/blob/main/README.md#sample-tutorial---api-logic-server\n\n")

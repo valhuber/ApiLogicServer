@@ -37,6 +37,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Perform Customizations",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "perform_customizations.py",
+            "redirectOutput": true,
+            "args": [ "go"],
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Behave Scenario",
             "type": "python",
             "request": "launch",
