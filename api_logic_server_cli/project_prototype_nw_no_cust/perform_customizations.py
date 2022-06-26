@@ -9,6 +9,14 @@ from pathlib import Path
 import shutil
 
 
+docker_api_logic_server = '/home/api_logic_server'
+
+def is_docker() -> bool:
+    """ running docker?  dir exists: /home/api_logic_server """
+    path = docker_api_logic_server 
+    return os.path.isdir(path)
+
+
 def print_at(label: str, value: str):
     tab_to = 28 - len(label)
     spaces = ' ' * tab_to
@@ -56,12 +64,17 @@ def backup_file(proj_dir: Path, folder: str, file: str):
 
 def perform_customizations():
     print(" ")
-    print("\nShow Customizations here, 1.0\n")
+    print("\nShow Customizations here, 1.01\n")
     dir = get_api_logic_project_path()
-    test_env = "/workspaces/../home/api_logic_server/"
-    if os.path.exists(test_env):
-        dir = test_env
+    do_test_env = False
+    if do_test_env:
+        test_env = "/workspaces/../home/api_logic_server/"
+        if os.path.exists(test_env):
+            dir = test_env
     sys.path.append(dir)  # e.g, on Docker -- export PATH=" /home/app_user/api_logic_server_cli"
+
+    if is_docker():
+        sys.path.append(docker_api_logic_server)
 
     try:
         import api_logic_server_cli.cli as cli
