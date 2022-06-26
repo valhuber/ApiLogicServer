@@ -17,7 +17,7 @@ __version__ = "5.03.01"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/22/2022 - 05.03.01: Clarify nw+- creation logs, explore customize_test \n"\
+    "\t06/22/2022 - 05.03.01: Clarify nw+- creation logs, working perform_customizations \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\
@@ -336,6 +336,17 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
             replace_customize_models_with_nw_customize_models(project_directory)
             replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
             replace_server_test_with_nw_server_test(project_directory)
+
+    if nw_db_status in ["nw-"]:
+        if nw_copy == "recursive_overwrite":
+            print(".. ..Copy in nw- customizations: readme, perform_customizations")
+            code_loc = str(get_api_logic_server_dir())
+            nw_dir = (Path(code_loc)).\
+                joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
+            recursive_overwrite(nw_dir, project_directory)
+        else:
+            print(".. ..Not implemented")
+            exit (1)
 
     create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
