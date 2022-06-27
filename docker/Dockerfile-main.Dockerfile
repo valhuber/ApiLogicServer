@@ -62,7 +62,8 @@ COPY . .
 # EXPOSE 8080
 USER root
 RUN chmod +x bin/ApiLogicServer \
-    && chmod a+rwx -R api_logic_server_cli/api_logic_server_info.yaml
+    && chmod a+rwx -R api_logic_server_cli/api_logic_server_info.yaml \
+    && chmod +x bin/py
 # CMD ["ApiLogicServer"]
 USER api_logic_server
 # RUN chmod a+rwx -R api_logic_server_cli/api_logic_server_info.yaml

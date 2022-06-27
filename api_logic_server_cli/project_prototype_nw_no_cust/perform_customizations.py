@@ -10,6 +10,7 @@ import shutil
 
 
 docker_api_logic_server = '/home/api_logic_server'
+verbose = False
 
 def is_docker() -> bool:
     """ running docker?  dir exists: /home/api_logic_server """
@@ -52,19 +53,27 @@ def recursive_overwrite(src, dest, ignore=None):
                                     os.path.join(dest, f),
                                     ignore)
     else:
+        is_not_noise = "test/" not in str(dest)
+        if is_not_noise and verbose:
+            print(f'..{str(dest)}')
         shutil.copyfile(src, dest)
 
 
 def backup_file(proj_dir: Path, folder: str, file: str):
-    print(f'Backup up to {folder}/{file}_original.py')
     src = proj_dir.joinpath(folder).joinpath(file + ".py")
     dest = proj_dir.joinpath(folder).joinpath(file + "_original.py")
-    shutil.copyfile(src=src, dst=dest)
+    if Path.exists(dest):
+        print(f'..skipping file already copied: {folder}/{file}.py')
+    else:
+        print(f'..{folder}/{file}.py')
+        shutil.copyfile(src=src, dst=dest)
 
 
 def perform_customizations():
     print(" ")
-    print("\nPerform Customizations here, 1.02\n")
+    print("\nPerform Customizations here, 1.03\n")
+    global verbose
+
     dir = get_api_logic_project_path()
     do_test_env = False
     if do_test_env:
@@ -92,15 +101,21 @@ def perform_customizations():
 
     if sys.argv[1:]:
         print(" ")
+        if sys.argv[1].startswith('v'):
+            verbose = True
     else:
         print("\nUse argument 'go' to apply customizations\n\n")
         exit(0)
 
-    print(" ")
+    print("\nCreating '_original' backups (for purposes of comparison) for the following key customization files:")
     backup_file(proj_dir=dir, folder="api", file="customize_api")
     backup_file(proj_dir=dir, folder="database", file="customize_models")
     backup_file(proj_dir=dir, folder="logic", file="declare_logic")
- 
+
+    if verbose:
+        print("\nCopying NW customization files (test files omitted from this list)...") 
+    else:
+        print("\nCopying...")
     nw_dir = cli_path.joinpath('project_prototype_nw')
     recursive_overwrite(nw_dir, dir)
 
@@ -109,7 +124,7 @@ def perform_customizations():
                         replace_with=f'api',
                         in_file=home_js_file)
 
-    print("\n*** Customizations applied - explore the files above\n\n")
+    print("\n*** Customizations applied - explore the files above")
     print("\n*** See Tutorial: https://github.com/valhuber/ApiLogicServer/blob/main/README.md#sample-tutorial---api-logic-server\n\n")
 
 

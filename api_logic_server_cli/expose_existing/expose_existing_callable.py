@@ -100,12 +100,14 @@ uri_info = [
     '    --host=ApiLogicServer.pythonanywhere.com --port= \\',
     '    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook',
     '',
-    'Where --db_url defaults to supplied sample, or, specify URI for your own database:',
-    '   SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html',
-    '   Other URI examples:           https://github.com/valhuber/ApiLogicServer/wiki/Testing',
-    '   Install Guide:                https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#install-guide',
+    'Where --db_url is one of...',
+    '   <default>                     Sample DB                    - https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database',
+    '   nw-                           Sample DB, no customizations - add later with perform_customizations.py',
+    '   <SQLAlchemy Database URI>     Your own database            - https://docs.sqlalchemy.org/en/14/core/engines.html',
+    '                                      Other URI examples:     - https://github.com/valhuber/ApiLogicServer/wiki/Testing',
     ' ',
     'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
+    '      https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#install-guide'
 ]
 
 

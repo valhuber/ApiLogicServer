@@ -266,6 +266,6 @@ if __name__ == "__main__":
         user_host = "localhost"
     msg = f'API Logic Project Started, version api_logic_server_version, available at http://{user_host}:{port}'
     if is_docker():
-        msg += f' on docker container'
+        msg += f' (running from docker container - may require refresh)'
     app_logger.info(msg)
     flask_app.run(host=flask_host, threaded=False, port=port)

@@ -945,18 +945,19 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
 @click.pass_context
 def main(ctx):
     """
-    Creates and runs logic-enabled Python database api projects.
+    Creates and optionally runs logic-enabled Python database api projects.
 
 \b
     Doc: https://github.com/valhuber/ApiLogicServer/blob/main/README.md
 
 \b
-    Examples:
+    Examples (accept defaults for Sample Tutorial):
 
 \b
-        ApiLogicServer create                                                        # Local install
-        ApiLogicServer create-and-run --project_name=ApiLogicProject   --db_url=     # Tutorial
-        ApiLogicServer create         --project_name=/localhost/ApiLogicProject      # Docker install
+        ApiLogicServer create-and-run
+        ApiLogicServer create
+
+    Then, customize created project in your IDE
     """
 
 
@@ -1465,13 +1466,13 @@ log = logging.getLogger(__name__)
 
 def print_uri_info():
     """
-    Creates and optionally runs a customizable ApiLogicServer project, Example
+    Creates and optionally runs a customizable Api Logic Project, Example
 
     URI examples, Docs URL
     """
     header = [
         '',
-        'Creates and optionally runs a customizable ApiLogicServer project',
+        'Creates and optionally runs a customizable Api Logic Project',
         ''
     ]
 
@@ -1516,7 +1517,7 @@ def check_ports():
 
 
 def start():               # target of setup.py
-    sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n")
+    sys.stdout.write("\nWelcome to API Logic Server " + __version__ + "\n\n")
     hostname, local_ip = check_ports()  #  = socket.gethostname()
     # sys.stdout.write("    SQLAlchemy Database URI help: https://docs.sqlalchemy.org/en/14/core/engines.html\n")
     main(obj={})
