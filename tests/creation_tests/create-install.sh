@@ -26,8 +26,8 @@ if [ "$1" = "venv" ]
         echo ""
         echo "venv created, now..."
         echo "  source ${ApiLogicServer}/venv/bin/activate  # ;a"
-        echo "  pip install pyodbc"
-        echo "  python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==5.2.28"
+        echo "  python3 -m pip install pyodbc"
+        echo "  python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==5.3.05"
 
         echo " "
     fi
