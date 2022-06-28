@@ -4,6 +4,8 @@ You've already completed the `Create` step below, and are now viewing the readme
 
 In this tutorial, we will explore:
 
+* **create** - options for creating API Logic Server Projects
+
 * **run** - we will first run the Admin App and the JSON:API
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
@@ -21,6 +23,19 @@ You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 ## Establish your Python environment
 Install your projects' virtual environment
 as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start). See also the `venv_setup` directory in your API Logic Project.
+
+
+&nbsp;&nbsp;&nbsp;
+
+## Create
+
+Once you have installed API Logic Server, you can use the provided CLI to create projects.  The key arguments are:
+
+1. `project_name` - a folder with this name will be created and populated; you'll later open this with your IDE
+
+2. `db_url` - this defaults to the SqlLite version of Northwind already provided in the project.
+
+The defaulted `db_url` includes customizations we'll explore below.  If you want to see a "vanilla" creation without customizations, specify `nw-`.  You can later introduce the customizations by running `python perform_customizations.py go`.
 
 &nbsp;&nbsp;
 
@@ -40,6 +55,7 @@ To run the Admin App, follow these steps:
       * Open a browser at [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home), or
       * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
          * Note: be aware that we have seen some issues where the _simple browser_ fails to start; just use your normal browser  
+         * Note: we have also seen that some systems are slow to load caches on first execution; browser refresh can often be helpful
 4. Explore the app: multi-page, multi-table, automatic joins
    * Navigate to `Customer`
      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
@@ -156,6 +172,10 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 4. When you hit the breakpoint, expand `row` VARIABLES list (top left)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
+
+Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [described here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#how---usage-and-operation-overview).
+
+> This rule architecture ensures that rules are always re-used across all client applications and integrations.  This avoids common "fat client" approaches that embed logic in user interface controllers, which leads to replication and inconsistency.
 
 &nbsp;&nbsp;
 
