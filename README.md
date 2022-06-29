@@ -44,8 +44,7 @@ In addition to Docker, you can install locally; if Python 3.7+ [is installed](#i
 ```bash
 python3 -m venv venv       # may require python -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
-apt install unixodbc-dev   # Linux only
-pip install ApiLogicServer # you may need to use pip3, or restart your terminal session
+pip install ApiLogicServer # you may need to use pip3
 
 ApiLogicServer create      # create, or create-and-run; defaults provided
 ```
@@ -60,7 +59,7 @@ Project creation is based on database schema introspection as shown below.  Clic
 
 After you've explored the tutorial (created from [this database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
 
-> Already installed?  Upgrade to the latest (5.02.23): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (5.03.06): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
 &nbsp;
 
@@ -85,6 +84,8 @@ After completing the `create` step, you can view the readme in the created ApiLo
 
 In this tutorial, we will explore:
 
+* **create** - options for creating API Logic Server Projects
+
 * **run** - we will first run the Admin App and the JSON:API
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
@@ -93,6 +94,18 @@ This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects
 
 The diagram above summarizes the create / run / customize process.  You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
+
+&nbsp;&nbsp;&nbsp;
+
+## Create
+
+Once you have installed API Logic Server, you can use the provided CLI to create projects.  The key arguments are:
+
+1. `project_name` - a folder with this name will be created and populated; you'll later open this with your IDE
+
+2. `db_url` - this defaults to the SqlLite version of Northwind already provided in the project.
+
+The defaulted `db_url` includes customizations we'll explore below.  If you want to see a "vanilla" creation without customizations, specify `nw-`.  You can later introduce the customizations by running `python perform_customizations.py go`.
 
 &nbsp;&nbsp;&nbsp;
 
@@ -112,6 +125,7 @@ To run the Admin App, follow these steps:
       * Open a browser at [localhost:5656](localhost:5656), or
       * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
          * Note: be aware that we have seen some issue where the _simple browser_ fails to start; just use your normal browser  
+         * Note: we have also seen that some systems are slow to load caches on first execution; browser refresh can often be helpful
 4. Explore the app: multi-page, multi-table, automatic joins
    * Navigate to `Customer`
      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
@@ -228,6 +242,11 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 4. When you hit the breakpoint, expand `row` VARIABLES list (top left)
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
+
+Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [described here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#how---usage-and-operation-overview).
+
+> This rule architecture ensures that rules are always re-used across all client applications and integrations.  This avoids common "fat client" approaches that embed logic in user interface controllers, which leads to replication and inconsistency.
+
 
 &nbsp;&nbsp;
 
@@ -442,6 +461,8 @@ These technologies are automatically created when you use ApiLogicServer:
 * [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 ### Change Log
+
+06/27/2022 - 05.03.06: nw-, with perform_customizations docker
 
 06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image
 

@@ -1,6 +1,6 @@
 # docker build -f docker/Dockerfile-main.Dockerfile -t apilogicserver/api_logic_server --rm .
-# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:5.03.05
-# docker push apilogicserver/api_logic_server:5.03.05
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:5.03.06
+# docker push apilogicserver/api_logic_server:5.03.06
 
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server-exp:3.50.20
 # docker push apilogicserver/api_logic_server-exp:3.50.20
@@ -17,7 +17,6 @@
 #   ApiLogicServer create --project_name=/localhost/sqlserver --db_url=mssql+pyodbc://sa:posey386\!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\?trusted_connection=no
 #   ApiLogicServer create --project_name=/localhost/postgres --db_url=postgresql://postgres:p@postgresql-container/postgres
 #   python /localhost/api_logic_server/api_logic_server_run.py
-#   python /localhost/api_logic_server/ui/basic_web_app/run.py
 
 # shout outs...
 #   Thmomas Pollet  https://github.com/thomaxxl/safrs-react-admin -- safrs, safrs-react-admin

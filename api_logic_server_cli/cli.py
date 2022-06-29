@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.05"
+__version__ = "5.03.06"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/26/2022 - 05.03.05: Clarify nw+- creation logs, working perform_customizations docker \n"\
+    "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\

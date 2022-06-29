@@ -7,6 +7,8 @@ sh create-install.sh venv  # rebuilds the venv
 
 run each script below, verify app and swagger
 
+caution: SqlServer url depends on install of pyodbc (18 requires &Encrypt=no)
+
 
     pip
     ===
