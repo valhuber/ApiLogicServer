@@ -4,7 +4,7 @@
 
 # API Logic Server
 
-### TL;DR - Creates Customizable,  Executable Database Projects
+### TL;DR - Creates Customizable, Executable Database Projects
 
 The `ApiLogicServer create-and-run` command creates a _executable, customizable_ project that provides:
 
