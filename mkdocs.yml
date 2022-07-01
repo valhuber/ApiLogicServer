@@ -1,0 +1,5 @@
+site_name: API Logic Server
+theme:
+  name: material
+  features:
+    - navigation.instant
