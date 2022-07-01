@@ -51,7 +51,7 @@
             "program": "cli.py",
             "redirectOutput": true,
             "argsExpansion": "none",
-            "args": ["create","--project_name=../../servers/SqlServer","--db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no"],
+            "args": ["create","--project_name=../../servers/SqlServer","--db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"],
             "console": "integratedTerminal"
         },
         {

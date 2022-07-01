@@ -3,7 +3,7 @@ Creation tests
 
 cd ~/dev/ApiLogicServer/tests/creation_tests
 sh create-install.sh venv  # rebuilds the venv
-# follow directions to pip install
+# follow directions to activate and pip install
 
 run each script below, verify app and swagger
 

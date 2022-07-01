@@ -160,3 +160,22 @@ Verify other DBs don't require pyodbc
     sqlserver   runs: with updates
     postgres    runs (as above)
     mysql       runs
+
+
+Exploring
+=========
+
+7/29/2022 - SqlServer fails on Swagger, but not Admin app (!)
+
+admin app api:
+
+GET /api/Categories?include=&page%5Blimit%5D=25&page%5Bnumber%5D=1&page%5Boffset%5D=0&page%5Bsize%5D=25&sort=CategoryName HTTP/1.1" 200
+
+swagger api:
+
+curl -X 'GET' \
+  'http://localhost:5656/api/Categories/?include=ProductList&fields%5BCategory%5D=CategoryID%2CCategoryName%2CDescription%2CPicture&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=CategoryID%2CCategoryName%2CDescription%2CPicture%2Cid' \
+  -H 'accept: application/vnd.api+json' \
+  -H 'Content-Type: application/vnd.api+json'
+
+  since trying to sort on Picture
