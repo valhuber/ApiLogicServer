@@ -11,7 +11,7 @@ nav:
       - "Using Docker": Install-With-Docker.md
       - "Using local install": Install-Locally.md
       - "Using PythonAnyWhere": Install-PythonAnywhere.md
-      - "Install pyodbc: SqlServer": Install-pyodbc.md
+      - "Installation Notes": Install-Notes.md
     - "Create an API Logic Project": Create-ApiLogicProject.md
     - Execute an API Logic Project:
       - "Execution Options": Execute.md
@@ -23,16 +23,18 @@ nav:
     - Sample-Database.md
     - "Working With Docker": Working-With-Docker.md
     - "Old Quick Start": Quick-Start.md
-  - Admin App:
+  - 1. Admin App:
     - "Admin Tour": "Admin-Tour.md"
-  - API:
-    - Admin-Tour.md
-  - Database:
-    - Testing.md
-  - Logic:
-    - "Logic is Rules + Python": "Logic:-Rules-plus-Python.md"
-    - "Logic Tutorial (with TDD)": "Logic:-Tutorial.md"
+  - 2. API:
+    - "JSON:API": API.md
+    - "API Customization": API-Customize.md
+  - 3. Logic:
+    - "Logic is Rules + Python": "Logic-Rules-plus-Python.md"
+    - "Logic Tutorial (with TDD)": "Logic-Tutorial.md"
     - Working-With-Behave.md
+  - Database Access:
+    - "Connection Examples": Testing.md
+    - "Install pyodbc: SqlServer": Install-pyodbc.md
   - Architecture:
     - Architecture.md
     - Working-with-the-Admin-App.md

@@ -12,6 +12,41 @@ ApiLogicServer is therefore provided in a docker image, as described in the [rea
 
 &nbsp;
 
+## Install - `docker run` arguments
+Once you've [installed Docker](https://github.com/valhuber/ApiLogicServer/wiki/Testing#working-with-docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
+* the `v ${PWD}:/localhost` argument is what enables the ApiLogicServer to create / access the project on your local host
+   * Windows - Powershell must be used (due to the `$(PWD)` syntax)
+   * if you use Command Prompt, specify the local directory completely 
+   
+The **arguments** mean:
+* **-it** - launch a terminal window for the Docker container
+* **--name api_logic_server** - the name of the image on your local host
+* **-rm** - remove the container once it stops (your project files are not lost - they are on your local host)
+* **-p 5656:5656** - maps local (host) part to Docker port 
+* **-v ${PWD}:/localhost** - maps a local directory to a mount name for Docker.  This is where a directory will be created for your new project.  
+   * `${PWD}` is your current folder.  
+      * You could also provide a specific folder, e.g., `~/dev/servers` (Unix), or `C:\Users\val\dev\servers` (windows)
+   * `/localhost`is the mounted volume reference from inside the Docker container
+* **`apilogicserver/api_logic_server`** - the name of the image to pull from Docker Hub.  
+   * This will fetch the image first time, and will run it locally on subsequent runs
+   * The image is not automatically refreshed -- install ApiLogicServer updates as described below
+
+You may also wish to add a parameter for networking:
+* **--net my-network** - attaches to my-network
+
+On your Docker container, you can **inspect** your environment:
+```
+python py.py
+```
+
+Open a new terminal window on your **local host**, and find your docker IP address:
+
+```
+docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
+```
+
+</details>
+
 ## Connect to Dockerized Databases
 
 One of the great things about Docker is the ability to install popular databases, with no hassle.  Follow the procedures described in [Testing](https://github.com/valhuber/ApiLogicServer/wiki/Testing).
