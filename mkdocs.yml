@@ -31,7 +31,10 @@ nav:
   - 3. Logic:
     - "Logic is Rules + Python": "Logic-Rules-plus-Python.md"
     - "Logic Tutorial (with TDD)": "Logic-Tutorial.md"
-    - Working-With-Behave.md
+    - "Learning Rules": Logic-Learning.md
+  - Testing:
+    - "Testing With Behave": Behave.md
+    - "Behave Logic Report": Behave-Logic-Report.md
   - API Logic Projects:
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md
@@ -39,7 +42,7 @@ nav:
     - "Execution": Project-Execution.md
     - "Builders": Project-Builders.md
   - Database Access:
-    - "Connection Examples": Testing.md
+    - "Connection Examples": Database-Connectivity.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
     - Data-Model-Classes.md
     - Data-Model-Customization.md
