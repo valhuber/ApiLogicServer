@@ -22,9 +22,9 @@ nav:
     - "Tutorial": Tutorial.md
     - Sample-Database.md
     - "Working With Docker": Working-With-Docker.md
-    - "Old Quick Start": Quick-Start.md
   - 1. Admin App:
     - "Admin Tour": "Admin-Tour.md"
+    - Admin-Customization.md
   - 2. API:
     - "JSON:API": API.md
     - "API Customization": API-Customize.md
@@ -32,9 +32,17 @@ nav:
     - "Logic is Rules + Python": "Logic-Rules-plus-Python.md"
     - "Logic Tutorial (with TDD)": "Logic-Tutorial.md"
     - Working-With-Behave.md
+  - API Logic Projects:
+    - "Structure": Project-Structure.md
+    - "Rebuild": Project-Rebuild.md
+    - "Virtual Environment": Project-Env.md
+    - "Execution": Project-Execution.md
+    - "Builders": Project-Builders.md
   - Database Access:
     - "Connection Examples": Testing.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
+    - Data-Model-Classes.md
+    - Data-Model-Customization.md
   - Architecture:
     - Architecture.md
     - Working-with-the-Admin-App.md
@@ -42,7 +50,7 @@ nav:
     - "API Logic Server Development": Internals.md
   - Troubleshooting.md
   - Unfiled:
-    - Home.md
+    - "Old Quick Start": Quick-Start.md
     - _Footer.md
 markdown_extensions:
   - toc:
