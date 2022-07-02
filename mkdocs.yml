@@ -3,3 +3,53 @@ theme:
   name: material
   features:
     - navigation.instant
+nav:
+  - " ": index.md
+  - Quick Start:
+    - Install API Logic Server:
+      - "Install Options": Install.md
+      - "Using Docker": Install-With-Docker.md
+      - "Using local install": Install-Locally.md
+      - "Using PythonAnyWhere": Install-PythonAnywhere.md
+      - "Install pyodbc: SqlServer": Install-pyodbc.md
+    - "Create an API Logic Project": Create-ApiLogicProject.md
+    - Execute an API Logic Project:
+      - "Execution Options": Execute.md
+      - "From Command Line": Execute-Command-Line.md
+      - "From VSCode Local": Execute-VSCode-Local.md
+      - "From VSCode Docker": Execute-VSCode-Docker.md
+      - "From Pycharm": Execute-PyCharm-Local.md
+    - "Tutorial": Tutorial.md
+    - Sample-Database.md
+    - "Working With Docker": Working-With-Docker.md
+    - "Old Quick Start": Quick-Start.md
+  - Admin App:
+    - "Admin Tour": "Admin-Tour.md"
+  - API:
+    - Admin-Tour.md
+  - Database:
+    - Testing.md
+  - Logic:
+    - "Logic is Rules + Python": "Logic:-Rules-plus-Python.md"
+    - "Logic Tutorial (with TDD)": "Logic:-Tutorial.md"
+    - Working-With-Behave.md
+  - Architecture:
+    - Architecture.md
+    - Working-with-the-Admin-App.md
+    - Working-with-Flask-AppBuilder.md
+    - "API Logic Server Development": Internals.md
+  - Troubleshooting.md
+  - Unfiled:
+    - Home.md
+    - _Footer.md
+markdown_extensions:
+  - toc:
+      baselevel: 2
+      title: On this Page
+      toc_depth: 5
+  - meta
+  - attr_list
+  - pymdownx.emoji:
+      title: "long"
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
