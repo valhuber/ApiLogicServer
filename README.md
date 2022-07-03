@@ -2,10 +2,7 @@
 [![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 
-<figure>
-   <a href="https://valhuber.github.io/ApiLogicServer/">
-   <img src="https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true"  style="width:600px"   title="Click for docs">
-</figure>
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true)](https://valhuber.github.io/ApiLogicServer/ "Click for docs")
 
 &nbsp;
 
