@@ -14,7 +14,7 @@ Logic consists of both:
 
 &nbsp;
 
-## Current Approach - Simple Cocktail-Napkin Spec Explodes into Massive Legacy Code
+## Problem: Code Explosion
 
 Let's imagine we have a "cocktail napkin spec" shown (in blue) in the diagram below.  How might we enforce such logic?
 
@@ -26,15 +26,18 @@ After we've determined _where_ to put the code, we then have to _write_ it.  Our
 
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/overview/rules-vs-code.png"></figure>
 
-
-## Why Rules - Velocity, Quality, Agility, Performance
-
 It's also incredibly repetitive - you often get the feeling you're doing the same thing over and over.
 
 And you're right.  It's because backend logic follows patterns of "what" is supposed to happen.
 And your code is the "how".  
 
-Declarative logic addresses this by automating the _why_ with spreadsheet-like rules that are 40x more concise than code.  The 5 rules below (lines 40-49) express the same logic as 200 lines of code [**(see them here)**](https://github.com/valhuber/LogicBank/wiki/by-code).  That's because rules are all about "what"
+&nbsp;
+
+---
+
+## Rules: Executable Design
+
+Declarative logic addresses this by automating the _why_ with spreadsheet-like rules that are 40x more concise than code.  The 5 rules below (lines 64-79) express the same logic as 200 lines of code [**(see them here)**](https://github.com/valhuber/LogicBank/wiki/by-code).  That's because rules are all about "what"
 -- spreadsheet-like expressions that automate the tedious "how":
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
@@ -63,10 +66,13 @@ In past rule implementations addressing moderate-sized systems (typically consis
 
 * rules are 40x more concise than code as shown above
 
-&nbsp;
 
-### Complexity: automate 95%, standard language for rest
+### Complexity: Extensible with Python
 
 While 95% is certainly remarkable, it's not 100%.  Automating most of the logic is of no value unless there are provisions to address the remainder.
 
-That provision is standard Python, provided as standard events.  This will be typically be used for non-database oriented logic such as files and messages, and for extremely complex database logic.
+That provision is standard Python, provided as standard events (lines 84-96 in the screen shot above).  This will be typically be used for non-database oriented logic such as files and messages, and for extremely complex database logic.
+
+### Your IDE
+
+The screen shot above illustrates you use your IDE (e.g., VSCode, PyCharm) to declare logic using Python, with all the familiar features of code completion and syntax high-lighting.  You can also use the debugger, and familiar tools such as `git`.
