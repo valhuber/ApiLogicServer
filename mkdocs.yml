@@ -30,8 +30,7 @@ nav:
     - "API Customization": API-Customize.md
   - 3. Logic:
     - "Why Rules": Logic-Why.md
-    - "Rules, Extensible With Python": Logic.md
-    - "Conventional - Code Explosion": "Logic-Conventional.md"
+    - "Rules; 40X, Extensible": Logic.md
     - "Logic Operation": "Logic-Operation.md"
     - "TDD-based Approach": "Logic-Tutorial.md"
   - Testing:
