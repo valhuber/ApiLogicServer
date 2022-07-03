@@ -1,17 +1,25 @@
+Logic consists of both:
 
-# Learning Rules
+* **Rules - 40X** more concise using a spreadsheet-like paradigm, and
 
-Inside the larger process above, here is the best way to learn how to use rules:
+* **Python - control and extensibility,** using standard tools and techniques
 
-1. [Rule Summary](https://github.com/valhuber/LogicBank/wiki/Examples): there are a small number of rules, since their power lies in chaining (duplicated below)
+&nbsp;
 
-2. Be aware of the [rule patterns](https://github.com/valhuber/LogicBank/wiki/Rule-Summary#rule-patterns), duplicated below
+## Basic Idea - Rules Are Spreadsheet-Like Derivations
 
-3. Use the _case study_ approach to learn about using rules, by exploring the examples in the report, below.
+Rules are spreadsheet-like expressions for multi-table derivations and constraints.  For example (not actual syntax):
 
-4. Be aware of [Rule Extensibility](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility).
+    The Customer Balance is the sum of the unshipped Order AmountTotals
 
-&nbsp;&nbsp;
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/like-a-spreadsheet.png?raw=true"></figure>
+
+The list of rules is short, easily learned in an hour.  To see the rules, [click here.](#rules-summary)
+
+Their power lies in _chaining_, as shown by the examples in the link.  Just like in a spreadsheet.
+
+&nbsp;&nbsp;&nbsp;
+
 
 ## Rules Summary
 The table shows excerpts only; see the ```nw``` sample for full syntax.
@@ -28,9 +36,46 @@ The table shows excerpts only; see the ```nw``` sample for full syntax.
 | Allocation      | Allocate a provider amount to recipients | allocate a payment to outstanding orders | See [Allocation](Sample-Project__Allocation) for an example |
 | Copy Row      | Create child row by copying parent | audit Employee Salary changes to EmployeeAudit | See [Rule Extensibility](Rule-Extensibility) |
 
+&nbsp;
+
+## Extensibility - Python Events
+
+TBD, using your IDE
+
+### Standard Python - Declare, Extend, Manage
+Logic Bank is fully integrated with Python:
+
+* **Declare** rules in Python as shown above (more details in How, below)
+* **Extend** rules with Python (rule on line 51 invokes the Python function on line 32)
+* **Manage** logic using your existing IDE (PyCharm, VSCode etc for code completion, debugging, etc),
+and source control tools and procedures
+
+&nbsp;
+
+## Learning Rules
+
+Inside the larger process above, here is the best way to learn how to use rules:
+
+1. [Rule Summary](https://github.com/valhuber/LogicBank/wiki/Examples): there are a small number of rules, since their power lies in chaining (duplicated below)
+
+2. Be aware of the [rule patterns](https://github.com/valhuber/LogicBank/wiki/Rule-Summary#rule-patterns), duplicated below
+
+3. Use the _case study_ approach to learn about using rules, by exploring the examples in the report, below.
+
+4. Be aware of [Rule Extensibility](https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility).
+
 &nbsp;&nbsp;
 
-## Rule Patterns
+
+### Case Study
+
+The best way to learn the rules is by a Case Study approach:
+
+1. See the [Behave Logic Report](../Behave-Logic-Report)
+
+2. On each, open the disclosure box: "Tests - and their logic - are transparent.. click to see Logic"
+
+### Rule Patterns
 
 | Pattern | Notes | Example
 | :------------- | :-----| :---- |
@@ -43,7 +88,7 @@ The table shows excerpts only; see the ```nw``` sample for full syntax.
 &nbsp;&nbsp;
 
 
-## Discovery by Code Completion
+### Discovery by Code Completion
 
 Your IDE code completion services can aid in discovering logic services.  There are 2 key elements:
 
@@ -55,13 +100,3 @@ Your IDE code completion services can aid in discovering logic services.  There 
 You can find examples of these services in the sample `ApiLogicProject`.
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/vscode/venv.png?raw=true"></figure>
-
-&nbsp;&nbsp;
-
-# Behave Logic Report
-
-The best way to learn the rules is by a Case Study approach:
-
-1. See the [Behave Logic Report](../Behave-Logic-Report)
-
-2. On each, open the disclosure box: "Tests - and their logic - are transparent.. click to see Logic"

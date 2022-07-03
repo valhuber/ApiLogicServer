@@ -29,13 +29,15 @@ nav:
     - "JSON:API": API.md
     - "API Customization": API-Customize.md
   - 3. Logic:
-    - "Logic is Rules + Python": "Logic-Rules-plus-Python.md"
-    - "Logic Tutorial (with TDD)": "Logic-Tutorial.md"
-    - "Learning Rules": Logic-Learning.md
+    - "Why Rules": Logic-Why.md
+    - "Rules, Extensible With Python": Logic.md
+    - "Conventional - Code Explosion": "Logic-Conventional.md"
+    - "Logic Operation": "Logic-Operation.md"
+    - "TDD-based Approach": "Logic-Tutorial.md"
   - Testing:
     - "Testing With Behave": Behave.md
     - "Behave Logic Report": Behave-Logic-Report.md
-  - API Logic Projects:
+  - Managing API Logic Projects:
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md
     - "Virtual Environment": Project-Env.md
@@ -52,7 +54,8 @@ nav:
     - Working-with-Flask-AppBuilder.md
     - "API Logic Server Development": Internals.md
   - Troubleshooting.md
-  - Unfiled:
+  - Unused:
+    - "zz Logic = Rules + Python": "Logic-Rules-plus-Python.md"
     - "Old Quick Start": Quick-Start.md
     - _Footer.md
 markdown_extensions:

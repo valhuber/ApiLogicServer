@@ -129,7 +129,7 @@ While the automatically-created API is a great start, you may uncover a need for
 
 We now choose a scenario (e.g, `Bad Order`), and engage business users for a clear understanding of _check credit_.  This follows a ___familiar step-wise definition of terms:___
 
-| Question                    | Answer                               |
+| Analyst Question         | Business User Answer               |
 |:-------------------------|:-----------------------------------|
 | What do you mean by _Check Credit_?                      | The balance must be less than the credit limit
 | What is the _Balance_?  | The sum of the unshipped order amount totals
