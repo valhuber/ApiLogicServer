@@ -61,7 +61,7 @@ ApiLogicServer create      # create, or create-and-run; defaults provided
 
 Project creation is based on database schema introspection as shown below.  Click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
 After you've explored the tutorial (created from [this database](https://valhuber.github.io/ApiLogicServer/Sample-Database/)), try out our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/), and then try your own database.
 
