@@ -13,6 +13,7 @@ Pre-reqs:
 The steps below explain how to load, run, verify and debug your projects.
 The _load_ step differs depending on whether you are using Docker.
 
+## Execute under VSCode / Docker
 
 __1. Load your docker project__
 
@@ -65,7 +66,7 @@ When you run, you may encounter the message below; if so:
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
 
 
-__ApiLogicServer Container upgrades__
+## ApiLogicServer Container upgrades
 
 If you update your ApiLogicServer container to a new version, your existing projects may appear to be damaged.  You can fix them easily:
 

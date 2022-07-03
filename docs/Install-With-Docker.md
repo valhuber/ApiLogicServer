@@ -13,5 +13,8 @@ You are now able to issue commands like `ApiLogicServer create` as described in 
 
 The `api_logic_server` image supports startup arguments so you can control the `api_logic_server` container, by running a startup script or by supplying environment variables.  You might, for example, have automated test procedures that load projects from `GitHub` and run tests.
 
+
+> Already installed?  Upgrade to the latest (5.03.06): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Docker/)).
+
 For more information, see [Working With Docker](../Working-With-Docker).
 

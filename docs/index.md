@@ -10,9 +10,12 @@ title:
 
 ## Key Features
 
-1. [**Admin Web App**](Admin-Tour) - multi-page, multi-table, automatic joins
+1. [**Admin Web App**](Admin-Tour) [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
 2. [**API**](API) - endpoint for each table, with filtering, sorting, pagination, related data
-3. [**Logic**](Logic-Why#rules-executable-design) - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python
+3. [**Unique Backend Logic **](Logic-Why#rules-executable-design) - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python.
+
+    * 40X more concise than code
+    * Unique to API Logic Server &nbsp; :trophy:
 
 ---
 
@@ -50,7 +53,7 @@ ApiLogicServer create      # create, or create-and-run; defaults provided
 
 Project creation is based on database schema introspection as shown below.  Click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
-[![Using VS Code](../images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
 After you've explored the tutorial (created from [this database](../Sample-Database)), try out our [dockerized test databases](../Testing#docker-databases), and then try your own database.
 

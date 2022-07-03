@@ -22,13 +22,13 @@ nav:
     - "Tutorial": Tutorial.md
     - Sample-Database.md
     - "Working With Docker": Working-With-Docker.md
-  - 1. Admin App:
+  - 1. Admin Web App:
     - "Admin App Features": "Admin-Tour.md"
     - Admin-Customization.md
   - 2. API:
     - "JSON:API": API.md
     - "API Customization": API-Customize.md
-  - 3. Logic:
+  - 3. Unique Backend Logic:
     - "Why Rules": Logic-Why.md
     - "Rules; 40X, Extensible": Logic.md
     - "Logic Operation": "Logic-Operation.md"

@@ -10,7 +10,7 @@ The video below illustrates using this stack to create, execute and customize th
 
 For a local install, these exact same elements are made available in your `venv` after your `pip install ApiLogicServer.`
 
-[![Using VS Code](../images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/5nYVNJTfWbs "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/5nYVNJTfWbs "Using VS Code with the ApiLogicServer container")
 
 The sections below further describe details of this process.
 
