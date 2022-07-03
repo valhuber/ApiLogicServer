@@ -6,13 +6,13 @@ title:
 [![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true"></figure>
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true)](https://valhuber.github.io/ApiLogicServer/ "Using VS Code with the ApiLogicServer container")
 
 ## Key Features
 
-1. Admin Web App - multi-page, multi-table, automatic joins
-2. Logic - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python
-3. Your IDE - Customize and debug using your existing IDE
+1. [**Admin Web App**](Admin-Tour) - multi-page, multi-table, automatic joins
+2. [**API**](API) - endpoint for each table, with filtering, sorting, pagination, related data
+3. [**Logic**](Logic-Why#rules-executable-design) - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python
 
 ---
 

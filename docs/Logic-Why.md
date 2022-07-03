@@ -40,6 +40,54 @@ And your code is the "how".
 Declarative logic addresses this by automating the _why_ with spreadsheet-like rules that are 40x more concise than code.  The 5 rules below (lines 64-79) express the same logic as 200 lines of code [**(see them here)**](https://github.com/valhuber/LogicBank/wiki/by-code).  That's because rules are all about "what"
 -- spreadsheet-like expressions that automate the tedious "how":
 
+<details>
+
+  <summary>See the code here</summary>
+```python
+"""
+Logic Design ("Cocktail Napkin Design")
+    Customer.Balance <= CreditLimit
+    Customer.Balance = Sum(Order.AmountTotal where unshipped)
+    Order.AmountTotal = Sum(OrderDetail.Amount)
+    OrderDetail.Amount = Quantity * UnitPrice
+    OrderDetail.UnitPrice = copy from Product
+"""
+
+Rule.constraint(validate=models.Customer,       # logic design translates directly into rules
+    as_condition=lambda row: row.Balance <= row.CreditLimit,
+    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+
+Rule.sum(derive=models.Customer.Balance,        # adjust iff AmountTotal or ShippedDate or CustomerID changes
+    as_sum_of=models.Order.AmountTotal,
+    where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
+
+Rule.sum(derive=models.Order.AmountTotal,       # adjust iff Amount or OrderID changes
+    as_sum_of=models.OrderDetail.Amount)
+
+Rule.formula(derive=models.OrderDetail.Amount,  # compute price * qty
+    as_expression=lambda row: row.UnitPrice * row.Quantity)
+
+Rule.copy(derive=models.OrderDetail.UnitPrice,  # get Product Price (e,g., on insert, or ProductId change)
+    from_parent=models.Product.UnitPrice)
+
+"""
+    Demonstrate that logic == Rules + Python (for extensibility)
+"""
+def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: LogicRow):
+    """ use events for sending email, messages, etc. """
+    if logic_row.ins_upd_dlt == "ins":  # logic engine fills parents for insert
+        sales_rep = row.Employee
+        if sales_rep is None:
+            logic_row.log("no salesrep for this order")
+        elif sales_rep.Manager is None:
+            logic_row.log("no manager for this order's salesrep")
+        else:
+            logic_row.log(f'Hi, {sales_rep.Manager.FirstName} - '
+                            f'Congratulate {sales_rep.FirstName} on their new order')
+
+Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
+```
+</details>
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
 
 Logic Bank was designed to make the cocktail napkin spec _executable_.

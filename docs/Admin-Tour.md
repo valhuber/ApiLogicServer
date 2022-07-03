@@ -2,6 +2,7 @@ This page summarizes the Admin App created by ApiLogicServer.
 * If you have installed ApiLogicServer, this is the sample app described in the [Tutorial](https://github.com/valhuber/ApiLogicServer/blob/main/README.md)
 * You can also view the app - it is deployed [here on PythonAnywhere](http://apilogicserver.pythonanywhere.com/admin-app/index.html).
 
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png"></figure>
 
 # Use Cases
 The system automatically creates multi-page, multi-table applications as you'll see below.  Typical usage is described here.

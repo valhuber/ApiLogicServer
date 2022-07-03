@@ -23,7 +23,7 @@ nav:
     - Sample-Database.md
     - "Working With Docker": Working-With-Docker.md
   - 1. Admin App:
-    - "Admin Tour": "Admin-Tour.md"
+    - "Admin App Features": "Admin-Tour.md"
     - Admin-Customization.md
   - 2. API:
     - "JSON:API": API.md
