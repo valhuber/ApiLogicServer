@@ -17,7 +17,7 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 1. [**Admin App**](https://valhuber.github.io/ApiLogicServer/Admin-Tour/) [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
 
 
-2. [**API](https://valhuber.github.io/ApiLogicServer/API/),** with [Swagger](http://apilogicserver.pythonanywhere.com/api) - endpoint for each table, with filtering, pagination, related data
+2. [**API**](https://valhuber.github.io/ApiLogicServer/API/), with [Swagger](http://apilogicserver.pythonanywhere.com/api) - endpoint for each table, with filtering, pagination, related data
 
 
 3. [**Business Logic**](https://valhuber.github.io/ApiLogicServer/Logic-Why/#rules-executable-design), using rules for multi-table derivations and constraints, extensible with Python
