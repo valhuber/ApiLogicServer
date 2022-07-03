@@ -19,7 +19,7 @@ You can provide options for `vscode` or `charm`:
 
 For reference, projects are created with this structure:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/generated-project.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png?raw=true"></figure>
 
 To create using the source code (e.g, from an IDE), using the ```venv``` created from above:
 
@@ -83,7 +83,7 @@ Run API Logic Server:
 
 Customize using your IDE:
   code ~/Desktop/test_project  # e.g., open VSCode on created project
-  Establish your Python environment - see https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution
+  Establish your Python environment - see ../Quick-Start#project-execution
 
 
 (venv) val@Vals-MacBook-Pro-16 ApiLogicServer % 
@@ -95,7 +95,7 @@ Customize using your IDE:
 
 The ApiLogicServer source code looks like this:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/apilogicserver-ide.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/apilogicserver-ide.png?raw=true"></figure>
 
 Execution begins at ```ApiLogicServer/api_logic_server_cli/cli.py```.  It gathers command line arguments, and proceeds to ```def api_logic_server(<cmdline-args):```, which operates as described in the sections below.
 
@@ -146,7 +146,7 @@ called to read the schema and create ```database/models.py```:
                 * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
                     * An important consideration is disambiguating multiple relationships between the same w tables
                         * See `nw-plus` relationships between `Department` and `Employee`.
-                        * [See here](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) for a database diagram.
+                        * [See here](../Sample-Database) for a database diagram.
                     * It transforms database names to resource names - capitalized, singular
                         * These (not table names) are used to create api and ui model
 
@@ -181,7 +181,7 @@ If you elect this option, you should see the following in the console log:
 #### Extensible generate from models
 The ```models.py``` file provides `resource_list` metadata used to create APIs, a basic web app, and a react-admin app (steps 31, 3b and 3c), as shown below:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/apilogicserver-ide-create-from-model.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/apilogicserver-ide-create-from-model.png?raw=true"></figure>
 
 ### 3b. Create ```api/expose_api_models.py``` (import / iterate models) 
 

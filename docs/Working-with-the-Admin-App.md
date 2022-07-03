@@ -26,7 +26,7 @@ That said, it's common that you will need custom apps for complex functions, cus
 * Create these in your favorite technology (React, Angular, etc)
 
 
-* Base them on the automatically created API, which handles not only data retrieval and update, but also enforces your [business logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python), which dramatically reduces client app dev effort by factoring out business logic to the shared API.
+* Base them on the automatically created API, which handles not only data retrieval and update, but also enforces your [business logic](../Logic:-Rules-plus-Python), which dramatically reduces client app dev effort by factoring out business logic to the shared API.
 
 # Features
 Key features are described below.
@@ -38,7 +38,7 @@ From your database, the system creates a page for each table, with a menu on the
 2. Pagination
 3. Form transitions to "zoom" into the selected row (click the icon, or just the row)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/multi-page.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/multi-page.png?raw=true"></figure>
 
 
 ### Multi-table - 1:n, n:1 (automatic _predictive joins_)
@@ -53,7 +53,7 @@ The display page below is a multi-table page
 2. (n:1) Many to One - the data model defines a many-to-one foreign key relationship from an order to employee (salesrep); the system joins in the most likely field and displays it in the grid
 
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/multi-table.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/multi-table.png?raw=true"></figure>
 
 
 ### Lookup
@@ -85,7 +85,7 @@ This file is created initially by the system, so it's not necessary to learn the
 
   > Press Browser refresh to reload the application after you make changes; it is not necessary to restart the server
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/admin-yaml.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-yaml.png?raw=true"></figure>
 
 #### Models and admin correlation
 

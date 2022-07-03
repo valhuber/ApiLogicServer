@@ -2,7 +2,7 @@
 
 **Automated App Creation** (Working Software Now) enables **Collaboration** to uncover **Automated Rules.**
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/introduction.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/introduction.png?raw=true"></figure>
 
 This page explains how [API Logic Server](https://github.com/valhuber/ApiLogicServer/blob/main/README.md) Automation, coupled with an [Agile (TDD - Test Driven Development) Process](http://dannorth.net/introducing-bdd/), can dramatically improve Time to Market and reduce Requirements Risk:
   
@@ -24,11 +24,11 @@ This page explains how [API Logic Server](https://github.com/valhuber/ApiLogicSe
 
 # Resources
 
-After you've reviewed the [logic background](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python), use this page to learn how to use logic.  Key resources:
+After you've reviewed the [logic background](../Logic:-Rules-plus-Python), use this page to learn how to use logic.  Key resources:
 1. [Rule Summary](https://github.com/valhuber/LogicBank/wiki/Examples)
-2. [Sample Database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)
+2. [Sample Database](../Sample-Database)
 3. [Behave](https://behave.readthedocs.io/en/stable/tutorial.html) is a framework for defining and executing tests.  It is based on [TDD (Test Driven Development)](http://dannorth.net/introducing-bdd/), an Agile approach for defining system requirements as executable tests.
-  * Here are some [details for using Behave with API Logic Server](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
+  * Here are some [details for using Behave with API Logic Server](../Working-With-Behave).
 
 &nbsp;&nbsp;
 
@@ -36,7 +36,7 @@ After you've reviewed the [logic background](https://github.com/valhuber/ApiLogi
 
 The diagram below provides more detail on the development process, further explained in the sections below.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/TDD-process.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/TDD-process.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -69,7 +69,7 @@ The app shown below [(more detail here)](https://github.com/valhuber/ApiLogicSer
 
 You can [customize it](https://github.com/valhuber/ApiLogicServer#admin-app-customization) by editing a simple `yaml`file (e.g, field captions, ordering etc.)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -115,7 +115,7 @@ Behave is designed for business user collaboration by making Features and Scenar
 
 For example, see the `place_order.feature`, as tested by the `Bad Order: Custom Service` Scenario, below.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/scenario.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/scenario.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -141,7 +141,7 @@ We capture in text as shown below.
 
 Note this "cocktail napkin spec" is short, yet clear.  That's because instead of diving unto unnecessary technical detail of _how_ (such as pseudocode), it focuses on ___what___.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/logic-spec.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/logic-spec.png?raw=true"></figure>
   
 
 &nbsp;&nbsp;
@@ -167,7 +167,7 @@ So, [instead of several hundred lines of code](https://github.com/valhuber/Logic
 
 Rules are entered in Python, with code completion, as shown below.  Observe how they exactly correspond to our design, and are executable by the API Logic Server rules engine:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/declare-logic.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/declare-logic.png?raw=true"></figure>
 
 Unlike manual code, logic is ***declarative:***
 * **automatically reused** - re-use is usually achieved by careful design; rules make re-use automatic:
@@ -191,7 +191,7 @@ Unlike manual code, logic is ***declarative:***
 
 Implement the actual scenarios (tests) in Python (`place_order.py`), using annotations (`@when`) to match scenarios and implementations.  In this project, the implementation is basically calling APIs to get old data, run transactions, and check results.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/TDD-ide.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/TDD-ide.png?raw=true"></figure>
 
 Execute the tests using the pre-supplied Launch Configurations:
 
@@ -200,7 +200,7 @@ Execute the tests using the pre-supplied Launch Configurations:
 
 The rules fire as transactions are run, and produce Logic Log files later used in Report Behave Logic (described below): 
 1. `test/api_logic_server_behave/behave.log` - summarizes test success / failure
-2. `api_logic_server_behave/scenario_logic_logs/Bad_Order_Custom_Service.log` - [Logic Log output](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging).
+2. `api_logic_server_behave/scenario_logic_logs/Bad_Order_Custom_Service.log` - [Logic Log output](../Logic:-Rules-plus-Python#debugging).
    * The code on line 161 signals the name of Logic Log
    * Note the Logic Log actually consists of 2 sections:
       * The first shows each rule firing, including complete old/new row values, with indentation for `multi-table chaining`
@@ -248,7 +248,7 @@ We've seen these key points:
 
 Automation enables you to **deliver projects faster**; the Agile/Behave encourages collaboration to **reduce requirements risk**.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/introduction.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/introduction.png?raw=true"></figure>
   
 
 &nbsp;&nbsp;
@@ -260,9 +260,9 @@ In addition to Behave, you can use manual approaches for testing:
 <details>
 <summary>Click to see how to run Basic tests</summary>
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/run-server-test.png" title="run instructions"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/run-server-test.png" title="run instructions"></figure>
 
-After you've [created the sample project](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start), you can execute pre-defined tests as shown above:
+After you've [created the sample project](../Quick-Start), you can execute pre-defined tests as shown above:
 
 1. Start the Server (e.g., under VS Code, Launch Configuration *ApiLogicServer*)
 2. Open a terminal window, and `cd test/basic; python server_test.py go`

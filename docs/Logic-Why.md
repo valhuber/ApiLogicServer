@@ -40,7 +40,7 @@ And your code is the "how".
 Declarative logic addresses this by automating the _why_ with spreadsheet-like rules that are 40x more concise than code.  The 5 rules below (lines 64-79) express the same logic as 200 lines of code [**(see them here)**](https://github.com/valhuber/LogicBank/wiki/by-code).  That's because rules are all about "what"
 -- spreadsheet-like expressions that automate the tedious "how":
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
 
 Logic Bank was designed to make the cocktail napkin spec _executable_.
 

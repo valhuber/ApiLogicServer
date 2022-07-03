@@ -3,7 +3,7 @@
 
 Most of API Logic Server functionality derives from the data model classes created from your schema when you create your project.  Here is an example:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/model/relns-admin.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/relns-admin.png?raw=true"></figure>
 
 Observe that:
 
@@ -21,6 +21,6 @@ Observe that:
 
 Relationship names are also part of your API:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/model/relns-api.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/relns-api.png?raw=true"></figure>
 
 &nbsp;

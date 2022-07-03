@@ -14,6 +14,6 @@ Specify your database as `nw-` to use the standard Northwind:
 <figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/nw.png"></figure>
 
 It includes a few fields to illustrate rules.  For example, `Customer.Balance`.  
-It also includes the admin security tables for the basic web app, as described [here.](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-Flask-AppBuilder)
+It also includes the admin security tables for the basic web app, as described [here.](../Working-with-Flask-AppBuilder)
 
 The sample project also has some pre-loaded code to illustrate [customizations](https://github.com/valhuber/ApiLogicServer/wiki) for logic, APIs and the data model.

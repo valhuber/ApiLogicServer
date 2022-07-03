@@ -21,7 +21,7 @@ ApiLogicServer create      # accept default project name, db
 
 In either case, the `create` command builds an `ApiLogicProject` - a directory, shown here in VSCode:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/generated-project.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png?raw=true"></figure>
 
   > The procedures above will create the sample project, which we recommend to start with.  You will then want to create a project with your own database.  For that, you will require a [SQLAlchemy URI](https://docs.sqlalchemy.org/en/14/core/engines.html).  You can see some examples:
 

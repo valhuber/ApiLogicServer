@@ -24,7 +24,7 @@ As shown in the diagram, creation is always driven from `models.py.`  Models dif
    * to add foreign keys missing in the database - these are critical for multi-table apis and applications
    * to provide better naming
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/extended_builder/rebuild-from.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/extended_builder/rebuild-from.png?raw=true"></figure>
 
 You can rebuild your project, preserving customizations (including any additional files you have created).  You have 2 alternatives, depending on where you choose the _"source of truth"_ for your database:
 

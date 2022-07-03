@@ -1,4 +1,4 @@
-This page shows how to create the sample API Logic Server project.  These procedures presume that you have  [Installed](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#Install-Guide) API Logic Server.  Instructions are provided for command line, and for using IDEs such as VS Code and PyCharm.pip install -r requirements.txt   
+This page shows how to create the sample API Logic Server project.  These procedures presume that you have  [Installed](../Quick-Start#Install-Guide) API Logic Server.  Instructions are provided for command line, and for using IDEs such as VS Code and PyCharm.pip install -r requirements.txt   
 
 
 # Overview
@@ -10,7 +10,7 @@ The video below illustrates using this stack to create, execute and customize th
 
 For a local install, these exact same elements are made available in your `venv` after your `pip install ApiLogicServer.`
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/5nYVNJTfWbs "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](../images/creates-and-runs-video-vsc.png?raw=true?raw=true)](https://youtu.be/5nYVNJTfWbs "Using VS Code with the ApiLogicServer container")
 
 The sections below further describe details of this process.
 
@@ -43,7 +43,7 @@ You are now able to issue commands like `ApiLogicServer create` as described in 
 
 The `api_logic_server` image supports startup arguments so you can control the `api_logic_server` container, by running a startup script or by supplying environment variables.  You might, for example, have automated test procedures that load projects from `GitHub` and run tests.
 
-For more information, see [Working With Docker](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Docker).
+For more information, see [Working With Docker](../Working-With-Docker).
 
 &nbsp;
 
@@ -75,7 +75,7 @@ python -m venv --help    # creates a venv
 python -m pip --version  # install from PyPi
 ```
 
-  > Note: you may need to use `python3` instead of `python`.  You can customize this as described in the [Troubleshooting Guide](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#python-issues).
+  > Note: you may need to use `python3` instead of `python`.  You can customize this as described in the [Troubleshooting Guide](../Troubleshooting#python-issues).
 
 &nbsp;
 
@@ -91,7 +91,7 @@ If you are missing any, install them as described here.  Skip this step if your
 
   * Mac users can use the [standard installer](https://www.python.org/downloads/); follow the recommendations to install certificates and update your shell.
 
-    > Installing Python on the Mac can be... _dramatic._  Consult the [Troubleshooting Guide](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#python-issues).
+    > Installing Python on the Mac can be... _dramatic._  Consult the [Troubleshooting Guide](../Troubleshooting#python-issues).
 
   * Alternatively, many prefer [using homebrew](https://brew.sh/), as described [here](https://opensource.com/article/19/5/python-3-default-mac#what-to-do)
 
@@ -130,7 +130,7 @@ Install the [Microsoft ODBC driver](https://docs.microsoft.com/en-us/sql/connect
 pip install pyodbc
 ```
 
-Please see the examples on the [testing](https://github.com/valhuber/ApiLogicServer/wiki/Testing#northwind---sqlserver--docker) for important considerations in specifying SQLAlchemy URIs.
+Please see the examples on the [testing](../Testing#northwind---sqlserver--docker) for important considerations in specifying SQLAlchemy URIs.
 
 &nbsp;
 
@@ -167,7 +167,7 @@ ApiLogicServer create --project_name=Chinook \
 
 __2. Create and configure a web app__
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/python-anywhere.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/python-anywhere.png?raw=true"></figure>
 
 __3. Update the wsgi__
 And copy the contents of ```/home/ApiLogicServer/api_logic_server/python_anywhere_wsgi.py``` over the wsgi file created by pythonanywhere.
@@ -239,7 +239,7 @@ ApiLogicServer create      # accept default project name, db
 
 In either case, the `create` command builds an `ApiLogicProject` - a directory, shown here in VSCode:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/generated-project.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png?raw=true"></figure>
 
   > The procedures above will create the sample project, which we recommend to start with.  You will then want to create a project with your own database.  For that, you will require a [SQLAlchemy URI](https://docs.sqlalchemy.org/en/14/core/engines.html).  You can see some examples:
 
@@ -255,7 +255,7 @@ ApiLogicServer examples   # prints a list of url examples
 
 Select your desired configuration below, and see how to run, customize and debug your ApiLogicProject.
 
-  > Note: as of release 5.02.10, projects are created with a `venv_setup` directory which may be helpful in establishing and verifying your Python environment.  For more information, see the [Trouble Shooting Guide](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#ide-issues).
+  > Note: as of release 5.02.10, projects are created with a `venv_setup` directory which may be helpful in establishing and verifying your Python environment.  For more information, see the [Trouble Shooting Guide](../Troubleshooting#ide-issues).
 
 <details>
   <summary>Command Line</summary>
@@ -271,9 +271,9 @@ ApiLogicServer run        # in Docker Terminal, or with venv active
 ```
 
 __2. Open in your Browser__
-The server should start, and suggest the URL for your Browser.  That will open a page like this where you can explore your data using the automatically created [Admin app](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App), and explore the API with automatically generated Swagger:
+The server should start, and suggest the URL for your Browser.  That will open a page like this where you can explore your data using the automatically created [Admin app](../Working-with-the-Admin-App), and explore the API with automatically generated Swagger:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/admin-home.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-home.png?raw=true"></figure>
 </details>
 
 <details>
@@ -329,7 +329,7 @@ __5. Install Python Extension__
 
 You may be prompted for this (recent versions of VSCode might auto-detect language support):
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/4-install-python-extension.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/4-install-python-extension.png"></figure>
 
 
 __6. Run the server__
@@ -338,7 +338,7 @@ You are ready to run
 
 > You may get a message: _"The Python path in your debug configuration is invalid."_  Open View > Command Pallet, type “Python Select Interpreter” and Select your `venv`.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/run-debug.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/run-debug.png"></figure>
 
 </details>
 
@@ -397,7 +397,7 @@ Created projects are configured to support:
 So, when you open the created project, VS Code recognizes that Docker configuration, and provides an option to **Reopen** the project in a [remote container](https://code.visualstudio.com/docs/remote/containers).  Accept this option.
 
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/open-in-container.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/open-in-container.png"></figure>
 
 __3. Run ApiLogicServer__
 
@@ -411,7 +411,7 @@ When you run, you may encounter the message below; if so:
 1. Click Extensions (as shown)
 2. Ensure Python support is installed and enabled
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
 
 
 __ApiLogicServer Container upgrades__
@@ -449,7 +449,7 @@ __4. Create a new Virtual Environment using PyCharm defaults__
 
 PyCharm will ask you to configure a Python Interpreter.  Do so as shown below.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/PyCharm/PyCharm-create-venv.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/PyCharm/PyCharm-create-venv.png"></figure>
 
 
 __5. `pip` install__
@@ -480,7 +480,7 @@ Some versions of Pycharm may require that you update the Launch Configuration(s)
 __1. Configure Python Interpreter using Docker__
 See [these instructions for PyCharm](https://www.jetbrains.com/help/pycharm/using-docker-as-a-remote-interpreter.html); you should be able to configure a Python interpreter like this:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/docker-python.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/docker-python.png"></figure>
 
 __2. Run the pre-configured launch configuration__
 
@@ -492,7 +492,7 @@ It won't run, but does create a launch configuration...
 1. Specify the `Parameters`
 1. Specify the `Docker container settings`
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/run-parameters.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/run-parameters.png"></figure>
 
 </details>
 
@@ -507,14 +507,14 @@ You can also view the [Tutorial on git](https://github.com/valhuber/ApiLogicServ
 # Verify - run cURL, Swagger, Debugger
 Be sure to verify that Swagger can perform a `get`; VSCode will offer to run the Browser for you (you can also run [http://localhost:5656/](http://localhost:5656/)):
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/5-run-swagger.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/5-run-swagger.png"></figure>
 
 The sample database provides an excellent opportunity to study key elements of ApiLogicServer:
 * The customizable project is open in VSCode, editing `declare_logic.py`, which illustrates how [5 rules can replace 200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code)
 * Create logic using IDE services such as code completion
 * Use IDE services to breakpoints and inspect variables and the log as shown below:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/logic-debug.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/logic-debug.png"></figure>
 
 # Logic Debugging (VS Code)
 
@@ -522,14 +522,14 @@ To illustrate:
 1. Set the breakpoints above
 2. And then use Swagger (see below) to trigger a transaction that causes the breakpoint above to be hit.  This particular endpoint is a [custom service](#customizing-apilogicprojects)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/add-order.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/add-order.png"></figure>
 
 3. Inspect your variables, review the log as shown above
     * Indentation illustrates logic chaining, but this is obscured with _word wrap_; you will probably want to use the **Debug Console**, with `"redirectOutput": true` in your **Launch Configuration:**
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
 
 &nbsp;
 
 # Trouble Shooting
-See [Trouble Shooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#docker).
+See [Trouble Shooting](../Troubleshooting#docker).

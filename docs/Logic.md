@@ -12,7 +12,7 @@ Rules are spreadsheet-like expressions for multi-table derivations and constrain
 
     The Customer Balance is the sum of the unshipped Order AmountTotals
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/like-a-spreadsheet.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/like-a-spreadsheet.png?raw=true"></figure>
 
 The list of rules is short, easily learned in an hour.  To see the rules, [click here.](#rules-summary)
 
@@ -79,11 +79,11 @@ The best way to learn the rules is by a Case Study approach:
 
 | Pattern | Notes | Example
 | :------------- | :-----| :---- |
-| **Chain Up** | parent sums and counts mean that child row changes can ***adjust*** parents | [Derive Balance](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial#scenario-bad-order-custom-service)
-| **Chain Down** | child copy and parent references mean that parent row changes can ***cascade*** to children | [Ship Order](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial#scenario-set-shipped---adjust-logic-reuse) 
-| **Constrain a Derived Result** | constraints may require derived values | [Balance < creditLimit](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial#scenario-bad-order-custom-service)
-| **Auditing** | Note the Copy Row rule | [Salary Audit](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial#scenario-audit-salary-change)
-| **old_row** | useful for state transition logic | [Meaningful Raise](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial#scenario-raise-must-be-meaningful)
+| **Chain Up** | parent sums and counts mean that child row changes can ***adjust*** parents | [Derive Balance](../Logic:-Tutorial#scenario-bad-order-custom-service)
+| **Chain Down** | child copy and parent references mean that parent row changes can ***cascade*** to children | [Ship Order](../Logic:-Tutorial#scenario-set-shipped---adjust-logic-reuse) 
+| **Constrain a Derived Result** | constraints may require derived values | [Balance < creditLimit](../Logic:-Tutorial#scenario-bad-order-custom-service)
+| **Auditing** | Note the Copy Row rule | [Salary Audit](../Logic:-Tutorial#scenario-audit-salary-change)
+| **old_row** | useful for state transition logic | [Meaningful Raise](../Logic:-Tutorial#scenario-raise-must-be-meaningful)
 
 &nbsp;&nbsp;
 
@@ -95,8 +95,8 @@ Your IDE code completion services can aid in discovering logic services.  There 
 1. Discover _rules_ by `Rule.`
 2. Discovery _logic services_ made available through `logic_row`
 
-  > If these aren't working, ensure your `venv` setup is correct - consult the [Trouble Shooting](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#code-completion-fails) Guide.
+  > If these aren't working, ensure your `venv` setup is correct - consult the [Trouble Shooting](../Troubleshooting#code-completion-fails) Guide.
 
 You can find examples of these services in the sample `ApiLogicProject`.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/vscode/venv.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/venv.png?raw=true"></figure>

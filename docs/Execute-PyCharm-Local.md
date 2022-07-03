@@ -19,7 +19,7 @@ __4. Create a new Virtual Environment using PyCharm defaults__
 
 PyCharm will ask you to configure a Python Interpreter.  Do so as shown below.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/PyCharm/PyCharm-create-venv.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/PyCharm/PyCharm-create-venv.png"></figure>
 
 
 __5. `pip` install__

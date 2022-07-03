@@ -38,7 +38,7 @@ Docker is a wonderful way to get known databases for your project, without datab
 
 If you are running API Logic Server in a container, and accessing dockerized databases, you will need to enable connectivity by uncommenting the indicated line in the diagram below:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/databases/docker-db-access.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/databases/docker-db-access.png"></figure>
 
 The diagram above, and the examples below, presume you have created a docker network called `dev-network`, as shown at the top of this page.
 
@@ -145,7 +145,7 @@ ApiLogicServer create --project_name=/localhost/sqlserver --db_url=mssql+pyodbc:
 
 You will probably also want to get [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15), and configure a connection like this (password: posey386!):
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/databases/sqlsvr-conn.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/databases/sqlsvr-conn.png"></figure>
 
 ### SqlServer SQLAlchemy URIs
 
@@ -196,7 +196,7 @@ Various IDEs provide tools for managing databases.
 
 Pycharm provides [database tools](https://www.jetbrains.com/help/pycharm/2021.3/database-tool-window.html), as shown below:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/PyCharm/database-tools.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/PyCharm/database-tools.png"></figure>
 
 &nbsp;
 
@@ -204,11 +204,11 @@ Pycharm provides [database tools](https://www.jetbrains.com/help/pycharm/2021.3/
 
 I use [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools).  To use it, you must first install drivers:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/SQLTools/SQLTools-drivers.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/SQLTools/SQLTools-drivers.png"></figure>
 
 Then, you can explore the sample:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/SQLTools/SQLTools-sample.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/SQLTools/SQLTools-sample.png"></figure>
 
 &nbsp;
 

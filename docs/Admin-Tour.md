@@ -29,7 +29,7 @@ That said, it's common that you will need custom apps for complex functions, cus
 * Create these in your favorite technology (React, Angular, etc)
 
 
-* Base them on the automatically created API, which handles not only data retrieval and update, but also enforces your [business logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python), which dramatically reduces client app dev effort by factoring out business logic to the shared API.
+* Base them on the automatically created API, which handles not only data retrieval and update, but also enforces your [business logic](../Logic:-Rules-plus-Python), which dramatically reduces client app dev effort by factoring out business logic to the shared API.
 
 # Architecture - React, based on created logic-enabled API
 The Admin App is created in your ApiLogicProject, and operates as follows:
@@ -38,9 +38,9 @@ The Admin App is created in your ApiLogicProject, and operates as follows:
 1. The applications are Single Page React applications executing in the Browser, acquiring data via the SAFRS JSON:API.  
 2. Updates are submitted to SQLAlchemy; LogicBank listens for `before_flush` events, and enforces the logic declared in your `declare_logic.py`.
 
-For more information on Architecture, [see Architecture](https://github.com/valhuber/ApiLogicServer/wiki/Architecture).
+For more information on Architecture, [see Architecture](../Architecture).
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/admin-arch.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-arch.png"></figure>
 
 
   > **Key Take-away:** instant admin apps, an api for custom apps, with enforcement of declarative logic.
@@ -61,7 +61,7 @@ Explore basic data browsing:
       * You can customize your model if these are absent in your database
 4. On the Customer page (shown below), click the first Placed Order row
    * Observe you can navigate through your database, based on the foreign key relationships
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/admin-pa.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-pa.png?raw=true"></figure>
 
 5. On the Order Page
    * Observe the Product information
@@ -70,7 +70,7 @@ Explore basic data browsing:
          * You can tune this (e.g. for different languages) using the `--favorites` argument when creating your project.
    * Click one of the `Product Id` values
       * Observe the modal dialog
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/admin-pa-order.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-pa-order.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -109,7 +109,7 @@ To explore Lookup support:
    * Internally, the system will obtain the `Product.Id` and update the `OrderDetail.ProductId`
 6. Click save
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/lookups.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/lookups.png?raw=true"></figure>
 
 
 #### Logic Enforcement
@@ -144,7 +144,7 @@ Repeat the process above, but note the `Customer.Balance` before and after.  Thi
     Rule.formula(derive=models.Product.UnitsInStock, calling=units_in_stock)
 
 ```
-Such logic is [automatically re-used](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#spreadsheet-like-automatic-reuse) over transactions, and is therefore [equivalent to several hundred lines of code.](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#what---declare-spreadsheet-like-rules---40x-more-concise)  So, these rules also govern:
+Such logic is [automatically re-used](../Logic:-Rules-plus-Python#spreadsheet-like-automatic-reuse) over transactions, and is therefore [equivalent to several hundred lines of code.](../Logic:-Rules-plus-Python#what---declare-spreadsheet-like-rules---40x-more-concise)  So, these rules also govern:
 * changing an `OrderDetail.ProductId` (as we did here)
 * changing an `OrderDetail.Quantity` 
 * adding `OrderDetail` rows
@@ -153,7 +153,7 @@ Such logic is [automatically re-used](https://github.com/valhuber/ApiLogicServer
 * changing `Order.ShippedDate`
 * deleting an `Order`
 
-One of the mechanisms to [debug logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#debugging) is the logic log; here is the log from changing the Product, above, illustrating that our change was a _multi-table_ transaction, altering 5 rows:
+One of the mechanisms to [debug logic](../Logic:-Rules-plus-Python#debugging) is the logic log; here is the log from changing the Product, above, illustrating that our change was a _multi-table_ transaction, altering 5 rows:
 
 ```log
 Logic Phase:		ROW LOGIC(session=0x1072b1d30) (sqlalchemy before_flush)			 - 2021-12-29 20:19:07,564 - logic_logger - INFO
@@ -180,7 +180,7 @@ The creation process does _not_ create hundreds of lines of JavaScript and HTML.
 
 Instead, it creates an _application __model__,_ represented as a yaml file.  So, you can customize it easily, without requiring extensive JavaScript/HTML background, or deciphering generated code.
 
-Please see [Working with the Admin App](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App).
+Please see [Working with the Admin App](../Working-with-the-Admin-App).
 
 
   > **Key Take-away:** instant admin app, with logic, easy to customize

@@ -6,14 +6,12 @@ title:
 [![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/hero-banner.png?raw=true"></figure>
-
----
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true"></figure>
 
 ## Key Features
 
-1. Instant Projects - use the command below for a running project within seconds
-2. Logic - unique rules-based backend logic
+1. Admin Web App - multi-page, multi-table, automatic joins
+2. Logic - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python
 3. Your IDE - Customize and debug using your existing IDE
 
 ---
@@ -34,7 +32,7 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 Your system is running - explore the data and api at [localhost:5656](http://localhost:5656),
 or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
 
-VSCode and PyCharm users can execute within their IDE with [these steps](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start).
+VSCode and PyCharm users can execute within their IDE with [these steps](../Quick-Start).
 
 In addition to Docker, you can install locally; if Python 3.7+ [is installed](#installation), it's typically:
 
@@ -52,9 +50,9 @@ ApiLogicServer create      # create, or create-and-run; defaults provided
 
 Project creation is based on database schema introspection as shown below.  Click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](../images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
-After you've explored the tutorial (created from [this database](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)), try out our [dockerized test databases](https://github.com/valhuber/ApiLogicServer/wiki/Testing#docker-databases), and then try your own database.
+After you've explored the tutorial (created from [this database](../Sample-Database)), try out our [dockerized test databases](../Testing#docker-databases), and then try your own database.
 
 > Already installed?  Upgrade to the latest (5.03.06): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
 
@@ -69,7 +67,7 @@ After you've explored the tutorial (created from [this database](https://github.
 | 3. [Transactional **Logic**](Logic-Rules-plus-Python)  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation <br> ... nearly half the system                       | [Logic Bank](Logic-Tutorial)     |
 | 4. [**Customizable Project**](Project-Structure)                   | Custom Data Model, Endpoints, Logic <br>Use Python and yourIDE                                                                                                            | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
 | 5. Model Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
-| 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial)                          |
+| 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](../Logic:-Tutorial)                          |
 
 The following tutorial is a good way to explore API Logic Server.
 
@@ -163,7 +161,7 @@ These technologies are automatically created when you use ApiLogicServer:
 
 04/24/2022 - 05.01.01: copy_children, with support for nesting (children and grandchildren, etc.)
 
-03/27/2022 - 05.00.06: Introducing [Behave test framework](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial), LogicBank bugfix
+03/27/2022 - 05.00.06: Introducing [Behave test framework](../Logic:-Tutorial), LogicBank bugfix
 
 02/18/2022 - 04.02.03: SqlServer fixes, rebuild creates '-created' versions for data model repair
 

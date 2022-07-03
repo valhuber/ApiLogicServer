@@ -18,6 +18,6 @@ Install the [Microsoft ODBC driver](https://docs.microsoft.com/en-us/sql/connect
 pip install pyodbc
 ```
 
-Please see the examples on the [testing](https://github.com/valhuber/ApiLogicServer/wiki/Testing#northwind---sqlserver--docker) for important considerations in specifying SQLAlchemy URIs.
+Please see the examples on the [testing](../Testing#northwind---sqlserver--docker) for important considerations in specifying SQLAlchemy URIs.
 
 &nbsp;

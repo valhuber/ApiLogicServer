@@ -14,7 +14,7 @@ python -m venv --help    # creates a venv
 python -m pip --version  # install from PyPi
 ```
 
-  > Note: you may need to use `python3` instead of `python`.  You can customize this as described in the [Troubleshooting Guide](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#python-issues).
+  > Note: you may need to use `python3` instead of `python`.  You can customize this as described in the [Troubleshooting Guide](../Troubleshooting#python-issues).
 
 &nbsp;
 
@@ -30,7 +30,7 @@ If you are missing any, install them as described here.  Skip this step if your
 
   * Mac users can use the [standard installer](https://www.python.org/downloads/); follow the recommendations to install certificates and update your shell.
 
-    > Installing Python on the Mac can be... _dramatic._  Consult the [Troubleshooting Guide](https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#python-issues).
+    > Installing Python on the Mac can be... _dramatic._  Consult the [Troubleshooting Guide](../Troubleshooting#python-issues).
 
   * Alternatively, many prefer [using homebrew](https://brew.sh/), as described [here](https://opensource.com/article/19/5/python-3-default-mac#what-to-do)
 
@@ -69,7 +69,7 @@ Install the [Microsoft ODBC driver](https://docs.microsoft.com/en-us/sql/connect
 pip install pyodbc
 ```
 
-Please see the examples on the [testing](https://github.com/valhuber/ApiLogicServer/wiki/Testing#northwind---sqlserver--docker) for important considerations in specifying SQLAlchemy URIs.
+Please see the examples on the [testing](../Testing#northwind---sqlserver--docker) for important considerations in specifying SQLAlchemy URIs.
 
 &nbsp;
 

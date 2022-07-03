@@ -21,7 +21,7 @@ ApiLogicServer create --project_name=Chinook \
 
 __2. Create and configure a web app__
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/python-anywhere.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/python-anywhere.png?raw=true"></figure>
 
 __3. Update the wsgi__
 And copy the contents of ```/home/ApiLogicServer/api_logic_server/python_anywhere_wsgi.py``` over the wsgi file created by pythonanywhere.

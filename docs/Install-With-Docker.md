@@ -13,5 +13,5 @@ You are now able to issue commands like `ApiLogicServer create` as described in 
 
 The `api_logic_server` image supports startup arguments so you can control the `api_logic_server` container, by running a startup script or by supplying environment variables.  You might, for example, have automated test procedures that load projects from `GitHub` and run tests.
 
-For more information, see [Working With Docker](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Docker).
+For more information, see [Working With Docker](../Working-With-Docker).
 

@@ -48,7 +48,7 @@ Created projects are configured to support:
 So, when you open the created project, VS Code recognizes that Docker configuration, and provides an option to **Reopen** the project in a [remote container](https://code.visualstudio.com/docs/remote/containers).  Accept this option.
 
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/open-in-container.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/open-in-container.png"></figure>
 
 __3. Run ApiLogicServer__
 
@@ -62,7 +62,7 @@ When you run, you may encounter the message below; if so:
 1. Click Extensions (as shown)
 2. Ensure Python support is installed and enabled
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
 
 
 __ApiLogicServer Container upgrades__

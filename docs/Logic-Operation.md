@@ -99,7 +99,7 @@ As shown on the [readme video](https://github.com/valhuber/ApiLogicServer/blob/m
 ##### VSCode debugging
 In VSCode, you must set `"redirectOutput": true` in your **Launch Configuration.**
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
 
 #### Extensibility
 

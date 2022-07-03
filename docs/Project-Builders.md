@@ -26,7 +26,7 @@ to designate a file that implements your builder. After the creation process, th
 
 Let's illustrate the use of extensible automation with this example.  Create the sample project as follows:
 
-1.  Acquire [this sql/server docker database](https://github.com/valhuber/ApiLogicServer/wiki/Testing#northwind---sqlserver--docker)
+1.  Acquire [this sql/server docker database](../Testing#northwind---sqlserver--docker)
 2.  Create the project
 
 ```
@@ -59,7 +59,7 @@ This particular example creates this [tvf file](https://github.com/valhuber/ApiL
 
 Updates `api/customize_api.py` to expose it, as shown below:
 
-![](https://github.com/valhuber/ApiLogicServer/wiki/images/extended_builder/activate.png?raw=true)
+![](../images/extended_builder/activate.png?raw=true)
 
 
 This example illustrates the extended builder approach; the resultant services runs as shown below.
@@ -68,7 +68,7 @@ This example illustrates the extended builder approach; the resultant services r
 
 It generates Swagger, with arguments:
 
-![](https://github.com/valhuber/ApiLogicServer/wiki/images/extended_builder/swagger.png?raw=true)
+![](../images/extended_builder/swagger.png?raw=true)
 
 You can run it with this cURL:
 

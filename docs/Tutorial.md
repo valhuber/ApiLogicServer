@@ -1,7 +1,7 @@
 
 # Sample Tutorial - API Logic Server
 
-After completing the `create` step, you can view the readme in the created ApiLogicProject.  It contains the sample tutorial, created from [this database.](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)  
+After completing the `create` step, you can view the readme in the created ApiLogicProject.  It contains the sample tutorial, created from [this database.](../Sample-Database)  
 
 In this tutorial, we will explore:
 
@@ -11,9 +11,9 @@ In this tutorial, we will explore:
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
 
-This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution) for more information.
+This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here](../Quick-Start#project-execution) for more information.
 
-[![Using VS Code](https://github.com/valhuber/ApiLogicServer/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](../images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
 The diagram above summarizes the create / run / customize process.  It's a video - click to view.
 
@@ -59,7 +59,7 @@ To run the Admin App, follow these steps:
    * Click the first __Product Id__ to see its detail information
 6. (Close the app (browser), but leave the server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -80,7 +80,7 @@ The creation process builds not only the API, but swagger so you can explore it.
    * Note: you can drag windows to arrange your viewing area
 3. (Leave the swagger and server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/swagger.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/swagger.png?raw=true"></figure>
 &nbsp;&nbsp;&nbsp;
 
   > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
@@ -154,9 +154,9 @@ API and UI automation are impressive answers to familiar challenges.  Logic auto
  
 The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for multi-table constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 
-> Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules; you can [visualize the process here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#logic-execution-add-order---watch-react-chain).
+> Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules; you can [visualize the process here](../Logic:-Rules-plus-Python#logic-execution-add-order---watch-react-chain).
 
-[Logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
+[Logic](../Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
 1. Open **Explorer > logic/declare_logic.py**:
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown
@@ -166,7 +166,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
-Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [described here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#how---usage-and-operation-overview).
+Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [described here](../Logic:-Rules-plus-Python#how---usage-and-operation-overview).
 
 > This rule architecture ensures that rules are always re-used across all client applications and integrations.  This avoids common "fat client" approaches that embed logic in user interface controllers, which leads to replication and inconsistency.
 
@@ -175,7 +175,7 @@ Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [
 
 ## Test
 
-You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).  This can be used as part of an overall agil approach as described in the [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial).
+You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](../Working-With-Behave).  This can be used as part of an overall agil approach as described in the [Logic Tutorial](../Logic:-Tutorial).
 
 TL;DR - features and test scripts are predefined in the sample; to run them (with the server running):
 
@@ -187,7 +187,7 @@ TL;DR - features and test scripts are predefined in the sample; to run them (wit
 
    > The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
 
-For more information, see [Working with Behave](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
+For more information, see [Working with Behave](../Working-With-Behave).
 
 &nbsp;&nbsp;&nbsp;
 
@@ -202,7 +202,7 @@ Let's recap what you've seen:
 
 ### Next Steps
 
-Explore the [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial).
+Explore the [Logic Tutorial](../Logic:-Tutorial).
 
 
 ### Docker cleanup

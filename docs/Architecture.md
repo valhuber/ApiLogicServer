@@ -21,7 +21,7 @@ and your Dev Tools (IDE etc) operate
 * The **database** (purple) can run as a separate Docker container, in your local host, or (for the demo) within the ApiLogicServer docker container
 
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/docker-arch-create-run.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/docker-arch-create-run.png"></figure>
 
 
 ### Pip Install - ApiLogicServer in local Python environment
@@ -44,20 +44,20 @@ We recommend, however, that you take a good look at Docker:
 | Component                                                                              | Provides                                                                                                              |
 |:---------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------|
 | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                      | Python-friendly ORM (analogous to Hiberate, JPA)                                                                      |
-| [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) | Multi-Table Derivation and Constraint Rules<br>Python Events (e.g., send mail, message)<br>Extensible with Python<br> |
+| [Logic Bank](../Logic:-Rules-plus-Python) | Multi-Table Derivation and Constraint Rules<br>Python Events (e.g., send mail, message)<br>Extensible with Python<br> |
 | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                        | JSON:API and swagger, based on SQLAlchemy                                                                             |
 | [SAFRS-React-Admin](https://github.com/thomaxxl/safrs-react-admin)                     | Executable React Admin UI, using SAFRS                                                                                |
 
 
 ### Project Structure
 When you have created your project, you will find the following project directory in `~/dev/servers` on your (grey) local host   (here opened in VS Code):
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/generated-project.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png"></figure>
 
 Your docker container (blue) files include Python, Python libraries, and API Logic Server.  The Python project above utilizes IDE `remote-container` support (visible at the lower left in the preceding diagram), which utilizes the docker container (not local host) version of Python.
 
 Your docker container looks like this:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/docker-files.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/docker-files.png"></figure>
 
 #### IDE Friendly
 
@@ -71,12 +71,12 @@ All project elements are files - no database or binary objects.  So, you can sto
 
 # Internals - How It Works
 
-The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below - for more information, [see here](https://github.com/valhuber/ApiLogicServer/wiki/Internals).
+The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below - for more information, [see here](../Internals).
 
 * Execution begins in `api_logic_server_run.py`.
 * Your customizations are done to the files noted in the callouts below.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/generated-project.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png"></figure>
 
 ### API Execution: `api_logic_server_run.py`
 
@@ -90,7 +90,7 @@ The ApiLogicServer CLI `create` (or `run`) command creates the project structure
 
 3. **API Setup:** It next invokes `api/expose_api_models`.  This calls safrs to create the end points and the swagger information, based on the created `database/models.py` (the models used by the SQLAlchemy ORM).   It finally calls `api/customize.py` where you can add your own services.  The sample includes a trivial Hello World, as well as `add_order`.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/logic-exec-arch.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/logic-exec-arch.png"></figure>
 
 ### Logic Execution
 SAFRS API listens for API calls, e.g., from the Admin App.  When updates are issued:
@@ -142,7 +142,7 @@ And, of course, the API means you are unblocked for creating custom UIs and inte
 
 As noted above, multi-table constraints and derivations can constitute nearly half the effort in transactional systems.
 
-Unlike most systems that address such logic with "your code goes here", ApiLogicServer provides _**declarative** spreadsheet-like rules,_ extensible with Python, as [described here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python).  Rules are 40X more concise than code.  
+Unlike most systems that address such logic with "your code goes here", ApiLogicServer provides _**declarative** spreadsheet-like rules,_ extensible with Python, as [described here](../Logic:-Rules-plus-Python).  Rules are 40X more concise than code.  
 
 Rule execution is via a _transaction logic_ engine, a complementary technology to traditional RETE engines.  The [transaction logic engine](https://github.com/valhuber/LogicBank/wiki/Rules-Engines) is specifically designed to optimize integrity and performance for transactional logic, which is not possible in RETE engines. See [here](https://github.com/valhuber/LogicBank/wiki/Logic-Walkthrough) for more information on their operation.
 
@@ -167,7 +167,7 @@ Logic represents the starkest different between procedural code and declarative 
 ApiLogicServer automation creates a running project nearly instantly, but it also is designed to help you adapt to business changes more rapidly:
 
 * [Rebuild](https://github.com/valhuber/ApiLogicServer/wiki#rebuilding) support to update existing projects from database or data model changes
-* Logic provides automatic [reordering and reoptimization](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#ordering-automatic-for-derivations-with-control-for-actions-and-constraints) as logic is altered
+* Logic provides automatic [reordering and reoptimization](../Logic:-Rules-plus-Python#ordering-automatic-for-derivations-with-control-for-actions-and-constraints) as logic is altered
 
 ### Technology Agility - an Application Virtual Machine
 
@@ -188,7 +188,7 @@ The most troublesome bugs are silent failures - no stacktrace, but the wrong ans
 Automation address this by designing out whole classes of error:
 
 * the UI and API just work
-* logic is [automatically re-used](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#spreadsheet-like-automatic-reuse) over all Use Cases
+* logic is [automatically re-used](../Logic:-Rules-plus-Python#spreadsheet-like-automatic-reuse) over all Use Cases
 
 #### Architectural Risk
 

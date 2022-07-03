@@ -21,7 +21,7 @@ Rules are spreadsheet-like expressions for multi-table derivations and constrain
 
     The Customer Balance is the sum of the unshipped Order AmountTotals
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/like-a-spreadsheet.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/like-a-spreadsheet.png?raw=true"></figure>
 
 The list of rules is short, easily learned in an hour.  To see the rules, [click here.](https://github.com/valhuber/LogicBank/wiki/Examples)
 
@@ -108,7 +108,7 @@ Logic Bank introduces rules that are 40X more concise than legacy code.
 The 5 rules below (lines 40-49) express the same logic as 200 lines of code [**(see them here)**](https://github.com/valhuber/LogicBank/wiki/by-code).  That's because rules are all about "what"
 -- spreadsheet-like expressions that automate the tedious "how":
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
 
 ### Standard Python - Declare, Extend, Manage
 Logic Bank is fully integrated with Python:
@@ -218,7 +218,7 @@ As shown on the [readme video](https://github.com/valhuber/ApiLogicServer/blob/m
 ##### VSCode debugging
 In VSCode, you must set `"redirectOutput": true` in your **Launch Configuration.**
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
 
 #### Extensibility
 
@@ -252,7 +252,7 @@ Business users relate best to actual working pages -
 _their_ interpretation of working software.
 The Admin App builds pages in moments.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 
 #### Iteration - Automatic Ordering

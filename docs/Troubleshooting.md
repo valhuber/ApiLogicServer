@@ -25,7 +25,7 @@ sql.h not found - your console log might include:
     src/pyodbc.h:56:10: fatal error: 'sql.h' file not found
 ```
 
-Resolve these as explained in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#sqlserver---install-pyodbc).
+Resolve these as explained in the [Quick Start](../Quick-Start#sqlserver---install-pyodbc).
 
 
 ## Unsupported Architecture - MacOS
@@ -53,7 +53,7 @@ export ARCHFLAGS="-arch x86_64"  # <=== enable this line
 Project Creation involves 2 steps that can cause errors, described in the following sub-sections.
 
 ## Database failed to open
-The `db_url` argument is a [SQLAlchemy database uri](https://docs.sqlalchemy.org/en/14/core/engines.html).  Please find several examples we use in our [testing](https://github.com/valhuber/ApiLogicServer/wiki/Testing).
+The `db_url` argument is a [SQLAlchemy database uri](https://docs.sqlalchemy.org/en/14/core/engines.html).  Please find several examples we use in our [testing](../Testing).
 
 ### Check Connectivity using SQL Tools
 A typical cause is lack of connectivity to the database.  Use your local database tools to verify connectivity from your machine to the database.
@@ -72,7 +72,7 @@ Watch for entries like this in the console log:
 
 ===> ERROR - Unable to introspect model classes
 .. Using db for meta (models not found)
-.. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting#manual-model-repair
+.. See ../Troubleshooting#manual-model-repair
 .. ..WARNING - no relationships detected - add them to your database or model
 .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design
 ```
@@ -104,7 +104,7 @@ ApiLogicServer rebuild-from-model\
 
 For more on rebuild, see [Rebuilding](https://github.com/valhuber/ApiLogicServer/wiki#rebuilding).
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/model/model-repair-rebuild.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/model-repair-rebuild.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -136,7 +136,7 @@ You may need to rebuild your container, as [described here](https://stackoverflo
 
 You may encounter unexpected port changes, such as using `localhost:5657` instead of the usual `localhost:5656`.  Resolve this as shown below:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/fix-vscode-ports.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/fix-vscode-ports.png?raw=true"></figure>
 
 # IDE Issues
 
@@ -144,7 +144,7 @@ You may encounter unexpected port changes, such as using `localhost:5657` instea
 
 Code completion depends on a properly installed `venv`.  The digram below shows how code completion exposes valuable services provided by `logic_row`, and how to verify your `venv` setting for VSCode:
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/vscode/venv.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/venv.png?raw=true"></figure>
 
 
 ## `venv` Setup
@@ -160,13 +160,13 @@ In some installations, PyCharm may fail when your `venv` is pre-created.  I have
 In most cases, VSCode discovers `venv` environments, whether created prior to launching VSCode, or created inside the newly created project.
 
 However, this process occasionally fails.  For example, if you create the project successfully, then delete and recreate it, VSCode may not discover your `venv`.  This is usually resolved by:
-1. Create the `venv` as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution)
+1. Create the `venv` as described in the [Quick Start](../Quick-Start#project-execution)
 2. Exit / restart VSCode
 3. Use __View > Command Palette > Python: Select Interpreter__, and select the entry `"venv”: venv`.  See the diagram below.
 
 It's a good idea to verify your `venv`, as described in the next section.
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/vscode/select-venv.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/select-venv.png?raw=true"></figure>
 
 ## Verify your Python environment
 
@@ -175,14 +175,14 @@ As of release 5.02.10, you can run `venv_setup/py.py sys-info`, either
 * In VSCode, select the file and use the Launch Configuration __Python: Current File__.
    * Note: this may properly update the Python `venv` information if it was not properly set
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/vscode/py-py.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/py-py.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
 # Database Issues
 
 ## Docker API Logic Server connecting to dockerized databases
-Even when you can access the database to create the project, your dockerized project may fail to connect.  This is often caused by not enabling your project for network access.  For more information, see [connectivity](https://github.com/valhuber/ApiLogicServer/wiki/Testing#connecting).
+Even when you can access the database to create the project, your dockerized project may fail to connect.  This is often caused by not enabling your project for network access.  For more information, see [connectivity](../Testing#connecting).
 
 
 ## MySQL
@@ -203,7 +203,7 @@ sql.h not found - your console log might include:
     src/pyodbc.h:56:10: fatal error: 'sql.h' file not found
 ```
 
-Resolve these as explained in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#sqlserver---install-pyodbc).
+Resolve these as explained in the [Quick Start](../Quick-Start#sqlserver---install-pyodbc).
 
 &nbsp;&nbsp;
 
