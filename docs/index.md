@@ -10,6 +10,14 @@ title:
 
 ---
 
+## Key Features
+
+1. Instant Projects - use the command below for a running project within seconds
+2. Logic - unique rules-based backend logic
+3. Your IDE - Customize and debug using your existing IDE
+
+---
+
 ## Here's How: Single Command Project Creation
 
 To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
