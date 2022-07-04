@@ -680,7 +680,7 @@ class AdminCreator(object):
         else:
             print(f'{msg} copy safrs-react-admin: {from_proto_dir} -> {to_project_dir}')
             if not os.path.isdir(from_proto_dir):
-                print(f'\n==> Error - safrs-react-admin... did you complete setup: https://github.com/valhuber/ApiLogicServer/wiki/Internals')
+                print(f'\n==> Error - safrs-react-admin... did you complete setup: https://valhuber.github.io/ApiLogicServer/Internals/')
                 print(".. Setup required.  Really.")
                 exit(1)
             shutil.copytree(from_proto_dir, to_project_dir)

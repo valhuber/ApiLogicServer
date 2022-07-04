@@ -174,14 +174,3 @@ Logic Phase:		COMMIT(session=0x1072b1d30)   										 - 2021-12-29 20:19:07,572
 ```
 
 Note: your log is truncated to make it easy to view on a console, as explained in the link above.
-
-# Customization: edit `ui/admin/admin.yaml`
-
-The creation process does _not_ create hundreds of lines of JavaScript and HTML.  
-
-Instead, it creates an _application __model__,_ represented as a yaml file.  So, you can customize it easily, without requiring extensive JavaScript/HTML background, or deciphering generated code.
-
-Please see [Working with the Admin App](../Working-with-the-Admin-App).
-
-
-  > **Key Take-away:** instant admin app, with logic, easy to customize

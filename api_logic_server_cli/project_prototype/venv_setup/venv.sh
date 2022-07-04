@@ -6,7 +6,7 @@ if [ $# -eq 0 ]
         echo "Installs virtual environment (as venv)"
         echo " "
         echo " IMPORTANT - Mac only, not required for docker-based projects"
-        echo " .. Windows: https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start"
+        echo " .. Windows: https://valhuber.github.io/ApiLogicServer/Project-Env/"
         echo " "
         echo "Usage:"
         echo "  cd ApiLogicProject     # your project directory"

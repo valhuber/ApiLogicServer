@@ -73,6 +73,7 @@ development, available in swagger, as shown below.  JSON:APIs are interesting be
 are client configurable to **reduce network traffic** and **minimize organizational dependencies.**
 
 The creation process builds not only the API, but swagger so you can explore it.  The Admin App Home page provides a link to the swagger, but it doesn't work in VS Code's simple browser.  So, we'll launch a new Simple Browser, like this:
+
 1. Click __View > Command__ to open the Command Palette
    * Enter command: `Simple Browser: Show`
    * Specify the URL: `http://localhost:5656/api`
@@ -157,6 +158,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules; you can [visualize the process here](../Logic:-Rules-plus-Python#logic-execution-add-order---watch-react-chain).
 
 [Logic](../Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
+
 1. Open **Explorer > logic/declare_logic.py**:
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown

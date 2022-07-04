@@ -2,7 +2,7 @@ This folder is to simplify recreating the nw project on PythonAnywhere:
 
 1. Rebuild the dev/venv folder as necessary, and create the project:
 
-        https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#pythonanywhere
+        https://valhuber.github.io/ApiLogicServer/Install-PythonAnywhere/
 
         cd dev
         rm -r venv

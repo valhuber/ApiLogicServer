@@ -34,10 +34,6 @@ logic_logger.setLevel(logging.INFO)
 logger.setLevel(logging.WARNING)  # WARNING to reduce output, INFO for more
 logger.info(f'ui/basic_web_app/run.py - project_dir: {project_dir}')
 
-if auto_log_narrow and config.SQLALCHEMY_DATABASE_URI.endswith("db.sqlite"):
-    logger.warning("\nLog width reduced for readability - "
-                   "see https://github.com/valhuber/ApiLogicServer/wiki/Tutorial#word-wrap-on-the-log\n")
-
 # args for help
 import sys
 if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):

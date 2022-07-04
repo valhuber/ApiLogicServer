@@ -18,8 +18,8 @@ def declare_logic():
     This logic pre-created for default database, nw.sqlite.
         You would normally declare your *own* rules.
         For details on these rules, see
-            https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python
-            https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial
+            https://valhuber.github.io/ApiLogicServer/Logic/
+            https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/
 
     This logic is *activated* in api_logic_server_run.py:
         LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)

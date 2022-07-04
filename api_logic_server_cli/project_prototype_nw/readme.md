@@ -1,6 +1,6 @@
 # Sample Tutorial - API Logic Server
 
-You've already completed the `Create` step below, and are now viewing the readme in the created ApiLogicProject - the sample tutorial, created from [this database.](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database)  
+You've already completed the `Create` step below, and are now viewing the readme in the created ApiLogicProject - the sample tutorial, created from [this database.](https://valhuber.github.io/ApiLogicServer/Sample-Database/)  
 
 In this tutorial, we will explore:
 
@@ -22,7 +22,7 @@ You can watch the tutorial in [this video.](https://youtu.be/-C5O453Q-Mc)
 
 ## Establish your Python environment
 Install your projects' virtual environment
-as described in the [Quick Start](https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start). See also the `venv_setup` directory in your API Logic Project.
+as described in the [Quick Start](https://valhuber.github.io/ApiLogicServer/Project-Env/). See also the `venv_setup` directory in your API Logic Project.
 
 
 &nbsp;&nbsp;&nbsp;
@@ -161,9 +161,10 @@ We've all seen excellent technology that can create great User Interfaces. But f
  
 The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for multi-table constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 
-> Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules; you can [visualize the process here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#logic-execution-add-order---watch-react-chain).
+> Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules;
+> you can [visualize the process here](https://valhuber.github.io/ApiLogicServer/Logic-Operation/#logic-execution-add-order-watch-react-chain).
 
-[Logic](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
+[Logic](https://valhuber.github.io/ApiLogicServer/Logic/) consists of rules **and** conventional Python code.  Explore it like this:
 1. Open **Explorer > logic/declare_logic.py**:
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown
@@ -173,7 +174,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
 
-Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [described here](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python#how---usage-and-operation-overview).
+Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [described here](https://valhuber.github.io/ApiLogicServer/Logic-Operation/).
 
 > This rule architecture ensures that rules are always re-used across all client applications and integrations.  This avoids common "fat client" approaches that embed logic in user interface controllers, which leads to replication and inconsistency.
 
@@ -181,7 +182,8 @@ Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [
 
 ## Test
 
-You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).  This can be used as part of an overall agil approach as described in the [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial).
+You can test using standard api and ui test tools.  We recommend exploring the [Behave framework](https://valhuber.github.io/ApiLogicServer/Behave/).  
+This can be used as part of an overall agile approach as described in the [Logic Tutorial](https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/).
 
 TL;DR - features and test scripts are predefined in the sample; to run them (with the server running):
 
@@ -193,7 +195,7 @@ TL;DR - features and test scripts are predefined in the sample; to run them (wit
 
    > The sample Scenarios were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   
 
-For more information, see [Working with Behave](https://github.com/valhuber/ApiLogicServer/wiki/Working-With-Behave).
+For more information, see [Working with Behave](https://valhuber.github.io/ApiLogicServer/Behave/).
 
 &nbsp;&nbsp;&nbsp;
 
@@ -210,7 +212,7 @@ Let's recap what you've seen:
 
 ### Next Steps
 
-Explore the [Logic Tutorial](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Tutorial).
+Explore the [Logic Tutorial](https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/).
 
 ### Docker cleanup
 VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-api_logic_server...`.
@@ -244,7 +246,7 @@ swagger/OpenAPI and JSON:API compliant API implementation.
 
 ### LogicBank
 
-[Transaction Logic for SQLAlchemy Object Models](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)
+[Transaction Logic for SQLAlchemy Object Models](https://valhuber.github.io/ApiLogicServer/Logic-Why/)
 
 Use Logic Bank (nothing to do with banking!) to govern SQLAlchemy update transaction logic - 
 multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
@@ -300,8 +302,8 @@ into the new project, without line-by-line merges.
 | Feature                                                               | Providing  | Why it Matters                                          | Learn More                                                                              |
 |:----------------------------------------------------------------------|:--------------|:--------------------------------------------------------|:----------------------------------------------------------------------------------------|
 | 1. [JSON:**API** and Swagger](#jsonapi---swagger)                     | Endpoint for each table, with... <br>Filtering, pagination, related data | Unblock Client App Dev                                  | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                         |
-| 2. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Business Agility                                        | [Logic Bank](https://github.com/valhuber/ApiLogicServer/wiki/Logic:-Rules-plus-Python)  |                                                         |
-| 3. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin              | [Admin App](https://github.com/valhuber/ApiLogicServer/wiki/Working-with-the-Admin-App) |
+| 2. [Transactional **Logic**](#logic)                                  | *Spreadsheet-like Rules* - **40X more concise** <br>Compare Check Credit with [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)  | Business Agility                                        | [Logic Bank](https://valhuber.github.io/ApiLogicServer/Logic-Why/)  |                                                         |
+| 3. [**Admin App**](#admin-app-multi-page-multi-table-automatic-joins) | Instant **multi-page, multi-table** web app | Engage Business Users<br>Back-office Admin              | [Admin App](https://valhuber.github.io/ApiLogicServer/Admin-Tour/) |
 | 4. [**Customizable Project**](#customize-and-debug)                   | Custom Data Model, Endpoints, Logic | Customize, run and debug <br>Re-creation *not* required | PyCharm <br> VS Code ...                                                                |
 | 5. Model Creation                                                     | Python-friendly ORM | Custom Data Access<br>Used by API and Admin App         | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                       |
 

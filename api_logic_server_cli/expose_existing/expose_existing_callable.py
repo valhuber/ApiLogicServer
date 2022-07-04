@@ -101,13 +101,12 @@ uri_info = [
     '    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook',
     '',
     'Where --db_url is one of...',
-    '   <default>                     Sample DB                    - https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database',
+    '   <default>                     Sample DB                    - https://valhuber.github.io/ApiLogicServer/Sample-Database/',
     '   nw-                           Sample DB, no customizations - add later with perform_customizations.py',
     '   <SQLAlchemy Database URI>     Your own database            - https://docs.sqlalchemy.org/en/14/core/engines.html',
-    '                                      Other URI examples:     - https://github.com/valhuber/ApiLogicServer/wiki/Testing',
+    '                                      Other URI examples:     - https://valhuber.github.io/ApiLogicServer/Database-Connectivity/',
     ' ',
-    'Docs: https://github.com/valhuber/ApiLogicServer#readme\n'
-    '      https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#install-guide'
+    'Docs: https://valhuber.github.io/ApiLogicServer/'
 ]
 
 
@@ -143,7 +142,7 @@ def create_models_from_db(args) -> str:
         print(f'.. Here are some examples:\n')
         print_uri_info()
         print(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
-        print(f'\n...see https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
+        print(f'\n...see https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
         exit(1)
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite
