@@ -1,5 +1,3 @@
-Under Construction.
-
 
 # Architectural Overview
 
