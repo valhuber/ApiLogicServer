@@ -22,7 +22,7 @@ This is the sample project from API Logic Server, based on the Northwind databas
 &emsp;&emsp;    Given Sample Database  
 &emsp;&emsp;    When Transactions are submitted  
 &emsp;&emsp;    Then Enforce business policies with Logic (rules + code)  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -95,7 +95,7 @@ Logic Bank - 22 rules loaded - 2022-04-24 11:30:21,866 - logic_logger - INF
 &emsp;&emsp;    Then Logic adjusts Products Reordered  
 &emsp;&emsp;    Then Logic sends email to salesrep  
 &emsp;&emsp;    Then Logic adjusts aggregates down on delete order  
-<details>
+<details markdown>
 
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
@@ -194,7 +194,7 @@ Logic Phase:		COMMIT(session=0x112f92e50)   										 - 2022-04-24 11:30:22,128
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order Placed with excessive quantity  
 &emsp;&emsp;    Then Rejected per Check Credit  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -265,7 +265,7 @@ Logic Phase:		ROW LOGIC(session=0x1130778b0) (sqlalchemy before_flush)			 - 2022
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order Detail Quantity altered very high  
 &emsp;&emsp;    Then Rejected per Check Credit  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -323,7 +323,7 @@ Logic Phase:		ROW LOGIC(session=0x113077df0) (sqlalchemy before_flush)			 - 2022
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order RequiredDate altered (2013-10-13)  
 &emsp;&emsp;    Then Balance not adjusted  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -373,7 +373,7 @@ Logic Phase:		COMMIT(session=0x113129c70)   										 - 2022-04-24 11:30:22,730
 &emsp;&emsp;    Given Customer Account: ALFKI  
 &emsp;&emsp;    When Order ShippedDate altered (2013-10-13)  
 &emsp;&emsp;    Then Balance reduced 1086  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -453,7 +453,7 @@ Logic Phase:		COMMIT(session=0x113129dc0)   										 - 2022-04-24 11:30:22,959
 &emsp;&emsp;    Given Shipped Order  
 &emsp;&emsp;    When Order ShippedDate set to None  
 &emsp;&emsp;    Then Logic adjusts Balance by -1086  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -523,7 +523,7 @@ Logic Phase:		COMMIT(session=0x11317f5e0)   										 - 2022-04-24 11:30:23,189
 &emsp;&emsp;    Given Shipped Order  
 &emsp;&emsp;    When Cloning Existing Order  
 &emsp;&emsp;    Then Logic Copies ClonedFrom OrderDetails  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -623,7 +623,7 @@ Logic Phase:		ROW LOGIC(session=0x11318f370) (sqlalchemy before_flush)			 - 2022
 &emsp;&emsp;    Given Employee 5 (Buchanan) - Salary 95k  
 &emsp;&emsp;    When Patch Salary to 200k  
 &emsp;&emsp;    Then Salary_audit row created  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -678,7 +678,7 @@ Logic Phase:		COMMIT(session=0x113197cd0)   										 - 2022-04-24 11:30:23,444
 &emsp;&emsp;    Given Employee 5 (Buchanan) - Salary 95k  
 &emsp;&emsp;    When Patch Salary to 96k  
 &emsp;&emsp;    Then Reject - Raise too small  
-<details>
+<details markdown>
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
