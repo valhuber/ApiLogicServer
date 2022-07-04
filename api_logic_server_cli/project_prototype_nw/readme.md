@@ -66,7 +66,7 @@ To run the Admin App, follow these steps:
    * Click the first __Product Id__ to see its detail information
 6. Close the app (browser), but __leave the server running__
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
+<figure><img src="linksImages/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
@@ -87,7 +87,7 @@ The creation process builds not only the API, but swagger so you can explore it.
    * Note: you can drag windows to arrange your viewing area
 3. (Leave the swagger and server running)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/ui-admin/swagger
+<figure><img src="linksImages/ui-admin/swagger
 .png?raw=true"></figure>
 &nbsp;&nbsp;&nbsp;
 
@@ -114,7 +114,7 @@ Use VS Code's **Project Explorer** to see the project structure:
 | ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema                       |
 | ```logic``` | Transactional Logic           | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and events such as send mail / messages |
 | ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display, ordering, etc.                                                 |
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/generated-project.png"></figure>
+<figure><img src="linksImages/generated-project.png"></figure>
 
 Let's now explore some examples.
 
@@ -151,7 +151,7 @@ To review the implementation:
    1. You can examine the variables, step, etc.
 6. Click **Continue** on the floating debug menu (upper right in screen shot below)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/docker/VSCode/nw-readme/customize-api.png"></figure>
+<figure><img src="linksImages/docker/VSCode/nw-readme/customize-api.png"></figure>
 
 
 ### Logic

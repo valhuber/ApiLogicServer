@@ -22,7 +22,7 @@ def step_impl(context):
 
     This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative:
 
-    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/salary_change.png?raw=true"></figure>
+    <figure><img src="linksImages/behave/salary_change.png?raw=true"></figure>
 
     > **Key Takeaway:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
 

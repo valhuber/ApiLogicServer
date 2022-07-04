@@ -96,6 +96,7 @@ Logic Bank - 22 rules loaded - 2022-04-24 11:30:21,866 - logic_logger - INF
 &emsp;&emsp;    Then Logic sends email to salesrep  
 &emsp;&emsp;    Then Logic adjusts aggregates down on delete order  
 <details>
+
 <summary>Tests - and their logic - are transparent.. click to see Logic</summary>
 
 
@@ -106,6 +107,7 @@ Logic Bank - 22 rules loaded - 2022-04-24 11:30:21,866 - logic_logger - INF
 **Logic Doc** for scenario: Good Order Custom Service
    
 We place an Order with an Order Detail.  It's one transaction.
+
 
 Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
 Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
