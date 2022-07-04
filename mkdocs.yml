@@ -49,6 +49,7 @@ nav:
     - Data-Model-Classes.md
     - Data-Model-Customization.md
   - Architecture:
+    - "What is API Logic Server": Architecture-What-Is.md
     - Architecture.md
     - Working-with-the-Admin-App.md
     - Working-with-Flask-AppBuilder.md
