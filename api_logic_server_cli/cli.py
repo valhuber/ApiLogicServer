@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.07"
+__version__ = "5.03.10"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/03/2022 - 05.03.07: Links to new gh-pages docs \n"\
+    "\t07/04/2022 - 05.03.10: Links to new gh-pages docs \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
@@ -276,6 +276,34 @@ def copy_if_mounted(project_directory):
     return return_project_directory, return_copy_to_directory
 
 
+def create_nw_tutorial(project_name, code_loc):
+    """ copy tutorial from docs, and link to it from readme.md """
+
+    tutorial_link = \
+        f'# Tutorial' +\
+        "\n" +\
+        "Welcome to the Sample Database Readme - [run the Tutorial](Tutorial)\n" +\
+        "\n" +\
+        "The standard readme follows...\n" +\
+        "\n" +\
+        "&nbsp;\n" +\
+        "\n" +\
+        "# API Logic Server\n"
+
+    tutorial_file_proj = open(project_name + '/Tutorial.md', 'w')
+    tutorial_file_docs_path = Path(code_loc).\
+        joinpath('docs').joinpath("Tutorial.md")
+    tutorial_file_docs = open(tutorial_file_docs_path)  # /Users/val/dev/ApiLogicServer/docs/Tutorial.md
+    tutorial_readme = tutorial_file_docs.read()
+    tutorial_file_proj.write(tutorial_readme)
+    tutorial_file_proj.close()
+
+    readme_file_path = project_name + '/readme.md'
+    create_utils.replace_string_in_file(search_for="# API Logic Server",
+                           replace_with=tutorial_link,
+                           in_file=readme_file_path)
+
+
 def create_project_with_nw_samples(project_directory: str, project_name: str, api_name: str,
                                             from_git: str, msg: str,
                                             abs_db_url: str, nw_db_status: str) -> str:
@@ -322,32 +350,20 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
                   f'Suggestions:\n'
                   f'.. Verify the --project_name argument\n'
                   f'.. If you are using Docker, verify the -v argument\n\n')
-    nw_copy = "recursive_overwrite"
     if nw_db_status in ["nw", "nw+"]:
-        if nw_copy == "recursive_overwrite":
-            print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
-            code_loc = str(get_api_logic_server_dir())
-            nw_dir = (Path(code_loc)).\
-                joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/project_prototype
-            recursive_overwrite(nw_dir, project_directory)
-        else:
-            print(".. ..Append logic/declare_logic.py with pre-defined nw_logic, services")
-            replace_readme_with_nw_readme(project_directory)
-            replace_logic_with_nw_logic(project_directory)
-            replace_customize_models_with_nw_customize_models(project_directory)
-            replace_expose_rpcs_with_nw_expose_rpcs(project_directory)
-            replace_server_test_with_nw_server_test(project_directory)
+        print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
+        code_loc = str(get_api_logic_server_dir())
+        nw_dir = (Path(code_loc)).\
+            joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
+        recursive_overwrite(nw_dir, project_directory)
+
+        create_nw_tutorial(project_name, code_loc)
 
     if nw_db_status in ["nw-"]:
-        if nw_copy == "recursive_overwrite":
-            print(".. ..Copy in nw- customizations: readme, perform_customizations")
-            code_loc = str(get_api_logic_server_dir())
-            nw_dir = (Path(code_loc)).\
-                joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
-            recursive_overwrite(nw_dir, project_directory)
-        else:
-            print(".. ..Not implemented")
-            exit (1)
+        print(".. ..Copy in nw- customizations: readme, perform_customizations")
+        code_loc = str(get_api_logic_server_dir())
+        nw_dir = (Path(code_loc)).\
+            joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
 
     create_utils.replace_string_in_file(search_for="creation-date",
                            replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
@@ -469,57 +485,6 @@ def write_expose_api_models(project_name, apis):
     text_file = open(project_name + '/api/expose_api_models.py', 'a')
     text_file.write(apis)
     text_file.close()
-
-
-def replace_readme_with_nw_readme(project_name):
-    """ Replace readme.md with pre-defined nw_readme """
-    readme_file = open(project_name + '/readme.md', 'w')
-    nw_readme_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_readme.md")
-    nw_readme = nw_readme_file.read()
-    readme_file.write(nw_readme)
-    readme_file.close()
-
-
-def replace_logic_with_nw_logic(project_name):
-    """ Replace logic/declare_logic.py with pre-defined nw_logic """
-    logic_file = open(project_name + '/logic/declare_logic.py', 'w')
-    nw_logic_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_logic.py")
-    nw_logic = nw_logic_file.read()
-    logic_file.write(nw_logic)
-    logic_file.close()
-
-
-def replace_customize_models_with_nw_customize_models(project_name):
-    """ Replace models/customize_models.py with pre-defined nw_customize_models """
-    customize_models_file = open(project_name + '/database/customize_models.py', 'w')
-    nw_customize_models_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_customize_models.py")
-    nw_customize_models = nw_customize_models_file.read()
-    customize_models_file.write(nw_customize_models)
-    customize_models_file.close()
-
-
-def replace_expose_rpcs_with_nw_expose_rpcs(project_name):
-    """ replace api/expose_rpcs with nw version """
-    rpcs_file = open(project_name + '/api/customize_api.py', 'w')
-    nw_expose_rpcs_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_expose_services.py")
-    nw_expose_rpcs = nw_expose_rpcs_file.read()
-    rpcs_file.write(nw_expose_rpcs)
-    rpcs_file.close()
-
-
-def replace_server_test_with_nw_server_test(project_name):
-    """ replace test/server_tests.py with nw version """
-    tests_file = open(project_name + '/test/server_test.py', 'w')
-    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_server_test.py")
-    nw_tests_file_data = nw_tests_file.read()
-    tests_file.write(nw_tests_file_data)
-    tests_file.close()
-
-    tests_file = open(project_name + '/test/server_test.sh', 'w')
-    nw_tests_file = open(os.path.dirname(os.path.realpath(__file__)) + "/project_prototype_nw/nw_server_test.sh")
-    nw_tests_file_data = nw_tests_file.read()
-    tests_file.write(nw_tests_file_data)
-    tests_file.close()
 
 
 def get_windows_path_with_slashes(url: str) -> str:

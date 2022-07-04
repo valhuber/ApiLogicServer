@@ -148,6 +148,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+07/04/2022 - 05.03.08: Docs using mkdocs-material (vs. wiki)
+
 06/27/2022 - 05.03.06: nw-, with perform_customizations docker
 
 06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image

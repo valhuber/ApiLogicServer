@@ -49,7 +49,7 @@ def step_impl(context):
     Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
     Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
 
-    <figure><img src="linksImages/behave/declare-logic.png?raw=true"></figure>
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/declare-logic.png?raw=true"></figure>
 
     > **Key Takeaway:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
 
@@ -62,7 +62,7 @@ def step_impl(context):
     - using Python to provide logic not covered by rules, 
     like non-database operations such as sending email or messages.
 
-    <figure><img src="linksImages/behave/send-email.png?raw=true"></figure>
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/send-email.png?raw=true"></figure>
 
     There are actually multiple kinds of events:
 
@@ -290,7 +290,7 @@ def step_impl(context):
     
     This chains to adjust the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
 
-    <figure><img src="linksImages/behave/order-shipped-date.png?raw=true"></figure>
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/order-shipped-date.png?raw=true"></figure>
 
 
     > **Key Takeaway:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
@@ -376,7 +376,7 @@ def step_impl(context):
 
     3. `declare_logic.py` implements the logic, by invoking `logic_row.copy_children()`.  `which` defines which children to copy, here just `OrderDetailList`
 
-    <figure><img src="linksImages/behave/clone-order.png?raw=true"></figure>
+    <figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/clone-order.png?raw=true"></figure>
 
     `CopyChildren` For more information, [see here](https://github.com/valhuber/LogicBank/wiki/Copy-Children)
 

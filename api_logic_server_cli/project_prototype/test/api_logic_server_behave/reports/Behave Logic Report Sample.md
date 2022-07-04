@@ -8,7 +8,7 @@ You can optionally use the Behave test framework to (here is an [Agile Approach 
 
    * **Integrated Logic Documentation:** the report integrates your logic, including a logic report showing your logic (rules and Python), and a Logic Log that shows exactly how the rules executed.  Logic Doc is transparent to business users, so can further contribute to Agile Collaboration.
 
-<figure><img src="linksImages/behave/behave-summary.png?raw=true"  height="600"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/behave-summary.png?raw=true"  height="600"></figure>
 
 [Behave](https://behave.readthedocs.io/en/stable/tutorial.html) is a framework for defining and executing tests.  It is based on [TDD (Test Driven Development)](http://dannorth.net/introducing-bdd/), an Agile approach for defining system requirements as executable tests.
 
@@ -16,7 +16,7 @@ You can optionally use the Behave test framework to (here is an [Agile Approach 
 
 # Using Behave
 
-<figure><img src="linksImages/behave/TDD-ide.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/TDD-ide.png?raw=true"></figure>
 
 Behave is pre-installed with API Logic Server.  Use it as shown above:
 
@@ -178,7 +178,7 @@ We place an Order with an Order Detail.  It's one transaction.
 Note how the `Order.OrderTotal` and `Customer.Balance` are *adjusted* as Order Details are processed.
 Similarly, the `Product.UnitsShipped` is adjusted, and used to recompute `UnitsInStock`
 
-<figure><img src="linksImages/behave/declare-logic.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/declare-logic.png?raw=true"></figure>
 
 > **Key Takeaway:** sum/count aggregates (e.g., `Customer.Balance`) automate ***chain up*** multi-table transactions.
 
@@ -191,7 +191,7 @@ The `congratulate_sales_rep` event illustrates logic
 - using Python to provide logic not covered by rules, 
 like non-database operations such as sending email or messages.
 
-<figure><img src="linksImages/behave/send-email.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/send-email.png?raw=true"></figure>
 
 There are actually multiple kinds of events:
 
@@ -455,7 +455,7 @@ This cascades to the Order Details, per the `derive=models.OrderDetail.ShippedDa
 
 This chains to adjust the `Product.UnitsShipped` and recomputes `UnitsInStock`, as above
 
-<figure><img src="linksImages/behave/order-shipped-date.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/order-shipped-date.png?raw=true"></figure>
 
 
 > **Key Takeaway:** parent references (e.g., `OrderDetail.ShippedDate`) automate ***chain-down*** multi-table transactions.
@@ -611,7 +611,7 @@ The copy operation is automated using `logic_row.copy_children()`:
 
 3. `declare_logic.py` implements the logic, by invoking `logic_row.copy_children()`.  `which` defines which children to copy, here just `OrderDetailList`
 
-<figure><img src="linksImages/behave/clone-order.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/clone-order.png?raw=true"></figure>
 
 `CopyChildren` For more information, [see here](https://github.com/valhuber/LogicBank/wiki/Copy-Children)
 
@@ -708,7 +708,7 @@ Generic event handlers can also reduce redundant code, illustrated in the time/d
 
 This is due to the `copy_row` rule.  Contrast this to the *tedious* `audit_by_event` alternative:
 
-<figure><img src="linksImages/behave/salary_change.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/ApiLogicServer/wiki/images/behave/salary_change.png?raw=true"></figure>
 
 > **Key Takeaway:** use **extensible own rule types** to automate pattern you identify; events can result in tedious amounts of code.
 
