@@ -70,6 +70,7 @@ markdown_extensions:
       toc_depth: 5
   - meta
   - attr_list
+  - md_in_html
   - pymdownx.emoji:
       title: "long"
       emoji_index: !!python/name:materialx.emoji.twemoji
