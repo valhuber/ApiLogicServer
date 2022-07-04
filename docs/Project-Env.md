@@ -12,5 +12,9 @@ You can create it in the usual manner:
 cd ApiLogicProject
 python3 -m venv venv       # may require python -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
+
+> The install sometimes fails due on machines with an older version of `pip`.  If you see a message suggesting you upgrade  `pip` , do so.
+
+For more information, see [Work with Environments](https://code.visualstudio.com/docs/python/environments#_work-with-environments).

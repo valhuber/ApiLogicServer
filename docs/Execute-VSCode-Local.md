@@ -34,15 +34,15 @@ You then create your virtual environment, activate it, and install the  ApiLogic
 In VS Code: __Terminal > New Terminal Window__, and...
 
 ```
-python3 -m venv ./venv            # windows: python -m venv venv
+python3 -m venv ./venv                       # windows: python -m venv venv
 # VS Code will recognize your `venv` and ask whether to establish it as your virtual environment.  Say yes.  
-source venv/bin/activate          # windows: venv\Scripts\activate
-pip install -r requirements.txt   # the requirements.txt file was pre-created by ApiLogicServer
+source venv/bin/activate                     # windows: venv\Scripts\activate
+python3 -m pip install -r requirements.txt   # the requirements.txt file was pre-created by ApiLogicServer
 ```
 
 > The install sometimes fails due on machines with an older version of `pip`.  If you see a message suggesting you upgrade  `pip` , do so.
 
-For more information, see [Work with Environments](https://code.visualstudio.com/docs/python/environments#_work-with-environments)
+For more information, see [Work with Environments](https://code.visualstudio.com/docs/python/environments#_work-with-environments), and [Project Environment](../Project-Env/).
 
 __5. Install Python Extension__
 
