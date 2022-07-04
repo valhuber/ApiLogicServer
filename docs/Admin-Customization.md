@@ -1,5 +1,5 @@
 
-# Customization: edit `ui/admin/admin.yaml`
+# Customize
 
 The creation process does _not_ create hundreds of lines of JavaScript and HTML.  
 
