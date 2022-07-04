@@ -55,8 +55,9 @@ nav:
     - "API Logic Server Development": Internals.md
   - Troubleshooting.md
   - Tech Notes:
+    - "About Tech Notes": Tech--Notes.md
     - "Docker": Tech-Docker.md
-    - "Python": Tech-Python.md
+    - "Python for a Java developer": Tech-Python.md
     - "Mkdocs Material": Tech-mkdocs-material.md
   - Unused:
     - "zz Logic = Rules + Python": "Logic-Rules-plus-Python.md"

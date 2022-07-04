@@ -8,7 +8,7 @@ This project was created by API Logic Server.  Edit / extend this readme as desi
 
 ### Establish your Python environment
 Install your projects' virtual environment
-as described in the [Quick Start](https://valhuber.github.io/ApiLogicServer/Project-Env/). See also the `venv_setup` directory in your API Logic Project.
+as [described here](https://valhuber.github.io/ApiLogicServer/Project-Env/). See also the `venv_setup` directory in your API Logic Project.
 
 ### For SqlServer, install `pyodbc`
 Not required for docker-based projects.  For local installs, see the [Quick Start](https://valhuber.github.io/ApiLogicServer/Install-pyodbc/).
@@ -109,11 +109,12 @@ This project was created with the following directory structure:
 | ```logic``` | Transactional Logic           | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and events such as send mail / messages |
 | ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display - order, captions etc.                                          |
 
+&nbsp;
+
 ### Key Customization File - Typical Customization
 
 In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
 the created API, Logic and Web App.  Since they are separate files, the project can be
-recreated (e.g., synchronized with a revised schema), and these files can be easily copied
-into the new project, without line-by-line merges.
+[rebuilt](see api_logic_server_run.py) (e.g., synchronized with a revised schema), preserving your customizations.
 
 Please see the ```nw``` sample for examples of typical customizations.
