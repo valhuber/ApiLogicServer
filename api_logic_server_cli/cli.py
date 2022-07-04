@@ -932,7 +932,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
     else:
         print(f'\nCustomize using your IDE:')
         print(f'  code {project_name}  # e.g., open VSCode on created project')
-    print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
+        print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
     print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
     if run:  # synchronous run of server - does not return
