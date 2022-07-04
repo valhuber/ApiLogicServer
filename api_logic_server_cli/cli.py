@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.06"
+__version__ = "5.03.07"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t07/03/2022 - 05.03.07: Links to new gh-pages docs \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
@@ -931,7 +932,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
     else:
         print(f'\nCustomize using your IDE:')
         print(f'  code {project_name}  # e.g., open VSCode on created project')
-    print(f'  Establish your Python environment - see https://github.com/valhuber/ApiLogicServer/wiki/Quick-Start#project-execution')
+    print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
     print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
     if run:  # synchronous run of server - does not return
