@@ -77,7 +77,7 @@ def show_logic(scenario: str, logic_logs_dir: str):
     else:
         logic_log = []
         rules_used = []
-        wiki_data.append("<details>")
+        wiki_data.append("<details markdown>")
         wiki_data.append("<summary>Tests - and their logic - are transparent.. click to see Logic</summary>")
         line_spacer()
         scenario_trunc = get_truncated_scenario_name(scenario)

@@ -17,4 +17,6 @@ python3 -m pip install -r requirements.txt
 
 > The install sometimes fails due on machines with an older version of `pip`.  If you see a message suggesting you upgrade  `pip` , do so.
 
+> If VSCode does not find your `venv`, you can [specify it manually](https://code.visualstudio.com/docs/python/environments#_manually-specify-an-interpreter) using `Python: Select Interpreter`
+
 For more information, see [Work with Environments](https://code.visualstudio.com/docs/python/environments#_work-with-environments).
