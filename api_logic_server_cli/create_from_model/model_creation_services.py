@@ -738,7 +738,7 @@ class CreateFromModel(object):
         orm_class = None
         if not model_imported:
             print('.. .. ..Creation proceeding to enable manual database/models.py fixup')
-            print('.. .. .. See https://github.com/valhuber/ApiLogicServer/wiki/Troubleshooting')
+            print('.. .. .. See https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
         else:
             try:
                 resource_list: Dict[str, Resource] = dict()
@@ -828,7 +828,7 @@ class CreateFromModel(object):
                 * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
                     * An important consideration is disambiguating multiple relationships between the same w tables
                         * See `nw-plus` relationships between `Department` and `Employee`.
-                        * [See here](https://github.com/valhuber/ApiLogicServer/wiki/Sample-Database) for a database diagram.
+                        * [See here](https://valhuber.github.io/ApiLogicServer/Sample-Database/) for a database diagram.
                     * It transforms database names to resource names - capitalized, singular
                         * These (not table names) are used to create api and ui model
 
