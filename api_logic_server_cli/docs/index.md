@@ -10,9 +10,9 @@ title:
 
 ## Key Features
 
-1. [**Admin Web App**](Admin-Tour) [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
-2. [**API**](API) - endpoint for each table, with filtering, sorting, pagination, related data
-3. [**Unique Backend Logic **](Logic-Why#rules-executable-design) - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python.
+1. [**Admin Web App**](Admin-Tour){:target="_blank" rel="noopener"} [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
+2. [**API**](API){:target="_blank" rel="noopener"} - endpoint for each table, with filtering, sorting, pagination, related data
+3. [**Unique Backend Logic **](Logic-Why#rules-executable-design){:target="_blank" rel="noopener"} - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python.
 
     * 40X more concise than code
     * Unique to API Logic Server &nbsp; :trophy:
@@ -33,11 +33,11 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 ```
 
 Your system is running - explore the data and api at [localhost:5656](http://localhost:5656),
-or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home).
+or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.
 
-VSCode and PyCharm users can execute within their IDE with [these steps](../Quick-Start).
+VSCode and PyCharm users can execute within their IDE with [these steps](../Quick-Start){:target="_blank" rel="noopener"}.
 
-In addition to Docker, you can install locally; if Python 3.7+ [is installed](#installation), it's typically:
+In addition to Docker, you can install locally; if Python 3.7+ [is installed](#installation){:target="_blank" rel="noopener"}, it's typically:
 
 ```bash
 python3 -m venv venv       # may require python -m venv venv
@@ -55,9 +55,9 @@ Project creation is based on database schema introspection as shown below.  Clic
 
 [![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
-After you've explored the tutorial (created from [this database](../Sample-Database)), try out our [dockerized test databases](../Testing#docker-databases), and then try your own database.
+After you've explored the tutorial (created from [this database](../Sample-Database){:target="_blank" rel="noopener"}), try out our [dockerized test databases](../Testing#docker-databases){:target="_blank" rel="noopener"}, and then try your own database.
 
-> Already installed?  Upgrade to the latest (5.03.06): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades)).
+> Already installed?  Upgrade to the latest (5.03.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades){:target="_blank" rel="noopener"}).
 
 &nbsp;
 
@@ -65,10 +65,10 @@ After you've explored the tutorial (created from [this database](../Sample-Datab
 
 | Feature                                                               | Providing                                                                                                                                       | Why it Matters                                   | Learn More                                                                                 |
 |:----------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------|:-------------------------------------------------------------------------------------------|
-| 1. [**Admin App**](Admin-Tour) | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)              | Engage Business Users<br>Back-office Admin       | [safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)                         |
-| 2. [JSON:**API** and Swagger](API)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki)                                            |
-| 3. [Transactional **Logic**](Logic-Rules-plus-Python)  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation <br> ... nearly half the system                       | [Logic Bank](Logic-Tutorial)     |
-| 4. [**Customizable Project**](Project-Structure)                   | Custom Data Model, Endpoints, Logic <br>Use Python and yourIDE                                                                                                            | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide) <br> PyCharm ... |
+| 1. [**Admin App**](Admin-Tour){:target="_blank" rel="noopener"} | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}              | Engage Business Users<br>Back-office Admin       | [safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin){:target="_blank" rel="noopener"}                         |
+| 2. [JSON:**API** and Swagger](API){:target="_blank" rel="noopener"}                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           | [SAFRS](https://github.com/thomaxxl/safrs/wiki){:target="_blank" rel="noopener"}                                            |
+| 3. [Transactional **Logic**](Logic-Rules-plus-Python){:target="_blank" rel="noopener"}  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"} | Unique backend automation <br> ... nearly half the system                       | [Logic Bank](Logic-Tutorial){:target="_blank" rel="noopener"}     |
+| 4. [**Customizable Project**](Project-Structure){:target="_blank" rel="noopener"}                   | Custom Data Model, Endpoints, Logic <br>Use Python and yourIDE                                                                                                            | Customize and run <br>Re-creation *not* required | [VS Code](https://github.com/valhuber/ApiLogicServer/wiki#using-your-ide){:target="_blank" rel="noopener"} <br> PyCharm ... |
 | 5. Model Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
 | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](../Logic:-Tutorial)                          |
 
@@ -81,9 +81,9 @@ This is an open source project.  We are open to suggestions.  Some of our ideas 
 
 | Component           | Provides         | Consider Adding                                                                |
 |:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
-| [1. safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)      | Admin App        | [Hide/Show, Cascade Add](https://github.com/thomaxxl/safrs-react-admin/issues) |
-| 2. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) | API Execution    | Security, Serverless, Kubernetes                                                                       | 
-| 3. [Transactional **Logic**](#logic)   | Rule Enforcement | New rule types        |
+| [1. safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin){:target="_blank" rel="noopener"}      | Admin App        | [Hide/Show, Cascade Add](https://github.com/thomaxxl/safrs-react-admin/issues) |
+| 2. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger){:target="_blank" rel="noopener"} | API Execution    | Security, Serverless, Kubernetes                                                                       | 
+| 3. [Transactional **Logic**](#logic){:target="_blank" rel="noopener"}   | Rule Enforcement | New rule types        |
 | 4. This project | API Logic Project Creation | Support for features described above |
 
 
@@ -104,7 +104,7 @@ There are a number of facilities that will quickly enable you to get familiar wi
 
 We have tested several databases - see [status here.](Testing)
 
-We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
+We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues){:target="_blank" rel="noopener"}.
 
 We have introduced several renames to clarify operation.
 These do not affect existing projects.  However, we've not updated all the docs to reflect these changes:
@@ -135,20 +135,20 @@ Many thanks to
 ### Articles
 There are a few articles that provide some orientation to Logic Bank and Flask App Builder.
 These technologies are automatically created when you use ApiLogicServer:
-* [How Automation Activates Agile](https://modeling-languages.com/logic-model-automation/)
-* [How Automation Activates Agile](https://dzone.com/articles/automation-activates-agile) - providing working software rapidly drives agile collaboration to define systems that meet actual needs, reducing requirements risk
-* [How to create application systems in moments](https://dzone.com/articles/create-customizable-database-app-systems-with-1-command)
-* [Stop coding database backends…Declare them with one command.](https://medium.com/@valjhuber/stop-coding-database-backends-declare-them-with-one-command-938cbd877f6d)
-* [Instant Database Backends](https://dzone.com/articles/instant-api-backends)
-* [Extensible Rules](https://dzone.com/articles/logic-bank-now-extensible-drive-95-automation-even) - defining new rule types, using Python
-* [Declarative](https://dzone.com/articles/agile-design-automation-how-are-rules-different-fr) - exploring _multi-statement_ declarative technology
-* [Automate Business Logic With Logic Bank](https://dzone.com/articles/automate-business-logic-with-logic-bank) - general introduction, discussions of extensibility, manageability and scalability
-* [Agile Design Automation With Logic Bank](https://dzone.com/articles/logical-data-indendence) - focuses on automation, design flexibility and agile iterations
-* [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
+* [How Automation Activates Agile](https://modeling-languages.com/logic-model-automation/){:target="_blank" rel="noopener"}
+* [How Automation Activates Agile](https://dzone.com/articles/automation-activates-agile){:target="_blank" rel="noopener"} - providing working software rapidly drives agile collaboration to define systems that meet actual needs, reducing requirements risk
+* [How to create application systems in moments](https://dzone.com/articles/create-customizable-database-app-systems-with-1-command){:target="_blank" rel="noopener"}
+* [Stop coding database backends…Declare them with one command.](https://medium.com/@valjhuber/stop-coding-database-backends-declare-them-with-one-command-938cbd877f6d){:target="_blank" rel="noopener"}
+* [Instant Database Backends](https://dzone.com/articles/instant-api-backends){:target="_blank" rel="noopener"}
+* [Extensible Rules](https://dzone.com/articles/logic-bank-now-extensible-drive-95-automation-even){:target="_blank" rel="noopener"} - defining new rule types, using Python
+* [Declarative](https://dzone.com/articles/agile-design-automation-how-are-rules-different-fr){:target="_blank" rel="noopener"} - exploring _multi-statement_ declarative technology
+* [Automate Business Logic With Logic Bank](https://dzone.com/articles/automate-business-logic-with-logic-bank){:target="_blank" rel="noopener"} - general introduction, discussions of extensibility, manageability and scalability
+* [Agile Design Automation With Logic Bank](https://dzone.com/articles/logical-data-indendence){:target="_blank" rel="noopener"} - focuses on automation, design flexibility and agile iterations
+* [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps){:target="_blank" rel="noopener"} 
 
 ### Change Log
 
-07/04/2022 - 05.03.08: Docs using mkdocs-material (vs. wiki)
+07/04/2022 - 05.03.10: Docs using mkdocs-material (vs. wiki)
 
 06/27/2022 - 05.03.06: nw-, with perform_customizations docker
 
