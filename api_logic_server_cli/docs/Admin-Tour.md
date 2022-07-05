@@ -1,8 +1,22 @@
-This page summarizes the Admin App created by ApiLogicServer.
-* If you have installed ApiLogicServer, this is the sample app described in the [Tutorial](https://github.com/valhuber/ApiLogicServer/blob/main/README.md)
-* You can also view the app - it is deployed [here on PythonAnywhere](http://apilogicserver.pythonanywhere.com/admin-app/index.html).
+The `ApiLogicServer create` command creates an API Logic Project that implements an Admin App (React Admin), and an underlying API.  No additional code is required.
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png"></figure>
+Start the server, and open your Browser.  Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.  Key features:
+
+* Multi-page - for each table, you get a list page and a detail page
+
+      * list pages provide filtering, sorting and pagination
+
+* Multi-table - pages include related data: 
+
+      * Tab Sheets for related child data (Order Details List)
+      * Automatic joins for related parent data (Employee _Name_ - not just the Id)
+      * Page Transitions for related data (e.g., click Order Detail for detail page)
+
+In addition to running in the Browser, you can run in your IDE:  
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/Order-Page.png"></figure>
+
+&nbsp;
 
 # Use Cases
 The system automatically creates multi-page, multi-table applications as you'll see below.  Typical usage is described here.
