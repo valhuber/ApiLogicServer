@@ -19,12 +19,24 @@ if [ $# -eq 0 ]
     exit 0
   else
     ls
+    ostype=$(uname -a)
     echo " "
     read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for $1> "
     set -x
     mkdir servers    # good place to create ApiLogicProjects
     git clone https://github.com/valhuber/ApiLogicServer
     git clone https://github.com/thomaxxl/safrs-react-admin
+    git clone https://github.com/valhuber/Docs-ApiLogicServer
+    pushd Docs-ApiLogicServer
+    python3 -m venv venv       # may require python -m venv venv
+    if contains "ubuntu" $ostype; then
+      echo $ostype contains ubuntu
+      . venv/bin/activate
+    else
+      echo $ostype does not contain ubuntu
+      source venv/bin/activate   # windows venv\Scripts\activate
+    fi
+    popd
     cd ApiLogicServer
     cp -r ../safrs-react-admin/build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     #
@@ -35,7 +47,6 @@ if [ $# -eq 0 ]
         python3 -m venv venv       # may require python -m venv venv
         # pwd
         # ls
-        ostype=$(uname -a)
         if contains "ubuntu" $ostype; then
           echo $ostype contains ubuntu
           . venv/bin/activate

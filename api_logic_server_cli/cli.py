@@ -17,13 +17,11 @@ __version__ = "5.03.10"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/04/2022 - 05.03.10: Links to new gh-pages docs \n"\
+    "\t07/04/2022 - 05.03.10: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
-    "\t06/16/2022 - 05.02.23: Support nw- (sample, no customization) for evaluation \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\
     "\t05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info \n"\
-    "\t05/22/2022 - 05.02.10: Minor enhancements: docs, examples (db_url), venv_setup, simple req.txt \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\

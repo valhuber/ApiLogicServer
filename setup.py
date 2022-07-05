@@ -25,7 +25,7 @@ def desc():
 
 
 project_urls = {
-  'Docs': 'https://github.com/valhuber/ApiLogicServer#readme'
+  'Docs': 'https://valhuber.github.io/ApiLogicServer/'
 }
 
 setup(
