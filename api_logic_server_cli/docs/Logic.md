@@ -1,10 +1,3 @@
-Logic consists of both:
-
-* **Rules - 40X** more concise using a spreadsheet-like paradigm, and
-
-* **Python - control and extensibility,** using standard tools and techniques
-
-&nbsp;
 
 ## Rules Summary
 The table shows excerpts only; see the ```nw``` sample for full syntax.
@@ -23,19 +16,6 @@ The table shows excerpts only; see the ```nw``` sample for full syntax.
 
 &nbsp;
 
-## Extensibility - Python Events
-
-TBD, using your IDE
-
-### Standard Python - Declare, Extend, Manage
-Logic Bank is fully integrated with Python:
-
-* **Declare** rules in Python as shown above (more details in How, below)
-* **Extend** rules with Python (rule on line 51 invokes the Python function on line 32)
-* **Manage** logic using your existing IDE (PyCharm, VSCode etc for code completion, debugging, etc),
-and source control tools and procedures
-
-&nbsp;
 
 ## Learning Rules
 
@@ -72,16 +52,3 @@ The best way to learn the rules is by a Case Study approach:
 
 &nbsp;&nbsp;
 
-
-### Discovery by Code Completion
-
-Your IDE code completion services can aid in discovering logic services.  There are 2 key elements:
-
-1. Discover _rules_ by `Rule.`
-2. Discovery _logic services_ made available through `logic_row`
-
-  > If these aren't working, ensure your `venv` setup is correct - consult the [Trouble Shooting](../Troubleshooting#code-completion-fails) Guide.
-
-You can find examples of these services in the sample `ApiLogicProject`.
-
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/venv.png?raw=true"></figure>

@@ -12,7 +12,7 @@ title:
 
 1. [**Admin Web App**](Admin-Tour){:target="_blank" rel="noopener"} [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
 2. [**API**](API){:target="_blank" rel="noopener"} - endpoint for each table, with filtering, sorting, pagination, related data
-3. [**Unique Backend Logic **](Logic-Why#rules-executable-design){:target="_blank" rel="noopener"} - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python.
+3. [**Unique Backend Logic **](Logic-Why){:target="_blank" rel="noopener"} - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python.
 
     * 40X more concise than code
     * Unique to API Logic Server &nbsp; :trophy:
