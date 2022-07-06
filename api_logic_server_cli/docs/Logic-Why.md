@@ -89,6 +89,25 @@ That provision is standard Python, provided as standard events (lines 84-96 in t
 
 The screen shot above illustrates you use your IDE (e.g., VSCode, PyCharm) to declare logic using Python, with all the familiar features of code completion and syntax high-lighting.  You can also use the debugger, and familiar Source Code Control tools such as `git`.
 
+
+#### Debugging
+
+As shown on the [readme video](https://github.com/valhuber/ApiLogicServer/blob/main/README.md), you can:
+
+1. Use your IDE to set breakpoints in rules, then examine `row` variables
+
+2. Visualize logic execution with the _logic log._ Shown below, the console shows a line for each rule that fires, with the full row content (old/new values), indented to show multi-table logic chaining.
+
+> Note: the logic log creates long lines.  You will generally therefore want to suppress word wrap.  Most IDEs and text editors have mechanisms to do this; if you are using the console, you may want to copy/paste the log into a text editor that can suppress word wrap.  This is defaulted in `api_logic_server_run.py` for sqlite databases.
+
+<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/overview/log.png"></figure>
+
+###### VSCode debugging
+In VSCode, set `"redirectOutput": true` in your **Launch Configuration.**  This directs logging output to the Debug Console, where it is not word-wrapped (word-wrap obscures the multi-table chaining).
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
+
+
 &nbsp;
 
 ## Key Aspects of Logic

@@ -7,7 +7,7 @@ theme:
     - kramdown
 nav:
   - " ": index.md
-  - Quick Start:
+  - 0. Quick Start:
     - Install API Logic Server:
       - "Install Options": Install.md
       - "Using Docker": Install-With-Docker.md
@@ -56,6 +56,9 @@ nav:
     - Working-with-Flask-AppBuilder.md
     - "API Logic Server Development": Internals.md
   - Troubleshooting.md
+  - FAQs:
+    - "Is this a RETE Engine": FAQ-RETE.md
+    - "Is this a Low Code approach?": FAQ-Low-Code.md
   - Tech Notes:
     - "About Tech Notes": Tech--Notes.md
     - "Docker": Tech-Docker.md
