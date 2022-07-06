@@ -4,6 +4,7 @@ theme:
   name: material
   features:
     - navigation.instant
+    - kramdown
 nav:
   - " ": index.md
   - Quick Start:
@@ -29,8 +30,8 @@ nav:
     - "JSON:API": API.md
     - "API Customization": API-Customize.md
   - 3. Unique Backend Logic:
-    - "Why Rules": Logic-Why.md
-    - "Rules; 40X, Extensible": Logic.md
+    - "Rules; 40X, Extensible": Logic-Why.md
+    - "Rules": Logic.md
     - "Logic Operation": "Logic-Operation.md"
     - "TDD-based Approach": "Logic-Tutorial.md"
   - Testing:
@@ -64,7 +65,6 @@ nav:
     - "zz Logic = Rules + Python": "Logic-Rules-plus-Python.md"
     - "Old Quick Start": Quick-Start.md
     - _Footer.md
-markdown: kramdown
 markdown_extensions:
   - toc:
       baselevel: 2
