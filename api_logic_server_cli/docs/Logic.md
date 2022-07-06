@@ -6,21 +6,6 @@ Logic consists of both:
 
 &nbsp;
 
-## Basic Idea - Rules Are Spreadsheet-Like Derivations
-
-Rules are spreadsheet-like expressions for multi-table derivations and constraints.  For example (not actual syntax):
-
-    The Customer Balance is the sum of the unshipped Order AmountTotals
-
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/like-a-spreadsheet.png?raw=true"></figure>
-
-The list of rules is short, easily learned in an hour.  To see the rules, [click here.](#rules-summary)
-
-Their power lies in _chaining_, as shown by the examples in the link.  Just like in a spreadsheet.
-
-&nbsp;&nbsp;&nbsp;
-
-
 ## Rules Summary
 The table shows excerpts only; see the ```nw``` sample for full syntax.
 
