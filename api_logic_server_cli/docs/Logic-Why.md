@@ -1,6 +1,6 @@
-Logic addresses backend multi-table constraint and derivation logic.  In conventional approaches, such logic is **nearly half the system** due to [code explosion](#problem-code-explosion).
+Logic addresses backend multi-table constraint and derivation logic.  In conventional approaches, such logic is **nearly half the system,** due to [code explosion](#problem-code-explosion).
 
-API Logic -- unique to API Logic Server -- consists of __Rules plus Python.__  Rules typically automate over **95% of such logic,** and are **40X more concise**.  Rules are conceptually similar to [spreadsheet cell formulas](../Logic-Operation/#basic-idea-like-a-spreadsheet).
+API Logic -- unique to API Logic Server -- consists of __Rules, extensible with Python.__  Rules typically automate over **95% of such logic,** and are **40X more concise**.  Rules are conceptually similar to [spreadsheet cell formulas](../Logic-Operation/#basic-idea-like-a-spreadsheet).
 
 For this typical check credit design (in blue), the 5 rules shown below (lines 54-79) represent the same logic as [200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}:
 
@@ -83,7 +83,7 @@ You can find examples of these services in the sample `ApiLogicProject`.
 
 While 95% is certainly remarkable, it's not 100%.  Automating most of the logic is of no value unless there are provisions to address the remainder.
 
-That provision is standard Python, provided as standard events (lines 84-96 in the screen shot above).  This will be typically be used for non-database oriented logic such as files and messages, and for extremely complex database logic.
+That provision is standard Python, provided as standard events (lines 84-100 in the first screen shot above).  This will be typically be used for non-database oriented logic such as files and messages, and for extremely complex database logic.
 
 ### Manage: Your IDE, SCCS
 
