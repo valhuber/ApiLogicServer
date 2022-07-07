@@ -5,6 +5,7 @@
 [![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true)](https://valhuber.github.io/ApiLogicServer/ "Click for docs")
 
 &nbsp;
+[Docs here](https://valhuber.github.io/ApiLogicServer/)
 
 ---
 
@@ -25,8 +26,6 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
    * Declare rules as in a spreadsheet - 40X more concise than code
    * Unique to API Logic Server &nbsp; :trophy:
 
-
-[Click here](https://valhuber.github.io/ApiLogicServer/) to see the docs.
 
 &nbsp;
 
@@ -51,9 +50,9 @@ VSCode and PyCharm users can execute within their IDE with [these steps](https:/
 In addition to Docker, you can install locally; if Python 3.7+ [is installed](#installation), it's typically:
 
 ```bash
-python3 -m venv venv       # may require python -m venv venv
+python -m venv venv        # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
-pip install ApiLogicServer # you may need to use pip3
+python -m pip install ApiLogicServer
 
 ApiLogicServer create      # create, or create-and-run; defaults provided
 ```
