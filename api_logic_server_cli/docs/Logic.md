@@ -5,10 +5,10 @@ The table shows excerpts only; see the ```nw``` sample for full syntax.
 | Rule | Summary   | Example | Notes |
 | :-------------: |:-------------:| :-----:| :-----:|
 | Constraint     | Boolean function must be True<br>else transaction rolled back | ```row.Balance <= row.CreditLimit```<br>```row.Salary >= Decimal('1.20') * old_row.Salary``` | Multi-field<br>```old_row``` |
-| Formula | Function computes column value | row.UnitPrice * row.Quantity<br>row.OrderHeader.ShippedDate | lambda, or function<br>Parent ```(OrderHeader)``` references |
+| Formula | Function computes column value | ```row.UnitPrice * row.Quantity```<br>```row.OrderHeader.ShippedDate``` | lambda, or function<br>Parent ```(OrderHeader)``` references |
 | Sum | Derive parent-attribute as sum of designated child attribute; optional child qualification | ```Rule.sum(derive=Customer.Balance, as_sum_of=Order.AmountTotal,where=lambda row: row.ShippedDate is None)``` | Parent attribute can be hybrid (virtual)<br>scalable: pruning, adjustment |
 | Count | Derive parent-attribute as count of child rows; optional child qualification | ```Rule.sum(derive=Customer.Balance, as_sum_of=Order.AmountTotal,where=lambda row: row.ShippedDate is None)``` | Parent attribute can be hybrid (virtual)<br>scalable: pruning, adjustment |
-| Copy      | Child value set from Parent     | OrderDetail.ProductPrice = copy(Product.Price) | Unlike formula references, parent changes are not propagated<br>e.g, Order totals for Monday are not affected by a Tuesday price increase |
+| Copy      | Child value set from Parent     | ```OrderDetail.ProductPrice = copy(Product.Price)``` | Unlike formula references, parent changes are not propagated<br>e.g, Order totals for Monday are not affected by a Tuesday price increase |
 | Event      | Python Function    | on insert, call ```congratulate_sales_rep``` | See [Extensibility](Extensibility) for a information on early, row and commit events |
 | Parent Check      | Ensure Parent row exists | Orders must have a Customer | See [Referential Integrity](Referential-Integrity) |
 | Allocation      | Allocate a provider amount to recipients | allocate a payment to outstanding orders | See [Allocation](Sample-Project__Allocation) for an example |

@@ -10,9 +10,11 @@ title:
 
 ## Key Features
 
+A Low Code[^1] approach providing:
+
 1. [**Admin Web App**](Admin-Tour){:target="_blank" rel="noopener"} [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home) - multi-page, multi-table, automatic joins
 2. [**API**](API){:target="_blank" rel="noopener"} - endpoint for each table, with filtering, sorting, pagination, related data
-3. [**Unique Backend Logic **](Logic-Why){:target="_blank" rel="noopener"} - multi-table derivations and constraints, using spreadsheet-like rules, extensible with Python.
+3. [**Unique Backend Logic **](Logic-Why){:target="_blank" rel="noopener"} - _multi-table_ derivations and constraints, using spreadsheet-like rules, extensible with Python.
 
     * 40X more concise than code
     * Unique to API Logic Server &nbsp; :trophy:
@@ -195,3 +197,6 @@ These technologies are automatically created when you use ApiLogicServer:
 09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug
 
 09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging
+
+[^1]:
+    See the [FAQ for Low Code](../FAQ-Low-Code)

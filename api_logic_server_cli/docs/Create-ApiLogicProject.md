@@ -1,23 +1,30 @@
-# Project Creation
+Create projects by establishing your Python environment, then issuing `ApiLogicServer create ...`.  The process differs slighly on whether you are using Docker, or a local install.
 
-Use this procedure __for Docker installs:__
+=== "Local Install"
 
-```
-cd ApiLogicServer  # directory of API Logic Server projects on local host
+      The procedure is similar __for local installs:__
+      ```
+      cd ApiLogicServer          # your install folder
+      source venv/bin/activate   # windows venv\Scripts\activate
+      ApiLogicServer create      # accept default project name, db
+      ```
 
-# Start (install if required) the API Logic Server docker container
+=== "Docker Install"
 
-docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
+      ```
+      cd ApiLogicServer  # directory of API Logic Server projects on local host
 
-$ ApiLogicServer create --project_name=/localhost/ApiLogicProject --db_url=
-```
+      # Start (install if required) the API Logic Server docker container
 
-The procedure is similar __for local installs:__
-```
-cd ApiLogicServer          # your install folder
-source venv/bin/activate   # windows venv\Scripts\activate
-ApiLogicServer create      # accept default project name, db
-```
+      docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
+
+      $ ApiLogicServer create --project_name=/localhost/ApiLogicProject --db_url=
+      ```
+
+&nbsp;
+---
+
+## Project Directory Created
 
 In either case, the `create` command builds an `ApiLogicProject` - a directory, shown here in VSCode:
 

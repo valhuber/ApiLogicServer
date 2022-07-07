@@ -2,27 +2,18 @@ site_name: API Logic Server
 docs_dir: api_logic_server_cli/docs
 theme:
   name: material
+  theme:
   features:
     - navigation.instant
     - kramdown
+    - content.tooltips
 nav:
   - " ": index.md
   - 0. Quick Start:
-    - Install API Logic Server:
-      - "Install Options": Install.md
-      - "Using Docker": Install-With-Docker.md
-      - "Using local install": Install-Locally.md
-      - "Using PythonAnyWhere": Install-PythonAnywhere.md
-      - "Installation Notes": Install-Notes.md
+    - Install API Logic Server: Install.md
     - "Create an API Logic Project": Create-ApiLogicProject.md
-    - Execute an API Logic Project:
-      - "Execution Options": Execute.md
-      - "From Command Line": Execute-Command-Line.md
-      - "From VSCode Local": Execute-VSCode-Local.md
-      - "From VSCode Docker": Execute-VSCode-Docker.md
-      - "From Pycharm": Execute-PyCharm-Local.md
+    - Execute an API Logic Project: Execute.md
     - "Tutorial": Tutorial.md
-    - Sample-Database.md
   - 1. Admin Web App:
     - "Admin App Features": "Admin-Tour.md"
     - Admin-Customization.md
@@ -49,6 +40,7 @@ nav:
     - "Install pyodbc: SqlServer": Install-pyodbc.md
     - Data-Model-Classes.md
     - Data-Model-Customization.md
+    - Sample-Database.md
   - Architecture:
     - "What is API Logic Server": Architecture-What-Is.md
     - Architecture.md
@@ -75,6 +67,8 @@ markdown_extensions:
       toc_depth: 5
   - meta
   - attr_list
+  - abbr
+  - footnotes
   - md_in_html
   - pymdownx.emoji:
       title: "long"
@@ -83,3 +77,6 @@ markdown_extensions:
   - pymdownx.snippets:
       auto_append:
         - includes/abbreviations.md
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
