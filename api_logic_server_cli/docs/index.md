@@ -26,8 +26,6 @@ A Low Code[^1] approach providing:
 To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
 ```bash
-cd ~/Desktop                       # directory of API Logic Server projects on local host
-
 # Start the API Logic Server docker container
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
@@ -37,14 +35,14 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 Your system is running - explore the data and api at [localhost:5656](http://localhost:5656),
 or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.
 
-VSCode and PyCharm users can execute within their IDE with [these steps](../Quick-Start){:target="_blank" rel="noopener"}.
+VSCode and PyCharm users can execute within their IDE with [these steps](../Execute){:target="_blank" rel="noopener"}.
 
-In addition to Docker, you can install locally; if Python 3.7+ [is installed](#installation){:target="_blank" rel="noopener"}, it's typically:
+In addition to Docker, you can install locally; if Python 3.7+ [is installed](../Install){:target="_blank" rel="noopener"}, it's typically:
 
 ```bash
-python3 -m venv venv       # may require python -m venv venv
+python -m venv venv        # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
-pip install ApiLogicServer # you may need to use pip3
+python -m pip install ApiLogicServer
 
 ApiLogicServer create      # create, or create-and-run; defaults provided
 ```
