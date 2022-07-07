@@ -34,8 +34,6 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
 To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
 ```bash
-cd ~/Desktop                       # directory of API Logic Server projects on local host
-
 # Start the API Logic Server docker container
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
