@@ -10,14 +10,14 @@ title:
 
 ## Key Features
 
-A Low Code[^1] approach providing:
-
 1. [**Admin Web App**](Admin-Tour) [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"} - multi-page, multi-table, automatic joins
 2. [**API**](API) - endpoint for each table, with filtering, sorting, pagination, related data
 3. [**Unique Backend Logic **](Logic-Why) - _multi-table_ derivations and constraints, using spreadsheet-like rules, extensible with Python.
 
     * 40X more concise than code
     * Unique to API Logic Server &nbsp; :trophy:
+
+This programmer-friendly low-code microservice creation approach is distinguished by leveraging ___your IDE___, and extending low-code to address frontend ___and backend___ logic.
 
 ---
 
