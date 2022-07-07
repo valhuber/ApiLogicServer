@@ -35,9 +35,9 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 Your system is running - explore the data and api at [localhost:5656](http://localhost:5656),
 or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.
 
-VSCode and PyCharm users can execute within their IDE with [these steps](../Execute){:target="_blank" rel="noopener"}.
+VSCode and PyCharm users can execute within their IDE with [these steps](Execute){:target="_blank" rel="noopener"}.
 
-In addition to Docker, you can install locally; if Python 3.7+ [is installed](../Install){:target="_blank" rel="noopener"}, it's typically:
+In addition to Docker, you can install locally; if Python 3.7+ [is installed](Install){:target="_blank" rel="noopener"}, it's typically:
 
 ```bash
 python -m venv venv        # may require python3 -m venv venv
