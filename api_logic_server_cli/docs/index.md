@@ -199,4 +199,4 @@ These technologies are automatically created when you use ApiLogicServer:
 09/10/2021 - 03.00.02: rename logic_bank to declare_logic, improved logging
 
 [^1]:
-    See the [FAQ for Low Code](../FAQ-Low-Code)
+    See the [FAQ for Low Code](FAQ-Low-Code)
