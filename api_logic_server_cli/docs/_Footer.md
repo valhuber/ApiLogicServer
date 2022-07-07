@@ -1,1 +1,0 @@
-<figure><img src="images/jetbrains-variant-4.png"  width="50"><figcaption>Developed with PyCharm</figcaption></figure>

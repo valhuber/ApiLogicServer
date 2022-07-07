@@ -59,7 +59,6 @@ nav:
   - Unused:
     - "zz Logic = Rules + Python": "Logic-Rules-plus-Python.md"
     - "Old Quick Start": Quick-Start.md
-    - _Footer.md
 markdown_extensions:
   - toc:
       baselevel: 2

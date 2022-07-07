@@ -1,4 +1,4 @@
-# Why Docker: Reduce Install Confusion
+## Why Docker: Reduce Install Confusion
 
 Docker provides significant well-known advantages for development and deployment:</summary>
 
@@ -8,7 +8,7 @@ Docker provides significant well-known advantages for development and deployment
 
 * __isolation__ - in both cases, Docker applications encapsulate their environment, eliminating external dependencies.  Likewise, Docker applications will not affect other applications running on the same hardware
 
-ApiLogicServer is therefore provided in a docker image, as described in the [readme](https://github.com/valhuber/ApiLogicServer/blob/main/README.md).  This page provides miscellaneous operational procedures to support Docker.
+ApiLogicServer is therefore provided in a docker image, as described in the [Install Guide](../Install).  This page provides miscellaneous operational procedures to support Docker.
 
 &nbsp;
 

@@ -1,16 +1,15 @@
+## Install in Docker or Locally
+
 You can install API Logic Server locally using `pip`, using Docker, or pythonanywhere (a cloud service).
 
   > While `pip` is a simple install, it requires a Python environment, which is _not_ so simple.  We therefore recommend you consider Docker - it's a simpler install, and aligns you with a likely deployment environment.
 
-
-Open the appropriate section below, and see the [Install Notes](Installation-Notes) at the end.
-
+Open the appropriate section below, and see the [Installation Notes](Installation-Notes), below.
 
 === "With Docker"
   
-    As described in the [readme](https://github.com/valhuber/ApiLogicServer/blob/main/README.md):
 
-    ```bash
+    ```bash title="Start (might install) API Logic Server Docker"
     cd ApiLogicServer      # a directory of projects on local host
 
     # Start (install if required) the API Logic Server docker container...
@@ -18,17 +17,18 @@ Open the appropriate section below, and see the [Install Notes](Installation-Not
     docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
     ```
 
-    This will start a command line in the Docker container.
-    You are now able to issue commands like `ApiLogicServer create` as described in the readme.
+    This will start a command line in the Docker container at your current directory.
+    You are now able to issue commands like `ApiLogicServer create` as described in the home page.  These will create API Logic Projects as directories under your current directory.
+
+    > Windows: use Powershell (`PWD` is not supported in Command Line)
+
+    > API Logic Projects are _not_ restricted to be under the same directory.
 
     The `api_logic_server` image supports startup arguments so you can control the `api_logic_server` container, by running a startup script or by supplying environment variables.  You might, for example, have automated test procedures that load projects from `GitHub` and run tests.
 
-
-    > Already installed?  Upgrade to the latest (5.03.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Docker/)).
-
     For more information, see [Working With Docker](../Working-With-Docker).
 
-
+    > Already installed?  Upgrade to the latest (5.03.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Docker/)).
 
 === "Local Install"
 
@@ -38,82 +38,32 @@ Open the appropriate section below, and see the [Install Notes](Installation-Not
 
     The following section explains how to install a current Python environment.
 
-    ### Verify Pre-reqs: Python 3.8+, pip3
+   __Verify Pre-reqs: Python 3.8+__
 
     Ensure you have these pre-reqs:
 
-    ```bash
+    ```bash title="Verify 3.8 - 3.10"
     python --version
-    python -m venv --help    # creates a venv
-    python -m pip --version  # install from PyPi
     ```
+      > Note: on Macs, you may need to use `python3` instead of `python`.  You can customize this as described in the [Troubleshooting Guide](../Troubleshooting#python-issues).
 
-      > Note: you may need to use `python3` instead of `python`.  You can customize this as described in the [Troubleshooting Guide](../Troubleshooting#python-issues).
-
+    If you need to install Python (it can be tricky), see [these notes](../Tech-Install-Python)
     &nbsp;
 
-    ### Install Python (if required)
-
-    If you are missing any, install them as described here.  Skip this step if your pre-reqs are fine.  To install Python:
-
-    * On Windows - run the windows installer - be sure to specify "add Python to Path"
-
-    * On Mac/Linux - your OS may provide installer options.
-      
-      * For example, Ubuntu provides the *Software Update* utility.  
-
-      * Mac users can use the [standard installer](https://www.python.org/downloads/); follow the recommendations to install certificates and update your shell.
-
-        > Installing Python on the Mac can be... _dramatic._  Consult the [Troubleshooting Guide](../Troubleshooting#python-issues).
-
-      * Alternatively, many prefer [using homebrew](https://brew.sh/), as described [here](https://opensource.com/article/19/5/python-3-default-mac#what-to-do)
-
-    &nbsp;
-
-    ### Install API Logic Server in a virtual environment
+    __Install API Logic Server in a virtual environment__
 
     Then, install API Logic Server in the usual manner:
 
-    ```bash
-    cd ApiLogicServer          # directory of your choice
-    python3 -m venv venv       # may require python -m venv venv
-    source venv/bin/activate   # windows venv\Scripts\activate
-    pip install ApiLogicServer # you may need to use pip3
+    ```bash title="Install API Logic Server in a Virtual Environment"
+    cd ApiLogicServer                    # directory of your choice
+    python -m venv venv                  # may require python3 -m venv venv
+    source venv/bin/activate             # windows venv\Scripts\activate
+    python -m pip install ApiLogicServer # you may need to use pip3
     ```
 
-    &nbsp;
+    If you are using SqlServer, you also need to [install `pyodbc`](../Install-pyodbc)
 
-    ### SqlServer - install `pyodbc`
-
-    This is included in Docker, but not for local installs.  To install `pyodbc` (either global to your machine, or within a `venv`):
-
-    * Linux
-
-    ```bash
-    apt install unixodbc-dev   # Linux only
-    pip install pyodbc
-    ```
-
-    * Mac - using [brew](https://brew.sh/):
-
-    Install the [Microsoft ODBC driver](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16), then:
-
-    ```bash
-    # may be required - brew install unixodbc      # Mac only
-    pip install pyodbc
-    ```
-
-    Please see the examples on the [testing](../Testing#northwind---sqlserver--docker) for important considerations in specifying SQLAlchemy URIs.
-
-    &nbsp;
-
-    ### Next Steps
-
-    Create, start and debug the sample project - see the [Quick Start](#Quick-Start).
-
-    &nbsp;
 === "PythonAnyWhere"
-
 
     You can create an ApiLogicServer on [PythonAnywhere](http://pythonanywhere.com) for any cloud-accessible database.  Open a bash console, and:
 
@@ -174,6 +124,9 @@ Open the appropriate section below, and see the [Install Notes](Installation-Not
     curl -X GET "http://ApiLogicServer.pythonanywhere.com/api/employees/?include=office%2Cparent%2CEmployeeList%2CCustomerList&fields%5BEmployee%5D=employeeNumber%2ClastName%2CfirstName%2Cextension%2Cemail%2CofficeCode%2CreportsTo%2CjobTitle&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=employeeNumber%2ClastName%2CfirstName%2Cextension%2Cemail%2CofficeCode%2CreportsTo%2CjobTitle%2Cid" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/vnd.api+json"  
     ```
 
+## After Install - Create a Project
+
+Create, start and debug the sample project - see the [Creating a Project](../Create-ApiLogicProject).
 
 ## Installation Notes
 
