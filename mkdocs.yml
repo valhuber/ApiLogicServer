@@ -20,17 +20,20 @@ nav:
   - 2. API:
     - "JSON:API": API.md
     - "API Customization": API-Customize.md
-  - 3. Unique Backend Logic:
+  - 3. Logic:
     - "Rules; 40X, Extensible": Logic-Why.md
     - "Rules": Logic.md
     - "Logic Operation": "Logic-Operation.md"
     - "TDD-based Approach": "Logic-Tutorial.md"
+  - Database:
+    - Data-Model-Classes.md
+    - Data-Model-Customization.md
+    - "Connection Examples": Database-Connectivity.md
+    - "Install pyodbc: SqlServer": Install-pyodbc.md
+    - Sample-Database.md
   - Using your IDE:
     - "Open and Execute": IDE-Execute.md
     - "Customize": IDE-Customize.md
-  - Testing:
-    - "Testing With Behave": Behave.md
-    - "Behave Logic Report": Behave-Logic-Report.md
   - Managing API Logic Projects:
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md
@@ -38,12 +41,9 @@ nav:
     - "Virtual Environment": Project-Env.md
     - "Execution": Project-Execution.md
     - "Builders": Project-Builders.md
-  - Database Access:
-    - "Connection Examples": Database-Connectivity.md
-    - "Install pyodbc: SqlServer": Install-pyodbc.md
-    - Data-Model-Classes.md
-    - Data-Model-Customization.md
-    - Sample-Database.md
+  - Testing:
+    - "Testing With Behave": Behave.md
+    - "Behave Logic Report": Behave-Logic-Report.md
   - Architecture:
     - "What is API Logic Server": Architecture-What-Is.md
     - Architecture.md

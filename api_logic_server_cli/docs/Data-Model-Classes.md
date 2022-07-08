@@ -1,7 +1,8 @@
 
-# Data Model Classes
+Most of API Logic Server functionality derives from the data model classes created from your schema when you create your project with `ApiLogicServer create`.  In the example below:
 
-Most of API Logic Server functionality derives from the data model classes created from your schema when you create your project.  Here is an example:
+* On the right are the created data model classes
+* On the left are references to it from the Admin Web App `admin.yaml` model file that defines how the app behaves:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/relns-admin.png?raw=true"></figure>
 
@@ -23,4 +24,4 @@ Relationship names are also part of your API:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/relns-api.png?raw=true"></figure>
 
-&nbsp;
+> Each database has extensions which can introduce issues in model generation, so facilities are described in [Troubleshooting](Troubleshooting) to edit models and rebuild.

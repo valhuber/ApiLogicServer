@@ -1,11 +1,13 @@
 ## Customize the Model: add relationships, derived attributes
-Model files describe your database tables.  Each database has extensions which can introduce issues in model generation, so facilities are described in [Troubleshooting](Troubleshooting) to edit models and rebuild.
+Model files describe your database tables.  You can extend these, e.g. to __add relationships__, and __add derived attributes__.
 
+> Note: relationships are a particularly critical aspect of the model.  While they normally come from your schema and are discovered during `ApiLogicServer create`, they are often missing from the database.  You can add them as shown below.
+  
 &nbsp;
 
-#### Edit ```models.py```: referential integrity (e.g., sqlite)
+### Edit ```models.py```: referential integrity (e.g., sqlite)
 
-[Rebuild support](#rebuilding) enables you to rebuild your project, preserving customizations you have made to the api, logic and app.  You can rebuild from the database, or from the model.
+[Rebuild support](../Project-Rebuild) enables you to rebuild your project, preserving customizations you have made to the api, logic and app.  You can rebuild from the database, or from the model.
 
 This enables you to edit the model to specify aspects not captured in creating the model from your schema.  For example, sqlite often is not configured to enforce referential integrity.  SQLAlchemy provides  support to fill such gaps.
 
@@ -21,7 +23,7 @@ Your api, logic and ui are not (directly) dependent on this setting, so there is
 
 &nbsp;
 
-#### Edit ```model_ext.py```: add relationships, derived attributes
+### Edit ```model_ext.py```: add relationships, derived attributes
 In addition, you may wish to edit ```models_ext.py```, for example:
 
 * to define [relationships](https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design), critical for multi-table logic, APIs, and web apps
@@ -30,7 +32,7 @@ In addition, you may wish to edit ```models_ext.py```, for example:
 
 &nbsp;
 
-#### Use Alembic to update database schema from model
+### Use Alembic to update database schema from model
 
 As of release 5.02.03, created API Logic Projects integrate [Alembic](https://alembic.sqlalchemy.org/en/latest/index.html) to perform database migrations.
 
