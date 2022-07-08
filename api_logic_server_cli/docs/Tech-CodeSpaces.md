@@ -1,0 +1,3 @@
+[CodeSpaces](https://github.com/features/codespaces){:target="_blank" rel="noopener"} is a GitHub project that enables you to use VSCode in your Browser to develop on rapidly deployed docker containers.  It's quite remarkable.  It's currently in Beta, though enrollment appears to be very open.
+
+Api Logic Server has been tested under CodeSpaces, and runs well.  Here is the [test project](https://github.com/valhuber/Tutorial-ApiLogicProject#readme){:target="_blank" rel="noopener"}.

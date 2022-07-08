@@ -58,7 +58,9 @@ nav:
     - "About Tech Notes": Tech--Notes.md
     - "Docker": Tech-Docker.md
     - "Python for a Java developer": Tech-Python.md
+    - "Python Installation": Tech-Install-Python.md
     - "Mkdocs Material": Tech-mkdocs-material.md
+    - "CodeSpaces": Tech-CodeSpaces.md
   - Unused:
     - "zz Logic = Rules + Python": "Logic-Rules-plus-Python.md"
     - "Old Quick Start": Quick-Start.md
