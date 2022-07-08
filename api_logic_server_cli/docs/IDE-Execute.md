@@ -142,3 +142,7 @@ Once you have established your Python environment, you are ready to run.  The `A
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/run-debug.png"></figure>
 
 > You may get a message: _"The Python path in your debug configuration is invalid."_  Open View > Command Pallet, type “Python Select Interpreter” and Select your `venv`.
+
+## Other Launch Configurations
+
+The `ApiLogicServer create` command also creates launch configurations for executing tests, and running the [Behave Logic Report](../Behave-Logic-Report). 
