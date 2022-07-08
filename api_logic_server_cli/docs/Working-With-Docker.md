@@ -49,6 +49,14 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 
 </details>
 
+
+## ApiLogicServer Container upgrades
+
+If you update your ApiLogicServer container to a new version, your existing projects may appear to be damaged.  You can fix them easily:
+
+1. Click the Dev Container button (in the lower left)
+1. Choose **Rebuild Container**
+
 ## Connect to Dockerized Databases
 
 One of the great things about Docker is the ability to install popular databases, with no hassle.  Follow the procedures described in [Testing](../Testing).

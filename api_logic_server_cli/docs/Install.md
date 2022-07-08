@@ -38,16 +38,19 @@ Open the appropriate section below, and see the [Installation Notes](Installatio
 
     The following section explains how to install a current Python environment.
 
-   __Verify Pre-reqs: Python 3.8+__
+    __Verify Pre-reqs: Python 3.8+__
 
     Ensure you have these pre-reqs:
 
     ```bash title="Verify 3.8 - 3.10"
     python --version
-    ```
-      > Note: on Macs, you may need to use `python3` instead of `python`.  You can customize this as described in the [Troubleshooting Guide](../Troubleshooting#python-issues).
 
-    If you need to install Python (it can be tricky), see [these notes](../Tech-Install-Python)
+    python -m venv -h  # also verify these work
+    python -m pip -h
+    ```
+      > Note: on Macs, you may need to use `python3` instead of `python`.
+
+    If you need to install Python (it can be tricky), see [these notes](../Tech-Install-Python).
     &nbsp;
 
     __Install API Logic Server in a virtual environment__
@@ -61,7 +64,7 @@ Open the appropriate section below, and see the [Installation Notes](Installatio
     python -m pip install ApiLogicServer # you may need to use pip3
     ```
 
-    If you are using SqlServer, you also need to [install `pyodbc`](../Install-pyodbc)
+    If you are using SqlServer, you also need to [install `pyodbc`](../Install-pyodbc).
 
 === "PythonAnyWhere"
 

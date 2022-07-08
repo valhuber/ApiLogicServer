@@ -25,6 +25,9 @@ nav:
     - "Rules": Logic.md
     - "Logic Operation": "Logic-Operation.md"
     - "TDD-based Approach": "Logic-Tutorial.md"
+  - Using your IDE:
+    - "Open and Execute": IDE-Execute.md
+    - "Customize": IDE-Customize.md
   - Testing:
     - "Testing With Behave": Behave.md
     - "Behave Logic Report": Behave-Logic-Report.md
