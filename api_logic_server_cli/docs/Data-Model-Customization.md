@@ -33,10 +33,12 @@ In addition, you may wish to edit ```models_ext.py```, for example:
 #### Use Alembic to update database schema from model
 
 As of release 5.02.03, created API Logic Projects integrate [Alembic](https://alembic.sqlalchemy.org/en/latest/index.html) to perform database migrations.
+
 * Manual: create migration scripts by hand, or
 * Autogenerate: alter your `database/models.py`, and have alembic create the migration scripts for you
 
 Preconfiguration includes:
+
 * initialized `database/alembic` directory
 * configured `database/alembic/env.py` for autogenerations
 * configured `database/alembic.ini` for directory structure

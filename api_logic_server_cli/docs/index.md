@@ -134,8 +134,7 @@ Many thanks to
 
 ### Articles
 
-There are a few articles that provide some orientation to Logic Bank and Flask App Builder.
-These technologies are automatically created when you use ApiLogicServer:
+There are a few articles that provide some orientation to API Logic Server:
 
 * [How Automation Activates Agile](https://modeling-languages.com/logic-model-automation/){:target="_blank" rel="noopener"}
 * [How Automation Activates Agile](https://dzone.com/articles/automation-activates-agile){:target="_blank" rel="noopener"} - providing working software rapidly drives agile collaboration to define systems that meet actual needs, reducing requirements risk

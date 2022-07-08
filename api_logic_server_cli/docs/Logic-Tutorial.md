@@ -170,6 +170,7 @@ Rules are entered in Python, with code completion, as shown below.  Observe how 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/declare-logic.png?raw=true"></figure>
 
 Unlike manual code, logic is ***declarative:***
+
 * **automatically reused** - re-use is usually achieved by careful design; rules make re-use automatic:
   * Since rules are about the data (not a specific transaction), they automate all the transactions that touch the data (add order, delete order, change order shipped date, etc).  Even ones you might have overlooked (move order to different customer).
   * Since rules are enforced as part of the API, they are automatically shared across *all* screens and services.
@@ -199,6 +200,7 @@ Execute the tests using the pre-supplied Launch Configurations:
 1. Run Launch Configuration `Run Behave Logic` 
 
 The rules fire as transactions are run, and produce Logic Log files later used in Report Behave Logic (described below): 
+
 1. `test/api_logic_server_behave/behave.log` - summarizes test success / failure
 2. `api_logic_server_behave/scenario_logic_logs/Bad_Order_Custom_Service.log` - [Logic Log output](../Logic:-Rules-plus-Python#debugging).
    * The code on line 161 signals the name of Logic Log
