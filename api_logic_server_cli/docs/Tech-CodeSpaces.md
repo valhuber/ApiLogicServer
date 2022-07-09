@@ -14,7 +14,7 @@ __2. Get the Tutorial Project__
 
 __3. Configure the Admin App__ for you URL:
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-tutorial-repo.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/configure-admin.png?raw=true"></figure>
 
 __4. Configure a Port__
 
