@@ -18,7 +18,7 @@ __3. Configure the Admin App__ for you URL:
 
 __4. Configure a Port__
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/configure-port.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-port.png?raw=true"></figure>
 
 __5. Start the Server__ using the provided Launch Configuration
 
