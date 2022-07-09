@@ -8,10 +8,10 @@ __1. Signup for CodeSpaces__ - use [this link](https://github.com/features/codes
 
 __2. Get the Tutorial Project__
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/codespaces/open-tutorial.png
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-tutorial-repo.png
 ?raw=true"></figure> 
 
-https://github.com/valhuber/apilogicserver/wiki/images/codespaces/open-tutorial.png?raw=true
+https://github.com/valhuber/apilogicserver/wiki/images/codespaces/open-tutorial.png%0A?raw=true
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/behave-summary.png?raw=true"  height="600"></figure>
 
