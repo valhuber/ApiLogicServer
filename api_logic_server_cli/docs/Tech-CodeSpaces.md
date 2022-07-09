@@ -11,21 +11,17 @@ __2. Get the Tutorial Project__
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-tutorial-repo.png
 ?raw=true"></figure> 
 
-https://github.com/valhuber/apilogicserver/wiki/images/codespaces/open-tutorial.png%0A?raw=true
-
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/behave/behave-summary.png?raw=true"  height="600"></figure>
-
 
 __3. Configure the Admin App__ for you URL:
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/codespaces/open-tutorial.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-tutorial.png?raw=true"></figure>
 
 __4. Configure a Port__
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/codespaces/configure-port.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/configure-port.png?raw=true"></figure>
 
 __5. Start the Server__ using the provided Launch Configuration
 
 __6. Open the Browser__
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/codespaces/open-port.png?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-port.png?raw=true"></figure>
