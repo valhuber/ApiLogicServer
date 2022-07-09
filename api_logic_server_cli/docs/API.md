@@ -9,6 +9,6 @@ Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com
 JSON:APIs are interesting because they are _client configurable,_ to __reduce network traffic__ and __minimize organizational dependencies.__
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/swagger.png?raw=true"></figure>
-&nbsp;&nbsp;&nbsp;
+&nbsp;
 
   > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
