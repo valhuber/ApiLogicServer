@@ -25,7 +25,7 @@ And your code is the "how".
 </details>
 
 
-## Solution: Rules for Executable Design
+## Solution: Rules are an Executable Design
 
 API Logic -- unique to API Logic Server -- consists of __Rules, extensible with Python.__  
 

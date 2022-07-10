@@ -21,7 +21,7 @@ nav:
     - "JSON:API": API.md
     - "API Customization": API-Customize.md
   - 3. Logic:
-    - "Rules; 40X, Extensible": Logic-Why.md
+    - "Rules: 40X, Extensible": Logic-Why.md
     - "Rules": Logic.md
     - "Logic Operation": "Logic-Operation.md"
     - "TDD-based Approach": "Logic-Tutorial.md"
