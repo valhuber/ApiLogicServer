@@ -72,7 +72,7 @@ After you've explored the tutorial (created from [this database](../Sample-Datab
 | 5. Model Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                | [SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html)                          |
 | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                | [Logic Tutorial](../Logic:-Tutorial)                          |
 
-The following tutorial is a good way to explore API Logic Server.
+The [tutorial](Tutorial) is a good way to explore API Logic Server.
 
 &nbsp;
 
