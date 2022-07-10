@@ -1,4 +1,4 @@
-After completing the `ApiLogicServer create` step, you can view the readme in the created ApiLogicProject.  It contains the sample tutorial, created from [this database.](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  
+After completing the `ApiLogicServer create` step, you can view the ```readme``` in the created API Logic Project.  It links to this sample tutorial, created from [this database.](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  
 
 In this tutorial, we will explore:
 
@@ -8,7 +8,8 @@ In this tutorial, we will explore:
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
 
-This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  
+This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.
+
 &nbsp;
 
 [![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container - click for video")
