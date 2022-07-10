@@ -1,7 +1,4 @@
-
-# Sample Tutorial - API Logic Server
-
-After completing the `create` step, you can view the readme in the created ApiLogicProject.  It contains the sample tutorial, created from [this database.](../Sample-Database)  
+After completing the `ApiLogicServer create` step, you can view the readme in the created ApiLogicProject.  It contains the sample tutorial, created from [this database.](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  
 
 In this tutorial, we will explore:
 
@@ -11,9 +8,10 @@ In this tutorial, we will explore:
 
 * **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
 
-This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  You will need to configure container and launch configurations for PyCharm - [see here](https://valhuber.github.io/ApiLogicServer/Execute/) for more information.
+This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.  
+&nbsp;
 
-[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container - click for video"){:target="_blank" rel="noopener"}
 
 The diagram above summarizes the create / run / customize process.  It's a video - click to view.
 
@@ -22,15 +20,30 @@ The diagram above summarizes the create / run / customize process.  It's a video
 
 ## Create
 
-Once you have installed API Logic Server, you can use the provided CLI to create projects.  The key arguments are:
+> Note: this page appears in the documentation, and in created projects.  This section is intended for documentation readers; if you are viewing this in a created project, the create step has already been completed, so you can skip this section.
 
-1. `project_name` - a folder with this name will be created and populated; you'll later open this with your IDE
+Once you have installed API Logic Server, you can use the provided CLI to [create API Logic Projects]https://valhuber.github.io/ApiLogicServer/Create-ApiLogicProject/): 
+
+```
+ApiLogicServer create --project_name= --db_url=
+```
+
+The key arguments are:
+
+1. `project_name` - a folder with this name will be created and populated; you'll later open this with your IDE.
 
 2. `db_url` - this defaults to the SqlLite version of Northwind already provided in the project.
+      * After exploring the sample, use `ApiLogicServer examples` to see how to use your own database.
 
-The defaulted `db_url` includes customizations we'll explore below.  If you want to see a "vanilla" creation without customizations, specify `nw-`.  You can later introduce the customizations by running `python perform_customizations.py go`.
+      * The defaulted `db_url` includes customizations we'll explore below.  If you want to see a "vanilla" creation without customizations, specify `nw-`.  You can later introduce the customizations by running `python perform_customizations.py go`.
 
-&nbsp;&nbsp;&nbsp;
+&nbsp;
+
+## Establish your Python Environment
+
+Please  see [Using your IDE > Open and Execute](https://valhuber.github.io/ApiLogicServer/IDE-Execute/).
+
+&nbsp;
 
 ## Run
 
@@ -157,7 +170,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 
 > Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules; you can [visualize the process here](https://valhuber.github.io/ApiLogicServer/Logic:-Rules-plus-Python#logic-execution-add-order---watch-react-chain).
 
-[Logic](../Logic:-Rules-plus-Python) consists of rules **and** conventional Python code.  Explore it like this:
+[Logic](https://valhuber.github.io/ApiLogicServer/Logic-Why/) consists of rules **and** conventional Python code.  Explore it like this:
 
 1. Open **Explorer > logic/declare_logic.py**:
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
