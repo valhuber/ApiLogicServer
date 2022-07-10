@@ -282,6 +282,8 @@ def create_nw_tutorial(project_name, code_loc):
         "\n" +\
         "Welcome to the Sample Database Readme - [run the Tutorial](Tutorial).\n" +\
         "\n" +\
+        "...Also available in [the docs](https://valhuber.github.io/ApiLogicServer/Tutorial/)]\n" +\
+         "\n" +\
         "The standard API Logic Project readme follows...\n" +\
         "\n" +\
         "&nbsp;\n" +\

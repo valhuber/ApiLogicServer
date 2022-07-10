@@ -9,11 +9,13 @@ theme:
     - content.tooltips
 nav:
   - " ": index.md
-  - 0. Quick Start:
+  - Quick Start:
     - Install API Logic Server: Install.md
     - "Create an API Logic Project": Create-ApiLogicProject.md
     - Execute an API Logic Project: Execute.md
+  - Tutorial:
     - "Tutorial": Tutorial.md
+    - Sample-Database.md
   - 1. Admin Web App:
     - "Admin App Features": "Admin-Tour.md"
     - Admin-Customization.md
@@ -30,7 +32,6 @@ nav:
     - Data-Model-Customization.md
     - "Connection Examples": Database-Connectivity.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
-    - Sample-Database.md
   - Using your IDE:
     - "Open and Execute": IDE-Execute.md
     - "Customize": IDE-Customize.md
