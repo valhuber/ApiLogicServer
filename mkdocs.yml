@@ -47,18 +47,17 @@ nav:
   - Architecture:
     - "What is API Logic Server": Architecture-What-Is.md
     - Architecture.md
-    - Working-with-the-Admin-App.md
     - Working-with-Flask-AppBuilder.md
     - "API Logic Server Development": Internals.md
   - Troubleshooting.md
   - FAQs:
-    - "Is this a RETE Engine": FAQ-RETE.md
+    - "Is this a RETE Engine?": FAQ-RETE.md
     - "Is this a Low Code approach?": FAQ-Low-Code.md
+    - "Is this a 4GL?": Tech-4GL.md
   - Tech Notes:
     - "About Tech Notes": Tech--Notes.md
     - "Docker": Tech-Docker.md
     - "Python for a Java developer": Tech-Python.md
-    - "Is API Logic Server a 4L": Tech-4GL.md
     - "Python Installation": Tech-Install-Python.md
     - "Mkdocs Material": Tech-mkdocs-material.md
     - "CodeSpaces": Tech-CodeSpaces.md

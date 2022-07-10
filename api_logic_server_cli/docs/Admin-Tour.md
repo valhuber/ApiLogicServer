@@ -65,11 +65,17 @@ For more information on Architecture, [see Architecture](../Architecture).
 
 Let's explore the admin app for the sample database.
 
+
 ### Multi-Page, Multi-Table, Automatic Joins
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/multi-page.png?raw=true"></figure>
+
 Explore basic data browsing:
 
 1. Navigate to `Customer`
    * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
+   * Observe support for _Pagination_
+   * Observe support for _Multi-Field Search_
 2. Click the Customer row to _drill down_ to see Customer Details
 3. Observe the `Placed Order List` tab at the bottom
    * Observe the _multi-table_ page: a tab is created for each foreign key relationship
@@ -160,6 +166,7 @@ Repeat the process above, but note the `Customer.Balance` before and after.  Thi
 
 ```
 Such logic is [automatically re-used](../Logic:-Rules-plus-Python#spreadsheet-like-automatic-reuse) over transactions, and is therefore [equivalent to several hundred lines of code.](../Logic:-Rules-plus-Python#what---declare-spreadsheet-like-rules---40x-more-concise)  So, these rules also govern:
+
 * changing an `OrderDetail.ProductId` (as we did here)
 * changing an `OrderDetail.Quantity` 
 * adding `OrderDetail` rows

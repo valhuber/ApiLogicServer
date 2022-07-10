@@ -3,7 +3,7 @@ const sla_doc =
     '<div style="text-align:center">' +
     '<h2>Welcome to API Logic Server - Sample</h2>' +
     '</div><br>' +
-    '<h3><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server</a> ' +
+    '<h3><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/" target="_blank">API Logic Server</a> ' +
     'creates <i>customizable</i> model-driven systems, instantly from your ' +
     '<a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/Sample-Database/" target="_blank">database:</a>' +
     '</h3>' +
