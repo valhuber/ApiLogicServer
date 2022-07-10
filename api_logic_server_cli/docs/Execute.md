@@ -1,8 +1,12 @@
 You can execute API Logic Projects directly in a Terminal window, as described below.
 
+&nbsp;
+
 ## Most commonly - in your IDE
 
 In most cases, you will probably want to run it from your IDE (see [IDE > Open and Execute](../IDE-Execute)).
+
+&nbsp;
 
 ## From the Terminal
 
@@ -22,7 +26,7 @@ python api_logic_server_run.py       # options exist to override URL, port
 
 ### 2. Open in your Browser
 
-The server should start, and suggest the URL for your Browser.  That will open a page like this where you can explore your data using the automatically created [Admin app](../Working-with-the-Admin-App), and explore the API with automatically generated Swagger:
+The server should start, and suggest the URL for your Browser.  That will open a page like this, where you can explore your data using the automatically created [Admin app](../Working-with-the-Admin-App), and explore the API with automatically generated Swagger:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-home.png?raw=true"></figure>
 
