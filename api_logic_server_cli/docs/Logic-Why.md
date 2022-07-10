@@ -1,10 +1,42 @@
-Logic addresses backend multi-table constraint and derivation logic.  In conventional approaches, such logic is **nearly half the system,** due to [code explosion](#problem-code-explosion).
+Logic addresses backend multi-table constraint and derivation logic.  It's expressed in Python as rules, extensible with Python events as required.
 
-API Logic -- unique to API Logic Server -- consists of __Rules, extensible with Python.__  Rules typically automate over **95% of such logic,** and are **40X more concise**.  Rules are conceptually similar to [spreadsheet cell formulas](../Logic-Operation/#basic-idea-like-a-spreadsheet).
+
+## Problem: Code Explosion
+
+In conventional approaches, such logic is **nearly half the system,** due to code explosion.  A typical design specification of 5 lines explodes into [200 lines of legacy code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}).
+
+<details markdown>
+<summary>5 Line Spec Explodes into 200 Lines of Code... </summary>
+
+Let's imagine we have a "cocktail napkin spec" for checking credit, shown (in blue) in the diagram below.  How might we enforce such logic?
+
+* In UI controllers - this is the most common choice.  It's actually the worst choice, since it offers little re-use, and does not apply to non-UI cases such as API-based application integration.
+
+* Centralized in the server - in the past, we might have written triggers, but a modern software architecture centralizes such logic in an App Server tier.  If you are using an ORM such as SQLAlchemy, you can _ensure sharing_ with `before_flush` events as shown below.
+
+After we've determined _where_ to put the code, we then have to _write_ it.  Our simple 5 line cocktail napkin specification explodes into [200 lines of legacy code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}):
+
+<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/overview/rules-vs-code.png"></figure>
+
+It's also incredibly repetitive - you often get the feeling you're doing the same thing over and over.
+
+And you're right.  It's because backend logic follows patterns of "what" is supposed to happen.
+And your code is the "how". 
+</details>
+
+
+## Solution: Rules for Executable Design
+
+API Logic -- unique to API Logic Server -- consists of __Rules, extensible with Python.__  
+
+> Rules typically automate over **95% of such logic,** and are **40X more concise**.  Rules are conceptually similar to [spreadsheet cell formulas](../Logic-Operation/#basic-idea-like-a-spreadsheet).
 
 For this typical check credit design (in blue), the 5 rules shown below (lines 54-79) represent the same logic as [200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}:
 
-<details>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
+
+
+<details markdown>
 
   <summary>See the code here</summary>
 ```python
@@ -52,7 +84,6 @@ def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: 
 Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 ```
 </details>
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
 
 &nbsp;
 
