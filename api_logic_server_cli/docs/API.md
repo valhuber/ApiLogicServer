@@ -12,3 +12,13 @@ JSON:APIs are interesting because they are _client configurable,_ to __reduce ne
 &nbsp;
 
   > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
+
+&nbsp;
+
+## Key Usage: custom apps
+
+The automatic Admin App is useful, but most systems will require custom User Interfaces.  Use your favorite framework (eg, React).
+
+  > **Key Take-away:** your API encapsulates your logic, factoring it out of APIs for greater concisenss and sharing / consistency.
+
+  > Tip: use Swagger to debug your API parameters, then use the copy/paste services to use these in your application.

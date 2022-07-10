@@ -1,10 +1,19 @@
-While a standards-based API is a great start, sometimes you need custom endpoints tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for `add_order`.
+While a standards-based API is a great start, sometimes you need custom endpoints tailored exactly to your business requirement.  Initially the API exposes all your tables as collection endpoints.  You can add additional endpoints by editing ```expose_services.py```, as illustrated below. 
 
-## Customize the API with ```expose_services.py```: add RPCs, Services
 
-Initially the API exposes all your tables as collection endpoints.  You can add additional endpoints by editing ```expose_services.py```, as illustrated by the Add Service example.  For more on customization, see [SAFRS Customization docs](https://github.com/thomaxxl/safrs/wiki/Customization).
+## Use Flask
 
-To review the implementation: 
+You will observe the standard "Hello World" endpoint, which directly uses Flask.  These do not appear in Swagger.
+
+&nbsp;
+
+## Use SAFRS: endpoint with swagger
+
+ You can create these as shown below, where we create an additional endpoint for `add_order`.
+ 
+ For more on customization, see [SAFRS Customization docs](https://github.com/thomaxxl/safrs/wiki/Customization).
+
+To review the implementation, and how to use the debugger for your custom endpoints: 
 
 1. Open **Explorer > api/customize_api.py**:
 3. Set the breakpoint as shown
