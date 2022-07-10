@@ -189,23 +189,3 @@ This is significant for iterative development and maintenance, eliminating the b
 
 #### Control for actions and constraints
 Constraint and action rules are executed in their declaration order.
-
-
-&nbsp;
-
-## Problem: Code Explosion
-
-Let's imagine we have a "cocktail napkin spec" for checking credit, shown (in blue) in the diagram below.  How might we enforce such logic?
-
-* In UI controllers - this is the most common choice.  It's actually the worst choice, since it offers little re-use, and does not apply to non-UI cases such as API-based application integration.
-
-* Centralized in the database - in the past, we might have written triggers, but a modern software architecture centralizes such logic in an App Server tier.  If you are using an ORM such as SQLAlchemy, you can _ensure sharing_ with `before_flush` events as shown below
-
-After we've determined _where_ to put the code, we then have to _write_ it.  Our simple cocktail napkin specification explodes into a massive amount of legacy code:
-
-<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/overview/rules-vs-code.png"></figure>
-
-It's also incredibly repetitive - you often get the feeling you're doing the same thing over and over.
-
-And you're right.  It's because backend logic follows patterns of "what" is supposed to happen.
-And your code is the "how".  
