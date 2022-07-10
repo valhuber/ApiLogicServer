@@ -58,6 +58,7 @@ nav:
     - "About Tech Notes": Tech--Notes.md
     - "Docker": Tech-Docker.md
     - "Python for a Java developer": Tech-Python.md
+    - "Is API Logic Server a 4L": Tech-4GL.md
     - "Python Installation": Tech-Install-Python.md
     - "Mkdocs Material": Tech-mkdocs-material.md
     - "CodeSpaces": Tech-CodeSpaces.md

@@ -25,3 +25,10 @@ __5. Start the Server__ using the provided Launch Configuration
 __6. Open the Browser__
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-port.png?raw=true"></figure>
+
+
+&nbsp;
+
+## Status
+
+On 7/9/2022, the project loads and the server starts and runs the admin app.  But, unable to run swagger, or ping / curl the server.
