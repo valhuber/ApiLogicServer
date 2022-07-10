@@ -6,7 +6,7 @@ Logic addresses backend multi-table constraint and derivation logic.  It's expre
 In conventional approaches, such logic is **nearly half the system,** due to code explosion.  A typical design specification of 5 lines explodes into [200 lines of legacy code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}).
 
 <details markdown>
-<summary>5 Line Spec Explodes into 200 Lines of Code... </summary>
+<summary>5 Line Spec Explodes into 200 Lines of Legacy Code... </summary>
 
 Let's imagine we have a "cocktail napkin spec" for checking credit, shown (in blue) in the diagram below.  How might we enforce such logic?
 
@@ -31,7 +31,7 @@ API Logic -- unique to API Logic Server -- consists of __Rules, extensible with 
 
 > Rules typically automate over **95% of such logic,** and are **40X more concise**.  Rules are conceptually similar to [spreadsheet cell formulas](../Logic-Operation/#basic-idea-like-a-spreadsheet).
 
-For this typical check credit design (in blue), the 5 rules shown below (lines 54-79) represent the same logic as [200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}:
+For this typical check credit design (in blue), the 5 rules shown below (lines 64-79) represent the same logic as [200 lines of code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
 
