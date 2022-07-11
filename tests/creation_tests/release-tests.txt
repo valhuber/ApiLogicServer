@@ -13,7 +13,7 @@ caution: SqlServer url depends on install of pyodbc (18 requires &Encrypt=no)
     pip
     ===
 
-    pip install pyodbc
+    python3 -m pip install pyodbc
     sh create-servers.sh create  # rebuilds ApiLogicProject, classicmodels, postgres, sqlserver, sqlserver-types
     
     then, to test the servers (same cmd window)...
