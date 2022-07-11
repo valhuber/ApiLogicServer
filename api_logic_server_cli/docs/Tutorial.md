@@ -1,4 +1,4 @@
-After completing the `ApiLogicServer create` step, you can view the ```readme``` in the created API Logic Project.  It links to this sample tutorial, created from [this database.](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  
+After completing the `ApiLogicServer create` step, you can view the ```readme``` in the created API Logic Project.  The `readme` links to this sample tutorial, created from [this database.](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  
 
 In this tutorial, we will explore:
 
@@ -23,7 +23,7 @@ The diagram above summarizes the create / run / customize process.  It's a video
 
 > Note: this page appears in the documentation, and in created projects.  This section is intended for documentation readers; if you are viewing this in a created project, the create step has already been completed, so you can skip this section.
 
-Once you have installed API Logic Server, you can use the provided CLI to [create API Logic Projects]https://valhuber.github.io/ApiLogicServer/Create-ApiLogicProject/): 
+Once you have installed API Logic Server, you can use the provided CLI to [create API Logic Projects](https://valhuber.github.io/ApiLogicServer/Create-ApiLogicProject/): 
 
 ```
 ApiLogicServer create --project_name= --db_url=
@@ -34,7 +34,7 @@ The key arguments are:
 1. `project_name` - a folder with this name will be created and populated; you'll later open this with your IDE.
 
 2. `db_url` - this defaults to the SqlLite version of Northwind already provided in the project.
-      * After exploring the sample, use `ApiLogicServer examples` to see how to use your own database.
+      * After exploring the sample, use the `ApiLogicServer examples` command to see how to use your own database.
 
       * The defaulted `db_url` includes customizations we'll explore below.  If you want to see a "vanilla" creation without customizations, specify `nw-`.  You can later introduce the customizations by running `python perform_customizations.py go`.
 
@@ -48,30 +48,26 @@ Please  see [Using your IDE > Open and Execute](https://valhuber.github.io/ApiLo
 
 ## Run
 
-Created ApiLogicProjects are instantly executable.  Let's explore the Admin App and the API.
+The prior step established your Python enviroment, and started the server using the re-built launch configuration.  We are now ready to explore the Admin App and the API.
 
 ### Admin App: Multi-Page, Multi-Table, Automatic Joins
+
 To run the Admin App, follow these steps:
 
-1. Click **Run and Debug**
-   * *Note:* these steps are highlighted in the diagram below
-2. Select the `ApiLogicServer` Launch Configuration
-3. Press the green run button to start the server
-   * If you are running Docker / VS Code, and VS Code will suggest opening a Browser (the _preview_ browser is shown below).  Do so, and you should see the Home screen in your Browser.
-   * Otherwise, you can:
-      * Open a browser at [localhost:5656](localhost:5656), or
-      * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
-         * Note: be aware that we have seen some issue where the _simple browser_ fails to start; just use your normal browser  
-         * Note: we have also seen that some systems are slow to load caches on first execution; browser refresh can often be helpful
-4. Explore the app: multi-page, multi-table, automatic joins
-   * Navigate to `Customer`
-     * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
-   * Click the Customer row  to see Customer Details
-   * Observe the `Placed Order List` tab at the bottom
-   * Click the first Order row
-   * Click the `Order Detail List` tab at the bottom
-   * Click the first __Product Id__ to see its detail information
-6. (Close the app (browser), but leave the server running)
+1. In the step above, you've already started the server and browser
+1. Navigate to `Customer`
+      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
+2. Click the Customer row  to see Customer Details
+3. Observe the `Placed Order List` tab at the bottom
+4. Click the first Order row
+5. Observe the `Order Detail List` tab at the bottom
+6. Observe the elements shown in the diagram
+
+      * Multi-Page - 2 pages for each table (list, with search, and display)
+      * Multi-Table - database relationships (typically from foreign keys) used to build master/detail pages
+      * Automatic Joins - the Order Detail table contains `ProductId`, but the system has joined in the `Product Name`.  You can edit the `admin.yaml` file to control such behavior.
+
+7. Close the app (browser), but __leave the server running__
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
 

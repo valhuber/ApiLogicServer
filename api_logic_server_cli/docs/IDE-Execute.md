@@ -57,7 +57,7 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
     __1. Load your docker project__
 
-    Create and load your project like this:
+    You've aleady created your project like this:
 
     ```bash
     cd ~/Desktop                # directory of API Logic Server projects on local host
@@ -70,7 +70,7 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
     exit  # exit container to localhost
     ```
-        > Observe you __exit the Docker container___.  We'll start VSCOde _locally_ below, where it will restart Docker as a Remote Container below.  _Local_ operation means your project files are accessed locally (not via `/localhost`), which enables local file operations such as git.
+        > Observe you __exit the Docker container__.  We'll start VSCode _locally_ below, where it will restart Docker as a Remote Container below.  _Local_ operation means your project files are accessed locally (not via `/localhost`), which enables local file operations such as git.
 
     ```bash title="Start VSCode on created API Logic Project"
     # start VS Code either as an application, or via the command line
@@ -82,10 +82,12 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
     Created projects are configured to support:
 
-    * launch configurations for running `ApiLogicServer` and the `Basic Web App`
+    * launch configurations for running `ApiLogicServer` and tests
     * Docker-based Python environments, per `.devcontainer`
 
     So, when you open the created project, VS Code recognizes that Docker configuration, and provides an option to **Reopen** the project in a [remote container](https://code.visualstudio.com/docs/remote/containers).  Accept this option.
+
+    > If you already skipped this option, no worries.  Use __View > Command Palette > Remote-Containers: Reopen in Container__
 
 
     <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/open-in-container.png"></figure>
@@ -135,13 +137,30 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
 ## Execute - prebuilt Launch Configurations
 
-Once you have established your Python environment, you are ready to run.  The `ApiLogicServer create` command has build launch configurations, so you can start your server like this:
+Once you have established your Python environment, you are ready to run.  The `ApiLogicServer create` command has built launch configurations, so you can start your server like this:
 
-1. Run/Debug: `ApiLogicServer`
+1. Click **Run and Debug**
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/run-debug.png"></figure>
 
-> You may get a message: _"The Python path in your debug configuration is invalid."_  Open View > Command Pallet, type “Python Select Interpreter” and Select your `venv`.
+2. Select the `ApiLogicServer` Launch Configuration
+3. Press the green run button to start the server
+
+    * If you are running Docker / VS Code, VS Code will suggest opening a Browser, or previewing it in the Editor (i.e., in VSCode) (the _preview_ browser is shown in the Tutorial).
+
+    * Otherwise, you can:
+
+        * Open a browser at [localhost:5656](localhost:5656), or
+        * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
+
+
+Notes:
+
+* Be aware that we have seen some issue where the _simple browser_ fails to start; just use your normal browser  
+* We have also seen that some systems are slow to load caches on first execution; browser refresh can often be helpful
+* You may get a message: _"The Python path in your debug configuration is invalid."_  Open View > Command Pallet, type “Python Select Interpreter” and Select your `venv`.
+
+&nbsp;
 
 ## Other Launch Configurations
 

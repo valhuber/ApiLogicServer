@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.10"
+__version__ = "5.03.11"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/04/2022 - 05.03.10: Product links to new gh-pages doc site \n"\
+    "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\

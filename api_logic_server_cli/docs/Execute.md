@@ -1,10 +1,12 @@
-You can execute API Logic Projects directly in a Terminal window, as described below.
+You can execute API Logic Projects in your IDE, or directly in a Terminal window, as described below.
 
 &nbsp;
 
 ## Most commonly - in your IDE
 
-In most cases, you will probably want to run it from your IDE (see [IDE > Open and Execute](../IDE-Execute)).
+In most cases, you will probably want to run it from your IDE (see [IDE > Open and Execute](../IDE-Execute)).  
+
+> If you are following the Tutorial (recommended first step), proceed to the link above.
 
 &nbsp;
 
