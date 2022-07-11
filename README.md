@@ -94,7 +94,7 @@ The following tutorial is a good way to explore API Logic Server.
 
 # Sample Tutorial - API Logic Server
 
-The [Tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/) contains a complete walk-through of creating, running and customizing a project.  For the best experience, download and run the sample project.
+The [Tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/) contains a complete walk-through of creating, running and customizing a project.  For the best experience, run the Tutorial.
 
 &nbsp;
 
