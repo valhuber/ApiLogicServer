@@ -54,7 +54,9 @@ The prior step established your Python enviroment, and started the server using 
 
 To run the Admin App, follow these steps:
 
-1. In the step above, you've already started the server and browser
+1. In the step above, you've already
+      * Used the pre-built Launch Configuration to start the server and
+      * Started the browser to see your Admin App
 1. Navigate to `Customer`
       * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
 2. Click the Customer row  to see Customer Details
