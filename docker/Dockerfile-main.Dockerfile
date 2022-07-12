@@ -65,5 +65,8 @@ RUN chmod +x bin/ApiLogicServer \
     && chmod +x bin/py
 # CMD ["ApiLogicServer"]
 USER api_logic_server
+
+ENV APILOGICSERVER_RUNNING=DOCKER
+
 # RUN chmod a+rwx -R api_logic_server_cli/api_logic_server_info.yaml
 CMD ["bash"]

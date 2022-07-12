@@ -37,7 +37,7 @@ def get_api_logic_server_dir() -> str:
 
 def python_status():
     print(" ")
-    print("\nPython Status here, 4.2\n")
+    print("\nPython Status here, 4.3\n")
     dir = get_api_logic_server_dir()
     test_env = "/workspaces/../home/api_logic_server/"
     if os.path.exists(test_env):
@@ -83,7 +83,7 @@ def python_status():
     if command == "sys-info":
         print_at('ip (gethostbyname)', local_ip)
         print_at('on hostname', hostname)
-        show("python --version")
+        print_at('python sys.version', sys.version)
     print("")
     print("Typical API Logic Server commands:")
     print("  ApiLogicServer create-and-run --project_name=/localhost/api_logic_server --db_url=")

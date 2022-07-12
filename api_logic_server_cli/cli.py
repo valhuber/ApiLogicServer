@@ -13,10 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.11"
+__version__ = "5.03.12"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t07/12/2022 - 05.03.12: Using env variable for docker (perhaps codespaces) \n"\
     "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
@@ -689,7 +690,10 @@ def start_open_with(open_with: str, project_name: str):
 def is_docker() -> bool:
     """ running docker?  dir exists: /home/api_logic_server """
     path = '/home/api_logic_server'
-    return os.path.isdir(path)
+    path_result = os.path.isdir(path)  # this *should* exist only on docker
+    env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
+    assert path_result == env_result
+    return path_result
 
 
 def get_abs_db_url(msg, db_url):
