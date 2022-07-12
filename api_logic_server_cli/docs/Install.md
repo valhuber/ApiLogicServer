@@ -105,7 +105,7 @@ Open the appropriate section below, and see the [Installation Notes](Installatio
     api_root: https://apilogicserver.pythonanywhere.com/api
     ```
 
-    __5. Verify `admin.yanl`__
+    __5. Verify `admin.yaml`__
     Verify that the `ui/admin.yaml` ends with something like this:
 
     ```bash
@@ -113,19 +113,30 @@ Open the appropriate section below, and see the [Installation Notes](Installatio
       HomeJS: https://apilogicserver.pythonanywhere.com/admin-app/home.js
       max_list_columns: 8
     ```
+    __6. Configure the host and port__
 
-    __6. Restart the Web App__
+    In `api_logic_server_run.py`, set these as follows:
+
+    ```python
+    host = "apilogicserver.pythonanywhere.com"  # was "localhost"
+    port = ""                                   # was "5656"
+    ```
+    __7. Restart the Web App__
     You start ApiLogicServer from the web console, *not* from the command line
 
-    __6. Run the application__
+    __8. Run the application__
 
     You can open the Admin App in your browser [http://apilogicserver.pythonanywhere.com/admin-app/index.html](http://apilogicserver.pythonanywhere.com/admin-app/index.html).
 
 
-    You can use ```curl```:  
+    You can use ```curl``` from pythonanywhere consoles:  
     ```  
     curl -X GET "http://ApiLogicServer.pythonanywhere.com/api/employees/?include=office%2Cparent%2CEmployeeList%2CCustomerList&fields%5BEmployee%5D=employeeNumber%2ClastName%2CfirstName%2Cextension%2Cemail%2CofficeCode%2CreportsTo%2CjobTitle&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=employeeNumber%2ClastName%2CfirstName%2Cextension%2Cemail%2CofficeCode%2CreportsTo%2CjobTitle%2Cid" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/vnd.api+json"  
     ```
+
+&nbsp;
+
+---
 
 ## After Install - Create a Project
 

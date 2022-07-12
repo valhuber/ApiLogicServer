@@ -190,8 +190,6 @@ ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@l
 
 Various IDEs provide tools for managing databases.
 
-&nbsp;
-
 ## PyCharm Database Tools
 
 Pycharm provides [database tools](https://www.jetbrains.com/help/pycharm/2021.3/database-tool-window.html), as shown below:
@@ -200,7 +198,7 @@ Pycharm provides [database tools](https://www.jetbrains.com/help/pycharm/2021.3/
 
 &nbsp;
 
-# VSCode Database Tools
+## VSCode Database Tools
 
 I use [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools).  To use it, you must first install drivers:
 
@@ -209,6 +207,25 @@ I use [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltoo
 Then, you can explore the sample:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/SQLTools/SQLTools-sample.png"></figure>
+
+&nbsp;
+
+
+&nbsp;
+
+# PythonAnywhere
+
+PythonAnyWhere provides the ability to create and connect to databases.  For example, create a project like this from within PythonAnyWhere:
+
+```bash title="Create database for mysql/Chinook"
+  ApiLogicServer create --project_name=Chinook \
+      --host=ApiLogicServer.pythonanywhere.com --port= \
+      --db_url=mysql+pymysql://ApiLogicServer:Your-DB-Password@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook
+```
+
+Notes:
+
+* Be aware of [connectivity and firewall issues](https://help.pythonanywhere.com/pages/AccessingMySQLFromOutsidePythonAnywhere/).
 
 &nbsp;
 
