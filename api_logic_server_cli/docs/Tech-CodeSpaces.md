@@ -71,9 +71,12 @@ The home page of the running Admin App has a link (item 2) to run Swagger.  In t
 
 To address this, I created another Launch Configuration `ApiLogicServer-swagger` to specify __host__  (it's argument 1), using the "copy local address" from above: `valhuber-tutorial-apilogicproject-wrv7gj45fgxq6-5656.githubpreview.dev`.
 
-It fails with
+Starting the server with this Launch Configuration fails with:
 
 ```bash
   fails with: OSError: [Errno 99] Cannot assign requested address 
 ```
+
+It is particularly surprising, since the Launch Configuration `ApiLogicServer` succeeds as noted above.
+
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/cannot-assign-server.png?raw=true"></figure>
