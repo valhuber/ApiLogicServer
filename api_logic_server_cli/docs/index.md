@@ -123,7 +123,7 @@ There are a number of facilities that will quickly enable you to get familiar wi
 
 ### Status
 
-We have tested several databases - see [status here.](Testing)
+We have tested several databases - see [status here.](Database-Connectivity)
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues){:target="_blank" rel="noopener"}.
 
