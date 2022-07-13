@@ -11,7 +11,7 @@ title:
 ## Key Features
 
 1. [**Admin Web App**](Admin-Tour) [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"} - multi-page, multi-table, automatic joins
-2. [**API**](API) - endpoint for each table, with filtering, sorting, pagination, related data.  With [Swagger](http://apilogicserver.pythonanywhere.com/api#){:target="_blank" rel="noopener"}.
+2. [**API**](API) - endpoint for each table, with filtering, sorting, pagination, related data.  And [Swagger](http://apilogicserver.pythonanywhere.com/api#){:target="_blank" rel="noopener"}.
 3. [**Unique Backend Logic **](Logic-Why) - _multi-table_ derivations and constraints, using spreadsheet-like rules, extensible with Python.
 
     * 40X more concise than code
@@ -24,43 +24,61 @@ This programmer-friendly low-code microservice creation approach is distinguishe
 
 ---
 
-## Instant -- Single Command Project Creation
+## Instant -- Single Command
 
-To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
+Create the sample API and Admin App project with a single command, using either Docker or a local install.
 
-```bash
+### Create With Docker
+
+Execute the following commands (Windows, use Powershell):
+
+```bash title="Run API Logic Server in Docker"
 # Start the API Logic Server docker container
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
 
 ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url=
 ```
 
-Your system is running - explore the data and api at [localhost:5656](http://localhost:5656),
-or [on this deployed system](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.
+### Or, Create With Local Install
+Presuming Python 3.7+ [is installed](Install){:target="_blank" rel="noopener"}, it's typically:
 
-VSCode and PyCharm users can execute within their IDE with [these steps](Execute){:target="_blank" rel="noopener"}.
-
-In addition to Docker, you can install locally; if Python 3.7+ [is installed](Install){:target="_blank" rel="noopener"}, it's typically:
-
-```bash
+```bash title="Run API Logic Server from a local pip install"
 python -m venv venv        # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
 python -m pip install ApiLogicServer
 
-ApiLogicServer create      # create, or create-and-run; defaults provided
+ApiLogicServer create      # create, or create-and-run; accept defaults
 ```
+
+### Then, Execute, Open in IDE
+
+Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).
+
+VSCode and PyCharm users can execute within their IDE with [these steps](Execute){:target="_blank" rel="noopener"}.
 
 &nbsp;
 
-## Process Overview - Project Creation from Database Introspection
+## Overview Video
 
-Project creation is based on database schema introspection as shown below.  Click for a video tutorial, showing complete project creation, execution, customization and debugging.
+Project creation is based on database schema introspection as shown below: identify a database, and the ```ApiLogicServer create``` commands creates an executable, customomizable project.
 
-[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
+Click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
-After you've explored the tutorial (created from [this database](../Sample-Database){:target="_blank" rel="noopener"}), try out our [dockerized test databases](../Testing#docker-databases){:target="_blank" rel="noopener"}, and then try your own database.
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container"){:target="_blank" rel="noopener"}
 
-> Already installed?  Upgrade to the latest (5.03.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://github.com/valhuber/ApiLogicServer/wiki#apilogicserver-container-upgrades){:target="_blank" rel="noopener"}).
+&nbsp;
+
+## Getting Started
+
+### Install and run Tutorial
+Install, and explore the tutorial (created from [this database](https://valhuber.github.io/ApiLogicServer/Sample-Database/)).
+
+### Test databases
+Then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/).
+
+### Your database
+
+Finally, try your own database.
 
 &nbsp;
 
