@@ -34,7 +34,7 @@ nav:
     - "Install pyodbc: SqlServer": Install-pyodbc.md
   - Using your IDE:
     - "Open and Execute": IDE-Execute.md
-    - "Customize": IDE-Customize.md
+    - "Customize and Debug": IDE-Customize.md
   - Managing API Logic Projects:
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md
