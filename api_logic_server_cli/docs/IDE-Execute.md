@@ -70,9 +70,16 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
     exit  # exit container to localhost
     ```
-        > Observe you __exit the Docker container__.  We'll start VSCode _locally_ below, where it will restart Docker as a Remote Container below.  _Local_ operation means your project files are accessed locally (not via `/localhost`), which enables local file operations such as git.
 
-    ```bash title="Start VSCode on created API Logic Project"
+    !!! Container-exit
+    
+        Observe you __exit the Docker container__.  We'll start VSCode _locally_ below, where it will restart Docker as a Remote Container below.  _Local_ operation means your project files are accessed locally (not via `/localhost`), which enables local file operations such as git.
+
+    &nbsp;
+
+    The project creation above has created a project on your local computer.  You can open it in VSCode like this:
+
+    ```bash title="Open VSCode on created API Logic Project"
     # start VS Code either as an application, or via the command line
     # macOS users may require: https://code.visualstudio.com/docs/setup/mac
     code ApiLogicProject  # loads VS Code; accept container suggestions, and press F5 to run (described below)
@@ -80,7 +87,7 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
     __2. Remote Container - Accept__
 
-    Created projects are configured to support:
+    Created projects are pre-configured to support:
 
     * launch configurations for running `ApiLogicServer` and tests
     * Docker-based Python environments, per `.devcontainer`
@@ -92,22 +99,7 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
     <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/open-in-container.png"></figure>
 
-    __3. Run ApiLogicServer__
-
-    Click __Run and debug > Run ApiLogicServer__.
-
-    This will start the server, and offer to run the Browser on the Admin app.  For more information, [see here](https://github.com/valhuber/ApiLogicServer/blob/main/README.md#run).
-
-    __4. Install Python Extension__
-
-    When you run, you may encounter the message below; if so:
-
-    1. Click Extensions (as shown)
-    2. Ensure Python support is installed and enabled
-
-    <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
-
-    You may need to update your Docker container - see [Working with Docker](../Working-With-Docker).
+    __Note:__ when you Execute your application (below), you may need to update your Docker container - see [Working with Docker](../Working-With-Docker).
 
 === "PyCharm"
 
@@ -135,6 +127,10 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
     Some versions of Pycharm may require that you update the Launch Configuration(s) to use your `venv`.
 
+&nbsp;
+
+---
+
 ## Execute - prebuilt Launch Configurations
 
 Once you have established your Python environment, you are ready to run.  The `ApiLogicServer create` command has built launch configurations, so you can start your server like this:
@@ -148,10 +144,21 @@ Once you have established your Python environment, you are ready to run.  The `A
 
     * If you are running Docker / VS Code, VS Code will suggest opening a Browser, or previewing it in the Editor (i.e., in VSCode) (the _preview_ browser is shown in the Tutorial).
 
-    * Otherwise, you can:
+        * Earlier versions of VSCode sometimes failed here; it's easy to fix:
 
-        * Open a browser at [localhost:5656](localhost:5656), or
-        * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
+            * Open a browser at [localhost:5656](localhost:5656), _or_
+            * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
+
+    * This will start the server, and offer to run the Browser on the Admin app.  For more information on the Admin App, [see here](../Admin-Tour).
+
+4. __Install Python Extension__
+
+    When you run, you may encounter the message below; if so:
+
+    1. Click Extensions (as shown)
+    2. Ensure Python support is installed and enabled
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
 
 
 Notes:

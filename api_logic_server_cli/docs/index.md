@@ -52,9 +52,9 @@ ApiLogicServer create      # create, or create-and-run; accept defaults
 
 ### Then, Execute, Open in IDE
 
-Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).
+Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](Tutorial/){:target="_blank" rel="noopener"}, the recommended quick start for API Logic Server.
 
-VSCode and PyCharm users can execute within their IDE with [these steps](Execute){:target="_blank" rel="noopener"}.
+VSCode and PyCharm users can execute within their IDE with [these steps](IDE-Execute){:target="_blank" rel="noopener"}.
 
 &nbsp;
 
