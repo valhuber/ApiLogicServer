@@ -19,7 +19,7 @@ title:
 
 This programmer-friendly low-code microservice creation approach is distinguished by
 
-* leveraging [___your IDE___](../IDE-Customize){:target="_blank" rel="noopener"}, and
+* leveraging [___your IDE___](IDE-Customize){:target="_blank" rel="noopener"}, and
 * extending low-code to address frontend ___and backend___ logic.
 
 ---
