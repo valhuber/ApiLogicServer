@@ -51,7 +51,7 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 ```
 
 ### Or, Create With Local Install
-Presuming Python 3.7+ [is installed](Install){:target="_blank" rel="noopener"}, it's typically:
+Presuming Python 3.7+ [is installed](Install), it's typically:
 
 ```bash title="Run API Logic Server from a local pip install"
 python -m venv venv        # may require python3 -m venv venv
@@ -65,7 +65,7 @@ ApiLogicServer create      # create, or create-and-run; accept defaults
 
 Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).
 
-VSCode and PyCharm users can execute within their IDE with [these steps](Execute){:target="_blank" rel="noopener"}.
+VSCode and PyCharm users can execute within their IDE with [these steps](Execute).
 
 
 &nbsp;
