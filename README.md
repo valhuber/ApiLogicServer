@@ -26,13 +26,16 @@ The `ApiLogicServer create-and-run` command creates a _executable, customizable_
    * Declare rules as in a spreadsheet - 40X more concise than code
    * Unique to API Logic Server &nbsp; :trophy:
 
-This programmer-friendly low-code microservice creation approach is distinguished by leveraging ___your IDE___, and extending low-code to address frontend ___and backend___ logic.
+This programmer-friendly low-code microservice creation approach is distinguished by
+
+* leveraging [___your IDE___](https://valhuber.github.io/ApiLogicServer/IDE-Customize/), and
+* extending low-code to address frontend ___and backend___ logic.
 
 ---
 
 &nbsp;
 
-## Here's How: Single Command Project Creation
+## Instant -- Single Command Project Creation
 
 To create the sample API and app project in a *minute or two --*  start Docker, and execute the following commands (Windows, use Powershell):
 
