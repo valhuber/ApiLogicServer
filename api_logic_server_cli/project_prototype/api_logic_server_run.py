@@ -126,7 +126,7 @@ from safrs import SAFRSBase, SAFRSAPI
 db = safrs.DB  # opens database (per config.py), setting session
 
 
-def create_app(config_filename=None, swagger_host: str = None):
+def create_app(config_filename=None, swagger_host: str = None, flask_host: str = None):
     """ creates flask_app, activates API and logic """
     admin_enabled = os.name != "nt"
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
@@ -200,7 +200,7 @@ else:
 
 API_PREFIX = "/api"
 did_send_spa = False
-flask_app, safrs_api = create_app(swagger_host = swagger_host)
+flask_app, safrs_api = create_app(flask_host = flask_host, swagger_host = swagger_host)
 
 
 @flask_app.route('/')
@@ -270,10 +270,7 @@ def after_request(response):
 """ start the server from create_app """
 
 if __name__ == "__main__":
-    user_host = flask_host
-    if is_docker():
-        user_host = "localhost"  # FIXME what is this??
-    msg = f'API Logic Project Started, version 5.03.12, available at http://{flask_host}:{port}'
+    msg = f'API Logic Project Started, version 5.03.12, available at http://{swagger_host}:{port}'
     if is_docker():
         msg += f' (running from docker container at {flask_host} - may require refresh)'
     app_logger.info(msg)

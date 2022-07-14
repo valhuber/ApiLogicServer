@@ -21,7 +21,7 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 app_logger = logging.getLogger("api_logic_server_app")
 
 
-def expose_services(app, api, project_dir, HOST: str, PORT: str):
+def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ extend model end points with new end points for services """
     app_logger.info("api/customize_api.py - expose custom services")
 
@@ -30,7 +30,7 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
         """
         This is inserted to illustrate that APIs not limited to database objects, but are extensible.
 
-        See: https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
+        See: https://valhuber.github.io/ApiLogicServer/API-Customize/
 
         See: https://github.com/thomaxxl/safrs/wiki/Customization
         """
@@ -131,5 +131,5 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
     app_logger.info(f'*** Customizable ApiLogicServer project created -- '
              f'open it in your IDE at {project_dir}')
     app_logger.info(f'*** Server now running -- '
-             f'explore your data and API at http://{HOST}:{PORT}/')
+             f'explore your data and API at http://{swagger_host}:{PORT}/')
     app_logger.info("\n")
