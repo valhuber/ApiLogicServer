@@ -13,11 +13,11 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.12"
+__version__ = "5.03.14"
 
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/12/2022 - 05.03.12: Using env variable for docker (perhaps codespaces) \n"\
+    "\t07/14/2022 - 05.03.14: Add swagger_host for create & run, Docker env \n"\
     "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
@@ -577,7 +577,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
 
 
 def final_project_fixup(msg, project_name, project_directory, api_name,
-                        host, port, use_model, copy_to_project_directory) -> str:
+                        host, port, swagger_host, use_model, copy_to_project_directory) -> str:
     print(msg)  # "7. Final project fixup"
 
     if False and use_model == "" and command != "rebuild-from-model":  # TODO remove dead code
@@ -590,7 +590,7 @@ def final_project_fixup(msg, project_name, project_directory, api_name,
     else:
         print(f' b.   Update api_logic_server_run.py with '
               f'project_name={project_name} and api_name, host, port')
-        update_api_logic_server_run(project_name, project_directory, api_name, host, port)
+        update_api_logic_server_run(project_name, project_directory, api_name, host, port, swagger_host)
 
         fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project_directory, host, port)
 
@@ -617,7 +617,7 @@ def fix_database_models__import_customize_models(project_directory: str, msg: st
     models_file.close()
 
 
-def update_api_logic_server_run(project_name, project_directory, api_name, host, port):
+def update_api_logic_server_run(project_name, project_directory, api_name, host, port, swagger_host):
     """
     Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
 
@@ -641,8 +641,11 @@ def update_api_logic_server_run(project_name, project_directory, api_name, host,
     create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
                            replace_with=api_name,
                            in_file=api_logic_server_run_py)
-    create_utils.replace_string_in_file(search_for="api_logic_server_host",  # server host
+    create_utils.replace_string_in_file(search_for="api_logic_server_host",
                            replace_with=host,
+                           in_file=api_logic_server_run_py)
+    create_utils.replace_string_in_file(search_for="api_logic_swagger_host",
+                           replace_with=swagger_host,
                            in_file=api_logic_server_run_py)
     replace_port = f', port="{port}"' if port else ""  # TODO: consider reverse proxy
 
@@ -731,7 +734,8 @@ def get_abs_db_url(msg, db_url):
     return rtn_abs_db_url, rtn_nw_db_status
 
 
-def print_options(project_name: str, api_name: str, db_url: str, host: str, port: str, not_exposed: str,
+def print_options(project_name: str, api_name: str, db_url: str,
+                  host: str, port: str, swagger_host: str, not_exposed: str,
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
                   extended_builder: str, multi_api: bool):
@@ -754,6 +758,7 @@ def print_options(project_name: str, api_name: str, db_url: str, host: str, port
         print(f'  --run={run}')
         print(f'  --host={host}')
         print(f'  --port={port}')
+        print(f'  --swagger_host={swagger_host}')
         print(f'  --not_exposed={not_exposed}')
         print(f'  --open_with={open_with}')
         print(f'  --use_model={use_model}')
@@ -806,7 +811,8 @@ def invoke_creators(model_creation_services: CreateFromModel):
     model_creation_services.close_app()  # this may no longer be required
 
 
-def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, port: str, not_exposed: str,
+def api_logic_server(project_name: str, db_url: str, api_name: str,
+                     host: str, port: str, swagger_host: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
                      extended_builder: str, multi_api: bool):
@@ -825,7 +831,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
 
     # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
     print_options(project_name = project_name, db_url=db_url, api_name=api_name,
-                  host=host, port=port, not_exposed=not_exposed,
+                  host=host, port=port, swagger_host = swagger_host, not_exposed=not_exposed,
                   from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
                   flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
                   react_admin=react_admin, admin_app=admin_app,
@@ -873,7 +879,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str, host: str, p
         invoke_extended_builder(extended_builder, db_url, project_directory)
 
     copy_project_result = final_project_fixup("4. Final project fixup", project_name, project_directory, api_name,
-                                              host, port,
+                                              host, port, swagger_host, 
                                               use_model, copy_to_project_directory)
 
     if open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
@@ -1020,6 +1026,9 @@ def about(ctx):
 @click.option('--port',
               default=f'5656',
               help="Port (default 5656, or leave empty)")
+@click.option('--swagger_host',
+              default=f'localhost',
+              help="Swagger hostname (default is localhost)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -1035,6 +1044,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            use_model: str,
            host: str,
            port: str,
+           swagger_host: str,
            favorites: str, non_favorites: str,
            extended_builder: str,
            multi_api: click.BOOL):
@@ -1047,7 +1057,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
     api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder, multi_api=multi_api)
@@ -1104,6 +1114,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
 @click.option('--port',
               default=f'5656',
               help="Port (default 5656, or leave empty)")
+@click.option('--swagger_host',
+              default=f'localhost',
+              help="Swagger hostname (default is localhost)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -1119,6 +1132,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
         use_model: str,
         host: str,
         port: str,
+        swagger_host: str,
         favorites: str, non_favorites: str,
         extended_builder: str,
         multi_api: click.BOOL):
@@ -1131,7 +1145,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
     api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types=db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder, multi_api=multi_api)
@@ -1185,6 +1199,9 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
 @click.option('--port',
               default=f'5656',
               help="Port (default 5656, or leave empty)")
+@click.option('--swagger_host',
+              default=f'localhost',
+              help="Swagger hostname (default is localhost)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -1200,6 +1217,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
            use_model: str,
            host: str,
            port: str,
+           swagger_host: str,
            favorites: str, non_favorites: str,
            extended_builder: str):
     """
@@ -1217,7 +1235,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
     api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder, multi_api=False)
@@ -1271,6 +1289,9 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 @click.option('--port',
               default=f'5656',
               help="Port (default 5656, or leave empty)")
+@click.option('--swagger_host',
+              default=f'localhost',
+              help="Swagger hostname (default is localhost)")
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
@@ -1286,6 +1307,7 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_e
            use_model: str,
            host: str,
            port: str,
+           swagger_host: str,
            favorites: str, non_favorites: str,
            extended_builder: str):
     """
@@ -1297,7 +1319,7 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_e
     api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
                      not_exposed=not_exposed,
                      run=run, use_model=use_model, from_git=from_git, db_types = db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port,
+                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder, multi_api=False)
@@ -1314,8 +1336,11 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_e
 @click.option('--port',
               default=f'5656',
               help="Port (default 5656, or leave empty)")
+@click.option('--swagger_host',
+              default=f'localhost',
+              help="Swagger hostname (default is localhost)")
 @click.pass_context
-def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
+def run_api(ctx, project_name: str, host: str="localhost", port: str="5656", swagger_host: str="localhost"):
     """
         Runs existing project.
 
@@ -1334,7 +1359,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656"):
         proj_dir = last_created_project_name
     else:
         proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
-    run_file = f'{proj_dir}/api_logic_server_run.py {host} {port}'
+    run_file = f'{proj_dir}/api_logic_server_run.py {host} {port} {swagger_host}'
     create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
     print("run complete")
 

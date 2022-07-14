@@ -4,7 +4,7 @@
 
   Created on api_logic_server_created_on
 
-  $ python3 api_logic_server_run.py [Listener-IP] [port]  # this starts your ApiLogicServer project
+  $ python3 api_logic_server_run.py [Listener-IP] [port] [swagger-IP]    # starts your ApiLogicServer project
 
   Access the server via the Browser: http://Listener-Ip:api_logic_server_port
 
@@ -15,7 +15,7 @@ import sys
 if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
     print("")
     print("API Logic Server - run instructions (default is localhost):")
-    print("  python api_logic_server_run.py [host]")
+    print("  python api_logic_server_run.py [Flask-IP] [,port [, swagger-IP]]")
     print("")
     sys.exit()
 
@@ -33,7 +33,7 @@ handler.setFormatter(formatter)
 app_logger.addHandler(handler)
 app_logger.propagate = True
 
-app_logger.setLevel(logging.INFO)  # use WARNING to reduce output
+app_logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
 app_logger.info(f'\nAPI Logic Project Starting: {__file__}\n')
 
 logging.getLogger('safrs').setLevel(logging.INFO)
@@ -47,18 +47,18 @@ from logic_bank.exec_row_logic.logic_row import LogicRow
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 import socket
-
 from api import expose_api_models, customize_api
 from logic import declare_logic
-
 from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase
-
 
 def is_docker() -> bool:
     """ running docker?  dir exists: /home/api_logic_server """
     path = '/home/api_logic_server'
-    return os.path.isdir(path)
+    path_result = os.path.isdir(path)  # this *should* exist only on docker
+    env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
+    assert path_result == env_result
+    return path_result
 
 
 def setup_logging(flask_app):
@@ -123,12 +123,11 @@ from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from safrs import SAFRSBase, SAFRSAPI
 
-db = safrs.DB  # opens database per config, setting session
+db = safrs.DB  # opens database (per config.py), setting session
 
 
-
-
-def create_app(config_filename=None):
+def create_app(config_filename=None, swagger_host: str = None):
+    """ creates flask_app, activates API and logic """
     admin_enabled = os.name != "nt"
     def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
         if constraint.error_attributes:
@@ -155,9 +154,11 @@ def create_app(config_filename=None):
             db.create_all()
             db.create_all(bind='admin')
             session.commit()
-        safrs_api = expose_api_models.expose_models(flask_app, HOST=host, PORT=port, API_PREFIX=API_PREFIX)
 
-        customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=host, PORT=port)  # custom services
+        app_logger.debug(f'==> Network Diagnostic - create_app exposes api on swagger_host {swagger_host}')
+        safrs_api = expose_api_models.expose_models(flask_app, HOST=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
+        customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=swagger_host, PORT=port)  # custom services
+
         from database import customize_models
         app_logger.debug(f'Customizations for API and Model activated\n')
 
@@ -171,25 +172,35 @@ def create_app(config_filename=None):
 network_diagnostics = True
 hostname = socket.gethostname()
 local_ip = socket.gethostbyname(hostname)
-host = "api_logic_server_host"
+
+# defaults from ApiLogicServer create command...
+flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud server addr)
+swagger_host = "api_logic_swagger_host"  # where swagger finds the API
 port = "api_logic_server_port"
-if __name__ == "__main__":  # gunicorn-friendly host/port settings
+
+if __name__ == "__main__":  # gunicorn-friendly host/port settings ()
     if sys.argv[1:]:
-        host = sys.argv[1]  # you many need to enable cors support, below
+        flask_host = sys.argv[1]  # you many need to enable cors support, below
         app_logger.debug(f'==> Network Diagnostic - using specified host: {sys.argv[1]}')
     else:
-        app_logger.debug(f'==> Network Diagnostic - defaulting host: {host}')
-    flask_host = host
-    if is_docker() and host == "localhost":
-        flask_host = "0.0.0.0"
-        app_logger.debug(f'==> Network Diagnostic - using docker flask_host: {flask_host}')
+        app_logger.debug(f'==> Network Diagnostic - defaulting host: {flask_host}')
+    if is_docker() and flask_host == "localhost":
+        use_docker_override = True
+        if use_docker_override:
+            flask_host = "0.0.0.0"  # noticeably faster
+        app_logger.debug(f'==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
     if sys.argv[2:]:
         port = sys.argv[2]  # you many need to enable cors support, below
         app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
+    if sys.argv[3:]:
+        swagger_host = sys.argv[3]
+        app_logger.debug(f'==> Network Diagnostic - using specified swagger_host: {sys.argv[3]}')
+else:
+    app_logger.debug(f'==> Network Diagnostic - WSGI server, flask_host={flask_host}, port={port}, swagger_host={swagger_host}')
 
-API_PREFIX = "/api_logic_server_api_name"
+API_PREFIX = "/api"
 did_send_spa = False
-flask_app, safrs_api = create_app()
+flask_app, safrs_api = create_app(swagger_host = swagger_host)
 
 
 @flask_app.route('/')
@@ -240,7 +251,6 @@ def handle_exception(e: ValidationError):
 
 """ uncomment to disable cors support"""
 
-
 @flask_app.after_request
 def after_request(response):
     '''
@@ -257,15 +267,14 @@ def after_request(response):
     return response
 
 
-""" """
-
+""" start the server from create_app """
 
 if __name__ == "__main__":
     user_host = flask_host
     if is_docker():
-        user_host = "localhost"
-    msg = f'API Logic Project Started, version api_logic_server_version, available at http://{user_host}:{port}'
+        user_host = "localhost"  # FIXME what is this??
+    msg = f'API Logic Project Started, version 5.03.12, available at http://{flask_host}:{port}'
     if is_docker():
-        msg += f' (running from docker container - may require refresh)'
+        msg += f' (running from docker container at {flask_host} - may require refresh)'
     app_logger.info(msg)
     flask_app.run(host=flask_host, threaded=False, port=port)
