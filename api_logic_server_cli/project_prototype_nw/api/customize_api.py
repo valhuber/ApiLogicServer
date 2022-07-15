@@ -19,7 +19,7 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 # separate from expose_api_models.py, to simplify merge if project recreated
 
 
-def expose_services(app, api, project_dir, HOST: str, PORT: str):
+def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ extend model end points with new end points for services
 
     This sample illustrates the classic hello world,
@@ -29,10 +29,10 @@ def expose_services(app, api, project_dir, HOST: str, PORT: str):
 
 
     app_logger = logging.getLogger("api_logic_server_app")
-    app_logger.debug(f'\n*** Customizable ApiLogicServer project created -- '
+    app_logger.debug(f'\n*** Customizable API Logic Project created -- '
              f'open it with your IDE at {project_dir}')
     app_logger.debug(f'*** Server now running -- '
-             f'explore sample data and API at http://{HOST}:{PORT}/')
+             f'explore sample data and API at swagger_host: http://{swagger_host}:{PORT}/')
 
 
     def rules_report():

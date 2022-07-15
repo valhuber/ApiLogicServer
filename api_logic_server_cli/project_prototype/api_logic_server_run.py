@@ -155,9 +155,9 @@ def create_app(config_filename=None, swagger_host: str = None, flask_host: str =
             db.create_all(bind='admin')
             session.commit()
 
-        app_logger.debug(f'==> Network Diagnostic - create_app exposes api on swagger_host {swagger_host}')
-        safrs_api = expose_api_models.expose_models(flask_app, HOST=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
-        customize_api.expose_services(flask_app, safrs_api, project_dir, HOST=swagger_host, PORT=port)  # custom services
+        app_logger.debug(f'\n==> Network Diagnostic - create_app exposing api on swagger_host: {swagger_host}')
+        safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
+        customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
         from database import customize_models
         app_logger.debug(f'Customizations for API and Model activated\n')
@@ -181,14 +181,14 @@ port = "api_logic_server_port"
 if __name__ == "__main__":  # gunicorn-friendly host/port settings ()
     if sys.argv[1:]:
         flask_host = sys.argv[1]  # you many need to enable cors support, below
-        app_logger.debug(f'==> Network Diagnostic - using specified host: {sys.argv[1]}')
+        app_logger.debug(f'==> Network Diagnostic - using specified flask_host: {sys.argv[1]}')
     else:
-        app_logger.debug(f'==> Network Diagnostic - defaulting host: {flask_host}')
+        app_logger.debug(f'==> Network Diagnostic - defaulting flask_host: {flask_host}')
     if is_docker() and flask_host == "localhost":
         use_docker_override = True
         if use_docker_override:
-            flask_host = "0.0.0.0"  # noticeably faster
-        app_logger.debug(f'==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
+            flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
+            app_logger.debug(f'==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
     if sys.argv[2:]:
         port = sys.argv[2]  # you many need to enable cors support, below
         app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
