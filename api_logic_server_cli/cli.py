@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.16"
+__version__ = "5.03.17"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/14/2022 - 05.03.16: Add swagger_host for create & run, Docker env \n"\
+    "\t07/14/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
     "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
@@ -282,7 +282,7 @@ def create_nw_tutorial(project_name, code_loc):
         "\n" +\
         "Welcome to the Sample Database Readme - [run the Tutorial](Tutorial).\n" +\
         "\n" +\
-        "...Also available in [the docs](https://valhuber.github.io/ApiLogicServer/Tutorial/)]\n" +\
+        "...Also available in [the docs](https://valhuber.github.io/ApiLogicServer/Tutorial/).\n" +\
          "\n" +\
         "The standard API Logic Project readme follows...\n" +\
         "\n" +\
