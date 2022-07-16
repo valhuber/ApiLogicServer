@@ -56,7 +56,8 @@ Hosts are defaulted as follows:
 You can override these defaults when you create the application like this:
 
 ```bash
-ApiLogicServer create --project_name=~/dev/servers/api_logic_server --host=myhost --port=myport --swagger_host=mycloud
+ApiLogicServer create --project_name=~/dev/servers/api_logic_server \
+                      --host=myhost --port=myport --swagger_host=mycloud
 ```
 
 &nbsp;
@@ -67,10 +68,10 @@ When you run created applications, you can provide arguments to override the def
 
 ```bash
 ApiLogicServer run --project_name=~/dev/servers/api_logic_server \
-    --host=myhost --port=myport --swagger_host=mycloud
+                   --host=myhost --port=myport --swagger_host=mycloud
 
 python ~/dev/servers/api_logic_server/api_logic_server_run.py \
-    myhost myport mycloud     # equivalent to above
+                   myhost myport mycloud     # equivalent to above
 ```
 
 &nbsp;
