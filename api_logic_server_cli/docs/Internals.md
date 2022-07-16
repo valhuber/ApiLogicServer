@@ -25,6 +25,34 @@ You can provide options for `vscode` or `charm`:
 
 &nbsp;
 
+## Develop / Debug admin app
+
+You can obtain an editable version of the admin app like this:
+
+```bash title="Get safrs-react-admin"
+cd ~/dev
+* rm -r safrs-react-admin. # fails permissions
+git clone https://github.com/thomaxxl/safrs-react-admin
+cd safrs-react-admin
+git clone https://github.com/thomaxxl/rav3-jsonapi-client # modified data provider used, installed in the project root
+```
+
+Then, to debug (with server running):
+```bash title="Execute debug version of admin app"
+npm install
+npm run build
+
+npm start
+```
+
+To make this the runtime used to create API Logic Projects:
+
+```bash title="Update ApiLogicServer to use your admin app"
+cp -a /build/. ../ApiLogicServer/api_logic_server_cli/create_from_model/admin/
+```
+
+&nbsp;
+
 # Created API Logic Project Structure
 
 For reference, projects are created with this structure:
