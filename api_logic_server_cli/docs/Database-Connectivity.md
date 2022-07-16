@@ -1,14 +1,10 @@
 This page lists some of the databases we have tested, including various (Mac-oriented) configuration notes.
 
-If you are using (recommended) docker for API Logic Server, start the docker machine like this (Windows users - use Powershell):
+Recall the `db_url` parameter is a SQLAlchemy URI.  To see some examples, see below, and use
 
+```bash
+ApiLogicServer examples
 ```
-cd ~/dev/servers  # project directories will be created here
-docker network create dev-network  # only required once
-docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 --net dev-network -v ${PWD}:/localhost apilogicserver/api_logic_server
-```
-
-&nbsp;
 
 # Northwind - sqlite (default sample)
 
@@ -34,7 +30,45 @@ Docker is a wonderful way to get known databases for your project, without datab
 
 &nbsp;
 
-## Connecting
+## Connecting to Docker DBs
+
+The examples below illustrate connecting _to_ dockerized databases.  You can connect _from_ `pip` installs, or from API Logic Server containers, as described below.
+
+&nbsp;
+
+### From `pip` install
+
+You can also use the `pip` install version.  Differences to note:
+
+* the `/localhost` path is typically not required
+* the server host address is `localhost`
+* Note related in install procedure, the SqlServer example illustrates you can single-quote the url, instead of using the `\` escapes
+
+```
+ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+
+ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
+
+ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
+```
+
+&nbsp;
+
+### From API Logic Server Container
+
+If you are using (recommended) docker for API Logic Server, you must to enable connectivity from your API Logic Server container to your database container.  See the instructions below.
+
+#### Create Docker network
+
+Start the docker machine like this (Windows users - use Powershell) to enable connectivity from your API Logic Server container to your database container:
+
+```
+cd ~/dev/servers  # project directories will be created here
+docker network create dev-network  # only required once
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 --net dev-network -v ${PWD}:/localhost apilogicserver/api_logic_server
+```
+
+#### VSCode - enable network
 
 If you are running API Logic Server in a container, and accessing dockerized databases, you will need to enable connectivity by uncommenting the indicated line in the diagram below:
 
@@ -44,6 +78,7 @@ The diagram above, and the examples below, presume you have created a docker net
 
 &nbsp;
 
+&nbsp;
 ## classicmodels - MySQL / Docker
 
 Docker below built from [MySQL Tutorials](https://www.mysqltutorial.org/mysql-sample-database.aspx/) - Customers, Orders...
@@ -59,8 +94,9 @@ ApiLogicServer create --project_name=/localhost/classicmodels --db_url=mysql+pym
 
 &nbsp;
 
-### Using VSCode sqltools
-If you are using VSCode, you may wish to use tools to query your database.  A useful resource is [this video](https://www.youtube.com/watch?v=wzdCpJY6Y4c&ab_channel=BoostMyTool), which illustrates using *SQLTools*, a VSCode extension.  Connecting to Docker databases has proven difficult for many, but this video shows that the solution is to create a *native* user:
+### MySQL Native user
+
+If you are using VSCode, you may wish to [use tools](#vscode-database-tools) to manage and query your database.  A useful resource is [this video](https://www.youtube.com/watch?v=wzdCpJY6Y4c&ab_channel=BoostMyTool){:target="_blank" rel="noopener"}, which illustrates using *SQLTools*, a VSCode extension.  Connecting to Docker databases has proven difficult for many, but this video shows that the solution is to create a *native* user:
 ```
 Create new MySQL user with old authentication method:
 CREATE USER 'sqluser'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
@@ -72,8 +108,6 @@ FLUSH PRIVILEGES;
 
 ### Additional MySQL databases
 These databases are also provided in the MySQL docker loaded above.
-
-Note: these databases do not have Flask AppBuilder Admin data; to run Flask AppBuilder, you must [add admin data like this](Working-with-Flask-AppBuilder).
 
 &nbsp;
 
@@ -165,23 +199,6 @@ Important considerations for SQLAlchemy URIs:
 
 ```bash
 --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
-```
-
-&nbsp;
-
-# Accessing Docker databases from `pip` install
-
-You can also use the `pip` install version.  Differences to note:
-* the `/localhost` path is typically not required
-* the server host address is `localhost`
-* Note related in install procedure, the SqlServer example illustrates you can single-quote the url, instead of using the `\` escapes
-
-```
-ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
-
-ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
-
-ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
 ```
 
 &nbsp;

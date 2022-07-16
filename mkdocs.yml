@@ -40,7 +40,7 @@ nav:
     - "Rebuild": Project-Rebuild.md
     - "Working With Docker": Working-With-Docker.md
     - "Virtual Environment": Project-Env.md
-    - "Execution": Project-Execution.md
+    - "Execution - Hosts and Ports": Project-Execution.md
     - "Builders": Project-Builders.md
   - Testing:
     - "Testing With Behave": Behave.md

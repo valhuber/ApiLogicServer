@@ -1,16 +1,32 @@
 
-## How to Run the API Logic Server
+Recall that you execute your API Logic Project by __starting the server__, like this:
 
 ```
 ApiLogicServer> cd my_new_project
 my_new_project> python api_logic_server_run.py
 ```
 
-This should now run [http://localhost:5656/](http://localhost:5656/), and return data.
+Then, __to run the Admin App and Swagger:__
+
+Run your browser at
+
+```html
+http://localhost:5656/
+```
+
+Or, to run the Basic Web App:
+
+```bash
+ApiLogicServer run-ui [--host=myhost --port=myport]  # or...
+my_new_project> python ui/basic_web_app/run.py [host port]
+```
+
+Try http://localhost:5002/, http://0.0.0.0:5002/
+
 
 &nbsp;
 
-#### Host and Port Handling
+## Host and Port Handling
 
 ApiLogicServer attempts to avoid port conflicts.  These can arise from:
 
@@ -35,9 +51,19 @@ Hosts are defaulted as follows:
 
 &nbsp;
 
-###### Overriding Host and Port
+### Create time overrides
 
-When you run created applications, you can provide arguments to override these defaults.  For example:
+You can override these defaults when you create the application like this:
+
+```bash
+ApiLogicServer create --project_name=~/dev/servers/api_logic_server --host=myhost --port=myport --swagger_host=mycloud
+```
+
+&nbsp;
+
+### Runtime overrides
+
+When you run created applications, you can provide arguments to override the defaults.  For example:
 
 ```bash
 ApiLogicServer run --project_name=~/dev/servers/api_logic_server --host=myhost --port=myport --swagger_host=mycloud
@@ -45,29 +71,12 @@ ApiLogicServer run --project_name=~/dev/servers/api_logic_server --host=myhost -
 python ~/dev/servers/api_logic_server/api_logic_server_run.py myhost myport mycloud     # equivalent to above
 ```
 
-Notes:
-
-* `host` is the flask-host
-* `swagger_host` designates how swagger finds the API
-
 &nbsp;
 
-## How to run the Admin App
-Start the ApiLogicServer, and run your browser at
+__Notes:__
 
-```html
-http://localhost:5656/
-```
+* `host` is the flask-host, which maps to the ip address of the interface to which flask will be bound (on the machine itself
+* `swagger_host` maps to the ip address as seen by the clients
 
-&nbsp;
-
-## How to run the Basic Web App
-You can run the Basic Web App like this:
-
-```bash
-ApiLogicServer run-ui [--host=myhost --port=myport]
-
-my_new_project> python ui/basic_web_app/run.py [host port]
-```
-
-Try http://localhost:5002/, http://0.0.0.0:5002/
+For example, 127.0.0.1 (localhost) or 0.0.0.0 (any interface) only have meaning on your own computer.
+Also, it's possible to map hostname->ip dns entries manually in /etc/hosts, but users on other computers are not aware of that mapping.
