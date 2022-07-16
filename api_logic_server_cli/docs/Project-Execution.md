@@ -40,10 +40,15 @@ Hosts are defaulted as follows:
 When you run created applications, you can provide arguments to override these defaults.  For example:
 
 ```bash
-ApiLogicServer run --project_name=~/dev/servers/api_logic_server --host=myhost --port=myport
+ApiLogicServer run --project_name=~/dev/servers/api_logic_server --host=myhost --port=myport --swagger_host=mycloud
 
-python ~/dev/servers/api_logic_server/api_logic_server_run.py myhost myport      # equivalent to above
+python ~/dev/servers/api_logic_server/api_logic_server_run.py myhost myport mycloud     # equivalent to above
 ```
+
+Notes:
+
+* `host` is the flask-host
+* `swagger_host` designates how swagger finds the API
 
 &nbsp;
 
