@@ -66,9 +66,11 @@ ApiLogicServer create --project_name=~/dev/servers/api_logic_server --host=myhos
 When you run created applications, you can provide arguments to override the defaults.  For example:
 
 ```bash
-ApiLogicServer run --project_name=~/dev/servers/api_logic_server --host=myhost --port=myport --swagger_host=mycloud
+ApiLogicServer run --project_name=~/dev/servers/api_logic_server \
+    --host=myhost --port=myport --swagger_host=mycloud
 
-python ~/dev/servers/api_logic_server/api_logic_server_run.py myhost myport mycloud     # equivalent to above
+python ~/dev/servers/api_logic_server/api_logic_server_run.py \
+    myhost myport mycloud     # equivalent to above
 ```
 
 &nbsp;
