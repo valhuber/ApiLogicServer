@@ -208,20 +208,23 @@ def index():
     app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
     return redirect('/admin-app/index.html')
 
-"""
-@flask_app.route('/ui/admin/admin.yaml')
-def admin(path=None):  # test http://localhost/ui/admin/admin.yaml
-    with open("ui/admin/admin.yaml", "r") as f:
-        content = f.read()
-    app_logger.debug(f'loading ui/admin/admin.yaml')
-    return render_template('content.html', content=content)
-"""
-
 
 @flask_app.route('/ui/admin/admin.yaml')
 def admin_yaml():
-    response = send_file("ui/admin/admin.yaml", mimetype='text/yaml')
-    return response
+    import io
+    use_type = "mem"
+    if use_type == "mem":
+        with open("ui/admin/admin.yaml", "r") as f:
+            content = f.read()
+        content = content.replace("{swagger_host}", swagger_host)
+        content = content.replace("{port}", port)
+        content = content.replace("{api}", API_PREFIX)
+        app_logger.debug(f'loading ui/admin/admin.yaml')
+        mem = io.BytesIO(str.encode(content))
+        return send_file(mem, mimetype='text/yaml')
+    else:
+        response = send_file("ui/admin/admin.yaml", mimetype='text/yaml')
+        return response
 
 
 @flask_app.route("/admin-app/<path:path>")
