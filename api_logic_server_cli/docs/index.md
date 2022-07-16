@@ -170,6 +170,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env
+
 07/04/2022 - 05.03.10: Docs using mkdocs-material (vs. wiki)
 
 06/27/2022 - 05.03.06: nw-, with perform_customizations docker

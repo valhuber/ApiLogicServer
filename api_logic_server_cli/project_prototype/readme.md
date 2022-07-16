@@ -7,17 +7,18 @@ This project was created by the API Logic Server with the `ApiLogicServer create
 # Setup and Run
 
 ### Establish your Python environment
-To run your project, the system requires various runtime systems for data access, api, and logic.  These are included with API Logic Server.  The procedure for activating them depends on your install:
+To run your project, the system requires various runtime systems for data access, api, and logic.  These are [included with API Logic Server](https://valhuber.github.io/ApiLogicServer/Architecture-What-Is/).  The procedure for effecting this inclusion depends on your install:
 
 * Docker - your runtime systems are part of Dev Container, which you probably activated when you [opened the project](https://valhuber.github.io/ApiLogicServer/IDE-Execute/)
 * Local Installs - `pip install` your projects' virtual environment
-as [described here](https://valhuber.github.io/ApiLogicServer/Project-Env/). See also the `venv_setup` directory in this API Logic Project.
+as [described here](https://valhuber.github.io/ApiLogicServer/Project-Env/).
 
-#### If using SqlServer, install `pyodbc`
-Not required for docker-based projects.  For local installs, see the [Quick Start](https://valhuber.github.io/ApiLogicServer/Install-pyodbc/).
+    * See also the `venv_setup` directory in this API Logic Project.
+
+    * If using SqlServer, install `pyodbc`.  Not required for docker-based projects.  For local installs, see the [Quick Start](https://valhuber.github.io/ApiLogicServer/Install-pyodbc/).
 
 ### Run
-Then, start the API, either by __IDE launch configurations__, or by command line: `python api_logic_server_run.py'.
+Then, start the API, either by __IDE launch configurations__, or by command line: `python api_logic_server_run.py`.
 
 * **Open the Admin App -** [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home)
 

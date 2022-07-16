@@ -180,6 +180,8 @@ These technologies are automatically created when you use ApiLogicServer:
 
 ### Change Log
 
+07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env
+
 07/10/2022 - 05.03.11: Product links to new gh-pages doc site
 
 06/27/2022 - 05.03.06: nw-, with perform_customizations docker
