@@ -217,7 +217,10 @@ def admin_yaml():
         with open("ui/admin/admin.yaml", "r") as f:
             content = f.read()
         content = content.replace("{swagger_host}", swagger_host)
-        content = content.replace("{port}", port)
+        if os.getenv('CODESPACES'):  # port is implicit and gets mapped
+            content = content.replace(":{port}","")
+        else:
+            content = content.replace("{port}", port)
         content = content.replace("{api}", API_PREFIX)
         app_logger.debug(f'loading ui/admin/admin.yaml')
         mem = io.BytesIO(str.encode(content))
@@ -273,7 +276,7 @@ def after_request(response):
 """ start the server from create_app """
 
 if __name__ == "__main__":
-    msg = f'API Logic Project Started, version 5.03.12, available at http://{swagger_host}:{port}'
+    msg = f'API Logic Project Started, version api_logic_server_version, available at http://{swagger_host}:{port}'
     if is_docker():
         msg += f' (running from docker container at {flask_host} - may require refresh)'
     app_logger.info(msg)
