@@ -3,7 +3,7 @@ about:
   recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType
 # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
   version: 5.03.18
-api_root: http://{swagger_host}:{port}/{api}
+api_root: http://{swagger_host}:{port}{api}
 info:
   number_relationships: 11
   number_tables: 15
