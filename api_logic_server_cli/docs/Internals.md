@@ -5,7 +5,11 @@ This page does _not_ address created projects, rather, it is about the API Logic
 To create the project:
 
 1. Create an empty folder (e.g., `dev`)
-2. Download and run [the install-ApiLogicServer-dev procedure](https://github.com/valhuber/ApiLogicServer/blob/main/install-ApiLogicServer-dev.sh) (note: Windows users can use this as a guide).
+2. Download and run [the install-ApiLogicServer-dev procedure](https://github.com/valhuber/ApiLogicServer/blob/main/install-ApiLogicServer-dev.sh) (note: Windows users use `install-ApiLogicServer-dev.ps1`), e.g.:
+
+```bash title="Install API Logic Server Development environment"
+sh install-ApiLogicServer-dev.sh vscode
+```
 
   * This will use `git clone` to create folders in `dev:` ApiLogicServer, safrs-react-admin, and servers.  It's basically straightforward, _except_ for the `cp` command which copies the `safrs-react-admin` runtime to API Logic Server for subsequent creation of API Logic Projects:
 
