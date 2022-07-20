@@ -20,7 +20,7 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 
 
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
-    """ extend model end points with new end points for services
+    """ Customize API - new end points for services
 
     This sample illustrates the classic hello world,
     and a more interesting add_order.
@@ -131,7 +131,7 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
             app_logger.info(f'{msg}')
         return jsonify({"result": f'ok'})
     
-    app_logger.info("api/expose_service.py - Exposing custom services hello_world, add_order")
+    app_logger.info("Customize API - api/expose_service.py, exposing custom services hello_world, add_order")
     api.expose_object(ServicesEndPoint)
 
 

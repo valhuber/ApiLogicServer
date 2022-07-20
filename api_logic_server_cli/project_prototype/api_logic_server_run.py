@@ -184,48 +184,6 @@ def flask_events():
         return response
 
 
-def create_app(config_filename=None, swagger_host: str = None, flask_host: str = None):
-    """ creates flask_app, activates API and logic """
-    admin_enabled = os.name != "nt"
-    def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
-        if constraint.error_attributes:
-            detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
-        else:
-            detail = {"model": logic_row.name}
-        raise ValidationErrorExt(message=message, detail=detail)
-
-    flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
-    flask_app.config.from_object("config.Config")
-    if admin_enabled:
-        flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
-    # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
-    setup_logging(flask_app)
-    # ?? db = safrs.DB  # opens database per config, setting session
-    Base: declarative_base = db.Model
-    session: Session = db.session
-
-    LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
-
-    db.init_app(flask_app)
-    with flask_app.app_context():
-        if admin_enabled:
-            db.create_all()
-            db.create_all(bind='admin')
-            session.commit()
-
-        # app_logger.debug(f'\n==> Network Diagnostic - create_app exposing api on swagger_host: {swagger_host}')
-        safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
-        customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
-
-        from database import customize_models
-        app_logger.debug(f'\nCustomizations for API and Model activated')
-
-        SAFRSBase._s_auto_commit = False
-        session.close()
-
-    return flask_app, safrs_api
-
-
 def get_args():
     """
     returns tuple: flask_host, swagger_host, port
@@ -318,6 +276,55 @@ def get_args():
                 swagger_host = sys.argv[3]
                 app_logger.debug(f'==> Network Diagnostic - using specified swagger_host: {sys.argv[3]}')
     return flask_host, swagger_host, port, verbose, create_and_run
+
+def create_app(config_filename=None, swagger_host: str = None, flask_host: str = None):
+    """ creates flask_app, activates API and logic """
+    admin_enabled = os.name != "nt"
+    def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
+        if constraint.error_attributes:
+            detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
+        else:
+            detail = {"model": logic_row.name}
+        raise ValidationErrorExt(message=message, detail=detail)
+
+    flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
+    flask_app.config.from_object("config.Config")
+    if admin_enabled:
+        flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
+    # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
+    setup_logging(flask_app)
+    # ?? db = safrs.DB  # opens database per config, setting session
+    Base: declarative_base = db.Model
+    session: Session = db.session
+
+    """ Logs:
+        Declare Logic complete - logic/declare_logic.py
+    """
+    LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
+
+    db.init_app(flask_app)
+    with flask_app.app_context():
+        if admin_enabled:
+            db.create_all()
+            db.create_all(bind='admin')
+            session.commit()
+
+        # app_logger.debug(f'\n==> Network Diagnostic - create_app exposing api on swagger_host: {swagger_host}')
+        """ Logs:
+            Declare   API - api/expose_api_models, URL = localhost, port = 5656
+            Customize API - api/expose_service.py, exposing custom services hello_world, add_order
+        """
+        safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
+        customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
+
+        from database import customize_models
+        app_logger.debug(f'\nCustomizations for API and Model activated')
+
+        SAFRSBase._s_auto_commit = False
+        session.close()
+
+    return flask_app, safrs_api
+
 
 did_send_spa = False
 

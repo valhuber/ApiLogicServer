@@ -13,7 +13,7 @@ declared_rules = []  # rules are objects, you can collect them if you like (see 
 
 def declare_logic():
     """
-    Logic declared here, using code completion.
+    Declare Logic here, using Python with code completion.
 
     This logic pre-created for default database, nw.sqlite.
         You would normally declare your *own* rules.
@@ -165,4 +165,4 @@ def declare_logic():
     time_stamp_rule = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
     declared_rules.append(time_stamp_rule)  # print ala api/customize_api#rules_report()
 
-    app_logger.debug("\nlogic/declare_logic.py: declare_logic complete")
+    app_logger.debug("\nDeclare Logic complete - logic/declare_logic.py")
