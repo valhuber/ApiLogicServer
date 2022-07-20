@@ -1,7 +1,7 @@
 Creation tests
 ==============
 
-cd ~/dev/ApiLogicServer/tests/creation_tests
+cd ~/dev/ApiLogicServer/tests/creation_tests   # docker databases must be running
 sh create-install.sh venv  # rebuilds the venv
 # follow directions to activate and pip install
 
@@ -13,7 +13,6 @@ caution: SqlServer url depends on install of pyodbc (18 requires &Encrypt=no)
     pip
     ===
 
-    python3 -m pip install pyodbc
     sh create-servers.sh create  # rebuilds ApiLogicProject, classicmodels, postgres, sqlserver, sqlserver-types
     
     then, to test the servers (same cmd window)...
