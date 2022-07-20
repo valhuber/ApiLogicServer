@@ -30,4 +30,4 @@ def proper_salary(row, value):
 
 models.Employee.ProperSalary = proper_salary
 
-app_logger.info("database/customize_models.py - models.Employee.Manager(manages), Employee.ProperSalary\n")
+app_logger.info("\ndatabase/customize_models.py - models.Employee.Manager(manages), Employee.ProperSalary\n")

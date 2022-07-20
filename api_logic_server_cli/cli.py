@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.18"
+__version__ = "5.03.19"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/15/2022 - 05.03.18: ui/admin/admin.yaml replacable host/port names \n"\
+    "\t07/19/2022 - 05.03.19: api_logic_server_run refactor, ui/admin/admin.yaml replacable host/port names \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
     "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
@@ -87,7 +87,9 @@ import create_from_model.api_logic_server_utils as create_utils
 
 api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
 
-api_logic_server_info_file_dict = {}
+api_logic_server_info_file_dict = {}  # last-run (debug, etc) info
+""" contains last-run info, debug switches to show args, etc """
+
 if Path(api_logic_server_info_file_name).is_file():
     api_logic_server_info_file = open(api_logic_server_info_file_name)
     api_logic_server_info_file_dict = yaml.load(api_logic_server_info_file, Loader=yaml.FullLoader)
@@ -892,7 +894,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
     else:
         print("\nRun API Logic Server:")
         print(f'  cd {project_name};  python api_logic_server_run.py')
-    if copy_project_result != "":  # or project_directory.endswith("api_logic_server")?
+    if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
         print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
         # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
     if (is_docker()):
@@ -914,27 +916,69 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
         # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
         # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
         run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
-        create_utils.run_command(f'python {run_file}', msg="\nStarting created API Logic Project")
+        run_args = ""
+        if command == "create-and-run":
+            run_args = "--create_and_run"
+        create_utils.run_command(f'python {run_file} {run_args}', msg="\nStarting created API Logic Project")
 
+'''  exploring no-args, not a clue
+from click_default_group import DefaultGroup
+
+@click.group(cls=DefaultGroup, default='no_args', default_if_no_args=True)
+def main():
+    """
+    wonder if this can just do something
+    """
+    click.echo("group execution (never happens)")
+
+# @click.pass_context
+@main.command()
+@click.option('--config', default=None)
+def no_args(config):
+    print("no args!!")
+
+
+@click.group()
+@click.pass_context
+@main.command("mainZ")
+def mainZ(ctx):
+    """
+    Creates [and runs] logic-enabled Python database API Logic Projects.
+
+\b
+    Doc: https://valhuber.github.io/ApiLogicServer
+
+\b
+    Examples:
+
+\b
+        ApiLogicServer create-and-run --db_url= project_name=  # defaults to Tutorial
+        ApiLogicServer create                                  # prompts
+
+    Then, customize created API Logic Project in your IDE
+    """
+    print("Never executed")
+'''
 
 @click.group()
 @click.pass_context
 def main(ctx):
     """
-    Creates and optionally runs logic-enabled Python database api projects.
+    Creates [and runs] logic-enabled Python database API Logic Projects.
 
 \b
-    Doc: https://github.com/valhuber/ApiLogicServer/blob/main/README.md
+    Doc: https://valhuber.github.io/ApiLogicServer
 
 \b
-    Examples (accept defaults for Sample Tutorial):
+    Examples:
 
 \b
-        ApiLogicServer create-and-run
-        ApiLogicServer create
+        ApiLogicServer create-and-run --db_url= project_name=  # defaults to Tutorial
+        ApiLogicServer create                                  # prompts
 
-    Then, customize created project in your IDE
+    Then, customize created API Logic Project in your IDE
     """
+    click.echo("main - called iff commands supplied")
 
 
 @main.command("about")
@@ -973,7 +1017,6 @@ def about(ctx):
     click.echo(
         click.style(recent_changes)
     )
-
 
 @main.command("create")
 @click.option('--project_name',
@@ -1534,7 +1577,7 @@ if __name__ == '__main__':  # debugger & python command line start here
 
 def key_module_map():
     """ not called - just index of key code - use this for hover, goto etc 
-        ctl-l for last edit
+        ctl-l (^l) for last edit
     """
     import create_from_model.ui_admin_creator as ui_admin_creator
     import create_from_model.api_expose_api_models as api_expose_api_models

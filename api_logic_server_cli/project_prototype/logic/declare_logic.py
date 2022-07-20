@@ -9,7 +9,7 @@ import logging
 
 def declare_logic():
     app_logger = logging.getLogger("api_logic_server_app")
-    app_logger.info("logic_bank.py - declare_logic")
+    app_logger.info("logic/declare_logic.py")
 
     """ example from default database
     

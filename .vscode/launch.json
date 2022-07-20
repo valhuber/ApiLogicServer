@@ -192,6 +192,15 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "ApiLogicServer <empty>",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/api_logic_server_cli",
+            "program": "cli.py",
+            "redirectOutput": true,
+            "console": "integratedTerminal"
+        },
+        {
             "name": "ApiLogicServer about",
             "type": "python",
             "request": "launch",

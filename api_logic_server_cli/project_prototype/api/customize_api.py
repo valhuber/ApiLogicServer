@@ -23,6 +23,7 @@ app_logger = logging.getLogger("api_logic_server_app")
 
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ extend model end points with new end points for services """
+    
     app_logger.info("api/customize_api.py - expose custom services")
 
     @app.route('/hello_world')

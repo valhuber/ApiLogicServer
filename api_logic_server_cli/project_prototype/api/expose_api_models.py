@@ -8,4 +8,4 @@ import logging as logging
 database = __import__('database')
 
 app_logger = logging.getLogger('api_logic_server_app')
-app_logger.info("api/expose_api_models.py - endpoint for each table")
+app_logger.info("\napi/expose_api_models.py - endpoint for each table")
