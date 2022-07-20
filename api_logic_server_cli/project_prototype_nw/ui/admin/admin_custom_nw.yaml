@@ -3,7 +3,7 @@ about:
   recent_changes: altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, SampleDBVersion
 # this file illustrates customizations; compare it to admin-created.yaml to see the specific changes.
   version: 5.03.018
-api_root:  http://{swagger_host}:{port}{api}
+api_root:  http://{swagger_host}:{port}/{api}
 # becomes  http://localhost:5656/api
 # for deployed apps, you might use a different uri, such as https://apilogicserver.pythonanywhere.com/api
 info:

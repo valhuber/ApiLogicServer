@@ -329,6 +329,11 @@ did_send_spa = False
 API_PREFIX = "/api_logic_server_api_name"
 flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud server addr)
 swagger_host = "api_logic_swagger_host"  # where swagger finds the API
+if is_docker() and flask_host == "localhost":
+    use_docker_override = True
+    if use_docker_override:
+        flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
+        app_logger.debug(f'\n==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
 port = "api_logic_server_port"
 
 flask_app, safrs_api = create_app(flask_host = flask_host, swagger_host = swagger_host)
