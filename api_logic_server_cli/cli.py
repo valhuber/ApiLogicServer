@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.19"
+__version__ = "5.03.21"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/19/2022 - 05.03.19: api_logic_server_run refactor, ui/admin/admin.yaml replacable host/port names \n"\
+    "\t07/19/2022 - 05.03.21: api_logic_server_run refactor, ui/admin/admin.yaml replacable host/port names \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
     "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\

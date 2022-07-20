@@ -133,11 +133,8 @@ def flask_events():
             with open("ui/admin/admin.yaml", "r") as f:
                 content = f.read()
             content = content.replace("{swagger_host}", swagger_host)
-            if os.getenv('CODESPACES'):  # port is implicit and gets mapped
-                content = content.replace(":{port}","")
-            else:
-                content = content.replace("{port}", port)
-            content = content.replace("{api}", API_PREFIX)
+            content = content.replace("{port}", port)  # note - codespaces requires 443 here (typically via args)
+            content = content.replace("{api}", API_PREFIX[1:])
             app_logger.debug(f'loading ui/admin/admin.yaml')
             mem = io.BytesIO(str.encode(content))
             return send_file(mem, mimetype='text/yaml')
@@ -329,7 +326,7 @@ did_send_spa = False
 # ================================== 
 
 # defaults from ApiLogicServer create command...
-API_PREFIX = "/api"
+API_PREFIX = "/api_logic_server_api_name"
 flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud server addr)
 swagger_host = "api_logic_swagger_host"  # where swagger finds the API
 port = "api_logic_server_port"

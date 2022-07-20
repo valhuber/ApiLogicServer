@@ -113,7 +113,7 @@ class AdminCreator(object):
 
         use_repl = True
         if use_repl:
-            self.admin_yaml.api_root = 'https://{swagger_host}{api}'
+            self.admin_yaml.api_root = 'http://{swagger_host}:{port}/{api}'
         else:
             self.admin_yaml.api_root = f'http://localhost:5656/{self.mod_gen.api_name}'
             if self.host != "localhost":
