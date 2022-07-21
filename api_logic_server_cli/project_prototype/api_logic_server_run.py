@@ -26,7 +26,7 @@ handler.setFormatter(formatter)
 app_logger.addHandler(handler)
 app_logger.propagate = True
 
-app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning < info < debug
+app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
 app_logger.info(f'\nAPI Logic Project Starting: {__file__}')
 
 logging.getLogger('safrs').setLevel(logging.INFO)
