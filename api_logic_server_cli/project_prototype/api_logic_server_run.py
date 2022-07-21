@@ -118,7 +118,7 @@ from safrs import SAFRSBase, SAFRSAPI
 
 db = safrs.DB  # opens database (per config.py), setting session
 
-def flask_events():
+def flask_events(flask_app):
     @flask_app.route('/')
     def index():
         app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
@@ -279,51 +279,67 @@ def get_args():
 
 def create_app(config_filename=None, swagger_host: str = None, flask_host: str = None):
     """ creates flask_app, activates API and logic """
-    admin_enabled = os.name != "nt"
-    def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
-        if constraint.error_attributes:
-            detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
-        else:
-            detail = {"model": logic_row.name}
-        raise ValidationErrorExt(message=message, detail=detail)
+    # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
+    import warnings
 
-    flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
-    flask_app.config.from_object("config.Config")
-    if admin_enabled:
-        flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
-    # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
-    setup_logging(flask_app)
-    # ?? db = safrs.DB  # opens database per config, setting session
-    Base: declarative_base = db.Model
-    session: Session = db.session
+    from sqlalchemy import exc as sa_exc
 
-    """ Logs:
-        Declare Logic complete - logic/declare_logic.py
-    """
-    LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
+    with warnings.catch_warnings():
+        # warnings.simplefilter("ignore", category=sa_exc.SAWarning)
+        admin_enabled = os.name != "nt"
+        def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
+            if constraint.error_attributes:
+                detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
+            else:
+                detail = {"model": logic_row.name}
+            raise ValidationErrorExt(message=message, detail=detail)
 
-    db.init_app(flask_app)
-    with flask_app.app_context():
+        flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
+        flask_app.config.from_object("config.Config")
         if admin_enabled:
-            db.create_all()
-            db.create_all(bind='admin')
-            session.commit()
+            flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
+        # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
+        setup_logging(flask_app)
+        # ?? db = safrs.DB  # opens database per config, setting session
+        Base: declarative_base = db.Model
+        session: Session = db.session
 
-        # app_logger.debug(f'\n==> Network Diagnostic - create_app exposing api on swagger_host: {swagger_host}')
+        safrs_log_level = safrs.log.getEffectiveLevel()
+        db_logger = logging.getLogger('sqlalchemy')
+        db_log_level = db_logger.getEffectiveLevel()
+        if True or app_logger.getEffectiveLevel() >= logging.INFO:
+            safrs.log.setLevel(logging.WARN)  # warn is 20, info 30
+            db_logger.setLevel(logging.WARN)
+
         """ Logs:
-            Declare   API - api/expose_api_models, URL = localhost, port = 5656
-            Customize API - api/expose_service.py, exposing custom services hello_world, add_order
+            Declare Logic complete - logic/declare_logic.py
         """
-        safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
-        customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
+        LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
 
-        from database import customize_models
-        app_logger.debug(f'\nCustomizations for API and Model activated')
+        db.init_app(flask_app)
+        with flask_app.app_context():
+            if admin_enabled:
+                db.create_all()
+                db.create_all(bind='admin')
+                session.commit()
 
-        SAFRSBase._s_auto_commit = False
-        session.close()
+            # app_logger.debug(f'\n==> Network Diagnostic - create_app exposing api on swagger_host: {swagger_host}')
+            """ Logs:
+                Declare   API - api/expose_api_models, URL = localhost, port = 5656
+                Customize API - api/expose_service.py, exposing custom services hello_world, add_order
+            """
+            safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
+            customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
-    return flask_app, safrs_api
+            from database import customize_models
+            app_logger.debug(f'\nCustomizations for API and Model activated')
+
+            SAFRSBase._s_auto_commit = False
+            session.close()
+        
+        safrs.log.setLevel(safrs_log_level)
+        db_logger.setLevel(db_log_level)
+        return flask_app, safrs_api
 
 
 did_send_spa = False
@@ -344,6 +360,7 @@ if is_docker() and flask_host == "localhost":
 port = "api_logic_server_port"
 
 flask_app, safrs_api = create_app(flask_host = flask_host, swagger_host = swagger_host)
+flask_events(flask_app)
 
 how_run = "(from WSGI)"
 if __name__ == "__main__":
@@ -352,18 +369,16 @@ if __name__ == "__main__":
     if verbose:
         app_logger.setLevel(logging.DEBUG)
 
-msg = f'API Logic Project Loaded {how_run}, version 5.03.18, configured for http://{swagger_host}:{port}'
-if is_docker():
-    msg += f' (running from docker container at {flask_host} - may require refresh)'
-app_logger.info(f'\n{msg}')
+    msg = f'API Logic Project Loaded {how_run}, version 5.03.18, configured for http://{swagger_host}:{port}'
+    if is_docker():
+        msg += f' (running from docker container at {flask_host} - may require refresh)'
+    app_logger.info(f'\n{msg}')
 
-flask_app, safrs_api = create_app(flask_host = flask_host, swagger_host = swagger_host)
+    if create_and_run:
+        app_logger.debug(f'\n==> Customizable API Logic Project Created -- '
+                    f'open it with your IDE at {project_dir}')
 
-if create_and_run:
-    app_logger.debug(f'\n==> Customizable API Logic Project Created -- '
-                f'open it with your IDE at {project_dir}')
+    app_logger.debug(f'\nServer starting -- '
+                f'explore sample data and API at swagger_host: http://{swagger_host}:{port}/\n')
 
-app_logger.debug(f'\nServer starting -- '
-            f'explore sample data and API at swagger_host: http://{swagger_host}:{port}/\n')
-flask_events()
-flask_app.run(host=flask_host, threaded=False, port=port)
+    flask_app.run(host=flask_host, threaded=False, port=port)
