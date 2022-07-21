@@ -10,6 +10,7 @@ app_logger.debug("logic/__init__ begin")
 import database.db
 from logic.declare_logic import declare_logic
 
+app_logger.info(f'\nlogic/__init__ - {len(database.models.metadata.tables)} tables loaded')
 
 def constraint_handler(message: str, constraint: constraint, logic_row: logic_row):    # message: str, constr: constraint, row: logic_row):
     raise ValidationError(message)

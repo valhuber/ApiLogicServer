@@ -116,7 +116,7 @@ from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from safrs import SAFRSBase, SAFRSAPI
 
-db = safrs.DB  # opens database (per config.py), setting session
+db = safrs.DB
 
 def flask_events(flask_app):
     @flask_app.route('/')
@@ -295,7 +295,7 @@ def create_app(config_filename=None, swagger_host: str = None, flask_host: str =
         """ Logs:
             Declare Logic complete - logic/declare_logic.py
         """
-        LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
+        LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)  # opens db
 
         db.init_app(flask_app)
         with flask_app.app_context():
