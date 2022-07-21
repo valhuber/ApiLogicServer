@@ -164,6 +164,7 @@ def declare_logic():
 
     time_stamp_rule = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
     declared_rules.append(time_stamp_rule)  # print ala api/customize_api#rules_report()
+    
     import database.db
     app_logger.info("\nDeclare Logic complete - logic/declare_logic.py (rules + code)"
             + f' -- {len(database.models.metadata.tables)} tables loaded')
