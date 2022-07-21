@@ -37,12 +37,12 @@ def create_expose_api_models(model_creation_services: create_from_model.CreateFr
     # result_apis += '    if HOST == "0.0.0.0":\n'
     # result_apis += '        my_host = "localhost"  # override default HOST for pc"\n'
     result_apis += '    """ Declare API - create SAFRSAPI, exposing each model (note: end point names are table names) """\n'
-    result_apis += '    app_logger.debug(f"")\n'
-    result_apis += '    app_logger.debug(f"Declare   API - api/expose_api_models, URL = {swagger_host}, port = {PORT}")\n'
+    result_apis += '    app_logger.info(f"")\n'
+    result_apis += '    app_logger.info(f"Declare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{PORT}")\n'
     result_apis += '    api = SAFRSAPI(app, host=swagger_host, port=PORT, prefix = API_PREFIX, **kwargs)\n'
     result_apis += '    safrs_log_level = safrs.log.getEffectiveLevel()\n'
     result_apis += '    if True or app_logger.getEffectiveLevel() >= logging.INFO:\n'
-    result_apis += '        safrs.log.setLevel(logging.WARN)  # warn is 20, info 30\n'
+    result_apis += '        safrs.log.setLevel(logging.WARN)  # log level warn is 20, info 30\n'
 
     sys.path.append(cwd)
 

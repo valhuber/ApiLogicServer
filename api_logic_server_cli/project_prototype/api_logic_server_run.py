@@ -26,8 +26,8 @@ handler.setFormatter(formatter)
 app_logger.addHandler(handler)
 app_logger.propagate = True
 
-app_logger.setLevel(logging.DEBUG)  # use WARNING to reduce output
-app_logger.info(f'\nAPI Logic Project Starting: {__file__}\n')
+app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning < info < debug
+app_logger.info(f'\nAPI Logic Project Starting: {__file__}')
 
 logging.getLogger('safrs').setLevel(logging.INFO)
 logging.getLogger('safrs.safrs_init').setLevel(logging.INFO)
@@ -285,7 +285,7 @@ def create_app(config_filename=None, swagger_host: str = None, flask_host: str =
     from sqlalchemy import exc as sa_exc
 
     with warnings.catch_warnings():
-        # warnings.simplefilter("ignore", category=sa_exc.SAWarning)
+        warnings.simplefilter("ignore", category=sa_exc.SAWarning)
         admin_enabled = os.name != "nt"
         def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
             if constraint.error_attributes:
@@ -369,7 +369,7 @@ if __name__ == "__main__":
     if verbose:
         app_logger.setLevel(logging.DEBUG)
 
-    msg = f'API Logic Project Loaded {how_run}, version 5.03.18, configured for http://{swagger_host}:{port}'
+    msg = f'API Logic Project Loaded {how_run}, version 5.03.18, configured for http://{swagger_host}:{port}\n'
     if is_docker():
         msg += f' (running from docker container at {flask_host} - may require refresh)'
     app_logger.info(f'\n{msg}')

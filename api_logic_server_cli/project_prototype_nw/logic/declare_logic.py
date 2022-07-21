@@ -7,7 +7,7 @@ from database import models
 import logging
 
 app_logger = logging.getLogger("api_logic_server_app")
-app_logger.info("logic/declare_logic.py")
+app_logger.debug("logic/declare_logic.py")
 
 declared_rules = []  # rules are objects, you can collect them if you like (see @ end)
 
@@ -165,4 +165,4 @@ def declare_logic():
     time_stamp_rule = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
     declared_rules.append(time_stamp_rule)  # print ala api/customize_api#rules_report()
 
-    app_logger.debug("\nDeclare Logic complete - logic/declare_logic.py")
+    app_logger.info("\nDeclare Logic complete - logic/declare_logic.py (rules + code)")
