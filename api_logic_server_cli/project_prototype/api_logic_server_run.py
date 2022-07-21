@@ -257,24 +257,6 @@ def get_args():
                 flask_host = args.flask_host_p
                 swagger_host = args.swagger_host_p
 
-        old_way = False
-        if old_way:
-            if sys.argv[1:]:
-                flask_host = sys.argv[1]  # you many need to enable cors support, below
-                app_logger.debug(f'==> Network Diagnostic - using specified flask_host: {sys.argv[1]}')
-            else:
-                app_logger.debug(f'==> Network Diagnostic - defaulting flask_host: {flask_host}')
-            if is_docker() and flask_host == "localhost":
-                use_docker_override = True
-                if use_docker_override:
-                    flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
-                    app_logger.debug(f'==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
-            if sys.argv[2:]:
-                port = sys.argv[2]  # you many need to enable cors support, below
-                app_logger.debug(f'==> Network Diagnostic - using specified port: {sys.argv[2]}')
-            if sys.argv[3:]:
-                swagger_host = sys.argv[3]
-                app_logger.debug(f'==> Network Diagnostic - using specified swagger_host: {sys.argv[3]}')
     return flask_host, swagger_host, port, verbose, create_and_run
 
 def create_app(config_filename=None, swagger_host: str = None, flask_host: str = None):
@@ -323,7 +305,6 @@ def create_app(config_filename=None, swagger_host: str = None, flask_host: str =
                 db.create_all(bind='admin')
                 session.commit()
 
-            # app_logger.debug(f'\n==> Network Diagnostic - create_app exposing api on swagger_host: {swagger_host}')
             """ Logs:
                 Declare   API - api/expose_api_models, URL = localhost, port = 5656
                 Customize API - api/expose_service.py, exposing custom services hello_world, add_order
@@ -375,10 +356,10 @@ if __name__ == "__main__":
     app_logger.info(f'\n{msg}')
 
     if create_and_run:
-        app_logger.debug(f'\n==> Customizable API Logic Project Created -- '
+        app_logger.debug(f'\n==> Customizable API Logic Project created -- '
                     f'open it with your IDE at {project_dir}')
 
     app_logger.debug(f'\nServer starting -- '
-                f'explore sample data and API at swagger_host: http://{swagger_host}:{port}/\n')
+                f'explore sample data and API on swagger_host: http://{swagger_host}:{port}/\n')
 
     flask_app.run(host=flask_host, threaded=False, port=port)
