@@ -282,7 +282,6 @@ def create_app(config_filename=None, swagger_host: str = None, flask_host: str =
             flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
         # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
         setup_logging(flask_app)
-        # ?? db = safrs.DB  # opens database per config, setting session
         Base: declarative_base = db.Model
         session: Session = db.session
 
