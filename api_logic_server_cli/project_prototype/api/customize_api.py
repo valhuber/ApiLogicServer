@@ -24,7 +24,7 @@ app_logger = logging.getLogger("api_logic_server_app")
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ Customize API - new end points for services """
     
-    app_logger.info("api/customize_api.py - expose custom services")
+    app_logger.debug("api/customize_api.py - expose custom services")
 
     @app.route('/hello_world')
     def hello_world():  # test it with: http://api_logic_server_host:api_logic_server_port/hello_world?user=ApiLogicServer
@@ -129,8 +129,4 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
             app_logger.info(f'{msg}')
         return jsonify({"result": f'ok'})
 
-    app_logger.info(f'*** Customizable ApiLogicServer project created -- '
-             f'open it in your IDE at {project_dir}')
-    app_logger.info(f'*** Server now running -- '
-             f'explore your data and API at http://{swagger_host}:{PORT}/')
-    app_logger.info("\n")
+    app_logger.info("Customize API - api/expose_service.py, exposing custom services")

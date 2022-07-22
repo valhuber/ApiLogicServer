@@ -355,10 +355,10 @@ if __name__ == "__main__":
     app_logger.info(f'\n{msg}')
 
     if create_and_run:
-        app_logger.debug(f'\n==> Customizable API Logic Project created -- '
-                    f'open it with your IDE at {project_dir}')
+        app_logger.info(f'==> Customizable API Logic Project created and running -- '
+                    f'open it with your IDE at {project_dir}\n')
 
-    app_logger.debug(f'\nServer starting -- '
+    app_logger.info(f'Server starting -- '
                 f'explore sample data and API on swagger_host: http://{swagger_host}:{port}/\n')
 
     flask_app.run(host=flask_host, threaded=False, port=port)

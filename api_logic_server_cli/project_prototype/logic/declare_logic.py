@@ -21,3 +21,8 @@ def declare_logic():
                     error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
     
     use code completion to declare rules here """
+
+    import database.db
+    app_logger.info("\nDeclare Logic complete - logic/declare_logic.py (rules + code)"
+        + f' -- {len(database.models.metadata.tables)} tables loaded')
+
