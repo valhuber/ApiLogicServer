@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-  ApiLogicServer v api_logic_server_version
+  ApiLogicServer v 5.03.23
 
-  Created on api_logic_server_created_on
+  Created on July 22, 2022 20:47:56
 
   $ python3 api_logic_server_run.py [Listener-IP] [port] [swagger-IP]    # starts your ApiLogicServer project
 
-  Access the server via the Browser: http://Listener-Ip:api_logic_server_port
+  Access the server via the Browser: http://Listener-Ip:5656
 
 """
 import os
@@ -50,7 +50,7 @@ def is_docker() -> bool:
     path = '/home/api_logic_server'
     path_result = os.path.isdir(path)  # this *should* exist only on docker
     env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
-    assert path_result == env_result
+    # assert path_result == env_result
     return path_result
 
 
@@ -127,13 +127,19 @@ def flask_events(flask_app):
 
     @flask_app.route('/ui/admin/admin.yaml')
     def admin_yaml():
+        """
+        returns response of admin.yaml
+        and text-substitutes to get url args from startup args (vs. specify them twice)
+            api_root: {http_type}://{swagger_host}:{swagger_port} (from ui_admin_creator)
+        """
         import io
         use_type = "mem"
-        if use_type == "mem":
+        if use_type == "mem":  # FIXME swagger_port http_type
             with open("ui/admin/admin.yaml", "r") as f:
                 content = f.read()
+            content = content.replace("{http_type}", http_type)
             content = content.replace("{swagger_host}", swagger_host)
-            content = content.replace("{port}", port)  # note - codespaces requires 443 here (typically via args)
+            content = content.replace("{port}", swagger_port)  # note - codespaces requires 443 here (typically via args)
             content = content.replace("{api}", API_PREFIX[1:])
             app_logger.debug(f'loading ui/admin/admin.yaml')
             mem = io.BytesIO(str.encode(content))
@@ -186,10 +192,10 @@ def flask_events(flask_app):
 
 def get_args():
     """
-    returns tuple: flask_host, swagger_host, port
+    returns tuple: (flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run)
     """
 
-    global flask_host, swagger_host, port
+    global flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run
 
     network_diagnostics = True
     hostname = socket.gethostname()
@@ -221,8 +227,14 @@ def get_args():
                                 help = f'ip address of the interface to which flask will be bound {flask_host})', 
                                 default = flask_host)
             parser.add_argument("-s", "--swagger_host", 
-                                help = f'ip address of the interface to which flask will be bound {swagger_host})',
+                                help = f'ip address clients use to access API {swagger_host})',
                                 default = swagger_host)
+            parser.add_argument("-q", "--swagger_port", 
+                                help = f'swagger port (eg, 443 for codespaces))',
+                                default = port)
+            parser.add_argument("-t", "--http_type", 
+                                help = f'ip address of the interface to which flask will be bound {swagger_host})',
+                                default = "http")
             parser.add_argument("-v", "--verbose", 
                                 help = f'set for more info',
                                 action=argparse.BooleanOptionalAction,
@@ -250,6 +262,8 @@ def get_args():
                 port = args.port
                 flask_host = args.flask_host
                 swagger_host = args.swagger_host
+                swagger_port = args.swagger_port
+                http_type = args.http_type
                 verbose = args.verbose
                 create_and_run = args.create_and_run
             else:                               # positional arguments (compatibility)
@@ -257,9 +271,9 @@ def get_args():
                 flask_host = args.flask_host_p
                 swagger_host = args.swagger_host_p
 
-    return flask_host, swagger_host, port, verbose, create_and_run
+    return flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run
 
-def create_app(config_filename=None, swagger_host: str = None, flask_host: str = None):
+def create_app(swagger_host: str = None, swagger_port: str = None):
     """ creates flask_app, activates API and logic """
     # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
     import warnings
@@ -307,8 +321,9 @@ def create_app(config_filename=None, swagger_host: str = None, flask_host: str =
             """ Logs:
                 Declare   API - api/expose_api_models, URL = localhost, port = 5656
                 Customize API - api/expose_service.py, exposing custom services hello_world, add_order
+                FIXME - swagger_port (443)
             """
-            safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=port, API_PREFIX=API_PREFIX)
+            safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=swagger_port, API_PREFIX=API_PREFIX)
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
             from database import customize_models
@@ -329,25 +344,29 @@ did_send_spa = False
 # ================================== 
 
 # defaults from ApiLogicServer create command...
-API_PREFIX = "/api_logic_server_api_name"
-flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud server addr)
-swagger_host = "api_logic_swagger_host"  # where swagger finds the API
+API_PREFIX = "/api"
+flask_host   = "localhost"  # where clients find  the API (eg, cloud server addr)
+swagger_host = "localhost"  # where swagger finds the API
 if is_docker() and flask_host == "localhost":
     use_docker_override = True
     if use_docker_override:
         flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
         app_logger.debug(f'\n==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
-port = "api_logic_server_port"
+port = "5656"
 
-flask_app, safrs_api = create_app(flask_host = flask_host, swagger_host = swagger_host)
+swagger_port = port  # these for codespaces.  Not genned, provide values in launch config
+http_type = "http"
+
+(flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run) = get_args()
+if verbose:
+    app_logger.setLevel(logging.DEBUG)
+
+flask_app, safrs_api = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
 flask_events(flask_app)
 
 how_run = "(from WSGI)"
 if __name__ == "__main__":
     how_run = "(not WSGI)"
-    (flask_host, swagger_host, port, verbose, create_and_run) = get_args()
-    if verbose:
-        app_logger.setLevel(logging.DEBUG)
 
     msg = f'API Logic Project Loaded {how_run}, version 5.03.18, configured for http://{swagger_host}:{port}\n'
     if is_docker():

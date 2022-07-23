@@ -74,6 +74,20 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Codespaces-ApiLogicServer",
+            "type": "python",
+            "request": "launch",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": [
+                "--flask_host=localhost", "--port=5656", "--verbose",
+                "--swagger_host=valhuber-tutorial-apilogicproject-jjr5qwg72vxg-5656.githubpreview.dev", 
+                "--swagger_port=443", "--http_type=https"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Basic Server Test",
             "type": "python",
             "request": "launch",
