@@ -17,7 +17,18 @@ This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects
 The diagram above summarizes the create / run / customize process.  It's a video - click to view.
 
 
-&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## Key Underlying Concepts
+This tutorial illustrates some key concepts:
+
+### _Declarative Models_, not code
+Observe that the files for the Admin App and API are models that describe _what, not how_.  This makes it much easier to understand than generating large amounts of code.
+
+### Preserve Customizations
+The system is designed to enable `rebuild`, so you can iterate the data model - _without losing your customization._  In general, such customizations are kept in separate files than the model files.  So, model files can be rebuilt without affecting customzation files.
+
+&nbsp;
 
 ## Create
 
