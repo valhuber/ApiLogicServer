@@ -67,7 +67,7 @@ def setup_logging(flask_app):
             logic_logger.handlers = []
             logic_logger.addHandler(handler)
             app_logger.warning("\nLog width truncated for readability -- "
-                               "see api_logic_server_run.py in your API Logic Project")
+                               "see api_logic_server_run.py in your API Logic Project\n")
         else:
             formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
         handler.setFormatter(formatter)
@@ -310,6 +310,10 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
             Declare Logic complete - logic/declare_logic.py
         """
         LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)  # opens db
+        import database.db
+        app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
+            + f' -- {len(database.models.metadata.tables)} tables loaded')
+
 
         db.init_app(flask_app)
         with flask_app.app_context():
@@ -323,11 +327,13 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
                 Customize API - api/expose_service.py, exposing custom services hello_world, add_order
                 FIXME - swagger_port (443)
             """
+            app_logger.info(f"\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}")
             safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=swagger_port, API_PREFIX=API_PREFIX)
+            app_logger.info("Customize API - api/expose_service.py, exposing custom services")
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
+            app_logger.info("\nCustomize Data Model - database/customize_models.py")
             from database import customize_models
-            app_logger.debug(f'\nCustomizations for API and Model activated')
 
             SAFRSBase._s_auto_commit = False
             session.close()

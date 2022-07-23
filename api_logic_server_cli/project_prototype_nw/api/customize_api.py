@@ -131,7 +131,7 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
             app_logger.info(f'{msg}')
         return jsonify({"result": f'ok'})
     
-    app_logger.info("Customize API - api/expose_service.py, exposing custom services hello_world, add_order")
+    app_logger.info("..api/expose_service.py, exposing custom services: hello_world, add_order")
     api.expose_object(ServicesEndPoint)
 
 
