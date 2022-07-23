@@ -538,6 +538,9 @@ class CodeGenerator(object):
 ########################################################################################################################
 # Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
 #
+# Alter this file per your database maintenance policy
+#    See https://valhuber.github.io/ApiLogicServer/Project-Rebuild/#rebuilding
+
 from safrs import SAFRSBase
 
 import safrs

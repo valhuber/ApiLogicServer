@@ -17,6 +17,7 @@ Ignoring the boxes labeled "rebuild", the key elements of the creation process a
 * you customize the created project, mainly by altering the files on the far right
 
 As shown in the diagram, creation is always driven from `models.py.`  Models differ from physical schemas in important ways:
+
 * the system ensure that class names are capitalized and singular
 
 
