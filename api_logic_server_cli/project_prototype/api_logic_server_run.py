@@ -1,23 +1,75 @@
 #!/usr/bin/env python3
-"""
-  ApiLogicServer v 5.03.23
-
-  Created on July 22, 2022 20:47:56
-
-  $ python3 api_logic_server_run.py [Listener-IP] [port] [swagger-IP]    # starts your ApiLogicServer project
-
-  Access the server via the Browser: http://Listener-Ip:5656
 
 """
+==============================================================================
+    ApiLogicServer v api_logic_server_version
+
+    Created on api_logic_server_created_on
+
+    This file starts the API Logic Server:
+
+        $ python3 api_logic_server_run.py [--help  # host, port arguments]
+
+    Then, access the Admin App and API via the Browser, eg:
+  
+        http://api_logic_server_host:api_logic_server_port
+
+    You typically do not customize this file,
+        except to override Creation Defaults and Logging, below.
+
+    See Main Code (at end).
+        Use log messages to understand API and Logic activation.
+
+==============================================================================
+"""
+
 import os
 import sys
+
+
+def is_docker() -> bool:
+    """ running docker?  dir exists: /home/api_logic_server """
+    path = '/home/api_logic_server'
+    path_result = os.path.isdir(path)  # this *should* exist only on docker
+    env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
+    # assert path_result == env_result
+    return path_result
+
+"""
+=======================================
+    Creation Defaults
+
+        Override as desired
+        Or specify in CLI arguments
+
+======================================= 
+"""
+
+# defaults from ApiLogicServer create command...
+API_PREFIX = "/api"
+flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud server addr)
+swagger_host = flask_host  # where swagger finds the API
+if is_docker() and flask_host == "localhost":
+    use_docker_override = True
+    if use_docker_override:
+        flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
+        app_logger.debug(f'\n==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
+port = "api_logic_server_port"
+swagger_port = port  # these for codespaces.  Not genned, provide values in launch config
+http_type = "http"
 
 current_path = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(current_path)
 project_dir = str(current_path)
 os.chdir(project_dir)  # so admin app can find images, code
 
+
 import logging
+
+
+# ==================================
+#       LOGGING SETUP
+# ================================== 
 
 app_logger = logging.getLogger('api_logic_server_app')
 handler = logging.StreamHandler(sys.stderr)
@@ -44,14 +96,6 @@ from api import expose_api_models, customize_api
 from logic import declare_logic
 from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase
-
-def is_docker() -> bool:
-    """ running docker?  dir exists: /home/api_logic_server """
-    path = '/home/api_logic_server'
-    path_result = os.path.isdir(path)  # this *should* exist only on docker
-    env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
-    # assert path_result == env_result
-    return path_result
 
 
 def setup_logging(flask_app):
@@ -119,6 +163,8 @@ from safrs import SAFRSBase, SAFRSAPI
 db = safrs.DB
 
 def flask_events(flask_app):
+    """ events for serving admin.yaml, minified safrs-admin
+    """
     @flask_app.route('/')
     def index():
         app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
@@ -134,7 +180,7 @@ def flask_events(flask_app):
         """
         import io
         use_type = "mem"
-        if use_type == "mem":  # FIXME swagger_port http_type
+        if use_type == "mem":
             with open("ui/admin/admin.yaml", "r") as f:
                 content = f.read()
             content = content.replace("{http_type}", http_type)
@@ -206,13 +252,6 @@ def get_args():
 
     if __name__ == "__main__":  # gunicorn-friendly host/port settings ()
 
-        if len(sys.argv) > 1 and sys.argv[1].__contains__("help"):
-            print("")
-            print("API Logic Server - run instructions (default is localhost):")
-            print("  python api_logic_server_run.py [Flask-IP] [,port [, swagger-IP]]")
-            print("")
-            sys.exit()
-
         # thanks to https://www.geeksforgeeks.org/command-line-arguments-in-python/#argparse
         import argparse
         # Initialize parser
@@ -251,8 +290,8 @@ def get_args():
             args = parser.parse_args()
 
             """
-                accepting both... 
-                cases that matter
+                accepting both positional (compatibility) and keyword args... 
+                cases that matter:
                     no args
                     kw only:        argv[1] starts with -
                     pos only
@@ -281,7 +320,7 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
     from sqlalchemy import exc as sa_exc
 
     with warnings.catch_warnings():
-        warnings.simplefilter("ignore", category=sa_exc.SAWarning)
+        warnings.simplefilter("ignore", category=sa_exc.SAWarning)  # alert - disable for safety msgs
         admin_enabled = os.name != "nt"
         def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
             if constraint.error_attributes:
@@ -294,7 +333,7 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
         flask_app.config.from_object("config.Config")
         if admin_enabled:
             flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
-        # flask_app.config.update(SQLALCHEMY_BINDS = {'admin': 'sqlite:///'})
+
         setup_logging(flask_app)
         Base: declarative_base = db.Model
         session: Session = db.session
@@ -306,14 +345,10 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
             safrs.log.setLevel(logging.WARN)  # warn is 20, info 30
             db_logger.setLevel(logging.WARN)
 
-        """ Logs:
-            Declare Logic complete - logic/declare_logic.py
-        """
         LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)  # opens db
         import database.db
         app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
             + f' -- {len(database.models.metadata.tables)} tables loaded')
-
 
         db.init_app(flask_app)
         with flask_app.app_context():
@@ -322,11 +357,6 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
                 db.create_all(bind='admin')
                 session.commit()
 
-            """ Logs:
-                Declare   API - api/expose_api_models, URL = localhost, port = 5656
-                Customize API - api/expose_service.py, exposing custom services hello_world, add_order
-                FIXME - swagger_port (443)
-            """
             app_logger.info(f"\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}")
             safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=swagger_port, API_PREFIX=API_PREFIX)
             app_logger.info("Customize API - api/expose_service.py, exposing custom services")
@@ -349,32 +379,16 @@ did_send_spa = False
 #        MAIN CODE
 # ================================== 
 
-# defaults from ApiLogicServer create command...
-API_PREFIX = "/api"
-flask_host   = "localhost"  # where clients find  the API (eg, cloud server addr)
-swagger_host = "localhost"  # where swagger finds the API
-if is_docker() and flask_host == "localhost":
-    use_docker_override = True
-    if use_docker_override:
-        flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
-        app_logger.debug(f'\n==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
-port = "5656"
-
-swagger_port = port  # these for codespaces.  Not genned, provide values in launch config
-http_type = "http"
-
 (flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run) = get_args()
+
 if verbose:
     app_logger.setLevel(logging.DEBUG)
 
 flask_app, safrs_api = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
 flask_events(flask_app)
 
-how_run = "(from WSGI)"
 if __name__ == "__main__":
-    how_run = "(not WSGI)"
-
-    msg = f'API Logic Project Loaded {how_run}, version 5.03.18, configured for http://{swagger_host}:{port}\n'
+    msg = f'API Logic Project Loaded (not WSGI), version api_logic_server_version, configured for http://{swagger_host}:{port}\n'
     if is_docker():
         msg += f' (running from docker container at {flask_host} - may require refresh)'
     app_logger.info(f'\n{msg}')
@@ -387,3 +401,8 @@ if __name__ == "__main__":
                 f'explore sample data and API on swagger_host: http://{swagger_host}:{port}/\n')
 
     flask_app.run(host=flask_host, threaded=False, port=port)
+else:
+    msg = f'API Logic Project Loaded (WSGI), version api_logic_server_version, configured for http://{swagger_host}:{port}\n'
+    if is_docker():
+        msg += f' (running from docker container at {flask_host} - may require refresh)'
+    app_logger.info(f'\n{msg}')
