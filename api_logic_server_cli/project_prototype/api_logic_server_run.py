@@ -18,8 +18,7 @@
 ==============================================================================
 """
 
-import os
-import sys
+import os, logging, sys
 
 
 def is_docker() -> bool:
@@ -54,8 +53,6 @@ project_dir = str(current_path)
 os.chdir(project_dir)  # so admin app can find images, code
 
 
-import logging
-
 # ==================================
 #       LOGGING SETUP
 # ================================== 
@@ -74,7 +71,6 @@ logging.getLogger('safrs').setLevel(logging.INFO)
 logging.getLogger('safrs.safrs_init').setLevel(logging.INFO)
 
 from typing import TypedDict
-
 import safrs
 from logic_bank.logic_bank import LogicBank
 from logic_bank.exec_row_logic.logic_row import LogicRow
@@ -86,6 +82,21 @@ from api import expose_api_models, customize_api
 from logic import declare_logic
 from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase
+from typing import TypedDict
+import safrs
+from logic_bank.logic_bank import LogicBank
+from logic_bank.exec_row_logic.logic_row import LogicRow
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
+import socket
+import warnings
+from api import expose_api_models, customize_api
+from logic import declare_logic
+from flask import Flask, redirect, send_from_directory, send_file
+from safrs import ValidationError, SAFRSBase
+from flask import Flask, request
+from flask_sqlalchemy import SQLAlchemy
+from safrs import SAFRSBase, SAFRSAPI
 
 
 def setup_logging(flask_app):
@@ -144,11 +155,6 @@ class ValidationErrorExt(ValidationError):
         self.api_code = api_code
         self.detail: TypedDict = detail
 
-
-import sys
-from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
-from safrs import SAFRSBase, SAFRSAPI
 
 db = safrs.DB
 
