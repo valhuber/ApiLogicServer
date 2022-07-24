@@ -12,7 +12,7 @@ API Logic Server is designed to provide a significantly faster and simpler __low
 
 * __:trophy: Declarative Business Logic:__ unique spreadsheet-like rules that are [40X more concise than legacy code](https://valhuber.github.io/ApiLogicServer/Logic-Why/#customize-and-debug){:target="_blank" rel="noopener"}, extensible with Python
 
-## Example: todos
+## Example: todos  -- 1 command project creation
 
 The video at the top shows how to create a system from a `todos` database.  You can create this system with API Logic Server like this:
 
