@@ -2,16 +2,11 @@
 
 """
 ==============================================================================
-    ApiLogicServer v api_logic_server_version
 
-    Created on api_logic_server_created_on
-
-    This file starts the API Logic Server:
-
+    This file starts the API Logic Server (v api_logic_server_version, api_logic_server_created_on):
         $ python3 api_logic_server_run.py [--help  # host, port arguments]
 
-    Then, access the Admin App and API via the Browser, eg:
-  
+    Then, access the Admin App and API via the Browser, eg:  
         http://api_logic_server_host:api_logic_server_port
 
     You typically do not customize this file,
@@ -35,27 +30,22 @@ def is_docker() -> bool:
     # assert path_result == env_result
     return path_result
 
-"""
-=======================================
-    Creation Defaults
 
-        Override as desired
-        Or specify in CLI arguments
-
-======================================= 
-"""
+# =======================================
+#    Creation Defaults
+#
+#        Override as desired
+#         Or specify in CLI arguments
+# ======================================= 
 
 # defaults from ApiLogicServer create command...
 API_PREFIX = "/api"
 flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud server addr)
 swagger_host = flask_host  # where swagger finds the API
 if is_docker() and flask_host == "localhost":
-    use_docker_override = True
-    if use_docker_override:
-        flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
-        app_logger.debug(f'\n==> Network Diagnostic - using docker_override for flask_host: {flask_host}')
+    flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
 port = "api_logic_server_port"
-swagger_port = port  # these for codespaces.  Not genned, provide values in launch config
+swagger_port = port  # for codespaces - see values in launch config
 http_type = "http"
 
 current_path = os.path.abspath(os.path.dirname(__file__))
@@ -65,7 +55,6 @@ os.chdir(project_dir)  # so admin app can find images, code
 
 
 import logging
-
 
 # ==================================
 #       LOGGING SETUP
@@ -92,6 +81,7 @@ from logic_bank.exec_row_logic.logic_row import LogicRow
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 import socket
+import warnings
 from api import expose_api_models, customize_api
 from logic import declare_logic
 from flask import Flask, redirect, send_from_directory, send_file
@@ -250,6 +240,18 @@ def get_args():
     verbose = False
     create_and_run = False
 
+    def make_wide(formatter, w=120, h=36):
+        """ Return a wider HelpFormatter, if possible."""
+        try:
+            # https://stackoverflow.com/a/5464440
+            # beware: "Only the name of this class is considered a public API."
+            kwargs = {'width': w, 'max_help_position': h}
+            formatter(None, **kwargs)
+            return lambda prog: formatter(prog, **kwargs)
+        except TypeError:
+            warnings.warn("argparse help formatter failed, falling back.")
+            return formatter
+
     if __name__ == "__main__":  # gunicorn-friendly host/port settings ()
 
         # thanks to https://www.geeksforgeeks.org/command-line-arguments-in-python/#argparse
@@ -259,26 +261,27 @@ def get_args():
             app_logger.debug("No host/port arguments - using creation defaults")
         else:
             msg = "API Logic Project"
-            parser = argparse.ArgumentParser(description = msg)
-            parser.add_argument("-p", "--port",
-                                help = f'Port (default {port})', default = port)
-            parser.add_argument("-f", "--flask_host", 
-                                help = f'ip address of the interface to which flask will be bound {flask_host})', 
+            parser = argparse.ArgumentParser(
+                formatter_class=make_wide(argparse.ArgumentDefaultsHelpFormatter))
+            parser.add_argument("--port",
+                                help = f'port (Flask)', default = port)
+            parser.add_argument("--flask_host", 
+                                help = f'ip to which flask will be bound', 
                                 default = flask_host)
-            parser.add_argument("-s", "--swagger_host", 
-                                help = f'ip address clients use to access API {swagger_host})',
+            parser.add_argument("--swagger_host", 
+                                help = f'ip clients use to access API',
                                 default = swagger_host)
-            parser.add_argument("-q", "--swagger_port", 
-                                help = f'swagger port (eg, 443 for codespaces))',
+            parser.add_argument("--swagger_port", 
+                                help = f'swagger port (eg, 443 for codespaces)',
                                 default = port)
-            parser.add_argument("-t", "--http_type", 
-                                help = f'ip address of the interface to which flask will be bound {swagger_host})',
+            parser.add_argument("--http_type", 
+                                help = f'http or https',
                                 default = "http")
-            parser.add_argument("-v", "--verbose", 
-                                help = f'set for more info',
+            parser.add_argument("--verbose", 
+                                help = f'for more logging',
                                 action=argparse.BooleanOptionalAction,
                                 default = False)
-            parser.add_argument("-r", "--create_and_run", 
+            parser.add_argument("--create_and_run", 
                                 help = f'system use - log how to open project',
                                 action=argparse.BooleanOptionalAction,
                                 default = False)
@@ -315,7 +318,6 @@ def get_args():
 def create_app(swagger_host: str = None, swagger_port: str = None):
     """ creates flask_app, activates API and logic """
     # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
-    import warnings
 
     from sqlalchemy import exc as sa_exc
 
