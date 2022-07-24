@@ -52,7 +52,7 @@ nav:
     - "API Logic Server Development": Internals.md
   - Troubleshooting.md
   - FAQs:
-    - "Compared To Frameworks": FAQ-Frameworks.md
+    - "Is this a Framework?": FAQ-Frameworks.md
     - "Is this a RETE Engine?": FAQ-RETE.md
     - "Is this a Low Code approach?": FAQ-Low-Code.md
     - "Is this a 4GL?": Tech-4GL.md

@@ -1,14 +1,18 @@
-There are many excellent frameworks for developing web apps.  This page provides a quick reminder of some popular alternatives, and then describes a new, __low-code approach__ taken by API Logic Server.
+## TL;DR - not a framework, rather a low-code approach for creating systems
+
+There are many excellent frameworks for developing web apps.  They provide tools for writing code to handle API and application events.
+
+API Logic Server is not a framework - it is _built_ on frameworks (Flask currently, more are possible).  It is a __low-code approach__ for creating customizable microservices - Apps, APIs, _and_ the underlying business logic.
 
 &nbsp;
 
-## Conventional Approach - code based
+## Frameworks - code based app/api handlers
 
-Conventional approaches require extensive background in web app development, and significant amounts of code.  The video at the end provides an excellent summary of Flask, FAST API, and Django.  While flexibile, they are _complex and time consuming._
+Frameworks require extensive background in web app development, and significant amounts of code.  The video at the end provides an excellent summary of Flask, FAST API, and Django.  While flexibile, they are _complex and time consuming._
 
 &nbsp;
 
-## API Logic Server - low-code declarative, extensible
+## API Logic Server - low-code declarative, extensible system creation
 
 API Logic Server is designed to provide a significantly faster and simpler __low-code__ approach for creating database systems:
 
@@ -21,6 +25,8 @@ API Logic Server is designed to provide a significantly faster and simpler __low
 * __Fully Customizable:__ you get a [customizable project](https://valhuber.github.io/ApiLogicServer/Tutorial/#customize-and-debug){:target="_blank" rel="noopener"} you can use in your IDE to create custom services with all the flexibility and power of Python, Flask and SQLAlchemy
 
 * __:trophy: Declarative Business Logic:__ unique spreadsheet-like rules that are [40X more concise than legacy code](https://valhuber.github.io/ApiLogicServer/Logic-Why/#customize-and-debug){:target="_blank" rel="noopener"}, extensible with Python
+
+&nbsp;
 
 ## Example: todos  -- 1 command project creation
 
