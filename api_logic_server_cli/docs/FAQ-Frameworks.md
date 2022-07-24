@@ -1,6 +1,6 @@
 There are many excellent frameworks for developing web apps.  Here is an [excellent video](https://www.youtube.com/watch?v=3vfum74ggHE&t=2s){:target="_blank" rel="noopener"}, describing how to create an app using Flask, Django and Fast API.
 
-API Logic Server is designed to provide a significantly faster and simpler __low-code__ way to create database systems:
+API Logic Server is designed to provide a significantly faster and simpler __low-code__ approach for creating database systems:
 
 * __Remarkable speed and simplicity:__ given a database, you get an instant system  - _no training, no coding:_
 
@@ -16,10 +16,14 @@ API Logic Server is designed to provide a significantly faster and simpler __low
 
 The video at the top shows how to create a system from a `todos` database.  You can create this system with API Logic Server like this:
 
-1. Download the [todos database](https://github.com/valhuber/ApiLogicServer/blob/main/examples/dbs/todos.db){:target="_blank" rel="noopener"}
+1. Download the [todos database](https://github.com/valhuber/ApiLogicServer/blob/main/examples/dbs/todos.db){:target="_blank" rel="noopener"} to your desktop
+
 2. Install API Logic Server:
 
 ```bash title="Install API Logic Server  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (also available for Docker)"
+cd ~/Desktop
+mkdir ApiLogicServer
+cd ApiLogicServer
 python -m venv venv        # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
 python -m pip install ApiLogicServer
@@ -27,7 +31,7 @@ python -m pip install ApiLogicServer
 3. Create and run your project
 ```bash title="Create and Run todos project"
 ApiLogicServer create-and-run --project_name=todo \
-   --db_url=sqlite:////Users/val/dev/todo_example/todos.db 
+   --db_url=sqlite:////Users/Val/Desktop/todos.db  # explicit path (no ~)
 ```
 
 Explore your project in your IDE, using standard services to code, run and debug.
