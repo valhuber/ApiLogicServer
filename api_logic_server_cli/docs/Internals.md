@@ -27,6 +27,12 @@ You can provide options for `vscode` or `charm`:
 * `vscode` projects are created with a `venv` and are ready to run the Launch Configurations
 * `charm` projects require that you create the `venv` with the IDE
 
+The ApiLogicServer project includes launch/run configurations you can use to run the software from the IDE:
+
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/dev-run.png?raw=true"></figure>
+
+
 &nbsp;
 
 ## Develop / Debug admin app
