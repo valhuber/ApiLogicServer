@@ -8,9 +8,9 @@ API Logic Server is designed to provide a significantly faster and simpler way t
     * a multi-page, multi-table [Admin Web App](https://valhuber.github.io/ApiLogicServer/Tutorial/#admin-app-multi-page-multi-table-automatic-joins){:target="_blank" rel="noopener"}, and 
     * SQLAlchemy model classes
 
-* __Customizable:__ you get a [customizable project](https://valhuber.github.io/ApiLogicServer/Tutorial/#customize-and-debug){:target="_blank" rel="noopener"} you can use in your IDE to create custom services with all the flexibility and power of Python and Flask
+* __Fully Customizable:__ you get a [customizable project](https://valhuber.github.io/ApiLogicServer/Tutorial/#customize-and-debug){:target="_blank" rel="noopener"} you can use in your IDE to create custom services with all the flexibility and power of Python, Flask and SQLAlchemy
 
-* __Declarative Business Logic:__ brings a spreadsheet-like approach to business logic, based on spreadsheet-like rules that are [40X more concise than legacy code](https://valhuber.github.io/ApiLogicServer/Logic-Why/#customize-and-debug){:target="_blank" rel="noopener"}, while still providing the flexibility of code
+* __:trophy: Declarative Business Logic:__ unique spreadsheet-like rules that are [40X more concise than legacy code](https://valhuber.github.io/ApiLogicServer/Logic-Why/#customize-and-debug){:target="_blank" rel="noopener"}, extensible with Python
 
 ## Example: todos
 
@@ -30,4 +30,4 @@ ApiLogicServer create-and-run --project_name=todo \
    --db_url=sqlite:////Users/val/dev/todo_example/todos.db 
 ```
 
-Explore your project in your IDE, using standard services to code, run and debug
+Explore your project in your IDE, using standard services to code, run and debug.
