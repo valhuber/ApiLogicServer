@@ -87,7 +87,7 @@ def fix_generated(code, args):
 uri_info = [
     'Examples:',
     '  ApiLogicServer create-and-run',
-    '  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite',
+    '  ApiLogicServer create-and-run --db_url=sqlite:////Users/val/dev/todo_example/todos.db --project_name=todo',
     '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
     '--project_name=/localhost/docker_db_project',
     '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?'

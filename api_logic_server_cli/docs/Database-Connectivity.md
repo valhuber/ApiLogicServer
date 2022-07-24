@@ -6,7 +6,51 @@ Recall the `db_url` parameter is a SQLAlchemy URI.  To see some examples, see be
 ApiLogicServer examples
 ```
 
-# Northwind - sqlite (default sample)
+This produces a console log like:
+```bash
+Creates and optionally runs a customizable Api Logic Project
+
+Examples:
+  ApiLogicServer create-and-run
+  ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite
+  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels --project_name=/localhost/docker_db_project
+  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no
+  ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres
+  ApiLogicServer create --project_name=my_schema --db_url=postgresql://postgres:p@localhost/my_schema
+  ApiLogicServer create --db_url=postgresql+psycopg2://postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema
+  ApiLogicServer create --project_name=Chinook \
+    --host=ApiLogicServer.pythonanywhere.com --port= \
+    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook
+
+Where --db_url is one of...
+   <default>                     Sample DB                    - https://valhuber.github.io/ApiLogicServer/Sample-Database/
+   nw-                           Sample DB, no customizations - add later with perform_customizations.py
+   <SQLAlchemy Database URI>     Your own database            - https://docs.sqlalchemy.org/en/14/core/engines.html
+                                      Other URI examples:     - https://valhuber.github.io/ApiLogicServer/Database-Connectivity/
+ 
+Docs: https://valhuber.github.io/ApiLogicServer/
+```
+
+Important notes:
+
+* tables without primary keys are not imported as classes, and do not appear in your API or Admin application
+
+&nbsp;
+
+# Sqlite
+
+You can use an existing sqlite database like this:
+```
+ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/Desktop/database.sqlite
+```
+
+Other important notes:
+
+* As shown above, use the __full path__
+* So that such databases are included in your project, they are copied to the `database` folder, and renamed to `db.sqlite'
+
+
+## Northwind - sqlite (default sample)
 
 See [Sample Database](Sample-Database).
 
@@ -17,10 +61,6 @@ Run under API Logic Server docker:
 ApiLogicServer run --project_name=/localhost/docker_project
 ```
 
-You can use an existing sqlite database like this:
-```
-ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/Desktop/database.sqlite
-```
 
 &nbsp;
 
