@@ -1,4 +1,14 @@
-There are many excellent frameworks for developing web apps.  Here is an [excellent video](https://www.youtube.com/watch?v=3vfum74ggHE&t=2s){:target="_blank" rel="noopener"}, describing how to create an app using Flask, Django and Fast API.
+There are many excellent frameworks for developing web apps.  This page provides a quick reminder of some popular alternatives, and then describes a new, __low-code approach__ taken by API Logic Server.
+
+&nbsp;
+
+## Conventional Approach - code based
+
+Conventional approaches require extensive background in web app development, and significant amounts of code.  The video at the end provides an excellent summary of Flask, FAST API, and Django.  While flexibile, they are _complex and time consuming._
+
+&nbsp;
+
+## API Logic Server - low-code declarative, extensible
 
 API Logic Server is designed to provide a significantly faster and simpler __low-code__ approach for creating database systems:
 
@@ -29,9 +39,15 @@ source venv/bin/activate   # windows venv\Scripts\activate
 python -m pip install ApiLogicServer
 ```
 3. Create and run your project
-```bash title="Create and Run todos project"
+```bash title="Create and Run todos project&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 command"
 ApiLogicServer create-and-run --project_name=todo \
    --db_url=sqlite:////Users/Val/Desktop/todos.db  # explicit path (no ~)
 ```
 
 Explore your project in your IDE, using standard services to code, run and debug.
+
+&nbsp;
+
+## Appendix - Video Conventional Approach
+
+[This video](https://www.youtube.com/watch?v=3vfum74ggHE&t=2s){:target="_blank" rel="noopener"} provides an excellent summary of Flask, FAST API, and Django.
