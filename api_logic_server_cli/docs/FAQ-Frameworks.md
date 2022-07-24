@@ -1,6 +1,6 @@
 There are many excellent frameworks for developing web apps.  Here is an [excellent video](https://www.youtube.com/watch?v=3vfum74ggHE&t=2s){:target="_blank" rel="noopener"}, describing how to create an app using Flask, Django and Fast API.
 
-API Logic Server is designed to provide a significantly faster and simpler way to create database systems:
+API Logic Server is designed to provide a significantly faster and simpler __low-code__ way to create database systems:
 
 * __Remarkable speed and simplicity:__ given a database, you get an instant system  - _no training, no coding:_
 

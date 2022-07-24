@@ -52,12 +52,12 @@ nav:
     - "API Logic Server Development": Internals.md
   - Troubleshooting.md
   - FAQs:
+    - "Compared To Frameworks": FAQ-Frameworks.md
     - "Is this a RETE Engine?": FAQ-RETE.md
     - "Is this a Low Code approach?": FAQ-Low-Code.md
     - "Is this a 4GL?": Tech-4GL.md
   - Tech Notes:
     - "About Tech Notes": Tech--Notes.md
-    - "Other Frameworks": Tech-Frameworks.md
     - "Docker": Tech-Docker.md
     - "Python for a Java developer": Tech-Python.md
     - "Python Installation": Tech-Install-Python.md
