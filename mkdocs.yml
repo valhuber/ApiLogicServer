@@ -57,6 +57,7 @@ nav:
     - "Is this a 4GL?": Tech-4GL.md
   - Tech Notes:
     - "About Tech Notes": Tech--Notes.md
+    - "Other Frameworks": Tech-Frameworks.md
     - "Docker": Tech-Docker.md
     - "Python for a Java developer": Tech-Python.md
     - "Python Installation": Tech-Install-Python.md
