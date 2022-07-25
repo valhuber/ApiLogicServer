@@ -10,6 +10,7 @@ To create the projects:
 2. Download and run [the install-ApiLogicServer-dev procedure](https://github.com/valhuber/ApiLogicServer/blob/main/install-ApiLogicServer-dev.sh) (note: Windows users use `install-ApiLogicServer-dev.ps1`), e.g.:
 
 ```bash title="Install API Logic Server Development environment"
+cd ~/dev  # project directories created here
 sh install-ApiLogicServer-dev.sh vscode
 ```
 
@@ -23,26 +24,25 @@ sh install-ApiLogicServer-dev.sh vscode
     cp -r ../safrs-react-admin/build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
 ```
 
-## Open the projects in your IDE
+## Open `~/dev/ApiLogicServer` in your IDE
 
-This will create a project and open it VS Code or PyCharm.
+`install-ApiLogicServer...` will create a project, and open it VS Code or PyCharm.
 
 Python requires a virtual environment; the procedure differs for `vscode` vs. `charm`:
 
 * `vscode` projects are created with a `venv` and are ready to run the Launch Configurations to create the sample
 * `charm` projects require that you create the `venv` with the PyCharm
 
-## Create the Sample
+## Create the Sample (`~/dev/servers/ApiLogicProject`)
 
 Once in your IDE, you can run the pre-defined launch configuration `0 - Create and Run ApiLogicProject` to create and run the sample.  This creates `~/dev/servers/ApiLogicProject`.
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/dev-run.png?raw=true"></figure>
 
-&nbsp;
 
 ## Develop / Debug admin app
 
-Once you have created the API Logic Server project, you can restart the server like this (it is _not_ necessary to recreate the sample each time you run):
+Once you have created the API Logic Project, you can restart the server like this (it is _not_ necessary to recreate the sample each time you run):
 
 ```bash title="Start API Logic Project"
 cd ~/dev/servers/ApiLogicProject
