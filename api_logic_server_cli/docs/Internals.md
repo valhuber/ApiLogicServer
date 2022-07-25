@@ -2,16 +2,18 @@ This page does _not_ address created projects, rather, it is about the API Logic
 
 # How to Install it
 
-To create the project:
+## Obtain the projects from GitHub
 
-1. Create an empty folder (e.g., `dev`)
+To create the projects:
+
+1. Create an empty folder (e.g., `~/dev`)
 2. Download and run [the install-ApiLogicServer-dev procedure](https://github.com/valhuber/ApiLogicServer/blob/main/install-ApiLogicServer-dev.sh) (note: Windows users use `install-ApiLogicServer-dev.ps1`), e.g.:
 
 ```bash title="Install API Logic Server Development environment"
 sh install-ApiLogicServer-dev.sh vscode
 ```
 
-  * This will use `git clone` to create folders in `dev:` ApiLogicServer, safrs-react-admin, and servers.  It's basically straightforward, _except_ for the `cp` command which copies the `safrs-react-admin` runtime to API Logic Server for subsequent creation of API Logic Projects:
+  * This will use `git clone` to create folders in `dev:` ApiLogicServer, safrs-react-admin, and servers.  It's basically straightforward, _though note_ the `cp` command which copies the `safrs-react-admin` runtime to API Logic Server for subsequent creation of API Logic Projects:
 
 ```bash
     mkdir servers    # good place to create ApiLogicProjects
@@ -21,33 +23,41 @@ sh install-ApiLogicServer-dev.sh vscode
     cp -r ../safrs-react-admin/build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
 ```
 
-This will create a project that can be loaded in VS Code or PyCharm, with run / launch configurations to create and run the sample app.
-You can provide options for `vscode` or `charm`:
+## Open the projects in your IDE
 
-* `vscode` projects are created with a `venv` and are ready to run the Launch Configurations
-* `charm` projects require that you create the `venv` with the IDE
+This will create a project and open it VS Code or PyCharm.
 
-The ApiLogicServer project includes launch/run configurations you can use to run the software from the IDE:
+Python requires a virtual environment; the procedure differs for `vscode` vs. `charm`:
 
+* `vscode` projects are created with a `venv` and are ready to run the Launch Configurations to create the sample
+* `charm` projects require that you create the `venv` with the PyCharm
+
+## Create the Sample
+
+Once in your IDE, you can run the pre-defined launch configuration `0 - Create and Run ApiLogicProject` to create and run the sample.  This creates `~/dev/servers/ApiLogicProject`.
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/dev-run.png?raw=true"></figure>
-
 
 &nbsp;
 
 ## Develop / Debug admin app
 
+Once you have created the API Logic Server project, you can restart the server like this (it is _not_ necessary to recreate the sample each time you run):
+
+```bash title="Start API Logic Project"
+cd ~/dev/servers/ApiLogicProject
+python3 api_logic_server_run.py
+```
+
 You can obtain an editable version of the admin app like this:
 
-```bash title="Get safrs-react-admin"
-cd ~/dev
-* rm -r safrs-react-admin. # fails permissions
-git clone https://github.com/thomaxxl/safrs-react-admin
-cd safrs-react-admin
+```bash title="Get Data Provider"
+cd ~/dev/safrs-react-admin
 git clone https://github.com/thomaxxl/rav3-jsonapi-client # modified data provider used, installed in the project root
 ```
 
 Then, to debug (with server running):
+
 ```bash title="Execute debug version of admin app"
 npm install
 npm run build
