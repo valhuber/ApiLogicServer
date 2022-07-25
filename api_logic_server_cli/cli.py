@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.25"
+__version__ = "5.03.26"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/23/2022 - 05.03.25: api_logic_server_run refactor, ui/admin/admin.yaml replacable host/port names \n"\
+    "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
     "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
@@ -918,7 +918,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
         run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
         run_args = ""
         if command == "create-and-run":
-            run_args = "--create_and_run"
+            run_args = "--create_and_run=True"
         create_utils.run_command(f'python {run_file} {run_args}', msg="\nStarting created API Logic Project")
 
 '''  exploring no-args, not a clue

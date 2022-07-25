@@ -72,6 +72,8 @@ Rebuild
 cd ~/dev/ApiLogicServer/tests/rebuild_tests  # after creation tests - uses install/ApiLogicServer/venv
 sh rebuild_tests.sh go  # creates ApiLogicProject, rebuild-from-database, rebuild-from-model
 
+#   think ok (??): sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) near "ALTER": syntax error
+
 
 Logic - Allocation
 ==================

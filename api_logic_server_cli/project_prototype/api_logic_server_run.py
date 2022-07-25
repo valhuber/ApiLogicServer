@@ -285,11 +285,9 @@ def get_args():
                                 default = "http")
             parser.add_argument("--verbose", 
                                 help = f'for more logging',
-                                action=argparse.BooleanOptionalAction,
                                 default = False)
             parser.add_argument("--create_and_run", 
                                 help = f'system use - log how to open project',
-                                action=argparse.BooleanOptionalAction,
                                 default = False)
             
             parser.add_argument("flask_host_p", nargs='?', default = flask_host)
