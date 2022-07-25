@@ -64,22 +64,42 @@ ApiLogicServer create --project_name=~/dev/servers/api_logic_server \
 
 ### Runtime overrides
 
-When you run created applications, you can provide arguments to override the defaults.  For example:
+When you run created applications, you can provide arguments to override the defaults.  Discover the arguments using `--help`:
 
 ```bash
-ApiLogicServer run --project_name=~/dev/servers/api_logic_server \
-                   --host=myhost --port=myport --swagger_host=mycloud
+(venv) val@Vals-MBP-16 ApiLogicProject % python api_logic_server_run.py -h
 
-python ~/dev/servers/api_logic_server/api_logic_server_run.py \
-                   myhost myport mycloud     # equivalent to above
+API Logic Project Starting: /Users/val/dev/servers/ApiLogicProject/api_logic_server_run.py
+usage: api_logic_server_run.py [-h] [--port PORT] [--flask_host FLASK_HOST] [--swagger_host SWAGGER_HOST]
+                               [--swagger_port SWAGGER_PORT] [--http_type HTTP_TYPE] [--verbose VERBOSE]
+                               [--create_and_run CREATE_AND_RUN]
+                               [flask_host_p] [port_p] [swagger_host_p]
+
+positional arguments:
+  flask_host_p
+  port_p
+  swagger_host_p
+
+options:
+  -h, --help                       show this help message and exit
+  --port PORT                      port (Flask) (default: 5656)
+  --flask_host FLASK_HOST          ip to which flask will be bound (default: localhost)
+  --swagger_host SWAGGER_HOST      ip clients use to access API (default: localhost)
+  --swagger_port SWAGGER_PORT      swagger port (eg, 443 for codespaces) (default: 5656)
+  --http_type HTTP_TYPE            http or https (default: http)
+  --verbose VERBOSE                for more logging (default: False)
+  --create_and_run CREATE_AND_RUN  system use - log how to open project (default: False)
+(venv) val@Vals-MBP-16 ApiLogicProject % 
+
 ```
+These are used for [Codespaces support](https://valhuber.github.io/ApiLogicServer/Tech-CodeSpaces/){:target="_blank" rel="noopener"}
 
 &nbsp;
 
 __Notes:__
 
-* `host` is the flask-host, which maps to the ip address of the interface to which flask will be bound (on the machine itself
+* `host` is the flask-host, which maps to the IP address of the interface to which flask will be bound (on the machine itself
 * `swagger_host` maps to the ip address as seen by the clients
 
 For example, 127.0.0.1 (localhost) or 0.0.0.0 (any interface) only have meaning on your own computer.
-Also, it's possible to map hostname->ip dns entries manually in /etc/hosts, but users on other computers are not aware of that mapping.
+Also, it's possible to map hostname->IP DNS entries manually in /etc/hosts, but users on other computers are not aware of that mapping.
