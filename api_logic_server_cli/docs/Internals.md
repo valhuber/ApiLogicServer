@@ -33,6 +33,10 @@ Python requires a virtual environment; the procedure differs for `vscode` vs. `c
 * `vscode` projects are created with a `venv` and are ready to run the Launch Configurations to create the sample
 * `charm` projects require that you create the `venv` with the PyCharm
 
+It should look something like this:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/dev-project.png?raw=true"></figure>
+
 ## Create the Sample (`~/dev/servers/ApiLogicProject`)
 
 Once in your IDE, you can run the pre-defined launch configuration `0 - Create and Run ApiLogicProject` to create and run the sample.  This creates `~/dev/servers/ApiLogicProject`.
