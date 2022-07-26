@@ -16,9 +16,9 @@ You can create this anywhere, such as your home folder or Desktop.
 mkdir ApiLogicServer      # a directory of projects on your local machine
 ```
 
-## Install in Docker or Locally
+## Use Local Install, or Docker
 
-You can install API Logic Server locally using `pip`, or using Docker.  If you already have docker, it can eliminate many of the sometimes-tricky Python install issues.
+You can install API Logic Server locally using `pip`, or use Docker.  If you already have docker, it can eliminate many of the sometimes-tricky Python install issues.
 
 Open the appropriate section below.
 
@@ -67,7 +67,7 @@ Open the appropriate section below.
 
 === "Docker"
 
-    __Start Docker
+    __Start Docker__
     ```bash title="Start (might install) API Logic Server Docker"
       docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
     ```
