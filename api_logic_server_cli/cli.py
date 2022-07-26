@@ -978,7 +978,7 @@ def main(ctx):
 
     Then, customize created API Logic Project in your IDE
     """
-    click.echo("main - called iff commands supplied")
+    # click.echo("main - called iff commands supplied")
 
 
 @main.command("about")

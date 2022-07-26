@@ -179,3 +179,27 @@ curl -X 'GET' \
   -H 'Content-Type: application/vnd.api+json'
 
   since trying to sort on Picture
+
+
+Install too complicated
+=======================
+
+TL:DR for local
+---------------
+
+cd ApiLogicServer     # presume already installed
+source venv/bin/activate;
+
+ApiLogicServer create
+code ApiLogicProject  # decline docker (maybe don't build??)
+# project venv setup yuck https://stackoverflow.com/questions/54106071/how-can-i-set-up-a-virtual-environment-for-python-in-visual-studio-code
+
+
+TL:DR for docker
+----------------
+
+cd ApiLogicServer
+docker run
+$ create
+$ exit
+code ApiLogicProject

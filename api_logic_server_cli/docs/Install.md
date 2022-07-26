@@ -44,7 +44,7 @@ Then, open the appropriate section below, and see the [Installation Notes](#inst
     cd ApiLogicServer                    # directory of your choice
     python -m venv venv                  # may require python3 -m venv venv
     source venv/bin/activate             # windows venv\Scripts\activate
-    python -m pip install ApiLogicServer # you may need to use pip3
+    python -m pip install ApiLogicServer
     ```
 
     If you are using SqlServer, you also need to [install `pyodbc`](../Install-pyodbc).
