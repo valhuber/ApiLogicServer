@@ -1,8 +1,8 @@
 API Logic Projects are simply directories, without restrictions on their location.  You can open them directly in your IDE. (You can also execute them from a [Terminal Window](../Execute)). 
 
-This page describes how to establish your Python environment, and execute your project.
+This page describes how to open your project, establish your Python environment, and execute your project.
 
-## Establish Python Environment
+## Open Project and Establish Python Environment
 
 IDE instructions depend on whether you are using a local install, or Docker.  Select your desired configuration below, and see how to run, customize and debug your ApiLogicProject.
 

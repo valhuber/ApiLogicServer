@@ -4,31 +4,14 @@ You can install API Logic Server locally using `pip`, using Docker, or pythonany
 
   > While `pip` is a simple install, it requires a Python environment, which is _not_ so simple.  We therefore recommend you consider Docker - it's a simpler install, and aligns you with a likely deployment environment.
 
-Open the appropriate section below, and see the [Installation Notes](Installation-Notes), below.
+__Create an install directory__
 
-=== "With Docker"
-  
+You can create this anywhere, such as your home folder or Desktop.
 
-    ```bash title="Start (might install) API Logic Server Docker"
-    cd ApiLogicServer      # a directory of projects on local host
-
-    # Start (install if required) the API Logic Server docker container...
-
-    docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
-    ```
-
-    This will start a command line in the Docker container at your current directory.
-    You are now able to issue commands like `ApiLogicServer create` as described in the home page.  These will create API Logic Projects as directories under your current directory.
-
-    > Windows: use Powershell (`PWD` is not supported in Command Line)
-
-    > API Logic Projects are _not_ restricted to be under the same directory.
-
-    The `api_logic_server` image supports startup arguments so you can control the `api_logic_server` container, by running a startup script or by supplying environment variables.  You might, for example, have automated test procedures that load projects from `GitHub` and run tests.
-
-    For more information, see [Working With Docker](../Working-With-Docker).
-
-    > Already installed?  Upgrade to the latest (5.03.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Docker/)).
+```bash title="Create an install directory"
+mkdir ApiLogicServer      # a directory of projects on your local machine
+```
+Then, open the appropriate section below, and see the [Installation Notes](#installation-notes), below.
 
 === "Local Install"
 
@@ -65,6 +48,29 @@ Open the appropriate section below, and see the [Installation Notes](Installatio
     ```
 
     If you are using SqlServer, you also need to [install `pyodbc`](../Install-pyodbc).
+
+=== "With Docker"
+
+    ```bash title="Start (might install) API Logic Server Docker"
+    cd ApiLogicServer      # a directory of projects on local host
+
+    # Start (install if required) the API Logic Server docker container...
+
+    docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
+    ```
+
+    This will start a command line in the Docker container at your current directory.
+    You are now able to issue commands like `ApiLogicServer create` as described in the home page.  These will create API Logic Projects as directories under your current directory.
+
+    > Windows: use Powershell (`PWD` is not supported in Command Line)
+
+    > API Logic Projects are _not_ restricted to be under the same directory.
+
+    The `api_logic_server` image supports startup arguments so you can control the `api_logic_server` container, by running a startup script or by supplying environment variables.  You might, for example, have automated test procedures that load projects from `GitHub` and run tests.
+
+    For more information, see [Working With Docker](../Working-With-Docker).
+
+    > Already installed?  Upgrade to the latest (5.03.10): ```docker pull apilogicserver/api_logic_server``` (you may need to [rebuild your container](https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Docker/)).
 
 === "PythonAnyWhere"
 
@@ -138,10 +144,6 @@ Open the appropriate section below, and see the [Installation Notes](Installatio
 
 ---
 
-## After Install - Create a Project
-
-Create, start and debug the sample project - see the [Creating a Project](../Create-ApiLogicProject).
-
 ## Installation Notes
 
 ### Alert - Project fails to start
@@ -157,3 +159,7 @@ In some cases, your computer may have multiple Python versions, such as ```pytho
 * using ```ApiLogicServer create```, and running ```python3 api_logic_server_run.py```
 
 &nbsp; &nbsp;
+
+## Next Steps - Create a Project
+
+Create, start and debug the sample project - see the [Creating a Project](../Create-ApiLogicProject).

@@ -20,7 +20,7 @@ The `api_logic_server_run.py` file is executable.  The simplest way to run it is
 ApiLogicServer run
 ```
 
-You can also run it directly:
+You can also run it directly (see also [start args](../Project-Execution)):
 
 ``` bash title="Either from Docker terminal, or from local terminal with `venv` set"
 python api_logic_server_run.py       # options exist to override URL, port

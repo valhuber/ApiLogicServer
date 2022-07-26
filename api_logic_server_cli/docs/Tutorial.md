@@ -53,7 +53,7 @@ The key arguments are:
 
 ## Establish your Python Environment
 
-Please  see [Using your IDE > Open and Execute](https://valhuber.github.io/ApiLogicServer/IDE-Execute/).
+Please  see [Quick Start > Using your IDE](https://valhuber.github.io/ApiLogicServer/IDE-Execute/).
 
 &nbsp;
 
