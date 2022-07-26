@@ -2,7 +2,7 @@ After completing the `ApiLogicServer create` step, you can view the ```readme```
 
 In this tutorial, we will explore:
 
-* **create** - options for creating API Logic Server Projects
+* **create** - creating the Tutorial project, and opening it your IDE
 
 * **run** - we will first run the Admin App and the JSON:API
 
@@ -30,30 +30,15 @@ The system is designed to enable `rebuild`, so you can iterate the data model - 
 
 &nbsp;
 
-## Create
+## Create and establish Python Environment
 
-> Note: this page appears in the documentation, and in created projects.  This section is intended for documentation readers; if you are viewing this in a created project, the create step has already been completed, so you can skip this section.
+Please  see [Quick Start > Express Install](https://valhuber.github.io/ApiLogicServer/IDE-Execute/), which explains how to:
 
-Once you have installed API Logic Server, you can use the provided CLI to [create API Logic Projects](https://valhuber.github.io/ApiLogicServer/Create-ApiLogicProject/): 
+1. Install API Logic Server
+2. Create the sample Tutorial API Logic Server Project
+3. Open it in your IDE
+4. Prepare the projects' Python environment
 
-```
-ApiLogicServer create --project_name= --db_url=
-```
-
-The key arguments are:
-
-1. `project_name` - a folder with this name will be created and populated; you'll later open this with your IDE.
-
-2. `db_url` - this defaults to the SqlLite version of Northwind already provided in the project.
-      * After exploring the sample, use the `ApiLogicServer examples` command to see how to use your own database.
-
-      * The defaulted `db_url` includes customizations we'll explore below.  If you want to see a "vanilla" creation without customizations, specify `nw-`.  You can later introduce the customizations by running `python perform_customizations.py go`.
-
-&nbsp;
-
-## Establish your Python Environment
-
-Please  see [Quick Start > Using your IDE](https://valhuber.github.io/ApiLogicServer/IDE-Execute/).
 
 &nbsp;
 
@@ -65,9 +50,9 @@ The prior step established your Python enviroment, and started the server using 
 
 To run the Admin App, follow these steps:
 
-1. In the step above, you've already
-      * Used the pre-built Launch Configuration to start the server and
-      * Started the browser to see your Admin App
+1. After completing the Create step, start the server as illustrated below:
+      * Use the pre-built Launch Configuration to start the server and
+      * Start the browser to see your Admin App
 1. Navigate to `Customer`
       * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
 2. Click the Customer row  to see Customer Details
