@@ -39,21 +39,6 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         return jsonify({"result": f'hello, {user}'})
 
 
-    def rules_report():
-        """
-        writes the rules report into the logs
-        """
-        rules_bank = RuleBank()
-        logic_logger = logging.getLogger("logic_logger")
-        rule_count = 0
-        logic_logger.debug(f'\nThe following rules have been activated\n')
-        list_rules = rules_bank.__str__()
-        loaded_rules = list(list_rules.split("\n"))
-        for each_rule in loaded_rules:
-            logic_logger.info(each_rule + '\t\t##  ')
-            rule_count += 1
-        logic_logger.info(f'Logic Bank - {rule_count} rules loaded')
-
     @app.route('/server_log')
     def server_log():
         """
@@ -61,72 +46,4 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
 
         Special support for the msg parameter -- Rules Report
         """
-        import os
-        import datetime
-        from pathlib import Path
-        import logging
-        # import logging.Logger as Logger
-
-
-        def add_file_handler(logger, name: str, log_dir):
-            """Add a file handler for this logger with the specified `name` (and
-            store the log file under `log_dir`)."""
-            # Format for file log
-            for each_handler in logger.handlers:
-                each_handler.flush()
-                handler_name = str(each_handler)
-                if "stderr" in handler_name:
-                    pass
-                    # print(f'do not delete stderr')
-                else:
-                    logger.removeHandler(each_handler)
-            fmt = '%(asctime)s | %(levelname)8s | %(filename)s:%(lineno)d | %(message)s'
-            formatter = logging.Formatter(fmt)
-            formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
-
-            # Determine log path/file name; create log_dir if necessary
-            now = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-            log_name = f'{str(name).replace(" ", "_")}'  # {now}'
-            if len(log_name) >= 26:
-                log_name = log_name[0:25]
-
-            if not os.path.exists(log_dir):
-                try:
-                    os.makedirs(log_dir)
-                except:
-                    print('{}: Cannot create directory {}. '.format(
-                        self.__class__.__name__, log_dir),
-                        end='', file=sys.stderr)
-                    log_dir = '/tmp' if sys.platform.startswith('linux') else '.'
-                    print(f'Defaulting to {log_dir}.', file=sys.stderr)
-
-            log_file = os.path.join(log_dir, log_name) + '.log'
-            if os.path.exists(log_file):
-                os.remove(log_file)
-            else:
-                pass  # file does not exist
-
-            # Create file handler for logging to a file (log all five levels)
-            # print(f'create file handler for logging: {log_file}')
-            logger.file_handler = logging.FileHandler(log_file)
-            logger.file_handler.setLevel(logging.DEBUG)
-            logger.file_handler.setFormatter(formatter)
-            logger.addHandler(logger.file_handler)
-
-        msg = request.args.get('msg')
-        test = request.args.get('test')
-        if test is not None and test != "None":
-            if test == "None":
-                print(f'None for msg: {msg}')
-            logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
-            # logic_logger.info("\n\nLOGIC LOGGER HERE\n")
-            dir = request.args.get('dir')
-            add_file_handler(logic_logger, test, Path(os.getcwd()).joinpath(dir))
-        if msg == "Rules Report":
-            rules_report()
-            logic_logger.info(f'Logic Bank {__version__} - {rule_count} rules loaded')
-        else:
-            app_logger.info(f'{msg}')
-        return jsonify({"result": f'ok'})
-
-    app_logger.info("Customize API - api/expose_service.py, exposing custom services")
+        return util.server_log(request, jsonify)
