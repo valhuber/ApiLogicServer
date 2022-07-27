@@ -37,3 +37,26 @@ See [this section](../Data-Model-Classes).
 
 #### Not altered on `rebuild`
 The rebuild commands do not override your customizations.  They do recreate `admin-created.yaml`.  You can use this to merge into your `admin.yaml`, e.g., to pick up new tables, relationships, etc.
+
+&nbsp;
+
+#### show_when
+
+  > __Coming attraction__ - not yet available
+
+You can provide an expression that determines when a field (and its caption) are hidden.  For example, you might show the `Dues` only when the `EmployeeType` is _Hourly_, by declaring this in your `admin.yaml`:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/declare.png?raw=true"></figure>
+
+`Dues` is hidden for non Hourly:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/display-hidden.png?raw=true"></figure>
+
+
+and is visible for Hourly:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/display-visible.png?raw=true"></figure>
+
+It also works on update, such as insert:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/insert.png?raw=true"></figure>
