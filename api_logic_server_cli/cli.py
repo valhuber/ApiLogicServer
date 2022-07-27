@@ -278,7 +278,7 @@ def copy_if_mounted(project_directory):
     return return_project_directory, return_copy_to_directory
 
 
-def create_nw_tutorial(project_name, code_loc):
+def create_nw_tutorial(project_name, api_logic_server_dir_str):
     """ copy tutorial from docs, and link to it from readme.md """
 
     tutorial_link = \
@@ -295,7 +295,7 @@ def create_nw_tutorial(project_name, code_loc):
         "# API Logic Server\n"
 
     tutorial_file_proj = open(project_name + '/Tutorial.md', 'w')
-    tutorial_file_docs_path = Path(code_loc).\
+    tutorial_file_docs_path = Path(api_logic_server_dir_str).\
         joinpath('docs').joinpath("Tutorial.md")
     tutorial_file_docs = open(tutorial_file_docs_path)  # /Users/val/dev/ApiLogicServer/docs/Tutorial.md
     tutorial_readme = tutorial_file_docs.read()
@@ -331,6 +331,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
         delete_dir(realpath(project_directory), "1.")
 
     from_dir = from_git
+    api_logic_server_dir_str = str(get_api_logic_server_dir())
     if from_git.startswith("https://"):
         cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
         cmd = f'git clone --quiet {from_git} {project_directory}'
@@ -338,8 +339,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
         delete_dir(f'{project_directory}/.git', "3.")
     else:
         if from_dir == "":
-            code_loc = str(get_api_logic_server_dir())
-            from_dir = (Path(code_loc)).\
+            from_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
         print(f'{msg} copy {from_dir} -> {os.path.realpath(project_directory)}')
         cloned_from = from_dir
@@ -356,17 +356,15 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
                   f'.. If you are using Docker, verify the -v argument\n\n')
     if nw_db_status in ["nw", "nw+"]:
         print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
-        code_loc = str(get_api_logic_server_dir())
-        nw_dir = (Path(code_loc)).\
+        nw_dir = (Path(api_logic_server_dir_str)).\
             joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
         recursive_overwrite(nw_dir, project_directory)
 
-        create_nw_tutorial(project_name, code_loc)
+        create_nw_tutorial(project_name, api_logic_server_dir_str)
 
     if nw_db_status in ["nw-"]:
         print(".. ..Copy in nw- customizations: readme, perform_customizations")
-        code_loc = str(get_api_logic_server_dir())
-        nw_dir = (Path(code_loc)).\
+        nw_dir = (Path(api_logic_server_dir_str)).\
             joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
 
     create_utils.replace_string_in_file(search_for="creation-date",
