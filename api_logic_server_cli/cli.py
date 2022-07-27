@@ -16,7 +16,7 @@ See end for key module map quick links...
 __version__ = "5.03.27"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t07/26/2022 - 05.03.27: Tutorial \n"\
+    "\t07/26/2022 - 05.03.27: Tutorial, refactor customize_api \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
     "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
