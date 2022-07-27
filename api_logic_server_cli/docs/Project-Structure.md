@@ -5,7 +5,7 @@ When you create an ApiLogicProject, the system creates a project like this that 
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png?raw=true"></figure>
 
-You will observe that the projects are rather small.  That is because the syste creates _models_ that define _what, not now_.  Explore the project and you will find it easy to understand the API, data model, app and logic files.
+[Explore the Tutorial Project](https://github.com/valhuber/Tutorial-ApiLogicProject#readme), and observe that the projects are rather small.  That is because the syste creates _models_ that define _what, not now_.  Explore the project and you will find it easy to understand the API, data model, app and logic files.
 
 Note the entire project is file-based, which makes it easy to perform typical project functions such as source control, diff, merge, code reviews etc.
 

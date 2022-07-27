@@ -154,6 +154,6 @@ This project was created with the following directory structure:
 
 In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
 the created API, Logic and Web App.  Since they are separate files, the project can be
-[rebuilt](see api_logic_server_run.py) (e.g., synchronized with a revised schema), preserving your customizations.
+[rebuilt](https://valhuber.github.io/ApiLogicServer/Project-Rebuild/) (e.g., synchronized with a revised schema), preserving your customizations.
 
 Please see the ```nw``` sample for examples of typical customizations.
