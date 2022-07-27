@@ -1,6 +1,8 @@
-# Readme - API Logic Projects
+# Readme - API Logic Project
 
-This project was created by the API Logic Server with the `ApiLogicServer create` command.  Edit / extend this readme as desired.
+This API Logic Project was created by the API Logic Server with the `ApiLogicServer create` command.  
+
+Edit / extend this readme as desired.
 
 &nbsp;&nbsp;
 
@@ -41,18 +43,23 @@ Your runtime systems are part of Dev Container, which you probably activated whe
 
 ## Run
 
-Then, start the API, either by __IDE launch configurations__, or by command line: `python api_logic_server_run.py`.
+To run your project:
 
-* **Open the Admin App -** [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home), shown here in the Simple Browser
+* **Start the API**, either by __IDE launch configurations__ (see below), or by command line: `python api_logic_server_run.py`.
+
+* **Open the Admin App -** either
+
+    * Open your Browser at [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home), or 
+    
+    * Open in VSCode's Simple Browser (as shown below):
+
+        1. Click __View > Command__ to open the Command Palette
+            * Enter command: `Simple Browser: Show`
+            * Specify the URL: `http://localhost:5656`
+        2. Explore the swagger - open another simple Browser with URL `http://localhost:5656/api` 
+            * Note: you can drag windows to arrange your viewing area
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
-
-1. Click __View > Command__ to open the Command Palette
-   * Enter command: `Simple Browser: Show`
-   * Specify the URL: `http://localhost:5656/api`
-2. Explore the swagger
-   * Note: you can drag windows to arrange your viewing area
-3. (Leave the swagger and server running)
 
 &nbsp;&nbsp;
 
