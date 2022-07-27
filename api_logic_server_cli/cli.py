@@ -302,10 +302,12 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
     tutorial_file_proj.write(tutorial_readme)
     tutorial_file_proj.close()
 
-    readme_file_path = project_name + '/readme.md'
-    create_utils.replace_string_in_file(search_for="# API Logic Server",
-                           replace_with=tutorial_link,
-                           in_file=readme_file_path)
+    project_readme_file_path = project_name + '/readme.md'
+    standard_readme_file_path = str(Path(api_logic_server_dir_str).\
+        joinpath('project_prototype').joinpath("readme.md"))
+    with open(project_readme_file_path, 'a') as project_readme_file:
+        with open(standard_readme_file_path) as standard_readme_file:
+            project_readme_file.write(standard_readme_file.read())
 
 
 def create_project_with_nw_samples(project_directory: str, project_name: str, api_name: str,

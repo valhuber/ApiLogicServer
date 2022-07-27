@@ -61,7 +61,7 @@ Open the appropriate section below.
     ```bash title="Install API Logic Server in a Virtual Environment"
     python -m venv venv                  # may require python3 -m venv venv
     venv\Scripts\activate                # mac/linux: source venv/bin/activate
-    python -m pip install -r requirements.txt  # accept "new Virtual environment
+    python -m pip install -r requirements.txt  # accept "new Virtual environment"
     ```
 
 
