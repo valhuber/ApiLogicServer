@@ -44,7 +44,7 @@ Please  see [Quick Start > Express Install](https://valhuber.github.io/ApiLogicS
 
 ## Run
 
-The prior step established your Python enviroment, and started the server using the re-built launch configuration.  We are now ready to explore the Admin App and the API.
+The prior step established your Python enviroment, so your project is ready to run.  We are now ready to explore the Admin App and the API.
 
 ### Admin App: Multi-Page, Multi-Table, Automatic Joins
 
