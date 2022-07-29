@@ -74,10 +74,10 @@ Click for a video tutorial, showing complete project creation, execution, custom
 ### Install and run Tutorial
 [Install](https://valhuber.github.io/ApiLogicServer/Install-Express/), and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/).  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
 
-### Test databases
+### Dockerized Test Databases
 Then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/).
 
-### Your database
+### Your Database
 
 Finally, try your own database.
 
@@ -98,7 +98,7 @@ The [tutorial](Tutorial) is a good way to explore API Logic Server.
 
 &nbsp;
 
-## Contributions
+## Making Contributions
 This is an open source project.  We are open to suggestions.  Some of our ideas include:
 
 | Component           | Provides         | Consider Adding                                                                |
