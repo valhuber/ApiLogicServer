@@ -45,6 +45,7 @@ Presuming Python 3.7+ [is installed](Install){:target="_blank" rel="noopener"}, 
 ```bash title="Run API Logic Server from a local pip install"
 python -m venv venv        # may require python3 -m venv venv
 source venv/bin/activate   # windows venv\Scripts\activate
+venv\Scripts\activate      # mac/linux: source venv/bin/activate
 python -m pip install ApiLogicServer
 
 ApiLogicServer create      # create, or create-and-run; accept defaults
