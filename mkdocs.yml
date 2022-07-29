@@ -15,8 +15,8 @@ nav:
       - "Install API Logic Server": Install.md
       - "Create an API Logic Project": Create-ApiLogicProject.md
       - Execute an API Logic Project:
-        - Using your IDE: IDE-Execute.md
-        - From Terminal: Execute.md
+        - Execute in your IDE: IDE-Execute.md
+        - Execute From Terminal: Execute.md
   - Tutorial:
     - "Tutorial": Tutorial.md
     - Sample-Database.md
@@ -36,9 +36,7 @@ nav:
     - Data-Model-Customization.md
     - "Connection Examples": Database-Connectivity.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
-  - Using your IDE:
-    - "Open and Execute": IDE-Execute-Link.md
-    - "Customize and Debug": IDE-Customize.md
+  - "Using your IDE": IDE-Customize.md
   - Managing API Logic Projects:
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md

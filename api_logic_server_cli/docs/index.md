@@ -71,7 +71,7 @@ Click for a video tutorial, showing complete project creation, execution, custom
 ## Getting Started
 
 ### Install and run Tutorial
-[Install](https://valhuber.github.io/ApiLogicServer/Install/), and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/).
+[Install](https://valhuber.github.io/ApiLogicServer/Install-Express/), and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/).  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
 
 ### Test databases
 Then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/).
