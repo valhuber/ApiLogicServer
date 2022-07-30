@@ -34,11 +34,13 @@ def declare_logic():
     Rules operate much like a spreadsheet:
         Watch, for changes in referenced values
         React, by recomputing value
-        Chain, to any referencing rules, including other tables
+        Chain, to any referencing rules, including other tables (multi-table logic)
             SQL is automated, and optimized (e.g., adjust vs. select sum)
 
-    Rules are automatically invoked, with
-        execution ordered per their dependencies (simplifies maintenance)
+    Unlike procedural code, rules are declarative:
+        automatically re-used                        (improves quality)
+        automatically ordered per their dependencies (simplifies maintenance)
+        automatically optimized (pruned, with sql optimizations such as adjust logic)
 
     These 5 rules apply to all transactions (automatic re-use), eg.
         * place order
