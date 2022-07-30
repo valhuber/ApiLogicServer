@@ -4,10 +4,11 @@ from safrs import jsonapi_attr
 from sqlalchemy.orm import relationship, remote, foreign
 
 """
-If you wish to drive models from the database schema,
-you can use this file to customize your schema (add relationships, derived attributes),
-and preserve customizations over iterations (regenerations of models.py).
+    If you wish to drive models from the database schema,
+    you can use this file to customize your schema (add relationships, derived attributes),
+    and preserve customizations over iterations (regenerations of models.py).
 """
+
 app_logger = logging.getLogger("api_logic_server_app")
 # add relationship: https://docs.sqlalchemy.org/en/13/orm/join_conditions.html#specifying-alternate-join-conditions
 models.Employee.Manager = relationship('Employee', cascade_backrefs=True, backref='Manages',

@@ -321,13 +321,16 @@ def get_args():
 
 def create_app(swagger_host: str = None, swagger_port: str = None):
     """ creates flask_app, activates API and logic """
-    # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
 
     from sqlalchemy import exc as sa_exc
 
     with warnings.catch_warnings():
+        # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
         warnings.simplefilter("ignore", category=sa_exc.SAWarning)  # alert - disable for safety msgs
+
         admin_enabled = os.name != "nt"
+        """ internal use, for future enhancements """
+
         def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
             if constraint.error_attributes:
                 detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
@@ -347,7 +350,7 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
         safrs_log_level = safrs.log.getEffectiveLevel()
         db_logger = logging.getLogger('sqlalchemy')
         db_log_level = db_logger.getEffectiveLevel()
-        if True or app_logger.getEffectiveLevel() >= logging.INFO:
+        if True or app_logger.getEffectiveLevel() >= logging.INFO:  # hide chatty logging
             safrs.log.setLevel(logging.WARN)  # warn is 20, info 30
             db_logger.setLevel(logging.WARN)
 
@@ -363,9 +366,9 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
                 db.create_all(bind='admin')
                 session.commit()
 
-            app_logger.info(f"\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}")
+            app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
             safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=swagger_port, API_PREFIX=API_PREFIX)
-            app_logger.info("Customize API - api/expose_service.py, exposing custom services")
+            app_logger.info(  f'Customize API - api/expose_service.py, exposing custom services')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
             app_logger.info("\nCustomize Data Model - database/customize_models.py")

@@ -15,7 +15,7 @@ from database.db import Base
 
 from logic_bank.rule_bank.rule_bank import RuleBank
 
-# called by expose_api_models.py, to customize api (new end points, services).
+# called by api_logic_server_run.py, to customize api (new end points, services).
 # separate from expose_api_models.py, to simplify merge if project recreated
 
 

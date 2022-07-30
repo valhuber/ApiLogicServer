@@ -13,21 +13,23 @@ declared_rules = []  # rules are objects, you can collect them if you like (see 
 
 def declare_logic():
     """
-    Declare Logic here, using Python with code completion.
+    Declare, Activate and Run...
 
-    This logic pre-created for default database, nw.sqlite.
-        You would normally declare your *own* rules.
-        For details on these rules, see
-            https://valhuber.github.io/ApiLogicServer/Logic/
-            https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/
+        *Declare* Logic here, using Python with code completion.
 
-    This logic is *activated* in api_logic_server_run.py:
-        LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
+            This logic pre-created for default database, nw.sqlite.
+                You would normally declare your *own* rules.
+                For details on these rules, see
+                    https://valhuber.github.io/ApiLogicServer/Logic/
+                    https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/
 
-    Logic *runs* in response to transaction commits,
-      for multi-table derivations and constraints,
-      and events such as sending messages or mail
-        it consists of spreadsheet-like Rules and Python code
+        *Activation* occurs in api_logic_server_run.py:
+            LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
+
+        Logic *runs* in response to transaction commits (typically via the API),
+            for multi-table derivations and constraints,
+            and events such as sending messages or mail
+                it consists of spreadsheet-like Rules and Python code
 
     Rules operate much like a spreadsheet:
         Watch, for changes in referenced values
@@ -36,7 +38,7 @@ def declare_logic():
             SQL is automated, and optimized (e.g., adjust vs. select sum)
 
     Rules are automatically invoked, with
-        execution ordered per their dependencies
+        execution ordered per their dependencies (simplifies maintenance)
 
     These 5 rules apply to all transactions (automatic re-use), eg.
         * place order
