@@ -58,6 +58,8 @@ git remote add origin https://github.com/PoseyDev/MyProject.git
 git remote -v
 git remote set-url origin "https://PoseyDev@github.com/PoseyDev/MyProject.git"
 git push origin master
+      remote: Permission to PoseyDev/MyProject.git denied to PoseyDev.
+      fatal: unable to access 'https://github.com/PoseyDev/MyProject.git/': The requested URL returned error: 403
 ```
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/push-403.png?raw=true"></figure>
