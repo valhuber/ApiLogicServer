@@ -34,6 +34,51 @@ Click the globe, below.  This should start your Browser, and the links on the le
 
 &nbsp;
 
+## Creating New Projects
+
+The example above illustrated a way to explore Codespaces without any local install, by loading a project already on GitHub.  You can also create your own project - 2 ways are described below.
+
+### Local Creation
+
+As described in the (Getting Started Guide)[../Install-Express], you can create projects, store them in GitHub, and load them as described above.
+
+### Create from Codespaces (currently not working)
+
+We also explored creating a new project from the Codespaces example itself.  You can create projects under Codespaces just as you do for local installs:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-project-from-codespaces.png?raw=true"></figure>
+
+Problems occur, however, when you try to [add existing project to git](https://gist.github.com/alexpchin/102854243cd066f8b88e):
+
+```
+git init
+git add .
+git commit -m 'First commit'
+git remote add origin https://github.com/PoseyDev/MyProject.git
+git remote -v
+git remote set-url origin "https://PoseyDev@github.com/PoseyDev/MyProject.git"
+git push origin master
+```
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/push-403.png?raw=true"></figure>
+
+Git config status:
+```
+git config --list
+      credential.helper=/.codespaces/bin/gitcredential_github.sh
+      user.name=PoseyDev
+      user.email=54030760+PoseyDev@users.noreply.github.com
+      gpg.program=/.codespaces/bin/gh-gpgsign
+      core.repositoryformatversion=0
+      core.filemode=true
+      core.bare=false
+      core.logallrefupdates=true
+      remote.origin.url=https://PoseyDev@github.com/PoseyDev/MyProject.git
+      remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+      api_logic_server@codespaces-966cb8:/workspaces/MyProject$
+```
+
+
 ## Status - Running, still experimental
 
 On 7/24/2022, the Admin App is working, cURL is working, and Swagger is working.  While still experimental, this looks very promising.
