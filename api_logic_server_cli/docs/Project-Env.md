@@ -23,7 +23,7 @@ Ss of release 5.02.10, projects are created with a `venv_setup` directory which 
 
 ## Notes
 
-### Issues with `pip
+### Issues with `pip`
 
 The install sometimes fails due on machines with an older version of `pip`.  If you see a message suggesting you upgrade  `pip` , do so.
 
