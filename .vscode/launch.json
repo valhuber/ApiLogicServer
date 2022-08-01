@@ -12,6 +12,8 @@
             "program": "cli.py",
             "redirectOutput": true,
             "args": ["create-and-run","--project_name=../../servers/ApiLogicProject","--db_url="],
+            "stopOnEntry": false,
+            "justMyCode": false,
             "console": "integratedTerminal"
         },
         {
