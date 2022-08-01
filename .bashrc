@@ -1,16 +1,10 @@
 export PATH=$PATH:/home/api_logic_server/bin
 
-# cd ~
+ApiLogicServer welcome
 
-echo " "
-echo "Welcome to ApiLogicServer - Docker container"
-echo " "
-cat ../../etc/issue
-
-echo " "
-echo "printenv..."
-echo " "
-printenv
+osv=$(cat ../../etc/issue)
+echo "     $ printenv       for OS context       information -- $osv"
+echo "     $ ApiLogicServer for API Logic Server information"
 echo " "
 
 if [[ -z "${APILOGICSERVER_GIT}" ]]; then
@@ -18,7 +12,4 @@ if [[ -z "${APILOGICSERVER_GIT}" ]]; then
 else
   echo "Now: sh /home/api_logic_server/bin/run-project.sh ${APILOGICSERVER_GIT} ${APILOGICSERVER_FIXUP}"
   sh /home/api_logic_server/bin/run-project.sh ${APILOGICSERVER_GIT} ${APILOGICSERVER_FIXUP}
-
 fi
-
-ApiLogicServer

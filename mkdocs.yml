@@ -41,6 +41,7 @@ nav:
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md
     - "Working With Docker": Working-With-Docker.md
+    - "GitHub and Codespaces": Manage-GitHub.md
     - "Virtual Environment": Project-Env.md
     - "Execution - Hosts and Ports": Project-Execution.md
     - "Builders": Project-Builders.md

@@ -991,7 +991,7 @@ def about(ctx):
     global recent_changes
 
     print(f'\tInstalled at {abspath(__file__)}\n')
-    print(f'\thttps://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-logic-server---sample-tutorial\n')
+    print(f'\thttps://valhuber.github.io/ApiLogicServer/Tutorial/\n')
 
     def print_at(label: str, value: str):
         tab_to = 30 - len(label)
@@ -1018,6 +1018,15 @@ def about(ctx):
     click.echo(
         click.style(recent_changes)
     )
+
+
+@main.command("welcome")
+@click.pass_context
+def welcome(ctx):
+    """
+        Just print version and exit.
+    """
+
 
 @main.command("create")
 @click.option('--project_name',
