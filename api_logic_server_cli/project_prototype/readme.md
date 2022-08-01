@@ -49,7 +49,7 @@ To run your project:
 
 * **Open the Admin App -** either
 
-    * Open your Browser at [http://localhost:5656/admin-app/index.html#/Home](http://localhost:5656/admin-app/index.html#/Home), or 
+    * Open your Browser at [http://localhost:5656](http://localhost:5656), or 
     
     * Open in VSCode's Simple Browser (as shown below):
 
