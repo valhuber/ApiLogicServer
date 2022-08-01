@@ -52,12 +52,13 @@ Problems occur, however, when you try to [add existing project to git](https://g
 
 ```
 git init
+git branch -m main  # as required... git projects often created with this as default branch (vs. say, master)
 git add .
 git commit -m 'First commit'
 git remote add origin https://github.com/PoseyDev/MyProject.git
 git remote -v
 git remote set-url origin "https://PoseyDev@github.com/PoseyDev/MyProject.git"
-git push origin master
+git push origin main  # may need to be master
       remote: Permission to PoseyDev/MyProject.git denied to PoseyDev.
       fatal: unable to access 'https://github.com/PoseyDev/MyProject.git/': The requested URL returned error: 403
 ```
