@@ -74,7 +74,14 @@ def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     if use_env_debug:
         result_b = subprocess.check_output(cmd, shell=True, env=use_env)
     else:
-        result_b = subprocess.check_output(cmd, shell=True)  # , stderr=subprocess.STDOUT)  loses all logging
+        try:
+            result_b = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)  # loses all logging
+        except Exception as e:
+            print(f'\n***\nError calling cmd: ')
+            print(f'.. cmd: {cmd}')
+            print(f'.. msg: {e.output}')
+            print(f'***\n')
+            raise
     result = str(result_b)  # b'pyenv 1.2.21\n'
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
