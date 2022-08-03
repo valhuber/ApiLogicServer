@@ -20,12 +20,12 @@ Welcome to API Logic Server, 5.03.27
 Project to create [/localhost/ApiLogicProject]: /localhost/ApiLogicProject-GitHub
 SQLAlchemy Database URI [default = nw.sqlite, ? for help]: 
 ... logging
-api_logic_server@bc1bc88dc6ce:~$ exit  # exit, to facilate use of Desktop tools (git cli, IDE, etc)
+api_logic_server@bc1bc88dc6ce:~$ exit  # exit, to facilitate use of Desktop tools (git cli, IDE, etc)
 ```
 
 ## Save API Logic Project to GitHub
 
-Create a project on your GitHub account (here callec `ApiLogicProject-GitHub`) in the usual manner.
+Create a project on your GitHub account (here called `ApiLogicProject-GitHub`) in the usual manner.
 
 1. Create your project on GitHub
         *  Don't add files yet to avoid merge
