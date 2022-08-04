@@ -153,6 +153,8 @@ While conciseness is the most immediately obvious aspect of logic, rules provide
 | Dependency Management | Automatic chaining |__Conciseness:__ Eliminates the code that tests _"what's changed"_ to invoke relevant logic |
 | Persistence | Automatic optimization |__Performance:__ Unlike Rete engines which have no concept of old values, transaction logic can prune rules for unchanged data, and optimize for adjustment logic based on the difference between old/new values.  This can literally result in sub-second performance instead of multiple minutes, and can be tuned without recoding.. |
 
+See also the [FAQs](../FAQ-RETE).
+
 
 ### Automatic Reuse
 Just as a spreadsheet reacts
