@@ -124,6 +124,24 @@ resources:
     type: Department
     user_key: DepartmentName
   Employee:
+    info_list: <h1>Show When</h1>
+          Support for
+          <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Admin-Customization/#show_when">Show When</a>      
+          means you can define expressions that determine when a field is shown or hidden.  On this page...
+            <ul>
+              <li> Click <strong>Suyama</strong> and note
+              <span style="font-family:'Courier New'">Dues</span> is hidden,
+              but visible if you click <strong>Steele</strong>
+                <ul>
+                  <li>
+                    That is because <span style="font-family:'Courier New'">Admin.yaml</span> has a
+                    expression for the <span style="font-family:'Courier New'">show_when expression</span> for the
+                    <span style="font-family:'Courier New'">Dues</span> field
+                  </li>
+                </ul>
+              </li>
+              <li> Observe the same effect on Update / Insert screens as you alter the value of <span style="font-family:'Courier New'">EmployeeType</span></li>
+            </ul>
     attributes:
       - label: ' Last Name*'
         name: LastName
