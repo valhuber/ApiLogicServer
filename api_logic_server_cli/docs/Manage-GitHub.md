@@ -71,6 +71,9 @@ __3. Configure a Port__
 
 __4. Configure the pre-created `Codespaces-ApiLogicServer` launch configuration__ (see above)
 
+* Make the port __public__
+* Note that the trailing slash, and the `https://` are removed
+
 __5. Start the Server__ using the provided Launch Configuration = `Codespaces-ApiLogicServer`
 
 __6. Open the Browser__
