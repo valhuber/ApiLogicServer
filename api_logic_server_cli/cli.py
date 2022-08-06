@@ -165,7 +165,7 @@ def delete_dir(dir_path, msg):
 
 
 def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
-    """ run shell command
+    """ run shell command  fixme unused remove
 
     :param cmd: string of command to execute
     :param env:
@@ -280,19 +280,6 @@ def copy_if_mounted(project_directory):
 
 def create_nw_tutorial(project_name, api_logic_server_dir_str):
     """ copy tutorial from docs, and link to it from readme.md """
-
-    tutorial_link = \
-        f'# Tutorial' +\
-        "\n" +\
-        "Welcome to the Sample Database Readme - [run the Tutorial](Tutorial).\n" +\
-        "\n" +\
-        "...Also available in [the docs](https://valhuber.github.io/ApiLogicServer/Tutorial/).\n" +\
-         "\n" +\
-        "The standard API Logic Project readme follows...\n" +\
-        "\n" +\
-        "&nbsp;\n" +\
-        "\n" +\
-        "# API Logic Server\n"
 
     tutorial_file_proj = open(project_name + '/Tutorial.md', 'w')
     tutorial_file_docs_path = Path(api_logic_server_dir_str).\
@@ -455,7 +442,7 @@ def create_models(db_url: str, project: str, use_model: str, model_creation_serv
     """
 
     class DotDict(dict):
-        """dot.notation access to dictionary attributes"""
+        """dot.notation access to dictionary attributes  fixme migrate to DotMap"""
         # thanks: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary/28463329
         __getattr__ = dict.get
         __setattr__ = dict.__setitem__
