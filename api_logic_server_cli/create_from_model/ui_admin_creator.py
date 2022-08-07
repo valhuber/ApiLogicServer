@@ -1,4 +1,5 @@
 import logging
+from re import X
 import shutil
 import sys
 import os
@@ -111,9 +112,9 @@ class AdminCreator(object):
         cwd = os.getcwd()
         sys.path.append(cwd)
 
-        use_repl = True
-        if use_repl:
-            self.admin_yaml.api_root = '{http_type}://{swagger_host}:{port}/{api}'
+        use_repl = True 
+        if use_repl: # enables same admin.yaml for local vs Codespace, by runtime fixup of api_root
+            self.admin_yaml.api_root = '"{http_type}://{swagger_host}:{port}/{api}"'
         else:
             self.admin_yaml.api_root = f'http://localhost:5656/{self.mod_gen.api_name}'
             if self.host != "localhost":
@@ -497,20 +498,39 @@ class AdminCreator(object):
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
 
-        ''' is not working on mac - always appears unaltered
+        ''' 
+            creation_time different mac - always appears unaltered (== modified_time)
             https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
             https://thispointer.com/python-get-last-modification-date-time-of-a-file-os-stat-os-path-getmtime/
+
+            windows:    has proper time_created/modified
+            mac:        mac created_time always = modified_time, but can use birthtime
+            linux:      same as mac, but not birthtime -- blocker??
         '''
         enable_rebuild_unaltered = True        
         write_file = "Write"
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
+
+            """
             yaml_os_stat = os.stat ( yaml_file_name )
-            created_time = os.path.getctime(yaml_file_name)
+            os_stat_modified = yaml_os_stat.st_mtime
+            os_stat_created = yaml_os_stat.st_ctime
+            os_stat_atime = yaml_os_stat.st_atime
             if hasattr(yaml_os_stat, "st_birthtime"):
-                created_time = os.stat(yaml_file_name).st_birthtime  # mac created_time always = modified_time
-            modified_time = os.path.getmtime(yaml_file_name)
-            if enable_rebuild_unaltered and created_time == modified_time:
+                time_created = os.stat(yaml_file_name).st_birthtime  # mac created_time always = modified_time
+
+            os_path_modified = os.path.getmtime(yaml_file_name)
+            os_path_created = os.path.getctime(yaml_file_name)
+            os_path_atime = os.path.getatime(yaml_file_name)
+            """
+
+            yaml_file_stats = Path(yaml_file_name).stat()
+            path_mtime = yaml_file_stats.st_mtime
+            path_ctime = yaml_file_stats.st_ctime
+            path_atime = yaml_file_stats.st_atime
+
+            if enable_rebuild_unaltered and path_atime == path_mtime:
                 write_file = "Rebuild - overwrite unaltered"
 
         if write_file == "Rebuild - preserve":
