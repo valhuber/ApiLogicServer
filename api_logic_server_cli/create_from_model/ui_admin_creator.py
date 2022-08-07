@@ -486,47 +486,38 @@ class AdminCreator(object):
 
     def write_yaml_files(self):
         """
-        write admin.yaml from self.admin_yaml.toDict()
+        write admin[-merge].yaml from self.admin_yaml.toDict()
 
-        with -created backup, with additional nw customized backup
+        with -created backup, plus additional nw customized backup
         """
         admin_yaml_dict = self.admin_yaml.toDict()
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
 
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
-        write_file = "Write"
+        write_file = "Write"  # alert - not just message, drives processing
         if self.mod_gen.command.startswith("rebuild"):
-            write_file = "Rebuild - preserve"
+            ''' 
+                creation_time different mac - always appears unaltered (== modified_time)
+                https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
+                https://thispointer.com/python-get-last-modification-date-time-of-a-file-os-stat-os-path-getmtime/
 
-        ''' 
-            creation_time different mac - always appears unaltered (== modified_time)
-            https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
-            https://thispointer.com/python-get-last-modification-date-time-of-a-file-os-stat-os-path-getmtime/
-
-            windows:    has proper time_created/modified
-            mac:        mac created_time always = modified_time, but can use birthtime
-            linux:      same as mac, but not birthtime -- blocker??
-        '''
-        enable_rebuild_unaltered = True        
-        write_file = "Write"
-        if self.mod_gen.command.startswith("rebuild"):
-            write_file = "Rebuild - preserve"
-
+                windows:    has proper time_created/modified
+                mac:        mac created_time always = modified_time, but can use birthtime
+                linux:      same as mac, but not birthtime -- disable for linux
+            '''
+            enable_rebuild_unaltered = True        
             yaml_file_stats = Path(yaml_file_name).stat()
-            path_mtime = yaml_file_stats.st_mtime
-            path_ctime = yaml_file_stats.st_ctime
-            path_atime = yaml_file_stats.st_atime
- 
-            time_diff = abs(path_atime - path_ctime)  # seconds between access and creation
             if sys.platform == 'win32':
-                time_diff = abs(path_mtime - path_ctime)
+                time_diff = abs(yaml_file_stats.st_mtime - yaml_file_stats.st_ctime)  # these are seconds
             elif sys.platform == 'darwin':
-                time_diff = abs(path_mtime - yaml_file_stats.st_birthtime)
+                time_diff = abs(yaml_file_stats.st_mtime - yaml_file_stats.st_birthtime)
             else:
                 time_diff = 1000  # linux never captures ctime (!), so we must preserve possible chgs
 
             if enable_rebuild_unaltered and time_diff < 5:
-                write_file = "Rebuild - overwrite unaltered"
+                write_file = "Rebuild - overwrite unaltered"  # caution - serious step
+            else:
+                write_file = "Rebuild - preserve"
 
         if write_file == "Rebuild - preserve":
             yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
