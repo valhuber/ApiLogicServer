@@ -529,10 +529,13 @@ class AdminCreator(object):
             path_mtime = yaml_file_stats.st_mtime
             path_ctime = yaml_file_stats.st_ctime
             path_atime = yaml_file_stats.st_atime
+            path_btime = yaml_file_stats.st_birthtime
  
             time_diff = abs(path_atime - path_ctime)  # seconds between creation and access
             if sys.platform == 'win32':
                 time_diff = abs(path_mtime - path_ctime)
+            elif sys.platform == 'darwin':
+                time_diff = abs(path_mtime - path_btime)
 
             if enable_rebuild_unaltered and time_diff < 5:
                 if (sys.platform).startswith('linux'):
