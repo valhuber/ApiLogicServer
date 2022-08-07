@@ -529,11 +529,16 @@ class AdminCreator(object):
             path_mtime = yaml_file_stats.st_mtime
             path_ctime = yaml_file_stats.st_ctime
             path_atime = yaml_file_stats.st_atime
+            if os.name == "nt":  # windows
+                pass
 
             time_diff = abs(path_atime - path_ctime)  # seconds between creation and access
 
-            if enable_rebuild_unaltered and time_diff < 2:
-                write_file = "Rebuild - overwrite unaltered"
+            if enable_rebuild_unaltered and time_diff < 5:
+                if sys.platform == 'linux2':
+                    write_file = "Rebuild - preserve"  # linux never captures ctime, so we must preserve poss chgs
+                else:
+                    write_file = "Rebuild - overwrite unaltered"
 
         if write_file == "Rebuild - preserve":
             yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
