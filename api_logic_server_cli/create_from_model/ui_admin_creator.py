@@ -532,7 +532,7 @@ class AdminCreator(object):
 
             time_diff = abs(path_atime - path_ctime)  # seconds between creation and access
 
-            if enable_rebuild_unaltered and time_diff > 2:
+            if enable_rebuild_unaltered and time_diff < 2:
                 write_file = "Rebuild - overwrite unaltered"
 
         if write_file == "Rebuild - preserve":
