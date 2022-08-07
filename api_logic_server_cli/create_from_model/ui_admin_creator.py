@@ -512,31 +512,18 @@ class AdminCreator(object):
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
 
-            """
-            yaml_os_stat = os.stat ( yaml_file_name )
-            os_stat_modified = yaml_os_stat.st_mtime
-            os_stat_created = yaml_os_stat.st_ctime
-            os_stat_atime = yaml_os_stat.st_atime
-            if hasattr(yaml_os_stat, "st_birthtime"):
-                time_created = os.stat(yaml_file_name).st_birthtime  # mac created_time always = modified_time
-
-            os_path_modified = os.path.getmtime(yaml_file_name)
-            os_path_created = os.path.getctime(yaml_file_name)
-            os_path_atime = os.path.getatime(yaml_file_name)
-            """
-
             yaml_file_stats = Path(yaml_file_name).stat()
             path_mtime = yaml_file_stats.st_mtime
             path_ctime = yaml_file_stats.st_ctime
             path_atime = yaml_file_stats.st_atime
  
-            time_diff = abs(path_atime - path_ctime)  # seconds between creation and access
+            time_diff = abs(path_atime - path_ctime)  # seconds between access and creation
             if sys.platform == 'win32':
                 time_diff = abs(path_mtime - path_ctime)
             elif sys.platform == 'darwin':
                 time_diff = abs(path_mtime - yaml_file_stats.st_birthtime)
             else:
-                time_diff = 1000  # linux never captures ctime, so we must preserve poss chgs
+                time_diff = 1000  # linux never captures ctime (!), so we must preserve possible chgs
 
             if enable_rebuild_unaltered and time_diff < 5:
                 write_file = "Rebuild - overwrite unaltered"
