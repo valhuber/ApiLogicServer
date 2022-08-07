@@ -530,7 +530,9 @@ class AdminCreator(object):
             path_ctime = yaml_file_stats.st_ctime
             path_atime = yaml_file_stats.st_atime
 
-            if enable_rebuild_unaltered and path_atime == path_mtime:
+            time_diff = abs(path_atime - path_ctime)  # seconds between creation and access
+
+            if enable_rebuild_unaltered and time_diff > 2:
                 write_file = "Rebuild - overwrite unaltered"
 
         if write_file == "Rebuild - preserve":
