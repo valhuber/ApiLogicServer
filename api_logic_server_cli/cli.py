@@ -13,9 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.27"
+__version__ = "5.03.28"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t08/06/2022 - 05.03.28: Rebuild admin.yaml per is-modified \n"\
     "\t07/26/2022 - 05.03.27: Tutorial, refactor customize_api \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\

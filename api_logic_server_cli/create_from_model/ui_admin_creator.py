@@ -499,17 +499,19 @@ class AdminCreator(object):
 
         ''' is not working on mac - always appears unaltered
             https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
-
-        enable_rebuild_unaltered = False        
+            https://thispointer.com/python-get-last-modification-date-time-of-a-file-os-stat-os-path-getmtime/
+        '''
+        enable_rebuild_unaltered = True        
         write_file = "Write"
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
             created_time = os.path.getctime(yaml_file_name)
             birth_time = os.stat(yaml_file_name).st_birthtime
             modified_time = os.path.getmtime(yaml_file_name)
-            if enable_rebuild_unaltered and created_time == modified_time:
+            fileStatsObj = os.stat ( yaml_file_name )
+            if enable_rebuild_unaltered and birth_time == modified_time:  # birth_time works on mac..?
                 write_file = "Rebuild - overwrite unaltered"
-        '''
+
         if write_file == "Rebuild - preserve":
             yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
             print(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
