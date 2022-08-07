@@ -535,12 +535,11 @@ class AdminCreator(object):
                 time_diff = abs(path_mtime - path_ctime)
             elif sys.platform == 'darwin':
                 time_diff = abs(path_mtime - yaml_file_stats.st_birthtime)
+            else:
+                time_diff = 1000  # linux never captures ctime, so we must preserve poss chgs
 
             if enable_rebuild_unaltered and time_diff < 5:
-                if (sys.platform).startswith('linux'):
-                    write_file = "Rebuild - preserve"  # linux never captures ctime, so we must preserve poss chgs
-                else:
-                    write_file = "Rebuild - overwrite unaltered"
+                write_file = "Rebuild - overwrite unaltered"
 
         if write_file == "Rebuild - preserve":
             yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
