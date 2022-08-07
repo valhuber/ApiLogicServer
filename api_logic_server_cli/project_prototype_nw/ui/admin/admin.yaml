@@ -1,9 +1,9 @@
 about:
-  date: July 24, 2022 18:59:13
+  date: Auf 7, 2022 18:59:13
   recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType
 # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
-  version: 5.03.24
-api_root: {http_type}://{swagger_host}:{port}/{api}
+  version: 5.03.28
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
 # becomes  http://localhost:5656/api
 # for deployed apps, you might use a different uri, such as https://apilogicserver.pythonanywhere.com/api
 info:
