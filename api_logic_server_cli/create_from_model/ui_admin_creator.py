@@ -505,11 +505,12 @@ class AdminCreator(object):
         write_file = "Write"
         if self.mod_gen.command.startswith("rebuild"):
             write_file = "Rebuild - preserve"
+            yaml_os_stat = os.stat ( yaml_file_name )
             created_time = os.path.getctime(yaml_file_name)
-            birth_time = os.stat(yaml_file_name).st_birthtime
+            if hasattr(yaml_os_stat, "st_birthtime"):
+                created_time = os.stat(yaml_file_name).st_birthtime  # mac created_time always = modified_time
             modified_time = os.path.getmtime(yaml_file_name)
-            fileStatsObj = os.stat ( yaml_file_name )
-            if enable_rebuild_unaltered and birth_time == modified_time:  # birth_time works on mac..?
+            if enable_rebuild_unaltered and created_time == modified_time:
                 write_file = "Rebuild - overwrite unaltered"
 
         if write_file == "Rebuild - preserve":
