@@ -529,10 +529,10 @@ class AdminCreator(object):
             path_mtime = yaml_file_stats.st_mtime
             path_ctime = yaml_file_stats.st_ctime
             path_atime = yaml_file_stats.st_atime
-            if os.name == "nt":  # windows
-                pass
-
+ 
             time_diff = abs(path_atime - path_ctime)  # seconds between creation and access
+            if sys.platform == 'win32':
+                time_diff = abs(path_mtime - path_ctime)
 
             if enable_rebuild_unaltered and time_diff < 5:
                 if sys.platform == 'linux2':
