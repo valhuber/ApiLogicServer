@@ -535,7 +535,7 @@ class AdminCreator(object):
                 time_diff = abs(path_mtime - path_ctime)
 
             if enable_rebuild_unaltered and time_diff < 5:
-                if sys.platform == 'linux2':
+                if (sys.platform).startswith('linux'):
                     write_file = "Rebuild - preserve"  # linux never captures ctime, so we must preserve poss chgs
                 else:
                     write_file = "Rebuild - overwrite unaltered"
