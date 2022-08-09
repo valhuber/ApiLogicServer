@@ -98,7 +98,6 @@ Then, you might like to try out some of our [dockerized test databases](https://
 
 Finally, try your own database.
 
-The [tutorial](Tutorial) is a good way to explore API Logic Server.
 
 &nbsp;
 
