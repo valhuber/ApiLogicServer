@@ -12,12 +12,12 @@ title:
 
 # Feature Summary
 
-| Thing | Feature    | Providing   | Why it Matters   |
+|   | Feature    | Providing   | Why it Matters   |
 :-------|:-----------|:------------|:-----------------|
 | __Instant__ | 1. [**Admin App**](Admin-Tour){:target="_blank" rel="noopener"} | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}              | Engage Business Users<br>Back-office Admin       |
 | | 2. [JSON:**API** and Swagger](API){:target="_blank" rel="noopener"}                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           |
 | __Customizable__ | 3. [**Customizable Project**](Project-Structure){:target="_blank" rel="noopener"}                   | Custom Endpoints, Logic <br>Use Python and your IDE  |Customize and run <br>Re-creation *not* required |                                                                                               
-| :trophy: __Unique Logic__ | 4. [Transactional **Logic**](Logic-Rules-plus-Python){:target="_blank" rel="noopener"}  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}<br>Extensible with Python | Unique backend automation <br> ... nearly half the system                       |
+| __Unique Logic__ | 4. [Transactional **Logic**](Logic-Rules-plus-Python){:target="_blank" rel="noopener"}  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}<br>Extensible with Python | Unique backend automation <br> ... nearly half the system                       |
 | | 5. Model Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                |
 | Testing | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                |
 
