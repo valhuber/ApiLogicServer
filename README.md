@@ -14,10 +14,10 @@ title:
 
 |   | Feature    | Providing   | Why it Matters   |
 :-------|:-----------|:------------|:-----------------|
-| __Instant__ | 1. [**Admin App**](Admin-Tour){:target="_blank" rel="noopener"} | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}              | Engage Business Users<br>Back-office Admin       |
-| | 2. [JSON:**API** and Swagger](API){:target="_blank" rel="noopener"}                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           |
-| __Customizable__ | 3. [**Customizable Project**](Project-Structure){:target="_blank" rel="noopener"}                   | Custom Endpoints, Logic <br>Use Python and your IDE  |Customize and run <br>Re-creation *not* required |                                                                                               
-| __Unique Logic__ | 4. [Transactional **Logic**](Logic-Rules-plus-Python){:target="_blank" rel="noopener"}  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code){:target="_blank" rel="noopener"}<br>Extensible with Python | Unique backend automation <br> ... nearly half the system                       |
+| __Instant__ | 1. [**Admin App**](Admin-Tour) | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)              | Engage Business Users<br>Back-office Admin       |
+| | 2. [JSON:**API** and Swagger](API)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           |
+| __Customizable__ | 3. [**Customizable Project**](Project-Structure)                   | Custom Endpoints, Logic <br>Use Python and your IDE  |Customize and run <br>Re-creation *not* required |                                                                                               
+| __Unique Logic__ | 4. [Transactional **Logic**](Logic-Rules-plus-Python)  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)<br>Extensible with Python | Unique backend automation <br> ... nearly half the system                       |
 | | 5. Model Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                |
 | Testing | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                |
 
@@ -52,7 +52,7 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 &nbsp;
 
 ### Or, Create With Local Install
-Presuming Python 3.7+ [is installed](Install){:target="_blank" rel="noopener"}, it's typically:
+Presuming Python 3.7+ [is installed](Install), it's typically:
 
 ```bash title="Run API Logic Server from a local pip install"
 python -m venv venv        # may require python3 -m venv venv
@@ -66,9 +66,9 @@ ApiLogicServer create      # create, or create-and-run; accept defaults
 
 ## Then -- Execute, Open in IDE
 
-Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](Tutorial/){:target="_blank" rel="noopener"}, the recommended quick start for API Logic Server.
+Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](Tutorial/), the recommended quick start for API Logic Server.
 
-VSCode and PyCharm users can execute within their IDE with [these steps](IDE-Execute){:target="_blank" rel="noopener"}.
+VSCode and PyCharm users can execute within their IDE with [these steps](IDE-Execute).
 
 &nbsp;
 
@@ -78,7 +78,7 @@ Project creation is based on database schema introspection as shown below: ident
 
 Click for a video tutorial, showing complete project creation, execution, customization and debugging.
 
-[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container"){:target="_blank" rel="noopener"}
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images/creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container")
 
 &nbsp;
 
@@ -107,9 +107,9 @@ This is an open source project.  We are open to suggestions.  Some of our ideas 
 
 | Component           | Provides         | Consider Adding                                                                |
 |:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
-| [1. safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin){:target="_blank" rel="noopener"}      | Admin App        | [Hide/Show, Cascade Add](https://github.com/thomaxxl/safrs-react-admin/issues) |
-| 2. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger){:target="_blank" rel="noopener"} | API Execution    | Security, Serverless, Kubernetes                                                                       | 
-| 3. [Transactional **Logic**](#logic){:target="_blank" rel="noopener"}   | Rule Enforcement | New rule types        |
+| [1. safrs-react-admin](https://github.com/thomaxxl/safrs-react-admin)      | Admin App        | [Hide/Show, Cascade Add](https://github.com/thomaxxl/safrs-react-admin/issues) |
+| 2. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) | API Execution    | Security, Serverless, Kubernetes                                                                       | 
+| 3. [Transactional **Logic**](#logic)   | Rule Enforcement | New rule types        |
 | 4. This project | API Logic Project Creation | Support for features described above |
 
 
@@ -131,7 +131,7 @@ There are a number of facilities that will quickly enable you to get familiar wi
 
 We have tested several databases - see [status here.](Database-Connectivity)
 
-We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues){:target="_blank" rel="noopener"}.
+We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
 We have introduced several renames to clarify operation.
 These do not affect existing projects.  However, we've not updated all the docs to reflect these changes:
@@ -166,16 +166,16 @@ Many thanks to
 
 There are a few articles that provide some orientation to API Logic Server:
 
-* [How Automation Activates Agile](https://modeling-languages.com/logic-model-automation/){:target="_blank" rel="noopener"}
-* [How Automation Activates Agile](https://dzone.com/articles/automation-activates-agile){:target="_blank" rel="noopener"} - providing working software rapidly drives agile collaboration to define systems that meet actual needs, reducing requirements risk
-* [How to create application systems in moments](https://dzone.com/articles/create-customizable-database-app-systems-with-1-command){:target="_blank" rel="noopener"}
-* [Stop coding database backends…Declare them with one command.](https://medium.com/@valjhuber/stop-coding-database-backends-declare-them-with-one-command-938cbd877f6d){:target="_blank" rel="noopener"}
-* [Instant Database Backends](https://dzone.com/articles/instant-api-backends){:target="_blank" rel="noopener"}
-* [Extensible Rules](https://dzone.com/articles/logic-bank-now-extensible-drive-95-automation-even){:target="_blank" rel="noopener"} - defining new rule types, using Python
-* [Declarative](https://dzone.com/articles/agile-design-automation-how-are-rules-different-fr){:target="_blank" rel="noopener"} - exploring _multi-statement_ declarative technology
-* [Automate Business Logic With Logic Bank](https://dzone.com/articles/automate-business-logic-with-logic-bank){:target="_blank" rel="noopener"} - general introduction, discussions of extensibility, manageability and scalability
-* [Agile Design Automation With Logic Bank](https://dzone.com/articles/logical-data-indendence){:target="_blank" rel="noopener"} - focuses on automation, design flexibility and agile iterations
-* [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps){:target="_blank" rel="noopener"} 
+* [How Automation Activates Agile](https://modeling-languages.com/logic-model-automation/)
+* [How Automation Activates Agile](https://dzone.com/articles/automation-activates-agile) - providing working software rapidly drives agile collaboration to define systems that meet actual needs, reducing requirements risk
+* [How to create application systems in moments](https://dzone.com/articles/create-customizable-database-app-systems-with-1-command)
+* [Stop coding database backends…Declare them with one command.](https://medium.com/@valjhuber/stop-coding-database-backends-declare-them-with-one-command-938cbd877f6d)
+* [Instant Database Backends](https://dzone.com/articles/instant-api-backends)
+* [Extensible Rules](https://dzone.com/articles/logic-bank-now-extensible-drive-95-automation-even) - defining new rule types, using Python
+* [Declarative](https://dzone.com/articles/agile-design-automation-how-are-rules-different-fr) - exploring _multi-statement_ declarative technology
+* [Automate Business Logic With Logic Bank](https://dzone.com/articles/automate-business-logic-with-logic-bank) - general introduction, discussions of extensibility, manageability and scalability
+* [Agile Design Automation With Logic Bank](https://dzone.com/articles/logical-data-indendence) - focuses on automation, design flexibility and agile iterations
+* [Instant Web Apps](https://dzone.com/articles/instant-db-web-apps) 
 
 
 
