@@ -107,6 +107,8 @@ finally, try your own database.
 
 &nbsp;
 
+# Project Information
+
 ### Making Contributions
 This is an open source project.  We are open to suggestions.  Some of our ideas include:
 
