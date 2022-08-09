@@ -9,6 +9,10 @@ title:
 [![API Logic Server Intro](https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true)](https://valhuber.github.io/ApiLogicServer/ "Single command creates executable, customizable projects")
 
 &nbsp;
+---
+Find the [documentation here](https://valhuber.github.io/ApiLogicServer/).
+
+&nbsp;
 
 # Feature Summary
 
@@ -94,19 +98,16 @@ Click for a video tutorial, showing complete project creation, execution, custom
 
 # Getting Started
 
-## Install and run Tutorial
-[Install](https://valhuber.github.io/ApiLogicServer/Install-Express/), and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/).  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
+API Logic Server is designed to make it easy to get started:
 
-&nbsp;
+* **Install and run Tutorial** - 
+[install](https://valhuber.github.io/ApiLogicServer/Install-Express/), and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/).  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
 
-## Dockerized Test Databases
-Then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/).
+* **Dockerized Test Databases** - 
+then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/).
 
-&nbsp;
-
-## Your Database
-
-Finally, try your own database.
+* **Your Database** - 
+finally, try your own database.
 
 
 &nbsp;
