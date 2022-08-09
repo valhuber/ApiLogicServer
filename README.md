@@ -16,10 +16,12 @@ title:
 :-------|:-----------|:------------|:-----------------|
 | __Instant__ | 1. [**Admin App**](Admin-Tour) | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)              | Engage Business Users<br>Back-office Admin       |
 | | 2. [JSON:**API** and Swagger](API)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           |
-| __Customizable__ | 3. [**Customizable Project**](Project-Structure)                   | Custom Endpoints, Logic <br>Use Python and your IDE  |Customize and run <br>Re-creation *not* required |                                                                                               
-| __Unique Logic__ | 4. [Transactional **Logic**](Logic-Rules-plus-Python)  &nbsp; :trophy:      | *Spreadsheet-like Rules* <br> **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code)<br>Extensible with Python | Unique backend automation <br> ... nearly half the system                       |
-| | 5. Model Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                |
+| | 3. Data Model Class Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                |
+| __Customizable__ | 4. [**Customizable Project**](Project-Structure)                   | Custom Endpoints, Logic <br>Use Python and your IDE  |Customize and run <br>Re-creation *not* required |                                                                                      
+| __Unique Logic__ | 5. [Spreadsheet-like Business Rules](Logic-Rules-plus-Python)  &nbsp; :trophy:      | **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation <br> ... nearly half the system  |
+|  | Extensible with Python      | Familiar Event Model | Eg., Send messages, email  |
 | Testing | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                |
+
 
 &nbsp;
 
@@ -64,11 +66,19 @@ ApiLogicServer create      # create, or create-and-run; accept defaults
 ```
 &nbsp;
 
-## Then -- Execute, Open in IDE
+## Execute
 
 Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](Tutorial/), the recommended quick start for API Logic Server.
 
-VSCode and PyCharm users can execute within their IDE with [these steps](IDE-Execute).
+&nbsp;
+
+# Customize in IDE
+
+VSCode and PyCharm users can customize and run/debug within their IDE with [these steps](IDE-Execute).  Created projects include Launch and Docker configurations.  
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png?raw=true"></figure>
+
+[Rebuild services](https://valhuber.github.io/ApiLogicServer/Project-Rebuild/) are provided to accomodate changes to database structure or ORM classes.
 
 &nbsp;
 
@@ -101,7 +111,17 @@ Finally, try your own database.
 
 &nbsp;
 
-# Making Contributions
+# Project Information
+
+### Tutorials
+There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
+
+* [Tutorial](Tutorial) walks you through the steps of creating a server
+* [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
+
+&nbsp;
+
+### Making Contributions
 This is an open source project.  We are open to suggestions.  Some of our ideas include:
 
 | Component           | Provides         | Consider Adding                                                                |
@@ -113,16 +133,6 @@ This is an open source project.  We are open to suggestions.  Some of our ideas 
 
 
 To get started, please see  the [Architecture.](Internals)
-
-&nbsp;
-
-# Project Information
-
-### Tutorials
-There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
-
-* [Tutorial](Tutorial) walks you through the steps of creating a server
-* [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
 
 &nbsp;
 
@@ -138,6 +148,7 @@ These do not affect existing projects.  However, we've not updated all the docs 
 * `logic/declare_logic.py` replaces `logic_bank.py`
 * `api/customize_api.py` replaces `expose_services.py`
 * `database/customize_models.py` replaces `models_ext.py`
+
  &nbsp;
 
 ### Acknowledgements
