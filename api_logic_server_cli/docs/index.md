@@ -16,6 +16,7 @@ title:
 We looked at approaches for building database systems:
 
 &nbsp;
+
 __Frameworks__
 
 Frameworks like Flask or Django make it easy to build a single endpoint or _Hello World_ page, 
@@ -86,7 +87,8 @@ source venv/bin/activate   # windows venv\Scripts\activate
 venv\Scripts\activate      # mac/linux: source venv/bin/activate
 python -m pip install ApiLogicServer
 
-ApiLogicServer create      # create, or create-and-run; accept defaults
+ApiLogicServer create --project_name=ApiLogicProject --db_url=  # or, create-and-run
+python ApiLogicProject/api_logic_server_run.py                  # run the server
 ```
 &nbsp;
 
