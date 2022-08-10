@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.30"
+__version__ = "5.03.31"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t08/09/2022 - 05.03.30: Fix ApiLogicServer run failure (Issue 45), Rebuild admin.yaml per is-modified \n"\
+    "\t08/10/2022 - 05.03.31: Fix ApiLogicServer run fails (Issue 45), admin 404 (Issue 46), Rebuild per is-modified \n"\
     "\t07/26/2022 - 05.03.27: Tutorial, refactor customize_api \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\

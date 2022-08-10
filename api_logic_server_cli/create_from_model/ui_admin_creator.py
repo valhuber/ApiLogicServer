@@ -114,7 +114,7 @@ class AdminCreator(object):
 
         use_repl = True 
         if use_repl: # enables same admin.yaml for local vs Codespace, by runtime fixup of api_root
-            self.admin_yaml.api_root = '"{http_type}://{swagger_host}:{port}/{api}"'
+            self.admin_yaml.api_root = '{http_type}://{swagger_host}:{port}/{api}'
         else:
             self.admin_yaml.api_root = f'http://localhost:5656/{self.mod_gen.api_name}'
             if self.host != "localhost":
