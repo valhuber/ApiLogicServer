@@ -52,7 +52,13 @@ docker inspect api_logic_server  # you will find the ip, e.g., 172.17.0.2
 
 ## ApiLogicServer Container upgrades
 
-If you update your ApiLogicServer container to a new version, your existing projects may appear to be damaged.  You can fix them easily:
+You can update your image to a new version:
+
+```bash
+docker pull apilogicserver/api_logic_server
+```
+
+If you update your ApiLogicServer container to a new version, your existing VSCode projects may appear to be damaged.  You can fix them easily:
 
 1. Click the Dev Container button (in the lower left)
 1. Choose **Rebuild Container**
