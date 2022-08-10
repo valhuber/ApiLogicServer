@@ -34,7 +34,9 @@ The **arguments** mean:
    * The image is not automatically refreshed -- install ApiLogicServer updates as described below
 
 You may also wish to add a parameter for networking:
+
 * **--net my-network** - attaches to my-network
+
 
 On your Docker container, you can **inspect** your environment:
 ```
