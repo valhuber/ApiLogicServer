@@ -259,7 +259,7 @@ Automation enables you to **deliver projects faster**; the Agile/Behave encourag
 
 In addition to Behave, you can use manual approaches for testing:
 
-<details>
+<details markdown>
 <summary>Click to see how to run Basic tests</summary>
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/run-server-test.png" title="run instructions"></figure>
