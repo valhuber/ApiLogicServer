@@ -40,6 +40,28 @@ def insert_lines_at(lines: str, at: str, file_name: str):
         fp.writelines(file_lines)  # write whole list again to the same file
 
 
+def find_valid_python_name() -> str:
+    '''
+        sigh.  On *some* macs, python fails so we must use python3.
+        
+        return 'python3' in this case
+    '''
+    python3_worked = False
+    try:
+        result_b = subprocess.check_output('python --version', shell=True, stderr=subprocess.STDOUT)
+    except Exception as e:
+        python3_worked = False
+        try:
+            result_b = subprocess.check_output('python3 --version', shell=True, stderr=subprocess.STDOUT)
+        except Exception as e1:
+            python3_worked = False
+        python3_worked = True
+    if python3_worked:
+        return "python3"
+    else:
+        return "python"
+
+
 def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     """ run shell command
 
@@ -48,6 +70,9 @@ def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     :param msg: optional message (no-msg to suppress)
     :return:
     """
+    if cmd.startswith('python'):
+        valid_python_name = find_valid_python_name()
+        cmd = cmd.replace("python", valid_python_name)
     log_msg = ""
     if msg != "Execute command:":
         log_msg = msg + " with command:"
@@ -74,28 +99,8 @@ def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     if use_env_debug:
         result_b = subprocess.check_output(cmd, shell=True, env=use_env)
     else:
-        try:
-            result_b = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)  # loses all logging
-        except Exception as e:
-            still_failed = True
-            try_python3 = True
-            if try_python3 and 'python: command not found' in str(e.output):
-                """
-                    WARNING: dragons lurk....
-                    on Mac, os upgrade caused dev env to lose venv, so python fails
-                    so, we use python3, as a hopefully temp solution.
-                """
-                cmd = cmd.replace("python", "python3")
-                print(f'\n***  Fallback from Python to python3 (should only occur in dev env)')
-                result_b = subprocess.check_output(cmd, shell=True)  # loses all logging
-                still_failed = False
-            if (still_failed):
-                print(f'\n***\nError calling cmd: ')
-                print(f'.. cmd: {cmd}')
-                print(f'.. msg: {e.output}')
-                print(f'***\n')
-                raise
-    result = str(result_b)  # b'pyenv 1.2.21\n'
+        result_b = subprocess.check_output(cmd, shell=True) # , stderr=subprocess.STDOUT)  # causes hang on docker
+    result = str(result_b)  # b'pyenv 1.2.21\n'  # this code never gets reached...
     result = result[2: len(result) - 3]
     tab_to = 20 - len(cmd)
     spaces = ' ' * tab_to

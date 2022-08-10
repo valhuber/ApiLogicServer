@@ -65,7 +65,14 @@ app_logger.addHandler(handler)
 app_logger.propagate = True
 
 app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
-app_logger.info(f'\nAPI Logic Project Starting: {__file__}')
+args = ""
+arg_num = 0
+for each_arg in sys.argv:
+    args += each_arg
+    arg_num += 1
+    if arg_num < len(sys.argv):
+        args += ", "
+app_logger.info(f'\nAPI Logic Project Starting at: {__file__}, with args: {args}')
 
 logging.getLogger('safrs').setLevel(logging.INFO)
 logging.getLogger('safrs.safrs_init').setLevel(logging.INFO)

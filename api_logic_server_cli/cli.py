@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.28"
+__version__ = "5.03.30"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t08/06/2022 - 05.03.28: Rebuild admin.yaml per is-modified \n"\
+    "\t08/09/2022 - 05.03.30: Fix ApiLogicServer run failure (Issue 45), Rebuild admin.yaml per is-modified \n"\
     "\t07/26/2022 - 05.03.27: Tutorial, refactor customize_api \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
@@ -1401,7 +1401,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656", swa
     else:
         proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
     run_file = f'{proj_dir}/api_logic_server_run.py {host} {port} {swagger_host}'
-    create_utils.run_command(f'python {run_file}', msg="Run created ApiLogicServer project", new_line=True)
+    create_utils.run_command(f'python {run_file}', msg="Run Created ApiLogicServer Project", new_line=True)
     print("run complete")
 
 
