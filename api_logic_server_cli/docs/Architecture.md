@@ -24,7 +24,7 @@ and your Dev Tools (IDE etc) operate
 
 ### Pip Install - ApiLogicServer in local Python environment
 
-<details>
+<details markdown>
 
   <summary>Alternative option: pip install</summary>
 
