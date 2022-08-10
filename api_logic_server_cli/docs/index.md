@@ -10,6 +10,30 @@ title:
 
 &nbsp;
 
+<details markdown>
+  <summary>Why did we build this?</summary>
+
+We looked at approaches for building database systems:
+
+&nbsp;
+__Frameworks__
+
+Frameworks like Flask or Django make it easy to build a single endpoint or _Hello World_ page, 
+<br>but a __multi-endpoint__ API and __multi-page__ application would take __weeks__ or more.
+
+&nbsp;
+
+__Low Code Tools__
+
+These are great for building great UIs, but
+
+* Want a multi-page app -- __no screen painting__
+* Want to __preserve dev tools__ - VSCode, PyCharm tools
+* Need an answer for __backend logic__ (it's nearly half the effort)
+</details>
+
+&nbsp;
+
 # Feature Summary
 
 |   | Feature    | Providing   | Why it Matters   |
