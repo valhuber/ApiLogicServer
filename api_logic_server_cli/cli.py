@@ -13,9 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.31"
+__version__ = "5.03.32"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t08/11/2022 - 05.03.32: Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t08/10/2022 - 05.03.31: Fix ApiLogicServer run fails (Issue 45), admin 404 (Issue 46), Rebuild per is-modified \n"\
     "\t07/26/2022 - 05.03.27: Tutorial, refactor customize_api \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
@@ -164,44 +165,6 @@ def delete_dir(dir_path, msg):
         except:
             pass
 
-
-def run_command_nowait(cmd: str, env=None, msg: str = "") -> str:
-    """ run shell command  fixme unused remove
-
-    :param cmd: string of command to execute
-    :param env:
-    :param msg: optional message (no-msg to suppress)
-    :return:
-    """
-    log_msg = ""
-    if msg != "Execute command:":
-        log_msg = msg + " with command:"
-    if msg != "no-msg":
-        print(f'{log_msg} {cmd}')
-
-    use_env = env
-    if env is None:
-        project_dir = get_api_logic_server_dir()
-        python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
-        use_env = os.environ.copy()
-        # print("\n\nFixing env for cmd: " + cmd)
-        if hasattr(use_env, "PYTHONPATH"):
-            use_env["PYTHONPATH"] = python_path + ":" + use_env["PYTHONPATH"]  # eg, /Users/val/dev/ApiLogicServer/venv/lib/python3.9
-            # print("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
-        else:
-            use_env["PYTHONPATH"] = python_path
-            # print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
-    use_env_debug = False  # not able to get this working
-    if use_env_debug:
-        result_b = subprocess.check_output(cmd, shell=True, env=use_env)
-    else:
-        result_b = subprocess.Popen(cmd, shell=True)
-    result = str(result_b)  # b'pyenv 1.2.21\n'
-    result = result[2: len(result) - 3]
-    tab_to = 20 - len(cmd)
-    spaces = ' ' * tab_to
-    if result != "" and result != "Downloaded the skeleton app, good coding!":
-        print(f'{log_msg} {cmd} result: {spaces}{result}')
 
 
 def recursive_overwrite(src, dest, ignore=None):
@@ -426,51 +389,6 @@ def create_basic_web_app(db_url, project_name, msg):  # remove - now creating by
     cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
     result = create_utils.run_command(cmd, msg=msg)
     pass
-
-
-def create_models(db_url: str, project: str, use_model: str, model_creation_services):
-    """
-    create model.py, normally via expose_existing.expose_existing_callable (sqlacodegen)
-
-    FIX ME unused
-
-    or, use_model -- then just copy
-
-    :param db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
-    :param project: project directory
-    :param use_model: file name of existing models file ("" means create_models)
-    :returns dict - key is table name, value is list of (role-name, relationship)
-    """
-
-    class DotDict(dict):
-        """dot.notation access to dictionary attributes  fixme migrate to DotMap"""
-        # thanks: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary/28463329
-        __getattr__ = dict.get
-        __setattr__ = dict.__setitem__
-        __delattr__ = dict.__delitem__
-
-    def get_codegen_args():
-        """ DotDict of url, outfile, version """
-        codegen_args = DotDict({})
-        codegen_args.url = db_url
-        # codegen_args.outfile = models_file
-        codegen_args.outfile = project + '/database/models.py'
-        codegen_args.version = False
-        codegen_args.model_creation_services = model_creation_services
-        return codegen_args
-
-    rtn_my_children_map = None
-    rtn_my_parents_map = None
-    if use_model != "":  # use this hand-edited model (e.g., added relns)
-        model_file = resolve_home(use_model)
-        print(f'.. .. ..Copy {model_file} to {project + "/database/models.py"}')
-        copyfile(model_file, project + '/database/models.py')
-    else:
-        code_gen_args = get_codegen_args()
-        rtn_my_children_map, rtn_my_parents_map = expose_existing_callable.codegen(code_gen_args)
-        model_creation_services.resource_list_complete = True
-        pass
-    return rtn_my_children_map, rtn_my_parents_map
 
 
 def write_expose_api_models(project_name, apis):
@@ -1400,7 +1318,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656", swa
         proj_dir = last_created_project_name
     else:
         proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
-    run_file = f'{proj_dir}/api_logic_server_run.py {host} {port} {swagger_host}'
+    run_file = f'{proj_dir}/api_logic_server_run.py '  # alert: sending args makes it hang: {host} {port} {swagger_host}
     create_utils.run_command(f'python {run_file}', msg="Run Created ApiLogicServer Project", new_line=True)
     print("run complete")
 
@@ -1452,41 +1370,6 @@ def create_ui(ctx, use_model: str,
     with open(admin_out, 'w') as yaml_file:
         yaml_file.write(admin_yaml_dump)
 
-'''
-
-@main.command("run-ui")
-@click.option('--project_name',
-              default=f'{last_created_project_name}',
-              prompt="Project to run",
-              help="Project to run")
-@click.option('--host',
-              default=f'{default_fab_host}',
-              help="Server hostname (default is localhost)")
-@click.option('--port',
-              default=f'5002',
-              help="Port (default 5002, or leave empty)")
-@click.pass_context
-def run_ui(ctx, project_name: str, host: str="localhost", port: str="5002"):
-    """
-        Runs existing basic web app.
-
-\b
-        Example
-
-\b
-            ApiLogicServer run-ui --project_name=/localhost/ApiLogicProject
-            ApiLogicServer run-ui --project_name=    # runs last-created project
-    """
-    global command
-    command = "run-ui"
-    proj_dir = project_name
-    if proj_dir == "":
-        proj_dir = last_created_project_name
-    else:
-        proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
-    run_file = f'{proj_dir}/ui/basic_web_app/run.py'   # this fails to open: {host} 8080
-    create_utils.run_command(f'python {run_file} {host} {port}', msg="Run created ApiLogicServer Basic Web App", new_line=True)
-'''
 
 @main.command("examples")
 @click.pass_context
