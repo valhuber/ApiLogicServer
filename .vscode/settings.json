@@ -1,4 +1,4 @@
 {
-    "python.terminal.activateEnvironment": false,
+    "python.terminal.activateEnvironment": true,
     "python.terminal.activateEnvInCurrentTerminal": true
 }
