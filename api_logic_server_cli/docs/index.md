@@ -29,8 +29,9 @@ __Low Code Tools__
 These are great for building great UIs, but
 
 * Want a multi-page app -- __no screen painting__
-* Want to __preserve dev tools__ - VSCode, PyCharm tools
+* Want to __preserve dev tools__ - VSCode, PyCharm, git, etc
 * Need an answer for __backend logic__ (it's nearly half the effort)
+</span>
 </details>
 
 &nbsp;
