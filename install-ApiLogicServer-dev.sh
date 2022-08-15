@@ -56,7 +56,7 @@ if [ $# -eq 0 ]
         fi
         # read -p "venv created; do optional pre-installs now $1> "
         pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
-        code .vscode/workspace.code-workspace
+        code .vscode/ApiLogicServerDev.code-workspace
         set +x
         echo ""
         echo "Workspace opened; use pre-created Launch Configurations:"

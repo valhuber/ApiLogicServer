@@ -39,7 +39,7 @@ if ($IDE -eq "vscode") {
     # ls
     venv\Scripts\activate
     python -m pip install -r requirements.txt
-    code .vscode/workspace.code-workspace
+    code .vscode/ApiLogicServerDev.code-workspace
     Set-PSDebug -Trace 0
     echo ""
     echo "Workspace opened; use pre-created Launch Configurations:"
