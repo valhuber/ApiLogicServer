@@ -17,20 +17,6 @@
 		"git.ignoreLimitWarning": true,
 		"sqltools.connections": [
 			{
-				"mysqlOptions": {
-					"authProtocol": "default"
-				},
-				"previewLimit": 50,
-				"server": "localhost",
-				"port": 3306,
-				"driver": "MySQL",
-				"name": "MySQL",
-				"group": "G",
-				"database": "Chinook",
-				"username": "vscode",
-				"password": "p"
-			},
-			{
 				"previewLimit": 50,
 				"server": "localhost",
 				"port": 5432,
@@ -91,6 +77,20 @@
 				"name": "nw-gold-plus",
 				"group": "G",
 				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/database/nw-gold-plus.sqlite"
+			},
+			{
+				"mysqlOptions": {
+					"authProtocol": "default"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "MySQL",
+				"group": "G",
+				"database": "Chinook",
+				"username": "root",
+				"password": "p"
 			}
 		],
 		"sqltools.useNodeRuntime": true,
