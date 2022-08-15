@@ -1,4 +1,4 @@
-# create a Postgres that stores data in the container, not a volume
+# create a Postgres (13.4) that stores data in the container, not a volume
 
 # ref: https://dev.to/shree_j/how-to-install-and-run-psql-using-docker-41j2
 
