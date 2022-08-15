@@ -17,7 +17,7 @@ Besides typical home use, I rely on this machine for API Logic Server dev.  That
 
 ## Docker
 
-Installs and runs without issue.  It is slower, however, on M2.  For example, once started, the `ApiLogicServer welcome` command takes under a second, but 7-9 on M1.
+Installs and runs without issue.  It is slower, however, on M1.  For example, once started, the `ApiLogicServer welcome` command takes under a second on x86, but 7-9 on M1.
 
 ## Dev Install
 
