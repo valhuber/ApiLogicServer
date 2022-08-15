@@ -27,6 +27,14 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "1.1 - Run ApiLogicProject",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/../servers/ApiLogicProject/api_logic_server_run.py",
+            "redirectOutput": true,
+            "console": "integratedTerminal"
+        },
+        {
             "name": "2 - Debug ApiLogicProject",
             "type": "python",
             "request": "launch",

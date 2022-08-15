@@ -93,6 +93,7 @@
 				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/database/nw-gold-plus.sqlite"
 			}
 		],
-		"sqltools.useNodeRuntime": true
+		"sqltools.useNodeRuntime": true,
+		"workbench.colorTheme": "MintLight Theme"
 	}
 }
