@@ -66,6 +66,7 @@ nav:
     - "Python Installation": Tech-Install-Python.md
     - "Mkdocs Material": Tech-mkdocs-material.md
     - "CodeSpaces": Tech-CodeSpaces.md
+    - "M1 Mac": Tech-m1.md
 markdown_extensions:
   - toc:
       baselevel: 2

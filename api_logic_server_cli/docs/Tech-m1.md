@@ -15,4 +15,10 @@ Besides typical home use, I rely on this machine for API Logic Server dev.  That
 
 # Notes
 
-TBD - Scheduled 8/18.
+## Docker
+
+Installs and runs without issue.  It is slower, however, on M2.  For example, once started, the `ApiLogicServer welcome` command takes under a second, but 7-9 on M1.
+
+## Dev Install
+
+Ran into significant drame with Postgres support - `psycopg2`.  Under investigation.
