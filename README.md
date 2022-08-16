@@ -195,6 +195,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+08/15/2022 - 05.03.33: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45)
+
 07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support
 
 07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env

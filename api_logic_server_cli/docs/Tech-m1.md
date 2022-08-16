@@ -15,10 +15,17 @@ Besides typical home use, I rely on this machine for API Logic Server dev.  That
 
 # Notes
 
-## Docker
+## Docker - ApiLogicServer
 
-Installs and runs without issue.  It is slower, however, on M1.  For example, once started, the `ApiLogicServer welcome` command takes under a second on x86, but 7-9 on M1.
+Installs and runs without issue.  
 
-## Dev Install
+It is slower, however, on M1.  For example, once started, the `ApiLogicServer welcome` command takes under a second on x86, but 7-9 on M1.
 
-Ran into significant drame with Postgres support - `psycopg2`.  Under investigation.
+## Dev Install fails due to `psycopg2`
+
+Ran into significant drame with Postgres support - `psycopg2`.  Under [investigation](pip install psycopg2_m1-*-macosx_12_0_arm64.whl).
+
+## Docker Databases
+
+Was able to run MySQL, any performance degradation was not user-visible.
+
