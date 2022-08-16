@@ -21,9 +21,15 @@ Installs and runs without issue.
 
 It is slower, however, on M1.  For example, once started, the `ApiLogicServer welcome` command takes under a second on x86, but 7-9 on M1.
 
-## Dev Install fails due to `psycopg2`
+## Install fails due to `psycopg2`
 
-Ran into significant drame with Postgres support - `psycopg2`.  Under [investigation](pip install psycopg2_m1-*-macosx_12_0_arm64.whl).
+Ran into significant drame with Postgres support - `psycopg2`.  Under [investigation](pip install psycopg2_m1-*-macosx_12_0_arm64.whl).  [Evidently](https://github.com/psycopg/psycopg/issues/344) this is not supported out of the box.  There are [various approaches](https://doesitarm.com/app/psycopg2) that work if you are willing to install Postgres locally.  I had been using Docker, so this remains an open item.
+
+So that M1 Macs work, API Logic Server version 05.03.34 has removed the psycopg2 from the install, so it needs to be [installed manually](../Install-psycopg2).
+
+## Sql Server Docker Fails
+
+The [Docker database images](..Database-Connectivity/) work for M1 Macs, __except SQL/Server__ (it fails to start).
 
 ## Docker Databases
 
