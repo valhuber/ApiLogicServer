@@ -36,6 +36,7 @@ nav:
     - Data-Model-Customization.md
     - "Connection Examples": Database-Connectivity.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
+    - "Install psycopg2: Postgres": Install-psycopg2.md
   - "Using your IDE": IDE-Customize.md
   - Managing API Logic Projects:
     - "Structure": Project-Structure.md
