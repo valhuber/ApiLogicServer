@@ -18,6 +18,8 @@ USER root
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get install -y git
+
+# begin Sql/Server
 RUN apt-get -y install gcc gnupg2
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list 
