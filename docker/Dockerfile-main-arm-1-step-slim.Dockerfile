@@ -11,6 +11,8 @@
 # python:3.9-slim-bullseye (Debian Linux 11) is 846MB, with SqlServer (here) is 1.16G
 
 # docker run -it --name api_logic_server-arm-slim --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server-arm-slim
+# docker run -it --name api_logic_server-arm-slim --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server-arm-slim:5.03.35
+# docker run -it --name api_logic_server-arm-slim --user root --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server-arm-slim:5.03.35
 
 # if builds fails, check for renamed targets by breaking up Run commands
 
