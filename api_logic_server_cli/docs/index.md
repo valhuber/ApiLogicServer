@@ -10,29 +10,37 @@ title:
 
 &nbsp;
 
-<details markdown>
-  <summary>Why did we build this?</summary>
+# Background
+A brief look at why we built it, and what it is.<br><br>
 
-We looked at approaches for building database systems:
+### Motivation - not instant, propietary IDE, no logic automation
 
-&nbsp;
+We looked at approaches for building database systems:   
 
-__Frameworks__
+* __Frameworks:__ Frameworks like Flask or Django enable you to build a single endpoint or _Hello World_ page, but a __multi-endpoint__ API and __multi-page__ application would take __weeks__ or more.
 
-Frameworks like Flask or Django make it easy to build a single endpoint or _Hello World_ page, 
-<br>but a __multi-endpoint__ API and __multi-page__ application would take __weeks__ or more.
+* __Low Code Tools:__ these are great for building great UIs, but
 
-&nbsp;
+    * Want a multi-page app -- __no screen painting__
+    * Want to __preserve dev tools__ - VSCode, PyCharm, git, etc
+    * Need an answer for __backend logic__ (it's nearly half the effort)<br><br>
 
-__Low Code Tools__
 
-These are great for building great UIs, but
+### Our Approach: Instant, Customizable, Logic Automation
 
-* Want a multi-page app -- __no screen painting__
-* Want to __preserve dev tools__ - VSCode, PyCharm, git, etc
-* Need an answer for __backend logic__ (it's nearly half the effort)
-</span>
-</details>
+API Logic Server is an open source Python project, consisting of:
+
+* a set of runtimes (SAFRS API, Flask, SQLAlchemy ORM, rule engine) for project execution, plus 
+
+* a CLI (Command Language Interface) to create executable projects, which can be customized in an IDE such as VSCode or PyCharm
+
+It runs as a standard pip install, or under Docker. After installation, you use the CLI create a project like this:
+
+```
+ApiLogicServer create --project_name=ApiLogicProject db_url=
+```
+
+> API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
 
 &nbsp;
 
