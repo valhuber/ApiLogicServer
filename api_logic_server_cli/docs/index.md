@@ -40,7 +40,7 @@ It runs as a standard pip install, or under Docker. After installation, you use 
 ApiLogicServer create --project_name=ApiLogicProject db_url=
 ```
 
-> API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
+> :bulb: API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
 
 &nbsp;
 
