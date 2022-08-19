@@ -14,6 +14,40 @@ Find the [documentation here](https://valhuber.github.io/ApiLogicServer/).
 
 &nbsp;
 
+# Background
+A brief look at why we built it, and what it is.<br><br>
+
+### Motivation - not instant, propietary IDE, no logic automation
+
+We looked at approaches for building database systems:   
+
+* __Frameworks:__ Frameworks like Flask or Django enable you to build a single endpoint or _Hello World_ page, but a __multi-endpoint__ API and __multi-page__ application would take __weeks__ or more.
+
+* __Low Code Tools:__ these are great for building great UIs, but
+
+    * Want a multi-page app -- __no screen painting__
+    * Want to __preserve dev tools__ - VSCode, PyCharm, git, etc
+    * Need an answer for __backend logic__ (it's nearly half the effort)<br><br>
+
+
+### Our Approach: Instant, Customizable, Logic Automation
+
+API Logic Server is an open source Python project, consisting of:
+
+* a set of runtimes (SAFRS API, Flask, SQLAlchemy ORM, rule engine) for project execution, plus 
+
+* a CLI (Command Language Interface) to create executable projects, which can be customized in an IDE such as VSCode or PyCharm
+
+It runs as a standard pip install, or under Docker. After installation, you use the CLI create a project like this:
+
+```
+ApiLogicServer create --project_name=ApiLogicProject db_url=
+```
+
+> API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
+
+&nbsp;
+
 # Feature Summary
 
 |   | Feature    | Providing   | Why it Matters   |
