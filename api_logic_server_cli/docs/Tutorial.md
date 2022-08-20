@@ -1,57 +1,75 @@
-After completing the `ApiLogicServer create` step, you can view the ```readme``` in the created API Logic Project.  The `readme` links to this sample tutorial, created from [this database.](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  
+## About this Tutorial
+
+This Tutorial is designed for these scenarios:
+
+* You have executed the `ApiLogicServer create` step, have opened the created [default project](https://valhuber.github.io/ApiLogicServer/Sample-Database/) in your IDE, and want to explore a typical project
+
+   * Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.
+
+* You are reviewing the docs, and want to get a sense of the software
 
 In this tutorial, we will explore:
 
-* **create** - creating the Tutorial project, and opening it your IDE
+* **create** - we will briefly review what actually happened udring the create process
 
-* **run** - we will first run the Admin App and the JSON:API
+* **run** - we will first run the Admin App and the JSON:API.  These will illustrate how automation creates an app and API from a data model.  You can then infer what you'd get for one of your databases.
 
-* **customize** - we will then explore some customizations already done for the API and logic, and how to debug them
+* **customize** - we will then explore some customizations already done for the API and logic, and how to debug them.
 
-This tutorial presumes you are running in an IDE - VS Code or PyCharm.  Projects are pre-configured for VS Code with `.devcontainer` and `launch configurations,` so these instructions are oriented around VS Code.
+&nbsp;&nbsp;
 
-&nbsp;
-
-[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container - click for video")
-
-The diagram above summarizes the create / run / customize process.  It's a video - click to view.
-
-
+---
 &nbsp;&nbsp;
 
 ## Key Underlying Concepts
 This tutorial illustrates some key concepts:
 
 ### _Declarative Models_, not code
-Observe that the files for the Admin App and API are models that describe _what, not how_.  This makes it much easier to understand than generating large amounts of code.
+Observe that the files for the Admin App and API are models that describe _what, not how_.  This makes it much easier to understand than large amounts of generated code.
 
 ### Preserve Customizations
-The system is designed to enable `rebuild`, so you can iterate the data model - _without losing your customization._  In general, such customizations are kept in separate files than the model files.  So, model files can be rebuilt without affecting customzation files.
+The system is designed to enable `rebuild`, so you can iterate the data model - _without losing your customization._  In general, such customizations are kept in separate files from the model files.  So, model files can be rebuilt without affecting customzation files.
+
+&nbsp;
+
+
+## Create
+
+&nbsp;
+
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container - click for video")
+
+The diagram above summarizes the create / run / customize process.  When you issue the `ApiLogicServer create` CLI command, the system reads your schema and creates a customizable API Logic Project.
+
+It's a video - click to view.
 
 &nbsp;
 
 ## Create and establish Python Environment
 
-Please  see [Quick Start > Express Install](https://valhuber.github.io/ApiLogicServer/IDE-Execute/), which explains how to:
+After creation, you must establish your Python environment.  Please  see [Quick Start > Express Install](https://valhuber.github.io/ApiLogicServer/IDE-Execute/), which explains how to:
 
 1. Install API Logic Server
 2. Create the sample Tutorial API Logic Server Project
 3. Open it in your IDE
 4. Prepare the projects' Python environment
+5. Start the Server, and the Admin App in the Browser
 
 
 &nbsp;
 
 ## Run
 
-The prior step established your Python enviroment, so your project is ready to run.  We are now ready to explore the Admin App and the API.
+With the server started and the Admin App open in your Browser, we are ready to explore the Admin App and the API.
+
+&nbsp;
 
 ### Admin App: Multi-Page, Multi-Table, Automatic Joins
 
-After starting the server and browser, explore the Admin App in yuour browser:
+After starting the server and browser, explore the Admin App in your browser:
 
 1. Navigate to `Customer`
-      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu
+      * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu<br/><br/>
 2. Click the Customer row  to see Customer Details
 3. Observe the `Placed Order List` tab at the bottom
 4. Click the first Order row
@@ -68,7 +86,7 @@ After starting the server and browser, explore the Admin App in yuour browser:
 
 &nbsp;&nbsp;
 
-  > **Key Take-away:** instant multi-page / multi-table admin apps, suitable for **back office, and instant agile collaboration.**
+  > :bulb: **Key Take-away:** instant multi-page / multi-table admin apps, suitable for **back office, and instant agile collaboration.**
 
 &nbsp;
 
@@ -86,10 +104,10 @@ The creation process builds not only the API, but also swagger so you can explor
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/swagger.png?raw=true"></figure>
 &nbsp;&nbsp;&nbsp;
 
-  > **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
+  > :bulb: **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
 
 
-&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
 
 ## Customize and Debug
 
@@ -99,6 +117,7 @@ Let's examine how API Logic Server projects can be customized for both APIs and 
 
 > The API and admin app you just reviewed above were ***not*** customized - they were created completely from the database structure.  For the sample project, we've injected some API and logic customizations, so you can explore them in this tutorial, as described below.
 
+&nbsp;
 
 ### Project Structure
 Use VS Code's **Project Explorer** to see the project structure:
@@ -120,13 +139,12 @@ There is no code for the Admin app - it's behavior is declared in the `admin.yam
 1. Open **Explorer > ui/admin/admin.yaml**
    * Find and alter the string `- label: 'Placed Order List*'` (e.g, make it plural)
    * Click Save
-2. Launch the app: [http://localhost:5656](http://localhost:5656)
-3. Load the updated configuration: click __Configuration > Reset__
+3. Load the updated configuration: in the running Admin App, click __Configuration > Reset__ and __Apply__
 4. Revisit **Customer > Order** to observe the new label
 
 &nbsp;&nbsp;&nbsp;
 
-  > **Key Take-away:** you can alter labels, which fields are displayed and their order, etc -- via a simple model.  No need to learn a new framework, or deal with low-level code or html.
+  > :bulb: **Key Take-away:** you can alter labels, which fields are displayed and their order, etc -- via a simple model.  No need to learn a new framework, or deal with low-level code or html.
 
 
 &nbsp;&nbsp;&nbsp;
@@ -149,9 +167,10 @@ To review the implementation:
 
 <figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
 
+&nbsp;
 
 ### Logic
-API and UI automation are impressive answers to familiar challenges.  Logic automation is a _unique_ answer to a significant and unaddressed problem:
+API and UI automation are impressive answers to _familiar_ challenges.  Logic automation is a _unique_ answer to a significant and unaddressed problem:
 
 > For transaction systems, backend constraint and derivation logic is often nearly *half* the system.  This is not addressed by conventional approaches of "your code goes here".
  
