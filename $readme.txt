@@ -1,6 +1,12 @@
 nw_readme.md -> README.md
     * remove internal IDE links
 
+https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/nw-readme/cust-api.png
+
+https://github.com/community/community/discussions/30205
+
+https://github.com/valhuber/ApiLogicServer.wiki.git
+
 Creating the ApiLogicServer dev environment
 
     Directory Presumption
