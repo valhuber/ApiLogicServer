@@ -56,7 +56,7 @@ Open the appropriate section below.
 
     1. Open Folder `ApiLogicServer/ApiLogicProject` in VSCode
         * Decline options for Containers
-    2. Establish your Virtual Environment - open __Terminal > New Terminal", and
+    2. Establish your Virtual Environment - open __Terminal > New Terminal__, and
 
     ```bash title="Install API Logic Server in a Virtual Environment"
     python -m venv venv                  # may require python3 -m venv venv
