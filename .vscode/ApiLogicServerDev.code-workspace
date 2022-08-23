@@ -91,6 +91,6 @@
 			}
 		],
 		"sqltools.useNodeRuntime": true,
-		"workbench.colorTheme": "Darcula"
+		"workbench.colorTheme": "MintLight Theme"
 	}
 }
