@@ -4,9 +4,6 @@
 			"path": ".."
 		},
 		{
-			"path": "../../safrs-react-admin"
-		},
-		{
 			"path": "../../servers"
 		},
 		{
@@ -94,6 +91,6 @@
 			}
 		],
 		"sqltools.useNodeRuntime": true,
-		"workbench.colorTheme": "MintLight Theme"
+		"workbench.colorTheme": "Darcula"
 	}
 }
