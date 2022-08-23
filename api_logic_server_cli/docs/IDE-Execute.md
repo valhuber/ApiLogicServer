@@ -138,13 +138,13 @@ Once you have established your Python environment, you are ready to run.  The `A
 ### 1. Click **Run and Debug**
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/run-debug.png"></figure>
 
-### 2. Select the Launch Definition
+### 2. Select Launch Configuation
 
-Select the pre-built `ApiLogicServer` Launch Definition (it should be the default).
+Select the pre-built `ApiLogicServer` Launch Configuration (it should be the default).
 
 * Use `Codespaces` if you are running in that environment)
 
-### 3. Press the green run button
+### 3. Click Green Run Button
 
 Press the green run button to start the server.
 
