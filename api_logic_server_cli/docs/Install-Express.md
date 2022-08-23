@@ -98,6 +98,6 @@ Open the appropriate section below.
 
 You're all set - the Tutorial is created, installed and ready to run:
 
-1. Start the Server [as shown here](../IDE-Execute/#execute-prebuilt-launch-configurations)
+1. Start the Server using the pre-built Launch Configuration [as shown here](../IDE-Execute/#execute-prebuilt-launch-configurations)
 2. Open the Admin App in your Browser
 3. Proceed to [Explore the Tutorial](../Tutorial).

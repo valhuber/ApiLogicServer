@@ -135,32 +135,33 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
 Once you have established your Python environment, you are ready to run.  The `ApiLogicServer create` command has built launch configurations, so you can start your server like this:
 
-1. Click **Run and Debug**
-
+### 1. Click **Run and Debug**
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/run-debug.png"></figure>
 
-2. Select the `ApiLogicServer` Launch Configuration
-3. Press the green run button to start the server
+### 2. Select the Launch Definition
 
-    * If you are running Docker / VS Code, VS Code will suggest opening a Browser, or previewing it in the Editor (i.e., in VSCode) (the _preview_ browser is shown in the Tutorial).
+Select the pre-built `ApiLogicServer` Launch Definition (it should be the default).
 
-        * Earlier versions of VSCode sometimes failed here; it's easy to fix:
+* Use `Codespaces` if you are running in that environment)
 
-            * Open a browser at [localhost:5656](localhost:5656), _or_
-            * Click __View > Command Palette__, select __Simple Browser__, and specify the same url
+### 3. Press the green run button
 
-    * This will start the server, and offer to run the Browser on the Admin app.  For more information on the Admin App, [see here](../Admin-Tour).
+Press the green run button to start the server.
 
-4. __Install Python Extension__
+When you run, you may encounter the message below; if so:
 
-    When you run, you may encounter the message below; if so:
-
-    1. Click Extensions (as shown)
-    2. Ensure Python support is installed and enabled
+1. Click Extensions (as shown)
+2. Ensure Python support is installed and enabled
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
 
-5. __ Proceed to the Tutorial__
+
+### 4. Start the Browser
+
+* If you are running Docker / VS Code, VS Code will suggest opening a Browser, or previewing it in the Editor (i.e., in VSCode).
+* Otherwise open a browser at [http://localhost:5656](http://localhost:5656){:target="_blank" rel="noopener"}
+
+### 5. Proceed to the Tutorial
 
 The [Tutorial](../Tutorial) will walk you through the sample project.
 
