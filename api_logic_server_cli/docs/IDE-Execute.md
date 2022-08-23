@@ -160,6 +160,13 @@ Once you have established your Python environment, you are ready to run.  The `A
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/docker-install-python-extension.png"></figure>
 
+5. __ Proceed to the Tutorial__
+
+The [Tutorial](../Tutorial) will walk you through the sample project.
+
+&nbsp;
+
+---
 
 Notes:
 

@@ -96,4 +96,8 @@ Open the appropriate section below.
 
 ## Next Steps - Tutorial
 
-You're all set - the Tutorial is created, installed and ready to run.  Proceed to [Explore the Tutorial](../Tutorial).
+You're all set - the Tutorial is created, installed and ready to run:
+
+1. Start the Server [as shown here](../IDE-Execute/#execute-prebuilt-launch-configurations)
+2. Open the Admin App in your Browser
+3. Proceed to [Explore the Tutorial](../Tutorial).

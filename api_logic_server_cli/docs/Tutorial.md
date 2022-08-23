@@ -10,7 +10,7 @@ This Tutorial is designed for these scenarios:
 
 In this tutorial, we will explore:
 
-* **create** - we will briefly review what actually happened udring the create process
+* **create** - we will briefly review what actually happened during the create process
 
 * **run** - we will first run the Admin App and the JSON:API.  These will illustrate how automation creates an app and API from a data model.  You can then infer what you'd get for one of your databases.
 
@@ -19,7 +19,6 @@ In this tutorial, we will explore:
 &nbsp;&nbsp;
 
 ---
-&nbsp;&nbsp;
 
 ## Key Underlying Concepts
 This tutorial illustrates some key concepts:
@@ -28,35 +27,42 @@ This tutorial illustrates some key concepts:
 Observe that the files for the Admin App and API are models that describe _what, not how_.  This makes it much easier to understand than large amounts of generated code.
 
 ### Preserve Customizations
-The system is designed to enable `rebuild`, so you can iterate the data model - _without losing your customization._  In general, such customizations are kept in separate files from the model files.  So, model files can be rebuilt without affecting customzation files.
+The system is designed to enable `rebuild`, so you can iterate the data model - _without losing your customizations._  In general, such customizations are kept in separate files from the model files.  So, the model files can be rebuilt without affecting customization files.
 
-&nbsp;
+### Logic Automation
+A unique feature of API Logic Server is provision for spreadsheet-like rules for multi-table derivations and constraints, extensible with Python.
 
+&nbsp;&nbsp;
+
+---
 
 ## Create
 
-&nbsp;
-
-[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.png?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container - click for video")
+[![Using VS Code](https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.jpg?raw=true?raw=true)](https://youtu.be/tOojjEAct4M "Using VS Code with the ApiLogicServer container - click for video")
 
 The diagram above summarizes the create / run / customize process.  When you issue the `ApiLogicServer create` CLI command, the system reads your schema and creates a customizable API Logic Project.
 
-It's a video - click to view.
+> It's a video - click to view.
 
 &nbsp;
 
 ## Create and establish Python Environment
 
-After creation, you must establish your Python environment.  Please  see [Quick Start > Express Install](https://valhuber.github.io/ApiLogicServer/IDE-Execute/), which explains how to:
+After creation, you must establish your Python environment:
 
-1. Install API Logic Server
-2. Create the sample Tutorial API Logic Server Project
-3. Open it in your IDE
-4. Prepare the projects' Python environment
-5. Start the Server, and the Admin App in the Browser
+* This is already complete for Codespace users
+* Other users - please  see [Quick Start > Express Install](https://valhuber.github.io/ApiLogicServer/IDE-Execute/), which explains how to:
+
+   1. Install API Logic Server
+   2. Create the sample Tutorial API Logic Server Project
+   3. Open it in your IDE
+   4. Prepare the projects' Python environment
+   5. Start the Server, and open the Admin App in the Browser
 
 
-&nbsp;
+&nbsp;&nbsp;
+
+---
 
 ## Run
 
@@ -106,8 +112,9 @@ The creation process builds not only the API, but also swagger so you can explor
 
   > :bulb: **Key Take-away:** instant *rich* APIs, with filtering, sorting, pagination and swagger.  **Custom App Dev is unblocked.**
 
-
 &nbsp;&nbsp;
+
+---
 
 ## Customize and Debug
 
@@ -149,7 +156,6 @@ There is no code for the Admin app - it's behavior is declared in the `admin.yam
 
 &nbsp;&nbsp;&nbsp;
 
-
 ### API Customization
 
 While a standards-based API is a great start, sometimes you need custom endpoints tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for `add_order`.
@@ -165,18 +171,18 @@ To review the implementation:
    1. You can examine the variables, step, etc.
 6. Click **Continue** on the floating debug menu (upper right in screen shot below)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/customize-api.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/customize-api.png?raw=true"></figure>
 
 &nbsp;
 
 ### Logic
 API and UI automation are impressive answers to _familiar_ challenges.  Logic automation is a _unique_ answer to a significant and unaddressed problem:
 
-> For transaction systems, backend constraint and derivation logic is often nearly *half* the system.  This is not addressed by conventional approaches of "your code goes here".
+> :exclamation: For transaction systems, backend constraint and derivation logic is often nearly *half* the system.  This is not addressed by conventional approaches of "your code goes here".
  
 The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for multi-table constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 
-> Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules; you can [visualize the process here](https://valhuber.github.io/ApiLogicServer/Logic-Operation/#watch-react-chain).
+> :bulb: Since they automate all the re-use and dependency management, rules are [40X more concise](https://github.com/valhuber/LogicBank/wiki/by-code) than code.  Like a spreadsheet, rules __watch__ for changes, __react__ by automatically executing relevant rules, which can __chain__ to activate other rules; you can [visualize the process here](https://valhuber.github.io/ApiLogicServer/Logic-Operation/#watch-react-chain).
 
 [Logic](https://valhuber.github.io/ApiLogicServer/Logic-Why/) consists of rules **and** conventional Python code.  Explore it like this:
 
@@ -187,14 +193,15 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 3. Using swagger, re-execute the `add_order` endpoint
 4. When you hit the breakpoint, expand `row` VARIABLES list (top left)
 
-<figure><img src="https://github.com/valhuber/ApiLogicServer/raw/main/images/docker/VSCode/nw-readme/declare-logic.png"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/debug-logic.png?raw=true"></figure>
 
 Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [described here](https://valhuber.github.io/ApiLogicServer/Logic-Operation/#how-usage-and-operation-overview).
 
 > This rule architecture ensures that rules are always re-used across all client applications and integrations.  This avoids common "fat client" approaches that embed logic in user interface controllers, which leads to replication and inconsistency.
 
-
 &nbsp;&nbsp;
+
+---
 
 ## Test
 
@@ -212,7 +219,9 @@ TL;DR - features and test scripts are predefined in the sample; to run them (wit
 
 For more information, see [Testing with Behave](https://valhuber.github.io/ApiLogicServer/Behave/).
 
-&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+---
 
 ## Wrap up
 Let's recap what you've seen:
@@ -229,6 +238,6 @@ Explore the [Logic Tutorial](https://valhuber.github.io/ApiLogicServer/Logic-Tut
 
 
 ### Docker cleanup
-VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. it will look something like `vsc-ApiLogicProject...`.
+VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. It will look something like `vsc-ApiLogicProject...`.
 
 &nbsp;&nbsp;&nbsp;
