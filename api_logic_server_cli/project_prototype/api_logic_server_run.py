@@ -138,7 +138,7 @@ def setup_logging(flask_app):
     do_safrs_logging = True
     if do_safrs_logging:
         safrs_init_logger = logging.getLogger('safrs.safrs_init')
-        safrs_init_logger.setLevel(logging.INFO)
+        safrs_init_logger.setLevel(logging.DEBUG)
         safrs_logger = logging.getLogger('safrs')
         safrs_logger.setLevel(logging.DEBUG)
 
