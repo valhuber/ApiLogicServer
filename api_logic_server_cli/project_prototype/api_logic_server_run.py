@@ -328,6 +328,13 @@ def get_args():
         if swagger_host.endswith("/"):
             swagger_host = swagger_host[0:len(swagger_host)-1]
 
+    use_codespace_defaulting = True  # experimental support to run default launch config
+    if use_codespace_defaulting and os.getenv('CODESPACES') and swagger_host == 'localhost':
+        app_logger.info('\n Applying Codespaces default port settings')
+        swagger_host = os.getenv('CODESPACE_NAME') + '-5656.githubpreview.dev'
+        swagger_port = '443'
+        http_type = 'https'
+
     return flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run
 
 def create_app(swagger_host: str = None, swagger_port: str = None):
