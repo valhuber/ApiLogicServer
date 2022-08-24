@@ -140,7 +140,7 @@ def setup_logging(flask_app):
     do_safrs_logging = True
     if do_safrs_logging:
         safrs_logger = logging.getLogger('safrs.safrs_init')
-        safrs_logger.setLevel(logging.CRITICAL)
+        safrs_logger.setLevel(logging.INFO)
 
     do_sqlalchemy_info = False  # True will log SQLAlchemy SQLs
     if do_sqlalchemy_info:
