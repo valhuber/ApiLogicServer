@@ -74,9 +74,6 @@ for each_arg in sys.argv:
         args += ", "
 app_logger.info(f'\nAPI Logic Project Starting at: {__file__}, with args: {args}')
 
-logging.getLogger('safrs').setLevel(logging.INFO)
-logging.getLogger('safrs.safrs_init').setLevel(logging.INFO)
-
 from typing import TypedDict
 import safrs
 from logic_bank.logic_bank import LogicBank
@@ -112,7 +109,8 @@ def setup_logging(flask_app):
         logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.DEBUG)
-        if flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
+        truncate_log = False  # useful for non-IDE run (e.g. console) to see logic indenting
+        if truncate_log and flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
             formatter = logging.Formatter('%(message).160s')  # lead tag - '%(name)s: %(message)s')
             handler.setFormatter(formatter)
             logic_logger = logging.getLogger("logic_logger")
@@ -139,8 +137,10 @@ def setup_logging(flask_app):
 
     do_safrs_logging = True
     if do_safrs_logging:
-        safrs_logger = logging.getLogger('safrs.safrs_init')
-        safrs_logger.setLevel(logging.INFO)
+        safrs_init_logger = logging.getLogger('safrs.safrs_init')
+        safrs_init_logger.setLevel(logging.INFO)
+        safrs_logger = logging.getLogger('safrs')
+        safrs_logger.setLevel(logging.DEBUG)
 
     do_sqlalchemy_info = False  # True will log SQLAlchemy SQLs
     if do_sqlalchemy_info:
