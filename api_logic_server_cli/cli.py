@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.03.35"
+__version__ = "5.03.36"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t08/23/2022 - 05.03.35: Simplify Codespaces swagger url, use default config \n"\
+    "\t08/25/2022 - 05.03.36: Simplify Codespaces swagger url, use default config, defaults \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t08/11/2022 - 05.03.32: Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t08/10/2022 - 05.03.31: Fix ApiLogicServer run fails (Issue 45), admin 404 (Issue 46), Rebuild per is-modified \n"\
@@ -1473,4 +1473,4 @@ def key_module_map():
     invoke_creators()                                           # creates api, ui via create_from_model...
     api_expose_api_models.create()        
     ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
-    get_abs_db_url()                                            # nw set here
+    get_abs_db_url()                                            # nw set here, dbname
