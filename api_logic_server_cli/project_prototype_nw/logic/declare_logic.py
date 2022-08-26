@@ -100,6 +100,23 @@ def declare_logic():
     Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 
     """
+        Simplify data entry with defaults 
+    """
+
+    def order_defaults(row: models.Order, old_row: models.Order, logic_row: LogicRow):
+        if row.Freight is None:
+            row.Freight = 11
+
+    def order_detail_defaults(row: models.OrderDetail, old_row: models.OrderDetail, logic_row: LogicRow):
+        if row.Quantity is None:
+            row.Quantity = 1
+        if row.Discount is None:
+            row.Discount = 0
+
+    Rule.early_row_event(on_class=models.Order, calling=order_defaults)
+    Rule.early_row_event(on_class=models.OrderDetail, calling=order_detail_defaults)
+
+    """
         More complex rules follow - see: 
             https://github.com/valhuber/LogicBank/wiki/Examples
             https://github.com/valhuber/LogicBank/wiki/Rule-Extensibility
@@ -140,7 +157,7 @@ def declare_logic():
     def audit_by_event(row: models.Employee, old_row: models.Employee, logic_row: LogicRow):
         tedious = False  # tedious code to repeat for every audited class
         if tedious:      # see instead the following RuleExtension.copy_row below (you can create similar rule extensions)
-            if logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]):
+            if logic_row.ins_upd_dlt == "upd" and logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]):
                 copy_to_logic_row = logic_row.new_logic_row(models.EmployeeAudit)
                 copy_to_logic_row.link(to_parent=logic_row)
                 copy_to_logic_row.set_same_named_attributes(logic_row)
@@ -150,7 +167,8 @@ def declare_logic():
 
     RuleExtension.copy_row(copy_from=models.Employee,
                            copy_to=models.EmployeeAudit,
-                           copy_when=lambda logic_row: logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]))
+                           copy_when=lambda logic_row: logic_row.ins_upd_dlt == "upd" and 
+                                logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]))
 
     def clone_order(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         if row.CloneFromOrder is not None and logic_row.nest_level == 0:

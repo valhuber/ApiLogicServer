@@ -1,6 +1,6 @@
 about:
-  date: Aug 7, 2022 18:59:13
-  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType
+  date: Aug 25, 2022 21:00
+  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults
 # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
   version: 5.03.28
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
@@ -110,11 +110,13 @@ resources:
         fks:
           - OnLoanDepartmentId
         name: EmployeeList
+        label: Employees On Loan
         resource: Employee
       - direction: tomany
         fks:
           - WorksForDepartmentId
         name: EmployeeList1
+        label: Employees
         resource: Employee
       - direction: toone
         fks:
@@ -315,7 +317,6 @@ resources:
       - name: Ready
       - name: OrderDetailCount
       - name: Freight
-        required: true
         type: DECIMAL
       - name: Country
         label: Country
@@ -371,12 +372,9 @@ resources:
         required: true
       - name: UnitPrice
         info: derived as copy(Product.UnitPrice)
-        required: true
         type: DECIMAL
       - name: Quantity
-        required: true
       - name: Discount
-        required: true
       - name: Amount
         type: DECIMAL
         info: derived as UnitPrice * Quantity

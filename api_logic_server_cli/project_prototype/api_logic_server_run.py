@@ -368,7 +368,8 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
         safrs_log_level = safrs.log.getEffectiveLevel()
         db_logger = logging.getLogger('sqlalchemy')
         db_log_level = db_logger.getEffectiveLevel()
-        if True or app_logger.getEffectiveLevel() >= logging.INFO:  # hide chatty logging
+        do_hide_chatty_logging = True
+        if do_hide_chatty_logging and app_logger.getEffectiveLevel() >= logging.INFO:
             safrs.log.setLevel(logging.WARN)  # warn is 20, info 30
             db_logger.setLevel(logging.WARN)
 
