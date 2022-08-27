@@ -99,13 +99,14 @@ def declare_logic():
 
     Rule.commit_row_event(on_class=models.Order, calling=congratulate_sales_rep)
 
+
     """
         Simplify data entry with defaults 
     """
 
     def order_defaults(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         if row.Freight is None:
-            row.Freight = 11
+            row.Freight = 10
 
     def order_detail_defaults(row: models.OrderDetail, old_row: models.OrderDetail, logic_row: LogicRow):
         if row.Quantity is None:
