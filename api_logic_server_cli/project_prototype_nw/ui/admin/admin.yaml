@@ -315,6 +315,7 @@ resources:
         type: DECIMAL
         info: derived as sum(OrderDetail.Amount)
       - name: Ready
+      - name: CloneFromOrder
       - name: OrderDetailCount
       - name: Freight
         type: DECIMAL

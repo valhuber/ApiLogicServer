@@ -1,11 +1,10 @@
 # docker build -f docker/arm-slim.Dockerfile -t apilogicserver/arm-slim --rm .
-# docker tag apilogicserver/arm-slim apilogicserver/arm-slim:latest
-# docker push apilogicserver/api_logic_server-arm-slim:5.03.35
+# docker tag apilogicserver/arm-slim apilogicserver/arm-slim:5.99.03
+# docker push apilogicserver/arm-slim:5.99.03
 
-# python:3.9-slim-bullseye (Debian Linux 11) is 846MB, with SqlServer (here) is 1.16G
-
+# cd ~/dev/servers/install/ApiLogicServer/dockers
 # docker run -it --name api_logic_server-arm-slim --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/arm-slim
-# works, fast
+# works, fast, 869MB
 
 # if builds fails, check for renamed targets by breaking up Run commands
 

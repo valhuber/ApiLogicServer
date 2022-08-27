@@ -229,6 +229,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+08/26/2022 - 05.99.01: Add order defaults, simplify Codespaces swagger url & use default config
+
 08/15/2022 - 05.03.33: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45)
 
 07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support
