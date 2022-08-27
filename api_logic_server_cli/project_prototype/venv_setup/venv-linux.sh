@@ -10,8 +10,8 @@ if [ $# -eq 0 ]
         echo " "
         echo "Usage:"
         echo "  cd ApiLogicProject     # your project directory"
-        echo "  sh bin/venv.sh go      # for python3, or..."
-        echo "  sh bin/venv.sh python  # for python"
+        echo "  sh venv_setup/venv.sh go      # for python3, or..."
+        echo "  sh venv_setup/venv.sh python  # for python"
         echo " "
         exit 0
     fi
