@@ -4,7 +4,12 @@ curl -X POST "http://localhost:5656/api/Payment/" -H  "accept: application/vnd.a
 
 if grep -q '"AmountUnAllocated": 0.0' results.txt
     then
-        echo "pass"
+        echo "pass -- AmountUnAllocated:0.0"
     else
-        echo "fail"
+        if grep -q '"AmountUnAllocated":0.0' results.txt
+            then
+                echo "pass -- AmountUnAllocated:0.0"
+            else
+                echo "fail -"
+        fi
 fi
