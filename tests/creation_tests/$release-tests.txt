@@ -13,7 +13,7 @@ caution: SqlServer url depends on install of pyodbc (18 requires &Encrypt=no)
     pip
     ===
 
-    sh create-servers.sh create  # rebuilds ApiLogicProject, classicmodels, postgres, sqlserver, sqlserver-types
+    sh create-servers.sh create  # rebuilds ApiLogicProject, classicmodels [if arg2: postgres, sqlserver, sqlserver-types]
     
     then, to test the servers (same cmd window)...
         
@@ -33,7 +33,7 @@ caution: SqlServer url depends on install of pyodbc (18 requires &Encrypt=no)
     ======
 
     (at cd ~/dev/ApiLogicServer/tests/creation_tests)
-    sh create-dockers.sh go
+    sh create-dockers.sh go [all]
     # copy/paste the "run this in docker: sh /localhost/docker-commands.sh"
     # should see the following projects in ~/dev/servers/install/ApiLogicServer/dockers:
         ApiLogicServer chinook  classicmodels	docker-commands.sh  postgres  sakila  sqlserver

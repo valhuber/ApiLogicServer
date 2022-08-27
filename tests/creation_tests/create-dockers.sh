@@ -9,7 +9,7 @@ echo "Creates docker servers at ${dockers}"  # e.g., /Users/val/dev/servers/inst
 if [ $# -eq 0 ]
     then
         echo ""
-        echo "  sh create-dockers.sh [ go ]"
+        echo "  sh create-dockers.sh [ go [all] ]"
         echo ""
         exit 0
     fi
@@ -28,10 +28,20 @@ echo "\n\n****************"
 echo "run this in docker: sh /localhost/docker-commands.sh"
 echo "****************\n\n"
 
-docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${dockers}:/localhost apilogicserver/api_logic_server
-# eg docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/api_logic_server 
-#    docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
-# echo "running docker-commands"
+if [ $# -eq 2 ]
 
-# docker exec api_logic_server docker-commands.sh only runs when docker completes
-# docker exec -it api_logic_server docker-commands.sh
+    then
+
+        docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${dockers}:/localhost apilogicserver/api_logic_server
+        # eg docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/api_logic_server 
+        #    docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server
+        # echo "running docker-commands"
+
+        # docker exec api_logic_server docker-commands.sh only runs when docker completes
+        # docker exec -it api_logic_server docker-commands.sh
+
+    else
+
+        docker run -it --name api_logic_server-arm-slim --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${dockers}:/localhost apilogicserver/arm-slim
+
+fi
