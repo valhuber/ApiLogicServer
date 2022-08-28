@@ -59,14 +59,26 @@ Here are some instructions you can use to explore API Logic Server running under
 
 __1. No signup required__ - use your GitHub account
 
-__2. Load your ApiLogicProject__
+__2. Load the ApiLogicProject from GitHub__
 
-Access the GitHub project you just created, and open it with Codespaces:
+To access this GitHub project with Codespaces
+
+1. [__Open this page _in a new window___](https://github.com/ApiLogicServer/ApiLogicServer-Explore), and 
+2. Click __Open > Codespaces__ as shown below:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-on-codespaces.jpg
 ?raw=true"></figure> 
 
-__3. Create and Configure a Port__
+
+> You will now see the sample project - running in VSCode, _in the Browser._  But that's just what you _see..._
+
+> Behind the scenes, Codespaces has requisitioned a cloud machine, and loaded your project - with a _complete development environment_ - Python, your dependencies, git, etc.  
+
+> You are attached to this machine in your Browser, running VSCode.
+
+> :trophy: Pretty remarkable.
+
+__3. Add and Configure a Port__
 
 * Referring to the diagram below, make the port __public__
 
@@ -76,7 +88,7 @@ __4. Start the Server__
 
 __5. Start the Browser__
 
-Click the globe to open the Admin App in your Browser, which also provides access to the Swagger.
+* Click the globe, as shown above.  This should start your Browser, and the links on the left (Customer etc) should return data.
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-port-launch-simple.jpg?raw=true"></figure>
 
