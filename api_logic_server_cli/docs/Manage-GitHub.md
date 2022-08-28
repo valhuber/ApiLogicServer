@@ -17,7 +17,7 @@ api_logic_server@bc1bc88dc6ce:~$ ApiLogicServer create
 
 Welcome to API Logic Server, 5.03.27
 
-Project to create [/localhost/ApiLogicProject]: /localhost/ApiLogicProject-GitHub
+Project to create [/localhost/ApiLogicProject]: 
 SQLAlchemy Database URI [default = nw.sqlite, ? for help]: 
 ... logging
 api_logic_server@bc1bc88dc6ce:~$ exit  # exit, to facilitate use of Desktop tools (git cli, IDE, etc)
@@ -25,9 +25,10 @@ api_logic_server@bc1bc88dc6ce:~$ exit  # exit, to facilitate use of Desktop tool
 
 ## Save API Logic Project to GitHub
 
-Create a project on your GitHub account (here called `ApiLogicProject-GitHub`) in the usual manner.
+Create a project on your GitHub account (here called `ApiLogicProject`) in the usual manner.
 
 1. Create your project on GitHub
+
         *  Don't add files yet to avoid merge
 2. Exit the Docker container as shown above
 3. Initialize your project for git and push it in the usual manner:
@@ -37,7 +38,7 @@ git init
 # git branch -m main
 git add --all
 git commit -m 'First commit'
-git remote add origin https://github.com/valhuber/ApiLogicProject-GitHub.git
+git remote add origin https://github.com/valhuber/ApiLogicProject.git
 git remote -v
 git push origin main
 ```
@@ -56,26 +57,42 @@ This is described under the [Express Install](../Install-Express).
 
 Here are some instructions you can use to explore API Logic Server running under CodeSpaces.
 
-__1. Signup for GitHub__ - if you don't already have an account
+__1. No signup required__ - use your GitHub account
 
-__2. Load your ApiLogicProject-GitHub__
+__2. Load your ApiLogicProject__
 
 Access the GitHub project you just created, and open it with Codespaces:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-on-codespaces.png
 ?raw=true"></figure> 
 
-__3. Configure a Port__
+__3. Create and Configure a Port__
+
+* Referring to the diagram below, make the port __public__
+
+__4. Start the Server__
+
+* Use the pre-defined Launch Configuration
+
+__5. Start the Browser__
+
+Click the globe to open the Admin App in your Browser, which also provides access to the Swagger.
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-port-launch-simple.jpg?raw=true"></figure>
+
+<details markdown>
+<summary>If errors, use this procedure</summary>
+
+The above procedure is simplified, based on some assumptions about Codespaces.  If the Browser fails to launch, try the following for explicit specification of the forwarded port:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-port-launch.png?raw=true"></figure>
 
 __4. Configure the pre-created `Codespaces-ApiLogicServer` launch configuration__ (see above)
-
-* Make the port __public__
-* Note that the trailing slash, and the `https://` are removed
 
 __5. Start the Server__ using the provided Launch Configuration = `Codespaces-ApiLogicServer`
 
 __6. Open the Browser__
 
 Click the globe, as shown above.  This should start your Browser, and the links on the left (Customer etc) should return data.
+
+</details>
