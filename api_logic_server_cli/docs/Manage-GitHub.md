@@ -56,7 +56,7 @@ This is described under the [Express Install](../Install-Express).
 
 Here are some instructions you can use to explore API Logic Server running under CodeSpaces.
 
-__1. Signup for CodeSpaces__ - use [this link](https://github.com/features/codespaces/signup){:target="_blank" rel="noopener"}, where you already have a GitHub account
+__1. Signup for GitHub__ - if you don't already have an account
 
 __2. Load your ApiLogicProject-GitHub__
 
