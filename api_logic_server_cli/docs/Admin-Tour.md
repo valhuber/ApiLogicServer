@@ -156,7 +156,7 @@ To explore Lookup support:
 
 #### Cascade Add
 
-Cascade set child Foreign Key values to corresponding parent values.  Support is also provided to add multiple rows, such as the Order Details for an Order.
+Cascade Add sets child Foreign Key values to corresponding parent values, such as setting the CustomerId for a new Order.  Support is also provided to add multiple rows, such as the Order Details for an Order.
 
 For example:
 
