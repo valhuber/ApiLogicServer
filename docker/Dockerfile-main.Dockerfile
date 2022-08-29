@@ -1,6 +1,6 @@
 # docker build -f docker/Dockerfile-main.Dockerfile -t apilogicserver/api_logic_server --rm .
-# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:5.03.32
-# docker push apilogicserver/api_logic_server:5.03.32
+# docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server:6.00.00
+# docker push apilogicserver/api_logic_server:6.00.00
 
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server-exp:3.50.20
 # docker push apilogicserver/api_logic_server-exp:3.50.20
@@ -48,7 +48,8 @@ RUN apt-get update \
 
 RUN apt-get -y install unixodbc-dev \
   && apt-get -y install python3-pip \
-  && pip install pyodbc
+  && pip install pyodbc \
+  && pip install psycopg2-binary
 
 RUN useradd --create-home --shell /bin/bash api_logic_server
 WORKDIR /home/api_logic_server
