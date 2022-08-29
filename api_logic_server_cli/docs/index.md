@@ -18,9 +18,9 @@ API Logic Server creates __customizable database web app projects:__
 
 * __Projects are Highly Functional:__
 
-    * __API__ - an endpoint for each table, with filtering, sorting, pagination and related data access
+    * __API:__ an endpoint for each table, with filtering, sorting, pagination and related data access
 
-    * __Admin UI__ - multi-page / multi-table apps, with page navigations and automatic joins
+    * __Admin UI:__ multi-page / multi-table apps, with page navigations and automatic joins
 
 * __Projects are Customizable, using _your IDE_:__ such as VSCode, PyCharm, etc, for familiar edit/debug services
 
