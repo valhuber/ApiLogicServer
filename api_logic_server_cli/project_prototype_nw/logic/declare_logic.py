@@ -104,6 +104,12 @@ def declare_logic():
         Simplify data entry with defaults 
     """
 
+    def customer_defaults(row: models.Customer, old_row: models.Order, logic_row: LogicRow):
+        if row.Balance is None:
+            row.Balance = 0
+        if row.CreditLimit is None:
+            row.CreditLimit = 1000
+
     def order_defaults(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         if row.Freight is None:
             row.Freight = 10
@@ -114,6 +120,7 @@ def declare_logic():
         if row.Discount is None:
             row.Discount = 0
 
+    Rule.early_row_event(on_class=models.Customer, calling=customer_defaults)
     Rule.early_row_event(on_class=models.Order, calling=order_defaults)
     Rule.early_row_event(on_class=models.OrderDetail, calling=order_detail_defaults)
 
