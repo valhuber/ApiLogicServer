@@ -10,8 +10,22 @@ title:
 
 &nbsp;
 
+# Welcome to API Logic Server
+
+Use API Logic Server to create customizable database web app projects _instantly_ from your database schema, providing:
+
+* __API__ - an endpoint for each table, with filtering, sorting, pagination and related data access
+
+* __Admin UI__ - multi-page / multi-table apps, with page navigations and automatic joins
+
+* __Logic Automation__ - using unique rules, extensible with Python
+
+Created projects are customizable with your IDE, such as VSCode.
+
+&nbsp;
+
 # Background
-A brief look at why we built it, and what it is.<br><br>
+A brief look at why we built it, and our approach.<br><br>
 
 ### Motivation - not instant, propietary IDE, no logic automation
 
@@ -21,7 +35,7 @@ We looked at approaches for building database systems:
 
 * __Low Code Tools:__ these are great for building great UIs, but
 
-    * Want a multi-page app -- __no screen painting__
+    * Want a multi-page app, _instantly_ -- __no layout required each screen__
     * Want to __preserve dev tools__ - VSCode, PyCharm, git, etc
     * Need an answer for __backend logic__ (it's nearly half the effort)<br><br>
 
@@ -40,7 +54,9 @@ It runs as a standard pip install, or under Docker. After installation, you use 
 ApiLogicServer create --project_name=ApiLogicProject db_url=
 ```
 
-> :bulb: API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
+!!! pied-piper "Key Takeaway"
+
+    :bulb: API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
 
 &nbsp;
 
@@ -56,28 +72,17 @@ ApiLogicServer create --project_name=ApiLogicProject db_url=
 |  | Extensible with Python      | Familiar Event Model | Eg., Send messages, email  |
 | Testing | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                |
 
-
 &nbsp;
-
-
-
-
 
 # Instant -- Single Command
 
-API Logic Server is an open source Python project, consisting of:
-
-* a set of runtimes (SAFRS API, Flask, SQLAlchemy ORM, rule engine) for project execution, plus 
-    
-* a CLI (Command Language Interface) to create executable projects, which can be customized in an IDE such as VSCode or PyCharm
-
-It runs as a standard pip install, or under Docker. Here, we use the CLI to create the sample API and Admin App project, with a single command.
+Use the CLI to create the sample API and Admin App project, with a single command.
 
 &nbsp;
 
 ### Create With Docker
 
-Execute the following commands (Windows, use Powershell):
+Execute the following commands (Windows, use Windows Terminal or Powershell):
 
 ```bash title="Run API Logic Server in Docker"
 # Start the API Logic Server docker container

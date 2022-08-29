@@ -13,17 +13,13 @@ See end for key module map quick links...
 
 """
 
-__version__ = "5.99.03"
+__version__ = "6.00.00"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t08/26/2022 - 05.99.03: Add order defaults + tests, simplify Codespaces swagger url & use default config \n"\
+    "\t08/28/2022 - 06.00.00: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
-    "\t08/11/2022 - 05.03.32: Fix ApiLogicServer run fails (Issue 45) \n"\
-    "\t08/10/2022 - 05.03.31: Fix ApiLogicServer run fails (Issue 45), admin 404 (Issue 46), Rebuild per is-modified \n"\
-    "\t07/26/2022 - 05.03.27: Tutorial, refactor customize_api \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
-    "\t07/10/2022 - 05.03.11: Product links to new gh-pages doc site \n"\
     "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
     "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\

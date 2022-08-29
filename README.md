@@ -10,7 +10,22 @@ title:
 
 &nbsp;
 ---
+
 Find the [documentation here](https://valhuber.github.io/ApiLogicServer/).
+
+&nbsp;
+
+# Welcome to API Logic Server
+
+Use API Logic Server to create customizable database web app projects _instantly_ from your database schema, providing:
+
+* __API__ - an endpoint for each table, with filtering, sorting, pagination and related data access
+
+* __Admin UI__ - multi-page / multi-table apps, with page navigations and automatic joins
+
+* __Logic Automation__ - using unique rules, extensible with Python
+
+Created projects are customizable with your IDE, such as VSCode.
 
 &nbsp;
 
@@ -60,22 +75,11 @@ ApiLogicServer create --project_name=ApiLogicProject db_url=
 |  | Extensible with Python      | Familiar Event Model | Eg., Send messages, email  |
 | Testing | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                |
 
-
 &nbsp;
-
-
-
-
 
 # Instant -- Single Command
 
-API Logic Server is an open source Python project, consisting of:
-
-* a set of runtimes (SAFRS API, Flask, SQLAlchemy ORM, rule engine) for project execution, plus 
-    
-* a CLI (Command Language Interface) to create executable projects, which can be customized in an IDE such as VSCode or PyCharm
-
-It runs as a standard pip install, or under Docker. Here, we use the CLI to create the sample API and Admin App project, with a single command.
+Use the CLI to create the sample API and Admin App project, with a single command.
 
 &nbsp;
 
@@ -229,15 +233,9 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
-08/26/2022 - 05.99.01: Add order defaults, simplify Codespaces swagger url & use default config
+08/28/2022 - 06.00.00: Admin App show_when, cascade add. Simplify Codespaces swagger url & use default config
 
 08/15/2022 - 05.03.33: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45)
-
-07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support
-
-07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env
-
-07/10/2022 - 05.03.11: Product links to new gh-pages doc site
 
 06/27/2022 - 05.03.06: nw-, with perform_customizations docker
 
