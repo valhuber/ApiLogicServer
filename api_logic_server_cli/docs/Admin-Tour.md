@@ -12,7 +12,7 @@ Start the server, and open your Browser.  Here it is, [running at PythonAnyWhere
       * Automatic joins for related parent data (Employee _Name_ - not just the Id)
       * Page Transitions for related data (e.g., click Order Detail for detail page)
 
-In addition to running in the Browser, you can run in your IDE:  
+This page illustrates some of the key features:  
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/Order-Page.png"></figure>
 
@@ -105,6 +105,28 @@ Click the left menu to see the Customer list again
 2. Enter _a_ in the `Search` box
 3. Click the `Contact Title` to observe sorting
 
+
+### Declarative Hide/Show: `show_when`
+
+You can provide an expression that determines when a field (and its caption) are hidden.  For example, you might show the `Dues` only when the `EmployeeType` is _Hourly_, by declaring this in your `admin.yaml`:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/declare.png?raw=true"></figure>
+
+`Dues` is hidden for non Hourly:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/display-hidden.png?raw=true"></figure>
+
+
+and is visible for Hourly:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/display-visible.png?raw=true"></figure>
+
+It also works on update, such as insert:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/insert.png?raw=true"></figure>
+
+&nbsp;
+
 # Update
 
 Your admin app has important support for making updates.
@@ -132,6 +154,30 @@ To explore Lookup support:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/lookups.png?raw=true"></figure>
 
+#### Cascade Add
+
+Cascade set child Foreign Key values to corresponding parent values.  Support is also provided to add multiple rows, such as the Order Details for an Order.
+
+For example:
+
+1. Click Customer List
+2. Click the first Customer (name is "Alfreds Futterkiste", CustomerID `ALFKI`)
+3. Click __+ Add New Order__ (the bottom of the screen)
+4. On the ensuing Add, note the defaulted Customer at the bottom of the page
+5. __Lookup Employee__ (Sales Rep)
+6. Click __Save and Show__ - you should see this page
+   <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/cascade-add/added-order.png?raw=true"></figure>
+7. Click __Add New Order Detail__
+8. __Lookup Product__
+9. Click __Save and Add Another__
+   <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/cascade-add/add-orderdetail.png?raw=true"></figure>
+10. __Lookup { start=10 } Product__ (choose a different one)
+11. Click __Save__
+   <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/cascade-add/added-order-with-details.png?raw=true"></figure>
+
+Observe that Logic Enforcement has computed the `Order Amount`.
+
+&nbsp;
 
 #### Logic Enforcement
 
