@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.00.00"
+__version__ = "6.00.01"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t08/28/2022 - 06.00.00: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
+    "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
     "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
