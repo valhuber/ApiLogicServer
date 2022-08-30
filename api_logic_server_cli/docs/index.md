@@ -142,7 +142,7 @@ Click for a video tutorial, showing complete project creation, execution, custom
 
 ### Quick Evaluation - _no install_
 
-You can avoid any install by exploring this [Codespaces](sample project).  This will enable to run the app, and customize / debug it using VSCode - all in your Browser.
+You can avoid install hassles by exploring this [Codespaces Sample Project](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to run the app, and customize / debug it using VSCode - all in your Browser.  We think you'll find Codespaces pretty amazing - check it out!
 
 ### Local Install
 
