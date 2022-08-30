@@ -141,6 +141,17 @@ Click for a video tutorial, showing complete project creation, execution, custom
 
 # Getting Started
 
+### Quick Evaluation - _no install_
+
+You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
+
+* see the created project
+* use the Tutorial to run, customize and debug it 
+
+We think you'll find Codespaces pretty amazing - check it out!
+
+### Local Install
+
 API Logic Server is designed to make it easy to get started:
 
 * **Install and run Tutorial** - 
@@ -151,7 +162,6 @@ then, you might like to try out some of our [dockerized test databases](https://
 
 * **Your Database** - 
 finally, try your own database.
-
 
 &nbsp;
 
