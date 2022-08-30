@@ -17,15 +17,20 @@ Find the [documentation here](https://valhuber.github.io/ApiLogicServer/).
 
 # Welcome to API Logic Server
 
-Use API Logic Server to create customizable database web app projects _instantly_ from your database schema, providing:
+API Logic Server creates __customizable database web app projects:__
 
-* __API__ - an endpoint for each table, with filtering, sorting, pagination and related data access
+* __Creation is Instant:__ create projects with a single command
 
-* __Admin UI__ - multi-page / multi-table apps, with page navigations and automatic joins
+* __Projects are Highly Functional:__
 
-* __Logic Automation__ - using unique rules, extensible with Python
+    * __API:__ an endpoint for each table, with filtering, sorting, pagination and related data access
 
-Created projects are customizable with your IDE, such as VSCode.
+    * __Admin UI:__ multi-page / multi-table apps, with page navigations and automatic joins
+
+* __Projects are Customizable, using _your IDE_:__ such as VSCode, PyCharm, etc, for familiar edit/debug services
+
+* __Business Logic Automation:__ using unique rules, extensible with Python
+
 
 &nbsp;
 

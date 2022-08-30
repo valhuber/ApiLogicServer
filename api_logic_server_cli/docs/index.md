@@ -41,14 +41,14 @@ We looked at approaches for building database systems:
 
     * Want a multi-page app, _instantly_ -- __no layout required each screen__
     * Want to __preserve dev tools__ - VSCode, PyCharm, git, etc
-    * Need an answer for __backend logic__ (it's nearly half the effort)<br><br>
+    * Need an answer for __backend business logic__ (it's nearly half the effort)<br><br>
 
 
 ### Our Approach: Instant, Customizable, Logic Automation
 
 API Logic Server is an open source Python project, consisting of:
 
-* a set of runtimes (SAFRS API, Flask, SQLAlchemy ORM, rule engine) for project execution, plus 
+* a set of runtimes (SAFRS API, Flask, SQLAlchemy ORM, business logic engine) for project execution, plus 
 
 * a CLI (Command Language Interface) to create executable projects, which can be customized in an IDE such as VSCode or PyCharm
 
@@ -57,10 +57,12 @@ It runs as a standard pip install, or under Docker. After installation, you use 
 ```
 ApiLogicServer create --project_name=ApiLogicProject db_url=
 ```
+&nbsp;
 
-!!! pied-piper "Key Takeaway"
+!!! pied-piper ":bulb: Key Takeaway"
 
-    :bulb: API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
+    API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
+
 
 &nbsp;
 
@@ -138,6 +140,12 @@ Click for a video tutorial, showing complete project creation, execution, custom
 
 # Getting Started
 
+### Quick Evaluation - _no install_
+
+You can avoid any install by exploring this [Codespaces](sample project).  This will enable to run the app, and customize / debug it using VSCode - all in your Browser.
+
+### Local Install
+
 API Logic Server is designed to make it easy to get started:
 
 * **Install and run Tutorial** - 
@@ -174,13 +182,6 @@ We have tested several databases - see [status here.](Database-Connectivity)
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues){:target="_blank" rel="noopener"}.
 
-We have introduced several renames to clarify operation.
-These do not affect existing projects.  However, we've not updated all the docs to reflect these changes:
-
-* `logic/declare_logic.py` replaces `logic_bank.py`
-* `api/customize_api.py` replaces `expose_services.py`
-* `database/customize_models.py` replaces `models_ext.py`
-
  &nbsp;
 
 ### Acknowledgements
@@ -188,6 +189,7 @@ These do not affect existing projects.  However, we've not updated all the docs 
 Many thanks to
 
 - [Thomas Pollet](https://www.linkedin.com/in/pollet/), for SAFRS, SAFRS-react-admin, and invaluable design partnership
+- Nitheish Munusamy, for contributions to Safrs React Admin
 - [Marelab](https://marmelab.com/en/), for [react-admin](https://marmelab.com/react-admin/)
 - Armin Ronacher, for Flask
 - Mike Bayer, for SQLAlchemy
