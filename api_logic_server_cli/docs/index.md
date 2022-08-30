@@ -142,7 +142,7 @@ Click for a video tutorial, showing complete project creation, execution, custom
 
 ### Quick Evaluation - _no install_
 
-You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser_ - to:
+You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
 
 * see the created project
 * use the Tutorial to run, customize and debug it 
