@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.00.02"
+__version__ = "6.00.03"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t08/30/2022 - 06.00.02: Codespaces - support create to '.' or './' \n"\
+    "\t08/31/2022 - 06.00.03: Codespaces - support create to '.' or './', preserve readme \n"\
     "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
@@ -263,29 +263,6 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
             project_readme_file.write(standard_readme_file.read())
 
 
-def create_project_prototype_over_existing(from_dir, project_directory):
-    """ 
-    saves project_directory files files to temp
-
-    copies from_dir -> project_directory
-
-    restores saved from_dir files
-
-    Args:
-        from_dir (str): location of api_logic_server_cli/project_prototype
-        project_directory (str): target (prototype) project
-    """
-    import tempfile
-
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        recursive_overwrite(project_directory, tmpdirname)
-        project_ui = Path(tmpdirname) / "ui"
-        delete_dir(str(project_ui), "")
-        delete_dir(realpath(project_directory), "")
-        recursive_overwrite(from_dir, project_directory)
-        recursive_overwrite(tmpdirname, project_directory)
-
-
 def get_project_directory_and_api_name(project_name: str, api_name: str, multi_api: bool):
     """
     user-supplied project_name, less the twiddle (which might be in project_name); typically relative to cwd.
@@ -344,111 +321,128 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
     :param nw_db_status one of ["", "nw", "nw+", "nw-"]
     :return: return_abs_db_url (e.g., reflects sqlite copy to project/database dir)
     """
+
+    import tempfile
     cloned_from = from_git
-    if merge_into_prototype:
-        pass
-    else:
-        remove_project_debug = True
-        if remove_project_debug and project_name != ".":
-            delete_dir(realpath(project_directory), "1.")
+    tmpdirname = ""
+    with tempfile.TemporaryDirectory() as tmpdirname:
 
-    from_dir = from_git
-    api_logic_server_dir_str = str(get_api_logic_server_dir())  # fixme not req'd
-    if from_git.startswith("https://"):
-        cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
-        cmd = f'git clone --quiet {from_git} {project_directory}'
-        result = create_utils.run_command(cmd, msg=msg)  # "2. Create Project")
-        delete_dir(f'{project_directory}/.git', "3.")
-    else:
-        if from_dir == "":
-            from_dir = (Path(api_logic_server_dir_str)).\
-                joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
-        print(f'{msg} copy {from_dir} -> {os.path.realpath(project_directory)}')
-        cloned_from = from_dir
-        try:
-            if merge_into_prototype:
-                create_project_prototype_over_existing(from_dir, project_directory)
-            else:
-                shutil.copytree(from_dir, project_directory)  # normal path (fails if project_directory not empty)
-        except OSError as e:
-            print(f'\n==>Error - unable to copy to {project_directory} -- see log below'
-                  f'\n\n{str(e)}\n\n'
-                  f'Suggestions:\n'
-                  f'.. Verify the --project_name argument\n'
-                  f'.. If you are using Docker, verify the -v argument\n\n')
-    if nw_db_status in ["nw", "nw+"]:
-        print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
-        nw_dir = (Path(api_logic_server_dir_str)).\
-            joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
-        recursive_overwrite(nw_dir, project_directory)
+        if merge_into_prototype:
+            pass
+        else:
+            remove_project_debug = True
+            if remove_project_debug and project_name != ".":
+                delete_dir(realpath(project_directory), "1.")
 
-        create_nw_tutorial(project_directory, api_logic_server_dir_str)
+        from_dir = from_git
+        api_logic_server_dir_str = str(get_api_logic_server_dir())  # fixme not req'd
+        if from_git.startswith("https://"):
+            cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
+            cmd = f'git clone --quiet {from_git} {project_directory}'
+            result = create_utils.run_command(cmd, msg=msg)  # "2. Create Project")
+            delete_dir(f'{project_directory}/.git', "3.")
+        else:
+            if from_dir == "":
+                from_dir = (Path(api_logic_server_dir_str)).\
+                    joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
+            print(f'{msg} copy {from_dir} -> {os.path.realpath(project_directory)}')
+            cloned_from = from_dir
+            try:
+                if merge_into_prototype:
+                    # tmpdirname = tempfile.TemporaryDirectory() 
+                    recursive_overwrite(project_directory, str(tmpdirname))
+                    delete_dir(str(Path(str(tmpdirname)) / "api"), "")
+                    delete_dir(str(Path(str(tmpdirname)) / "database"), "")
+                    delete_dir(str(Path(str(tmpdirname)) / "ui"), "")
+                    delete_dir(str(Path(str(tmpdirname)) / "test"), "")
+                    delete_dir(str(Path(str(tmpdirname)) / "ui"), "")
+                    delete_dir(realpath(project_directory), "")
+                    recursive_overwrite(from_dir, project_directory)  # ApiLogic Proto -> new project
+                else:
+                    shutil.copytree(from_dir, project_directory)  # normal path (fails if project_directory not empty)
+            except OSError as e:
+                print(f'\n==>Error - unable to copy to {project_directory} -- see log below'
+                    f'\n\n{str(e)}\n\n'
+                    f'Suggestions:\n'
+                    f'.. Verify the --project_name argument\n'
+                    f'.. If you are using Docker, verify the -v argument\n\n')
+        if nw_db_status in ["nw", "nw+"]:
+            print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
+            nw_dir = (Path(api_logic_server_dir_str)).\
+                joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
+            recursive_overwrite(nw_dir, project_directory)
 
-    if nw_db_status in ["nw-"]:
-        print(".. ..Copy in nw- customizations: readme, perform_customizations")
-        nw_dir = (Path(api_logic_server_dir_str)).\
-            joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
+            create_nw_tutorial(project_directory, api_logic_server_dir_str)
 
-    create_utils.replace_string_in_file(search_for="creation-date",
-                           replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
-                           in_file=f'{project_directory}/readme.md')
-    create_utils.replace_string_in_file(search_for="api_logic_server_version",
-                           replace_with=__version__,
-                           in_file=f'{project_directory}/readme.md')
-    create_utils.replace_string_in_file(search_for="api_logic_server_template",
-                           replace_with=f'{from_dir}',
-                           in_file=f'{project_directory}/readme.md')
-    create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
-                           replace_with=f'{project_directory}',
-                           in_file=f'{project_directory}/readme.md')
-    create_utils.replace_string_in_file(search_for="api_logic_server_api_name",
-                           replace_with=f'{api_name}',
-                           in_file=f'{project_directory}/readme.md')
+        if nw_db_status in ["nw-"]:
+            print(".. ..Copy in nw- customizations: readme, perform_customizations")
+            nw_dir = (Path(api_logic_server_dir_str)).\
+                joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
 
-    project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
-    return_abs_db_url = abs_db_url
-    copy_sqlite = True
-    if copy_sqlite == False or "sqlite" not in abs_db_url:
-        db_uri = get_windows_path_with_slashes(abs_db_url)
-        create_utils.replace_string_in_file(search_for="replace_db_url",
-                               replace_with=db_uri,
-                               in_file=f'{project_directory}/config.py')
-        create_utils.replace_string_in_file(search_for="replace_db_url",
-                               replace_with=db_uri,
-                               in_file=f'{project_directory}/database/alembic.ini')
-    else:
-        """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
-        """
-        # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
-        db_loc = abs_db_url.replace("sqlite:///", "")
-        target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
-        copyfile(db_loc, target_db_loc_actual)
-        backup_db = project_directory_actual + '/database/db-backup.sqlite'
-        copyfile(db_loc, backup_db)
+        create_utils.replace_string_in_file(search_for="creation-date",
+                            replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
+                            in_file=f'{project_directory}/readme.md')
+        create_utils.replace_string_in_file(search_for="api_logic_server_version",
+                            replace_with=__version__,
+                            in_file=f'{project_directory}/readme.md')
+        create_utils.replace_string_in_file(search_for="api_logic_server_template",
+                            replace_with=f'{from_dir}',
+                            in_file=f'{project_directory}/readme.md')
+        create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
+                            replace_with=f'{project_directory}',
+                            in_file=f'{project_directory}/readme.md')
+        create_utils.replace_string_in_file(search_for="api_logic_server_api_name",
+                            replace_with=f'{api_name}',
+                            in_file=f'{project_directory}/readme.md')
 
-        if os.name == "nt":  # windows
-            # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
-            target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
-        # db_uri = f'sqlite:///{target_db_loc_actual}'
-        return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
-        create_utils.replace_string_in_file(search_for="replace_db_url",
-                               replace_with=return_abs_db_url,
-                               in_file=f'{project_directory}/config.py')
-        create_utils.replace_string_in_file(search_for="replace_db_url",
-                               replace_with=return_abs_db_url,
-                               in_file=f'{project_directory}/database/alembic.ini')
-        api_config_file_name = \
-            os.path.dirname(os.path.realpath(__file__)) +"/create_from_model/templates/api_config.txt"
-        with open(api_config_file_name, 'r') as file:
-            api_config = file.read()
-        create_utils.insert_lines_at(lines=api_config,
-                                     at="override SQLALCHEMY_DATABASE_URI here as required",
-                                     file_name=f'{project_directory}/config.py')
+        project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
+        return_abs_db_url = abs_db_url
+        copy_sqlite = True
+        if copy_sqlite == False or "sqlite" not in abs_db_url:
+            db_uri = get_windows_path_with_slashes(abs_db_url)
+            create_utils.replace_string_in_file(search_for="replace_db_url",
+                                replace_with=db_uri,
+                                in_file=f'{project_directory}/config.py')
+            create_utils.replace_string_in_file(search_for="replace_db_url",
+                                replace_with=db_uri,
+                                in_file=f'{project_directory}/database/alembic.ini')
+        else:
+            """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
+            """
+            # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
+            db_loc = abs_db_url.replace("sqlite:///", "")
+            target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
+            copyfile(db_loc, target_db_loc_actual)
+            backup_db = project_directory_actual + '/database/db-backup.sqlite'
+            copyfile(db_loc, backup_db)
 
-        print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
-        print(f'.. .. ..From {db_loc}')
-        print(f'.. .. ..db_uri set to: {return_abs_db_url} in {project_directory}/config.py')
+            if os.name == "nt":  # windows
+                # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
+                target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
+            # db_uri = f'sqlite:///{target_db_loc_actual}'
+            return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
+            create_utils.replace_string_in_file(search_for="replace_db_url",
+                                replace_with=return_abs_db_url,
+                                in_file=f'{project_directory}/config.py')
+            create_utils.replace_string_in_file(search_for="replace_db_url",
+                                replace_with=return_abs_db_url,
+                                in_file=f'{project_directory}/database/alembic.ini')
+            api_config_file_name = \
+                os.path.dirname(os.path.realpath(__file__)) +"/create_from_model/templates/api_config.txt"
+            with open(api_config_file_name, 'r') as file:
+                api_config = file.read()
+            create_utils.insert_lines_at(lines=api_config,
+                                        at="override SQLALCHEMY_DATABASE_URI here as required",
+                                        file_name=f'{project_directory}/config.py')
 
+            print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
+            print(f'.. .. ..From {db_loc}')
+            print(f'.. .. ..db_uri set to: {return_abs_db_url} in {project_directory}/config.py')
+        if merge_into_prototype:
+            recursive_overwrite(str(tmpdirname), project_directory)
+            # delete_dir(realpath(Path(str(tmpdirname))), "")
+            # os.removedirs(Path(str(tmpdirname)))
+            # tmpdirname.cleanup()
     return return_abs_db_url
 
 
