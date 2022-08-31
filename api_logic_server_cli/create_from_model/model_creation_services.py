@@ -163,6 +163,7 @@ class CreateFromModel(object):
                  api_name: str = "api",
                  copy_to_project_directory: str = "",
                  api_logic_server_dir: str = "",
+                 os_cwd: str = "",
                  abs_db_url: str = "sqlite:///nw.sqlite",
                  db_url: str = "sqlite:///nw.sqlite",
                  nw_db_status: str = "",
@@ -189,6 +190,7 @@ class CreateFromModel(object):
             self.copy_to_project_directory = self.get_windows_path_with_slashes(copy_to_project_directory)
         self.api_logic_server_dir = api_logic_server_dir
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
+        self.os_cwd = os_cwd
         self.db_url = db_url  # the original cli parameter
         self.nw_db_status = nw_db_status
         self.host = host

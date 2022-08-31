@@ -19,7 +19,6 @@ __version__ = "0.0"
 def create_expose_api_models(model_creation_services: create_from_model.CreateFromModel):
     """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
-    cwd = os.getcwd()
     result_apis = ''
     '''
     result_apis += '"""'
@@ -50,7 +49,7 @@ def create_expose_api_models(model_creation_services: create_from_model.CreateFr
     result_apis += '    if True or app_logger.getEffectiveLevel() >= logging.INFO:\n'
     result_apis += '        safrs.log.setLevel(logging.WARN)  # log level warn is 20, info 30\n'
 
-    sys.path.append(cwd)
+    sys.path.append(model_creation_services.os_cwd)
 
     for each_resource_name in model_creation_services.resource_list:
         log.debug("process_each_table: " + each_resource_name)

@@ -9,3 +9,4 @@ venv/
 /api_logic_server_cli/api_logic_server_info.yaml
 .idea/ApiLogicServer.iml
 /api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+/api_logic_server_cli/ApiLogicProject

@@ -109,8 +109,7 @@ class AdminCreator(object):
         else:
             self.create_admin_app(msg=".. .. ..Create ui/admin")
 
-        cwd = os.getcwd()
-        sys.path.append(cwd)
+        sys.path.append(self.mod_gen.os_cwd)
 
         use_repl = True 
         if use_repl: # enables same admin.yaml for local vs Codespace, by runtime fixup of api_root

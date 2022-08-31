@@ -13,9 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.00.01"
+__version__ = "6.00.02"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t08/30/2022 - 06.00.02: Codespaces - support create to '.' or './' \n"\
     "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
@@ -101,6 +102,7 @@ last_created_project_name = api_logic_server_info_file_dict.get("last_created_pr
 default_db = "default = nw.sqlite, ? for help"
 default_project_name = "ApiLogicProject"
 default_fab_host = "localhost"
+os_cwd = os.getcwd()
 if os.path.exists('/home/api_logic_server'):  # docker?
     default_project_name = "/localhost/ApiLogicProject"
     default_fab_host = "0.0.0.0"
@@ -140,7 +142,8 @@ def delete_dir(dir_path, msg):
                 func(path)
             else:
                 raise
-        print(f'{msg} Delete dir: {dir_path}')
+        if msg != "":
+            print(f'{msg} Delete dir: {dir_path}')
         use_callback = False
         if use_callback:
             shutil.rmtree(dir_path, ignore_errors=False, onerror=handleRemoveReadonly)
@@ -219,9 +222,10 @@ def copy_if_mounted(project_directory):
     :param project_directory: name of project created
     :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
     """
+    global os_cwd
     return_project_directory = project_directory
     return_copy_to_directory = ""
-    cwd = os.getcwd()
+    cwd = os_cwd
     if project_directory == ".":
         code_path = os.path.dirname(os.path.realpath(__file__))
         if cwd == code_path:  # '/Users/val/dev/ApiLogicServer/api_logic_server_cli':
@@ -259,9 +263,72 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
             project_readme_file.write(standard_readme_file.read())
 
 
-def create_project_with_nw_samples(project_directory: str, project_name: str, api_name: str,
-                                            from_git: str, msg: str,
-                                            abs_db_url: str, nw_db_status: str) -> str:
+def create_project_prototype_over_existing(from_dir, project_directory):
+    """ 
+    saves project_directory files files to temp
+
+    copies from_dir -> project_directory
+
+    restores saved from_dir files
+
+    Args:
+        from_dir (str): location of api_logic_server_cli/project_prototype
+        project_directory (str): target (prototype) project
+    """
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        recursive_overwrite(project_directory, tmpdirname)
+        project_ui = Path(tmpdirname) / "ui"
+        delete_dir(str(project_ui), "")
+        delete_dir(realpath(project_directory), "")
+        recursive_overwrite(from_dir, project_directory)
+        recursive_overwrite(tmpdirname, project_directory)
+
+
+def get_project_directory_and_api_name(project_name: str, api_name: str, multi_api: bool):
+    """
+    user-supplied project_name, less the twiddle (which might be in project_name); typically relative to cwd.
+
+    :param project_name: a file name, eg, ~/Desktop/a.b
+    :param api_name: defaults to 'api'
+    :param multi_api: cli arg - e.g., set by alsdock
+
+    :return:
+            rtn_project_directory -- /users/you/Desktop/a.b (removes the ~)
+
+            rtn_api_name -- api_name, or last node of project_name if multi_api or api_name is "."
+
+            rtn_merge_into_prototype -- preserve contents of current (".", "./") *prototype* project
+    """
+
+    global os_cwd
+    rtn_project_directory = project_name    # eg, '../../servers/ApiLogicProject'
+    rtn_api_name = api_name                 # typically api
+    rtn_merge_into_prototype = False        
+    if rtn_project_directory.startswith("~"):
+        rtn_project_directory = str(Path.home()) + rtn_project_directory[1:]
+    if rtn_project_directory == '.' or rtn_project_directory == './':
+        rtn_project_directory = os_cwd
+        rtn_merge_into_prototype = True
+        msg = ''
+        if rtn_project_directory == get_api_logic_server_dir():
+            rtn_project_directory = str( Path(get_api_logic_server_dir()) / 'ApiLogicProject' )
+            msg = ' <dev>'
+        print(f'1. Merge into project prototype: {rtn_project_directory}{msg}')
+    project_path = Path(rtn_project_directory)
+    project_path_last_node = project_path.parts[-1]
+    if multi_api or api_name == ".":
+        rtn_api_name = project_path_last_node
+    return rtn_project_directory, \
+        rtn_api_name, \
+        rtn_merge_into_prototype
+
+
+def create_project_with_nw_samples(project_directory: str, project_name: str,
+                                    merge_into_prototype: bool, api_name: str,
+                                    from_git: str, msg: str,
+                                    abs_db_url: str, nw_db_status: str) -> str:
     """
     clone prototype to  project directory, copy sqlite db, and remove git folder
 
@@ -269,6 +336,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
 
     :param project_directory: name of project created
     :param project_name: actual user parameter (might have ~, .)
+    :param merge_into_prototype: if True, merge creation into project_directory
     :param api_name: node in rest uri
     :param from_git: name of git project to clone (blank for default)
     :param msg printed, such as Create Project:
@@ -277,12 +345,15 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
     :return: return_abs_db_url (e.g., reflects sqlite copy to project/database dir)
     """
     cloned_from = from_git
-    remove_project_debug = True
-    if remove_project_debug and project_name != ".":
-        delete_dir(realpath(project_directory), "1.")
+    if merge_into_prototype:
+        pass
+    else:
+        remove_project_debug = True
+        if remove_project_debug and project_name != ".":
+            delete_dir(realpath(project_directory), "1.")
 
     from_dir = from_git
-    api_logic_server_dir_str = str(get_api_logic_server_dir())
+    api_logic_server_dir_str = str(get_api_logic_server_dir())  # fixme not req'd
     if from_git.startswith("https://"):
         cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
         cmd = f'git clone --quiet {from_git} {project_directory}'
@@ -295,10 +366,10 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
         print(f'{msg} copy {from_dir} -> {os.path.realpath(project_directory)}')
         cloned_from = from_dir
         try:
-            if project_name != ".":
-                shutil.copytree(from_dir, project_directory)
+            if merge_into_prototype:
+                create_project_prototype_over_existing(from_dir, project_directory)
             else:
-                recursive_overwrite(from_dir, project_directory)
+                shutil.copytree(from_dir, project_directory)  # normal path (fails if project_directory not empty)
         except OSError as e:
             print(f'\n==>Error - unable to copy to {project_directory} -- see log below'
                   f'\n\n{str(e)}\n\n'
@@ -311,7 +382,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str, ap
             joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
         recursive_overwrite(nw_dir, project_directory)
 
-        create_nw_tutorial(project_name, api_logic_server_dir_str)
+        create_nw_tutorial(project_directory, api_logic_server_dir_str)
 
     if nw_db_status in ["nw-"]:
         print(".. ..Copy in nw- customizations: readme, perform_customizations")
@@ -413,59 +484,6 @@ def resolve_home(name: str) -> str:
     if result.startswith("~"):
         result = str(Path.home()) + result[1:]
     return result
-
-
-def get_project_directory_and_api_name(project_name: str, api_name: str, multi_api: bool):
-    """
-    user-supplied project_name, less the twiddle (which might be in project_name); typically relative to cwd.
-
-    :param project_name: a file name, eg, ~/Desktop/a.b
-    :param api_name: defaults to 'api'
-    :param multi_api: cli arg - e.g., set by alsdock
-    :return: /users/you/Desktop/a.b -- removes the ~.................
-           api_name -- api_name, or last node of project_name if multi_api or api_name is "."
-    """
-
-    rtn_project_directory = project_name
-    rtn_api_name = api_name
-    if rtn_project_directory.startswith("~"):
-        rtn_project_directory = str(Path.home()) + rtn_project_directory[1:]
-    if rtn_project_directory == './':
-        rtn_project_directory = os.getcwd()
-    project_path = Path(rtn_project_directory)
-    project_path_last_node = project_path.parts[-1]
-    if multi_api or api_name == ".":
-        rtn_api_name = project_path_last_node
-    return rtn_project_directory, rtn_api_name
-
-
-def fix_basic_web_app_run__python_path(project_directory):  # TODO remove these 2
-    """ overwrite ui/basic_web_app/run.py (enables run.py) with logic_bank_utils call to fixup python path """
-    project_ui_basic_web_app_run_file = open(project_directory + '/ui/basic_web_app/run.py', 'w')
-    ui_basic_web_app_run_file = open(os.path.dirname(os.path.realpath(__file__)) + "/ui_basic_web_app_run.py")
-    ui_basic_web_app_run = ui_basic_web_app_run_file.read()  # standard content
-    project_ui_basic_web_app_run_file.write(ui_basic_web_app_run)
-    project_ui_basic_web_app_run_file.close()
-
-    proj = os.path.basename(project_directory)
-    create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
-                           replace_with=proj,
-                           in_file=f'{project_directory}/ui/basic_web_app/run.py')
-
-
-def fix_basic_web_app_run__create_admin(project_directory):
-    """ update create_admin.sh with project_directory """
-
-    unix_project_name = project_directory.replace('\\', "/")
-    target_create_admin_sh_file = open(f'{unix_project_name}/ui/basic_web_app/create_admin.sh', 'x')
-    source_create_admin_sh_file = open(os.path.dirname(os.path.realpath(__file__)) + "/create_admin.sh")
-    create_admin_commands = source_create_admin_sh_file.read()
-    target_create_admin_sh_file.write(create_admin_commands)
-    target_create_admin_sh_file.close()
-
-    create_utils.replace_string_in_file(search_for="/Users/val/dev/servers/classicmodels/",
-                           replace_with=unix_project_name,
-                           in_file=f'{unix_project_name}/ui/basic_web_app/create_admin.sh')
 
 
 def fix_database_models(project_directory: str, db_types: str, nw_db_status: str):
@@ -655,7 +673,7 @@ def print_options(project_name: str, api_name: str, db_url: str,
     if print_options:
         print(f'\n\nCreating ApiLogicServer with options:')
         print(f'  --db_url={db_url}')
-        print(f'  --project_name={project_name}   (pwd: {os.getcwd()})')
+        print(f'  --project_name={project_name}   (pwd: {os_cwd})')
         print(f'  --api_name={api_name}')
         print(f'  --admin_app={admin_app}')
         print(f'  --react_admin={react_admin}')
@@ -690,6 +708,7 @@ def invoke_creators(model_creation_services: CreateFromModel):
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
 
     print(" b.  Create api/expose_api_models.py from models")
+    print(f'---> cwd: {model_creation_services.os_cwd}')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_expose_api_models.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
@@ -753,14 +772,16 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
         extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/extended_builder.py')
         print(f'0. Using default extended_builder: {extended_builder}')
 
-    project_directory, api_name = get_project_directory_and_api_name(project_name=project_name,
-                                                                     api_name=api_name,
-                                                                     multi_api=multi_api)
+    project_directory, api_name, merge_into_prototype = \
+        get_project_directory_and_api_name(project_name=project_name,
+                                           api_name=api_name,
+                                           multi_api=multi_api)
 
     project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
     if not command.startswith("rebuild"):
         abs_db_url = create_project_with_nw_samples(project_directory, # no twiddle, resolve .
                                                     project_name,      # actual user parameter
+                                                    merge_into_prototype,
                                                     api_name,
                                                     from_git, "2. Create Project:",
                                                     abs_db_url,        # sqlite DBs are copied to proj/database
@@ -771,7 +792,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
 
     print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
     model_creation_services = CreateFromModel(  # Create database/models.py from db
-        project_directory=project_directory, command = command,
+        project_directory=project_directory, command = command, os_cwd=os_cwd,
         copy_to_project_directory = copy_to_project_directory,
         api_logic_server_dir = get_api_logic_server_dir(), api_name=api_name,
         abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
