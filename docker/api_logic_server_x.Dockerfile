@@ -1,6 +1,6 @@
 # docker build -f docker/api_logic_server_x.Dockerfile -t apilogicserver/api_logic_server_x --rm .
-# docker tag apilogicserver/api_logic_server_x apilogicserver/api_logic_server_x:6.00.04
-# docker push apilogicserver/api_logic_server_x:6.00.04
+# docker tag apilogicserver/api_logic_server_x apilogicserver/api_logic_server_x:6.00.05
+# docker push apilogicserver/api_logic_server_x:6.00.05
 
 # docker tag apilogicserver/api_logic_server apilogicserver/api_logic_server-exp:3.50.20
 # docker push apilogicserver/api_logic_server-exp:3.50.20
