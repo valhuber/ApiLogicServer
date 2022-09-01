@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.00.04"
+__version__ = "6.00.05"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t08/31/2022 - 06.00.04: Codespaces - support create to '.' or './', preserve readme \n"\
+    "\t08/31/2022 - 06.00.05: Codespaces - support create to '.' or './', preserve readme \n"\
     "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
@@ -350,14 +350,15 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             try:
                 if merge_into_prototype:
                     # tmpdirname = tempfile.TemporaryDirectory() 
-                    recursive_overwrite(project_directory, str(tmpdirname))
-                    delete_dir(str(Path(str(tmpdirname)) / ".devcontainer"), "")
+                    recursive_overwrite(project_directory, str(tmpdirname))       # user proto -> temp
+                    delete_dir(str(Path(str(tmpdirname)) / ".devcontainer"), "")  # clean it up
                     delete_dir(str(Path(str(tmpdirname)) / "api"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "database"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "logic"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "test"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "ui"), "")
-                    os.remove(str(Path(str(tmpdirname)) / "api_logic_server_run.py"))
+                    if os.path.exists(str(Path(str(tmpdirname))  / "api_logic_server_run.py" )):
+                        os.remove(str(Path(str(tmpdirname)) / "api_logic_server_run.py"))
                     delete_dir(realpath(project_directory), "")
                     recursive_overwrite(from_dir, project_directory)  # ApiLogic Proto -> new project
                 else:
