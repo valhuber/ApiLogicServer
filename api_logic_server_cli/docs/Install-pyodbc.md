@@ -21,3 +21,9 @@ pip install pyodbc
 Please see the examples on the [testing](../Database-Connectivity) for important considerations in specifying SQLAlchemy URIs.
 
 &nbsp;
+
+### Limitations - SqlServer Sort fields
+
+Note Sql/Server may not sort on certain fields such as images or long text.  This shows up, for example, in the Docker SqlServer sample database for `Category`.  So, when testing these in Swagger, modify your Sort fields accordingly.
+
+&nbsp;
