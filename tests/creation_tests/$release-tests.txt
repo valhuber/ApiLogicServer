@@ -24,7 +24,7 @@ caution: SqlServer url depends on install of pyodbc (18 requires &Encrypt=no)
         $ popd
 
     pyodbc is not installed by default, so
-        sqlserver fails
+        sqlserver fails - you must install it per instructions from sh create-install.sh
         postgres/mysql logs many errors on start, retrieves data, but updates fail
 
 

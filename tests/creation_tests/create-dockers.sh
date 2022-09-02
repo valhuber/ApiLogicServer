@@ -25,7 +25,8 @@ ls ${dockers}
 set +x
 
 echo "\n\n****************"
-echo "run this in docker: sh /localhost/docker-commands.sh"
+echo "run this in docker: sh /localhost/docker-commands.sh [go]"
+echo "   .. go for Sql/Server and Postgres (amd, not arm)"
 echo "****************\n\n"
 
 if [ $# -eq 2 ]
