@@ -13,9 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.00.06"
+__version__ = "6.00.07"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t09/03/2022 - 06.00.07: Codespaces - perform_customizations \n"\
     "\t09/02/2022 - 06.00.06: Codespaces - support create to '.' or './', preserve readme \n"\
     "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
@@ -29,13 +30,7 @@ recent_changes = \
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
     "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
-    "\t03/05/2022 - 04.03.03: server_test.py bugfix and additional examples \n"\
-    "\t03/04/2022 - 04.03.02: proper required (issue 34), allocate fixes (issue 39), tests \n"\
-    "\t02/20/2022 - 04.02.06: SqlServer fixes, rebuild creates '-created' versions for data model repair \n"\
     "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
-    "\t01/14/2022 - 04.01.00: add info_disp/show, attribute info, performance, date fix \n"\
-    "\t01/05/2022 - 04.00.18: Integrated /admin-api, required fields, no redundant join, attr info, sample home rb \n"\
-    "\t01/02/2022 - 04.00.12: Fixed reposition after update, Home screen fonts and links \n"\
     "\t12/26/2021 - 04.00.05: Introducing the admin app, with Readme Tutorial \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
     "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
@@ -381,6 +376,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             print(".. ..Copy in nw- customizations: readme, perform_customizations")
             nw_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
+            recursive_overwrite(nw_dir, project_directory)
 
         create_utils.replace_string_in_file(search_for="creation-date",
                             replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
