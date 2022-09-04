@@ -61,7 +61,7 @@ ApiLogicServer create --project_name=ApiLogicProject db_url=
 
 !!! pied-piper ":bulb: Key Takeaway"
 
-    API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.
+    API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.  Check it out - __zero install__ [here, using Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme){:target="_blank" rel="noopener"}.
 
 
 &nbsp;
