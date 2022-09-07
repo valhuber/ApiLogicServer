@@ -13,9 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.00.07"
+__version__ = "6.00.08"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t09/06/2022 - 06.00.08: show_when isInserting \n"\
     "\t09/03/2022 - 06.00.07: Codespaces - perform_customizations \n"\
     "\t09/02/2022 - 06.00.06: Codespaces - support create to '.' or './', preserve readme \n"\
     "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\

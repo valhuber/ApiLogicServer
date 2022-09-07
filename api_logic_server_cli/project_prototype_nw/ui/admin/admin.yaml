@@ -1,14 +1,11 @@
 about:
-  date: Aug 25, 2022 21:00
-  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults
-# this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.
-  version: 5.03.28
+  date: September 06, 2022 23:50:16
+  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add
+  # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
-# becomes  http://localhost:5656/api
-# for deployed apps, you might use a different uri, such as https://apilogicserver.pythonanywhere.com/api
 info:
-  number_relationships: 11
-  number_tables: 15
+  number_relationships: 13
+  number_tables: 17
 resources:
   Category:
     attributes:
@@ -47,6 +44,22 @@ resources:
           <ul>
             <li>Note the list of related orders</li>
             <li>Click the first order</li>
+            <li> <strong>Add a New Order</strong>
+              <ul>
+                <li>Observe several fields are not shown when inserting (e.g., Order.Id)</li>
+                <li>Lookup an Employee</li>
+                <li>Cascade Add -  observe that the CustomerId is filled in</li>
+                <li><strong>Click Save and Show</strong></li>
+                <li>Insert several OrderDetails
+                  <ul>
+                    <li>Cascade Add - Observe OrderId is defaulted and not shown</li>
+                    <li>Show_when - Observe OrderId is not shown</li>
+                    <li>Lookup a Product</li>
+                    <li>Click <strong>Save and Add Another</strong> </li>
+                    <li>Lookup another Product, and click <strong>Add</strong>
+                </li>
+              </ul>
+            </li>
           </ul>
     attributes:
       - label: ' Company Name*'
@@ -306,17 +319,21 @@ resources:
           </ul>
     attributes:
       - name: Id
+        show_when: isInserting == false
       - name: EmployeeId
       - name: ShippedDate
         info: set reduces Customer Balance, decreases Product Stock
+        show_when: isInserting == false
       - name: OrderDate
         type: DATE
       - name: AmountTotal
         type: DECIMAL
         info: derived as sum(OrderDetail.Amount)
+        show_when: isInserting == false
       - name: Ready
       - name: CloneFromOrder
       - name: OrderDetailCount
+        show_when: isInserting == false
       - name: Freight
         type: DECIMAL
       - name: Country
@@ -367,6 +384,7 @@ resources:
         name: Id
         search: true
         sort: true
+        show_when: isInserting == false
       - name: ProductId
         required: true
       - name: OrderId
@@ -374,13 +392,16 @@ resources:
       - name: UnitPrice
         info: derived as copy(Product.UnitPrice)
         type: DECIMAL
+        show_when: isInserting == false
       - name: Quantity
       - name: Discount
       - name: Amount
         type: DECIMAL
         info: derived as UnitPrice * Quantity
+        show_when: isInserting == false
       - name: ShippedDate
         info: derived as Order.ShippedDate
+        show_when: isInserting == false
     tab_groups:
       - direction: toone
         fks:
