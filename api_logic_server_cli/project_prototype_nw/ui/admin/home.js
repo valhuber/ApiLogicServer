@@ -10,7 +10,7 @@ const sla_doc =
     '<h4>1. Automatic Admin App</h4>' +
     '<ul>' +
     '   <li>For instant collaboration and Back Office data maintenance</li>' +
-    '   <li>Rich functionality: multi-page, multi-table, automatic joins</li>' +
+    '   <li>Rich functionality: multi-page, multi-table, automatic joins, declarative hide/show</li>' +
     '   <li><a class="custom" style="color: #3f51b5;"  rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/Admin-Tour/" target="_blank">Explore</a> this Admin App, ' +
     '        and how to <a class="custom" style="color: #3f51b5" rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/Admin-Customization/" target="_blank">customize it</a></li>' +
     '</ul>' +

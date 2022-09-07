@@ -42,21 +42,23 @@ resources:
     info_show: <h1>Tour</h1>
           <h3>Multi-table</h3>
           <ul>
-            <li>Note the list of related orders</li>
-            <li>Click the first order</li>
-            <li> <strong>Add a New Order</strong>
+            <li><strong>Multi-Table Browsing - </strong>Note the list of related orders
+              <ul>
+                <li><strong>Navigations - </strong> Click first Order</li>
+              </ul>
+            </li>
+            <li> <strong>Multi-Table Add - </strong> Add a New Order
               <ul>
                 <li>Observe several fields are not shown when inserting (e.g., Order.Id)</li>
+                <li>Observe that the Customer is filled in ("Cascade Add")</li>
                 <li>Lookup an Employee</li>
-                <li>Cascade Add -  observe that the CustomerId is filled in</li>
                 <li><strong>Click Save and Show</strong></li>
                 <li>Insert several OrderDetails
                   <ul>
-                    <li>Cascade Add - Observe OrderId is defaulted and not shown</li>
-                    <li>Show_when - Observe OrderId is not shown</li>
+                    <li>Observe OrderId value is defaulted ("Cascade Add") and not shown ("Show_when")</li>
                     <li>Lookup a Product</li>
                     <li>Click <strong>Save and Add Another</strong> </li>
-                    <li>Lookup another Product, and click <strong>Add</strong>
+                    <li>Lookup another Product, and click <strong>Add</strong> to see the added Order
                 </li>
               </ul>
             </li>
@@ -389,6 +391,7 @@ resources:
         required: true
       - name: OrderId
         required: true
+        show_when: isInserting == false
       - name: UnitPrice
         info: derived as copy(Product.UnitPrice)
         type: DECIMAL
