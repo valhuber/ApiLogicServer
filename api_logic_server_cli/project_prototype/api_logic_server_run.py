@@ -166,25 +166,41 @@ class ValidationErrorExt(ValidationError):
 db = safrs.DB
 
 def flask_events(flask_app):
-    """ events for serving admin.yaml, minified safrs-admin
+    """ events for serving minified safrs-admin, admin.yaml 
     """
+
     @flask_app.route('/')
     def index():
+        """ default app """
         app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
         return redirect('/admin-app/index.html')
 
 
-    @flask_app.route('/ui/admin/admin.yaml')
-    def admin_yaml():
+    @flask_app.route("/admin-app/<path:path>")
+    def send_spa(path=None):
+        """ send minified safrs-react-admin app (acquired from safrs-react-admin/build) """
+        global did_send_spa
+        if path == "home.js":
+            directory = "ui/admin"
+        else:
+            directory = 'ui/safrs-react-admin'  # typical API Logic Server path (index.yaml)
+        if not did_send_spa:
+            did_send_spa = True
+            app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
+        return send_from_directory(directory, path)
+
+
+    @flask_app.route('/ui/admin/<path:path>')
+    def admin_yaml(path=None):
         """
-        returns response of admin.yaml
-        and text-substitutes to get url args from startup args (vs. specify them twice)
+        returns response of file /ui/admin/<path:path> (to safrs-react-admin app)
+        and text-substitutes to get url args from startup args (avoid specify twice for *both* server & admin.yaml)
             api_root: {http_type}://{swagger_host}:{swagger_port} (from ui_admin_creator)
         """
         import io
         use_type = "mem"
         if use_type == "mem":
-            with open("ui/admin/admin.yaml", "r") as f:
+            with open(f'ui/admin/{path}', "r") as f:  # path is admin.yaml for default url/app
                 content = f.read()
             content = content.replace("{http_type}", http_type)
             content = content.replace("{swagger_host}", swagger_host)
@@ -196,20 +212,6 @@ def flask_events(flask_app):
         else:
             response = send_file("ui/admin/admin.yaml", mimetype='text/yaml')
             return response
-
-
-    @flask_app.route("/admin-app/<path:path>")
-    def send_spa(path=None):
-        """ send minified safrs-react-admin app """
-        global did_send_spa
-        if path == "home.js":
-            directory = "ui/admin"
-        else:
-            directory = 'ui/safrs-react-admin'
-        if not did_send_spa:
-            did_send_spa = True
-            app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
-        return send_from_directory(directory, path)
 
 
     @flask_app.errorhandler(ValidationError)

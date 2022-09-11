@@ -13,12 +13,12 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.00.09"
+__version__ = "6.00.10"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t09/10/2022 - 06.00.10: Client-supplied <path> for named <path>.yaml load \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
-    "\t09/03/2022 - 06.00.07: Codespaces - perform_customizations \n"\
-    "\t09/02/2022 - 06.00.06: Codespaces - support create to '.' or './', preserve readme \n"\
+    "\t09/03/2022 - 06.00.07: Codespaces - create to '.' or './', preserve readme, perform_customizations \n"\
     "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
     "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
     "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
