@@ -175,6 +175,16 @@ def flask_events(flask_app):
         app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
         return redirect('/admin-app/index.html')
 
+    @flask_app.route("/admin/<path:path>")
+    def send_spa_for_custom(path=None):
+        """ custom app - send minified safrs-react-admin app (acquired from safrs-react-admin/build) 
+            custom url: http://localhost:5656/admin/custom_app
+        """
+        global did_send_spa
+        if True or not did_send_spa:
+            did_send_spa = True
+            app_logger.info(f'\nsend_spa for custom app ({path}): "ui/safrs-react-admin", "index.html"\n')
+        return send_from_directory('ui/safrs-react-admin', 'index.html')  # unsure how admin finds custom url
 
     @flask_app.route("/admin-app/<path:path>")
     def send_spa(path=None):
@@ -188,7 +198,6 @@ def flask_events(flask_app):
             did_send_spa = True
             app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
         return send_from_directory(directory, path)
-
 
     @flask_app.route('/ui/admin/<path:path>')
     def admin_yaml(path=None):
