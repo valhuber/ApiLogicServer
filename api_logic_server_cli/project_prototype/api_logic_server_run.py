@@ -166,29 +166,33 @@ class ValidationErrorExt(ValidationError):
 db = safrs.DB
 
 def flask_events(flask_app):
-    """ events for serving minified safrs-admin, admin.yaml 
+    """ events for serving minified safrs-admin, using admin.yaml
     """
 
-    @flask_app.route('/')
-    def index():
-        """ default app """
-        app_logger.debug(f'API Logic Server - redirect /admin-app/index.html')
-        return redirect('/admin-app/index.html')
-
     @flask_app.route("/admin/<path:path>")
-    def send_spa_for_custom(path=None):
-        """ custom app - send minified safrs-react-admin app (acquired from safrs-react-admin/build) 
-            custom url: http://localhost:5656/admin/custom_app
+    def start_custom_app_return_spa(path=None):
+        """ Step 1 - Start Custom App, and return minified safrs-react-admin app (acquired from safrs-react-admin/build) 
+            Custom url: http://localhost:5656/admin/custom_app
         """
         global did_send_spa
         if True or not did_send_spa:
             did_send_spa = True
-            app_logger.info(f'\nsend_spa for custom app ({path}): "ui/safrs-react-admin", "index.html"\n')
+            app_logger.info(f'\nStart Custom App ({path}): return spa "ui/safrs-react-admin", "index.html"\n')
         return send_from_directory('ui/safrs-react-admin', 'index.html')  # unsure how admin finds custom url
 
+    @flask_app.route('/')
+    def start_default_app():
+        """ Step 1 - Start default Admin App 
+            Default URL: http://localhost:5656/ 
+        """
+        app_logger.debug(f'API Logic Server - Start Default App - redirect /admin-app/index.html')
+        return redirect('/admin-app/index.html')  # --> return_spa
+
     @flask_app.route("/admin-app/<path:path>")
-    def send_spa(path=None):
-        """ send minified safrs-react-admin app (acquired from safrs-react-admin/build) """
+    def return_spa(path=None):
+        """ Step 2 - return minified safrs-react-admin app
+            This is in ui/safrs-react-admin (ultimately acquired from safrs-react-admin/build) 
+        """
         global did_send_spa
         if path == "home.js":
             directory = "ui/admin"
@@ -196,14 +200,13 @@ def flask_events(flask_app):
             directory = 'ui/safrs-react-admin'  # typical API Logic Server path (index.yaml)
         if not did_send_spa:
             did_send_spa = True
-            app_logger.debug(f'send_spa - directory = {directory}, path= {path}')
+            app_logger.debug(f'return_spa - directory = {directory}, path= {path}')
         return send_from_directory(directory, path)
 
     @flask_app.route('/ui/admin/<path:path>')
     def admin_yaml(path=None):
-        """
-        returns response of file /ui/admin/<path:path> (to safrs-react-admin app)
-        and text-substitutes to get url args from startup args (avoid specify twice for *both* server & admin.yaml)
+        """ Step 3 - return admin file response: /ui/admin/<path:path> (to now-running safrs-react-admin app)
+            and text-substitutes to get url args from startup args (avoid specify twice for *both* server & admin.yaml)
             api_root: {http_type}://{swagger_host}:{swagger_port} (from ui_admin_creator)
         """
         import io
