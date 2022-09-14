@@ -10,6 +10,7 @@ theme:
 nav:
   - " ": index.md
   - Quick Start:
+    - Express Eval: Install-Eval.md
     - Express Install: Install-Express.md
     - Detailed Install:
       - "Install API Logic Server": Install.md

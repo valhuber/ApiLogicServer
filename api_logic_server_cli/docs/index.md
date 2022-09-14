@@ -28,6 +28,10 @@ API Logic Server creates __customizable database web app projects:__
 
 &nbsp;
 
+!!! pied-piper ":bulb: Express Evaluation - No Install, No Sign-up"
+
+    Check it out - __zero install__ [here, using Codespaces](Install-Eval){:target="_blank" rel="noopener"}.
+
 # Background
 A brief look at why we built it, and our approach.<br><br>
 
@@ -61,7 +65,7 @@ ApiLogicServer create --project_name=ApiLogicProject db_url=
 
 !!! pied-piper ":bulb: Key Takeaway"
 
-    API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.  Check it out - __zero install__ [here, using Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme){:target="_blank" rel="noopener"}.
+    API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.  Check it out - __zero install__ [here, using Codespaces](Install-Eval){:target="_blank" rel="noopener"}.
 
 
 &nbsp;
