@@ -7,17 +7,6 @@ info:
   number_relationships: 13
   number_tables: 17
 resources:
-  Category:
-    attributes:
-      - label: ' Category Name*'
-        name: CategoryName
-        search: true
-        sort: true
-      - name: Description
-      - name: Id
-    type: Category
-    label: Product Category
-    user_key: CategoryName
   Customer:
     info_list: <h1>Tour</h1>
           In the <span style="font-family:'Courier New'">ui/admin/admin.yaml</span> file,
@@ -455,6 +444,17 @@ resources:
         resource: OrderDetail
     type: Product
     user_key: ProductName
+  Category:
+    attributes:
+      - label: ' Category Name*'
+        name: CategoryName
+        search: true
+        sort: true
+      - name: Description
+      - name: Id
+    type: Category
+    label: Product Category
+    user_key: CategoryName
   Region:
     attributes:
       - label: ' Region Description*'
