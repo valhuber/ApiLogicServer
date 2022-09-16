@@ -49,7 +49,7 @@ That said, it's common that you will need custom apps for complex functions, cus
 # Architecture - React, based on created logic-enabled API
 The Admin App is created in your ApiLogicProject, and operates as follows:
 
-1. Applications are defined in yaml files, automatically created from your database
+1. Applications are declared in yaml files, automatically created from your database
 1. The applications are Single Page React applications executing in the Browser, acquiring data via the SAFRS JSON:API.  
 2. Updates are submitted to SQLAlchemy; LogicBank listens for `before_flush` events, and enforces the logic declared in your `declare_logic.py`.
 
@@ -60,6 +60,29 @@ For more information on Architecture, [see Architecture](../Architecture).
 
   > **Key Take-away:** instant admin apps, an api for custom apps, with enforcement of declarative logic.
 
+&nbsp;
+
+### Declare Behavior in `admin.yaml`
+
+As described in [Admin Customization](../Admin-Customization), you can declare your own customized labels, field orders, help text in the `admin.yaml` file.
+
+### Multi-App Projects
+
+Explore the sample project `ui/admin` directory.  You will note it contains several admin files (new for release 6.1).  Each file defines a separate admin app:
+
+* the default app is accessed by `http://localhost:5656/`,<br/>corresponding to `ui/admin/admin.yaml`
+
+* custom apps are accessed by `http://localhost:5656/admin/custom_app/`,<br/>corresponding to `ui/admin/custom_app.yaml`
+
+See [Multiple admin.yaml files](../Admin-Customization/#multiple-adminyaml-files).
+
+!!! tip "Tip: Group-specific terminology"
+
+    You can use these to customize terminology for different user groups within an organization.  
+    
+    For example, `custom_app.yaml` file might be used by Accounting, with __labels__ such _Customer Account_ instead of _Customer_, _Account Balance_ instead of _Balance_, and a re-ordered left-side navigation.
+
+&nbsp;
 
 # Basics: browsing your data
 

@@ -73,7 +73,7 @@ markdown_extensions:
   - toc:
       baselevel: 2
       title: On this Page
-      toc_depth: 5
+      toc_depth: 6
   - meta
   - attr_list
   - abbr

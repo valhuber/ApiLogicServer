@@ -22,8 +22,7 @@ So, we created API Logic Server as an __open source__ Python project: a __CLI__ 
 
 ## Project Creation is Instant: Single Command
  
-&nbsp;&nbsp;&nbsp;&nbsp;
-`ApiLogicServer create --project_name=ApiLogicProject --db_url=`<br/><br/>
+**Create** a project with `ApiLogicServer create`; **run** it with `python api_logic_server_run.py`.
 
 
 ## Projects are Highly Functional: Admin UI and API
@@ -82,8 +81,9 @@ ApiLogicServer create --project_name=./ --db_url=
 where:
 
    * `project_name` is specified to be the current directory (normally a new directory)
-
-   * `db_url` is specified as the sample (normally a SQLAlchemy URI to your own database)<br/><br/>
+   * `db_url` is specified as the sample (normally a SQLAlchemy URI to your own database)
+   
+Do not rebuild the container if requested.<br/><br/>
 
 __3. Add and Configure a Port__
 
@@ -104,11 +104,16 @@ __5. Start the Browser__
 
 * Click the globe (on the Ports tab), as shown below.  This should start your Browser, and the links on the left (Customer etc) should return data.
 
+!!! note "If the Browser fails to load"
+    Stop / restart the Server.
+
 <details markdown>
-<summary>If errors, use this procedure</summary>
+<summary>Alternate Procedure using Codespaces-ApiLogicServer Launch Configuration</summary>
 
-The above procedure is simplified, based on some assumptions about Codespaces.  If the Browser fails to launch, try the following for explicit specification of the forwarded port:
+The above procedure is simplified, based on some assumptions about forwarded ports in Codespaces.  If the Browser fails to launch even when after restarting the server, you can explicitly specify the forwarded port:
 
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-port-launch.png?raw=true"></figure>
+<br/>
 __4. Configure the pre-created `Codespaces-ApiLogicServer` launch configuration__ (see above)
 
 __5. Start the Server__ using the provided Launch Configuration = `Codespaces-ApiLogicServer`
