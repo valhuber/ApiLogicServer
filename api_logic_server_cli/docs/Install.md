@@ -132,7 +132,7 @@ Then, open the appropriate section below, and see the [Installation Notes](#inst
 
     __8. Run the application__
 
-    You can open the Admin App in your browser [http://apilogicserver.pythonanywhere.com/admin-app/index.html](http://apilogicserver.pythonanywhere.com/admin-app/index.html).
+    You can open the Admin App in your browser [http://apilogicserver.pythonanywhere.com/admin-app/index.html](http://apilogicserver.pythonanywhere.com/admin-app/index.html).  **Currently down for maintenance.**
 
 
     You can use ```curl``` from pythonanywhere consoles:  

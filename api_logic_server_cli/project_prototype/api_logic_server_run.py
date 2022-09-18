@@ -249,7 +249,7 @@ def flask_events(flask_app):
         response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE, PATCH"
         response.headers["Access-Control-Allow-Headers"] = \
             "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-        # print(f'cors aftter_request - response: {str(response)}')
+        # print(f'cors after_request - response: {str(response)}')
         return response
 
 
