@@ -175,7 +175,7 @@ This is an open source project.  We are open to suggestions.  Some of our ideas 
 
 | Component           | Provides         | Consider Adding                                                                |
 |:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
-| 1. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger){:target="_blank" rel="noopener"} | API Execution    | Security, Serverless, Kubernetes<br/>**Security** is not provided / highest priority | 
+| 1. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger){:target="_blank" rel="noopener"} | API Execution    | **Security** authenticate, role-based access control<br/>**Multi-DB** support multiple databases / API<br/>**Serverless** / **Kubernetes** - extend [containerization](Working-With-Docker/#create-docker-hub-from-api-logic-project){:target="_blank" rel="noopener"} | 
 | 2. [Transactional **Logic**](#logic){:target="_blank" rel="noopener"}   | Rule Enforcement | New rule types        |
 | 3. This project | API Logic Project Creation | Support for features described above |
 
