@@ -1,6 +1,6 @@
 The `ApiLogicServer create` command creates an API Logic Project that implements an Admin App (React Admin), and an underlying API.  No additional code is required.
 
-Start the server, and open your Browser.  Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.  **Currently down for maintenance.** Key features:
+Start the server, and open your Browser.  Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.  Key features:
 
 * Multi-page - for each table, you get a list page and a detail page
 

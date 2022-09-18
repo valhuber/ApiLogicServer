@@ -1,4 +1,4 @@
-The sample application [(run it here  **Currently down for maintenance.**)](http://apilogicserver.pythonanywhere.com/admin-app/index.html) is created from the database shown below [(tutorial here)](../Tutorial).  It is an extension to Northwind that includes additional relationships:
+The sample application [(run it here)](http://apilogicserver.pythonanywhere.com/admin-app/index.html) is created from the database shown below [(tutorial here)](../Tutorial).  It is an extension to Northwind that includes additional relationships:
 
 * multiple relationships between Department / Employee
 * multi-field relationships between Order / Location

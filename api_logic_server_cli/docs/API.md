@@ -4,7 +4,7 @@
 The `ApiLogicServer create` command creates an API Logic Project that implements your API.  No additional code is required.
 
 Start the server, and open your Browser.  You can explore your API in the automatically generated swagger shown below.
-Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com/api){:target="_blank" rel="noopener"}.  **Currently down for maintenance.**
+Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com/api){:target="_blank" rel="noopener"}.
 
 JSON:APIs are interesting because they are _client configurable,_ to __reduce network traffic__ and __minimize organizational dependencies.__
 
