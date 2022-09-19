@@ -1,7 +1,7 @@
 The fastest way to explore API Logic Server - *with __no install__* - is to follow this [Exploration Guide](#exploration-guide) to create, explore and customize a project.
 
-!!! Caution "Codespaces sometimes not authorized"
-    While Codespaces is almost always enabled, we have seen some instances where it is not.  We are [researching this](https://github.com/community/community/discussions/32791){:target="_blank" rel="noopener"} with the Codespaces team.
+!!! Caution "Requires Codespaces Beta, or in organization with Codespaces enabled"
+    There are currently restrictions on Codespaces usage.  It appears these will be [removed in the near future](https://github.com/community/community/discussions/32791){:target="_blank" rel="noopener"}.
 
 If you are new to API Logic Server, the following section provides a brief overview.
 
@@ -53,7 +53,7 @@ Use these instructions to run API Logic Server in the cloud (courtesy Codespaces
 
 Explore API Logic Server running under CodeSpaces as follows.
 
-__1. Use your GitHub account__ - no additional sign-up required
+__1. Use your GitHub account__ - you may need to sign-up for the Beta, or be in a Codespaces-enabled organization
 
 __2. Load this project from GitHub, and create the Sample__
 

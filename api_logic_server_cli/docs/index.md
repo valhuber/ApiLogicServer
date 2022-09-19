@@ -16,21 +16,17 @@ API Logic Server creates __customizable database web app projects:__
 
 * __Creation is Instant:__ create projects with a single command
 
-* __Projects are Highly Functional:__
+* __Projects are Highly Functional,__ providing:
 
     * __API:__ an endpoint for each table, with filtering, sorting, pagination and related data access
 
-    * __Admin UI:__ multi-page / multi-table apps, with page navigations and automatic joins
+    * __Admin UI:__ multi-page / multi-table apps, with page navigations, automatic joins and declarative hide/show
 
 * __Projects are Customizable, using _your IDE_:__ such as VSCode, PyCharm, etc, for familiar edit/debug services
 
 * __Business Logic Automation:__ using unique rules, extensible with Python
 
 &nbsp;
-
-!!! pied-piper ":bulb: Express Evaluation - No Install, No Sign-up"
-
-    Check it out - __zero install__ [here, using Codespaces](Install-Eval){:target="_blank" rel="noopener"}.
 
 # Background
 A brief look at why we built it, and our approach.<br><br>
@@ -65,7 +61,7 @@ ApiLogicServer create --project_name=ApiLogicProject db_url=
 
 !!! pied-piper ":bulb: Key Takeaway"
 
-    API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.  Check it out - __zero install__ [here, using Codespaces](Install-Eval){:target="_blank" rel="noopener"}.
+    API Logic Server reads your schema, and creates an executable, customizable project providing the features listed below.  Check it out [here](Install-Express){:target="_blank" rel="noopener"}.
 
 
 &nbsp;
@@ -144,15 +140,6 @@ Click for a video tutorial, showing complete project creation, execution, custom
 
 # Getting Started
 
-### Quick Evaluation - _no install_
-
-You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
-
-* see the created project
-* use the Tutorial to run, customize and debug it 
-
-We think you'll find Codespaces pretty amazing - check it out!
-
 ### Local Install
 
 API Logic Server is designed to make it easy to get started:
@@ -165,6 +152,15 @@ then, you might like to try out some of our [dockerized test databases](https://
 
 * **Your Database** - 
 finally, try your own database.
+
+### Quick Evaluation - _no install_
+
+If you are in the Codespaces beta, or in a GitHub organization account with Codespaces enabled, you can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
+
+* see the created project
+* use the Tutorial to run, customize and debug it 
+
+We think you'll find Codespaces pretty amazing - check it out!
 
 &nbsp;
 
