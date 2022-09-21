@@ -22,7 +22,7 @@ def declare_logic():
     
     use code completion to declare rules here """
 
-    import database.db
+    import database.models
     app_logger.debug("\n..logic/declare_logic.py (rules + code)"
         + f' -- {len(database.models.metadata.tables)} tables loaded')
 
