@@ -72,7 +72,7 @@ for each_arg in sys.argv:
     arg_num += 1
     if arg_num < len(sys.argv):
         args += ", "
-app_logger.info(f'\nAPI Logic Project Starting at: {__file__}, with args: {args}')
+app_logger.info(f'\nAPI Logic Project Starting at: {__file__}, with args: \n..{args}\n')
 
 from typing import TypedDict
 import safrs
@@ -313,7 +313,7 @@ def get_args():
                 swagger_host = args.swagger_host
                 swagger_port = int(args.swagger_port)
                 http_type = args.http_type
-                verbose = args.verbose
+                verbose = args.verbose in ["True", "true"]
                 create_and_run = args.create_and_run
             else:                               # positional arguments (compatibility)
                 port = int(args.port_p)
@@ -347,6 +347,15 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
     with warnings.catch_warnings():
 
         flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
+
+        setup_logging(flask_app)        
+        safrs_log_level = safrs.log.getEffectiveLevel()
+        db_logger = logging.getLogger('sqlalchemy')
+        db_log_level = db_logger.getEffectiveLevel()
+        do_hide_chatty_logging = True
+        if do_hide_chatty_logging and app_logger.getEffectiveLevel() <= logging.INFO:
+            safrs.log.setLevel(logging.WARN)  # debug is 10, warn is 20, info 30
+            db_logger.setLevel(logging.WARN)
         flask_app.config.from_object("config.Config")
 
         # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
@@ -365,15 +374,6 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
         if admin_enabled:
             flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
 
-        safrs_log_level = safrs.log.getEffectiveLevel()
-        db_logger = logging.getLogger('sqlalchemy')
-        db_log_level = db_logger.getEffectiveLevel()
-        do_hide_chatty_logging = True
-        if do_hide_chatty_logging and app_logger.getEffectiveLevel() >= logging.INFO:
-            safrs.log.setLevel(logging.WARN)  # warn is 20, info 30
-            db_logger.setLevel(logging.WARN)
-        setup_logging(flask_app)        
-
         db = safrs.DB
         session: Session = db.session
         import database.models  # opens db
@@ -391,8 +391,9 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
             from api import expose_api_models, customize_api
             app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
-            safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=swagger_port, API_PREFIX=API_PREFIX)
-            app_logger.info(  f'Customize API - api/expose_service.py, exposing custom services')
+            safrs_api = SAFRSAPI(flask_app, host=swagger_host, port=swagger_port, prefix = API_PREFIX)
+            expose_api_models.expose_models(safrs_api)
+            app_logger.info(f'Customize API - api/expose_service.py, exposing custom services')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
             app_logger.info("\nCustomize Data Model - database/customize_models.py")

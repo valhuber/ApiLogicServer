@@ -195,4 +195,4 @@ def declare_logic():
     time_stamp_rule = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
     declared_rules.append(time_stamp_rule)  # print ala api/customize_api#rules_report()
     
-    app_logger.info("..logic/declare_logic.py (rules + code)")
+    app_logger.debug("..logic/declare_logic.py (rules + code)")

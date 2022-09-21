@@ -31,23 +31,18 @@ def create_expose_api_models(model_creation_services: create_from_model.CreateFr
     '''
     port_replace = model_creation_services.port if model_creation_services.port else "None"
     result_apis += \
-        f'\n\ndef expose_models(app, swagger_host="{model_creation_services.host}", PORT={port_replace}, API_PREFIX="/api", **kwargs):\n'
+        f'\n\ndef expose_models(api):\n'
     # result_apis += '    my_host = HOST\n'
     # result_apis += '    if HOST == "0.0.0.0":\n'
     # result_apis += '        my_host = "localhost"  # override default HOST for pc"\n'
     result_apis += '    """\n'
-    result_apis += '        Declare API - create SAFRSAPI \n'
+    result_apis += '        Declare API - on existing SAFRSAPI \n'
     result_apis += '            This exposes each model (note: end point names are table names) \n'
     result_apis += '            Including get (filtering, pagination, related data access) \n'
     result_apis += '            And post/patch/update (including logic enforcement) \n'
     result_apis += '        You typically do not customize this file \n'
     result_apis += '            See https://valhuber.github.io/ApiLogicServer/Tutorial/#customize-and-debug \n'
     result_apis += '    """\n'
-    # result_apis += '    app_logger.debug(f"..api/expose_api_models, endpoint for each table on {swagger_host}:{PORT}")\n'
-    result_apis += '    api = SAFRSAPI(app, host=swagger_host, port=PORT, prefix = API_PREFIX, **kwargs)\n'
-    result_apis += '    safrs_log_level = safrs.log.getEffectiveLevel()\n'
-    result_apis += '    if True or app_logger.getEffectiveLevel() >= logging.INFO:\n'
-    result_apis += '        safrs.log.setLevel(logging.WARN)  # log level warn is 20, info 30\n'
 
     sys.path.append(model_creation_services.os_cwd)
 
@@ -68,7 +63,6 @@ def create_expose_api_models(model_creation_services: create_from_model.CreateFr
             continue
         else:
             result_apis += f'    api.expose_object(database.models.{each_resource_name})\n'
-    result_apis += f'    safrs.log.setLevel(safrs_log_level)\n'
     result_apis += f'    return api\n'
     # self.session.close()
     expose_api_models_path = Path(model_creation_services.project_directory).joinpath('api/expose_api_models.py')

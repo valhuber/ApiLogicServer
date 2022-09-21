@@ -11,7 +11,7 @@
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,
-            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=True"],
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
             "console": "integratedTerminal"
         },
         {
