@@ -43,7 +43,7 @@ flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud
 swagger_host = flask_host  # where swagger finds the API
 if is_docker() and flask_host == "localhost":
     flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
-port = api_logic_server_port
+port = "api_logic_server_port"
 swagger_port = port  # for codespaces - see values in launch config
 http_type = "http"
 
@@ -231,7 +231,7 @@ def flask_events(flask_app):
         response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE, PATCH"
         response.headers["Access-Control-Allow-Headers"] = \
             "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-        # print(f'cors after_request - response: {str(response)}')
+        # app_logger.debug(f'cors after_request - response: {str(response)}')
         return response
 
 
@@ -308,15 +308,15 @@ def get_args():
                 positional values always override keyword, so decide which parsed values to use...
             """
             if sys.argv[1].startswith("-"):     # keyword arguments
-                port = int(args.port)
+                port = args.port
                 flask_host = args.flask_host
                 swagger_host = args.swagger_host
-                swagger_port = int(args.swagger_port)
+                swagger_port = args.swagger_port
                 http_type = args.http_type
                 verbose = args.verbose in ["True", "true"]
                 create_and_run = args.create_and_run
             else:                               # positional arguments (compatibility)
-                port = int(args.port_p)
+                port = args.port_p
                 flask_host = args.flask_host_p
                 swagger_host = args.swagger_host_p
         if swagger_host.startswith("https://"):
