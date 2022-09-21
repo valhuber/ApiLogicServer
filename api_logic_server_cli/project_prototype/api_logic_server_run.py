@@ -43,7 +43,7 @@ flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud
 swagger_host = flask_host  # where swagger finds the API
 if is_docker() and flask_host == "localhost":
     flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
-port = "api_logic_server_port"
+port = api_logic_server_port
 swagger_port = port  # for codespaces - see values in launch config
 http_type = "http"
 
@@ -82,7 +82,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 import socket
 import warnings
-from api import expose_api_models
 from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase, SAFRSAPI
 
@@ -146,6 +145,8 @@ class ValidationErrorExt(ValidationError):
         self.detail: TypedDict = detail
 
 
+did_send_spa = False
+
 def flask_events(flask_app):
     """ events for serving minified safrs-admin, using admin.yaml
     """
@@ -197,7 +198,7 @@ def flask_events(flask_app):
                 content = f.read()
             content = content.replace("{http_type}", http_type)
             content = content.replace("{swagger_host}", swagger_host)
-            content = content.replace("{port}", swagger_port)  # note - codespaces requires 443 here (typically via args)
+            content = content.replace("{port}", str(swagger_port))  # note - codespaces requires 443 here (typically via args)
             content = content.replace("{api}", API_PREFIX[1:])
             app_logger.debug(f'loading ui/admin/admin.yaml')
             mem = io.BytesIO(str.encode(content))
@@ -307,15 +308,15 @@ def get_args():
                 positional values always override keyword, so decide which parsed values to use...
             """
             if sys.argv[1].startswith("-"):     # keyword arguments
-                port = args.port
+                port = int(args.port)
                 flask_host = args.flask_host
                 swagger_host = args.swagger_host
-                swagger_port = args.swagger_port
+                swagger_port = int(args.swagger_port)
                 http_type = args.http_type
                 verbose = args.verbose
                 create_and_run = args.create_and_run
             else:                               # positional arguments (compatibility)
-                port = args.port_p
+                port = int(args.port_p)
                 flask_host = args.flask_host_p
                 swagger_host = args.swagger_host_p
         if swagger_host.startswith("https://"):
@@ -327,32 +328,40 @@ def get_args():
     if use_codespace_defaulting and os.getenv('CODESPACES') and swagger_host == 'localhost':
         app_logger.info('\n Applying Codespaces default port settings')
         swagger_host = os.getenv('CODESPACE_NAME') + '-5656.githubpreview.dev'
-        swagger_port = '443'
+        swagger_port = 443
         http_type = 'https'
 
     return flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run
 
-def create_app(swagger_host: str = None, swagger_port: str = None):
-    """ creates flask_app, activates API and logic """
+
+# ==========================================================
+# Creates flask_app, Opens Database, Activates API and Logic 
+# ==========================================================
+
+def create_app(swagger_host: str = None, swagger_port: int = None):
+
+    """ Creates flask_app, Opens Database, Activates API and Logic """ 
 
     from sqlalchemy import exc as sa_exc
 
     with warnings.catch_warnings():
+
+        flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
+        flask_app.config.from_object("config.Config")
+
         # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
         warnings.simplefilter("ignore", category=sa_exc.SAWarning)  # alert - disable for safety msgs
 
-        admin_enabled = os.name != "nt"
-        """ internal use, for future enhancements """
-
         def constraint_handler(message: str, constraint: object, logic_row: LogicRow):
+            """ format LogicBank constraint exception for SAFRS """
             if constraint.error_attributes:
                 detail = {"model": logic_row.name, "error_attributes": constraint.error_attributes}
             else:
                 detail = {"model": logic_row.name}
             raise ValidationErrorExt(message=message, detail=detail)
 
-        flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
-        flask_app.config.from_object("config.Config")
+        admin_enabled = os.name != "nt"
+        """ internal use, for future enhancements """
         if admin_enabled:
             flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
 
@@ -363,8 +372,7 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
         if do_hide_chatty_logging and app_logger.getEffectiveLevel() >= logging.INFO:
             safrs.log.setLevel(logging.WARN)  # warn is 20, info 30
             db_logger.setLevel(logging.WARN)
-        setup_logging(flask_app)
-        
+        setup_logging(flask_app)        
 
         db = safrs.DB
         session: Session = db.session
@@ -395,10 +403,8 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
         
         safrs.log.setLevel(safrs_log_level)
         db_logger.setLevel(db_log_level)
-        return flask_app, safrs_api
+        return flask_app
 
-
-did_send_spa = False
 
 # ==================================
 #        MAIN CODE
@@ -409,7 +415,7 @@ did_send_spa = False
 if verbose:
     app_logger.setLevel(logging.DEBUG)
 
-flask_app, safrs_api = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
+flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
 flask_events(flask_app)
 
 if __name__ == "__main__":
