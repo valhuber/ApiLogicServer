@@ -11,7 +11,6 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper
 
 from database import models
-from database.db import Base
 
 from logic_bank.rule_bank.rule_bank import RuleBank
 

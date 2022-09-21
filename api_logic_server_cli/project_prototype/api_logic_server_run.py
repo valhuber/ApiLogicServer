@@ -82,26 +82,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 import socket
 import warnings
-from api import expose_api_models, customize_api
-from logic import declare_logic
+from api import expose_api_models
 from flask import Flask, redirect, send_from_directory, send_file
-from safrs import ValidationError, SAFRSBase
-from typing import TypedDict
-import safrs
-from logic_bank.logic_bank import LogicBank
-from logic_bank.exec_row_logic.logic_row import LogicRow
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session
-import socket
-import warnings
-from api import expose_api_models, customize_api
-from logic import declare_logic
-from flask import Flask, redirect, send_from_directory, send_file
-from safrs import ValidationError, SAFRSBase
-from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
-from safrs import SAFRSBase, SAFRSAPI
-
+from safrs import ValidationError, SAFRSBase, SAFRSAPI
 
 def setup_logging(flask_app):
     setup_logic_logger = True
@@ -162,8 +145,6 @@ class ValidationErrorExt(ValidationError):
         self.api_code = api_code
         self.detail: TypedDict = detail
 
-
-db = safrs.DB
 
 def flask_events(flask_app):
     """ events for serving minified safrs-admin, using admin.yaml
@@ -375,10 +356,6 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
         if admin_enabled:
             flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
 
-        setup_logging(flask_app)
-        Base: declarative_base = db.Model
-        session: Session = db.session
-
         safrs_log_level = safrs.log.getEffectiveLevel()
         db_logger = logging.getLogger('sqlalchemy')
         db_log_level = db_logger.getEffectiveLevel()
@@ -386,9 +363,14 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
         if do_hide_chatty_logging and app_logger.getEffectiveLevel() >= logging.INFO:
             safrs.log.setLevel(logging.WARN)  # warn is 20, info 30
             db_logger.setLevel(logging.WARN)
+        setup_logging(flask_app)
+        
 
-        LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)  # opens db
-        import database.db
+        db = safrs.DB
+        session: Session = db.session
+        import database.models  # opens db
+        from logic import declare_logic
+        LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
         app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
             + f' -- {len(database.models.metadata.tables)} tables loaded')
 
@@ -399,6 +381,7 @@ def create_app(swagger_host: str = None, swagger_port: str = None):
                 db.create_all(bind='admin')
                 session.commit()
 
+            from api import expose_api_models, customize_api
             app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
             safrs_api = expose_api_models.expose_models(flask_app, swagger_host=swagger_host, PORT=swagger_port, API_PREFIX=API_PREFIX)
             app_logger.info(  f'Customize API - api/expose_service.py, exposing custom services')
