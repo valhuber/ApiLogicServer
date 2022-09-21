@@ -72,7 +72,7 @@ for each_arg in sys.argv:
     arg_num += 1
     if arg_num < len(sys.argv):
         args += ", "
-app_logger.info(f'\nAPI Logic Project Starting at: {__file__}, with args: \n..{args}\n')
+app_logger.info(f'\nAPI Logic Project Starting at: {__file__}, with args: \n.. {args}\n')
 
 from typing import TypedDict
 import safrs
