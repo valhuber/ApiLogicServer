@@ -64,13 +64,6 @@
 			{
 				"previewLimit": 50,
 				"driver": "SQLite",
-				"name": "nw-gold",
-				"group": "G",
-				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/project_prototype_nw/database/nw-gold.sqlite"
-			},
-			{
-				"previewLimit": 50,
-				"driver": "SQLite",
 				"name": "nw-gold-plus",
 				"group": "G",
 				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/database/nw-gold-plus.sqlite"
@@ -88,6 +81,20 @@
 				"database": "Chinook",
 				"username": "root",
 				"password": "p"
+			},
+			{
+				"previewLimit": 50,
+				"driver": "SQLite",
+				"name": "nw-gold",
+				"group": "G",
+				"database": "${workspaceFolder:ApiLogicServer}/api_logic_server_cli/database/nw-gold.sqlite"
+			},
+			{
+				"previewLimit": 50,
+				"driver": "SQLite",
+				"name": "unique-keys",
+				"group": "G",
+				"database": "${workspaceFolder:ApiLogicServer}/tests/sqlite-databases/unique_keys.sqlite"
 			}
 		],
 		"sqltools.useNodeRuntime": true,

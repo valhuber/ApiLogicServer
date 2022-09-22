@@ -72,5 +72,12 @@
         </library>
       </libraries>
     </data-source>
+    <data-source source="LOCAL" name="unique-keys" uuid="9fa611c4-95ad-4367-9564-136ff3069cdb">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/tests/sqlite-databases/unique_keys.sqlite</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
