@@ -494,15 +494,23 @@ class CodeGenerator(object):
                                     table.c[colname].type = Enum(*options, native_enum=False)
                                 continue
 
+            # Tables vs. Classes ********
             # Only form model classes for tables that have a primary key and are not association
             # tables
-            if "productvariantsoh-20190423" in (table.name + ""):
+            if "productvariantsoh-20190423" in (table.name + "") or "NoKey" in (table.name + ""):
                 debug_str = "target table located"
-            if noclasses or not table.primary_key or table.name in association_tables:
+            enable_unique_constraint_classes = True
+            has_unique_constraint = False
+            for each_constraint in table.constraints:
+                if isinstance(each_constraint, sqlalchemy.sql.schema.UniqueConstraint):
+                    has_unique_constraint = True
+                    print(f'\n*** {table.name} has constraints, not table.primary_key = {not table.primary_key}')
+            print(f'\nTEST *** {table.name} not table.primary_key = {not table.primary_key}, has_unique_constraint = {has_unique_constraint}')
+            unique_constraint_class = enable_unique_constraint_classes and has_unique_constraint
+            if unique_constraint_class == False and (noclasses or not table.primary_key or table.name in association_tables):
                 model = self.table_model(table)
             else:
-                model = self.class_model(table, links[table.name], self.inflect_engine,
-                                         not nojoined)  # computes attrs (+ roles)
+                model = self.class_model(table, links[table.name], self.inflect_engine, not nojoined)  # computes attrs (+ roles)
                 self.classes[model.name] = model
 
             self.models.append(model)
@@ -894,6 +902,11 @@ from sqlalchemy.dialects.mysql import *
                         EmployeeList1 = relationship('Employee', primaryjoin='Employee.WorksForDepartmentId == Department.Id', cascade_backrefs=True, backref='Department1')
                     cascade_backrefs=True, backref='EmployeeList_Department1'   <== need to append that "1"
                 """
+                if relationship.target_cls not in self.classes:
+                    print(f'.. .. ..ERROR - {model.name} -- missing parent class: {relationship.target_cls}')
+                    print(f'.. .. .. .. Parent Class may be missing Primary Key and Unique Column')
+                    print(f'.. .. .. .. Attempting to continue - you may need to repair model, or address database design')
+                    continue
                 parent_model = self.classes[relationship.target_cls]  # eg, Department
                 parent_relationship_def = self.render_relationship_on_parent(relationship)
                 parent_relationship_def = parent_relationship_def[:-1]
