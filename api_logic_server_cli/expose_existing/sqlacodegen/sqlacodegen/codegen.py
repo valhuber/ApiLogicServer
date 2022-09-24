@@ -506,7 +506,7 @@ class CodeGenerator(object):
                 if isinstance(each_constraint, sqlalchemy.sql.schema.UniqueConstraint):
                     has_unique_constraint = True
                     print(f'\n*** {table.name} has constraints, not table.primary_key = {not table.primary_key}')
-            print(f'\nTEST *** {table.name} not table.primary_key = {not table.primary_key}, has_unique_constraint = {has_unique_constraint}')
+            #  print(f'\nTEST *** {table.name} not table.primary_key = {not table.primary_key}, has_unique_constraint = {has_unique_constraint}')
             unique_constraint_class = enable_unique_constraint_classes and has_unique_constraint
             if unique_constraint_class == False and (noclasses or not table.primary_key or table.name in association_tables):
                 model = self.table_model(table)
