@@ -499,7 +499,7 @@ class CodeGenerator(object):
             # tables
             if "productvariantsoh-20190423" in (table.name + "") or "NoKey" in (table.name + ""):
                 debug_str = "target table located"
-            enable_unique_constraint_classes = True  # fails: Mapper could not assemble any primary key columns
+            enable_unique_constraint_classes = False  # fails: Mapper could not assemble any primary key columns
             """ create classes iff unique col - CAUTION: fails to run """
             has_unique_constraint = False
             for each_constraint in table.constraints:
