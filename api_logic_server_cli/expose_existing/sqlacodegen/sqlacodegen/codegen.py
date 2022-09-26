@@ -499,7 +499,7 @@ class CodeGenerator(object):
             # tables
             if "productvariantsoh-20190423" in (table.name + "") or "NoKey" in (table.name + ""):
                 debug_str = "target table located"
-            enable_unique_constraint_classes = False  # fails: Mapper could not assemble any primary key columns
+            enable_unique_constraint_classes = model_creation_services.infer_primary_key
             """ create classes iff unique col - CAUTION: fails to run """
             has_unique_constraint = False
             for each_constraint in table.constraints:
@@ -684,6 +684,10 @@ from sqlalchemy.dialects.mysql import *
         if is_unique:
             column.unique = True
             kwarg.append('unique')
+            if self.model_creation_services.infer_primary_key:
+                print(f'ApiLogicServer infer_primary_key for {column.table.name}.{column.name}')
+                column.primary_key = True
+                kwarg.append('primary_key')
         elif has_index:
             column.index = True
             kwarg.append('index')

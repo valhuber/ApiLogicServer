@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.01.06"
+__version__ = "6.01.07"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t09/23/2022 - 06.01.06: Cleanup database open, api creation, port still str, handle missing parent \n"\
+    "\t09/25/2022 - 06.01.07: Option infer_primary_key, leanup database open, api creation, port still str \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
     "\t09/03/2022 - 06.00.07: Codespaces - create to '.' or './', preserve readme, perform_customizations \n"\
@@ -658,7 +658,7 @@ def print_options(project_name: str, api_name: str, db_url: str,
                   host: str, port: str, swagger_host: str, not_exposed: str,
                   from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                   flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
-                  extended_builder: str, multi_api: bool):
+                  extended_builder: str, multi_api: bool, infer_primary_key: bool):
     """ Creating ApiLogicServer with options: (or uri helo) """
     if db_url == "?":
         print_uri_info()
@@ -686,6 +686,7 @@ def print_options(project_name: str, api_name: str, db_url: str,
         print(f'  --non_favorites={non_favorites}')
         print(f'  --extended_builder={extended_builder}')
         print(f'  --multi_api={multi_api}')
+        print(f'  --infer_primary_key={infer_primary_key}')
 
 
 def invoke_extended_builder(builder_path, db_url, project_directory):
@@ -736,7 +737,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
                      host: str, port: str, swagger_host: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
-                     extended_builder: str, multi_api: bool):
+                     extended_builder: str, multi_api: bool, infer_primary_key: bool):
     """
     Creates logic-enabled Python safrs api/admin project, options for FAB and execution
 
@@ -756,7 +757,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
                   from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
                   flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
                   react_admin=react_admin, admin_app=admin_app,
-                  extended_builder=extended_builder, multi_api=multi_api)
+                  extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
 
     print(f"\nApiLogicServer {__version__} Creation Log:")
 
@@ -794,7 +795,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
         host=host, port=port, use_model = use_model,
         not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
         favorite_names=favorites, non_favorite_names=non_favorites,
-        react_admin=react_admin, version = __version__, multi_api=multi_api)
+        react_admin=react_admin, version = __version__, multi_api=multi_api, infer_primary_key=infer_primary_key)
     fix_database_models(project_directory, db_types, nw_db_status)
     invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
     if extended_builder is not None and extended_builder != "":
@@ -1005,6 +1006,9 @@ def welcome(ctx):
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
+@click.option('--infer_primary_key/--no_infer_primary_key',
+              default=False, is_flag=True,
+              help="Infer primary_key for unique cols")
 @click.pass_context
 def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            from_git: str,
@@ -1020,7 +1024,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            swagger_host: str,
            favorites: str, non_favorites: str,
            extended_builder: str,
-           multi_api: click.BOOL):
+           multi_api: click.BOOL,
+           infer_primary_key: click.BOOL):
     """
         Creates new customizable project (overwrites).
     """
@@ -1033,7 +1038,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
                      flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=multi_api)
+                     extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
 
 
 @main.command("create-and-run")
@@ -1093,6 +1098,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
+@click.option('--infer_primary_key/--no_infer_primary_key',
+              default=False, is_flag=True,
+              help="Infer primary_key for unique cols")
 @click.pass_context
 def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
         from_git: str,
@@ -1108,7 +1116,8 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
         swagger_host: str,
         favorites: str, non_favorites: str,
         extended_builder: str,
-        multi_api: click.BOOL):
+        multi_api: click.BOOL,
+        infer_primary_key: click.BOOL):
     """
         Creates new project and runs it (overwrites).
     """
@@ -1121,7 +1130,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
                      flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=multi_api)
+                     extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
 
 
 @main.command("rebuild-from-database")

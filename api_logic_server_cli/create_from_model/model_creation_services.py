@@ -180,7 +180,8 @@ class CreateFromModel(object):
                  non_favorite_names: str = "id",
                  command: str = "",
                  version: str = "0.0.0",
-                 multi_api: bool = False):
+                 multi_api: bool = False,
+                 infer_primary_key: bool = False):
         self.project_directory = None
         self.api_name = api_name
         if project_directory:
@@ -211,6 +212,7 @@ class CreateFromModel(object):
         self.react_admin = react_admin
         self.version = version
         self.multi_api = multi_api
+        self.infer_primary_key = infer_primary_key
 
         self.table_to_class_map = {}
         """ keys are table[.column], values are class / attribute """
