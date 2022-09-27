@@ -499,15 +499,15 @@ class CodeGenerator(object):
             # tables
             if "productvariantsoh-20190423" in (table.name + "") or "NoKey" in (table.name + ""):
                 debug_str = "target table located"
-            enable_unique_constraint_classes = model_creation_services.infer_primary_key
             """ create classes iff unique col - CAUTION: fails to run """
             has_unique_constraint = False
-            for each_constraint in table.constraints:
-                if isinstance(each_constraint, sqlalchemy.sql.schema.UniqueConstraint):
-                    has_unique_constraint = True
-                    print(f'\n*** {table.name} has constraints, not table.primary_key = {not table.primary_key}')
-            #  print(f'\nTEST *** {table.name} not table.primary_key = {not table.primary_key}, has_unique_constraint = {has_unique_constraint}')
-            unique_constraint_class = enable_unique_constraint_classes and has_unique_constraint
+            if not table.primary_key:
+                for each_constraint in table.constraints:
+                    if isinstance(each_constraint, sqlalchemy.sql.schema.UniqueConstraint):
+                        has_unique_constraint = True
+                        print(f'\n*** ApiLogicServer -- {table.name} has unique constraint, no primary_key')
+                #  print(f'\nTEST *** {table.name} not table.primary_key = {not table.primary_key}, has_unique_constraint = {has_unique_constraint}')
+            unique_constraint_class = model_creation_services.infer_primary_key and has_unique_constraint
             if unique_constraint_class == False and (noclasses or not table.primary_key or table.name in association_tables):
                 model = self.table_model(table)
             else:
@@ -685,7 +685,7 @@ from sqlalchemy.dialects.mysql import *
             column.unique = True
             kwarg.append('unique')
             if self.model_creation_services.infer_primary_key:
-                print(f'ApiLogicServer infer_primary_key for {column.table.name}.{column.name}')
+                # print(f'ApiLogicServer infer_primary_key for {column.table.name}.{column.name}')
                 column.primary_key = True
                 kwarg.append('primary_key')
         elif has_index:
