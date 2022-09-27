@@ -17,7 +17,7 @@ if [ $# -eq 0 ]
 
 if [ "$1" = "venv" ]
     then
-        read -p "Press [Enter] to remove / reinstall ${ApiLogicServer}/venv (deactivate first) > "
+        read -p "Press [Enter] to remove / reinstall ${ApiLogicServer}/venv & projects(deactivate first) > "
 
         rm -r ${ApiLogicServer}
         mkdir ${install}/ApiLogicServer
