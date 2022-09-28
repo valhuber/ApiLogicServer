@@ -497,7 +497,7 @@ class CodeGenerator(object):
             # Tables vs. Classes ********
             # Only form model classes for tables that have a primary key and are not association
             # tables
-            if "productvariantsoh-20190423" in (table.name + "") or "KeyTest" in (table.name + ""):
+            if "productvariantsoh-20190423" in (table.name + "") or "unique_no_key" in (table.name + ""):
                 debug_str = "target table located"
             """ create classes iff unique col - CAUTION: fails to run """
             has_unique_constraint = False
