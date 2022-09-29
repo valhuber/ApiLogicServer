@@ -1,5 +1,5 @@
 --
--- PostgreSQL database dump
+-- PostgreSQL database dump  https://github.com/pthom/northwind_psql/blob/master/northwind.sql
 --
 
 SET statement_timeout = 0;

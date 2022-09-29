@@ -79,9 +79,18 @@
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/api_logic_server_cli",
+            "justMyCode": false,
             "program": "cli.py",
             "redirectOutput": true,
-            "args": ["create","--project_name=../../servers/postgres","--db_url=postgresql://postgres:p@10.0.0.236/postgres"],
+            "args": ["create","--project_name=../../servers/postgres","--db_url=postgresql://postgres:p@localhost/postgres"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "5a - Debug Postgres",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/../servers/install/ApiLogicServer/postgres/api_logic_server_run.py",
+            "redirectOutput": true,
             "console": "integratedTerminal"
         },
         {
