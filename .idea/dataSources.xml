@@ -27,7 +27,7 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="Microsoft SQL Server" uuid="b1c39a13-4866-4ba6-97a2-bbb265fc7682">
+    <data-source source="LOCAL" name="Microsoft - Sample" uuid="b1c39a13-4866-4ba6-97a2-bbb265fc7682">
       <driver-ref>sqlserver.ms</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
@@ -77,6 +77,13 @@
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/tests/sqlite-databases/unique_keys.sqlite</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="Microsoft - Northwind" uuid="1c4dfb03-0f9d-4884-b0f5-21468204df4b">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://localhost:1433;database=NORTHWND</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

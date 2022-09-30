@@ -241,6 +241,8 @@ Important considerations for SQLAlchemy URIs:
 --db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
 ```
 
+* In VSCode launch configurations, the `db_url` fails, a situation I have resolved and would welcome help on...
+
 &nbsp;
 
 # Managing Database in your IDE
