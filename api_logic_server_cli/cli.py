@@ -13,10 +13,10 @@ See end for key module map quick links...
 
 """
 
-__version__ = "6.01.08"
+__version__ = "6.01.09"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t09/26/2022 - 06.01.08: Option infer_primary_key, cleanup database open, api creation, port still str \n"\
+    "\t09/30/2022 - 06.01.09: Option infer_primary_key, 9/30 sra, cleanup db open, api creation \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
     "\t09/03/2022 - 06.00.07: Codespaces - create to '.' or './', preserve readme, perform_customizations \n"\
