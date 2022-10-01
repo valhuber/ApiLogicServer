@@ -13,7 +13,7 @@ caution: SqlServer url depends on install of pyodbc (18 requires &Encrypt=no)
     pip
     ===
 
-    sh create-servers.sh create  # rebuilds ApiLogicProject, classicmodels [if arg2: postgres, sqlserver, sqlserver-types]
+    sh create-servers.sh create go # rebuilds ApiLogicProject, classicmodels [if arg2: postgres, sqlserver, sqlserver-types]
     
     then, to test the servers (same cmd window)...
         
