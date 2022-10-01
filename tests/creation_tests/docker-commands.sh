@@ -8,6 +8,8 @@ ApiLogicServer create --project_name=/localhost/sakila --db_url=mysql+pymysql://
 
 ApiLogicServer create --project_name=/localhost/chinook --db_url=mysql+pymysql://root:p@mysql-container/Chinook
 
+ApiLogicServer create --project_name=/localhost/postgres --db_url=postgresql://postgres:p@postgresql-container/postgres
+
 if [ $# -eq 1 ]
 
     then
@@ -19,5 +21,5 @@ if [ $# -eq 1 ]
 
     else
 
-        echo "\n*** Short version - MySQL only ***\n"
+        echo "\n*** Short version - no MS SqlServer ***\n"
 fi
