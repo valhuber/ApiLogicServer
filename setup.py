@@ -88,9 +88,10 @@ setup(
         "cryptography==36.0.1",
         "requests==2.27.1",
         "dotmap==1.3.25",
-#        "psycopg2-binary==2.9.3",
+        "psycopg2-binary==2.9.3",
         "WTForms==2.3.3",
-        "alembic==1.7.7"
+        "alembic==1.7.7",
+        "GeoAlchemy2==0.12.5"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
