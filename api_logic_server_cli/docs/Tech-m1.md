@@ -56,4 +56,8 @@ Update: as of Oct 2022, the most recent release of `psycopg2` provides ARM suppo
 
 ## Docker Databases - MySQL/Postgres run, Sql Server Fails
 
-The [Docker database images](..Database-Connectivity/) work for M1 Macs, __except SQL/Server__ (it fails to start).
+The [Docker database images](..Database-Connectivity/) work for M1 Macs, __except SQL/Server__ (it fails to start).  There appear to be solutions:
+
+* [ODBC Driver](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16)
+
+* [SQL/Server](https://medium.com/geekculture/docker-express-running-a-local-sql-server-on-your-m1-mac-8bbc22c49dc9)
