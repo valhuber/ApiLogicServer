@@ -52,13 +52,14 @@ if [ $# -eq 0 ]
                         then
                             echo 'rebuild-from-database.. null merge properly handled'
                         else
-                            more ${project}/ui/admin/admin-merge.yaml
-                            echo '..rebuild-from-database failed - did not see "new_resources: " in admin-merge.yaml'
-                            exit 1
+                            echo 'rebuild-from-database.. no new_resources'
+                            # more ${project}/ui/admin/admin-merge.yaml
+                            # echo '..rebuild-from-database failed - did not see "new_resources: " in admin-merge.yaml'
+                            # exit 1
                         fi
                     fi
                 else
-                    read -p "Error - file admin-merge.yaml not in ${project}/ui/admin -- Press [Enter] to proceed> "
+                    read -p "Error rebuild-from-database - file admin-merge.yaml not in ${project}/ui/admin -- Press [Enter] to proceed> "
                     exit 1
                 fi
 
@@ -69,7 +70,7 @@ if [ $# -eq 0 ]
             if [ -e ${project}/ui/admin/admin-merge.yaml ]
                 then
                     echo "rebuild-from-model ok - admin-merge.yaml exists "
-                    if grep -q "new_resources: 'CategoryNew '" ${project}/ui/admin/admin-merge.yaml
+                    if grep -q CategoryNew ${project}/ui/admin/admin-merge.yaml
                         then
                             echo '..rebuild-from-model contains new resource'
                         else
@@ -78,7 +79,7 @@ if [ $# -eq 0 ]
                             exit 1
                         fi                    
                 else
-                    read -p "Error - file admin-merge.yaml not in ${project}/ui/admin -- Press [Enter] to proceed> "
+                    read -p "Error rebuild-from-model - file admin-merge.yaml not in ${project}/ui/admin -- Press [Enter] to proceed> "
                     exit 1
                 fi
             

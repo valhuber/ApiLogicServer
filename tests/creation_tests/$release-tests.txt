@@ -79,7 +79,7 @@ Logic - Allocation
 ==================
 
 cd ~/dev/ApiLogicServer/tests/allocation_test  # runs from dev env (no venv)
-sh setup_allocation.sh create  # creates/starts server, then follow directions to run test...
+sh setup_allocation.sh create  # creates/starts server, then follow directions below to run test...
 
 open another cmd window...
 cd ~/dev/servers/install/ApiLogicServer/Allocation/test  # ../../../servers/install/ApiLogicServer/Allocation/test
@@ -95,3 +95,7 @@ Create, test admin + swagger, Behave:
     Windows: ApiLogicServer, for pip and docker
 
     Linux: ApiLogicServer
+
+    Codespaces
+
+

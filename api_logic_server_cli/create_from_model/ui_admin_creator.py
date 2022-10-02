@@ -513,19 +513,22 @@ class AdminCreator(object):
             else:
                 time_diff = 1000  # linux never captures ctime (!), so we must preserve possible chgs
 
-            if enable_rebuild_unaltered and time_diff < 5:
-                write_file = "Rebuild - overwrite unaltered"  # caution - serious step
+            if time_diff >= 5:
+                write_file = "Rebuild - preserve altered admin.yaml"
             else:
-                write_file = "Rebuild - preserve"
+                write_file = "Rebuild - preserve unaltered admin.yaml (cp admin-merge.yaml admin.yaml)"
 
-        if write_file == "Rebuild - preserve":
+        if write_file.startswith("Rebuild"):
             yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
             print(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
             merge_yaml = self.create_yaml_merge()
             admin_merge_yaml_dump = yaml.dump(merge_yaml)
             with open(yaml_merge_file_name, 'w') as yaml_merge_file:
                 yaml_merge_file.write(admin_merge_yaml_dump)
-        else:
+            if write_file.startswith("Rebuild - overwrite"):
+                print(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
+            
+        if write_file == "Write":  #  or write_file.startswith("Rebuild - overwrite"):  # more drastic approach
             print(f'.. .. ..{write_file} {yaml_file_name}')
             with open(yaml_file_name, 'w') as yaml_file:
                 yaml_file.write(admin_yaml_dump)
