@@ -109,13 +109,13 @@ source venv/bin/activate   # windows venv\Scripts\activate
 venv\Scripts\activate      # mac/linux: source venv/bin/activate
 python -m pip install ApiLogicServer
 
-ApiLogicServer create      # create, or create-and-run; accept defaults
+ApiLogicServer create-and-run      # create, or create-and-run; accept defaults
 ```
 &nbsp;
 
 ## Execute
 
-Your system is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](Tutorial/), the recommended quick start for API Logic Server.
+Your server is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](Tutorial/), the recommended quick start for API Logic Server.
 
 &nbsp;
 
