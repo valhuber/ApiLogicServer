@@ -247,6 +247,10 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, restore postgres dvr
+
+09/15/2022 - 06.01.00: Multi-app Projects
+
 08/28/2022 - 06.00.00: Admin App show_when, cascade add. Simplify Codespaces swagger url & use default config
 
 08/15/2022 - 05.03.33: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45)
