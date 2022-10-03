@@ -34,6 +34,7 @@ nav:
     - "TDD-based Approach": "Logic-Tutorial.md"
   - Database:
     - Data-Model-Classes.md
+    - Data-Model-Keys.md
     - Data-Model-Customization.md
     - "Connection Examples": Database-Connectivity.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
