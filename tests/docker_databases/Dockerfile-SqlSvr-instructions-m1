@@ -43,6 +43,14 @@
 
 # docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr-m1
 
-# docker commit sqlsvr-container sqlsvr-image-m1
-# docker tag sqlsvr-image-m1 apilogicserver/sqlsvr-m1:version1.0.1
+# docker commit sqlsvr-container sqlsvr-m1
+# docker tag sqlsvr-m1 apilogicserver/sqlsvr-m1:version1.0.1
 # docker push apilogicserver/sqlsvr-m1:version1.0.1
+
+# Upgrade
+
+# docker commit sqlsvr-container sqlsvr-m1
+# docker tag sqlsvr-m1 apilogicserver/sqlsvr-m1:version1.0.2
+# docker push apilogicserver/sqlsvr-m1:version1.0.2
+# repeat for latest
+# docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr-m1:latest
