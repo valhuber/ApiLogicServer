@@ -180,7 +180,7 @@ Obtained from [pthom at git](https://github.com/pthom/northwind_psql).
 Installed in Docker per [these instructions](https://dev.to/shree_j/how-to-install-and-run-psql-using-docker-41j2).
 
 ```
-docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version1.0.2
+docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version2.0.0
 ```
 
 Run under API Logic Server docker:
@@ -197,10 +197,14 @@ docker run --name pgadmin -p 5050:5050 thajeztah/pgadmin4
 
 JDBC (for tools): `postgresql://postgres:p@10.0.0.234/postgres`
 
-Also note the datatype ```bpchar``` (blank-padded char) results in several evidently benign messages like:
+#### Version Update: 2.0.0
+
+In prior versions, note the datatype ```bpchar``` (blank-padded char) results in several evidently benign messages like:
 ```
 packages/sqlalchemy/dialects/postgresql/base.py:3185: SAWarning: Did not recognize type 'bpchar' of column 'customer_id'
 ```
+
+The current version uses 
 
 &nbsp;
 
