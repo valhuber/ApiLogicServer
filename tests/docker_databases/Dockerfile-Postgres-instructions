@@ -21,6 +21,12 @@
 
 # Now convert container to image
 
+# docker commit postgresql-container postgresql-image-nw
+# docker tag postgresql-image-nw apilogicserver/postgres:version2.0.0
+# docker push apilogicserver/postgres:version2.0.0
+# docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version2.0.0
+
+
 # docker commit pg-container postgresql-image-nw
 # docker tag postgresql-image-nw apilogicserver/postgres:version1.0.2
 # docker push apilogicserver/postgres:version1.0.2
