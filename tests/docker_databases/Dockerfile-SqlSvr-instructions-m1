@@ -1,0 +1,48 @@
+# create a SqlSvr for m1 that stores data in the container, not a volume (not working)
+
+# remove x86 info....
+#    ApiLogicServer create --project_name=/localhost/sqlserver --db_url=mssql+pyodbc://sa:posey386\!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\&trusted_connection=no
+
+# docker pull mcr.microsoft.com/mssql/server
+# docker run --name sqlsvr -e 'HOMEBREW_NO_ENV_FILTERING=1' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=posey386!' -p 1433:1433 -d mcr.microsoft.com/mssql/server
+#    docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr:version1.0.0
+
+# x86 tests.. 
+# ApiLogicServer create --project_name=sqlserver \
+    --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+
+
+
+# ref: https://medium.com/geekculture/docker-express-running-a-local-sql-server-on-your-m1-mac-8bbc22c49dc9
+# https://www.linkedin.com/in/merken/
+
+# docker run -e "ACCEPT_EULA=1" -e "MSSQL_SA_PASSWORD=MyPass@word" -e "MSSQL_PID=Developer" -e "MSSQL_USER=SA" -p 1433:1433 -d --name=sql mcr.microsoft.com/azure-sql-edge
+
+# ApiLogicServer create --project_name=SqlServer --db_url='mssql+pyodbc://sa:MyPass@word@sql:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\&trusted_connection=no'
+
+# ApiLogicServer create --project_name=SqlServer --db_url='mssql+pyodbc://sa:MyPass@word@sql:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server\&trusted_connection=no&Encrypt=no'
+
+# docker run -e "ACCEPT_EULA=1" -e "MSSQL_SA_PASSWORD=posey386!" -e "MSSQL_PID=Developer" -e "MSSQL_USER=sa" -p 1433:1433 -d --name=sql mcr.microsoft.com/azure-sql-edge
+
+
+# ref: https://whodeenie.medium.com/installing-pyodbc-and-unixodbc-for-apple-silicon-8e238ed7f216
+# ???
+
+# Now set up your sqlsvr database using Azure Data Studio
+
+#    northwind - thanks, Doug: https://douglaskline.blogspot.com/2020/09/restoring-sql-server-db-backup-to.html
+#       paste test data from tests/sql_server/northwind.sql
+#    SampleDB
+#       from tests/sql_server/SampleDB.sql
+
+# access Azure Data Studio Backups of docker db
+# docker cp ~/dev/ApiLogicServer/tests/sql_server/SampDB-Backup sqlsvr-container:/var/opt/mssql/data/SampleDB-Backup.bak
+
+
+# Now convert container to image
+
+# docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr-m1
+
+# docker commit sqlsvr-container sqlsvr-image-m1
+# docker tag sqlsvr-image-m1 apilogicserver/sqlsvr-m1:version1.0.1
+# docker push apilogicserver/sqlsvr-m1:version1.0.1

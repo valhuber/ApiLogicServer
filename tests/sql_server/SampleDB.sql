@@ -1,6 +1,9 @@
 CREATE DATABASE [SampleDB]
 go
 
+use SampleDB
+go
+
 create table DataTypes
 (
 	[Key] nvarchar(10) not null
