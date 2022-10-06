@@ -175,7 +175,7 @@ ApiLogicServer create --project_name=/localhost/chinook --db_url=mysql+pymysql:/
 
 ## Northwind - Postgres / Docker
 
-Obtained from [pthom at git](https://github.com/pthom/northwind_psql).
+Obtained from [pthom at git](https://github.com/pthom/northwind_psql) - many thanks!
 
 Installed in Docker per [these instructions](https://dev.to/shree_j/how-to-install-and-run-psql-using-docker-41j2).
 
