@@ -73,8 +73,8 @@
             "argsExpansion": "none",
             "args": ["create",
                 "--project_name=../../servers/SqlServer",
-                "--db_url=SqlServer     - see cli#def get_abs_db_url(msg, db_url)"],
-            "console": "integratedTerminal"
+                "--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"],
+            "console": "internalConsole" // allows special char '?' -- output goes to DEBUG CONSOLE
         },
         {
             "name": "4 - Create Sql/Server - ARM",
@@ -87,7 +87,7 @@
             "args": ["create",
                 "--project_name=../../servers/SqlServer",
                 "--db_url=SqlServer-arm - see cli#def get_abs_db_url(msg, db_url)"],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal" 
         },
         {
             "name": "5 - Create Postgres",
