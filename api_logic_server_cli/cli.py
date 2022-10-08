@@ -632,7 +632,7 @@ def get_abs_db_url(msg, db_url):
     if rtn_abs_db_url.startswith('SqlServer-arm'):
         rtn_abs_db_url = 'mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
     elif rtn_abs_db_url.startswith('SqlServer'):
-        rtn_abs_db_url = 'mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+        rtn_abs_db_url = 'mssql+pyodbc://sa:posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
 
     if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
         # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'

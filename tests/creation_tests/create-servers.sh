@@ -45,10 +45,10 @@ if [ "$1" = "create" ]
             # sort fields must not use images, large text (eg, just use names for category, customer)
 
             ApiLogicServer create --project_name=sqlserver \
-               --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+               --db_url='mssql+pyodbc://sa:posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
 
             ApiLogicServer create --project_name=sqlserver-types \
-               --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no' \
+               --db_url='mssql+pyodbc://sa:posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no' \
                --extended_builder=  
 
          else

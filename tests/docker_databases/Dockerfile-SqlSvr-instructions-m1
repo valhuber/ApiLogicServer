@@ -1,12 +1,12 @@
 # create a SqlSvr for m1 that stores data in the container, not a volume (not working)
 
 # docker pull mcr.microsoft.com/mssql/server
-# docker run --name sqlsvr -e 'HOMEBREW_NO_ENV_FILTERING=1' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=posey386!' -p 1433:1433 -d mcr.microsoft.com/mssql/server
+# docker run --name sqlsvr -e 'HOMEBREW_NO_ENV_FILTERING=1' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=posey3861' -p 1433:1433 -d mcr.microsoft.com/mssql/server
 #    docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr:version1.0.0
 
 # x86 tests.. 
 # ApiLogicServer create --project_name=sqlserver \
-    --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+    --db_url='mssql+pyodbc://sa:posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
 
 
 
@@ -19,7 +19,7 @@
 
 # ApiLogicServer create --project_name=SqlServer --db_url='mssql+pyodbc://sa:MyPass@word@sql:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server\&trusted_connection=no&Encrypt=no'
 
-# docker run -e "ACCEPT_EULA=1" -e "MSSQL_SA_PASSWORD=posey386!" -e "MSSQL_PID=Developer" -e "MSSQL_USER=sa" -p 1433:1433 -d --name=sql mcr.microsoft.com/azure-sql-edge
+# docker run -e "ACCEPT_EULA=1" -e "MSSQL_SA_PASSWORD=posey3861" -e "MSSQL_PID=Developer" -e "MSSQL_USER=sa" -p 1433:1433 -d --name=sql mcr.microsoft.com/azure-sql-edge
 
 
 # ref: https://whodeenie.medium.com/installing-pyodbc-and-unixodbc-for-apple-silicon-8e238ed7f216

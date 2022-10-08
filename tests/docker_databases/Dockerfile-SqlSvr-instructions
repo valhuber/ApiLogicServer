@@ -3,7 +3,7 @@
 # ref: https://www.microsoft.com/en-us/sql-server/developer-get-started/python/mac
 
 # docker pull mcr.microsoft.com/mssql/server
-# docker run --name sqlsvr -e 'HOMEBREW_NO_ENV_FILTERING=1' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=posey386!' -p 1433:1433 -d mcr.microsoft.com/mssql/server
+# docker run --name sqlsvr -e 'HOMEBREW_NO_ENV_FILTERING=1' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=posey3861' -p 1433:1433 -d mcr.microsoft.com/mssql/server
 
 
 # Now set up your sqlsvr database using Azure Data Studio

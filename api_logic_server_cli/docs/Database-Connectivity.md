@@ -14,7 +14,7 @@ Examples:
   ApiLogicServer create-and-run
   ApiLogicServer create-and-run --db_url=sqlite:///nw.sqlite
   ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels --project_name=/localhost/docker_db_project
-  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no
+  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no
   ApiLogicServer create-and-run --db_url=postgresql://postgres:p@10.0.0.234/postgres
   ApiLogicServer create --project_name=my_schema --db_url=postgresql://postgres:p@localhost/my_schema
   ApiLogicServer create --db_url=postgresql+psycopg2://postgres:password@localhost:5432/postgres?options=-csearch_path%3Dmy_db_schema
@@ -85,7 +85,7 @@ You can also use the `pip` install version.  Differences to note:
 * Note related in install procedure, the SqlServer example illustrates you can single-quote the url, instead of using the `\` escapes
 
 ```
-ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
+ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no'
 
 ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
 
@@ -218,10 +218,10 @@ docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicser
 
 Then, under API Logic Server, Docker installed:
 ```
-ApiLogicServer create --project_name=/localhost/sqlserver --db_url=mssql+pyodbc://sa:posey386\!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\&trusted_connection=no
+ApiLogicServer create --project_name=/localhost/sqlserver --db_url=mssql+pyodbc://sa:posey3861@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+17+for+SQL+Server\&trusted_connection=no
 ```
 
-You will probably also want to get [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15), and configure a connection like this (password: posey386!):
+You will probably also want to get [Azure Data Studio](https://docs.microsoft.com/en-us/sql/azure-data-studio/download-azure-data-studio?view=sql-server-ver15), and configure a connection like this (password: posey3861):
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/databases/sqlsvr-conn.png"></figure>
 
@@ -234,7 +234,7 @@ Important considerations for SQLAlchemy URIs:
 * It depends on the version of ODBC Driver; for example, a more recent version is:
 
 ```
-  mssql+pyodbc://sa:posey386!@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no
+  mssql+pyodbc://sa:posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no
 ```
 
 * Observe the additional parameter for encryption ([see here](https://stackoverflow.com/questions/71587239/operationalerror-when-trying-to-connect-to-sql-server-database-using-pyodbc))
@@ -242,7 +242,7 @@ Important considerations for SQLAlchemy URIs:
 * On Linux (and inside docker), the URI is:
 
 ```bash
---db_url='mssql+pyodbc://sa:posey386!@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+--db_url='mssql+pyodbc://sa:posey3861@sqlsvr-container:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
 ```
 
 * In VSCode launch configurations, the `db_url` fails, a situation I have resolved and would welcome help on...
