@@ -33,6 +33,11 @@ if [ "$1" = "create" ]
       ApiLogicServer create --project_name=postgres \
          --db_url=postgresql://postgres:p@localhost/postgres
 
+      
+      ApiLogicServer create --project_name=sqlserver \
+         --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+
+
       if [ $# -eq 2 ]
          then
 
