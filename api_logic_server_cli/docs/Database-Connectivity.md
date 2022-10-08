@@ -180,7 +180,7 @@ Obtained from [pthom at git](https://github.com/pthom/northwind_psql) - many tha
 Installed in Docker per [these instructions](https://dev.to/shree_j/how-to-install-and-run-psql-using-docker-41j2).
 
 ```
-docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version2.0.0
+docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version2.0.1
 ```
 
 Run under API Logic Server docker:
