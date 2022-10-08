@@ -6,7 +6,7 @@ import sqlalchemy
 
 """
     Example
-        APILogicServer run --project_name='~/dev/servers/sqlserver-types' --db_url='mssql+pyodbc://sa:posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no' --extended_builder='*'
+        APILogicServer run --project_name='~/dev/servers/sqlserver-types' --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no' --extended_builder='*'
 """
 
 

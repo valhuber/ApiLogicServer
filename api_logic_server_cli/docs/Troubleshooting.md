@@ -96,7 +96,7 @@ The system will log errors and attempt to proceed with project creation.  You ca
 ```
 ApiLogicServer rebuild-from-model\
 --project_name=~/dev/servers/sqlserver-types\
---db_url=mssql+pyodbc://sa:posey3861@localhost:1433/SampleDB?\driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no
+--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?\driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no
 ```
 3. You will most likely want to activate the api and app files:
    * `api/expose_api_models_created.py` - this file is not used in actual operation, but provided so you can merge or copy it over `api/expose_api_models.py`

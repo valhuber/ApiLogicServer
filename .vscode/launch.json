@@ -149,7 +149,7 @@
             "program": "cli.py",
             "redirectOutput": true,
             "argsExpansion": "none",
-            "args": ["create-and-run","--project_name=../../servers/SqlServer","--db_url=mssql+pyodbc://sa:posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"],
+            "args": ["create-and-run","--project_name=../../servers/SqlServer","--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"],
             "console": "integratedTerminal"
         },
         {
@@ -247,7 +247,7 @@
             "program": "cli.py",
             "redirectOutput": true,
             "argsExpansion": "none",
-            "args": ["create","--project_name=../../servers/sqlserver-types","--db_url=mssql+pyodbc://sa:posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no", "--extended_builder=*"],
+            "args": ["create","--project_name=../../servers/sqlserver-types","--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no", "--extended_builder=*"],
             "console": "integratedTerminal"
         },
         {
