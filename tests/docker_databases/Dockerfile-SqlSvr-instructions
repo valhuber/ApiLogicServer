@@ -16,6 +16,8 @@
 
 # Now convert container to image
 
-# docker commit sqlsvr sqlsvr-image
-# docker tag sqlsvr-image apilogicserver/sqlsvr:version1.0.0
-# docker push apilogicserver/sqlsvr:version1.0.0
+# docker commit sqlsvr-container sqlsvr-image
+# docker tag sqlsvr-image apilogicserver/sqlsvr:version2.0.1
+# docker push apilogicserver/sqlsvr:version2.0.1
+
+
