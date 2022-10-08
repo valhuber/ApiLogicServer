@@ -44,6 +44,25 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         return jsonify({"result": f'hello, {user}'})
 
 
+    @app.route('/kill')
+    def stop():  # test it with: http://localhost:5656/kill?msg=API Kill - Kill API Logic Server
+        """
+        Use this to kill the server from the Browser.
+
+        See: https://stackoverflow.com/questions/15562446/how-to-stop-flask-application-without-using-ctrl-c
+
+        See: https://github.com/thomaxxl/safrs/wiki/Customization
+        """
+
+        import os, signal
+
+        msg = request.args.get('msg')
+        app_logger.info(f'\nStopped server: {msg}\n')
+
+        os.kill(os.getpid(), signal.SIGINT)
+        return jsonify({ "success": True, "message": "Server is shutting down..." })
+
+
     @app.route('/server_log')
     def server_log():
         """

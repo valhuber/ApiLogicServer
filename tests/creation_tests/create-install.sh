@@ -28,6 +28,7 @@ if [ "$1" = "venv" ]
         echo "  source ${ApiLogicServer}/venv/bin/activate  # ;a"
         echo "  python3 -m pip install pyodbc"
         echo "  python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==6.01.16"
+        echo "  python3 -m pip install /Users/val/dev/ApiLogicServer"
 
         echo " "
     fi
