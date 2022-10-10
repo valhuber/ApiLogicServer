@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "REBUILD AND TEST",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/tests",
+            "program": "test_all.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["create","--project_name=../../servers/ApiLogicProject","--db_url="],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "0 - Create and Run ApiLogicProject",
             "type": "python",
             "request": "launch",
