@@ -1,4 +1,6 @@
-import subprocess, os, sys
+import subprocess, os
+from sys import platform
+from subprocess import DEVNULL, STDOUT, check_call
 from pathlib import Path
 # import api_logic_server_cli.create_from_model.api_logic_server_utils as create_utils
 
@@ -7,22 +9,29 @@ def find_valid_python_name() -> str:
     '''
         sigh.  On *some* macs, python fails so we must use python3.
         
-        return 'python3' in this case
+        return 'python3' in this case (alert - python works if in venv!)
     '''
-    python3_worked = False
-    try:
-        result_b = subprocess.check_output('python --version', shell=True, stderr=subprocess.STDOUT)
-    except Exception as e:
+    find_by = "os"  # "exec", "os"
+    if find_by == "exec":
         python3_worked = False
         try:
-            result_b = subprocess.check_output('python3 --version', shell=True, stderr=subprocess.STDOUT)
-        except Exception as e1:
+            result_b = subprocess.check_output('python --version', shell=True, stderr=subprocess.STDOUT)
+        except Exception as e:
             python3_worked = False
-        python3_worked = True
-    if python3_worked:
-        return "python3"
-    else:
-        return "python"
+            try:
+                result_b = subprocess.check_output('python3 --version', shell=True, stderr=subprocess.STDOUT)
+            except Exception as e1:
+                python3_worked = False
+            python3_worked = True
+        if python3_worked:
+            return "python3"
+        else:
+            return "python"
+    elif find_by == "os":
+        if platform == "darwin":
+            return 'python3'
+        else:
+            return 'python'
 
 def get_api_logic_server_path() -> Path:
     """
@@ -71,70 +80,79 @@ def delete_dir(dir_path, msg):
                 print("Error: %s : %s" % (dir_path, e.strerror))
 
 
-def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
-    """ run shell command
+def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
+    """ run shell command (waits)
 
     :param cmd: string of command to execute
-    :param env:
     :param msg: optional message (no-msg to suppress)
+    :param cwd: path to current working directory
     :return:
     """
 
-    from subprocess import DEVNULL, STDOUT, check_call
-
-    if cmd.startswith('python'):
-        valid_python_name = find_valid_python_name()
-        cmd = cmd.replace("python", valid_python_name)
-    log_msg = ""
-    if msg != "Execute command:":
-        log_msg = msg + " with command:"
-    if msg == "no-msg":
-        log_msg = ""
-    else:
-        print(f'{log_msg} {cmd}')
-    if new_line:
-        print("")
-
+    print(f'{msg}, with command: {cmd}')
     result_b = None
     try:
-        result_b = subprocess.check_output(
-            cmd,
-            shell=True,
-            cwd=cwd,
-            stderr=subprocess.STDOUT) # , stderr=subprocess.STDOUT)  # causes hang on docker
+        result_b = subprocess.check_output(cmd, shell=True, cwd=cwd, stderr=subprocess.STDOUT)
         result = str(result_b)  # b'pyenv 1.2.21\n' 
         result = result[2: len(result) - 3]
-        tab_to = 20 - len(cmd)
-        spaces = ' ' * tab_to
-        if msg == "no-msg":
-            pass
-        elif result != "" and result != "Downloaded the skeleton app, good coding!":
-            pass
-            print(f'{log_msg} {cmd}')  #  result: {spaces}{result}')]
+        spaces = ' ' * (20 - len(cmd))
+        print(f'{msg} {cmd}')  #  result: {spaces}{result}')]
     except:
         print(f'\n\n*** Failed on {cmd}')
         raise
     return result
 
-api_logic_server_path_str = get_api_logic_server_path()
+
+# ***************************
+# MAIN CODE
+# ***************************
+
+# api_logic_server_path_str = get_api_logic_server_path()
 # os.chdir(api_logic_server_path_str)
 
-run_command(f'echo "start"; pwd; ls; echo "end"', msg="\nMulti-Cmd Lines")
+# run_command(f'echo "start"; pwd; ls; echo "end"', msg="\nMulti-Cmd Lines")
 
 # run_command(f'python3 setup.py sdist bdist_wheel', msg="\nBuild Wheel", cwd=get_api_logic_server_path())
 
+python = find_valid_python_name()  # geesh - allow for python vs python3
+
+do_install_api_logic_server = False
+do_create_api_logic_project = False
+do_run_api_logic_project = False
+do_test_api_logic_project = True
+
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
-if os.path.exists(install_api_logic_server_path):
-    delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
-os.mkdir(install_api_logic_server_path)
+api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
 
-run_command(f'python3 -m venv venv; source venv/bin/activate; python3 -m pip install /Users/val/dev/ApiLogicServer',
-    cwd=install_api_logic_server_path,
-    msg="\nCreate venv")
+if do_install_api_logic_server:
+    if os.path.exists(install_api_logic_server_path):
+        delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
+    os.mkdir(install_api_logic_server_path)
 
-run_command(f'source venv/bin/activate; ApiLogicServer create --project_name=ApiLogicProject --db_url=',
-    cwd=install_api_logic_server_path,
-    msg="\nCreate venv")
+    run_command(f'{python} -m venv venv; source venv/bin/activate; python3 -m pip install /Users/val/dev/ApiLogicServer',
+        cwd=install_api_logic_server_path,
+        msg="\nInstall ApiLogicServer")
 
-server = subprocess.Popen(['python3','ApiLogicProject/api_logic_server_run.py'])
-print(f'\n\nserver running - server: {str(server)}\n')
+if do_create_api_logic_project:
+    run_command(f'source venv/bin/activate; ApiLogicServer create --project_name=ApiLogicProject --db_url=',
+        cwd=install_api_logic_server_path,
+        msg="\nCreate ApiLogicProject")
+
+if do_run_api_logic_project:
+    print(f'\n\nStarting Server...\n')
+    try:
+        server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
+                                cwd=api_logic_project_path)
+    except:
+        print("Popen failed")
+        raise
+    print(f'\nServer running - server: {str(server)}\n')
+
+if do_test_api_logic_project:
+    api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
+    api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
+    api_logic_project_logs_path_str = str(api_logic_project_logs_path)
+    api_logic_project_behave_path_str = str(api_logic_project_behave_path)
+    run_command(f'{python} behave_run.py --outfile={api_logic_project_logs_path_str}',
+        cwd=api_logic_project_behave_path,
+        msg="\nBehave Test Run")
