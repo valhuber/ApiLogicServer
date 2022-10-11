@@ -89,14 +89,14 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     :return:
     """
 
-    print(f'{msg}, with command: {cmd}')
+    print(f'{msg}, with command: \n{cmd}')
     result_b = None
     try:
         result_b = subprocess.check_output(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
         result = str(result_b)  # b'pyenv 1.2.21\n' 
         result = result[2: len(result) - 3]
         spaces = ' ' * (20 - len(cmd))
-        print(f'{msg} {cmd}')  #  result: {spaces}{result}')]
+        # print(f'{msg} {cmd}')  #  result: {spaces}{result}')]
     except:
         print(f'\n\n*** Failed on {cmd}')
         raise
@@ -107,22 +107,21 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
 # MAIN CODE
 # ***************************
 
-# api_logic_server_path_str = get_api_logic_server_path()
-# os.chdir(api_logic_server_path_str)
-
-# run_command(f'echo "start"; pwd; ls; echo "end"', msg="\nMulti-Cmd Lines")
-
-# run_command(f'python3 setup.py sdist bdist_wheel', msg="\nBuild Wheel", cwd=get_api_logic_server_path())
-
 python = find_valid_python_name()  # geesh - allow for python vs python3
 
 do_install_api_logic_server = True
 do_create_api_logic_project = True
 do_run_api_logic_project = True
 do_test_api_logic_project = True
+do_other_databases = True
 
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
 api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
+
+print("test_all 1.0 running")
+print(f'  Builds / Installs API Logic Server to api_logic_project_path: {api_logic_project_path}')
+print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
+print(f'  Creates other projects')
 
 if do_install_api_logic_server:
     if os.path.exists(install_api_logic_server_path):
@@ -166,3 +165,11 @@ if do_test_api_logic_project:
         file_contents = f.read()
         print (file_contents)
         f.close()
+    print("\nBehave tests - Success... (note - server still running)\n")
+
+if do_other_databases:
+    string = '''big long 
+    string'''
+    run_command('source venv/bin/activate; ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
