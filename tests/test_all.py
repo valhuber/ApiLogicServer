@@ -113,7 +113,8 @@ do_install_api_logic_server = True
 do_create_api_logic_project = True
 do_run_api_logic_project = True
 do_test_api_logic_project = True
-do_other_databases = True
+do_other_sqlite_databases = True
+do_docker_databases = True
 
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
 api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
@@ -131,6 +132,12 @@ if do_install_api_logic_server:
     run_command(f'{python} -m venv venv; source venv/bin/activate; python3 -m pip install /Users/val/dev/ApiLogicServer',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
+
+    run_command(
+        f'source venv/bin/activate; {python} -m pip install pyodbc',
+        cwd=install_api_logic_server_path,
+        msg=f'\nInstall pyodbc')
+
 
 if do_create_api_logic_project:
     run_command(f'source venv/bin/activate; ApiLogicServer create --project_name=ApiLogicProject --db_url=',
@@ -154,22 +161,46 @@ if do_test_api_logic_project:
         print("\nProceeding with Behave tests...\n")
         api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
         api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
-        api_logic_project_logs_path_str = str(api_logic_project_logs_path)
-        api_logic_project_behave_path_str = str(api_logic_project_behave_path)
-        run_command(f'{python} behave_run.py --outfile={api_logic_project_logs_path_str}',
+        run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
             cwd=api_logic_project_behave_path,
             msg="\nBehave Test Run")
     except:
-        print(f'\n\n** Behave Test failed\nHere is log from: {api_logic_project_logs_path_str}\n\n')
-        f = open(api_logic_project_logs_path_str, 'r')
+        print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
+        f = open(str(api_logic_project_logs_path), 'r')
         file_contents = f.read()
         print (file_contents)
         f.close()
     print("\nBehave tests - Success... (note - server still running)\n")
 
-if do_other_databases:
+if do_other_sqlite_databases:
     string = '''big long 
     string'''
     run_command('source venv/bin/activate; ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
+
+if do_docker_databases:
+    run_command(
+        "source venv/bin/activate; ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
+    
+    run_command(
+        "source venv/bin/activate; ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
+
+    run_command(
+        "source venv/bin/activate; ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
+ 
+    """
+      ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
+
+      ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
+    
+      ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+"""
+
+print("\n\nEND TESTS\n")
