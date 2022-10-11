@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os, time
 from sys import platform
 from subprocess import DEVNULL, STDOUT, check_call
 from pathlib import Path
@@ -116,9 +116,9 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
 
 python = find_valid_python_name()  # geesh - allow for python vs python3
 
-do_install_api_logic_server = False
-do_create_api_logic_project = False
-do_run_api_logic_project = False
+do_install_api_logic_server = True
+do_create_api_logic_project = True
+do_run_api_logic_project = True
 do_test_api_logic_project = True
 
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
@@ -131,12 +131,12 @@ if do_install_api_logic_server:
 
     run_command(f'{python} -m venv venv; source venv/bin/activate; python3 -m pip install /Users/val/dev/ApiLogicServer',
         cwd=install_api_logic_server_path,
-        msg="\nInstall ApiLogicServer")
+        msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
 
 if do_create_api_logic_project:
     run_command(f'source venv/bin/activate; ApiLogicServer create --project_name=ApiLogicProject --db_url=',
         cwd=install_api_logic_server_path,
-        msg="\nCreate ApiLogicProject")
+        msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
 if do_run_api_logic_project:
     print(f'\n\nStarting Server...\n')
@@ -150,6 +150,9 @@ if do_run_api_logic_project:
 
 if do_test_api_logic_project:
     try:
+        print("\nWaiting for server to start...")
+        time.sleep(10) 
+        print("\nProceeding with Behave tests...\n")
         api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
         api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
         api_logic_project_logs_path_str = str(api_logic_project_logs_path)

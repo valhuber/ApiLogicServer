@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.02.02"
+__version__ = "6.02.05"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t10/08/2022 - 06.02.02: SQL/Server url change, kill endpoint \n"\
+    "\t10/10/2022 - 06.02.05: SQL/Server url change, kill endpoint \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
