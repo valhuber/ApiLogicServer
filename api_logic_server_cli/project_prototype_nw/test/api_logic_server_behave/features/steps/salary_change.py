@@ -78,7 +78,7 @@ def step_impl(context):
     """
     Observe the use of `old_row
     `
-    > **Key Takeaway:** State Transsition Logic enabled per `old_row`
+    > **Key Takeaway:** State Transition Logic enabled per `old_row`
 
     """
     scenario_name = 'Raise Must be Meaningful'

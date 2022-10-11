@@ -690,7 +690,7 @@ Logic Phase:		COMMIT(session=0x113197cd0)   										 - 2022-04-24 11:30:23,444
    
 Observe the use of `old_row
 `
-> **Key Takeaway:** State Transsition Logic enabled per `old_row`
+> **Key Takeaway:** State Transition Logic enabled per `old_row`
 
 
 

@@ -74,7 +74,7 @@ for each_arg in sys.argv:
         args += ", "
 app_logger.info(f'\nAPI Logic Project Starting with args: \n.. {args}\n')
 app_logger.info(f'\nAPI Logic Project Creation:')
-app_logger.info(f'    By:\tapi_logic_server_version')
+app_logger.info(f'    By:\tAPI Logic Server api_logic_server_version')
 app_logger.info(f'    On:\tapi_logic_server_created_on')
 app_logger.info(f'    At:\t{str(current_path)}\n')
 
