@@ -27,6 +27,8 @@ if [ "$1" = "create" ]
 
       ApiLogicServer create --project_name=ApiLogicProject --db_url=
 
+      ApiLogicServer create --project_name=chinook_sqlite --db_url={install)/Chinook_Sqlite.sqlite}
+
       ApiLogicServer create --project_name=classicmodels \
          --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
 
