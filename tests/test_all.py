@@ -248,33 +248,28 @@ if do_allocation_test:
     pass
 
     src = api_logic_server_tests_path.joinpath('allocation_test').joinpath('Allocation-src')
-    dest = install_api_logic_server_path.joinpath('Allocation')
+    allocation_project_path = install_api_logic_server_path.joinpath('Allocation')
     recursive_overwrite(src = src,
-                        dest = str(dest))
+                        dest = str(allocation_project_path))
     print(f'\n\nStarting Server...\n')
     try:
         server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
-                                cwd=api_logic_project_path)
+                                cwd=allocation_project_path)
     except:
         print("Popen failed")
         raise
-    print(f'\nServer running - server: {str(server)}\n')
+    print(f'\nServer [Allocation] running - server: {str(server)}\n')
 
     try:
         print("\nWaiting for server to start...")
         time.sleep(10) 
-        print("\nProceeding with Behave tests...\n")
-        api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
-        api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
-        run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
-            cwd=api_logic_project_behave_path,
+        print("\nProceeding with Allocation tests...\n")
+        allocation_tests_path = allocation_project_path.joinpath('test')
+        run_command(f'sh test.sh',
+            cwd=allocation_tests_path,
             msg="\nBehave Test Run")
     except:
-        print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
-        f = open(str(api_logic_project_logs_path), 'r')
-        file_contents = f.read()
-        print (file_contents)
-        f.close()
-    print("\nBehave tests - Success... (note - server still running)\n")
+        print(f'\n\n** Allocation Test failed\n\n')
+    print("\nAllocation tests - Success... (note - server still running)\n")
 
 stop_server(msg="END ALLOCATION TEST\n")
