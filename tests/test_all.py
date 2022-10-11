@@ -92,7 +92,7 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     print(f'{msg}, with command: {cmd}')
     result_b = None
     try:
-        result_b = subprocess.check_output(cmd, shell=True, cwd=cwd, stderr=subprocess.STDOUT)
+        result_b = subprocess.check_output(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
         result = str(result_b)  # b'pyenv 1.2.21\n' 
         result = result[2: len(result) - 3]
         spaces = ' ' * (20 - len(cmd))
@@ -149,10 +149,17 @@ if do_run_api_logic_project:
     print(f'\nServer running - server: {str(server)}\n')
 
 if do_test_api_logic_project:
-    api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
-    api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
-    api_logic_project_logs_path_str = str(api_logic_project_logs_path)
-    api_logic_project_behave_path_str = str(api_logic_project_behave_path)
-    run_command(f'{python} behave_run.py --outfile={api_logic_project_logs_path_str}',
-        cwd=api_logic_project_behave_path,
-        msg="\nBehave Test Run")
+    try:
+        api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
+        api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
+        api_logic_project_logs_path_str = str(api_logic_project_logs_path)
+        api_logic_project_behave_path_str = str(api_logic_project_behave_path)
+        run_command(f'{python} behave_run.py --outfile={api_logic_project_logs_path_str}',
+            cwd=api_logic_project_behave_path,
+            msg="\nBehave Test Run")
+    except:
+        print(f'\n\n** Behave Test failed\nHere is log from: {api_logic_project_logs_path_str}\n\n')
+        f = open(api_logic_project_logs_path_str, 'r')
+        file_contents = f.read()
+        print (file_contents)
+        f.close()
