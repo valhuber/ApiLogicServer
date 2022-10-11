@@ -1,4 +1,7 @@
-import subprocess, os, time
+from re import A
+import subprocess, os, time, requests
+from shutil import copyfile
+import shutil
 from sys import platform
 from subprocess import DEVNULL, STDOUT, check_call
 from pathlib import Path
@@ -79,6 +82,40 @@ def delete_dir(dir_path, msg):
             else:
                 print("Error: %s : %s" % (dir_path, e.strerror))
 
+def recursive_overwrite(src: Path, dest: Path, ignore=None):
+    """
+    copyTree, with overwrite
+    thanks: https://stackoverflow.com/questions/12683834/how-to-copy-directory-recursively-in-python-and-overwrite-all
+
+    :param src: from path
+    :param dest: destinatiom path
+    """
+    if os.path.isdir(src):
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
+        files = os.listdir(src)
+        if ignore is not None:
+            ignored = ignore(src, files)
+        else:
+            ignored = set()
+        for f in files:
+            if f not in ignored:
+                recursive_overwrite(os.path.join(src, f),
+                                    os.path.join(dest, f),
+                                    ignore)
+    else:
+        shutil.copyfile(src, dest)
+
+def stop_server(msg: str):
+    pass
+    URL = "http://localhost:5656/kill"
+    PARAMS = {'msg': msg}
+    try:
+        r = requests.get(url = URL, params = PARAMS)
+    except:
+        print("..")
+
+    # print("\nServer Stopped")
 
 def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
     """ run shell command (waits)
@@ -109,20 +146,25 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
 
 python = find_valid_python_name()  # geesh - allow for python vs python3
 
-do_install_api_logic_server = True
-do_create_api_logic_project = True
-do_run_api_logic_project = True
-do_test_api_logic_project = True
-do_other_sqlite_databases = True
-do_docker_databases = True
+do_install_api_logic_server = False
+do_create_api_logic_project = False
+do_run_api_logic_project = False
+do_test_api_logic_project = False
+do_other_sqlite_databases = False
+do_docker_databases = False
+do_allocation_test = True
 
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
 api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
+api_logic_server_tests_path = os.path.abspath(Path(__file__).parent)
+api_logic_server_tests_path = Path(os.path.abspath(__file__)).parent
 
 print("test_all 1.0 running")
 print(f'  Builds / Installs API Logic Server to api_logic_project_path: {api_logic_project_path}')
 print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
 print(f'  Creates other projects')
+
+stop_server(msg="BEGIN TESTS\n")
 
 if do_install_api_logic_server:
     if os.path.exists(install_api_logic_server_path):
@@ -194,13 +236,45 @@ if do_docker_databases:
         "source venv/bin/activate; ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
- 
-    """
-      ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'
 
-      ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres
-    
-      ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
-"""
+stop_server(msg="END NW TESTS\n")
 
-print("\n\nEND TESTS\n")
+if do_allocation_test:
+    allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
+    allocation_url = f'sqlite:///{allocation_path}'
+    run_command(f'source venv/bin/activate; ApiLogicServer create --project_name=Allocation --db_url={allocation_url}',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate Allocation at: {str(install_api_logic_server_path)}')
+    pass
+
+    src = api_logic_server_tests_path.joinpath('allocation_test').joinpath('Allocation-src')
+    dest = install_api_logic_server_path.joinpath('Allocation')
+    recursive_overwrite(src = src,
+                        dest = str(dest))
+    print(f'\n\nStarting Server...\n')
+    try:
+        server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
+                                cwd=api_logic_project_path)
+    except:
+        print("Popen failed")
+        raise
+    print(f'\nServer running - server: {str(server)}\n')
+
+    try:
+        print("\nWaiting for server to start...")
+        time.sleep(10) 
+        print("\nProceeding with Behave tests...\n")
+        api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
+        api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
+        run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
+            cwd=api_logic_project_behave_path,
+            msg="\nBehave Test Run")
+    except:
+        print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
+        f = open(str(api_logic_project_logs_path), 'r')
+        file_contents = f.read()
+        print (file_contents)
+        f.close()
+    print("\nBehave tests - Success... (note - server still running)\n")
+
+stop_server(msg="END ALLOCATION TEST\n")
