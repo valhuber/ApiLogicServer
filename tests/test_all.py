@@ -123,13 +123,14 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     :param cmd: string of command to execute
     :param msg: optional message (no-msg to suppress)
     :param cwd: path to current working directory
-    :return:
+    :return: dict print(ret.stdout.decode())
     """
 
     print(f'{msg}, with command: \n{cmd}')
     result_b = None
     try:
-        result_b = subprocess.check_output(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
+        # result_b = subprocess.run(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
+        result_b = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True)
         result = str(result_b)  # b'pyenv 1.2.21\n' 
         result = result[2: len(result) - 3]
         spaces = ' ' * (20 - len(cmd))
@@ -137,7 +138,7 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     except:
         print(f'\n\n*** Failed on {cmd}')
         raise
-    return result
+    return result_b  # print(ret.stdout.decode())
 
 
 # ***************************
