@@ -146,17 +146,17 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
 
 python = find_valid_python_name()  # geesh - allow for python vs python3
 
-do_install_api_logic_server = False
-do_create_api_logic_project = False
-do_run_api_logic_project = False
-do_test_api_logic_project = False
-do_other_sqlite_databases = False
-do_docker_databases = False
-do_allocation_test = True
+default_setting = True  # simplify enable / disable most
+do_install_api_logic_server = default_setting
+do_create_api_logic_project = default_setting
+do_run_api_logic_project = default_setting
+do_test_api_logic_project = default_setting
+do_other_sqlite_databases = default_setting
+do_docker_databases = default_setting
+do_allocation_test = default_setting
 
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
 api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
-api_logic_server_tests_path = os.path.abspath(Path(__file__).parent)
 api_logic_server_tests_path = Path(os.path.abspath(__file__)).parent
 
 print("test_all 1.0 running")
@@ -171,7 +171,8 @@ if do_install_api_logic_server:
         delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
     os.mkdir(install_api_logic_server_path)
 
-    run_command(f'{python} -m venv venv; source venv/bin/activate; python3 -m pip install /Users/val/dev/ApiLogicServer',
+    api_logic_server_home_path = os.path.abspath(get_api_logic_server_path())
+    run_command(f'{python} -m venv venv; source venv/bin/activate; python3 -m pip install {str(api_logic_server_home_path)}',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
 
