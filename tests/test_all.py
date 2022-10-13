@@ -184,7 +184,11 @@ if do_install_api_logic_server:
         delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
     os.mkdir(install_api_logic_server_path, mode = 0o777)
 
-    api_logic_server_home_path = os.path.abspath(get_api_logic_server_path())
+    api_logic_server_home_path = api_logic_server_tests_path.parent
+    build_result = run_command(f'{python} setup.py sdist bdist_wheel',
+        cwd=api_logic_server_home_path,
+        msg=f'\nBuild ApiLogicServer at: {str(api_logic_server_home_path)}')
+
     run_command(f'{python} -m venv venv; {set_venv}; python3 -m pip install {str(api_logic_server_home_path)}',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
