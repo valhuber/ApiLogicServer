@@ -189,7 +189,7 @@ if do_install_api_logic_server:
         cwd=api_logic_server_home_path,
         msg=f'\nBuild ApiLogicServer at: {str(api_logic_server_home_path)}')
 
-    run_command(f'{python} -m venv venv; {set_venv}; python3 -m pip install {str(api_logic_server_home_path)}',
+    run_command(f'{python} -m venv venv; {set_venv}; {python} -m pip install {str(api_logic_server_home_path)}',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
 
