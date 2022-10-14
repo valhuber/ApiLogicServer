@@ -179,7 +179,7 @@ if debug_script:
     result_venv = run_command(f'pwd && {set_venv} && pip freeze',
         cwd=api_logic_server_install_path,
         msg=f'\nInstall ApiLogicServer at: {str(api_logic_server_install_path)}')
-    print(venv_ok.stdout.decode())  # should say pyodbc==4.0.34
+    print(result_venv.stdout.decode())  # should say pyodbc==4.0.34
 
 if do_install_api_logic_server:
     if os.path.exists(install_api_logic_server_path):
