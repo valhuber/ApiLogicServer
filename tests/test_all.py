@@ -152,6 +152,8 @@ set_venv = '. venv/bin/activate'
    https://github.com/valhuber/ubuntu-script-venv/blob/main/use-in-script.sh '''
 if platform == "win32":
     set_venv = "venv\\Scripts\\activate"
+db_ip = 'localhost'
+''' for virtual machine access, set this to host IP '''
 
 default_setting = True  # simplify enable / disable most
 do_install_api_logic_server = default_setting
@@ -244,22 +246,6 @@ if do_other_sqlite_databases:
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
 
-if do_docker_databases:
-    result_docker_mysql_classic = run_command(
-        f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'",
-        cwd=install_api_logic_server_path,
-        msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
-    
-    result_docker_postgres = run_command(
-        f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres",
-        cwd=install_api_logic_server_path,
-        msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
-
-    result_docker_sqlserver = run_command(
-        f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
-        cwd=install_api_logic_server_path,
-        msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
-
 stop_server(msg="END NW TESTS\n")
 
 if do_allocation_test:
@@ -274,6 +260,7 @@ if do_allocation_test:
     allocation_project_path = install_api_logic_server_path.joinpath('Allocation')
     recursive_overwrite(src = src,
                         dest = str(allocation_project_path))
+
     print(f'\n\nStarting Server...\n')
     try:
         server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
@@ -296,3 +283,32 @@ if do_allocation_test:
     print("\nAllocation tests - Success... (note - server still running)\n")
 
 stop_server(msg="END ALLOCATION TEST\n")
+
+if do_docker_databases:
+    result_docker_mysql_classic = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@{db_ip}:3306/classicmodels'",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
+    
+    result_docker_postgres = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@{db_ip}/postgres",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
+
+    result_docker_sqlserver = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
+    
+    print(f'\n\nStarting Postgres Server...\n')
+    try:
+        postgres_project_path = install_api_logic_server_path.joinpath('postgres')
+        server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
+                                cwd=postgres_project_path)
+    except:
+        print("Popen failed")
+        raise
+    print(f'\nServer [Postgres] running - server: {str(server)}\n')
+
+
+print("\n\nSUCCESS -- END OF TESTS\n")
