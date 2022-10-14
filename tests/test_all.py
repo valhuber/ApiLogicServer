@@ -245,18 +245,18 @@ if do_other_sqlite_databases:
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
 
 if do_docker_databases:
-    run_command(
-        "{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'",
+    result_docker_mysql_classic = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
     
-    run_command(
-        "{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres",
+    result_docker_postgres = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
 
-    run_command(
-        "{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+    result_docker_sqlserver = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
 
