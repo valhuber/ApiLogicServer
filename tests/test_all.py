@@ -184,7 +184,10 @@ if debug_script:
 if do_install_api_logic_server:
     if os.path.exists(install_api_logic_server_path):
         delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
-    os.mkdir(install_api_logic_server_path, mode = 0o777)
+    try:
+        os.mkdir(install_api_logic_server_path, mode = 0o777)
+    except:
+        print("Windows dir exists?")
 
     api_logic_server_home_path = api_logic_server_tests_path.parent
     build_result = run_command(f'{python} setup.py sdist bdist_wheel',
