@@ -205,7 +205,7 @@ if do_install_api_logic_server:
 
 
 if do_create_api_logic_project:
-    run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
+    result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
