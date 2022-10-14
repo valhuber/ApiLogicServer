@@ -176,7 +176,7 @@ stop_server(msg="BEGIN TESTS\n")
 debug_venv = True
 if debug_script:
     api_logic_server_install_path = os.path.abspath(install_api_logic_server_path.parent)
-    venv_ok = run_command(f'pwd; {set_venv}; pip freeze',
+    venv_ok = run_command(f'pwd && {set_venv} && pip freeze',
         cwd=api_logic_server_install_path,
         msg=f'\nInstall ApiLogicServer at: {str(api_logic_server_install_path)}')
     print(venv_ok.stdout.decode())  # should say pyodbc==4.0.34
@@ -194,18 +194,18 @@ if do_install_api_logic_server:
         cwd=api_logic_server_home_path,
         msg=f'\nBuild ApiLogicServer at: {str(api_logic_server_home_path)}')
 
-    run_command(f'{python} -m venv venv; {set_venv}; {python} -m pip install {str(api_logic_server_home_path)}',
+    run_command(f'{python} -m venv venv && {set_venv} && {python} -m pip install {str(api_logic_server_home_path)}',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
 
     run_command(
-        f'{set_venv}; {python} -m pip install pyodbc',
+        f'{set_venv} && {python} -m pip install pyodbc',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall pyodbc')
 
 
 if do_create_api_logic_project:
-    run_command(f'{set_venv}; ApiLogicServer create --project_name=ApiLogicProject --db_url=',
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
@@ -240,23 +240,23 @@ if do_test_api_logic_project:
 if do_other_sqlite_databases:
     string = '''big long 
     string'''
-    run_command('{set_venv}; ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
+    run_command('{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
 
 if do_docker_databases:
     run_command(
-        "{set_venv}; ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'",
+        "{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@localhost:3306/classicmodels'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
     
     run_command(
-        "{set_venv}; ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres",
+        "{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@localhost/postgres",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
 
     run_command(
-        "{set_venv}; ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+        "{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
 
@@ -265,7 +265,7 @@ stop_server(msg="END NW TESTS\n")
 if do_allocation_test:
     allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
     allocation_url = f'sqlite:///{allocation_path}'
-    run_command(f'{set_venv}; ApiLogicServer create --project_name=Allocation --db_url={allocation_url}',
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=Allocation --db_url={allocation_url}',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate Allocation at: {str(install_api_logic_server_path)}')
     pass
