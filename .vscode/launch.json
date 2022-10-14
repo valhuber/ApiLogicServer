@@ -8,11 +8,10 @@
             "name": "REBUILD AND TEST",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/tests",
-            "program": "test_all.py",
+            "cwd": "${workspaceFolder}/tests/api_logic_server_test",
+            "program": "api_logic_server_test.py",
             "redirectOutput": true,
             "justMyCode": false,
-            "args": ["create","--project_name=../../servers/ApiLogicProject","--db_url="],
             "console": "integratedTerminal"
         },
         {

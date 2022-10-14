@@ -1,7 +1,4 @@
-from doctest import debug_script
-from re import A
 import subprocess, os, time, requests, sys
-import warnings
 from shutil import copyfile
 import shutil
 from sys import platform
@@ -50,13 +47,12 @@ def get_api_logic_server_path() -> Path:
     :return: ApiLogicServer dir, eg, /Users/val/dev/ApiLogicServer
     """
     file_path = Path(os.path.abspath(__file__))
-    api_logic_server_path = file_path.parent.parent
-    api_logic_server_path_str = str(api_logic_server_path)
+    api_logic_server_path = file_path.parent.parent.parent
     return api_logic_server_path
 
 def get_servers_install_path() -> Path:
     """ Path: /Users/val/dev/servers/install """
-    api_logic_server_path = os.path.abspath(get_api_logic_server_path())
+    api_logic_server_path = get_api_logic_server_path()
     dev_path = Path(api_logic_server_path).parent
     rtn_path = dev_path.joinpath("servers").joinpath("install")
     return rtn_path
@@ -149,49 +145,6 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
         raise
     return result_b  # print(ret.stdout.decode())
 
-def get_args() -> DotDict:
-    """
-    returns DotDict of arguments
-    """
-
-    rtn_args = DotDict({})
-
-    def make_wide(formatter, w=120, h=36):
-        """ Return a wider HelpFormatter, if possible."""
-        try:
-            # https://stackoverflow.com/a/5464440
-            # beware: "Only the name of this class is considered a public API."
-            kwargs = {'width': w, 'max_help_position': h}
-            formatter(None, **kwargs)
-            return lambda prog: formatter(prog, **kwargs)
-        except TypeError:
-            warnings.warn("argparse help formatter failed, falling back.")
-            return formatter
-
-    if __name__ == "__main__":  # gunicorn-friendly host/port settings ()
-
-        # thanks to https://www.geeksforgeeks.org/command-line-arguments-in-python/#argparse
-
-        from argparse_prompt import PromptParser
-        
-        # Initialize parser
-        if False and len(sys.argv) == 1:
-            print("No cli arguments - using creation defaults")
-        else:
-            msg = "API Logic Project"
-
-            parser = PromptParser()  #.ArgumentParser(formatter_class=make_wide(argparse.ArgumentDefaultsHelpFormatter))
-
-            parser.add_argument('--argument', '-a', help='An argument you could provide', default='foo')
-
-            parser.add_argument("--build",
-                                help = f'Build Wheel', default = True)
-            
-            parser.add_argument("docker_dbs", nargs='?', default = True)
-            
-            rtn_args = parser.parse_args()
-
-    return rtn_args
 
 # ***************************
 # MAIN CODE
@@ -204,17 +157,9 @@ os.chdir(project_dir)  # so admin app can find images, code
 
 cli_args = ""
 arg_num = 0
-for each_arg in sys.argv:
-    cli_args += each_arg
-    arg_num += 1
-    if arg_num < len(sys.argv):
-        cli_args += ", "
-print(f'\n{__file__} Starting with args: \n.. {cli_args}\n')
 
-args = get_args()
-print(f'args: {str(args)}')
-exit(2)
 python = find_valid_python_name()  # geesh - allow for python vs python3
+"""
 set_venv = '. venv/bin/activate'
 '''typical source "venv/bin/activate" does not persist over cmds, see...
    https://github.com/valhuber/ubuntu-script-venv/blob/main/use-in-script.sh '''
@@ -222,28 +167,35 @@ if platform == "win32":
     set_venv = "venv\\Scripts\\activate"
 db_ip = 'localhost'
 ''' for virtual machine access, set this to host IP '''
+"""
 
-default_setting = True  # simplify enable / disable most
-do_install_api_logic_server = default_setting
-do_create_api_logic_project = default_setting
-do_run_api_logic_project = default_setting
-do_test_api_logic_project = default_setting
-do_other_sqlite_databases = default_setting
-do_docker_databases = default_setting
-do_allocation_test = default_setting
+if platform == "darwin":
+    from env_mac import Config
+elif platform == "win32":
+    from env_win import Config
+elif platform.startswith("linux"):
+    from env_linux import Config
+else:
+    print("unknown platform")
+
+set_venv = Config.set_venv
+db_ip = Config.docker_database_ip
+
+debug_env = True
+print(f'Config.do_install_api_logic_server: {Config.do_install_api_logic_server}')
 
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
 api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
-api_logic_server_tests_path = Path(os.path.abspath(__file__)).parent
+api_logic_server_tests_path = Path(os.path.abspath(__file__)).parent.parent
 
-print("\n\ntest_all 1.0 running")
-print(f'  Builds / Installs API Logic Server to api_logic_project_path: {api_logic_project_path}')
+print("\n\n{__file__} 1.0 running")
+print(f'  Builds / Installs API Logic Server to install_api_logic_server_path: {install_api_logic_server_path}')
 print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
 print(f'  Creates other projects')
 
 stop_server(msg="BEGIN TESTS\n")
 
-debug_venv = True
+debug_script = False
 if debug_script:
     api_logic_server_install_path = os.path.abspath(install_api_logic_server_path.parent)
     result_venv = run_command(f'pwd && {set_venv} && pip freeze',
@@ -251,7 +203,7 @@ if debug_script:
         msg=f'\nInstall ApiLogicServer at: {str(api_logic_server_install_path)}')
     print(result_venv.stdout.decode())  # should say pyodbc==4.0.34
 
-if do_install_api_logic_server:
+if Config.do_install_api_logic_server:
     if os.path.exists(install_api_logic_server_path):
         delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
     try:
@@ -274,12 +226,12 @@ if do_install_api_logic_server:
         msg=f'\nInstall pyodbc')
 
 
-if do_create_api_logic_project:
+if Config.do_create_api_logic_project:
     result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
-if do_run_api_logic_project:
+if Config.do_run_api_logic_project:
     print(f'\n\nStarting Server...\n')
     try:
         server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
@@ -289,7 +241,7 @@ if do_run_api_logic_project:
         raise
     print(f'\nServer running - server: {str(server)}\n')
 
-if do_test_api_logic_project:
+if Config.do_test_api_logic_project:
     try:
         print("\nWaiting for server to start...")
         time.sleep(10) 
@@ -307,7 +259,7 @@ if do_test_api_logic_project:
         f.close()
     print("\nBehave tests - Success... (note - server still running)\n")
 
-if do_other_sqlite_databases:
+if Config.do_other_sqlite_databases:
     string = '''big long 
     string'''
     run_command('{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
@@ -316,7 +268,7 @@ if do_other_sqlite_databases:
 
 stop_server(msg="END NW TESTS\n")
 
-if do_allocation_test:
+if Config.do_allocation_test:
     allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
     allocation_url = f'sqlite:///{allocation_path}'
     run_command(f'{set_venv} && ApiLogicServer create --project_name=Allocation --db_url={allocation_url}',
@@ -352,7 +304,7 @@ if do_allocation_test:
 
 stop_server(msg="END ALLOCATION TEST\n")
 
-if do_docker_databases:
+if Config.do_docker_databases:
     result_docker_mysql_classic = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@{db_ip}:3306/classicmodels'",
         cwd=install_api_logic_server_path,
@@ -377,6 +329,5 @@ if do_docker_databases:
         print("Popen failed")
         raise
     print(f'\nServer [Postgres] running - server: {str(server)}\n')
-
 
 print("\n\nSUCCESS -- END OF TESTS\n")

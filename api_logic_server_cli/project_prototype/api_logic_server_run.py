@@ -72,8 +72,9 @@ for each_arg in sys.argv:
     arg_num += 1
     if arg_num < len(sys.argv):
         args += ", "
-app_logger.info(f'\nAPI Logic Project Starting with args: \n.. {args}\n')
-app_logger.info(f'\nAPI Logic Project Creation:')
+project_name = os.path.basename(os.path.normpath(current_path))
+app_logger.info(f'\nAPI Logic Project ({project_name}) Starting with args: \n.. {args}\n')
+app_logger.info(f'{project_name} creation:')
 app_logger.info(f'    By:\tAPI Logic Server api_logic_server_version')
 app_logger.info(f'    On:\tapi_logic_server_created_on')
 app_logger.info(f'    At:\t{str(current_path)}\n')
@@ -424,7 +425,7 @@ flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
 flask_events(flask_app)
 
 if __name__ == "__main__":
-    msg = f'API Logic Project Loaded (not WSGI), version api_logic_server_version, configured for http://{swagger_host}:{port}\n'
+    msg = f'API Logic Project ({project_name}) Loaded (not WSGI), version api_logic_server_version, on http://{swagger_host}:{port}\n'
     if is_docker():
         msg += f' (running from docker container at {flask_host} - may require refresh)\n'
     app_logger.info(f'\n{msg}')
@@ -438,7 +439,7 @@ if __name__ == "__main__":
                 f'explore sample data and API on codespaces, swagger_host: {http_type}://{swagger_host}/\n')
     else:
         app_logger.info(f'Server starting -- '
-                f'explore sample data and API on swagger_host: {http_type}://{swagger_host}:{port}/\n')
+                f'explore sample data and API at swagger_host: {http_type}://{swagger_host}:{port}/\n')
 
     flask_app.run(host=flask_host, threaded=False, port=port)
 else:
