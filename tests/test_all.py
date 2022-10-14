@@ -151,7 +151,7 @@ set_venv = '. venv/bin/activate'
 '''typical source "venv/bin/activate" does not persist over cmds, see...
    https://github.com/valhuber/ubuntu-script-venv/blob/main/use-in-script.sh '''
 if platform == "win32":
-    set_venv = "venv\Scripts\activate"
+    set_venv = "venv\\Scripts\\activate"
 
 default_setting = True  # simplify enable / disable most
 do_install_api_logic_server = default_setting
