@@ -176,7 +176,7 @@ stop_server(msg="BEGIN TESTS\n")
 debug_venv = True
 if debug_script:
     api_logic_server_install_path = os.path.abspath(install_api_logic_server_path.parent)
-    venv_ok = run_command(f'pwd && {set_venv} && pip freeze',
+    result_venv = run_command(f'pwd && {set_venv} && pip freeze',
         cwd=api_logic_server_install_path,
         msg=f'\nInstall ApiLogicServer at: {str(api_logic_server_install_path)}')
     print(venv_ok.stdout.decode())  # should say pyodbc==4.0.34
@@ -190,15 +190,15 @@ if do_install_api_logic_server:
         print("Windows dir exists?")
 
     api_logic_server_home_path = api_logic_server_tests_path.parent
-    build_result = run_command(f'{python} setup.py sdist bdist_wheel',
+    result_build = run_command(f'{python} setup.py sdist bdist_wheel',
         cwd=api_logic_server_home_path,
         msg=f'\nBuild ApiLogicServer at: {str(api_logic_server_home_path)}')
 
-    run_command(f'{python} -m venv venv && {set_venv} && {python} -m pip install {str(api_logic_server_home_path)}',
+    result_install = run_command(f'{python} -m venv venv && {set_venv} && {python} -m pip install {str(api_logic_server_home_path)}',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
 
-    run_command(
+    result_pyodbc = run_command(
         f'{set_venv} && {python} -m pip install pyodbc',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall pyodbc')
@@ -226,7 +226,7 @@ if do_test_api_logic_project:
         print("\nProceeding with Behave tests...\n")
         api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
         api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
-        run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
+        result_behave = run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
             cwd=api_logic_project_behave_path,
             msg="\nBehave Test Run")
     except:
