@@ -318,5 +318,7 @@ if Config.do_docker_databases:
 
 print("\n\nSUCCESS -- END OF TESTS (be sure to test Postgres, and stop the server")
 
+
 print(f"\n\nRelease {api_logic_server_version}?  ")
-print(f"cd .. && cd .. && python3 -m twine upload  --username vhuber --password PypiPassword --skip-existing dist/*  \n\n")
+print(f'cd {str(get_api_logic_server_path())}')
+print(f"python3 -m twine upload  --username vhuber --password PypiPassword --skip-existing dist/*  \n\n")
