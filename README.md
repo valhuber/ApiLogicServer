@@ -247,6 +247,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+10/15/2022 - 06.02.20: Dialects, internal testing (SQL/Server url, kill endpoint, Chinook Sqlite, api_logic_server_test)
+
 10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, restore postgres dvr
 
 09/15/2022 - 06.01.00: Multi-app Projects

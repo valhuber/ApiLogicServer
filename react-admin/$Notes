@@ -1,59 +1,68 @@
-Overview:
-    * Val has altered the files in /code
-        * menu.js - hello screen, links to swagger and docs
-        * config.js
-            * loads admin.yaml from disk
-                * if missing, uses config.json import (as as to run without LAC)
-            * converts admin-attributes (if present) to admin-column for internal admin app use
-                * Detects and does not convert admin-column; this enables testing of load vs conversion
-    * to release ALS - see ApiLogicServer/$readme.txt
+API Logic Server execution requires an SRA (Safrs React Admin) build in ApiLogicServer/api_logic_server_cli/create_from_model.  It is *not* built into the source tree - you must build it, or expand a built release (recommended).
 
-This directory contains various yaml files, and their json equivalents, for test compares.
+Built releases (recommended)
+    There are available in the $releases folder. 
+    The one without the date is GA, the others are dev (test) releases
+    Expand zip into ApiLogicServer/api_logic_server_cli/create_from_model.
 
-Update 11/24 - parent joins, child grids running
-    * running with admin-attr, admin-col
-    * minimal constraint handling
 
-Update 11/26
-    * added code to obtain the search property (it works!)
-    * altered directory structure (react-admin is now a top-level project folder)
+Building SRA (not recommended)
+    Overview (internal notes - advise skipping these):
+        * Val has altered the files in /code
+            * menu.js - hello screen, links to swagger and docs
+            * config.js
+                * loads admin.yaml from disk
+                    * if missing, uses config.json import (as as to run without LAC)
+                * converts admin-attributes (if present) to admin-column for internal admin app use
+                    * Detects and does not convert admin-column; this enables testing of load vs conversion
+        * to release ALS - see ApiLogicServer/$readme.txt
 
-Update 12/2
-    * Safrs-react-admin (non-NPM) works with https://github.com/thomaxxl/safrs-react-admin
-        ** paste, and manage/load
-    * Safrs-react-admin (non-NPM) works with created admin.yml
-        ** paste
+    This directory contains various yaml files, and their json equivalents, for test compares.
 
-Avoiding redundant parent joins - better approach than "use these attributes"
-    * Instead, "skip these attributes" - better...
-        * smaller raml to read
-        * better re-use of grid attr defs
-    * Should it be <attr> or <fk-name> - whichever is easier...
+    Update 11/24 - parent joins, child grids running
+        * running with admin-attr, admin-col
+        * minimal constraint handling
 
-Proposed Release criteria (Val)
-* Technology Preview - public pip/docker release, low key (Legend: + working, - todo, ? needs discussion)
-    + Works from ApiLogicServer run, all browsers
-    + Admin-attributes, loaded from created project (many properties may be ignored)
-    + Admin page has link to swagger
-    +- Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
-    + Joins - parent & child, any sensible default
-    - Filter (working, 3.50.17, failing 3.50.24)
-    + Constraint retry (show message, return to page, retype all changes, but way better than flask appBuilder)
-    - All pages work for test DBs; many issues - see...
-        https://docs.google.com/document/d/1DzJXwVQoTGgJcfXvvPGCczgEVG-s9g72vB6AfJSJIVc/edit#heading=h.z54llfjeay3x)
-    - Pagination not showing up for sample db
-    ? Might be nice to add just a bit of style to grid headers
-    ? Might be nice to limit grids to @7 cols (there is a settingsmax_list_columns object in admin.yaml)
-    ? Currency display (decimal digits)
-    ? Custom home component
-* Announcement (articles, videos etc)
-    - Lookups!!
-    - Add order - cascade add (set OrderDetail.OrderId from Order), lookup OrderDetail.Product
-    - Constraint retry (show message, stay on page, fix {preserved} changes and retry, or cancel)
-    * PythonAnywhere demo (combined app/api)
-    ? Image? Link? Money?  Date?
-    - Notes (for demo self-discovery)
-    - Join attrs - explicit from admin (so avoid redundant master)
-* Key Futures
-    * Hide / Show
-    * Set attr=value, save (e.g., checkout, approve, etc)
+    Update 11/26
+        * added code to obtain the search property (it works!)
+        * altered directory structure (react-admin is now a top-level project folder)
+
+    Update 12/2
+        * Safrs-react-admin (non-NPM) works with https://github.com/thomaxxl/safrs-react-admin
+            ** paste, and manage/load
+        * Safrs-react-admin (non-NPM) works with created admin.yml
+            ** paste
+
+    Avoiding redundant parent joins - better approach than "use these attributes"
+        * Instead, "skip these attributes" - better...
+            * smaller raml to read
+            * better re-use of grid attr defs
+        * Should it be <attr> or <fk-name> - whichever is easier...
+
+    Proposed Release criteria (Val)
+    * Technology Preview - public pip/docker release, low key (Legend: + working, - todo, ? needs discussion)
+        + Works from ApiLogicServer run, all browsers
+        + Admin-attributes, loaded from created project (many properties may be ignored)
+        + Admin page has link to swagger
+        +- Works in VSCode (the missing menu can be a doc'd bug if fix is not easy / obvious)
+        + Joins - parent & child, any sensible default
+        - Filter (working, 3.50.17, failing 3.50.24)
+        + Constraint retry (show message, return to page, retype all changes, but way better than flask appBuilder)
+        - All pages work for test DBs; many issues - see...
+            https://docs.google.com/document/d/1DzJXwVQoTGgJcfXvvPGCczgEVG-s9g72vB6AfJSJIVc/edit#heading=h.z54llfjeay3x)
+        - Pagination not showing up for sample db
+        ? Might be nice to add just a bit of style to grid headers
+        ? Might be nice to limit grids to @7 cols (there is a settingsmax_list_columns object in admin.yaml)
+        ? Currency display (decimal digits)
+        ? Custom home component
+    * Announcement (articles, videos etc)
+        - Lookups!!
+        - Add order - cascade add (set OrderDetail.OrderId from Order), lookup OrderDetail.Product
+        - Constraint retry (show message, stay on page, fix {preserved} changes and retry, or cancel)
+        * PythonAnywhere demo (combined app/api)
+        ? Image? Link? Money?  Date?
+        - Notes (for demo self-discovery)
+        - Join attrs - explicit from admin (so avoid redundant master)
+    * Key Futures
+        * Hide / Show
+        * Set attr=value, save (e.g., checkout, approve, etc)

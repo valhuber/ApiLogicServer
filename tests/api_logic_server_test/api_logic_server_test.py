@@ -1,4 +1,5 @@
-import subprocess, os, time, requests, sys
+import subprocess, os, time, requests, sys, re, io
+from turtle import st
 from shutil import copyfile
 import shutil
 from sys import platform
@@ -12,7 +13,6 @@ class DotDict(dict):
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
-
 
 def find_valid_python_name() -> str:
     '''
@@ -112,15 +112,12 @@ def recursive_overwrite(src: Path, dest: Path, ignore=None):
         shutil.copyfile(src, dest)
 
 def stop_server(msg: str):
-    pass
     URL = "http://localhost:5656/kill"
     PARAMS = {'msg': msg}
     try:
         r = requests.get(url = URL, params = PARAMS)
     except:
         print("..")
-
-    # print("\nServer Stopped")
 
 def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
     """ run shell command (waits)
@@ -145,29 +142,39 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
         raise
     return result_b  # print(ret.stdout.decode())
 
+def start_api_logic_server(path: Path):
+    """ start server at path, and wait a few moments """
+
+    project_name = os.path.basename(os.path.normpath(path))
+    print(f'\n\nStarting Server {project_name}...\n')
+    try:
+        server = subprocess.Popen([f'{python}','api_logic_server_run.py'], cwd=path)
+    except:
+        print("Popen failed")
+        raise
+    print(f'\n.. Server started - server: {str(server)}\n')
+    print("\n.. Waiting for server to start...")
+    time.sleep(10) 
+
+    URL = "http://localhost:5656/hello_world?user=ApiLogicServer"
+    try:
+        r = requests.get(url = URL)
+        print("\n.. Proceeding...\n")
+    except:
+        print(f".. Ping failed on {project_name}")
+
+   
 
 # ***************************
-# MAIN CODE
+#        MAIN CODE
 # ***************************
 
 current_path = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(current_path)
-project_dir = str(current_path)
-os.chdir(project_dir)  # so admin app can find images, code
-
-cli_args = ""
-arg_num = 0
+program_dir = str(current_path)
+os.chdir(program_dir)  # so admin app can find images, code
 
 python = find_valid_python_name()  # geesh - allow for python vs python3
-"""
-set_venv = '. venv/bin/activate'
-'''typical source "venv/bin/activate" does not persist over cmds, see...
-   https://github.com/valhuber/ubuntu-script-venv/blob/main/use-in-script.sh '''
-if platform == "win32":
-    set_venv = "venv\\Scripts\\activate"
-db_ip = 'localhost'
-''' for virtual machine access, set this to host IP '''
-"""
 
 if platform == "darwin":
     from env_mac import Config
@@ -181,19 +188,21 @@ else:
 set_venv = Config.set_venv
 db_ip = Config.docker_database_ip
 
-debug_env = True
-print(f'Config.do_install_api_logic_server: {Config.do_install_api_logic_server}')
-
 install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
 api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
 api_logic_server_tests_path = Path(os.path.abspath(__file__)).parent.parent
+
+api_logic_server_cli_path = get_api_logic_server_path().\
+                            joinpath("api_logic_server_cli").joinpath('cli.py')
+with io.open(str(api_logic_server_cli_path), "rt", encoding="utf8") as f:
+    api_logic_server_version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 
 print("\n\n{__file__} 1.0 running")
 print(f'  Builds / Installs API Logic Server to install_api_logic_server_path: {install_api_logic_server_path}')
 print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
 print(f'  Creates other projects')
 
-stop_server(msg="BEGIN TESTS\n")
+stop_server(msg="BEGIN TESTS\n")  # just in case server left running
 
 debug_script = False
 if debug_script:
@@ -232,20 +241,10 @@ if Config.do_create_api_logic_project:
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
 if Config.do_run_api_logic_project:
-    print(f'\n\nStarting Server...\n')
-    try:
-        server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
-                                cwd=api_logic_project_path)
-    except:
-        print("Popen failed")
-        raise
-    print(f'\nServer running - server: {str(server)}\n')
+    start_api_logic_server(path = api_logic_project_path)
 
 if Config.do_test_api_logic_project:
     try:
-        print("\nWaiting for server to start...")
-        time.sleep(10) 
-        print("\nProceeding with Behave tests...\n")
         api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
         api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
         result_behave = run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
@@ -260,8 +259,6 @@ if Config.do_test_api_logic_project:
     print("\nBehave tests - Success... (note - server still running)\n")
 
 if Config.do_other_sqlite_databases:
-    string = '''big long 
-    string'''
     run_command('{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
@@ -281,18 +278,9 @@ if Config.do_allocation_test:
     recursive_overwrite(src = src,
                         dest = str(allocation_project_path))
 
-    print(f'\n\nStarting Server...\n')
-    try:
-        server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
-                                cwd=allocation_project_path)
-    except:
-        print("Popen failed")
-        raise
-    print(f'\nServer [Allocation] running - server: {str(server)}\n')
+    start_api_logic_server(path = allocation_project_path)
 
     try:
-        print("\nWaiting for server to start...")
-        time.sleep(10) 
         print("\nProceeding with Allocation tests...\n")
         allocation_tests_path = allocation_project_path.joinpath('test')
         run_command(f'sh test.sh',
@@ -319,15 +307,16 @@ if Config.do_docker_databases:
         f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
-    
-    print(f'\n\nStarting Postgres Server...\n')
-    try:
-        postgres_project_path = install_api_logic_server_path.joinpath('postgres')
-        server = subprocess.Popen([f'{python}','api_logic_server_run.py'],
-                                cwd=postgres_project_path)
-    except:
-        print("Popen failed")
-        raise
-    print(f'\nServer [Postgres] running - server: {str(server)}\n')
 
-print("\n\nSUCCESS -- END OF TESTS\n")
+    start_api_logic_server(path = install_api_logic_server_path.joinpath('classicmodels'))
+    stop_server(msg="classicmodels\n")
+    start_api_logic_server(path = install_api_logic_server_path.joinpath('sqlserver'))
+    stop_server(msg="sqlserver\n")
+    
+    start_api_logic_server(path = install_api_logic_server_path.joinpath('postgres'))
+    print(f'\nServer [Postgres] running\n')
+
+print("\n\nSUCCESS -- END OF TESTS (be sure to test Postgres, and stop the server")
+
+print(f"\n\nRelease {api_logic_server_version}?  ")
+print(f"cd .. && cd .. && python3 -m twine upload  --username vhuber --password PypiPassword --skip-existing dist/*  \n\n")

@@ -542,8 +542,7 @@ class CodeGenerator(object):
                          for package, names in self.collector.items())
 
     def render_metadata_declarations(self):
-        if "sqlalchemy.ext.declarative" in self.collector:  # Manually Added for safrs (ApiLogicServer)
-            return """
+        api_logic_server_imports = """
 ########################################################################################################################
 # Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
 #
@@ -563,7 +562,14 @@ metadata = Base.metadata
 from sqlalchemy.dialects.mysql import *
 ########################################################################################################################
 """
-            # return 'Base = declarative_base()\nmetadata = Base.metadata'
+        if "sqlalchemy.ext.declarative" in self.collector:  # Manually Added for safrs (ApiLogicServer)
+            dialect_name = self.metadata.bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
+            if dialect_name in ["firebird", "mssql", "oracle", "postgresql", "sqlite", "sybase"]:
+                rtn_api_logic_server_imports = api_logic_server_imports.replace("msql", dialect_name)
+            else:
+                rtn_api_logic_server_imports = api_logic_server_imports
+                print(".. .. ..Warning - unknown sql dialect, defaulting to msql - check database/models.py")
+            return rtn_api_logic_server_imports
         return "metadata = MetaData()"
 
     def _get_compiled_expression(self, statement):
