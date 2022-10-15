@@ -1,5 +1,4 @@
 import subprocess, os, time, requests, sys, re, io
-from turtle import st
 from shutil import copyfile
 import shutil
 from sys import platform
