@@ -141,6 +141,12 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
         raise
     return result_b  # print(ret.stdout.decode())
 
+def check_command(command_result):
+    if "Trace" in str(result_docker_mysql_classic.stderr) or "Error" in str(result_docker_mysql_classic.stderr):
+        print("\n\n==> Command Failed:")
+        print(command_result.stderr)
+        raise
+
 def start_api_logic_server(path: Path):
     """ start server at path, and wait a few moments """
 
@@ -297,6 +303,7 @@ if Config.do_docker_databases:
         f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@{db_ip}:3306/classicmodels'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
+    check_command(result_docker_mysql_classic)
     
     result_docker_postgres = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@{db_ip}/postgres",
