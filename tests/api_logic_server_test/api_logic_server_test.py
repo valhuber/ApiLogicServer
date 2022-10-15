@@ -161,6 +161,7 @@ def start_api_logic_server(path: Path):
         print("\n.. Proceeding...\n")
     except:
         print(f".. Ping failed on {project_name}")
+        raise
 
    
 
