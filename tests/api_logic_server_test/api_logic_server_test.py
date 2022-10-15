@@ -142,10 +142,13 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     return result_b  # print(ret.stdout.decode())
 
 def check_command(command_result):
-    if "Trace" in str(result_docker_mysql_classic.stderr) or "Error" in str(result_docker_mysql_classic.stderr):
+    if "Trace" in str(result_docker_mysql_classic.stderr) or \
+        "Error" in str(result_docker_mysql_classic.stderr):
         print("\n\n==> Command Failed:")
-        print(command_result.stderr)
-        raise
+        print(str(command_result.stderr))
+        for line in command_result.stderr.decode('utf-8').split('\n'):
+            print (line)
+        raise("comand failed")
 
 def start_api_logic_server(path: Path):
     """ start server at path, and wait a few moments """
