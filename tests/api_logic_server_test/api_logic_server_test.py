@@ -303,33 +303,32 @@ if Config.do_allocation_test:
 
 stop_server(msg="END ALLOCATION TEST\n")
 
-if Config.do_docker_databases:
+if Config.do_docker_mysql:
     result_docker_mysql_classic = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url=mysql+pymysql://root:p@{db_ip}:3306/classicmodels",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
     check_command(result_docker_mysql_classic)
+    start_api_logic_server(path = install_api_logic_server_path.joinpath('classicmodels'))
+    stop_server(msg="classicmodels\n")
     
-    result_docker_postgres = run_command(
-        f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@{db_ip}/postgres",
-        cwd=install_api_logic_server_path,
-        msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
-
+if Config.do_docker_sqlserver:
     result_docker_sqlserver = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
-
-    start_api_logic_server(path = install_api_logic_server_path.joinpath('classicmodels'))
-    stop_server(msg="classicmodels\n")
     start_api_logic_server(path = install_api_logic_server_path.joinpath('sqlserver'))
     stop_server(msg="sqlserver\n")
     
+if Config.do_docker_postgres:
+    result_docker_postgres = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@{db_ip}/postgres",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
     start_api_logic_server(path = install_api_logic_server_path.joinpath('postgres'))
     print(f'\nServer [Postgres] running\n')
 
 print("\n\nSUCCESS -- END OF TESTS (be sure to test Postgres, and stop the server")
-
 
 print(f"\n\nRelease {api_logic_server_version}?  ")
 print(f'cd {str(get_api_logic_server_path())}')

@@ -21,7 +21,9 @@ class Config:
 
     do_other_sqlite_databases = default_setting     # classic models
 
-    do_docker_databases = default_setting           # requires docker database be running
+    do_docker_mysql = default_setting               # requires docker database be running
+    do_docker_postgres = default_setting            # requires docker database be running
+    do_docker_sqlserver = default_setting           # requires docker database be running
 
 
     # ***********************
