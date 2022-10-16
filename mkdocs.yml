@@ -56,6 +56,7 @@ nav:
     - Architecture.md
     - Working-with-Flask-AppBuilder.md
     - "API Logic Server Development": Internals.md
+    - "Internals - CLI": Internals-CLI.md
   - Troubleshooting.md
   - FAQs:
     - "Is this a Framework?": FAQ-Frameworks.md
