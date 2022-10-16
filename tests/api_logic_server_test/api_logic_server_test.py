@@ -144,8 +144,10 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
 def check_command(command_result):
     if "Trace" in str(result_docker_mysql_classic.stderr) or \
         "Error" in str(result_docker_mysql_classic.stderr):
-        print("\n\n==> Command Failed:")
-        print(str(command_result.stderr))
+        print("\n\n==> Command Failed - Console Log:")
+        for line in command_result.stdout.decode('utf-8').split('\n'):
+            print (line)
+        print("\n\n==> Error Log:")
         for line in command_result.stderr.decode('utf-8').split('\n'):
             print (line)
         raise("comand failed")
