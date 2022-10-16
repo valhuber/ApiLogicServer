@@ -150,7 +150,7 @@ def check_command(command_result):
         print("\n\n==> Error Log:")
         for line in command_result.stderr.decode('utf-8').split('\n'):
             print (line)
-        raise("comand failed")
+        raise("command failed")
 
 def start_api_logic_server(path: Path):
     """ start server at path, and wait a few moments """
@@ -305,7 +305,7 @@ stop_server(msg="END ALLOCATION TEST\n")
 
 if Config.do_docker_databases:
     result_docker_mysql_classic = run_command(
-        f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url='mysql+pymysql://root:p@{db_ip}:3306/classicmodels'",
+        f"{set_venv} && ApiLogicServer create --project_name=classicmodels --db_url=mysql+pymysql://root:p@{db_ip}:3306/classicmodels",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
     check_command(result_docker_mysql_classic)
