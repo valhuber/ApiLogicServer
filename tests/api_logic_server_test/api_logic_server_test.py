@@ -228,6 +228,7 @@ if Config.do_install_api_logic_server:
         delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
     try:
         os.mkdir(install_api_logic_server_path, mode = 0o777)
+        os.mkdir(install_api_logic_server_path.joinpath('dockers'), mode = 0o777)
     except:
         print("Windows dir exists?")
 
@@ -330,6 +331,6 @@ if Config.do_docker_postgres:
 
 print("\n\nSUCCESS -- END OF TESTS (be sure to test Postgres, and stop the server")
 
-print(f"\n\nRelease {api_logic_server_version}?  ")
+print(f"\n\nRelease {api_logic_server_version}?\n")
 print(f'cd {str(get_api_logic_server_path())}')
 print(f"python3 -m twine upload  --username vhuber --password PypiPassword --skip-existing dist/*  \n\n")

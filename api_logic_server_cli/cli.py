@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.02.20"
+__version__ = "6.02.22"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t10/15/2022 - 06.02.20: Dialects, SQL/Server url change, kill endpoint, Chinook Sqlite, test_all \n"\
+    "\t10/17/2022 - 06.02.22: Dialects, SQL/Server url change, kill endpoint, Chinook Sqlite, test_all \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
@@ -824,14 +824,19 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
         print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
         # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
     if (is_docker()):
-        print(f'\nCustomize Docker project using IDE on local machine:')
-        docker_project_name = project_name
-        if project_name.startswith('/localhost/'):
-            docker_project_name = project_name[11:]
+        if os.getenv('CODESPACES'):
+            print(f'\nAdd port 5656, with Public visibility":')
+            print(f'\nExecute using Launch Configuration "ApiLogicServer"')
+            print(f'\nSave Created Project to GitHub (TBD)":')
         else:
-            docker_project_name = f'<local machine directory for: {project_name}>'
-        print(f'  exit  # exit the Docker container ')
-        print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
+            print(f'\nCustomize Docker project using IDE on local machine:')
+            docker_project_name = project_name
+            if project_name.startswith('/localhost/'):
+                docker_project_name = project_name[11:]
+            else:
+                docker_project_name = f'<local machine directory for: {project_name}>'
+            print(f'  exit  # exit the Docker container ')
+            print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
     else:
         print(f'\nCustomize using your IDE:')
         print(f'  code {project_name}  # e.g., open VSCode on created project')

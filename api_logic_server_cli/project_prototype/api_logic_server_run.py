@@ -74,10 +74,7 @@ for each_arg in sys.argv:
         args += ", "
 project_name = os.path.basename(os.path.normpath(current_path))
 app_logger.info(f'\nAPI Logic Project ({project_name}) Starting with args: \n.. {args}\n')
-app_logger.info(f'{project_name} creation:')
-app_logger.info(f'    By:\tAPI Logic Server api_logic_server_version')
-app_logger.info(f'    On:\tapi_logic_server_created_on')
-app_logger.info(f'    At:\t{str(current_path)}\n')
+app_logger.info(f'Created api_logic_server_created_on at {str(current_path)}\n')
 
 from typing import TypedDict
 import safrs
@@ -249,7 +246,10 @@ def get_args():
 
     network_diagnostics = True
     hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
+    try:
+        local_ip = socket.gethostbyname(hostname)
+    except:
+        app_logger.info(f"Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}")
 
     verbose = False
     create_and_run = False
