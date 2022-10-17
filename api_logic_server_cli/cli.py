@@ -818,11 +818,11 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
     if multi_api:
         print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
     else:
+        print("\nRun API Logic Server:")
         if os.getenv('CODESPACES'):
-            print(f'\nAdd port 5656, with Public visibility":')
-            print(f'\nExecute using Launch Configuration "ApiLogicServer"')
+            print(f'  Add port 5656, with Public visibility')
+            print(f'  Execute using Launch Configuration "ApiLogicServer"')
         else:
-            print("\nRun API Logic Server:")  # FIXME not for cs
             print(f'  cd {project_name};  python api_logic_server_run.py')
     if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
         print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
@@ -830,7 +830,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
     if (is_docker()):
         if os.getenv('CODESPACES'):
             print(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
-            print(f'Save customized project to GitHub (TBD)":')
+            print(f'Save customized project to GitHub (TBD)')
         else:
             print(f'\nCustomize Docker project using IDE on local machine:')
             docker_project_name = project_name
