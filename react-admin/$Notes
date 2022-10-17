@@ -1,7 +1,7 @@
 API Logic Server execution requires an SRA (Safrs React Admin) build in ApiLogicServer/api_logic_server_cli/create_from_model.  It is *not* built into the source tree - you must build it, or expand a built release (recommended).
 
 Built releases (recommended)
-    There are available in the $releases folder. 
+    There are available in the Docs-ApiLogicServer project. 
     The one without the date is GA, the others are dev (test) releases
     Expand zip into ApiLogicServer/api_logic_server_cli/create_from_model.
 

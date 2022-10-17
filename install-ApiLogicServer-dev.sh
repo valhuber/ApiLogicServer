@@ -10,7 +10,7 @@ contains()
 if [ $# -eq 0 ]
   then
     echo " "
-    echo "Installs dev version of ApiLogicServer and safrs-react-admin (version 4.01.08)"
+    echo "Installs dev version of ApiLogicServer and safrs-react-admin"
     echo " "
     echo " IMPORTANT - run this from empty folder"
     echo " "
@@ -27,6 +27,7 @@ if [ $# -eq 0 ]
     git clone https://github.com/valhuber/ApiLogicServer
     git clone https://github.com/thomaxxl/safrs-react-admin
     git clone https://github.com/valhuber/Docs-ApiLogicServer
+
     pushd Docs-ApiLogicServer
     python3 -m venv venv       # may require python -m venv venv
     if contains "ubuntu" $ostype; then
@@ -36,9 +37,12 @@ if [ $# -eq 0 ]
       echo $ostype does not contain ubuntu
       source venv/bin/activate   # windows venv\Scripts\activate
     fi
+    cd safrs-react-admin-builds
+    unzip safrs-react-admin-npm-build.zip
+
     popd
     cd ApiLogicServer
-    cp -r ../safrs-react-admin/build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+    cp -r ../Docs-ApiLogicServer/safrs-react-admin-builds/safrs-react-admin-npm-build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     #
     #
     # read -p "Installed - ready to launch IDE..."
