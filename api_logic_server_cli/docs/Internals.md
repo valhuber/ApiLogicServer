@@ -79,7 +79,7 @@ This:
 
 1. Runs the standard Python build: `python3 setup.py sdist bdist_wheel`
 2. Installs it into a Python environment `dev/servers/install/ApiLogicServer/venv`
-3. Installs `pyodbc`.  Note this requires you have installed `odbc`, but install failures are intentionally ignored
+3. Installs `pyodbc`.  Note this requires you have installed `odbc`, but install failures are intentionally ignored (instead, skip the Sql/Server database with`do_docker_sqlserver = False` )
 
 #### `do_create_api_logic_project`...
 
@@ -93,7 +93,7 @@ This is a complex rule example.
 
 #### `do_docker_<database>`
 
-These create projects from docker databases which are expected to be running.  They perform minimal validation to ensure the server starts by executing the _hello world_ API.  
+These create projects from docker databases ([see here](../Database-Connectivity/#docker-databases)) which are expected to be running.  They perform minimal validation to ensure the server starts by executing the _hello world_ API.  
 
     This in fact verifies that the `models.py` file is created and runs.
 

@@ -66,7 +66,23 @@ ApiLogicServer run --project_name=/localhost/docker_project
 
 # Docker Databases
 
-Docker is a wonderful way to get known databases for your project, without database installs.  The docker databases below were created for use with API Logic Server, but you may find them generally useful.
+Docker is a wonderful way to get known databases for your project, and eliminate often-messy database installs.  The docker databases below were created for use with API Logic Server, but you may find them generally useful.  
+
+You probably don't need _all_ these, but here's how you start the docker databases (schema details below):
+
+```
+docker run --name mysql-container --net dev-network -p 3306:3306 -d -e MYSQL_ROOT_PASSWORD=p apilogicserver/mysql8.0:version1.0.7
+
+docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version2.0.0
+
+docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr:version2.0.1
+
+docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr-m1:version1.0.2  # Mac M1
+```
+
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/databases/docker-db-versions.png"></figure>
+
 
 &nbsp;
 
@@ -78,7 +94,7 @@ The examples below illustrate connecting _to_ dockerized databases.  You can con
 
 ### From `pip` install
 
-You can also use the `pip` install version.  Differences to note:
+If you are using `pip install` version of API Logic Server.  Differences to note:
 
 * the `/localhost` path is typically not required
 * the server host address is `localhost`
@@ -96,7 +112,7 @@ ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@l
 
 ### From API Logic Server Container
 
-If you are using (recommended) docker for API Logic Server, you must to enable connectivity from your API Logic Server container to your database container.  See the instructions below.
+If you are using the docker version of API Logic Server, you must to enable connectivity from your API Logic Server container to your database container.  See the instructions below.
 
 #### Create Docker network
 
@@ -180,7 +196,7 @@ Obtained from [pthom at git](https://github.com/pthom/northwind_psql) - many tha
 Installed in Docker per [these instructions](https://dev.to/shree_j/how-to-install-and-run-psql-using-docker-41j2).
 
 ```
-docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version2.0.1
+docker run -d --name postgresql-container --net dev-network -p 5432:5432 -e PGDATA=/pgdata -e POSTGRES_PASSWORD=p apilogicserver/postgres:version2.0.0
 ```
 
 Run under API Logic Server docker:
@@ -213,7 +229,7 @@ The current version uses `character varying(5)`, and should not exhibit issues s
 Start SQL Server:
 
 ```
-docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr:version1.0.0
+docker run --name sqlsvr-container --net dev-network -p 1433:1433 -d apilogicserver/sqlsvr:version2.0.1
 ```
 
 Then, under API Logic Server, Docker installed:
