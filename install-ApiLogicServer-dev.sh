@@ -7,10 +7,19 @@ contains()
     (*) false;;
   esac
 
+ostype=$(uname -a)
+if contains "Ubuntu" $ostype; then
+  ostype="ubuntu"
+fi
+if contains "ubuntu" $ostype; then
+  echo $ostype contains ubuntu
+fi
+
 if [ $# -eq 0 ]
   then
     echo " "
-    echo "Installs dev version of ApiLogicServer and safrs-react-admin"
+    # echo "shell: $SHELL"
+    echo "Installs dev version of ApiLogicServer and safrs-react-admin on $ostype"
     echo " "
     echo " IMPORTANT - run this from empty folder"
     echo " "
@@ -19,7 +28,6 @@ if [ $# -eq 0 ]
     exit 0
   else
     ls
-    ostype=$(uname -a)
     echo " "
     read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for $1> "
     set -x
@@ -28,7 +36,7 @@ if [ $# -eq 0 ]
     git clone https://github.com/thomaxxl/safrs-react-admin
     git clone https://github.com/valhuber/Docs-ApiLogicServer
 
-    pushd Docs-ApiLogicServer
+    cd Docs-ApiLogicServer
     python3 -m venv venv       # may require python -m venv venv
     if contains "ubuntu" $ostype; then
       echo $ostype contains ubuntu
@@ -39,9 +47,11 @@ if [ $# -eq 0 ]
     fi
     cd safrs-react-admin-builds
     unzip safrs-react-admin-npm-build.zip
+    cd ..
+    cd ..
 
-    popd
     cd ApiLogicServer
+    pwd
     cp -r ../Docs-ApiLogicServer/safrs-react-admin-builds/safrs-react-admin-npm-build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     #
     #
@@ -51,15 +61,9 @@ if [ $# -eq 0 ]
         python3 -m venv venv       # may require python -m venv venv
         # pwd
         # ls
-        if contains "ubuntu" $ostype; then
-          echo $ostype contains ubuntu
-          . venv/bin/activate
-        else
-          echo $ostype does not contain ubuntu
-          source venv/bin/activate   # windows venv\Scripts\activate
-        fi
+        . venv/bin/activate
         # read -p "venv created; do optional pre-installs now $1> "
-        pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
+        python3 -m pip install -r requirements.txt    # you may need to use pip3, or restart your terminal session
         code .vscode/ApiLogicServerDev.code-workspace
         set +x
         echo ""
