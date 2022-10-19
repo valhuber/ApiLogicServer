@@ -11,9 +11,9 @@ ostype=$(uname -a)
 if contains "Ubuntu" $ostype; then
   ostype="ubuntu"
 fi
-if contains "ubuntu" $ostype; then
-  echo $ostype contains ubuntu
-fi
+# if contains "ubuntu" $ostype; then
+#   echo $ostype contains ubuntu
+# fi
 
 if [ $# -eq 0 ]
   then

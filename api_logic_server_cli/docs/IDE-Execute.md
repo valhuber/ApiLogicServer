@@ -7,8 +7,8 @@ This page describes how to open your project, establish your Python environment,
 IDE instructions depend on whether you are using a local install, or Docker.  Select your desired configuration below, and see how to run, customize and debug your ApiLogicProject.
 
 === "VS Code Local -- Local Install"
-        
-    blah
+
+Follow these instructions:
 
     __1. Open your project with VS Code__
 
