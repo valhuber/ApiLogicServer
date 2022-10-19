@@ -1,15 +1,27 @@
 #!/bin/bash
 
-echo "Running at caller path: $PWD"
+# ru
 
-if [ "$1" = "CallingVenv" ] then
+contains()
+  # echo contains check $1 in $2
+  case "$1" in
+    (*"$2"*) true;;
+    (*) false;;
+  esac
+
+if [ $# -eq 1 ] 
+  then
+    if contains "help" $1; then
+      echo "\nRuns API Logic Project, using venv in:"
+      echo "   - project folder (no args)"
+      echo "   - calling folder (arg 1)\n"
+      exit 0
+    fi
     . venv/bin/activate
-fi
+  else
+    cd "$(dirname "$0")"
+    . venv/bin/activate
+  fi
 
-# change path to project
 cd "$(dirname "$0")"
-
-if[ "$1" ne "CallingVenv" ] then
-    . venv/bin/activate
-}
-python api_logic_server_run.py
+python3 api_logic_server_run.py

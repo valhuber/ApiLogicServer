@@ -5,7 +5,8 @@ param(
 
 Set-PSDebug -Trace 0  # Use 1 for LOTS of output
 
-# echo "Running at caller path: $PWD"
+# echo "Running at caller path: $PWD with $Args.Count"
+# $servername=$args[0]
 
 if($UseCallingVenv -eq "CallingVenv") { 
     .\venv\Scripts\activate
