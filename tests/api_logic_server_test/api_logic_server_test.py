@@ -208,7 +208,7 @@ api_logic_server_cli_path = get_api_logic_server_path().\
 with io.open(str(api_logic_server_cli_path), "rt", encoding="utf8") as f:
     api_logic_server_version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 
-print("\n\n{__file__} 1.0 running")
+print(f"\n\n{__file__} 1.0 running")
 print(f'  Builds / Installs API Logic Server to install_api_logic_server_path: {install_api_logic_server_path}')
 print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
 print(f'  Creates other projects')

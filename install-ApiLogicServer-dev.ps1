@@ -7,17 +7,17 @@ param(
 Write-Output "IDE specified as: $IDE"
 
 if($IDE -eq "") {
-    echo " "
-    echo "Installs dev version of ApiLogicServer and safrs-react-admin (version 4.01.08)"
-    echo " "
-    echo " IMPORTANT - run this from empty folder"
-    echo " "
-    echo "  ./Install-ApiLogicServer-Dev.ps1 [ vscode | charm | x ]"
-    echo " "
+    Write-Output " "
+    Write-Output "Installs dev version of ApiLogicServer and safrs-react-admin (version 4.01.08)"
+    Write-Output " "
+    Write-Output " IMPORTANT - run this from empty folder"
+    Write-Output " "
+    Write-Output "  ./Install-ApiLogicServer-Dev.ps1 [ vscode | charm | x ]"
+    Write-Output " "
     Exit
 }
 ls
-echo " "
+Write-Output " "
 $Ready= Read-Host -Prompt "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for IDE $IDE"
 Set-PSDebug -Trace 0
 mkdir servers    # good place to create ApiLogicProjects
@@ -26,12 +26,16 @@ git clone https://github.com/thomaxxl/safrs-react-admin safrs-react-admin
 git clone https://github.com/valhuber/Docs-ApiLogicServer Docs-ApiLogicServer
 
 pushd Docs-ApiLogicServer
+Expand-Archive -LiteralPath safrs-react-admin-builds/safrs-react-admin-npm-build.zip -DestinationPath safrs-react-admin-builds/safrs-react-admin-npm-build
+
+
 python -m venv venv
 python -m pip install -r requirements.txt
+
 popd
 
 cd ApiLogicServer
-cp -r ../safrs-react-admin/build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+cp -r ../Docs-ApiLogicServer/safrs-react-admin-builds/safrs-react-admin-npm-build/safrs-react-admin-npm-build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
 
 if ($IDE -eq "vscode") {
     python -m venv venv
@@ -41,23 +45,23 @@ if ($IDE -eq "vscode") {
     python -m pip install -r requirements.txt
     code .vscode/ApiLogicServerDev.code-workspace
     Set-PSDebug -Trace 0
-    echo ""
-    echo "Workspace opened; use pre-created Launch Configurations:"
-    echo "  * Run 1 - Create ApiLogicProject, then..."
-    echo "  * Run 2 - RUN ApiLogicProject"
+    Write-Output ""
+    Write-Output "Workspace opened; use pre-created Launch Configurations:"
+    Write-Output "  * Run 1 - Create ApiLogicProject, then..."
+    Write-Output "  * Run 2 - RUN ApiLogicProject"
 } elseif ($IDE -eq "pycharm") {
     charm .
     Set-PSDebug -Trace 0
-    echo "  * Python Interpreter > Add New Environment (default, to create venv)"
-    echo "     IMPORTANT - NOT DOCKER"
-    echo "  * then open requirements.txt - PyCharm should **Install Requirements**"
-    echo "     If this fails, use a terminal to run pip install -r requirements.txt"
+    Write-Output "  * Python Interpreter > Add New Environment (default, to create venv)"
+    Write-Output "     IMPORTANT - NOT DOCKER"
+    Write-Output "  * then open requirements.txt - PyCharm should **Install Requirements**"
+    Write-Output "     If this fails, use a terminal to run pip install -r requirements.txt"
 } else {
-    echo "No IDE started"
+    Write-Output "No IDE started"
 }
-echo ""
-echo "IDEs are preconfigured with run/launch commands to create and run the sample"
-echo ""
-echo "ApiLogicServer/react-admin contains shell burn-and-rebuild-react-admin"
-echo ""
+Write-Output ""
+Write-Output "IDEs are preconfigured with run/launch commands to create and run the sample"
+Write-Output ""
+Write-Output "ApiLogicServer/react-admin contains shell burn-and-rebuild-react-admin"
+Write-Output ""
 exit 0

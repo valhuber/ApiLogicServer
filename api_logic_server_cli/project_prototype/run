@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "Running at caller path: $PWD"
+
+if [ "$1" = "CallingVenv" ] then
+    . venv/bin/activate
+fi
+
+# change path to project
+cd "$(dirname "$0")"
+
+if[ "$1" ne "CallingVenv" ] then
+    . venv/bin/activate
+}
+python api_logic_server_run.py

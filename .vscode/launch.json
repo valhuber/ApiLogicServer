@@ -63,6 +63,14 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "2a - Debug servers/installApiLogicProject",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/../servers/install/ApiLogicServer/ApiLogicProject/api_logic_server_run.py",
+            "redirectOutput": true,
+            "console": "integratedTerminal"
+        },
+        {
             "name": "3 - Run Last Project",
             "type": "python",
             "request": "launch",
