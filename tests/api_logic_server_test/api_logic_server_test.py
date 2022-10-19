@@ -157,12 +157,19 @@ def start_api_logic_server(path: Path):
 
     project_name = os.path.basename(os.path.normpath(path))
     print(f'\n\nStarting Server {project_name}...\n')
+    pipe = None
+    if platform == "win32":
+        start_cmd = ['powershell.exe', f'{str(path)}\\run.ps1 x']
+    else:
+        start_cmd = ['sh', f'{str(path)}\\run x']
+
     try:
-        server = subprocess.Popen([f'{python}','api_logic_server_run.py'], cwd=path)
+        pipe = subprocess.Popen(start_cmd, cwd=path, stderr=subprocess.PIPE)
     except:
-        print("Popen failed")
+        print(f"\nsubprocess.Popen failed trying to start server.. with command: \n {start_cmd}")
+        # what = pipe.stderr.readline()
         raise
-    print(f'\n.. Server started - server: {str(server)}\n')
+    print(f'\n.. Server started - server: {str(pipe)}\n')
     print("\n.. Waiting for server to start...")
     time.sleep(10) 
 
