@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.02.27"
+__version__ = "6.02.28"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t10/19/2022 - 06.02.27: Dialects, run, SQL/Server url change, kill endpoint, Chinook Sqlite, test_all \n"\
+    "\t10/20/2022 - 06.02.28: Dialects, run, SQL/Server url change, kill endpoint, Chinook Sqlite, test_all \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
@@ -561,7 +561,7 @@ def update_api_logic_server_run(project_name, project_directory, api_name, host,
     create_utils.replace_string_in_file(search_for="api_logic_server_host",
                            replace_with=host,
                            in_file=api_logic_server_run_py)
-    create_utils.replace_string_in_file(search_for="api_logic_swagger_host",
+    create_utils.replace_string_in_file(search_for="api_logic_server_swagger_host",
                            replace_with=swagger_host,
                            in_file=api_logic_server_run_py)
     replace_port = f', port="{port}"' if port else ""  # TODO: consider reverse proxy
@@ -1450,8 +1450,11 @@ def print_args(args, msg):
 
 
 def check_ports():
-    rtn_hostname = socket.gethostname()
-    rtn_local_ip = socket.gethostbyname(rtn_hostname)
+    try:
+        rtn_hostname = socket.gethostname()
+        rtn_local_ip = socket.gethostbyname(rtn_hostname)
+    except:
+        print(f"cannot get local ip from {rtn_hostname}")
     port_check = False
     if port_check or is_docker():
         s = socket.socket()  # Create a socket object

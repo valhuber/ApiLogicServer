@@ -40,7 +40,9 @@ def is_docker() -> bool:
 # defaults from ApiLogicServer create command...
 API_PREFIX = "/api"
 flask_host   = "api_logic_server_host"  # where clients find  the API (eg, cloud server addr)
-swagger_host = flask_host  # where swagger finds the API
+swagger_host = "api_logic_server_swagger_host"
+if swagger_host == "":
+    swagger_host = flask_host  # where swagger finds the API
 if is_docker() and flask_host == "localhost":
     flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
 port = "api_logic_server_port"
