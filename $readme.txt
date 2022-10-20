@@ -209,3 +209,6 @@ docker run
 $ create
 $ exit
 code ApiLogicProject
+
+
+ApiLogicServer create-and-run --project_name=/localhost/CheckIP --db_url=  --swagger_host=10.0.0.77
