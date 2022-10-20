@@ -152,24 +152,30 @@ def check_command(command_result):
             print (line)
         raise("command failed")
 
-def start_api_logic_server(path: Path):
+def start_api_logic_server(project_name: str):
     """ start server at path, and wait a few moments """
+    import stat
 
-    project_name = os.path.basename(os.path.normpath(path))
+    install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
+    path = install_api_logic_server_path.joinpath(project_name)
     print(f'\n\nStarting Server {project_name}...\n')
     pipe = None
     if platform == "win32":
         start_cmd = ['powershell.exe', f'{str(path)}\\run.ps1 x']
     else:
-        start_cmd = ['sh', f'{str(path)}\\run x']
+        os.chmod(f'{str(path)}/run.sh', 0o777)
+        # start_cmd = ['sh', f'{str(path)}/run x']
+        start_cmd = [f'{str(path)}/run.sh', 'x']
+        start_cmd = [f'{str(path)}/run.sh']
+        print(f'sh {str(path)}/run.sh x')
 
     try:
-        pipe = subprocess.Popen(start_cmd, cwd=path, stderr=subprocess.PIPE)
+        pipe = subprocess.Popen(start_cmd, cwd=path)  #, stderr=subprocess.PIPE)
     except:
         print(f"\nsubprocess.Popen failed trying to start server.. with command: \n {start_cmd}")
         # what = pipe.stderr.readline()
         raise
-    print(f'\n.. Server started - server: {str(pipe)}\n')
+    print(f'\n.. Server started - server: {project_name}\n')
     print("\n.. Waiting for server to start...")
     time.sleep(10) 
 
@@ -220,7 +226,7 @@ print(f'  Builds / Installs API Logic Server to install_api_logic_server_path: {
 print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
 print(f'  Creates other projects')
 
-stop_server(msg="BEGIN TESTS\n")  # just in case server left running
+# stop_server(msg="BEGIN TESTS\n")  # just in case server left running
 
 debug_script = False
 if debug_script:
@@ -253,14 +259,13 @@ if Config.do_install_api_logic_server:
         cwd=install_api_logic_server_path,
         msg=f'\nInstall pyodbc')
 
-
 if Config.do_create_api_logic_project:
     result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
 if Config.do_run_api_logic_project:
-    start_api_logic_server(path = api_logic_project_path)
+    start_api_logic_server(project_name="ApiLogicProject")
 
 if Config.do_test_api_logic_project:
     try:
@@ -282,7 +287,7 @@ if Config.do_other_sqlite_databases:
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
 
-stop_server(msg="END NW TESTS\n")
+stop_server(msg="*** NW TESTS COMPLETE ***\n")
 
 if Config.do_allocation_test:
     allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
@@ -297,7 +302,7 @@ if Config.do_allocation_test:
     recursive_overwrite(src = src,
                         dest = str(allocation_project_path))
 
-    start_api_logic_server(path = allocation_project_path)
+    start_api_logic_server(project_name="Allocation")
 
     try:
         print("\nProceeding with Allocation tests...\n")
@@ -309,7 +314,7 @@ if Config.do_allocation_test:
         print(f'\n\n** Allocation Test failed\n\n')
     print("\nAllocation tests - Success... (note - server still running)\n")
 
-stop_server(msg="END ALLOCATION TEST\n")
+stop_server(msg="*** ALLOCATION TEST COMPLETE ***\n")
 
 if Config.do_docker_mysql:
     result_docker_mysql_classic = run_command(
@@ -317,7 +322,7 @@ if Config.do_docker_mysql:
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MySQL classicmodels at: {str(install_api_logic_server_path)}')
     check_command(result_docker_mysql_classic)
-    start_api_logic_server(path = install_api_logic_server_path.joinpath('classicmodels'))
+    start_api_logic_server(project_name='classicmodels')
     stop_server(msg="classicmodels\n")
     
 if Config.do_docker_sqlserver:
@@ -325,7 +330,7 @@ if Config.do_docker_sqlserver:
         f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
-    start_api_logic_server(path = install_api_logic_server_path.joinpath('sqlserver'))
+    start_api_logic_server(project_name='sqlserver')
     stop_server(msg="sqlserver\n")
     
 if Config.do_docker_postgres:
@@ -333,7 +338,7 @@ if Config.do_docker_postgres:
         f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@{db_ip}/postgres",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
-    start_api_logic_server(path = install_api_logic_server_path.joinpath('postgres'))
+    start_api_logic_server(project_name='postgres')
     print(f'\nServer [Postgres] running\n')
 
 print("\n\nSUCCESS -- END OF TESTS (be sure to test Postgres, and stop the server")
