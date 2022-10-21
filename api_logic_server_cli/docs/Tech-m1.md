@@ -9,7 +9,6 @@ Besides typical home use, I rely on this machine for API Logic Server dev.  That
 | OS      | Mac, Windows 11, Unix (Ubuntu) | Parallels 14 |
 | DB      | Sqlite, MySql, Sql/Server, Postgres | Docker |
 | IDE     | VSCode, Pycharm | |
-| Tools   | Atom, Firefox | |
 | Docs    | GitHub Pages, MKDocs, Google Docs, slides | |
 | Other   | Better Touch Tool | |
 
@@ -19,7 +18,7 @@ Besides typical home use, I rely on this machine for API Logic Server dev.  That
 
 This was rather remarkable.  Under MBP 16 / VMWare Fusion / Windows 10, boot time was 70 seconds.  Under M1 / Parallels / Windows 11, it is 8-10 seconds.
 
-## Docker - ApiLogicServer
+## Docker - For ApiLogicServer
 
 Installs and runs without issue.  
 
@@ -32,9 +31,9 @@ It is slower, however, on M1.  For example, once started, the `ApiLogicServer we
 On investigation, you can create separate docker images for x86 vs. ARM.  The ARM version starts instantly.
 
 
-#### Building Docker Images - faiing
+#### Building Dual Docker Images - failing
 
-It is possible to build images that run on both, but I have not been able to address that.
+It appears to be possible to build images that run on both AMD and ARM, but I have not been able to address that.
   Initial attempt failed with:
 
 ```
@@ -54,9 +53,11 @@ So that M1 Macs work, API Logic Server version 05.03.34 has removed the psycopg2
 
 Update: as of Oct 2022, the most recent release of `psycopg2` provides ARM support.  With this, Postgres happily runs fine.  As of 6.1.2, it will no longer require manual install.
 
-## Docker Databases - MySQL/Postgres run, Sql Server Fails
+## Docker Databases - running
 
-The [Docker database images](..Database-Connectivity/) work for M1 Macs, __except SQL/Server__ (it fails to start).  There appear to be solutions:
+The [Docker database images](..Database-Connectivity/) work for M1 Macs, __except SQL/Server__ (it fails to start). It is architecture specific.
+
+These solutions were successful [as described here](https://github.com/valhuber/ApiLogicServer/blob/main/tests/docker_databases/Dockerfile-SqlSvr-instructions-m1).  Many thanks for the following information:
 
 * [ODBC Driver](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16)
 
