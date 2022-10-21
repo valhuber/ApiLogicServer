@@ -238,6 +238,7 @@ if debug_script:
 
 if Config.do_install_api_logic_server:
     if os.path.exists(install_api_logic_server_path):
+        # rm -r ApiLogicServer.egg-info; rm -r build; rm -r dist
         delete_dir(dir_path=str(get_api_logic_server_path().joinpath('ApiLogicServer.egg-info')), msg="delete egg ")
         delete_dir(dir_path=str(get_api_logic_server_path().joinpath('build')), msg="delete build ")
         delete_dir(dir_path=str(get_api_logic_server_path().joinpath('dist')), msg="delete dist ")
