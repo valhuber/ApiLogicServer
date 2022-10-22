@@ -63,11 +63,11 @@ Once in your IDE, you can run the pre-defined launch configuration `0 - Create a
 
 &nbsp;
 
-## Test and Release
+## Build and Test
 
-As of version 6.02.20, test automation ([located here](https://github.com/valhuber/ApiLogicServer/tree/main/tests/api_logic_server_test)) replaces a series of manually executed scripts ([located here](https://github.com/valhuber/ApiLogicServer/tree/main/tests/creation_tests)).  These have been verified on Mac, Linux (Ubuntu) and Windows.
+As of version 6.02.20, test automation ([located here](https://github.com/valhuber/ApiLogicServer/tree/main/tests/build_and_test)) replaces a series of manually executed scripts ([located here](https://github.com/valhuber/ApiLogicServer/tree/main/tests/creation_tests)).  These have been verified on Mac, Linux (Ubuntu) and Windows.
 
-The automated test (use the launch configuration `REBUILD AND TEST`) performs a number of steps.  You can configure the test to run some or all of these by editing the ``env_xxx.py` files shown here:
+The automated test (use the launch configuration `BUILD AND TEST`) performs a number of steps.  You can configure the test to run some or all of these by editing the ``env_xxx.py` files shown here:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/internals/test-env-files.png?raw=true"></figure>
 

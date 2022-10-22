@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "REBUILD AND TEST",
+            "name": "BUILD AND TEST",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/tests/api_logic_server_test",
-            "program": "api_logic_server_test.py",
+            "cwd": "${workspaceFolder}/tests/build_and_test",
+            "program": "build_and_test.py",
             "redirectOutput": true,
             "justMyCode": false,
             "console": "integratedTerminal"
