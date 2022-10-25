@@ -111,7 +111,7 @@ def recursive_overwrite(src: Path, dest: Path, ignore=None):
         shutil.copyfile(src, dest)
 
 def stop_server(msg: str):
-    URL = "http://localhost:5656/kill"
+    URL = "http://localhost:5656/stop"
     PARAMS = {'msg': msg}
     try:
         r = requests.get(url = URL, params = PARAMS)
