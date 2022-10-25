@@ -109,8 +109,13 @@ For example, 127.0.0.1 (localhost) or 0.0.0.0 (any interface) only have meaning 
 Also, it's possible to map hostname->IP DNS entries manually in /etc/hosts, but users on other computers are not aware of that mapping.
 
 &nbsp;
-## gunicorn
+## Production Deployment
 
+As noted in the [gunicorn documentation](https://flask.palletsprojects.com/en/2.0.x/deploying/):
+
+  > While lightweight and easy to use, Flask’s built-in server is not suitable for production as it doesn’t scale well. 
+
+#### gunicorn
 You can run API Logic Server servers under [gunicorn](https://flask.palletsprojects.com/en/2.2.x/deploying/gunicorn/){:target="_blank" rel="noopener"}.  To use the default API Logic Server ports:
 
 ```
@@ -127,3 +132,6 @@ You will also need to:
 
 1. Update the default server/port settings in `api_logic_server_run.py`
 2. Start your browser at [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+#### PythonAnywhere
+Please see the [Install Instructions](../Install) for information on PythonAnywhere.
