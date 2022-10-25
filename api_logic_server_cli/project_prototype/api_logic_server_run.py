@@ -268,13 +268,14 @@ def get_args():
             warnings.warn("argparse help formatter failed, falling back.")
             return formatter
 
-    if __name__ == "__main__":  # gunicorn-friendly host/port settings ()
-
+    if __name__ != "__main__":  
+        app_logger.debug(f"WSGI - no args, using creation default host/port..  sys.argv = {sys.argv}\n")
+    else:   # gunicorn-friendly host/port settings ()
         # thanks to https://www.geeksforgeeks.org/command-line-arguments-in-python/#argparse
         import argparse
         # Initialize parser
         if len(sys.argv) == 1:
-            app_logger.debug("No host/port arguments - using creation defaults")
+            app_logger.debug("No arguments - using creation default host/port")
         else:
             msg = "API Logic Project"
             parser = argparse.ArgumentParser(

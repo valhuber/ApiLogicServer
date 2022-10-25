@@ -2,8 +2,12 @@
 Recall that you execute your API Logic Project by __starting the server__, like this:
 
 ```
-ApiLogicServer> cd my_new_project
-my_new_project> python api_logic_server_run.py
+ApiLogicServer (venv)> cd my_new_project
+my_new_project(venv)> python api_logic_server_run.py
+```
+Note this presumes you have activated your `venv`.  The system also provides shell scripts you can use:
+```
+sh run.sh  # windows - use run.ps1
 ```
 
 Then, __to run the Admin App and Swagger:__
@@ -103,3 +107,23 @@ __Notes:__
 
 For example, 127.0.0.1 (localhost) or 0.0.0.0 (any interface) only have meaning on your own computer.
 Also, it's possible to map hostname->IP DNS entries manually in /etc/hosts, but users on other computers are not aware of that mapping.
+
+&nbsp;
+## gunicorn
+
+You can run API Logic Server servers under [gunicorn](https://flask.palletsprojects.com/en/2.2.x/deploying/gunicorn/){:target="_blank" rel="noopener"}.  To use the default API Logic Server ports:
+
+```
+gunicorn api_logic_server_run:flask_app -w 4 -b localhost:5656
+```
+
+Or, to use the default gunicorn ports:
+
+```
+gunicorn api_logic_server_run:flask_app -w 4
+```
+
+You will also need to:
+
+1. Update the default server/port settings in `api_logic_server_run.py`
+2. Start your browser at [http://127.0.0.1:8000](http://127.0.0.1:8000)
