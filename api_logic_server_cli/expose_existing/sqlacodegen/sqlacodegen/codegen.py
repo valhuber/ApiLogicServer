@@ -565,7 +565,7 @@ from sqlalchemy.dialects.mysql import *
         if "sqlalchemy.ext.declarative" in self.collector:  # Manually Added for safrs (ApiLogicServer)
             dialect_name = self.metadata.bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
             if dialect_name in ["firebird", "mssql", "oracle", "postgresql", "sqlite", "sybase"]:
-                rtn_api_logic_server_imports = api_logic_server_imports.replace("msql", dialect_name)
+                rtn_api_logic_server_imports = api_logic_server_imports.replace("mysql", dialect_name)
             else:
                 rtn_api_logic_server_imports = api_logic_server_imports
                 print(".. .. ..Warning - unknown sql dialect, defaulting to msql - check database/models.py")
