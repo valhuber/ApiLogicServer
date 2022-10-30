@@ -8,7 +8,7 @@ flask-appbuilder==3.4.4
 logicbankutils==0.6.0
 inflect==5.0.2
 itsdangerous==1.1.0
-safrs>=2.12.2
+safrs>=2.12.4
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 Flask-Admin==1.5.7
