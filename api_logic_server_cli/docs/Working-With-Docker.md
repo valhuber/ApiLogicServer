@@ -13,7 +13,7 @@ ApiLogicServer is therefore provided in a docker image, as described in the [Ins
 &nbsp;
 
 ## Install - `docker run` arguments
-Once you've [installed Docker](../Testing#working-with-docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
+Once you've [installed Docker](../Tech-Docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
 
 * the `v ${PWD}:/localhost` argument is what enables the ApiLogicServer to create / access the project on your local host
    * Windows - Powershell must be used (due to the `$(PWD)` syntax)
