@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.02.33"
+__version__ = "6.02.34"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t11/05/2022 - 06.02.33: Dialects, run, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
+    "\t11/05/2022 - 06.02.34: Dialects, run, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
@@ -820,7 +820,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
     else:
         print("\nRun API Logic Server:")
         if os.getenv('CODESPACES'):
-            print(f'  Add port 5656, with Public visibility')
+            # print(f'  Add port 5656, with Public visibility') - automated in .devcontainer.json
             print(f'  Execute using Launch Configuration "ApiLogicServer"')
         else:
             print(f'  cd {project_name};  python api_logic_server_run.py')

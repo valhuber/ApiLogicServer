@@ -9,6 +9,29 @@ See the [procedure here](../Manage-GitHub).
 
 &nbsp;
 
+## Exploring how to make port public
+
+This explores creating template projects (future feature), in particular creating **public** ports in advance.  The `.devcontainer` works, but creates the port as private.
+
+[This link](https://github.com/orgs/community/discussions/4068) describes how to work around missing setting for creating public ports.  It failed (11/5) as described in a reply near the end:
+
+I updated [this repo](https://github.com/ApiLogicServer/template), and a permission issue (I [build my own container](https://github.com/valhuber/ApiLogicServer/blob/main/docker/api_logic_server_x.Dockerfile)):
+
+```
+api_logic_server@codespaces-8b4a37:/workspaces/template$ cd .devcontainer/
+api_logic_server@codespaces-8b4a37:/workspaces/template/.devcontainer$ echo "gh codespace ports -c $CODESPACE_NAME" >> ~/.bashrc
+bash: /home/api_logic_server/.bashrc: Permission denied
+api_logic_server@codespaces-8b4a37:/workspaces/template/.devcontainer$ 
+```
+
+Currently under investigation.  It appears to work as suggested in the much-appreciated post by adding this to `.devcontainer/setup.sh`:
+
+```
+gh codespace ports visibility 5656:public -c $CODESPACE_NAME
+```
+
+@nbsp;
+
 ## Create New Projects from Codespaces (currently not working)
 
 We also explored creating a new project from the Codespaces example itself.  You can create projects under Codespaces just as you do for local installs:
