@@ -15,6 +15,12 @@ python3 -m pip install -r requirements.txt
 ```
 &nbsp;
 
+## Shared `venv`
+
+If you wish to share a `venv` over multiple projects, use __Settings > Python: Venv Path__, and specify a directory containing `venv` directories (e.g, where you installed API Logic Server).
+
+&nbsp;
+
 ## `venv_setup` - shortcut setup procedures
 
 Ss of release 5.02.10, projects are created with a `venv_setup` directory which may be helpful in establishing and verifying your Python environment.  For more information, see the [Trouble Shooting Guide](../Troubleshooting#ide-issues).
