@@ -81,7 +81,7 @@ For this, I updated [api_logic_server_run.py](https://github.com/valhuber/ApiLog
         http_type = 'https'
 ```
 
-Good progress, enabling users to run locally or in Codespaces with the same Run COnfiguration (shown above).  But it still required users to _create_ the port, so I wanted to automate that...
+Good progress, enabling users to run locally or in Codespaces with the same Run Configuration (shown above).  But it still required users to _create_ the port, so I wanted to automate that...
 
 &nbsp;
 
@@ -106,6 +106,8 @@ A big step forward, but it failed because the Port was not ___public___.
 
 #### Make the created port _public_
 
+[This link](https://github.com/orgs/community/discussions/4068){:target="_blank" rel="noopener"} describes how to work around missing setting for creating public ports.  Adding this to the `devcontainer` installs the `gh` CLI,
+
 ```json	
 	"features": {
 		"github-cli": "latest"
@@ -114,24 +116,24 @@ A big step forward, but it failed because the Port was not ___public___.
 	"postAttachCommand": "/bin/bash .devcontainer/setup.sh"
 ```
 
-This explores creating template projects (future feature), in particular creating **public** ports in advance.  The `.devcontainer` works, but creates the port as private.
+Adding this to the `devcontainer` installs the `gh` CLI, which enables us to [/bin/bash .devcontainer/setup.sh](https://github.com/ApiLogicServer/ApiLogicProject/blob/main/.devcontainer/setup.sh):
 
-[This link](https://github.com/orgs/community/discussions/4068){:target="_blank" rel="noopener"} describes how to work around missing setting for creating public ports.  It failed (11/5) as described in a reply near the end:
-
-I updated [this repo](https://github.com/ApiLogicServer/template), and a permission issue (I [build my own container](https://github.com/valhuber/ApiLogicServer/blob/main/docker/api_logic_server_x.Dockerfile)):
-
-```
-api_logic_server@codespaces-8b4a37:/workspaces/template$ cd .devcontainer/
-api_logic_server@codespaces-8b4a37:/workspaces/template/.devcontainer$ echo "gh codespace ports -c $CODESPACE_NAME" >> ~/.bashrc
-bash: /home/api_logic_server/.bashrc: Permission denied
-api_logic_server@codespaces-8b4a37:/workspaces/template/.devcontainer$ 
-```
-
-Currently under investigation.  It appears to work as suggested in the much-appreciated post by adding this to `.devcontainer/setup.sh`:
-
-```
+```bash
 gh codespace ports visibility 5656:public -c $CODESPACE_NAME
 ```
+
+As noted in form, this may be subject to race conditions, so I also updated the [`.bashrc`](https://github.com/valhuber/ApiLogicServer/blob/main/.bashrc) built by ApiLogicServer:
+
+```bash
+if [[ -z "${CODESPACES}" ]]; then
+  LOAD_GIT="Not Codespaces"
+else
+  echo "Now: gh codespace ports visibility 5656:public -c $CODESPACE_NAME"
+  gh codespace ports visibility 5656:public -c $CODESPACE_NAME
+fi
+```
+
+Not pretty, but API Logic Server users would not see this.
 
 @nbsp;
 
