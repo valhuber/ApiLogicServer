@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# ru
-
 contains()
   # echo contains check $1 in $2
   case "$1" in
@@ -19,8 +17,8 @@ if [ $# -eq 1 ]
     fi
     . venv/bin/activate
   else
-    if [[ -z "${CODESPACES}" ]]; then
-      # not codespaces - activate venv
+    if [ "${APILOGICSERVER_RUNNING}" != "DOCKER" ]; then
+      # not Docker/Codespaces - activate venv
       cd "$(dirname "$0")"
       . venv/bin/activate
     fi
