@@ -19,8 +19,11 @@ if [ $# -eq 1 ]
     fi
     . venv/bin/activate
   else
-    cd "$(dirname "$0")"
-    . venv/bin/activate
+    if [[ -z "${CODESPACES}" ]]; then
+      # not codespaces - activate venv
+      cd "$(dirname "$0")"
+      . venv/bin/activate
+    fi
   fi
 
 cd "$(dirname "$0")"
