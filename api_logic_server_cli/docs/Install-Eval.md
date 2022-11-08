@@ -8,6 +8,7 @@ The fastest way to explore API Logic Server - *with __no install__* - is to foll
 <summary>What is API Logic Server</summary>
 
 &nbsp;
+
 API Logic Server reads your schema to __create an executable web app project:__ an API and an Admin UI. 
 
 __Customize in standard IDEs__ with Python.
