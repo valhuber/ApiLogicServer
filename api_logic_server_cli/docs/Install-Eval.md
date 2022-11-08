@@ -7,12 +7,9 @@ The fastest way to explore API Logic Server - *with __no install__* - is to foll
 
 <summary>What is API Logic Server</summary>
 
-&nbsp;
-&nbsp;
+API Logic Server reads your schema to __create an executable web app project, _instantly:___ an API and an Admin UI. 
 
-API Logic Server reads your schema to __create an executable web app project:__ an API and an Admin UI. 
-
-__Customize in standard IDEs__ with Python.
+__Customize using standard IDEs__ with Python.
 
 __Unique spreadsheet-like business rules__ for multi-table derivations and constraints - 40X more concise than code.
 
@@ -20,15 +17,13 @@ Follow the steps below to be up and running in about a minute - no install, no c
 
 <details markdown>
 
-<summary>Why Does It Matter: Faster, Simpler, Architectural Quality</summary>
-
-&nbsp;
+<summary>Why Does It Matter: Faster, Simpler, Modern Architecture</summary>
 
 Automation makes it __faster:__ what used to require weeks or months is now immediate.  Unblock UI Dev, and engage business users - _early_ - instead of investing in a misunderstanding.
 
 Automation makes it __simpler:__ this reduces the risk of architectural errors, e.g., APIs without pagination.
 
-And finally, automation guarantees a base level of __architecture:__ systems will always have APIs (no more logic in UI controllers), logic will be always shared between UIs and APIs, and predictable for maintenance teams.
+And finally, automation guarantees a __modern software architecture:__ systems will always be container-ready, API-based, logic will be always shared between UIs and APIs (no more logic in UI controllers), and predictable for maintenance teams.
 
 
 </details>
@@ -44,8 +39,6 @@ Open [this template project](https://github.com/ApiLogicServer/ApiLogicProject) 
 <details markdown>
 
 <summary>Show Me How</summary>
-
-&nbsp;
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-on-codespaces.jpg?raw=true"></figure> 
 
@@ -68,7 +61,6 @@ These instructions will continue in Codespaces.
 &nbsp;
 
 <summary>What Just Happened</summary>
-
 
 You will now see the template project - open in VSCode, _in the Browser._  But that's just what you _see..._
 
@@ -97,8 +89,6 @@ ApiLogicServer create --project_name=./ --db_url=
 
 <summary>What Just Happened</summary>
 
-&nbsp;
-
 This is **not** a coded application.
 
 The system examined your database (here, the default), and __created an _executable project:___
@@ -115,8 +105,6 @@ __Business Logic is Automated:__ use unique spreadsheet-like rules to declare mu
 <details markdown>
 
 <summary>Using your own database</summary>
-
-&nbsp;
 
 In this case, we used a default Customers/Orders database.  To use your own database, provide the `db_url` [like this](../Database-Connectivity/).
 
@@ -135,8 +123,6 @@ The project is ready to run:
 
 <details markdown>
 
-&nbsp;
-
 <summary>Show Me How</summary>
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-port-launch-simple.jpg?raw=true"></figure>
@@ -150,8 +136,6 @@ The project is ready to run:
 [Open the Tutorial](Tutorial.md) to explore the sample project.
 
 <details markdown>
-
-&nbsp;
 
 <summary>Tutorial Overview</summary>
 
