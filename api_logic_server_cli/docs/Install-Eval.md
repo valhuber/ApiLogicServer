@@ -1,13 +1,7 @@
-The fastest way to explore API Logic Server - *with __no install__* - is to follow this Quick Start to create, explore and customize a project.
+The fastest way to explore API Logic Server - *with __no install__* - is to follow this guide to create, explore and customize a project using Codespaces.
 
 !!! Caution "Requires Codespaces Beta, or in organization with Codespaces enabled"
     There are currently restrictions on Codespaces usage.  It appears these will be [removed in the near future](https://github.com/community/community/discussions/32791){:target="_blank" rel="noopener"}.
-
-
-
-&nbsp;
-
-# Quick Start
 
 <details markdown>
 
@@ -43,7 +37,7 @@ And finally, automation guarantees a base level of __architecture:__ systems wil
 
 ## 1. Open in Codespaces
 
-Open this template project in Codespaces.
+Open [this template project](https://github.com/ApiLogicServer/ApiLogicProject) in Codespaces.
 
 <details markdown>
 
@@ -205,7 +199,14 @@ API Logic Server is an open source Python project.  It runs as a standard Python
 
 * a CLI (Command Language Interface) to create executable projects with a single command
 
-   * Customize your projects in an IDE such as VSCode or PyCharm
+Then,
+
+* Customize your projects in standard IDEs such as VSCode or PyCharm
+
+* Declare multi-table derivation and constraint logic using spreadsheet-like rules
+
+    * :trophy: 40X more concise than code
+    * Extend with Python
 
 
 > :bulb: API Logic Server reads your schema, and creates an executable, customizable project.
