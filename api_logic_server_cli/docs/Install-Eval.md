@@ -8,11 +8,11 @@ The fastest way to explore API Logic Server - *with __no install__* - is to foll
 <summary>What is API Logic Server</summary>
 
 &nbsp;
-API Logic Server reads your schema to create an executable web app project: an API and an Admin UI. 
+API Logic Server reads your schema to __create an executable web app project:__ an API and an Admin UI. 
 
-Customize with Python in standard IDEs.
+__Customize in standard IDEs__ with Python.
 
-Unique spreadsheet-like business rules for multi-table derivations and constraints - 40X more concise than code.
+__Unique spreadsheet-like business rules__ for multi-table derivations and constraints - 40X more concise than code.
 
 Follow the steps below to be up and running in about a minute - no install, no configuration.  You can run the created project to explore its functionality, and how to customize it in VSCode.
 
