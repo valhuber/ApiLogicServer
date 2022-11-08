@@ -1,4 +1,4 @@
-The fastest way to explore API Logic Server - *with __no install__* - is to follow this [Exploration Guide](#exploration-guide) to create, explore and customize a project.
+The fastest way to explore API Logic Server - *with __no install__* - is to follow this Quick Start to create, explore and customize a project.
 
 !!! Caution "Requires Codespaces Beta, or in organization with Codespaces enabled"
     There are currently restrictions on Codespaces usage.  It appears these will be [removed in the near future](https://github.com/community/community/discussions/32791){:target="_blank" rel="noopener"}.
@@ -14,7 +14,7 @@ The fastest way to explore API Logic Server - *with __no install__* - is to foll
 <summary>What is API Logic Server</summary>
 
 &nbsp;
-API Logic Server reads your schema to create executable web app projects: an API and an Admin UI. 
+API Logic Server reads your schema to create an executable web app project: an API and an Admin UI. 
 
 Customize with Python in standard IDEs.
 
@@ -111,7 +111,7 @@ The system examined your database (here, the default), and __created an _executa
 
 * __Admin UI__ - multi-page / multi-table apps, with page navigations and automatic joins
 
-__Projects are Customizable, using _your IDE_:__ the Project Explorer shows the project structure, at left.  Use the code editor to customize your project, and the debugger to debug it.
+__Projects are Customizable, using _your IDE_:__ the Project Explorer shows the project structure.  Use the code editor to customize your project, and the debugger to debug it.
 
 __Business Logic is Automated:__ use unique spreadsheet-like rules to declare multi-table derivations and constraints - 40X more concise than code.  Extend logic with Python.
 
@@ -122,20 +122,20 @@ __Business Logic is Automated:__ use unique spreadsheet-like rules to declare mu
 
 &nbsp;
 
-In this case, we used a default Customers/Orders database.  To use your own database, provide the `db_url`.
+In this case, we used a default Customers/Orders database.  To use your own database, provide the `db_url` [like this](../Database-Connectivity/).
 
 </details>
 </details>
 
 &nbsp;
 
-## 3. Start the Server, and Launch the Admin App
+## 3. Start Server, Admin App
 
 The project is ready to run:
 
-1. Use the default Run Configuration to start the server, and 
+1. Use the default __Run Configuration__ to start the server, and 
 
-2. Start the web app (Ports > Globe). 
+2. Click __Ports > Globe__ to start the web app. 
 
 <details markdown>
 
