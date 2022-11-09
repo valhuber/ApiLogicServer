@@ -158,19 +158,19 @@ def start_api_logic_server(project_name: str):
 
     install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
     path = install_api_logic_server_path.joinpath(project_name)
-    print(f'\n\nStarting Server {project_name}...\n')
+    print(f'\n\nStarting Server {project_name}... from  ${install_api_logic_server_path}\venv\n')
     pipe = None
     if platform == "win32":
         start_cmd = ['powershell.exe', f'{str(path)}\\run.ps1 x']
     else:
         os.chmod(f'{str(path)}/run.sh', 0o777)
         # start_cmd = ['sh', f'{str(path)}/run x']
-        start_cmd = [f'{str(path)}/run.sh', 'x']
-        start_cmd = [f'{str(path)}/run.sh']
+        start_cmd = [f'{str(path)}/run.sh', 'calling']
+        # start_cmd = [f'{str(path)}/run.sh']
         print(f'sh {str(path)}/run.sh x')
 
     try:
-        pipe = subprocess.Popen(start_cmd, cwd=path)  #, stderr=subprocess.PIPE)
+        pipe = subprocess.Popen(start_cmd, cwd=install_api_logic_server_path)  #, stderr=subprocess.PIPE)
     except:
         print(f"\nsubprocess.Popen failed trying to start server.. with command: \n {start_cmd}")
         # what = pipe.stderr.readline()

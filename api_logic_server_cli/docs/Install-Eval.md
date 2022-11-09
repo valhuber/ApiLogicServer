@@ -25,7 +25,6 @@ Automation makes it __simpler:__ this reduces the risk of architectural errors, 
 
 And finally, automation guarantees a __modern software architecture:__ systems will always be container-ready, API-based, logic will be always shared between UIs and APIs (no more logic in UI controllers), and predictable for maintenance teams.
 
-
 </details>
 
 </details>

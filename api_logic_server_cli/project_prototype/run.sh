@@ -7,19 +7,29 @@ contains()
     (*) false;;
   esac
 
-if [ $# -eq 1 ] 
+echo "\nAPI Logic Project Runner 1.0 Here ($# arg(s): $1)"
+if [ $# -eq 1 ]
   then
     if contains "help" $1; then
-      echo "\nRuns API Logic Project, using venv in:"
-      echo "   - project folder (no args)"
-      echo "   - calling folder (arg 1)\n"
+      echo "\nRuns API Logic Project"
+      echo "  sh run.sh [ calling | $ | help ]"
+      echo "    no args - use project venv"
+      echo "    calling - use venv from calling script (for internal tests)"
+      echo "    $ - use the current venv\n"
       exit 0
+    elif [ "$1" == "$" ]; then
+      echo ".. Using existing venv -- $VIRTUAL_ENV"
+    else
+      echo ".. Calling directory - venv from $PWD"
+      cd $PWD
+      . venv/bin/activate
     fi
-    . venv/bin/activate
   else
-    if [ "${APILOGICSERVER_RUNNING}" != "DOCKER" ]; then
-      # not Docker/Codespaces - activate venv
-      cd "$(dirname "$0")"
+    echo " "
+    if [ "${APILOGICSERVER_RUNNING}" = "DOCKER" ]; then
+      echo ".. Docker - no venv required"
+    else
+      echo ".. APILOGICSERVER_RUNNING=${APILOGICSERVER_RUNNING} - not Docker/Codespaces - activate venv"
       . venv/bin/activate
     fi
   fi
