@@ -333,7 +333,7 @@ resources:
         info: derived as sum(OrderDetail.Amount)
         show_when: isInserting == false
       - name: Ready
-      - type : Boolean
+        type : Boolean
       - name: CloneFromOrder
       - name: OrderDetailCount
         show_when: isInserting == false
