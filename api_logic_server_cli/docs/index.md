@@ -28,6 +28,16 @@ API Logic Server creates __customizable database web app projects:__
 
 &nbsp;
 
+### Why It Matters: Faster, Simpler, Modern Architecture
+
+Automation makes it __faster:__ what used to require weeks or months is now immediate.  Unblock UI Dev, and engage business users - _early_ - instead of investing in a misunderstanding.
+
+Automation makes it __simpler:__ this reduces the risk of architectural errors, e.g., APIs without pagination.
+
+Automation guarantees a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ between UIs and APIs (no more logic in UI controllers), in a predictable structure for maintenance.
+
+&nbsp;
+
 # Background
 A brief look at why we built it, and our approach.<br><br>
 
