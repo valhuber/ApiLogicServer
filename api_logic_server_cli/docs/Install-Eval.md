@@ -7,13 +7,23 @@ The fastest way to explore API Logic Server - *with __no install__* - is to foll
 
 <summary>What is API Logic Server</summary>
 
-API Logic Server reads your schema to __create an executable web app project, _instantly:___ an API and an Admin UI. 
+API Logic Server creates __customizable database web app projects:__
 
-__Customize using standard IDEs__ with Python.
+* __Creation is Instant:__ create _executable_ projects from your database, with a _single_ command
 
-__Unique spreadsheet-like business rules__ for multi-table derivations and constraints - 40X more concise than code.
+* __Projects are Highly Functional,__ providing:
+
+    * __API:__ an endpoint for each table, with filtering, sorting, pagination and related data access
+
+    * __Admin UI:__ multi-page / multi-table apps, with page navigations, automatic joins and declarative hide/show
+
+* __Projects are Customizable, using _your IDE_:__ such as VSCode, PyCharm, etc, for familiar edit/debug services
+
+* __Business Logic Automation:__ using unique spreadsheet-like rules, extensible with Python :trophy:
 
 Follow the steps below to be up and running in about a minute - no install, no configuration.  You can run the created project to explore its functionality, and how to customize it in VSCode.
+
+&nbsp;
 
 <details markdown>
 
@@ -23,7 +33,7 @@ Automation makes it __faster:__ what used to require weeks or months is now imme
 
 Automation makes it __simpler:__ this reduces the risk of architectural errors, e.g., APIs without pagination.
 
-And finally, automation guarantees a __modern software architecture:__ systems will always be container-ready, API-based, logic will be always shared between UIs and APIs (no more logic in UI controllers), and predictable for maintenance teams.
+Automation guarantees a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ between UIs and APIs (no more logic in UI controllers), in a predictable structure for maintenance.
 
 </details>
 
