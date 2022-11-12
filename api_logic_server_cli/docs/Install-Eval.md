@@ -43,7 +43,7 @@ Automation guarantees a __modern software architecture:__ _container-ready_, _AP
 
 ## 1. Open in Codespaces
 
-Open [this template project](https://github.com/ApiLogicServer/ApiLogicProject) in Codespaces.
+Open [this template project](https://github.com/ApiLogicServer/ApiLogicProject){:target="_blank" rel="noopener"} in Codespaces, by clicking the `Code` button.
 
 <details markdown>
 
@@ -59,7 +59,7 @@ __2. Load the working_software_now project from GitHub__
 
 To access this GitHub project with Codespaces
 
-1. __Open [this page](https://github.com/ApiLogicServer/working_software_now)  _in a new window___, and 
+1. __Open [this page](https://github.com/ApiLogicServer/working_software_now){:target="_blank" rel="noopener"}  _in a new window___, and 
 2. Click __Open > Codespaces__ as shown above
 3. You will see an empty project.
 
