@@ -1,6 +1,6 @@
 about:
-  date: November 08, 2022 09:03
-  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles
+  date: November 10, 2022 09:03
+  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, X-photo
   # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
 info:
@@ -185,7 +185,6 @@ resources:
       - name: Country
       - name: HomePhone
       - name: Extension
-      - name: Photo
       - name: Notes
       - name: ReportsTo
       - name: PhotoPath

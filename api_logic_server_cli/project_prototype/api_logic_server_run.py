@@ -18,7 +18,7 @@
 ==============================================================================
 """
 
-import os, logging, sys
+import os, logging, sys, io
 
 
 def is_docker() -> bool:
@@ -194,8 +194,8 @@ def flask_events(flask_app):
         """ Step 3 - return admin file response: /ui/admin/<path:path> (to now-running safrs-react-admin app)
             and text-substitutes to get url args from startup args (avoid specify twice for *both* server & admin.yaml)
             api_root: {http_type}://{swagger_host}:{swagger_port} (from ui_admin_creator)
+            e.g. http://localhost:5656/ui/admin/admin.yaml
         """
-        import io
         use_type = "mem"
         if use_type == "mem":
             with open(f'ui/admin/{path}', "r") as f:  # path is admin.yaml for default url/app
@@ -211,6 +211,13 @@ def flask_events(flask_app):
             response = send_file("ui/admin/admin.yaml", mimetype='text/yaml')
             return response
 
+    @flask_app.route('/ui/images/<path:path>')
+    def get_image(path=None):
+        """ return requested image
+            e.g. http://localhost:5656/ui/images/Employee/janet.jpg
+        """
+        response = send_file(f'ui/images/{path}', mimetype='image/jpeg')
+        return response
 
     @flask_app.errorhandler(ValidationError)
     def handle_exception(e: ValidationError):
