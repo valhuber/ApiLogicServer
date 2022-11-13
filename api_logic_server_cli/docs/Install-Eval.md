@@ -29,6 +29,28 @@ Follow the steps below to be up and running in about a minute - no install, no c
 
 <summary>Why Does It Matter: Faster, Simpler, Modern Architecture</summary>
 
+<details markdown>
+
+<summary>Frameworks are too slow, Low Code is not dev-friendly</summary>
+
+We looked at approaches for building database systems:   
+
+* __Frameworks:__ Frameworks like Flask or Django enable you to build a single endpoint or _Hello World_ page, but a __multi-endpoint__ API and __multi-page__ application would take __weeks__ or more.
+
+* __Low Code Tools:__ these are great for building great UIs, but
+
+    * Want a multi-page app, _instantly_ -- __no layout required each screen__
+    * Want to __preserve standard dev tools__ (VSCode, PyCharm, git, etc) - propietary IDEs are not dev-friendly
+
+And neither provides an answer for __backend business logic__ (it's nearly half the effort).
+
+</details>
+
+<details markdown>
+
+<summary>API Logic Server - dev-friendly low-code automation</summary>
+
+
 API Logic Server is a low-code, developer-friendly approach that leverages automation to dramatically improve web app development:
 
 * Automation makes it __faster:__ _moments_, instead of weeks or months.  Unblock UI Dev, and engage business users - _early_ - to reduce misunderstandings.  _Customize_ with __standard IDEs.__
@@ -36,6 +58,8 @@ API Logic Server is a low-code, developer-friendly approach that leverages autom
 * Automation makes it __simpler:__ this reduces the risk of architectural errors, e.g., APIs without pagination.
 
 * Automation ensures a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ over UIs and APIs (no more logic in UI controllers), in maintainable _models_.
+
+</details>
 
 </details>
 
