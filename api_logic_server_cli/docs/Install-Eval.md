@@ -29,11 +29,13 @@ Follow the steps below to be up and running in about a minute - no install, no c
 
 <summary>Why Does It Matter: Faster, Simpler, Modern Architecture</summary>
 
-Automation makes it __faster:__ what used to require weeks or months is now immediate.  Unblock UI Dev, and engage business users - _early_ - instead of investing in a misunderstanding.
+API Logic Server can dramatically improve web app development:
 
-Automation makes it __simpler:__ this reduces the risk of architectural errors, e.g., APIs without pagination.
+* Automation makes it __faster:__ what used to require weeks or months is now immediate.  Unblock UI Dev, and engage business users - _early_ - instead of investing in a misunderstanding.
 
-Automation guarantees a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ between UIs and APIs (no more logic in UI controllers), in a predictable structure for maintenance.
+* Automation makes it __simpler:__ this reduces the risk of architectural errors, e.g., APIs without pagination.
+
+* Automation guarantees a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ between UIs and APIs (no more logic in UI controllers), in a predictable structure for maintenance.
 
 </details>
 
@@ -77,6 +79,9 @@ Behind the scenes, Codespaces has requisitioned a cloud machine, and loaded the 
 
 You are attached to this machine in your Browser, running VSCode.
 
+These instructions are now visible in VS Code, to minimize window switching.
+
+
 > :trophy: Pretty remarkable.
 
 </details>
@@ -88,11 +93,13 @@ You are attached to this machine in your Browser, running VSCode.
 
 ## 2. Create a project
 
-Paste this into the Terminal window:
+Paste this into the Terminal window (lower right):
 
 ```
 ApiLogicServer create --project_name=./ --db_url=
 ```
+
+When prompted, _do **not** rebuild the container._
 
 <details markdown>
 
@@ -110,7 +117,6 @@ __Projects are Customizable, using _your IDE_:__ the Project Explorer shows the 
 
 __Business Logic is Automated:__ use unique spreadsheet-like rules to declare multi-table derivations and constraints - 40X more concise than code.  Extend logic with Python.
 
-
 <details markdown>
 
 <summary>Using your own database</summary>
@@ -124,15 +130,19 @@ In this case, we used a default Customers/Orders database.  To use your own data
 
 ## 3. Start Server, Admin App
 
-The project is ready to run:
+The project is ready to run.
 
-1. Use the default __Run Configuration__ to start the server, and 
-
-2. Click __Ports > Globe__ to start the web app. 
+Use the prebuilt Run Configuration to start the server, and the prebuilt Port to start the web app.
 
 <details markdown>
 
 <summary>Show Me How</summary>
+
+As shown below:
+
+1. Use the default __Run Configuration__ to start the server, and 
+
+2. Click __Ports > Globe__ to start the web app. 
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/create-port-launch-simple.jpg?raw=true"></figure>
 
