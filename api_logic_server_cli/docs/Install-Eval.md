@@ -29,13 +29,13 @@ Follow the steps below to be up and running in about a minute - no install, no c
 
 <summary>Why Does It Matter: Faster, Simpler, Modern Architecture</summary>
 
-API Logic Server can dramatically improve web app development:
+API Logic Server is a low-code, developer-friendly approach that leverages automation to dramatically improve web app development:
 
-* Automation makes it __faster:__ what used to require weeks or months is now immediate.  Unblock UI Dev, and engage business users - _early_ - instead of investing in a misunderstanding.
+* Automation makes it __faster:__ _moments_, instead of weeks or months.  Unblock UI Dev, and engage business users - _early_ - to reduce misunderstandings.  _Customize_ with __standard IDEs.__
 
 * Automation makes it __simpler:__ this reduces the risk of architectural errors, e.g., APIs without pagination.
 
-* Automation guarantees a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ between UIs and APIs (no more logic in UI controllers), in a predictable structure for maintenance.
+* Automation ensures a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ over UIs and APIs (no more logic in UI controllers), in maintainable _models_.
 
 </details>
 
