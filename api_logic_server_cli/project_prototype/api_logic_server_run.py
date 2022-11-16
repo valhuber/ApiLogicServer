@@ -214,7 +214,8 @@ def flask_events(flask_app):
     @flask_app.route('/ui/images/<path:path>')
     def get_image(path=None):
         """ return requested image
-            e.g. http://localhost:5656/ui/images/Employee/janet.jpg
+            data: Employee/janet.jpg
+            url:  http://localhost:5656/ui/images/Employee/janet.jpg
         """
         response = send_file(f'ui/images/{path}', mimetype='image/jpeg')
         return response

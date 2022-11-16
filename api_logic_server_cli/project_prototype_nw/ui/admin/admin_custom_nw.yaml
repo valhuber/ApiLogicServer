@@ -1,6 +1,6 @@
 about:
-  date: November 10, 2022 09:03
-  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, X-photo
+  date: November 16, 2022 13:03
+  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, images
   # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
 info:
@@ -159,6 +159,8 @@ resources:
               </li>
               <li> Observe the same effect on Update / Insert screens as you alter the value of <span style="font-family:'Courier New'">EmployeeType</span></li>
             </ul>
+            <h1>Images</h1>
+            Observe that "show" pages support images.
     attributes:
       - label: ' Last Name*'
         name: LastName
@@ -188,6 +190,7 @@ resources:
       - name: Notes
       - name: ReportsTo
       - name: PhotoPath
+        type: Image
       - name: IsCommissioned
     tab_groups:
       - direction: tomany

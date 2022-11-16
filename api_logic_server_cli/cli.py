@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.03.00"
+__version__ = "6.03.01"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t11/11/2022 - 06.03.00: Dialects, run, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all, chkbox \n"\
+    "\t11/16/2022 - 06.03.01: Image, Chkbox, Dialects, run, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
@@ -640,7 +640,7 @@ def get_abs_db_url(msg, db_url):
         # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold.sqlite'
         rtn_nw_db_status = "nw"
-        print(f'{msg} from: {rtn_abs_db_url}')
+        print(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
     elif db_url == "nw-":                                           # nw:           just in case
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold.sqlite'
         rtn_nw_db_status = "nw-"
