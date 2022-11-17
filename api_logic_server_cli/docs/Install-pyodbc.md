@@ -15,7 +15,7 @@ Install the [Microsoft ODBC driver](https://docs.microsoft.com/en-us/sql/connect
 
 ```bash
 # may be required - brew install unixodbc      # Mac only
-pip install pyodbc
+pip install pyodbc==4.0.34
 ```
 
 Please see the examples on the [testing](../Database-Connectivity) for important considerations in specifying SQLAlchemy URIs.

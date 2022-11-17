@@ -18,7 +18,7 @@ python-dotenv==0.15.0
 email-validator==1.1.1
 LogicBank==1.08.00
 PyMySQL==1.0.2
-# pyodbc==4.0.32
+# pyodbc==4.0.34
 cryptography==36.0.1
 requests==2.27.1
 gunicorn==20.1.0
