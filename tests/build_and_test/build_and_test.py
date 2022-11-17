@@ -284,14 +284,13 @@ if Config.do_test_api_logic_project:
         file_contents = f.read()
         print (file_contents)
         f.close()
-    print("\nBehave tests - Success... (note - server still running)\n")
+    print("\nBehave tests - Success...\n")
+    stop_server(msg="*** NW TESTS COMPLETE ***\n")
 
 if Config.do_other_sqlite_databases:
     run_command('{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
-
-stop_server(msg="*** NW TESTS COMPLETE ***\n")
 
 if Config.do_allocation_test:
     allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
@@ -316,9 +315,8 @@ if Config.do_allocation_test:
             msg="\nBehave Test Run")
     except:
         print(f'\n\n** Allocation Test failed\n\n')
-    print("\nAllocation tests - Success... (note - server still running)\n")
-
-stop_server(msg="*** ALLOCATION TEST COMPLETE ***\n")
+    print("\nAllocation tests - Success...\n")
+    stop_server(msg="*** ALLOCATION TEST COMPLETE ***\n")
 
 if Config.do_docker_mysql:
     result_docker_mysql_classic = run_command(
