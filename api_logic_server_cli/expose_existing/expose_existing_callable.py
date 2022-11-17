@@ -156,7 +156,7 @@ def create_models_from_db(args) -> str:
     generator.render(capture)  # generates (preliminary) models in memory
     models_py = capture.getvalue()
     models_py = fix_generated(models_py, args)
-    return models_py
+    return models_py, len(generator.models)
 
 
 if on_import:

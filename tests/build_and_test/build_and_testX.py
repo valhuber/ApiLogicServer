@@ -118,12 +118,6 @@ def stop_server(msg: str):
     except:
         print("..")
 
-def print_run_output(msg, input):
-    print(f'\n{msg}')
-    print_lines = input.split("\\n")
-    for each_line in print_lines:
-        print(each_line)
-
 def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
     """ run shell command (waits)
 
@@ -137,16 +131,22 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     result_b = None
     try:
         # result_b = subprocess.run(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
-        result = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True)
-        result_stdout = str(result.stdout)
-        result_stderr = str(result.stderr)
-        if "Traceback" in result_stderr:
-            print_run_output("Traceback detected - stdout", result_stdout)
-            print_run_output("stderr", result_stderr)
-            raise ValueError("Traceback detected")
+        result_b = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True)
+        result = str(result_b)
+        result_lines = result.splitlines()
     except:
+        i = 0/0
         print(f'\n\n*** Failed on {cmd}')
-        raise
+        raise ValueError(f'\n\n*** Failed on {cmd}')
+
+    if "Traceback" in result:
+        i = 0/0
+        result_fix = result.replace("\\n", "\n")
+        print(f'\n\nError detected:\n{result_fix}\n')
+        for stdout_line in iter(result_b.stdout.readline, ""):
+            yield stdout_line 
+        raise ValueError('Exception in run command')
+
     return result_b  # print(ret.stdout.decode())
 
 def check_command(command_result):
@@ -292,13 +292,14 @@ if Config.do_test_api_logic_project:
         file_contents = f.read()
         print (file_contents)
         f.close()
-    print("\nBehave tests - Success...\n")
+    print("\nBehave tests - Success... \n")
     stop_server(msg="*** NW TESTS COMPLETE ***\n")
 
 if Config.do_other_sqlite_databases:
     run_command('{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
+
 
 if Config.do_allocation_test:
     allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
@@ -323,7 +324,7 @@ if Config.do_allocation_test:
             msg="\nBehave Test Run")
     except:
         print(f'\n\n** Allocation Test failed\n\n')
-    print("\nAllocation tests - Success...\n")
+    print("\nAllocation tests - Success... \n")
     stop_server(msg="*** ALLOCATION TEST COMPLETE ***\n")
 
 if Config.do_docker_mysql:
@@ -336,10 +337,12 @@ if Config.do_docker_mysql:
     stop_server(msg="classicmodels\n")
     
 if Config.do_docker_sqlserver:
+    print("calling run")
     result_docker_sqlserver = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
+    print("called run")
     start_api_logic_server(project_name='sqlserver')
     stop_server(msg="sqlserver\n")
     

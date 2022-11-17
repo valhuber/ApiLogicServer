@@ -866,6 +866,7 @@ class CreateFromModel(object):
 
         rtn_my_children_map = None
         rtn_my_parents_map = None
+        num_models = 0
         model_file_name = "*"
         if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
             if self.use_model != "":  # use pre-existing (or repaired) existing model file
@@ -876,7 +877,7 @@ class CreateFromModel(object):
             else:
                 print(f' a.  Create Models - create database/models.py, using sqlcodegen for database: {abs_db_url}')
                 code_gen_args = get_codegen_args()
-                models_py = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
+                models_py, num_models = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
                 model_file_name = code_gen_args.outfile
                 with open(model_file_name, "w") as text_file:
                     text_file.write(models_py)
@@ -889,6 +890,6 @@ class CreateFromModel(object):
         else:
             error_message = f'System error - unexpected command: {self.command}'
             raise ValueError(error_message)
-        msg = f'.. .. ..Create resource_list - dynamic import database/models.py, inspect each class'
+        msg = f'.. .. ..Create resource_list - dynamic import database/models.py, inspect {num_models} classes'
         self.create_resource_list_from_safrs(model_file_name, msg)  # whether created or used, build resource_list
-        return rtn_my_children_map, rtn_my_parents_map
+        return rtn_my_children_map, rtn_my_parents_map # return data no longer used

@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.03.01"
+__version__ = "6.03.02"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t11/16/2022 - 06.03.01: Image, Chkbox, Dialects, run, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
+    "\t11/16/2022 - 06.03.02: Image, Chkbox, Dialects, run, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
@@ -1507,7 +1507,7 @@ def key_module_map():
 
     api_logic_server()                                          # main driver, calls...  Ctl- to return to last loc
     create_project_with_nw_samples()                            # clone project, overlay nw
-    model_creation_services = CreateFromModel()                 # creates database/models.py by calling...
+    model_creation_services = CreateFromModel()                 # creates database/models.py - set up class, & call...
     model_creation_services.create_models()                     # creates database/models.py
     model_creation_services.create_resource_list_from_safrs()   # creates resource_list via dynamic import of models.py
     invoke_creators()                                           # creates api, ui via create_from_model...
