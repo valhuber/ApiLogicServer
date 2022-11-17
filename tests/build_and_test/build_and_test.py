@@ -124,6 +124,26 @@ def print_run_output(msg, input):
     for each_line in print_lines:
         print(each_line)
 
+def check_command(command_result):
+    result_stdout = ""
+    result_stderr = ''
+    if command_result is not None:
+        if command_result.stdout is not None:
+            result_stdout = str(command_result.stdout)
+        if command_result.stderr is not None:
+            result_stderr = str(command_result.stderr)
+
+    if "Trace" in result_stderr or \
+        "Error" in result_stderr or \
+        "Traceback" in result_stderr:
+        print("\n\n==> Command Failed - Console Log:")
+        for line in command_result.stdout.decode('utf-8').split('\n'):
+            print (line)
+        print("\n\n==> Error Log:")
+        for line in command_result.stderr.decode('utf-8').split('\n'):
+            print (line)
+        raise ValueError("Traceback detected")
+
 def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
     """ run shell command (waits)
 
@@ -138,27 +158,17 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     try:
         # result_b = subprocess.run(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
         result = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True)
-        result_stdout = str(result.stdout)
-        result_stderr = str(result.stderr)
+        check_command(result)
+        """
         if "Traceback" in result_stderr:
             print_run_output("Traceback detected - stdout", result_stdout)
             print_run_output("stderr", result_stderr)
             raise ValueError("Traceback detected")
+        """
     except:
         print(f'\n\n*** Failed on {cmd}')
         raise
-    return result_b  # print(ret.stdout.decode())
-
-def check_command(command_result):
-    if "Trace" in str(result_docker_mysql_classic.stderr) or \
-        "Error" in str(result_docker_mysql_classic.stderr):
-        print("\n\n==> Command Failed - Console Log:")
-        for line in command_result.stdout.decode('utf-8').split('\n'):
-            print (line)
-        print("\n\n==> Error Log:")
-        for line in command_result.stderr.decode('utf-8').split('\n'):
-            print (line)
-        raise("command failed")
+    return result_b
 
 def start_api_logic_server(project_name: str):
     """ start server at path, and wait a few moments """
@@ -267,7 +277,7 @@ if Config.do_install_api_logic_server:
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
 
     result_pyodbc = run_command(
-        f'{set_venv} && {python} -m pip install pyodbc',
+        f'{set_venv} && {python} -m pip install pyodbc==4.0.34',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall pyodbc')
 
