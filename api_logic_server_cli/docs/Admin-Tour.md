@@ -1,6 +1,8 @@
 The `ApiLogicServer create` command creates an API Logic Project that implements an Admin App (React Admin), and an underlying API.  No additional code is required.
 
-Start the server, and open your Browser.  Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.  Key features:
+Start the server, and open your Browser.  Here it is, [running at PythonAnyWhere](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home){:target="_blank" rel="noopener"}.
+
+Key features:
 
 * Multi-page - for each table, you get a list page and a detail page
 
@@ -9,8 +11,8 @@ Start the server, and open your Browser.  Here it is, [running at PythonAnyWhere
 * Multi-table - pages include related data: 
 
       * Tab Sheets for related child data (Order Details List)
-      * Automatic joins for related parent data (Employee _Name_ - not just the Id)
-      * Page Transitions for related data (e.g., click Order Detail for detail page)
+      * Automatic joins for related parent data (Product _Name_ - not just the Id)
+      * Page Transitions for related data (e.g., on a Customer/Orders page, click an Order to see Order/OrderDetails)
 
 This page illustrates some of the key features:  
 
@@ -158,7 +160,7 @@ Your admin app has important support for making updates.
 
 Many databases uses automatically generated primary keys.  These can simplify design, but it is unreasonable to expect end users to use these.
 
-For example, Products are identified by an `Id`.  To refer to a `Product`, `OrderDetail` rows declare a foreign key from `OrderDetail.ProductId`.
+For example, Products are identified by an `Id`.  To refer to a parent `Product`, child `OrderDetail` rows declare a foreign key from `OrderDetail.ProductId`.
 
   > When adding or altering an order, it's unreasonable to expect end users to enter `ProductIds.`  Lookup support addresses this issue.
 

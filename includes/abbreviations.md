@@ -2,3 +2,27 @@
 *[Parent]: One side of a one-to-many relationship (e.g., Customers for Orders)
 *[child]: Many side of a one-to-many relationship (e.g., Orders for Customer)
 *[Child]: Many side of a one-to-many relationship (e.g., Orders for Customer)
+*[lookup]: User Interface to get list of parent rows, select one, and fill Foreign Key
+*[Lookup]: User Interface to get list of parent rows, select one, and fill Foreign Key
+*[Lookups]: User Interface to get list of parent rows, select one, and fill Foreign Key
+*[lookups]: User Interface to get list of parent rows, select one, and fill Foreign Key
+*[Foreign Key]: one or more fields in child rows that identify a parent row (e.g., OrderDetail.ProductId identifies a Product)
+*[foreign key]: one or more fields in child rows that identify a parent row (e.g., OrderDetail.ProductId identifies a Product)
+*[Multi-Page]: Applications providing multiple pages, e.g. a Customer Page and an Order Page
+*[Multi-page]: Applications providing multiple pages, e.g. a Customer Page and an Order Page
+*[multi-page]: Applications providing multiple pages, e.g. a Customer Page and an Order Page
+*[Multi-Table]: An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails
+*[Multi-table]: An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails
+*[multi-table]: An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails
+*[Declarative Hide/Show]: Support for Application fields that are displayed/hidden based on an expression for the current row declared in the Admin.yaml file
+*[Automatic Joins]: Automatically joined parent data, e.g., the ProductName (instead of the ProductId) for OrderDetails; these defaults can be overridden in the Admin.yaml file
+*[Automatic joins]: Automatically joined parent data, e.g., the ProductName (instead of the ProductId) for OrderDetails; these defaults can be overridden in the Admin.yaml file
+*[Page Transitions]: form controls that enable users to navigate to forms for related data, e.g., from a Customer/Orders page to an Order/OrderDetails page
+*[Page transitions]: form controls that enable users to navigate to forms for related data, e.g., from a Customer/Orders page to an Order/OrderDetails page
+*[Cascade Add]: support for adding child rows (e.g., OrderDetails) after adding a parent row (e.g., Order)
+*[Pagination]: support to show large lists of rows in page-size sets, to reduce database overhead and unwieldly pages
+*[pagination]: support to show large lists of rows in page-size sets, to reduce database overhead and unwieldly pages
+*[Declarative]: specifications that dictate _what_ should be done, instead of detailed that is _how_ the feature is provided.  Declarative specifications are much more concise, automatically ordered, automamatically optimized and automatically invoked (re-used).  Declarative specifications can be used for client, API and logic behavior
+*[declarative]: specifications that dictate _what_ should be done, instead of detailed that is _how_ the feature is provided.  Declarative specifications are much more concise, automatically ordered, automamatically optimized and automatically invoked (re-used).  Declarative specifications can be used for client, API and logic behavior
+*[Business Logic]: multi-table constraints and derivations, e.g., the Customer Balance may not exceed the CreditLimit, and is derived as the sum of unshipped Order AmountTotals.
+*[business logic]: multi-table constraints and derivations, e.g., the Customer Balance may not exceed the CreditLimit, and is derived as the sum of unshipped Order AmountTotals.

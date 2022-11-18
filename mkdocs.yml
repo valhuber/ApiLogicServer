@@ -39,7 +39,7 @@ nav:
     - "Connection Examples": Database-Connectivity.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
     - "Install psycopg2: Postgres": Install-psycopg2.md
-  - "Using your IDE": IDE-Customize.md
+  - "Using Your IDE": IDE-Customize.md
   - Managing API Logic Projects:
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md
@@ -59,9 +59,9 @@ nav:
     - "Internals - CLI": Internals-CLI.md
   - Troubleshooting.md
   - FAQs:
+    - "Is this a Low Code approach?": FAQ-Low-Code.md
     - "Is this a Framework?": FAQ-Frameworks.md
     - "Is this a RETE Engine?": FAQ-RETE.md
-    - "Is this a Low Code approach?": FAQ-Low-Code.md
     - "Is this a 4GL?": Tech-4GL.md
     - "Is this a Proven Technology?": Tech-Proven.md
   - Tech Notes:
