@@ -75,7 +75,7 @@ def get_api_logic_server_dir() -> str:
 sys.path.append(get_api_logic_server_dir())  # e.g, on Docker: export PATH="/home/api_logic_server/api_logic_server_cli"
 api_logic_server_path = os.path.dirname(get_api_logic_server_dir())  # e.g: export PATH="/home/api_logic_server"
 sys.path.append(api_logic_server_path)
-from create_from_model.model_creation_services import CreateFromModel
+from create_from_model.model_creation_services import ModelCreationServices
 
 import expose_existing.expose_existing_callable as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
@@ -701,7 +701,7 @@ def invoke_extended_builder(builder_path, db_url, project_directory):
     extended_builder.extended_builder(db_url, project_directory)  # extended_builder.MyClass()
 
 
-def invoke_creators(model_creation_services: CreateFromModel):
+def invoke_creators(model_creation_services: ModelCreationServices):
     """ MAJOR: uses model_creation_services (resource_list, model iterator functions) to create api, apps
     """
 
@@ -791,7 +791,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
         print("2. Using Existing Project")
 
     print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
-    model_creation_services = CreateFromModel(  # Create database/models.py from db
+    model_creation_services = ModelCreationServices(  # Create database/models.py from db
         project_directory=project_directory, command = command, os_cwd=os_cwd,
         copy_to_project_directory = copy_to_project_directory,
         api_logic_server_dir = get_api_logic_server_dir(), api_name=api_name,
@@ -1391,7 +1391,7 @@ def create_ui(ctx, use_model: str,
     admin_out = resolve_home(use_model.replace("py","yaml"))
     project_directory, ignore = os.path.split(resolve_home(use_model))
     print(f'1. Loading existing model: {use_model}')
-    model_creation_services = CreateFromModel(  # fills in rsource_list for ui_admin_creator
+    model_creation_services = ModelCreationServices(  # fills in rsource_list for ui_admin_creator
         use_model=use_model,
         favorite_names=favorites, non_favorite_names=non_favorites,
         project_directory=project_directory,
@@ -1507,7 +1507,7 @@ def key_module_map():
 
     api_logic_server()                                          # main driver, calls...  Ctl- to return to last loc
     create_project_with_nw_samples()                            # clone project, overlay nw
-    model_creation_services = CreateFromModel()                 # creates database/models.py - set up class, & calls...
+    model_creation_services = ModelCreationServices()           # creates database/models.py - ctor calls...
     model_creation_services.create_models()                     # creates database/models.py, by calling...
     expose_existing_callable.create_models_from_db({})          # wrapper for sqlcodegen (which returns models as str)
     model_creation_services.create_resource_list_from_safrs()   # creates resource_list via dynamic import of models.py

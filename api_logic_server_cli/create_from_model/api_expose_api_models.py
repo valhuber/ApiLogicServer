@@ -16,7 +16,7 @@ MetaDataTable = NewType('MetaDataTable', object)
 __version__ = "0.0"
 
 
-def create_expose_api_models(model_creation_services: create_from_model.CreateFromModel):
+def create_expose_api_models(model_creation_services: create_from_model.ModelCreationServices):
     """ create strings for ui/basic_web_app/views.py and api/expose_api_models.py """
 
     result_apis = ''
@@ -84,7 +84,7 @@ def create_expose_api_models(model_creation_services: create_from_model.CreateFr
     return
 
 
-def create(model_creation_services: create_from_model.CreateFromModel):
+def create(model_creation_services: create_from_model.ModelCreationServices):
     """ called by ApiLogicServer CLI -- creates api/expose_api_models.py, key input to SAFRS
     """
     create_expose_api_models(model_creation_services)

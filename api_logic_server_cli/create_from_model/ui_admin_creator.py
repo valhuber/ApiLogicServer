@@ -75,7 +75,7 @@ class AdminCreator(object):
     num_related = 0
 
     def __init__(self,
-                 mod_gen: create_from_model.CreateFromModel,
+                 mod_gen: create_from_model.ModelCreationServices,
                  host: str = "localhost",
                  port: str = "5656",
                  not_exposed: str = 'ProductDetails_V',
@@ -709,7 +709,7 @@ class AdminCreator(object):
                                         replace_with=swagger_name,
                                         in_file=to_project_dir.joinpath("home.js"))
 
-def create(model_creation_services: create_from_model.CreateFromModel):
+def create(model_creation_services: create_from_model.ModelCreationServices):
     """ called by ApiLogicServer CLI -- creates ui/admin application (ui/admin folder, admin.yaml)
     """
     admin_creator = AdminCreator(model_creation_services,

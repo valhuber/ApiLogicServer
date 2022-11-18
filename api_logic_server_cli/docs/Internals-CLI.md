@@ -110,7 +110,7 @@ Here is the key excerpt of the main driver in `api_logic_server_cli/cli.py`:
 
 ```
     print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
-    model_creation_services = CreateFromModel(  ...)
+    model_creation_services = ModelCreationServices(  ...)
     fix_database_models__inject_db_types(project_directory, db_types)
     invoke_creators(model_creation_services)  # creates api/expose_api_models, ui/admin & basic_web_app
 ```
@@ -122,7 +122,7 @@ called to read the schema and create ```database/models.py```:
 <pre>
         Create models.py (using sqlacodegen,  via expose_existing.expose_existing_callable).
 
-        Called on creation of CreateFromModel.__init__.
+        Called on creation of ModelCreationServices.__init__.
 
         It creates the `models.py` file, and loads `self.resource_list` used by creators to iterate the model.
 

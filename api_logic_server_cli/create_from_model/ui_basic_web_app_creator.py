@@ -6,7 +6,7 @@ from typing import NewType
 from sqlalchemy import MetaData
 from flask import Flask
 import create_from_model.api_logic_server_utils as create_utils
-from api_logic_server_cli.create_from_model.model_creation_services import CreateFromModel
+from api_logic_server_cli.create_from_model.model_creation_services import ModelCreationServices
 
 log = logging.getLogger(__file__)
 log.setLevel(logging.INFO)
@@ -66,7 +66,7 @@ class FabCreator(object):
     num_related = 0
 
     def __init__(self,
-                 mod_gen: CreateFromModel,
+                 mod_gen: ModelCreationServices,
                  host: str = "localhost",
                  port: str = "5656",
                  not_exposed: str = 'ProductDetails_V',
@@ -418,7 +418,7 @@ class FabCreator(object):
         log.debug(f'create_from_model.fab_creator("{self.mod_gen.db_url}", "{self.mod_gen.project_directory}" Completed')
 
 
-def create(model_creation_services: CreateFromModel):
+def create(model_creation_services: ModelCreationServices):
     """ called by ApiLogicServer CLI -- creates basic web app (Flask AppBuilder)
     """
     # create_basic_web_app(db_url, project_directory, ".. ..Create ui/basic_web_app")

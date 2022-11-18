@@ -128,7 +128,7 @@ class Resource():
             return each_attribute
 
 
-class CreateFromModel(object):
+class ModelCreationServices(object):
     """
     Model creation and shared services (favorite attributes, etc)
 
@@ -821,9 +821,9 @@ class CreateFromModel(object):
 
     def create_models(self, abs_db_url: str, project_directory: str):
         """
-        Create models.py (using sqlacodegen,  via expose_existing.expose_existing_callable).
+        Create models.py (using sqlacodegen, via expose_existing.expose_existing_callable).
 
-        Called on creation of CreateFromModel.__init__.
+        Called on creation of ModelCreationServices.__init__.
 
         It creates the `models.py` file, and loads `self.resource_list` used by creators to iterate the model.
 
@@ -869,12 +869,7 @@ class CreateFromModel(object):
         num_models = 0
         model_file_name = "*"
         if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
-            if self.use_model != "":  # use pre-existing (or repaired) existing model file
-                model_file_name = project_directory + '/database/models.py'
-                use_model_path = Path(self.use_model).absolute()
-                print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
-                copyfile(use_model_path, model_file_name)
-            else:
+            if self.use_model == "":
                 print(f' a.  Create Models - create database/models.py, using sqlcodegen for database: {abs_db_url}')
                 code_gen_args = get_codegen_args()
                 models_py, num_models = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
@@ -882,6 +877,12 @@ class CreateFromModel(object):
                 with open(model_file_name, "w") as text_file:
                     text_file.write(models_py)
                 self.resource_list_complete = True
+            else:  # use pre-existing (or repaired) existing model file
+                model_file_name = project_directory + '/database/models.py'
+                use_model_path = Path(self.use_model).absolute()
+                print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
+                copyfile(use_model_path, model_file_name)
+
         elif self.command == 'create-ui':
             model_file_name = self.resolve_home(name = self.use_model)
         elif self.command == "rebuild-from-model":
