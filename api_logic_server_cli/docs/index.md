@@ -202,7 +202,7 @@ We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issue
 
 ### Acknowledgements
 
-Many thanks to
+Many thanks to:
 
 - [Thomas Pollet](https://www.linkedin.com/in/pollet/), for SAFRS, SAFRS-react-admin, and invaluable design partnership
 - Nitheish Munusamy, for contributions to Safrs React Admin
