@@ -20,6 +20,10 @@ from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 from flask_cors import CORS
 from sqlacodegen_wrapper.sqlacodegen.sqlacodegen.codegen import CodeGenerator
+from api_logic_server_cli.create_from_model.model_creation_services import ModelCreationServices
+from pathlib import Path
+from shutil import copyfile
+
 
 MODEL_DIR = tempfile.mkdtemp()  # directory where the generated models.py will be saved
 on_import = False
@@ -120,6 +124,79 @@ def print_uri_info():
     for each_line in uri_info:
         sys.stdout.write(each_line + '\n')
     sys.stdout.write('\n')
+
+def create_models_py(model_creation_services: ModelCreationServices, abs_db_url: str, project_directory: str):
+    """
+    Create models.py (using sqlacodegen, via sqlacodegen_wrapper.sqlacodegen_wrapper).
+
+    Called on creation of ModelCreationServices.__init__ (ctor).
+
+    It creates the `models.py` file by calling this method.
+
+        1. It calls `sqlacodegen_wrapper.sqlacodegen_wrapper`:
+            * It returns the `models_py` text now written to the projects' `database/models.py`.
+            * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
+                * An important consideration is disambiguating multiple relationships between the same w tables
+                    * See `nw-plus` relationships between `Department` and `Employee`.
+                    * [See here](https://valhuber.github.io/ApiLogicServer/Sample-Database/) for a database diagram.
+                * It transforms database names to resource names - capitalized, singular
+                    * These (not table names) are used to create api and ui model
+
+    The ctor then calls `create_resource_list`, to create the `resource_list`
+        * This is the meta data iterated by the creation modules to create api and ui model classes.
+        * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
+            * Many DBs don't define FKs into the db (e.g. nw.db).
+            * Instead, they define "Virtual Keys" in their model files.
+            * To leverage these, we need to get resource Metadata from model classes, not db
+
+    :param abs_db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
+    :param project: project directory
+    """
+
+    class DotDict(dict):
+        """dot.notation access to dictionary attributes"""
+        # thanks: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary/28463329
+        __getattr__ = dict.get
+        __setattr__ = dict.__setitem__
+        __delattr__ = dict.__delitem__
+
+    def get_codegen_args():
+        """ DotDict of url, outfile, version """
+        codegen_args = DotDict({})
+        codegen_args.url = abs_db_url
+        # codegen_args.outfile = models_file
+        codegen_args.outfile = project_directory + '/database/models.py'
+        codegen_args.version = False
+        codegen_args.model_creation_services = model_creation_services
+        return codegen_args
+
+    num_models = 0
+    model_file_name = "*"
+    if model_creation_services.command in ('create', 'create-and-run', 'rebuild-from-database'):
+        if model_creation_services.use_model == "":
+            print(f' a.  Create Models - create database/models.py, using sqlcodegen')
+            print(f'.. .. ..For database:  {abs_db_url}')
+            code_gen_args = get_codegen_args()
+            models_mem, num_models = create_models_memstring(code_gen_args)  # calls sqlcodegen
+            model_file_name = code_gen_args.outfile
+            model_creation_services.write_models_py(model_file_name, models_mem)  # FIXME move here
+            model_creation_services.resource_list_complete = True
+        else:  # use pre-existing (or repaired) existing model file
+            model_file_name = project_directory + '/database/models.py'
+            use_model_path = Path(model_creation_services.use_model).absolute()
+            print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
+            copyfile(use_model_path, model_file_name)
+
+    elif model_creation_services.command == 'create-ui':
+        model_file_name = model_creation_services.resolve_home(name = model_creation_services.use_model)
+    elif model_creation_services.command == "rebuild-from-model":
+        print(f' a.  Use existing database/models.py to rebuild api and ui models - verifying')
+        model_file_name = project_directory + '/database/models.py'
+    else:
+        error_message = f'System error - unexpected command: {model_creation_services.command}'
+        raise ValueError(error_message)
+    msg = f'.. .. ..Create resource_list - dynamic import database/models.py, inspect {num_models} classes'
+    return model_file_name, msg # return to ctor, create resource_list
 
 
 def create_models_memstring(args) -> str:

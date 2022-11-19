@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.03.03"
+__version__ = "6.03.04"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t11/18/2022 - 06.03.03: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
+    "\t11/19/2022 - 06.03.04: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
@@ -1294,6 +1294,9 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
+@click.option('--infer_primary_key/--no_infer_primary_key',
+              default=False, is_flag=True,
+              help="Infer primary_key for unique cols")
 @click.pass_context
 def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_exposed: str,
            from_git: str,
@@ -1308,7 +1311,8 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_e
            port: str,
            swagger_host: str,
            favorites: str, non_favorites: str,
-           extended_builder: str):
+           extended_builder: str,
+           infer_primary_key: click.BOOL):
     """
         Updates database, api, and ui from changed models.
     """
@@ -1321,7 +1325,7 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_e
                      flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=False)
+                     extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
 
 
 @main.command("run")

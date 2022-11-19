@@ -224,7 +224,11 @@ class ModelCreationServices(object):
 
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
-        model_file_name, msg = self.create_models_py(abs_db_url= abs_db_url, project_directory= project_directory)
+        model_file_name, msg = sqlacodegen_wrapper.create_models_py(
+            model_creation_services = self,
+            abs_db_url= abs_db_url,
+            project_directory = project_directory)
+        # FIXME model_file_name, msg = self.create_models_py(abs_db_url= abs_db_url, project_directory= project_directory)
         self.create_resource_list(model_file_name, msg)  # whether created or used, build resource_list
 
 
