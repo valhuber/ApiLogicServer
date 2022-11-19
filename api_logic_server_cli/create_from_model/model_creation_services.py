@@ -228,7 +228,6 @@ class ModelCreationServices(object):
             model_creation_services = self,
             abs_db_url= abs_db_url,
             project_directory = project_directory)
-        # FIXME model_file_name, msg = self.create_models_py(abs_db_url= abs_db_url, project_directory= project_directory)
         self.create_resource_list(model_file_name, msg)  # whether created or used, build resource_list
 
 
@@ -828,82 +827,3 @@ class ModelCreationServices(object):
                 traceback.print_exc()
                 pass
     
-    def write_models_py(self, model_file_name, models_mem):
-        """ write models_mem to disk as model_file_name """
-        with open(model_file_name, "w") as text_file:
-            text_file.write(models_mem)
-
-    def create_models_py(self, abs_db_url: str, project_directory: str):
-        """
-        Create models.py (using sqlacodegen, via sqlacodegen_wrapper.sqlacodegen_wrapper).
-
-        Called on creation of ModelCreationServices.__init__ (ctor).
-
-        It creates the `models.py` file by calling this method.
-
-            1. It calls `sqlacodegen_wrapper.sqlacodegen_wrapper`:
-                * It returns the `models_py` text now written to the projects' `database/models.py`.
-                * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
-                    * An important consideration is disambiguating multiple relationships between the same w tables
-                        * See `nw-plus` relationships between `Department` and `Employee`.
-                        * [See here](https://valhuber.github.io/ApiLogicServer/Sample-Database/) for a database diagram.
-                    * It transforms database names to resource names - capitalized, singular
-                        * These (not table names) are used to create api and ui model
-
-        The ctor then calls `create_resource_list`, to create the `resource_list`
-            * This is the meta data iterated by the creation modules to create api and ui model classes.
-            * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
-                * Many DBs don't define FKs into the db (e.g. nw.db).
-                * Instead, they define "Virtual Keys" in their model files.
-                * To leverage these, we need to get resource Metadata from model classes, not db
-
-        :param abs_db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
-        :param project: project directory
-        """
-
-        class DotDict(dict):
-            """dot.notation access to dictionary attributes"""
-            # thanks: https://stackoverflow.com/questions/2352181/how-to-use-a-dot-to-access-members-of-dictionary/28463329
-            __getattr__ = dict.get
-            __setattr__ = dict.__setitem__
-            __delattr__ = dict.__delitem__
-
-        def get_codegen_args():
-            """ DotDict of url, outfile, version """
-            codegen_args = DotDict({})
-            codegen_args.url = abs_db_url
-            # codegen_args.outfile = models_file
-            codegen_args.outfile = project_directory + '/database/models.py'
-            codegen_args.version = False
-            codegen_args.model_creation_services = self
-            return codegen_args
-
-        rtn_my_children_map = None
-        rtn_my_parents_map = None
-        num_models = 0
-        model_file_name = "*"
-        if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
-            if self.use_model == "":
-                print(f' a.  Create Models - create database/models.py, using sqlcodegen')
-                print(f'.. .. ..For database:  {abs_db_url}')
-                code_gen_args = get_codegen_args()
-                models_mem, num_models = sqlacodegen_wrapper.create_models_memstring(code_gen_args)  # calls sqlcodegen
-                model_file_name = code_gen_args.outfile
-                self.write_models_py(model_file_name, models_mem)
-                self.resource_list_complete = True
-            else:  # use pre-existing (or repaired) existing model file
-                model_file_name = project_directory + '/database/models.py'
-                use_model_path = Path(self.use_model).absolute()
-                print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
-                copyfile(use_model_path, model_file_name)
-
-        elif self.command == 'create-ui':
-            model_file_name = self.resolve_home(name = self.use_model)
-        elif self.command == "rebuild-from-model":
-            print(f' a.  Use existing database/models.py to rebuild api and ui models - verifying')
-            model_file_name = project_directory + '/database/models.py'
-        else:
-            error_message = f'System error - unexpected command: {self.command}'
-            raise ValueError(error_message)
-        msg = f'.. .. ..Create resource_list - dynamic import database/models.py, inspect {num_models} classes'
-        return model_file_name, msg # return to ctor, create resource_list

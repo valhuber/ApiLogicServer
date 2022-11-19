@@ -125,22 +125,28 @@ def print_uri_info():
         sys.stdout.write(each_line + '\n')
     sys.stdout.write('\n')
 
+def write_models_py(model_file_name, models_mem):
+    """ write models_mem to disk as model_file_name """
+    with open(model_file_name, "w") as text_file:
+        text_file.write(models_mem)
+
 def create_models_py(model_creation_services: ModelCreationServices, abs_db_url: str, project_directory: str):
     """
-    Create models.py (using sqlacodegen, via sqlacodegen_wrapper.sqlacodegen_wrapper).
+    Create models.py (using sqlacodegen, via this wrapper).
 
     Called on creation of ModelCreationServices.__init__ (ctor).
 
     It creates the `models.py` file by calling this method.
 
-        1. It calls `sqlacodegen_wrapper.sqlacodegen_wrapper`:
-            * It returns the `models_py` text now written to the projects' `database/models.py`.
+        1. It calls `create_models_memstring`:
+            * It returns the `models_py` text to be written to the projects' `database/models.py`.
             * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
                 * An important consideration is disambiguating multiple relationships between the same w tables
                     * See `nw-plus` relationships between `Department` and `Employee`.
                     * [See here](https://valhuber.github.io/ApiLogicServer/Sample-Database/) for a database diagram.
                 * It transforms database names to resource names - capitalized, singular
                     * These (not table names) are used to create api and ui model
+        2. It then calls `write_models_py`
 
     The ctor then calls `create_resource_list`, to create the `resource_list`
         * This is the meta data iterated by the creation modules to create api and ui model classes.
@@ -179,7 +185,7 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
             code_gen_args = get_codegen_args()
             models_mem, num_models = create_models_memstring(code_gen_args)  # calls sqlcodegen
             model_file_name = code_gen_args.outfile
-            model_creation_services.write_models_py(model_file_name, models_mem)  # FIXME move here
+            write_models_py(model_file_name, models_mem)
             model_creation_services.resource_list_complete = True
         else:  # use pre-existing (or repaired) existing model file
             model_file_name = project_directory + '/database/models.py'

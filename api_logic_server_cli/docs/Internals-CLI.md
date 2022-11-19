@@ -123,15 +123,12 @@ Here is the key excerpt of the main driver in `api_logic_server_cli/cli.py`:
 ### 3a. Create Models - create ```database/models.py``` 
 
 The essence of the project creator is that, given a database model (description), we can 
-generate APIs and UIs.  These models are created in `model_creation_services.py - ModelCreationServices.#create_models_py in ApiLogicServer/api_logic_server_cli/create_from_model`.
+generate APIs and UIs.  These models are created in `model_creation_services.py - ModelCreationServices.
 
-The essence of the process is illustrated at the end of `ApiLogicServer/api_logic_cli/cli.py`:
+The essence of the process is illustrated in the `key_module_map` at the end of `ApiLogicServer/api_logic_cli/cli.py`.  `ModelCreationServices` provides the model (`resource_list`) and various services (e.g, `findChildList`).  A key function is to __create the model__, which starts in the `__init()__` constructor:
 
-* `ModelCreationServices` provides the model and various services (e.g, `findChildList`).  A key 
-function is to create the model, which starts in the `__init__` constructor which calls `create_models_py()`
-* It calls a `sqlacodegen_wrapper` to created a string of the models file
-* Which is then written to disk in `write_models_py()`
-* The constructor then calls `create_resource_list()`
+* It calls `sqlacodegen_wrapper.create_models_py` to create a string of the models file, which is then written to disk in `write_models_py()`
+* It then calls `create_resource_list()` (non-trivial)
     * It dynamically loads the created `models.py`
     * And builds the model using metadata create by the SAFRS package
 
@@ -147,20 +144,16 @@ def key_module_map():
     import create_from_model.api_expose_api_models_creator as api_expose_api_models
     import sqlacodegen_wrapper.sqlacodegen_wrapper as sqlacodegen_wrapper
 
-    api_logic_server()                                          # main driver, calls...  Ctl- to return to last loc
+    api_logic_server()                                          # main driver, calls...
     create_project_with_nw_samples()                            # clone project, overlay nw
-    model_creation_services = ModelCreationServices()           # creates database/models.py - ctor calls...
+    model_creation_services = ModelCreationServices()           # creates resource_list (python db model); ctor calls...
     def and_the_ctor_calls():
-        model_creation_services.create_models_py()              # creates database/models.py, by calling...
-        def create_models_py_calls():
-            sqlacodegen_wrapper.create_models_memstring({})     # creates models_mem (as memstring)
-            model_creation_services.write_models_py()           # creates models.py file from models_mem
+        sqlacodegen_wrapper.create_models_py({})                # creates models.py via sqlacodegen
         model_creation_services.create_resource_list()          # creates resource_list via dynamic import of models.py
     invoke_creators(model_creation_services)                    # creates api, ui via create_from_model...
-    api_expose_api_models.create()                              # creates api/expose_api_models.py, drives SAFRS        
+    api_expose_api_models.create()                              # creates api/expose_api_models.py, key input to SAFRS        
     ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
-    get_abs_db_url()                                            # nw set here, dbname
-```
+    get_abs_db_url()                                            # nw set here, dbname```
 
 #### Create `resource_list` - dynamic import database/models.py, inspect each class
 Called from `create_models`', this dynamically imports
