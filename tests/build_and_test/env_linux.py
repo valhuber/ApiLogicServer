@@ -17,6 +17,8 @@ class Config:
     do_run_api_logic_project = default_setting      # start the server 
     do_test_api_logic_project = default_setting     # run the behave tests (test logic, api)
 
+    do_rebuild_tests = default_setting              # rebuild from model, allembic
+    
     do_allocation_test = default_setting            # create / run / test allocation project
 
     do_other_sqlite_databases = default_setting     # classic models

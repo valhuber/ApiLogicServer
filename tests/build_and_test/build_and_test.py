@@ -4,7 +4,6 @@ import shutil
 from sys import platform
 from subprocess import DEVNULL, STDOUT, check_call
 from pathlib import Path
-# import api_logic_server_cli.create_from_model.api_logic_server_utils as create_utils
 
 class DotDict(dict):
     """ APiLogicServer dot.notation access to dictionary attributes """
@@ -206,7 +205,56 @@ def start_api_logic_server(project_name: str):
         print(f".. Ping failed on {project_name}")
         raise
 
-   
+def does_file_contain(in_file: str, search_for: str) -> bool:
+    with open(in_file, 'r') as file:
+        file_data = file.read()
+        result = file_data.find(search_for)
+    return result > 0
+
+def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
+    with open(in_file, 'r') as file:
+        file_data = file.read()
+        file_data = file_data.replace(search_for, replace_with)
+    with open(in_file, 'w') as file:
+        file.write(file_data)
+
+def rebuild_tests():
+    print(f'Rebuild tests')
+    current_path = Path(os.path.abspath(__file__))
+    install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
+    api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
+    admin_merge_yaml_path = api_logic_project_path.joinpath('ui').joinpath('admin').joinpath('admin-merge.yaml')
+    new_model_path = current_path.parent.parent.joinpath('rebuild_tests').joinpath('models.py')
+    models_py_path = api_logic_project_path.joinpath('database').joinpath('models.py')
+
+    result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
+    if admin_merge_yaml_path.is_file():
+        raise ValueError('System Error - admin-merge.yaml exists on create')
+
+    result_create = run_command(f'{set_venv} && ApiLogicServer rebuild-from-database --project_name=ApiLogicProject --db_url=',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
+    if not admin_merge_yaml_path.is_file():
+        raise ValueError('System Error - admin-merge.yaml does not exist on rebuild-from-database')
+    if does_file_contain(in_file=admin_merge_yaml_path, search_for="new_resources:"):
+        pass
+    else:
+        raise ValueError('System Error - admin-merge.yaml does not contain "new_resources: " ')
+
+    copyfile(new_model_path, models_py_path)
+    result_create = run_command(f'{set_venv} && ApiLogicServer rebuild-from-model --project_name=ApiLogicProject --db_url=',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
+    if not admin_merge_yaml_path.is_file():
+        raise ValueError('System Error - admin-merge.yaml does not exist on rebuild-from-model')
+    if does_file_contain(in_file=models_py_path, search_for="CategoryNew"):
+        pass
+    else:
+        raise ValueError('System Error - admin-merge.yaml does not contain "new_resources: " ')
+
+    print(f'..rebuild tests compete')
 
 # ***************************
 #        MAIN CODE
@@ -243,6 +291,7 @@ with io.open(str(api_logic_server_cli_path), "rt", encoding="utf8") as f:
 print(f"\n\n{__file__} 1.0 running")
 print(f'  Builds / Installs API Logic Server to install_api_logic_server_path: {install_api_logic_server_path}')
 print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
+print(f'  Rebuild tests')
 print(f'  Creates other projects')
 
 # stop_server(msg="BEGIN TESTS\n")  # just in case server left running
@@ -305,6 +354,9 @@ if Config.do_test_api_logic_project:
         f.close()
     print("\nBehave tests - Success...\n")
     stop_server(msg="*** NW TESTS COMPLETE ***\n")
+
+if Config.do_rebuild_tests:
+    rebuild_tests()
 
 if Config.do_other_sqlite_databases:
     run_command('{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',

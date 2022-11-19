@@ -1218,7 +1218,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
            swagger_host: str,
            favorites: str, non_favorites: str,
            extended_builder: str,
-           infer_prinary_key: click.BOOL):
+           infer_primary_key: click.BOOL):
     """
         Updates database, api, and ui from changed db.
 
@@ -1237,7 +1237,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
                      flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_prinary_key)
+                     extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
 
 
 @main.command("rebuild-from-model")
