@@ -157,7 +157,7 @@ def key_module_map():
             model_creation_services.write_models_py()           # creates models.py file from models_mem
         model_creation_services.create_resource_list()          # creates resource_list via dynamic import of models.py
     invoke_creators(model_creation_services)                    # creates api, ui via create_from_model...
-    api_expose_api_models.create()                              # creates api/expose_api_models.py, key input to SAFRS        
+    api_expose_api_models.create()                              # creates api/expose_api_models.py, drives SAFRS        
     ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
     get_abs_db_url()                                            # nw set here, dbname
 ```

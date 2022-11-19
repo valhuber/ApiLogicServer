@@ -833,9 +833,9 @@ class ModelCreationServices(object):
         """
         Create models.py (using sqlacodegen, via sqlacodegen_wrapper.sqlacodegen_wrapper).
 
-        Called on creation of ModelCreationServices.__init__.
+        Called on creation of ModelCreationServices.__init__ (ctor).
 
-        It creates the `models.py` file.
+        It creates the `models.py` file by calling this method.
 
             1. It calls `sqlacodegen_wrapper.sqlacodegen_wrapper`:
                 * It returns the `models_py` text now written to the projects' `database/models.py`.
@@ -846,12 +846,12 @@ class ModelCreationServices(object):
                     * It transforms database names to resource names - capitalized, singular
                         * These (not table names) are used to create api and ui model
 
-            2. It then calls `create_resource_list_from_safrs`, to create the `resource_list`
-                * This is the meta data iterated by the creation modules to create api and ui model classes.
-                * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
-                    * Many DBs don't define FKs into the db (e.g. nw.db).
-                    * Instead, they define "Virtual Keys" in their model files.
-                    * To leverage these, we need to get resource Metadata from model classes, not db
+        The ctor then calls `create_resource_list`, to create the `resource_list`
+            * This is the meta data iterated by the creation modules to create api and ui model classes.
+            * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
+                * Many DBs don't define FKs into the db (e.g. nw.db).
+                * Instead, they define "Virtual Keys" in their model files.
+                * To leverage these, we need to get resource Metadata from model classes, not db
 
         :param abs_db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
         :param project: project directory
