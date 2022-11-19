@@ -9,10 +9,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.03.02"
+__version__ = "6.03.03"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t11/16/2022 - 06.03.02: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
+    "\t11/18/2022 - 06.03.03: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
@@ -77,7 +77,7 @@ api_logic_server_path = os.path.dirname(get_api_logic_server_dir())  # e.g: expo
 sys.path.append(api_logic_server_path)
 from create_from_model.model_creation_services import ModelCreationServices
 
-import expose_existing.expose_existing_callable as expose_existing_callable
+import sqlacodegen_wrapper.sqlacodegen_wrapper as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
 
 
@@ -339,7 +339,8 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             if from_dir == "":
                 from_dir = (Path(api_logic_server_dir_str)).\
                     joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
-            print(f'{msg} copy {from_dir} -> {os.path.realpath(project_directory)}')
+            print(f'{msg} {from_dir}')
+            print(f'.. ..Clone from {from_dir} ')
             cloned_from = from_dir
             try:
                 if merge_into_prototype:
@@ -435,7 +436,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
 
             print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
             print(f'.. .. ..From {db_loc}')
-            print(f'.. .. ..db_uri set to: {return_abs_db_url} in {project_directory}/config.py')
+            print(f'.. .. ..db_uri set to: {return_abs_db_url} in <project>/config.py')
         if merge_into_prototype:
             recursive_overwrite(str(tmpdirname), project_directory)
             # delete_dir(realpath(Path(str(tmpdirname))), "")
@@ -487,7 +488,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
             db_types_data = file.read()
         create_utils.insert_lines_at(lines=db_types_data, at="(typically via --db_types)", file_name=models_file_name)
     if nw_db_status in ["nw", "nw+"]:
-        print(f'.. .. ..setting cascade delete for sample database database/models.py')
+        print(f'.. .. ..Setting cascade delete for sample database database/models.py')
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
             replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
@@ -708,8 +709,8 @@ def invoke_creators(model_creation_services: ModelCreationServices):
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
 
     print(" b.  Create api/expose_api_models.py from models")
-    print(f'---> cwd: {model_creation_services.os_cwd}')
-    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_expose_api_models.py')
+    # print(f'---> cwd: {model_creation_services.os_cwd}')
+    spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_expose_api_models_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(model_creation_services)  # invoke create function
@@ -1503,15 +1504,19 @@ def key_module_map():
         ctl-l (^l) for last edit
     """
     import create_from_model.ui_admin_creator as ui_admin_creator
-    import create_from_model.api_expose_api_models as api_expose_api_models
+    import create_from_model.api_expose_api_models_creator as api_expose_api_models
+    import sqlacodegen_wrapper.sqlacodegen_wrapper as sqlacodegen_wrapper
 
     api_logic_server()                                          # main driver, calls...  Ctl- to return to last loc
     create_project_with_nw_samples()                            # clone project, overlay nw
     model_creation_services = ModelCreationServices()           # creates database/models.py - ctor calls...
-    model_creation_services.create_models()                     # creates database/models.py, by calling...
-    expose_existing_callable.create_models_from_db({})          # wrapper for sqlcodegen (which returns models as str)
-    model_creation_services.create_resource_list_from_safrs()   # creates resource_list via dynamic import of models.py
-    invoke_creators()                                           # creates api, ui via create_from_model...
+    def and_the_ctor_calls():
+        model_creation_services.create_models_py()              # creates database/models.py, by calling...
+        def create_models_py_calls():
+            sqlacodegen_wrapper.create_models_memstring({})     # creates models_mem (as memstring)
+            model_creation_services.write_models_py()           # creates models.py file from models_mem
+        model_creation_services.create_resource_list()          # creates resource_list via dynamic import of models.py
+    invoke_creators(model_creation_services)                    # creates api, ui via create_from_model...
     api_expose_api_models.create()                              # creates api/expose_api_models.py, key input to SAFRS        
     ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
     get_abs_db_url()                                            # nw set here, dbname

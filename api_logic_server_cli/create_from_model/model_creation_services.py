@@ -18,7 +18,7 @@ from typing import List, Dict
 from pathlib import Path
 from shutil import copyfile
 from sqlalchemy.orm.interfaces import ONETOMANY, MANYTOONE, MANYTOMANY
-from api_logic_server_cli.expose_existing import expose_existing_callable
+from api_logic_server_cli.sqlacodegen_wrapper import sqlacodegen_wrapper
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
@@ -224,7 +224,9 @@ class ModelCreationServices(object):
 
         self._non_favorite_names_list = self.non_favorite_names.split()
         self._favorite_names_list = self.favorite_names.split()
-        self.create_models(abs_db_url= abs_db_url, project_directory= project_directory)
+        model_file_name, msg = self.create_models_py(abs_db_url= abs_db_url, project_directory= project_directory)
+        self.create_resource_list(model_file_name, msg)  # whether created or used, build resource_list
+
 
     @staticmethod
     def get_windows_path_with_slashes(url: str) -> str:
@@ -706,7 +708,7 @@ class ModelCreationServices(object):
         if self.engine:
             self.engine.dispose()
 
-    def create_resource_list_from_safrs(self, models_file, msg):
+    def create_resource_list(self, models_file, msg):
         """
         creates self.resource_list via dynamic import of models.py  (drives create_from_model modules)
         """
@@ -818,16 +820,21 @@ class ModelCreationServices(object):
                 print("\n===> ERROR - Unable to introspect model classes")
                 traceback.print_exc()
                 pass
+    
+    def write_models_py(self, model_file_name, models_mem):
+        """ write models_mem to disk as model_file_name """
+        with open(model_file_name, "w") as text_file:
+            text_file.write(models_mem)
 
-    def create_models(self, abs_db_url: str, project_directory: str):
+    def create_models_py(self, abs_db_url: str, project_directory: str):
         """
-        Create models.py (using sqlacodegen, via expose_existing.expose_existing_callable).
+        Create models.py (using sqlacodegen, via sqlacodegen_wrapper.sqlacodegen_wrapper).
 
         Called on creation of ModelCreationServices.__init__.
 
-        It creates the `models.py` file, and loads `self.resource_list` used by creators to iterate the model.
+        It creates the `models.py` file.
 
-            1. It calls `expose_existing-callable.create_models_from_db`:
+            1. It calls `sqlacodegen_wrapper.sqlacodegen_wrapper`:
                 * It returns the `models_py` text now written to the projects' `database/models.py`.
                 * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
                     * An important consideration is disambiguating multiple relationships between the same w tables
@@ -870,12 +877,12 @@ class ModelCreationServices(object):
         model_file_name = "*"
         if self.command in ('create', 'create-and-run', 'rebuild-from-database'):
             if self.use_model == "":
-                print(f' a.  Create Models - create database/models.py, using sqlcodegen for database: {abs_db_url}')
+                print(f' a.  Create Models - create database/models.py, using sqlcodegen')
+                print(f'.. .. ..For database:  {abs_db_url}')
                 code_gen_args = get_codegen_args()
-                models_py, num_models = expose_existing_callable.create_models_from_db(code_gen_args)  # calls sqlcodegen
+                models_mem, num_models = sqlacodegen_wrapper.create_models_memstring(code_gen_args)  # calls sqlcodegen
                 model_file_name = code_gen_args.outfile
-                with open(model_file_name, "w") as text_file:
-                    text_file.write(models_py)
+                self.write_models_py(model_file_name, models_mem)
                 self.resource_list_complete = True
             else:  # use pre-existing (or repaired) existing model file
                 model_file_name = project_directory + '/database/models.py'
@@ -892,5 +899,4 @@ class ModelCreationServices(object):
             error_message = f'System error - unexpected command: {self.command}'
             raise ValueError(error_message)
         msg = f'.. .. ..Create resource_list - dynamic import database/models.py, inspect {num_models} classes'
-        self.create_resource_list_from_safrs(model_file_name, msg)  # whether created or used, build resource_list
-        return rtn_my_children_map, rtn_my_parents_map # return data no longer used
+        return model_file_name, msg # return to ctor, create resource_list

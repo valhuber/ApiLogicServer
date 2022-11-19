@@ -19,8 +19,7 @@ from io import StringIO
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import MetaData
 from flask_cors import CORS
-from expose_existing.sqlacodegen.sqlacodegen.codegen import CodeGenerator
-
+from sqlacodegen_wrapper.sqlacodegen.sqlacodegen.codegen import CodeGenerator
 
 MODEL_DIR = tempfile.mkdtemp()  # directory where the generated models.py will be saved
 on_import = False
@@ -123,8 +122,8 @@ def print_uri_info():
     sys.stdout.write('\n')
 
 
-def create_models_from_db(args) -> str:
-    """ called by ApiLogicServer CLI - ModelCreationServices - to create return models_py string
+def create_models_memstring(args) -> str:
+    """ called by ApiLogicServer CLI - ModelCreationServices - to create return models(_py) string
 
     returns str to be written to models.py
     """
@@ -153,7 +152,7 @@ def create_models_from_db(args) -> str:
     generator = CodeGenerator(metadata, args.noindexes, args.noconstraints,
                               args.nojoined, args.noinflect, args.noclasses, args.model_creation_services)
     args.model_creation_services.metadata = generator.metadata
-    generator.render(capture)  # generates (preliminary) models in memory
+    generator.render(capture)  # generates (preliminary) models as memstring
     models_py = capture.getvalue()
     models_py = fix_generated(models_py, args)
     return models_py, len(generator.models)

@@ -288,7 +288,7 @@ class AdminCreator(object):
             log.debug(f'master object detected - {skipped}')
             return None
         relationship = DotMap()
-        if len(self.mod_gen.resource_list) == 0:   # RARELY used - use_model is true (expose_existing not called)
+        if len(self.mod_gen.resource_list) == 0:   # RARELY used - use_model is true (sqlacodegen_wrapper not called)
             return self.new_relationship_to_parent_no_model(a_child_resource,
                                                             parent_attribute_reference, a_master_parent_resource)
         my_parents_list = a_child_resource.parents
@@ -675,7 +675,7 @@ class AdminCreator(object):
         """
         deep copy ApiLogicServer/create_from_model/admin -> project_directory/ui/admin
 
-        :param msg: console log
+        :param msg: console  (.. .. ..Create ui/admin)
         :param from_git: git url for source - override ApiLogicServer/create_from_model/admin (not impl)
         """
         from_proto_dir = from_git
@@ -693,7 +693,8 @@ class AdminCreator(object):
             from_proto_dir = pathlib.Path("/app/ui/safrs-react-admin")  # enables debug for alsdock projects
             shutil.copytree(from_proto_dir, to_project_dir)
         else:
-            print(f'{msg} copy safrs-react-admin: {from_proto_dir} -> {to_project_dir}')
+            print(f'{msg} copy safrs-react-admin to: {to_project_dir}')
+            print(f'.. .. ..  ..From {from_proto_dir}')
             if not os.path.isdir(from_proto_dir):
                 print(f'\n==> Error - safrs-react-admin... did you complete setup: https://valhuber.github.io/ApiLogicServer/Internals/')
                 print(".. Setup required.  Really.")

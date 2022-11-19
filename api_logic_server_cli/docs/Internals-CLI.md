@@ -120,7 +120,7 @@ Here is the doc of `create_from_model/model_creation_services#create_models`,
 called to read the schema and create ```database/models.py```:
 
 <pre>
-        Create models.py (using sqlacodegen,  via expose_existing.expose_existing_callable).
+        Create models.py (using sqlacodegen,  via sqlacodegen_wrapper.sqlacodegen_wrapper).
 
         Called on creation of ModelCreationServices.__init__.
 

@@ -135,6 +135,7 @@ def check_command(command_result):
 
     if "Trace" in result_stderr or \
         "Error" in result_stderr or \
+        "error" in result_stderr or \
         "Traceback" in result_stderr:
         print("\n\n==> Command Failed - Console Log:")
         for line in command_result.stdout.decode('utf-8').split('\n'):
