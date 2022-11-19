@@ -9,11 +9,9 @@ For reference, projects are created with this structure:
 To create using the source code (e.g, from an IDE), using the ```venv``` created from above:
 
 ```bash
-(venv) val@Vals-MacBook-Pro-16 ApiLogicServer % python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
+(venv) val@Vals-MPB-14 ApiLogicServer % python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
 
-(venv) val@Vals-MacBook-Pro-16 ApiLogicServer % python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
-
-Welcome to API Logic Server, 5.02.25
+Welcome to API Logic Server, 6.03.03
 
 SQLAlchemy Database URI [default = nw.sqlite, ? for help]: 
 
@@ -29,6 +27,7 @@ Creating ApiLogicServer with options:
   --run=False
   --host=localhost
   --port=5656
+  --swagger_host=localhost
   --not_exposed=ProductDetails_V
   --open_with=
   --use_model=
@@ -36,23 +35,28 @@ Creating ApiLogicServer with options:
   --non_favorites=id
   --extended_builder=
   --multi_api=False
+  --infer_primary_key=False
 
-ApiLogicServer 5.02.25 Creation Log:
+ApiLogicServer 6.03.03 Creation Log:
 0. Using Sample DB from: sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
 1. Delete dir: /Users/val/Desktop/test_project
-2. Create Project copy /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype -> /Users/val/Desktop/test_project
+2. Create Project: /Users/val/Desktop/test_project
+.. ..Clone from /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype 
 .. ..Copy in nw customizations: logic, custom api, readme, tests, admin app
-.. ..Copied sqlite db to: sqlite:////Users/val/Desktop/test_project/database/db.sqlite and updated db_uri in /Users/val/Desktop/test_project/config.py
-.. .. ..Using nw sample db: /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
+.. ..Sqlite database setup /Users/val/Desktop/test_project/database/db.sqlite...
+.. .. ..From /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
+.. .. ..db_uri set to: sqlite:////Users/val/Desktop/test_project/database/db.sqlite in <project>/config.py
 3. Create/verify database/models.py, then use that to create api/ and ui/ models
- a.  Create Models - create database/models.py, using sqlcodegen for database: sqlite:////Users/val/Desktop/test_project/database/db.sqlite
-.. .. ..Create resource_list - dynamic import database/models.py, inspect each class in /Users/val/Desktop/test_project/database
-.. .. ..setting cascade delete for sample database database/models.py
+ a.  Create Models - create database/models.py, using sqlcodegen
+.. .. ..For database:  sqlite:////Users/val/Desktop/test_project/database/db.sqlite
+.. .. ..Create resource_list - dynamic import database/models.py, inspect 18 classes in <project>/database
+.. .. ..Setting cascade delete for sample database database/models.py
  b.  Create api/expose_api_models.py from models
  c.  Create ui/admin/admin.yaml from models
-.. .. ..Create ui/admin copy safrs-react-admin: /Users/val/dev/ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build -> /Users/val/Desktop/test_project/ui/safrs-react-admin
+.. .. ..Create ui/admin copy safrs-react-admin to: /Users/val/Desktop/test_project/ui/safrs-react-admin
+.. .. ..  ..From /Users/val/dev/ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
 .. .. ..Write /Users/val/Desktop/test_project/ui/admin/admin.yaml
-.. ..ui/basic_web_app creation declined
+ d.  Create ui/basic_web_app -- declined
 4. Final project fixup
  b.   Update api_logic_server_run.py with project_name=~/Desktop/test_project and api_name, host, port
  c.   Fixing api/expose_services - port, host
@@ -68,10 +72,10 @@ Run API Logic Server:
 
 Customize using your IDE:
   code ~/Desktop/test_project  # e.g., open VSCode on created project
-  Establish your Python environment - see ../Quick-Start#project-execution
+  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/
 
 
-(venv) val@Vals-MacBook-Pro-16 ApiLogicServer % 
+(venv) val@Vals-MPB-14 ApiLogicServer % 
 ```
 
 &nbsp;
@@ -115,38 +119,48 @@ Here is the key excerpt of the main driver in `api_logic_server_cli/cli.py`:
     invoke_creators(model_creation_services)  # creates api/expose_api_models, ui/admin & basic_web_app
 ```
 
+
 ### 3a. Create Models - create ```database/models.py``` 
-Here is the doc of `create_from_model/model_creation_services#create_models`,
-called to read the schema and create ```database/models.py```:
 
-<pre>
-        Create models.py (using sqlacodegen,  via sqlacodegen_wrapper.sqlacodegen_wrapper).
+The essence of the project creator is that, given a database model (description), we can 
+generate APIs and UIs.  These models are created in `model_creation_services.py - ModelCreationServices.#create_models_py in ApiLogicServer/api_logic_server_cli/create_from_model`.
 
-        Called on creation of ModelCreationServices.__init__.
+The essence of the process is illustrated at the end of `ApiLogicServer/api_logic_cli/cli.py`:
 
-        It creates the `models.py` file, and loads `self.resource_list` used by creators to iterate the model.
+* `ModelCreationServices` provides the model and various services (e.g, `findChildList`).  A key 
+function is to create the model, which starts in the `__init__` constructor which calls `create_models_py()`
+* It calls a `sqlacodegen_wrapper` to created a string of the models file
+* Which is then written to disk in `write_models_py()`
+* The constructor then calls `create_resource_list()`
+    * It dynamically loads the created `models.py`
+    * And builds the model using metadata create by the SAFRS package
 
-            1. It calls `expose_existing-callable.create_models_from_db`:
-                * It returns the `models_py` text now written to the projects' `database/models.py`.
-                * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
-                    * An important consideration is disambiguating multiple relationships between the same w tables
-                        * See `nw-plus` relationships between `Department` and `Employee`.
-                        * [See here](../Sample-Database) for a database diagram.
-                    * It transforms database names to resource names - capitalized, singular
-                        * These (not table names) are used to create api and ui model
+For more information, see the comments in `create_models_py()`, easily reached via the `key_module_map`
+in `ApiLogicServer/api_logic_cli/cli.py`:
 
-            2. It then calls `create_resource_list_from_safrs`, to create the `resource_list`
-                * This is the meta data iterated by the creation modules to create api and ui model classes.
-                * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
-                    * Many DBs don't define FKs into the db (e.g. nw.db).
-                    * Instead, they define "Virtual Keys" in their model files.
-                    * To leverage these, we need to get resource Metadata from model classes, not db
+```python
+def key_module_map():
+    """ not called - just index of key code - use this for hover, goto etc 
+        ctl-l (^l) for last edit
+    """
+    import create_from_model.ui_admin_creator as ui_admin_creator
+    import create_from_model.api_expose_api_models_creator as api_expose_api_models
+    import sqlacodegen_wrapper.sqlacodegen_wrapper as sqlacodegen_wrapper
 
-        :param abs_db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
-        :param project: project directory
-
-        """
-</pre>
+    api_logic_server()                                          # main driver, calls...  Ctl- to return to last loc
+    create_project_with_nw_samples()                            # clone project, overlay nw
+    model_creation_services = ModelCreationServices()           # creates database/models.py - ctor calls...
+    def and_the_ctor_calls():
+        model_creation_services.create_models_py()              # creates database/models.py, by calling...
+        def create_models_py_calls():
+            sqlacodegen_wrapper.create_models_memstring({})     # creates models_mem (as memstring)
+            model_creation_services.write_models_py()           # creates models.py file from models_mem
+        model_creation_services.create_resource_list()          # creates resource_list via dynamic import of models.py
+    invoke_creators(model_creation_services)                    # creates api, ui via create_from_model...
+    api_expose_api_models.create()                              # creates api/expose_api_models.py, key input to SAFRS        
+    ui_admin_creator.create()                                   # creates ui/admin/admin.yaml from resource_list
+    get_abs_db_url()                                            # nw set here, dbname
+```
 
 #### Create `resource_list` - dynamic import database/models.py, inspect each class
 Called from `create_models`', this dynamically imports

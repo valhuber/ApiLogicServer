@@ -339,7 +339,7 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             if from_dir == "":
                 from_dir = (Path(api_logic_server_dir_str)).\
                     joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
-            print(f'{msg} {from_dir}')
+            print(f'{msg} {os.path.realpath(project_directory)}')
             print(f'.. ..Clone from {from_dir} ')
             cloned_from = from_dir
             try:
@@ -733,7 +733,7 @@ def invoke_creators(model_creation_services: ModelCreationServices):
         spec.loader.exec_module(creator)
         creator.create(model_creation_services)
     else:
-        print(".. ..ui/basic_web_app creation declined")
+        print(" d.  Create ui/basic_web_app -- declined")
 
     model_creation_services.close_app()  # this may no longer be required
 

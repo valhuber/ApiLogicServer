@@ -711,6 +711,9 @@ class ModelCreationServices(object):
     def create_resource_list(self, models_file, msg):
         """
         creates self.resource_list via dynamic import of models.py  (drives create_from_model modules)
+        
+        :param models_file name of file for output
+        :param msg e.g. .. .. ..Create resource_list - dynamic import database/models.py, inspect
         """
         """ old code
         # project_abs_path = abspath(self.project_directory)
@@ -727,7 +730,7 @@ class ModelCreationServices(object):
             project_path + "/database"  # for Api Logic Server projects
         sys.path.insert(0, self.project_directory)    # e.g., /Users/val/dev/servers/install/ApiLogicServer
         sys.path.insert(0, path_to_add)    # e.g., /Users/val/dev/servers/install/ApiLogicServer/database
-        print(msg + " in " + path_to_add)
+        print(msg + " in <project>/database")  #  + path_to_add)
         # sys.path.insert( 0, '/Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject/database')
         # sys.path.insert( 0, '/Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject')  # AH HA!!
         # sys.path.insert( 0, 'ApiLogicProject')  # or, AH HA!!
