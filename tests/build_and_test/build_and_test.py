@@ -136,13 +136,16 @@ def check_command(command_result):
         "Error" in result_stderr or \
         "error" in result_stderr or \
         "Traceback" in result_stderr:
-        print("\n\n==> Command Failed - Console Log:")
-        for line in command_result.stdout.decode('utf-8').split('\n'):
-            print (line)
-        print("\n\n==> Error Log:")
-        for line in command_result.stderr.decode('utf-8').split('\n'):
-            print (line)
-        raise ValueError("Traceback detected")
+        if 'alembic.runtime.migration' in result_stderr:
+            pass
+        else:
+            print("\n\n==> Command Failed - Console Log:")
+            for line in command_result.stdout.decode('utf-8').split('\n'):
+                print (line)
+            print("\n\n==> Error Log:")
+            for line in command_result.stderr.decode('utf-8').split('\n'):
+                print (line)
+            raise ValueError("Traceback detected")
 
 def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
     """ run shell command (waits)
@@ -253,6 +256,13 @@ def rebuild_tests():
         pass
     else:
         raise ValueError('System Error - admin-merge.yaml does not contain "new_resources: " ')
+
+    result_create = run_command(f'alembic revision --autogenerate -m "Added Tables and Columns"',
+        cwd=models_py_path.parent,
+        msg=f'\nalembic revision')
+    result_create = run_command(f'alembic upgrade head',
+        cwd=models_py_path.parent,
+        msg=f'\nalembic upgrade head')
 
     print(f'..rebuild tests compete')
 
