@@ -86,7 +86,7 @@ The ApiLogicServer source code looks like this:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/apilogicserver-ide.png?raw=true"></figure>
 
-Execution begins at ```ApiLogicServer/api_logic_server_cli/cli.py```.  It gathers command line arguments, and proceeds to ```def api_logic_server(<cmdline-args):```, which operates as described in the sections below.
+Execution begins at `ApiLogicServer/api_logic_server_cli/cli.py`.  It gathers command line arguments, and proceeds to `def api_logic_server(<cmdline-args>):`, which operates as described in the sections below.
 
 ### 1. Delete Dir
 The target project directory is deleted.  This does not work on Windows, which requires the directory to not exist.

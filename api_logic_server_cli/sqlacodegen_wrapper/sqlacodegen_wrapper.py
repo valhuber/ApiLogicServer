@@ -155,6 +155,7 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
             * Instead, they define "Virtual Keys" in their model files.
             * To leverage these, we need to get resource Metadata from model classes, not db
 
+    :param model_creation_services: ModelCreationServices
     :param abs_db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
     :param project: project directory
     """
