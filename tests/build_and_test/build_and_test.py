@@ -266,6 +266,16 @@ def rebuild_tests():
 
     print(f'..rebuild tests compete')
 
+def docker_creation_tests():
+    """ start docker, create projects at dev/servers/install/ApiLogicServer/dockers """
+    """
+        Yay!
+        docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim sh -c "export PATH=$PATH:/home/api_logic_server/bin && /bin/sh /localhost/docker-commands.sh"
+
+        this runs:
+        docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim /home/api_logic_server/bin/ApiLogicServer welcome
+        docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim ls /localhost/
+    """
 # ***************************
 #        MAIN CODE
 # ***************************
@@ -422,9 +432,12 @@ if Config.do_docker_postgres:
         cwd=install_api_logic_server_path,
         msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
     start_api_logic_server(project_name='postgres')
-    print(f'\nServer [Postgres] running\n')
+    stop_server(msg="postgres\n")
 
-print("\n\nSUCCESS -- END OF TESTS (be sure to test Postgres, and stop the server")
+if Config.do_docker_creation_tests:
+    docker_creation_tests()
+
+print("\n\nSUCCESS -- END OF TESTS")
 
 print(f"\n\nRelease {api_logic_server_version}?\n")
 print(f'cd {str(get_api_logic_server_path())}')

@@ -1,13 +1,28 @@
 about:
-  date: November 16, 2022 13:03
+  date: November 21, 2022 17:03
   recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, images
   # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
+info_toggle_checked: true
 info:
   number_relationships: 13
   number_tables: 17
 resources:
   Category:
+    info_list: <h1>Tour - Application Information</h1>
+          To provide info...
+          <ul>
+            <li>In the <span style="font-family:'Courier New'">ui/admin/admin.yaml</span> file,
+          use <span style="font-family:'Courier New'">info_list</span> and 
+          <span style="font-family:'Courier New'">info_show</span> to provide user information</li>
+          </ul>
+          To show info...
+          <ul>
+            <li>On the page, click (?) to see the info dialog box</li>
+            <li>On the personalization icon (upper right), click the (?) toggle to see info on the page</li>
+            <li>In the admin.yaml, set <span style="font-family:'Courier New'">info_toggle_checked</span></li>
+          </ul>
+          Suggestion - visit the Customer and Employee pages<br><br>
     attributes:
       - label: ' Category Name*'
         name: CategoryName
@@ -18,13 +33,10 @@ resources:
     type: Category
     user_key: CategoryName
   Customer:
-    info_list: <h1>Tour</h1>
-          In the <span style="font-family:'Courier New'">ui/admin/admin.yaml</span> file,
-          use <span style="font-family:'Courier New'">info_list</span> and 
-          <span style="font-family:'Courier New'">info_show</span> to provide user information.<br><br>
+    info_list: <h1>List Pages</h1>
           In this
           <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Sample-Database/">Northwind demo,</a>      
-          Info provides Tour suggestions.  On this page...
+          Info provides Tour suggestions (see Category for instructions).  On this page...
           <ul>
             <li> <strong>Search</strong> on multiple fields (Company, Contact Name) -- try z</li>
             <li> <strong>Sort</strong> by column headers</li>
@@ -39,8 +51,7 @@ resources:
               </ul>
             </li>
           </ul>
-    info_show: <h1>Tour</h1>
-          <h3>Multi-table</h3>
+    info_show: <h1>Multi-table</h1>
           <ul>
             <li><strong>Multi-Table Browsing - </strong>Note the list of related orders
               <ul>
