@@ -1,11 +1,11 @@
-*[parent]: One side of a one-to-many relationship (e.g., Customers for Orders)
-*[Parent]: One side of a one-to-many relationship (e.g., Customers for Orders)
+*[parent]: One side of a one-to-many relationship (e.g., Customer for Orders)
+*[Parent]: One side of a one-to-many relationship (e.g., Customer for Orders)
 *[child]: Many side of a one-to-many relationship (e.g., Orders for Customer)
 *[Child]: Many side of a one-to-many relationship (e.g., Orders for Customer)
-*[lookup]: User Interface to get list of parent rows, select one, and fill Foreign Key
-*[Lookup]: User Interface to get list of parent rows, select one, and fill Foreign Key
-*[Lookups]: User Interface to get list of parent rows, select one, and fill Foreign Key
-*[lookups]: User Interface to get list of parent rows, select one, and fill Foreign Key
+*[lookup]: User Interface to get list of parent rows, select one, and fill child Foreign Key
+*[Lookup]: User Interface to get list of parent rows, select one, and fill child Foreign Key
+*[Lookups]: User Interface to get list of parent rows, select one, and fill child Foreign Key
+*[lookups]: User Interface to get list of parent rows, select one, and fill child Foreign Key
 *[Foreign Key]: one or more fields in child rows that identify a parent row (e.g., OrderDetail.ProductId identifies a Product)
 *[foreign key]: one or more fields in child rows that identify a parent row (e.g., OrderDetail.ProductId identifies a Product)
 *[Multi-Page]: Applications providing multiple pages, e.g. a Customer Page and an Order Page
@@ -26,3 +26,5 @@
 *[declarative]: specifications that dictate _what_ should be done, instead of detailed that is _how_ the feature is provided.  Declarative specifications are much more concise, automatically ordered, automamatically optimized and automatically invoked (re-used).  Declarative specifications can be used for client, API and logic behavior
 *[Business Logic]: multi-table constraints and derivations, e.g., the Customer Balance may not exceed the CreditLimit, and is derived as the sum of unshipped Order AmountTotals.
 *[business logic]: multi-table constraints and derivations, e.g., the Customer Balance may not exceed the CreditLimit, and is derived as the sum of unshipped Order AmountTotals.
+*[ORM]: Object Relational Manager - dev-friendly sql access, such as row objects (e.g., SQLAlchemy)
+*[orm]: Object Relational Manager - dev-friendly sql access, such as row objects (e.g., SQLAlchemy)

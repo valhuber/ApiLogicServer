@@ -69,14 +69,17 @@ All project elements are files - no database or binary objects.  So, you can sto
 
 # Internals - How It Works
 
-The ApiLogicServer CLI `create` (or `run`) command creates the project structure shown below - for more information, [see here](../Internals).
+### Project Creation
 
-* Execution begins in `api_logic_server_run.py`.
-* Your customizations are done to the files noted in the callouts below.
+The ApiLogicServer CLI `create` (or `create-and-run`) command creates the project structure shown below - for more information, [see here](../Internals).
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png"></figure>
+&nbsp;
 
 ### API Execution: `api_logic_server_run.py`
+
+Execution begins in `api_logic_server_run.py`.  Your customizations are done to the files noted in the callouts below.
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png"></figure>
 
 `api_logic_server_run.py` (a file created in your ApiLogicProject) sets up a Flask app, the database, logic and api:
 
