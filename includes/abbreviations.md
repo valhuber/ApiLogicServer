@@ -17,6 +17,7 @@
 *[Declarative Hide/Show]: Support for Application fields that are displayed/hidden based on an expression for the current row declared in the Admin.yaml file
 *[Automatic Joins]: Automatically joined parent data, e.g., the ProductName (instead of the ProductId) for OrderDetails; these defaults can be overridden in the Admin.yaml file
 *[Automatic joins]: Automatically joined parent data, e.g., the ProductName (instead of the ProductId) for OrderDetails; these defaults can be overridden in the Admin.yaml file
+*[automatic joins]: Automatically joined parent data, e.g., the ProductName (instead of the ProductId) for OrderDetails; these defaults can be overridden in the Admin.yaml file
 *[Page Transitions]: form controls that enable users to navigate to forms for related data, e.g., from a Customer/Orders page to an Order/OrderDetails page
 *[Page transitions]: form controls that enable users to navigate to forms for related data, e.g., from a Customer/Orders page to an Order/OrderDetails page
 *[Cascade Add]: support for adding child rows (e.g., OrderDetails) after adding a parent row (e.g., Order)
