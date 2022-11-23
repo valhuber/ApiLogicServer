@@ -66,7 +66,7 @@ API Logic Server is a low-code, developer-friendly approach that leverages autom
 
 ## 1. Open in Codespaces
 
-Open  in Codespaces, by clicking the `Code > Codespaces` button on [this Github project](https://github.com/ApiLogicServer/ApiLogicProject){:target="_blank" rel="noopener"}.
+Open  in Codespaces, by clicking the **Code > Create Codespace on main** button on [this Github project](https://github.com/ApiLogicServer/ApiLogicProject){:target="_blank" rel="noopener"}.
 
 <details markdown>
 
