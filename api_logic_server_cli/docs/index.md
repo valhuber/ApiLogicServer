@@ -40,7 +40,7 @@ API Logic Server can dramatically improve web app development:
 
 ### Quick Evaluation - _no install_
 
-You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
+You can avoid install hassles by exploring the [Sample Project in Codespaces](Install-Eval).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
 
 * Create a project using the supplied sample database
 * Examine the created project in VSCode (in your Browser)
