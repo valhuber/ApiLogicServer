@@ -28,3 +28,4 @@
 *[business logic]: multi-table constraints and derivations, e.g., the Customer Balance may not exceed the CreditLimit, and is derived as the sum of unshipped Order AmountTotals.
 *[ORM]: Object Relational Manager - dev-friendly sql access, such as row objects (e.g., SQLAlchemy)
 *[orm]: Object Relational Manager - dev-friendly sql access, such as row objects (e.g., SQLAlchemy)
+*[Codespaces]: a Github product that creates complete cloud-based dev environments for containerized Github projects, including Browser-based IDE development.

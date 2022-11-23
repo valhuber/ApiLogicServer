@@ -38,6 +38,16 @@ API Logic Server can dramatically improve web app development:
 
 * Automation guarantees a __modern software architecture:__ _container-ready_, _API-based_, with _shared logic_ between UIs and APIs (no more logic in UI controllers), in a predictable structure for maintenance.
 
+### Quick Evaluation - _no install_
+
+You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
+
+* Create a project using the supplied sample database
+* Examine the created project in VSCode (in your Browser)
+* Use the Tutorial to run, customize and debug it 
+
+We think you'll find Codespaces pretty amazing - check it out!
+
 &nbsp;
 
 # Background
@@ -164,15 +174,6 @@ then, you might like to try out some of our [dockerized test databases](https://
 
 * **Your Database** - 
 finally, try your own database.
-
-### Quick Evaluation - _no install_
-
-If you are in the Codespaces beta, or in a GitHub organization account with Codespaces enabled, you can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
-
-* see the created project
-* use the Tutorial to run, customize and debug it 
-
-We think you'll find Codespaces pretty amazing - check it out!
 
 &nbsp;
 

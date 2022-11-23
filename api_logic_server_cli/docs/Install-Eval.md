@@ -1,8 +1,5 @@
 The fastest way to explore API Logic Server - *with __no install__* - is to follow this guide to create, explore and customize a project using Codespaces.
 
-!!! Caution "Requires Codespaces Beta, or in organization with Codespaces enabled"
-    There are currently restrictions on Codespaces usage.  It appears these will be [removed in the near future](https://github.com/community/community/discussions/32791){:target="_blank" rel="noopener"}.
-
 <details markdown>
 
 <summary>What is API Logic Server</summary>
@@ -89,13 +86,13 @@ To access this GitHub project with Codespaces
 2. Click __Open > Codespaces__ as shown above
 3. You will see an empty project.
 
-These instructions will continue in Codespaces.
+These instructions will continue in Codespaces in the readme.me (double-click it if it does not open automatically).
 
 <details markdown>
 
 &nbsp;
 
-<summary>What Just Happened</summary>
+<summary>What Is Happening</summary>
 
 You will now see the template project - open in VSCode, _in the Browser._  But that's just what you _see..._
 
@@ -117,7 +114,7 @@ These instructions are now visible in VS Code, to minimize window switching.
 
 ## 2. Create a project
 
-Paste this into the Terminal window (lower right):
+Wait a bit for initialization to complete, then paste this into the Terminal window (lower right):
 
 ```
 ApiLogicServer create --project_name=./ --db_url=
