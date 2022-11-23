@@ -247,7 +247,7 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
-10/20/2022 - 06.02.28: Dialects, run, SQL/Server url change, stop endpoint, Chinook Sqlite, test_all
+11/22/2022 - 06.03.06: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite
 
 10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, restore postgres dvr
 
