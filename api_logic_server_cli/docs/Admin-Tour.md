@@ -152,6 +152,47 @@ It also works on update, such as insert:
 
 &nbsp;
 
+### Images: local or URL
+
+As of release 6.03.06, data fields can refer to images.  Explore the Employee page to see images, using the field `PhotoPath`.  
+
+#### Declaring Image Fields
+
+Edit your `ui/admin/admin.yaml` to designate images, e.g.:
+
+```yaml
+      - name: PhotoPath
+        type: Image
+```
+
+#### Locally Stored Images
+
+Images can be stored on the server, by placing them as shown in the diagram below:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-image.png?raw=true"></figure>
+
+#### URL-based Images
+
+You can also references images by url, such as Steele, specifying a value like:
+
+```
+https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWYaD6pHRUklVcWdaY4Jl2HOQCPfxJo8n2zj-ZYBvA8g&s
+```
+
+&nbsp;
+
+### Application Information
+
+Developers can edit the `ui/admin/admin.yaml` to provide application help, as shown below.
+
+Users can elect to hide/show this info:
+
+1. Info Toggle - on the personalization control, toggle the info control to display information at the top of each screen.  It's initial value is specified by the `ui/admin/admin.yaml` property: `info_toggle_checked: true`.
+
+2. Info Dialog - click this to show a pop-up dialog for help
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-info.png?raw=true"></figure>
+
 # Update
 
 Your admin app has important support for making updates.

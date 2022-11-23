@@ -1,4 +1,14 @@
 
+## Starting the Server
+
+### Via the IDE
+
+As described in the Quick Start, Run Configurations are provided to start the server in your IDE.
+
+&nbsp;
+
+### Directly
+
 Recall that you execute your API Logic Project by __starting the server__, like this:
 
 ```
@@ -26,6 +36,14 @@ my_new_project> python ui/basic_web_app/run.py [host port]
 ```
 
 Try http://localhost:5002/, http://0.0.0.0:5002/
+
+&nbsp;
+
+### Using the Run script
+
+Alternatively, you can start the server using the run script, e.g.:
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/server-run.png"></figure>
 
 
 &nbsp;
