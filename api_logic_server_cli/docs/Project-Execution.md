@@ -45,7 +45,13 @@ Alternatively, you can start the server using the run script, e.g.:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/server-run.png"></figure>
 
+### Stopping the server
 
+You can stop the server by cancelling it, or via an API:
+
+```
+http://localhost:5656/stop?msg=API stop - Stop API Logic Server
+```
 &nbsp;
 
 ## Host and Port Handling
