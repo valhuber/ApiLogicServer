@@ -14,7 +14,7 @@ title:
 
 API Logic Server creates __customizable database web app projects:__
 
-* __Creation is Instant:__ create _executable_ projects from your database with a _single_ command.  __Projects are Highly Functional,__ providing:
+* Creation is __Instant:__ create _executable_ projects from your database with a _single_ command.  Projects are __Highly Functional,__ providing:
 
     * __API:__ an endpoint for each table, with filtering, sorting, pagination and related data access
 
