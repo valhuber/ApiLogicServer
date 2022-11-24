@@ -121,7 +121,7 @@ VSCode will open in your Browser, and the project will perform various initializ
 2. Port made public
 3. `readme` opened, showing next step
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/verify-codespaces.jpg?raw=true"></figure>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/verify-codespaces.png?raw=true"></figure>
 
 </details>
 
