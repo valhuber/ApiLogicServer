@@ -6,9 +6,7 @@ The fastest way to explore API Logic Server - *with __no install__* - is to foll
 
 API Logic Server creates __customizable database web app projects:__
 
-* __Creation is Instant:__ create _executable_ projects from your database, with a _single_ command
-
-* __Projects are Highly Functional,__ providing:
+* __Creation is Instant:__ create _executable_ projects from your database, with a _single_ command.  __Projects are Highly Functional,__ providing:
 
     * __API:__ an endpoint for each table, with filtering, sorting, pagination and related data access
 
