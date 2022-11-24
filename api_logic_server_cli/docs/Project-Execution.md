@@ -52,6 +52,9 @@ You can stop the server by cancelling it, or via an API:
 ```
 http://localhost:5656/stop?msg=API stop - Stop API Logic Server
 ```
+
+This can be useful in testing if you don't have access to the server console.  The `msg` parameter is optional.
+
 &nbsp;
 
 ## Host and Port Handling

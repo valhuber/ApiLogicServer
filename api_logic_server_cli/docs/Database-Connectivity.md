@@ -61,6 +61,14 @@ Run under API Logic Server docker:
 ApiLogicServer run --project_name=/localhost/docker_project
 ```
 
+## Chinook - Albums and Artists
+
+Designate this as follows: `--db_url={install}/Chinook_Sqlite.sqlite`, e.g.:
+
+```
+~/ApiLogicServer/api_logic_server_cli/database/Chinook_Sqlite.sqlite
+```
+
 
 &nbsp;
 

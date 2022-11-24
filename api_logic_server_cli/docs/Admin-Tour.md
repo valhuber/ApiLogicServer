@@ -152,6 +152,17 @@ It also works on update, such as insert:
 
 &nbsp;
 
+### Data Types
+
+Your yaml can designate data types.   Browse the sample for example, such as `Order.Ready`:
+
+```yaml
+      - name: Ready
+        type : Boolean
+```
+
+&nbsp;
+
 ### Images: local or URL
 
 As of release 6.03.06, data fields can refer to images.  Explore the Employee page to see images, using the field `PhotoPath`.  
