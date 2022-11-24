@@ -62,6 +62,8 @@ API Logic Server is a low-code, developer-friendly approach that leverages autom
 
 </details>
 
+
+
 &nbsp;
 
 ## 1. Open in Codespaces
@@ -86,11 +88,11 @@ To access this GitHub project with Codespaces
 2. Click __Open > Codespaces__ as shown above
 3. You will see an empty project.
 
-These instructions will continue in Codespaces in the readme.me (double-click it if it does not open automatically).
 
 <details markdown>
 
 &nbsp;
+
 
 <summary>What Is Happening</summary>
 
@@ -109,6 +111,21 @@ These instructions are now visible in VS Code, to minimize window switching.
 
 </details>
 
+<details markdown>
+
+<summary>Verify it worked</summary>
+
+VSCode will open in your Browser, and the project will perform various initialization tasks.  After about 1 minute, verify as follows:
+
+1. Port is created
+2. Port made public
+3. `readme` opened, showing next step
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/verify-codespaces.jpg?raw=true"></figure>
+
+</details>
+
+These instructions will continue in Codespaces in the `readme.md` (double-click it if it does not open automatically).
 
 &nbsp;
 

@@ -30,7 +30,7 @@ API Logic Server creates web apps, so is senstive to Host and Port designations.
 
 &nbsp;
 
-### _Manual_ Host and Port Configuration
+### First Try: _Manual_ Host and Port Configuration
 
 After some investigation and help from forums, I was able to define Run Configurations to make API Logic Server Projects run, like this:
 
@@ -106,7 +106,9 @@ A big step forward, but it failed because the Port was not ___public___.
 
 #### Make the created port _public_
 
-[This link](https://github.com/orgs/community/discussions/4068){:target="_blank" rel="noopener"} describes how to work around missing setting for creating public ports.  Adding this to the `devcontainer` installs the `gh` CLI,
+[This link](https://github.com/orgs/community/discussions/4068){:target="_blank" rel="noopener"} describes how to work around missing setting for creating public ports.  
+
+This approach relies upon the `gh` CLI.  Adding this to the `devcontainer` installs the `gh` CLI,
 
 ```json	
 	"features": {
@@ -116,7 +118,7 @@ A big step forward, but it failed because the Port was not ___public___.
 	"postAttachCommand": "/bin/bash .devcontainer/setup.sh"
 ```
 
-Adding this to the `devcontainer` installs the `gh` CLI, which enables us to [/bin/bash .devcontainer/setup.sh](https://github.com/ApiLogicServer/ApiLogicProject/blob/main/.devcontainer/setup.sh):
+This enables us to [/bin/bash .devcontainer/setup.sh](https://github.com/ApiLogicServer/ApiLogicProject/blob/main/.devcontainer/setup.sh):
 
 ```bash
 gh codespace ports visibility 5656:public -c $CODESPACE_NAME
