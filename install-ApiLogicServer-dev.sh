@@ -52,6 +52,7 @@ if [ $# -eq 0 ]
 
     cd ApiLogicServer
     pwd
+    echo "\ncopying sra (safrs-react-admin) --> ApiLogicServer"
     cp -r ../Docs-ApiLogicServer/safrs-react-admin-builds/safrs-react-admin-npm-build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     #
     #
