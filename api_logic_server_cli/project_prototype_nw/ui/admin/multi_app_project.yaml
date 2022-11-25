@@ -1,0 +1,427 @@
+about:
+  date: November 24, 2022 12:50:49
+  recent_changes: example of multi-app projects (non-customized admin)
+  version: 6.03.05
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+info:
+  number_relationships: 13
+  number_tables: 17
+resources:
+  Category:
+    attributes:
+    - label: ' Category Name*'
+      name: CategoryName
+      search: true
+      sort: true
+    - name: Description
+    - name: Id
+    type: Category
+    user_key: CategoryName
+  Customer:
+    attributes:
+    - label: ' Company Name*'
+      name: CompanyName
+      search: true
+      sort: true
+    - name: ContactName
+    - name: ContactTitle
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: Phone
+    - name: Fax
+    - name: Balance
+      type: DECIMAL
+    - name: CreditLimit
+      type: DECIMAL
+    - name: OrderCount
+    - name: UnpaidOrderCount
+    - name: Id
+      required: true
+    tab_groups:
+    - direction: tomany
+      fks:
+      - CustomerId
+      name: OrderList
+      resource: Order
+    type: Customer
+    user_key: CompanyName
+  CustomerDemographic:
+    attributes:
+    - label: ' Id*'
+      name: Id
+      required: true
+      search: true
+      sort: true
+    - name: CustomerDesc
+    type: CustomerDemographic
+    user_key: Id
+  Department:
+    attributes:
+    - label: ' Department Name*'
+      name: DepartmentName
+      search: true
+      sort: true
+    - name: DepartmentId
+    - name: Id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - DepartmentId
+      name: DepartmentList
+      resource: Department
+    - direction: tomany
+      fks:
+      - OnLoanDepartmentId
+      name: EmployeeList
+      resource: Employee
+    - direction: tomany
+      fks:
+      - WorksForDepartmentId
+      name: EmployeeList1
+      resource: Employee
+    - direction: toone
+      fks:
+      - DepartmentId
+      name: Department
+      resource: Department
+    type: Department
+    user_key: DepartmentName
+  Employee:
+    attributes:
+    - label: ' Last Name*'
+      name: LastName
+      search: true
+      sort: true
+    - name: OnLoanDepartmentId
+    - name: WorksForDepartmentId
+    - name: UnionId
+    - name: FirstName
+    - name: Title
+    - name: TitleOfCourtesy
+    - name: BirthDate
+    - name: HireDate
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: HomePhone
+    - name: Extension
+    - name: Photo
+    - name: Notes
+    - name: ReportsTo
+    - name: PhotoPath
+    - name: EmployeeType
+    - name: Salary
+      type: DECIMAL
+    - name: Dues
+      type: DECIMAL
+    - name: Id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - EmployeeId
+      name: EmployeeAuditList
+      resource: EmployeeAudit
+    - direction: tomany
+      fks:
+      - EmployeeId
+      name: EmployeeTerritoryList
+      resource: EmployeeTerritory
+    - direction: tomany
+      fks:
+      - EmployeeId
+      name: OrderList
+      resource: Order
+    - direction: toone
+      fks:
+      - OnLoanDepartmentId
+      name: Department
+      resource: Department
+    - direction: toone
+      fks:
+      - WorksForDepartmentId
+      name: Department1
+      resource: Department
+    - direction: toone
+      fks:
+      - UnionId
+      name: Union
+      resource: Union
+    type: Employee
+    user_key: LastName
+  EmployeeAudit:
+    attributes:
+    - label: ' Last Name*'
+      name: LastName
+      search: true
+      sort: true
+    - name: EmployeeId
+    - name: Title
+    - name: Salary
+      type: DECIMAL
+    - name: FirstName
+    - name: CreatedOn
+    - name: Id
+    tab_groups:
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      resource: Employee
+    type: EmployeeAudit
+    user_key: LastName
+  EmployeeTerritory:
+    attributes:
+    - label: ' Id*'
+      name: Id
+      required: true
+      search: true
+      sort: true
+    - name: TerritoryId
+    - name: EmployeeId
+      required: true
+    tab_groups:
+    - direction: toone
+      fks:
+      - TerritoryId
+      name: Territory
+      resource: Territory
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      resource: Employee
+    type: EmployeeTerritory
+    user_key: Id
+  Location:
+    attributes:
+    - label: ' country*'
+      name: country
+      required: true
+      search: true
+      sort: true
+    - name: city
+      required: true
+    - name: notes
+    tab_groups:
+    - direction: tomany
+      fks:
+      - City
+      - Country
+      name: OrderList
+      resource: Order
+    type: Location
+    user_key: country
+  Order:
+    attributes:
+    - label: ' Ship Name*'
+      name: ShipName
+      search: true
+      sort: true
+    - name: CloneFromOrder
+    - name: CustomerId
+      required: true
+    - name: City
+    - name: EmployeeId
+      required: true
+    - name: OrderDate
+    - name: RequiredDate
+      type: DATE
+    - name: ShippedDate
+    - name: ShipVia
+    - name: Freight
+      type: DECIMAL
+    - name: ShipAddress
+    - name: ShipCity
+    - name: ShipRegion
+    - name: ShipPostalCode
+    - name: ShipCountry
+    - name: AmountTotal
+    - name: Country
+    - name: Ready
+    - name: OrderDetailCount
+    - name: Id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - CloneFromOrder
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - OrderId
+      name: OrderDetailList
+      resource: OrderDetail
+    - direction: toone
+      fks:
+      - CloneFromOrder
+      name: parent
+      resource: Order
+    - direction: toone
+      fks:
+      - CustomerId
+      name: Customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - City
+      - Country
+      name: Location
+      resource: Location
+    - direction: toone
+      fks:
+      - EmployeeId
+      name: Employee
+      resource: Employee
+    type: Order
+    user_key: ShipName
+  OrderDetail:
+    attributes:
+    - label: ' Id*'
+      name: Id
+      search: true
+      sort: true
+    - name: ProductId
+      required: true
+    - name: OrderId
+      required: true
+    - name: UnitPrice
+      type: DECIMAL
+    - name: Quantity
+      required: true
+    - name: Discount
+    - name: Amount
+      type: DECIMAL
+    - name: ShippedDate
+    tab_groups:
+    - direction: toone
+      fks:
+      - ProductId
+      name: Product
+      resource: Product
+    - direction: toone
+      fks:
+      - OrderId
+      name: Order
+      resource: Order
+    type: OrderDetail
+    user_key: Id
+  Product:
+    attributes:
+    - label: ' Product Name*'
+      name: ProductName
+      search: true
+      sort: true
+    - name: QuantityPerUnit
+    - name: UnitPrice
+      required: true
+      type: DECIMAL
+    - name: UnitsInStock
+      required: true
+    - name: UnitsOnOrder
+      required: true
+    - name: ReorderLevel
+      required: true
+    - name: Discontinued
+      required: true
+    - name: UnitsShipped
+    - name: Id
+    - name: SupplierId
+      required: true
+    - name: CategoryId
+      required: true
+    tab_groups:
+    - direction: tomany
+      fks:
+      - ProductId
+      name: OrderDetailList
+      resource: OrderDetail
+    type: Product
+    user_key: ProductName
+  Region:
+    attributes:
+    - label: ' Region Description*'
+      name: RegionDescription
+      search: true
+      sort: true
+    - name: Id
+    type: Region
+    user_key: RegionDescription
+  SampleDBVersion:
+    attributes:
+    - label: ' Id*'
+      name: Id
+      search: true
+      sort: true
+    - name: Notes
+    type: SampleDBVersion
+    user_key: Id
+  Shipper:
+    attributes:
+    - label: ' Company Name*'
+      name: CompanyName
+      search: true
+      sort: true
+    - name: Phone
+    - name: Id
+    type: Shipper
+    user_key: CompanyName
+  Supplier:
+    attributes:
+    - label: ' Company Name*'
+      name: CompanyName
+      search: true
+      sort: true
+    - name: ContactName
+    - name: ContactTitle
+    - name: Address
+    - name: City
+    - name: Region
+    - name: PostalCode
+    - name: Country
+    - name: Phone
+    - name: Fax
+    - name: HomePage
+    - name: Id
+    type: Supplier
+    user_key: CompanyName
+  Territory:
+    attributes:
+    - label: ' Territory Description*'
+      name: TerritoryDescription
+      search: true
+      sort: true
+    - name: Id
+      required: true
+    - name: RegionId
+      required: true
+    tab_groups:
+    - direction: tomany
+      fks:
+      - TerritoryId
+      name: EmployeeTerritoryList
+      resource: EmployeeTerritory
+    type: Territory
+    user_key: TerritoryDescription
+  Union:
+    attributes:
+    - label: ' Name*'
+      name: Name
+      search: true
+      sort: true
+    - name: Id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - UnionId
+      name: EmployeeList
+      resource: Employee
+    type: Union
+    user_key: Name
+settings:
+  HomeJS: http://localhost:5656/admin-app/home.js
+  max_list_columns: 8

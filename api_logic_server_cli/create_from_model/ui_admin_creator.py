@@ -535,12 +535,14 @@ class AdminCreator(object):
 
         yaml_created_file_name = \
             os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-created.yaml'))
-        with open(yaml_created_file_name, 'w') as yaml_created_file:
-            yaml_created_file.write(admin_yaml_dump)
+        create_initial_backup = False  # caused rebuild confusion, so disabled
+        if create_initial_backup:
+            with open(yaml_created_file_name, 'w') as yaml_created_file:
+                yaml_created_file.write(admin_yaml_dump)
 
         if self.mod_gen.nw_db_status in ["nw"] and self.mod_gen.api_name == "api":
             if not self.mod_gen.command.startswith("rebuild"):
-                src = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin_custom_nw.yaml'))
+                src = os.path.join(Path(self.mod_gen.api_logic_server_dir), Path(f'project_prototype_nw/ui/admin/admin.yaml'))
                 dest = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
                 shutil.copyfile(src, dest)
                 """  nw fixup (not required, since all copied from prototype_nw)
