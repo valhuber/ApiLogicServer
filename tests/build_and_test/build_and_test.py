@@ -266,8 +266,14 @@ def rebuild_tests():
 
     print(f'..rebuild tests compete')
 
+def build_docker_container():
+    """
+    run_command docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .
+    """
+    pass
+
 def docker_creation_tests():
-    """ start docker, create projects at dev/servers/install/ApiLogicServer/dockers """
+    """ start docker, cp docker_coammands.sh, create projects at dev/servers/install/ApiLogicServer/dockers """
     """
         Yay!
         docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim sh -c "export PATH=$PATH:/home/api_logic_server/bin && /bin/sh /localhost/docker-commands.sh"
@@ -336,6 +342,9 @@ if Config.do_install_api_logic_server:
         os.mkdir(install_api_logic_server_path.joinpath('dockers'), mode = 0o777)
     except:
         print("Windows dir exists?")
+
+    if True:
+        build_docker_container()
 
     api_logic_server_home_path = api_logic_server_tests_path.parent
     result_build = run_command(f'{python} setup.py sdist bdist_wheel',
