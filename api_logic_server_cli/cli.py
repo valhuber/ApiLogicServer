@@ -9,7 +9,7 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 """
 
-__version__ = "6.03.06"
+__version__ = "6.03.07"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
     "\t11/24/2022 - 06.03.07: Remove confusing files (Issue 54) \n"\
