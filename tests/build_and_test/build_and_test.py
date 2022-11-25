@@ -282,6 +282,8 @@ def docker_creation_tests():
         docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim /home/api_logic_server/bin/ApiLogicServer welcome
         docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim ls /localhost/
     """
+
+
 # ***************************
 #        MAIN CODE
 # ***************************
@@ -314,11 +316,13 @@ api_logic_server_cli_path = get_api_logic_server_path().\
 with io.open(str(api_logic_server_cli_path), "rt", encoding="utf8") as f:
     api_logic_server_version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 
-print(f"\n\n{__file__} 1.0 running")
+print(f"\n\n{__file__} 1.1 running")
 print(f'  Builds / Installs API Logic Server to install_api_logic_server_path: {install_api_logic_server_path}')
 print(f'  Creates Sample project (nw), starts server and runs Behave Tests')
 print(f'  Rebuild tests')
 print(f'  Creates other projects')
+print(f'  Creates Docker projects (wip)')
+print('\n')
 
 # stop_server(msg="BEGIN TESTS\n")  # just in case server left running
 
