@@ -32,13 +32,6 @@ nav:
     - "Rules": Logic.md
     - "Logic Operation": "Logic-Operation.md"
     - "TDD-based Approach": "Logic-Tutorial.md"
-  - Database:
-    - Data-Model-Classes.md
-    - Data-Model-Keys.md
-    - Data-Model-Customization.md
-    - "Connection Examples": Database-Connectivity.md
-    - "Install pyodbc: SqlServer": Install-pyodbc.md
-    - "Install psycopg2: Postgres": Install-psycopg2.md
   - "Using Your IDE": IDE-Customize.md
   - Managing API Logic Projects:
     - "Structure": Project-Structure.md
@@ -48,6 +41,13 @@ nav:
     - "Virtual Environment": Project-Env.md
     - "Execution - Hosts and Ports": Project-Execution.md
     - "Builders": Project-Builders.md
+  - Database:
+    - Data-Model-Classes.md
+    - Data-Model-Keys.md
+    - Data-Model-Customization.md
+    - "Connection Examples": Database-Connectivity.md
+    - "Install pyodbc: SqlServer": Install-pyodbc.md
+    - "Install psycopg2: Postgres": Install-psycopg2.md
   - Testing:
     - "Testing With Behave": Behave.md
     - "Behave Logic Report": Behave-Logic-Report.md

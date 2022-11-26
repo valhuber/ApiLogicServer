@@ -266,13 +266,21 @@ def rebuild_tests():
 
     print(f'..rebuild tests compete')
 
-def build_docker_container():
-    """
-    run_command docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .
-    """
-    pass
+def delete_build_directories(install_api_logic_server_path):
+    if os.path.exists(install_api_logic_server_path):
+        # rm -r ApiLogicServer.egg-info; rm -r build; rm -r dist
+        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('ApiLogicServer.egg-info')), msg="delete egg ")
+        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('build')), msg="delete build ")
+        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('dist')), msg="delete dist ")
+        delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
+    try:
+        os.mkdir(install_api_logic_server_path, mode = 0o777)
+        os.mkdir(install_api_logic_server_path.joinpath('dockers'), mode = 0o777)
+    except:
+        print("Windows dir exists?")
 
-def docker_creation_tests():
+
+def docker_creation_tests(api_logic_server_tests_path):
     """ start docker, cp docker_coammands.sh, create projects at dev/servers/install/ApiLogicServer/dockers """
     """
         Yay!
@@ -282,6 +290,13 @@ def docker_creation_tests():
         docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim /home/api_logic_server/bin/ApiLogicServer welcome
         docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim ls /localhost/
     """
+    """
+    run_command docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .
+    """
+    api_logic_server_home_path = api_logic_server_tests_path.parent
+    result_build = run_command(f'docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .',
+        cwd=api_logic_server_home_path,
+        msg=f'\nBuild ApiLogicServer Docker Container at: {str(api_logic_server_home_path)}')
 
 
 # ***************************
@@ -335,20 +350,7 @@ if debug_script:
     print(result_venv.stdout.decode())  # should say pyodbc==4.0.34
 
 if Config.do_install_api_logic_server:
-    if os.path.exists(install_api_logic_server_path):
-        # rm -r ApiLogicServer.egg-info; rm -r build; rm -r dist
-        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('ApiLogicServer.egg-info')), msg="delete egg ")
-        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('build')), msg="delete build ")
-        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('dist')), msg="delete dist ")
-        delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
-    try:
-        os.mkdir(install_api_logic_server_path, mode = 0o777)
-        os.mkdir(install_api_logic_server_path.joinpath('dockers'), mode = 0o777)
-    except:
-        print("Windows dir exists?")
-
-    if True:
-        build_docker_container()
+    delete_build_directories(install_api_logic_server_path)
 
     api_logic_server_home_path = api_logic_server_tests_path.parent
     result_build = run_command(f'{python} setup.py sdist bdist_wheel',
@@ -358,6 +360,8 @@ if Config.do_install_api_logic_server:
     result_install = run_command(f'{python} -m venv venv && {set_venv} && {python} -m pip install {str(api_logic_server_home_path)}',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall ApiLogicServer at: {str(install_api_logic_server_path)}')
+
+    delete_build_directories(install_api_logic_server_path)
 
     result_pyodbc = run_command(
         f'{set_venv} && {python} -m pip install pyodbc==4.0.34',
@@ -446,6 +450,9 @@ if Config.do_docker_postgres:
         msg=f'\nCreate Postgres postgres (nw) at: {str(install_api_logic_server_path)}')
     start_api_logic_server(project_name='postgres')
     stop_server(msg="postgres\n")
+
+if True:
+    build_docker_container(api_logic_server_tests_path)
 
 if Config.do_docker_creation_tests:
     docker_creation_tests()
