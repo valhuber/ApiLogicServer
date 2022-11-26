@@ -179,7 +179,7 @@ def start_api_logic_server(project_name: str):
 
     install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
     path = install_api_logic_server_path.joinpath(project_name)
-    print(f'\n\nStarting Server {project_name}... from  ${install_api_logic_server_path}\venv\n')
+    print(f'\n\nStarting Server {project_name}... from  {install_api_logic_server_path}\venv\n')
     pipe = None
     if platform == "win32":
         start_cmd = ['powershell.exe', f'{str(path)}\\run.ps1 x']
@@ -269,15 +269,14 @@ def rebuild_tests():
 def delete_build_directories(install_api_logic_server_path):
     if os.path.exists(install_api_logic_server_path):
         # rm -r ApiLogicServer.egg-info; rm -r build; rm -r dist
-        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('ApiLogicServer.egg-info')), msg="delete egg ")
+        delete_dir(dir_path=str(get_api_logic_server_path().joinpath('ApiLogicServer.egg-info')), msg="\ndelete egg ")
         delete_dir(dir_path=str(get_api_logic_server_path().joinpath('build')), msg="delete build ")
         delete_dir(dir_path=str(get_api_logic_server_path().joinpath('dist')), msg="delete dist ")
-        delete_dir(dir_path=str(install_api_logic_server_path), msg="delete install ")
     try:
         os.mkdir(install_api_logic_server_path, mode = 0o777)
         os.mkdir(install_api_logic_server_path.joinpath('dockers'), mode = 0o777)
     except:
-        print("Windows dir exists?")
+        print(f"Unable to create directory {install_api_logic_server_path} -- Windows dir exists?")
 
 
 def docker_creation_tests(api_logic_server_tests_path):
@@ -293,8 +292,13 @@ def docker_creation_tests(api_logic_server_tests_path):
     """
     run_command docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .
     """
+    import platform
+    machine = platform.machine()
     api_logic_server_home_path = api_logic_server_tests_path.parent
-    build_container = run_command(f'docker build -f docker/arm-slim.Dockerfile -t apilogicserver/arm-slim --rm .',
+    build_cmd = 'docker build -f docker/arm-slim.Dockerfile -t apilogicserver/arm-slim --rm .'
+    if machine != "arm64":
+        build_cmd = 'docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .'
+    build_container = run_command(build_cmd,
         cwd=api_logic_server_home_path,
         msg=f'\nBuild ApiLogicServer Docker Container at: {str(api_logic_server_home_path)}')
     print('built container')
@@ -302,15 +306,22 @@ def docker_creation_tests(api_logic_server_tests_path):
     dest = get_servers_install_path().joinpath('ApiLogicServer').joinpath('dockers')
     shutil.copy(src, dest)
     build_projects_cmd = (
-        'docker run -it --name api_logic_server --rm '
-        '--net dev-network -p 5656:5656 -p 5002:5002 ' 
-        '-v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim ' 
-        'sh -c "export PATH=$PATH:/home/api_logic_server/bin && /bin/sh /localhost/docker-commands.sh"'
+        f'docker run -it --name api_logic_server --rm '
+        f'--net dev-network -p 5656:5656 -p 5002:5002 ' 
+        f'-v {str(dest)}:/localhost apilogicserver/arm-slim ' 
+        f'sh -c "export PATH=$PATH:/home/api_logic_server/bin && /bin/sh /localhost/docker-commands.sh"'
     )
+    if machine != "arm64":
+        build_projects_cmd = (
+            f'docker run -it --name api_logic_server --rm '
+            f'--net dev-network -p 5656:5656 -p 5002:5002 ' 
+            f'-v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/api_logic_server ' 
+            f'sh -c "export PATH=$PATH:/home/api_logic_server/bin && /bin/sh /localhost/docker-commands.sh"'
+        )
     build_projects = run_command(build_projects_cmd,
         cwd=api_logic_server_home_path,
         msg=f'\nBuilding projects from Docker container at: {str(api_logic_server_home_path)}')
-    print('built projects')
+    print('built projects from container')
 
 # ***************************
 #        MAIN CODE
@@ -356,6 +367,8 @@ print('\n')
 
 debug_script = False
 if debug_script:
+    import platform as platform
+    machine = platform.machine()
     api_logic_server_install_path = os.path.abspath(install_api_logic_server_path.parent)
     result_venv = run_command(f'pwd && {set_venv} && pip freeze',
         cwd=api_logic_server_install_path,
@@ -363,6 +376,7 @@ if debug_script:
     print(result_venv.stdout.decode())  # should say pyodbc==4.0.34
 
 if Config.do_install_api_logic_server:
+    delete_dir(dir_path=str(install_api_logic_server_path), msg=f"delete install: {install_api_logic_server_path} ")
     delete_build_directories(install_api_logic_server_path)
 
     api_logic_server_home_path = api_logic_server_tests_path.parent
