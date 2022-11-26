@@ -135,6 +135,7 @@ def check_command(command_result):
     if "Trace" in result_stderr or \
         "Error" in result_stderr or \
         "error" in result_stderr or \
+        "Cannot connect" in result_stderr or \
         "Traceback" in result_stderr:
         if 'alembic.runtime.migration' in result_stderr:
             pass
@@ -157,7 +158,6 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     """
 
     print(f'{msg}, with command: \n{cmd}')
-    result_b = None
     try:
         # result_b = subprocess.run(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
         result = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True)
@@ -171,7 +171,7 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     except:
         print(f'\n\n*** Failed on {cmd}')
         raise
-    return result_b
+    return result
 
 def start_api_logic_server(project_name: str):
     """ start server at path, and wait a few moments """
@@ -294,10 +294,23 @@ def docker_creation_tests(api_logic_server_tests_path):
     run_command docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .
     """
     api_logic_server_home_path = api_logic_server_tests_path.parent
-    result_build = run_command(f'docker build -f docker/api_logic_server.Dockerfile -t apilogicserver/api_logic_server --rm .',
+    build_container = run_command(f'docker build -f docker/arm-slim.Dockerfile -t apilogicserver/arm-slim --rm .',
         cwd=api_logic_server_home_path,
         msg=f'\nBuild ApiLogicServer Docker Container at: {str(api_logic_server_home_path)}')
-
+    print('built container')
+    src = api_logic_server_tests_path.joinpath('creation_tests').joinpath('docker-commands.sh')
+    dest = get_servers_install_path().joinpath('ApiLogicServer').joinpath('dockers')
+    shutil.copy(src, dest)
+    build_projects_cmd = (
+        'docker run -it --name api_logic_server --rm '
+        '--net dev-network -p 5656:5656 -p 5002:5002 ' 
+        '-v /Users/val/dev/servers/install/ApiLogicServer/dockers:/localhost apilogicserver/arm-slim ' 
+        'sh -c "export PATH=$PATH:/home/api_logic_server/bin && /bin/sh /localhost/docker-commands.sh"'
+    )
+    build_projects = run_command(build_projects_cmd,
+        cwd=api_logic_server_home_path,
+        msg=f'\nBuilding projects from Docker container at: {str(api_logic_server_home_path)}')
+    print('built projects')
 
 # ***************************
 #        MAIN CODE
@@ -451,11 +464,8 @@ if Config.do_docker_postgres:
     start_api_logic_server(project_name='postgres')
     stop_server(msg="postgres\n")
 
-if True:
-    build_docker_container(api_logic_server_tests_path)
-
 if Config.do_docker_creation_tests:
-    docker_creation_tests()
+    docker_creation_tests(api_logic_server_tests_path)
 
 print("\n\nSUCCESS -- END OF TESTS")
 
