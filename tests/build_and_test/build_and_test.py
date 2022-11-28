@@ -363,6 +363,9 @@ print(f'  Creates other projects')
 print(f'  Creates Docker projects (wip)')
 print('\n')
 
+if not os.path.isdir(install_api_logic_server_path):
+    os.makedirs(install_api_logic_server_path)
+
 # stop_server(msg="BEGIN TESTS\n")  # just in case server left running
 
 debug_script = False
