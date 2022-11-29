@@ -201,7 +201,8 @@ def main(behave_log: str, scenario_logs: str, wiki: str, prepend_wiki: str):
 
     with open(wiki, 'w') as rpt:
         rpt.write('\n'.join(wiki_data))
-    print(f'Wiki Output: {wiki}\n\n')
+    wiki_full_path = Path(wiki).absolute()
+    print(f'Wiki Output: {wiki_full_path}\n\n')
 
 
 
@@ -248,7 +249,7 @@ if __name__ == '__main__':  # debugger & python command line start here
     # eg: python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
     # unix: python api_logic_server_cli/cli.py create --project_name=/home/ApiLogicProject
 
-    print(f'\nBehave Logic Report, started at {os.getcwd()}')
+    print(f'\nBehave Logic Report 1.1, started at {os.getcwd()}')
     commands = sys.argv
     if len(sys.argv) > 1:
         print_args(commands, f'\n\nCommand Line Arguments:')
