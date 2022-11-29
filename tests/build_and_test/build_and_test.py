@@ -413,6 +413,9 @@ if Config.do_test_api_logic_project:
         result_behave = run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
             cwd=api_logic_project_behave_path,
             msg="\nBehave Test Run")
+        result_behave_report = run_command(f"{python} behave_logic_report.py run --prepend_wiki='reports/Behave Logic Report Intro.md' --wiki='reports/Behave Logic Report.md'",
+            cwd=api_logic_project_behave_path,
+            msg="\nBehave Logic Report")
     except:
         print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
         f = open(str(api_logic_project_logs_path), 'r')
@@ -450,7 +453,7 @@ if Config.do_allocation_test:
         allocation_tests_path = allocation_project_path.joinpath('test')
         run_command(f'sh test.sh',
             cwd=allocation_tests_path,
-            msg="\nBehave Test Run")
+            msg="\nAllocation Test")
     except:
         print(f'\n\n** Allocation Test failed\n\n')
     print("\nAllocation tests - Success...\n")
