@@ -123,6 +123,12 @@ def print_run_output(msg, input):
     for each_line in print_lines:
         print(each_line)
 
+def print_byte_string(msg, byte_string):
+    print(msg)
+    for line in byte_string.decode('utf-8').split('\n'):
+        print (line)
+
+
 def check_command(command_result):
     result_stdout = ""
     result_stderr = ''
@@ -140,20 +146,18 @@ def check_command(command_result):
         if 'alembic.runtime.migration' in result_stderr:
             pass
         else:
-            print("\n\n==> Command Failed - Console Log:")
-            for line in command_result.stdout.decode('utf-8').split('\n'):
-                print (line)
-            print("\n\n==> Error Log:")
-            for line in command_result.stderr.decode('utf-8').split('\n'):
-                print (line)
+            print_byte_string("\n\n==> Command Failed - Console Log:", command_result.stdout)
+            print_byte_string("\n\n==> Error Log:", command_result.stderr)
             raise ValueError("Traceback detected")
 
-def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -> str:
+def run_command(cmd: str, msg: str = "", new_line: bool=False, 
+    cwd: Path=None, show_output: bool=False) -> object:
     """ run shell command (waits)
 
     :param cmd: string of command to execute
     :param msg: optional message (no-msg to suppress)
     :param cwd: path to current working directory
+    :param show_output print command result
     :return: dict print(ret.stdout.decode())
     """
 
@@ -161,6 +165,8 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False, cwd: Path=None) -
     try:
         # result_b = subprocess.run(cmd, cwd=cwd, shell=True, stderr=subprocess.STDOUT)
         result = subprocess.run(cmd, cwd=cwd, shell=True, capture_output=True)
+        if show_output:
+            print_byte_string(f'{msg} Output:', result.stdout)
         check_command(result)
         """
         if "Traceback" in result_stderr:
@@ -403,7 +409,7 @@ if Config.do_create_api_logic_project:
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
-if Config.do_run_api_logic_project:
+if Config.do_run_api_logic_project or Config.do_test_api_logic_project:
     start_api_logic_server(project_name="ApiLogicProject")
 
 if Config.do_test_api_logic_project:
@@ -412,10 +418,12 @@ if Config.do_test_api_logic_project:
         api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
         result_behave = run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
             cwd=api_logic_project_behave_path,
-            msg="\nBehave Test Run")
+            msg="\nBehave Test Run",
+            show_output=True)
         result_behave_report = run_command(f"{python} behave_logic_report.py run --prepend_wiki='reports/Behave Logic Report Intro.md' --wiki='reports/Behave Logic Report.md'",
             cwd=api_logic_project_behave_path,
-            msg="\nBehave Logic Report")
+            msg="\nBehave Logic Report",
+            show_output=True)
     except:
         print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
         f = open(str(api_logic_project_logs_path), 'r')
