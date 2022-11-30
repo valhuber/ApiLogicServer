@@ -247,6 +247,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54)
+
 11/22/2022 - 06.03.06: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite
 
 10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, restore postgres dvr
