@@ -1,6 +1,6 @@
 ### Update - `psycopg2` pre-installed as of 06.02.00
 
-`psycopg2` was updated at the end of September 2020.  So, as of release 6.2, this is restored into the build of piLogicServer.
+`psycopg2` was updated at the end of September 2020.  So, as of release 6.2, this is restored into the build of ApiLogicServer.
 
 &nbsp;
 

@@ -423,7 +423,7 @@ if Config.do_test_api_logic_project:
         result_behave_report = run_command(f"{python} behave_logic_report.py run --prepend_wiki='reports/Behave Logic Report Intro.md' --wiki='reports/Behave Logic Report.md'",
             cwd=api_logic_project_behave_path,
             msg="\nBehave Logic Report",
-            show_output=True)
+            show_output=True)  # note: report lost due to rebuild tests
     except:
         print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
         f = open(str(api_logic_project_logs_path), 'r')
