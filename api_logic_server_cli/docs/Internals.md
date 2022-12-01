@@ -118,10 +118,11 @@ git clone https://github.com/thomaxxl/rav3-jsonapi-client # modified data provid
 Then, to debug (with server running):
 
 ```bash title="Execute debug version of admin app"
-npm install
-npm run build
+npm install --global yarn # required only once
+yarn install
+yarn run build
 
-npm start
+yarn start
 ```
 
 To make this the runtime used to create API Logic Projects:
