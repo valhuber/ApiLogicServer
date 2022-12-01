@@ -37,6 +37,25 @@ Important notes:
 
 &nbsp;
 
+# Verify Database Connectivity
+
+Database connectivity can be... trying.  Before attempting the SQLAlchemy connectivity discussed here, it's a best practice to make sure your computer can connec to the database server.  One possible approach is a command line utility called `telnet`.
+
+First, ensure your machine has telnet installed.  Consult the documentation for your OS type.  Note that Windows 11 requires this command (use Powershell, and **run as adminstrator**):
+
+```
+Enable-WindowsOptionalFeature -Online -FeatureName TelnetClient
+```
+
+Then, you can issue a command such as:
+
+```
+telnet 10.0.0.77 3306  # where you subsitute IP address)
+```
+If you are prompted for your database password, you have established connectivity.
+
+&nbsp;
+
 # Sqlite
 
 You can use an existing sqlite database like this:
