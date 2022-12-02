@@ -85,6 +85,7 @@ You can build a container for your ApiLogicProject:
     * Your docker account can contain multiple docker repositories
         * It would be typical to use your project name as the docker repository name
         * Note: repository names must be lower case
+        * Repository names are scoped by your account - see the diagram above.  You then refer to your docker repository in the CLI commands as `your_account/your_repository`
     * A docker repository can can be downloaded (pulled) to create a docker image on your local computer
     * A docker image can be run as a docker container
     * Your system might be comprised of multiple docker containers, e.g. one for your API Logic Project, one for your DBMS, etc.
