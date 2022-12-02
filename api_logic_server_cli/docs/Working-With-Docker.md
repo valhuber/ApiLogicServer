@@ -83,28 +83,30 @@ You can build a container for your ApiLogicProject:
 
 1. On Docker Hub, create a repository under your docker account
     * Your docker account can contain multiple docker repositories
+       * It would be typical to use your project name as the docker repository name
+       * Note: repository names must be lower case
     * A docker repository can can be downloaded (pulled) to create a docker image on your local computer
     * A docker image can be run as a docker container
     * Your system might be comprised of multiple docker containers, e.g. one for your API Logic Project, one for your DBMS, etc.
 2. Create / customize your project as your normally would
 3. Edit `ApiLogicProject.dockerfile`: change your_repo/your_project as appropriate
     * Here is [an example](https://github.com/valhuber/docker_api_logic_project/blob/main/ApiLogicProject.dockerfile){:target="_blank" rel="noopener"}
-4. In terminal (not in VSCode docker - docker is not installed there), cd to your project
+4. In terminal (not in VSCode docker - docker CLI is not installed there), cd to your project
 5. Build a container for your project with terminal commands:
 
 ```bash
-docker build -f ApiLogicProject.dockerfile -t your_repo/your_project --rm .
-docker tag your_repo/your_project your_repo/your_project:1.00.00
-docker login; docker push your_repo/your_project:1.00.00
+docker build -f ApiLogicProject.dockerfile -t your_account/your_repository --rm .
+docker tag your_account/your_repository your_account/your_repository:1.00.00
+docker login; docker push your_account/your_repository:1.00.00
 ```
 
 To run your project container directly...
 
 ```bash
-docker run -it --name your_project --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost your_repo/your_project
+docker run -it --name your_project --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost your_account/your_repository
 
-# start the image, but open terminal (e.g., for exploring docker image)
-docker run -it --name your_project --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost your_repo/your_project bash
+# start the image, but open terminal (e.g., for exploring docker container)
+docker run -it --name your_project --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost your_account/your_repository bash
 ```
 
 &nbsp;
