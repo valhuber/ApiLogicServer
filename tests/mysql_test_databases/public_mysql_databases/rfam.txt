@@ -1,0 +1,4 @@
+rfam
+https://docs.rfam.org/en/latest/database.html
+
+ApiLogicServer create --project_name=rfam --db_url=mysql+pymysql://rfamro@mysql-rfam-public.ebi.ac.uk:4497/Rfam

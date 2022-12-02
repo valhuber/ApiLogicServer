@@ -30,3 +30,7 @@
 *[ORM]: Object Relational Manager - dev-friendly sql access, such as row objects (e.g., SQLAlchemy)
 *[orm]: Object Relational Manager - dev-friendly sql access, such as row objects (e.g., SQLAlchemy)
 *[Codespaces]: a Github product that creates complete cloud-based dev environments for containerized Github projects, including Browser-based IDE development.
+*[docker account]: create using your browser at hub.docker.com
+*[docker repository]: can can be downloaded (pulled) to create a docker image on your local computer
+*[docker image]: created from a docker repository, a set of local files that can be run as a docker container
+*[docker container]: a running image

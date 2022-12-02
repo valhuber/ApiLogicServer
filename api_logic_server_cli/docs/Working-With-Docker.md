@@ -77,11 +77,19 @@ One of the great things about Docker is the ability to install popular databases
 
 ### Create Docker Hub from API Logic Project
 
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/docker-repos.png?raw=true"></figure>
+
 You can build a container for your ApiLogicProject:
 
-1. Create / customize your project as your normally would
-2. Edit `ApiLogicProject.dockerfile`: change your_repo/your_project as appropriate
-3. In terminal (not in VSCode docker - docker is not installed there), cd to your project
+1. On Docker Hub, create a repository under your account
+    * Your docker account can contain multiple docker repositories
+    * A docker repository can can be downloaded (pulled) to create a docker image on your local computer
+    * A docker image can be run as a docker container
+    * Your system might be comprised of multiple docker containers, e.g. one for your API Logic Project, one for your DBMS, etc.
+2. Create / customize your project as your normally would
+3. Edit `ApiLogicProject.dockerfile`: change your_repo/your_project as appropriate
+    * Here is [an example](https://github.com/valhuber/docker_api_logic_project/blob/main/ApiLogicProject.dockerfile)
+4. In terminal (not in VSCode docker - docker is not installed there), cd to your project
 4. Build a container for your project with terminal commands:
 
 ```bash

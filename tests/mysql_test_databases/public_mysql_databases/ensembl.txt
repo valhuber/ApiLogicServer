@@ -1,0 +1,6 @@
+
+https://uswest.ensembl.org/info/data/mysql.html
+
+ApiLogicServer create --project_name=rfam --db_url=mysql+pymysql://anonymous@ensembldb.ensembl.org:3306/help
+
+fails - unknown db name
