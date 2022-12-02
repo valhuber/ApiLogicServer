@@ -13,7 +13,7 @@ ApiLogicServer is therefore provided in a docker image, as described in the [Ins
 &nbsp;
 
 ## Install - `docker run` arguments
-Once you've [installed Docker](../Tech-Docker) itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
+Once you've [installed Docker](../Tech-Docker){:target="_blank" rel="noopener"} itself, the `docker run` command above installs the ApiLogicServer docker (if it's not already there), and starts it, opening a terminal window on the Docker container.  Notes:
 
 * the `v ${PWD}:/localhost` argument is what enables the ApiLogicServer to create / access the project on your local host
    * Windows - Powershell must be used (due to the `$(PWD)` syntax)
@@ -67,7 +67,7 @@ If you update your ApiLogicServer container to a new version, your existing VSCo
 
 ## Connect to Dockerized Databases
 
-One of the great things about Docker is the ability to install popular databases, with no hassle.  Follow the procedures described in [Testing](../Testing).
+One of the great things about Docker is the ability to install popular databases, with no hassle.  Follow the procedures described in [Testing](../Testing){:target="_blank" rel="noopener"}.
 
 &nbsp;
 
@@ -81,16 +81,16 @@ One of the great things about Docker is the ability to install popular databases
 
 You can build a container for your ApiLogicProject:
 
-1. On Docker Hub, create a repository under your account
+1. On Docker Hub, create a repository under your docker account
     * Your docker account can contain multiple docker repositories
     * A docker repository can can be downloaded (pulled) to create a docker image on your local computer
     * A docker image can be run as a docker container
     * Your system might be comprised of multiple docker containers, e.g. one for your API Logic Project, one for your DBMS, etc.
 2. Create / customize your project as your normally would
 3. Edit `ApiLogicProject.dockerfile`: change your_repo/your_project as appropriate
-    * Here is [an example](https://github.com/valhuber/docker_api_logic_project/blob/main/ApiLogicProject.dockerfile)
+    * Here is [an example](https://github.com/valhuber/docker_api_logic_project/blob/main/ApiLogicProject.dockerfile){:target="_blank" rel="noopener"}
 4. In terminal (not in VSCode docker - docker is not installed there), cd to your project
-4. Build a container for your project with terminal commands:
+5. Build a container for your project with terminal commands:
 
 ```bash
 docker build -f ApiLogicProject.dockerfile -t your_repo/your_project --rm .
