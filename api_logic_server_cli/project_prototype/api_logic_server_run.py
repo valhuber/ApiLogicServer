@@ -44,7 +44,7 @@ swagger_host = "api_logic_server_swagger_host"
 if swagger_host == "":
     swagger_host = flask_host  # where swagger finds the API
 if is_docker() and flask_host == "localhost":
-    flask_host = "0.0.0.0"  # noticeably faster (at least on Mac)
+    flask_host = "0.0.0.0"  # enables docker run.sh (where there are no args)
 port = "api_logic_server_port"
 swagger_port = port  # for codespaces - see values in launch config
 http_type = "http"
@@ -261,6 +261,7 @@ def get_args():
     except:
         app_logger.info(f"Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}")
 
+    app_logger.debug(f"Getting args, with hostname={hostname} on local_ip={local_ip}")
     verbose = False
     create_and_run = False
 
@@ -436,9 +437,11 @@ flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
 flask_events(flask_app)
 
 if __name__ == "__main__":
-    msg = f'API Logic Project loaded (not WSGI), version api_logic_server_version, on http://{swagger_host}:{port}\n'
+    msg = f'API Logic Project loaded (not WSGI), version api_logic_server_version\n'
     if is_docker():
-        msg += f' (running from docker container at {flask_host} - may require refresh)\n'
+        msg += f' (running from docker container at flask_host: {flask_host} - may require refresh)\n'
+    else:
+        msg += f' (running locally at flask_host: {flask_host})\n'
     app_logger.info(f'\n{msg}')
 
     if create_and_run:
@@ -447,14 +450,18 @@ if __name__ == "__main__":
 
     if os.getenv('CODESPACES'):
         app_logger.info(f'API Logic Project (name: {project_name}) starting on Codespaces:\n'
-                f'..Explore sample data and API on codespaces, swagger_host: {http_type}://{swagger_host}/\n')
+                f'..Explore data and API on codespaces, swagger_host: {http_type}://{swagger_host}/\n')
     else:
         app_logger.info(f'API Logic Project (name: {project_name}) starting:\n'
-                f'..Explore sample data and API at swagger_host: {http_type}://{swagger_host}:{port}/\n')
+                f'..Explore data and API at swagger_host: {http_type}://{swagger_host}:{port}/\n')
 
     flask_app.run(host=flask_host, threaded=False, port=port)
 else:
-    msg = f'API Logic Project Loaded (WSGI), version api_logic_server_version, configured for {http_type}://{swagger_host}:{port}\n'
+    msg = f'API Logic Project Loaded (WSGI), version api_logic_server_version\n'
     if is_docker():
         msg += f' (running from docker container at {flask_host} - may require refresh)\n'
+    else:
+        msg += f' (running locally at flask_host: {flask_host})\n'
     app_logger.info(f'\n{msg}')
+    app_logger.info(f'API Logic Project (name: {project_name}) starting:\n'
+            f'..Explore data and API at swagger_host: {http_type}://{swagger_host}:{port}/\n')

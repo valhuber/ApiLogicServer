@@ -15,12 +15,16 @@
 # start the image, but open terminal (e.g., for exploring docker image)
 # docker run -it --name your_repository --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost your_account/your_repository bash
 
+# run on cloud-based docker, provide start arg (at end) e.g.
+# docker run -it --name docker_api_logic_project --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/docker_api_logic_project python api_logic_server_run.py --flask_host=172.18.0.5
+
 # consider adding your version here
 FROM apilogicserver/api_logic_server  
 
 USER root
 
-WORKDIR /home/api_logic_project  # user api_logic_server comes from apilogicserver/api_logic_server
+# user api_logic_server comes from apilogicserver/api_logic_server
+WORKDIR /home/api_logic_project
 USER api_logic_server
 COPY . .
 

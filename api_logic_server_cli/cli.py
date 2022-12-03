@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
+
+'''
 ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogicProject.
     * Basically clones prototype project, and creates:
         * database/models.py for SQLAlchemy, using modified sqlacodegen & safrs metadata
@@ -7,12 +8,12 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
         * api/expose_api_models.py for a safrs api  - using introspected models.py
     * Special provisions for NW Sample, to show customizations.
     * See end for key module map quick links...
-"""
+'''
 
-__version__ = "6.04.01"
+__version__ = "6.04.03"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/01/2022 - 06.04.01: Clarify creating docker repo \n"\
+    "\t12/03/2022 - 06.04.03: Clarify creating docker repo, IP info \n"\
     "\t11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54) \n"\
     "\t11/22/2022 - 06.03.06: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
@@ -395,6 +396,15 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
         create_utils.replace_string_in_file(search_for="api_logic_server_api_name",
                             replace_with=f'{api_name}',
                             in_file=f'{project_directory}/readme.md')
+
+        do_fix_docker_for_vscode_dockerfile = True
+        """
+        if do_fix_docker_for_vscode_dockerfile:
+            if arch.get_platform():
+                create_utils.replace_string_in_file(search_for="apilogicserver/api_logic_server",
+                                    replace_with=f'apilogicserver/arm-slim',
+                                    in_file=f'{project_directory}/For_VSCode.dockerfile')
+        """
 
         project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
         return_abs_db_url = abs_db_url
