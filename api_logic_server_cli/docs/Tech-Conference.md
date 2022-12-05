@@ -59,23 +59,25 @@ This tutorial is for developers interested in database systems, and the technolo
 
 This will be a series of short lectures, and hands-on usage (watch and/or do):
 
-* Introduction
+* Introduction (15 min)
 
     * What is API Logic Server
 
     * Why we wrote it
 
-* Starting Codespaces - you'll create a cloud-based development environment, and access it VSCode via your browser
+* Starting Codespaces - you'll create a cloud-based development environment, and access it VSCode via your browser (5 min)
 
-* Create a Project
+* Create a Project (10 min, Total 30 min)
 
-* Run the Project; we'll explore
+* Run the Project; we'll explore (30 min, Total 1 hour)
 
     * the User Interface - a multi-page, multi-table application (underlying technology is React Admin)
 
     * the API - using Swagger to explore pagination, filtering etc
 
-* Customize the Project - use VSCode to:
+* Customize the Project - use VSCode to: (45 min, Total 1.75 hour)
+
+    * Explore Project Structure
 
     * Add an Endpoint, and test it with the debugger
 
@@ -83,9 +85,18 @@ This will be a series of short lectures, and hands-on usage (watch and/or do):
 
     * Explore logic - what it is, how to declare it, how it runs, and how to debug it
 
+* Other Topics - explore on your own (time permitting - 15 min, Total 2 hours)
+
+    * Testing with the Behave Framework
+
+    * Schema Migrations with Alembic
+
 # Additional Notes
 
 Since API Logic Server is open source, you can obtain it
+
 ## Speaking Experience
 
-TBD
+I lead the PACE DBMS effort at Wang Labs, so gave many presentations for press briefings, User Conference Keynotes and working sessions, etc.
+
+I was the CTO at Versata, so served as the lead technical presenter at User Groups at Conferences.
