@@ -44,13 +44,13 @@ This talk will also give you a good intro to other technologies you may have alr
 
 | Technology  | Used For    | Notes   |
 :---------|:-----------|:------------|
-| SQLAlchemy      | Popular Python ORM | Python-friendly object-oriented database access |
-| Flask      | Popular Python Web Framework | Use to add custom endpoints (examples provided) |
-| VSCode     | Popular IDE | Runs in cloud via Codespaces (other IDEs as well) |
-| Codespaces    | Cloud-based Dev Container | Provides IDE, git, etc - via a Browser interface|
-| APIs   | Network-based database access | Via the SAFRS framework |
-| React-Admin | UI framework for simplified React apps | Further simplified via YAML model |
-| Declarative | Vague term ("what not how") | We'll describe key aspects |
+| __SQLAlchemy__  | Popular Python ORM | Python-friendly object-oriented database access |
+| __Flask__  | Popular Python Web Framework | Use to add custom endpoints (examples provided) |
+| __VSCode__  | Popular IDE | Use to customize API Logic Projects |
+| __Codespaces__  | Cloud-based Dev Container | Provides IDE, git, etc - via a *Browser interface* |
+| __APIs__  | Networked database access | Via the SAFRS framework |
+| __React-Admin__ | Simplified React UI framework | Further simplified via YAML model |
+| __Declarative__ | Vague term ("what not how") | We'll describe key aspects |
 
 ### What you will need
 
@@ -69,51 +69,19 @@ This tutorial is for developers interested in database systems, and the technolo
 
 This will be a series of short lectures, and hands-on usage (watch and/or do):
 
-* Introduction (15 min)
-
-    * What is API Logic Server
-
-    * Why we wrote it
-
-* Starting Codespaces - you'll create a cloud-based development environment, and access it VSCode via your browser (5 min)
-
-* Create a Project (10 min, Total 30 min)
-
-* Run the Project; we'll explore (30 min, Total 1 hour)
-
-    * the User Interface - a multi-page, multi-table application (underlying technology is React Admin)
-
-    * the API - using Swagger to explore pagination, filtering etc
-
-* Customize the Project - use VSCode to: (45 min, Total 1.75 hour)
-
-    * Explore Project Structure
-
-    * Add an Endpoint, and test it with the debugger
-
-    * Customize the API
-
-* Explore logic
-
-    * what it is
-    
-    * how to declare it
-    
-    * how it runs
-    
-    * how to debug it
-
-    * what it means to be declarative (automatic invocation, ordering, optimization)
-
-* Other Topics - explore on your own (time permitting - 15 min, Total 2 hours)
-
-    * Testing with the Behave Framework
-
-    * Schema Migrations with Alembic
+| Section  | Duration    | We'll cover   |
+:---------|:-----------|:------------|
+| __Introduction__ | 15 min | * What is API Logic Server<br>* Why we wrote it |
+| __Starting Codespaces__ | 5 min | * Create a cloud-based development environment<br> * Access it VSCode via your browser) |
+| __Create Project__  | 10 min (total 30) | Using pre-supplied sample database |
+| __Explore Project__ | 30 min (total 1 hour) | * User Interface - a multi-page, multi-table application (underlying technology is React Admin)<br>* API - using Swagger to explore pagination, filtering et |
+| __Customize Project__  | 45 min (total 1.75 hours) | * Explore Project Structure in VSCode<br>API: Add an Endpoint, and test it with the debugger<br>* UI (adjust captions, hide/show fields) |
+| __Business Logic__ | ?? | * what it is<br> * how to declare it<br> * how it runs<br> * how to debug it<br> * what it means to be _declarative_ (automatic invocation, ordering, optimization) |
+| __Other Topics__ | As time permits | * Testing with the Behave Framework<br> * Schema Migrations with Alembic |
 
 # Additional Notes
 
-Since API Logic Server is open source, you can obtain it - explore its value, investigate the key technologies shown in the table above
+Since API Logic Server is open source, you can obtain it - explore its value, investigate the Popular Technologies listed in the table above
 
 ## Speaking Experience
 
