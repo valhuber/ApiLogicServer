@@ -72,6 +72,8 @@ nav:
     - "Mkdocs Material": Tech-mkdocs-material.md
     - "CodeSpaces": Tech-CodeSpaces.md
     - "M1 Mac": Tech-m1.md
+    - Personal:
+      - "Conference": Tech-Conference.md
 markdown_extensions:
   - toc:
       baselevel: 2
