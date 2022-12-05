@@ -42,7 +42,7 @@ API Logic Server is an open source Python system that creates __customizable dat
 
 In this Tutorial, you will:
 
-* Create an application from a pre-supplied sample database
+* Create an interesting multi-table application from a pre-supplied sample database
 
 * Run it
 
