@@ -12,6 +12,14 @@ Submission materials for [PyCon 2023](https://us.pycon.org/2023/speaking/talks/)
 
 ## Description
 
+### Overview
+
+In this tutorial:
+
+* You will build, run and customize a complete multi-table database web app
+    * Use tomorrow on your organizations databases
+* You will also gain an excellent introduction to several popular Python technologies -- web apps, database access, project development, etc.
+
 ### What is API Logic Server
 
 API Logic Server is an open source Python system that creates __customizable database web app projects:__
@@ -44,7 +52,7 @@ This talk will also give you a good intro to other technologies you may have alr
 
 | Technology  | Used For    | Notes   |
 :---------|:-----------|:------------|
-| __Python__  | Popular OO Language | If you are new to Python, this is a great place to learn it, starting with running code you can explore, edit and debug in VSCode<br>* No install, no config |
+| __Python__  | Popular OO Language | New to Python?  This is a great place to learn it<br> * Start with _running_ code<br> * Explore, edit and debug in VSCode<br> * No install, no config |
 | __SQLAlchemy__  | Popular Python ORM | Python-friendly object-oriented database access |
 | __Flask__  | Popular Python Web Framework | Use to add custom endpoints (examples provided) |
 | __VSCode__  | Popular IDE | Use to customize API Logic Projects |
