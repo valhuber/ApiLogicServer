@@ -20,6 +20,8 @@ In this tutorial:
     * Use tomorrow on your organizations databases
 * You will also gain an excellent introduction to several popular Python technologies -- web apps, database access, project development, etc.
 
+&nbsp;
+
 ### What is API Logic Server
 
 API Logic Server is an open source Python system that creates __customizable database web app projects:__
@@ -34,17 +36,21 @@ API Logic Server is an open source Python system that creates __customizable dat
 
 * __Business Logic Automation:__ using unique spreadsheet-like rules, extensible with Python :trophy:
 
+&nbsp;
+
 ### Tutorial - build and customize a system
 
 In this Tutorial, you will:
 
-* create an application
+* Create an application from a pre-supplied sample database
 
-* run it
+* Run it
 
-* customize it using VSCode.
+* Customize it using VSCode.
 
-* learn about declarative, spreadsheet-like business logic for multi-table constraints and derivations
+* Learn about declarative, spreadsheet-like business logic for multi-table constraints and derivations
+
+&nbsp;
 
 ### Excellent Intro to Popular Technologies
 
@@ -62,9 +68,13 @@ This talk will also give you a good intro to other technologies you may have alr
 | __React-Admin__ | Simplified React UI framework | Further simplified via YAML model |
 | __Declarative__ | Vague term ("what not how") | We'll describe key aspects |
 
+&nbsp;
+
 ### What you will need
 
 You will need a laptop with a Browser connection, and a GitHub account.  You do *not* need a Python install, a database, or an IDE... and if you *do* have these, they won't be affected.
+
+&nbsp;
 
 ## Audience
 
@@ -74,6 +84,8 @@ This tutorial is for developers interested in database systems, and the technolo
 
 * Some database background (if you have heard of tables, columns and foreign keys, you are good to go)
 
+
+&nbsp;
 
 ## Outline
 
@@ -89,9 +101,13 @@ This will be a series of short lectures, and hands-on usage (watch and/or do):
 | __Business Logic__ | 30 min (total 2.25 hours) | * what it is<br> * how to declare it<br> * how it runs<br> * how to debug it<br> * what it means to be _declarative_ |
 | __Other Topics__ | 15 min (total 2.25 hours) | * Testing with the Behave Framework<br> * Schema Migrations with Alembic |
 
+&nbsp;
+
 # Additional Notes
 
 Since API Logic Server is open source, you can obtain it - explore its value, and/or investigate the Popular Technologies listed in the table above.
+
+&nbsp;
 
 ## Speaking Experience
 
