@@ -12,6 +12,8 @@ Submission materials for [PyCon 2023](https://us.pycon.org/2023/speaking/talks/)
 
 ## Description
 
+### What is API Logic Server
+
 API Logic Server is an open source Python system that creates __customizable database web app projects:__
 
 * Creation is __Instant:__ create _executable_ projects from your database with a _single_ command.  Projects are __Highly Functional,__ providing:
@@ -24,6 +26,8 @@ API Logic Server is an open source Python system that creates __customizable dat
 
 * __Business Logic Automation:__ using unique spreadsheet-like rules, extensible with Python :trophy:
 
+### Tutorial - build and customize a system
+
 In this Tutorial, you will:
 
 * create an application
@@ -34,15 +38,21 @@ In this Tutorial, you will:
 
 * learn about declarative, spreadsheet-like business logic for multi-table constraints and derivations
 
+### Excellent Intro to Popular Technologies
+
 This talk will also give you a good intro to other technologies you may have already wanted to explore, with running code you can extend:
 
-* SQLAlchemy - a popular Python ORM
+| Technology  | Used For    | Notes   |
+:---------|:-----------|:------------|
+| SQLAlchemy      | Popular Python ORM | Python-friendly object-oriented database access |
+| Flask      | Popular Python Web Framework | Use to add custom endpoints (examples provided) |
+| VSCode     | Popular IDE | Runs in cloud via Codespaces (other IDEs as well) |
+| Codespaces    | Cloud-based Dev Container | Provides IDE, git, etc - via a Browser interface|
+| APIs   | Network-based database access | Via the SAFRS framework |
+| React-Admin | UI framework for simplified React apps | Further simplified via YAML model |
+| Declarative | Vague term ("what not how") | We'll describe key aspects |
 
-* Flask - a web framework
-
-* APIs - we'll explore two different styles of API (creator-defined, consumer-defined), and explore the latter using Swagger
-
-* Codespaces - a GitHub product that provides cloud-based development with popular IDEs.
+### What you will need
 
 You will need a laptop with a Browser connection, and a GitHub account.  You do *not* need a Python install, a database, or an IDE... and if you *do* have these, they won't be affected.
 
@@ -83,7 +93,17 @@ This will be a series of short lectures, and hands-on usage (watch and/or do):
 
     * Customize the API
 
-    * Explore logic - what it is, how to declare it, how it runs, and how to debug it
+* Explore logic
+
+    * what it is
+    
+    * how to declare it
+    
+    * how it runs
+    
+    * how to debug it
+
+    * what it means to be declarative (automatic invocation, ordering, optimization)
 
 * Other Topics - explore on your own (time permitting - 15 min, Total 2 hours)
 
@@ -93,10 +113,10 @@ This will be a series of short lectures, and hands-on usage (watch and/or do):
 
 # Additional Notes
 
-Since API Logic Server is open source, you can obtain it
+Since API Logic Server is open source, you can obtain it - explore its value, investigate the key technologies shown in the table above
 
 ## Speaking Experience
 
 I lead the PACE DBMS effort at Wang Labs, so gave many presentations for press briefings, User Conference Keynotes and working sessions, etc.
 
-I was the CTO at Versata, so served as the lead technical presenter at User Groups at Conferences.
+I was the CTO at Versata, so served as the lead technical presenter at User Groups and Conferences.
