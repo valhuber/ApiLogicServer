@@ -8,21 +8,25 @@ Submission materials for [PyCon 2023](https://us.pycon.org/2023/speaking/talks/)
 
 ## Title
 
-  > Using API Logic Server for Web Applications - create with one command, customize in your IDE
+  > How to Create Web Applications Instantly with API Logic Server - create with one command, customize in your IDE
 
 ## Description
+
+Creating web-oriented database projects requires substantial time and background.  In this Tutorial, we introduce a meaningfully faster and simpler approach.
+
+&nbsp;
 
 ### Overview
 
 In this tutorial:
 
-* You will build, run and customize a complete multi-table database web app
-    * Use tomorrow on your organizations databases
+* Seeing is believing - you will build, run and customize a complete multi-table database web app
+    * You will be able to use it tomorrow on your organizations databases
 * You will also gain an excellent introduction to several popular Python technologies -- web apps, database access, project development, etc.
 
 &nbsp;
 
-### What is API Logic Server
+### What is API Logic Server?
 
 API Logic Server is an open source Python system that creates __customizable database web app projects:__
 
@@ -54,7 +58,7 @@ In this Tutorial, you will:
 
 ### Excellent Intro to Popular Technologies
 
-This talk will also give you a good intro to other technologies you may have already wanted to explore, with running code you can extend:
+This talk will also give you an intro to other technologies you may have already wanted to explore, with _running code_ you can extend:
 
 | Technology  | Used For    | Notes   |
 :---------|:-----------|:------------|
@@ -80,9 +84,9 @@ You will need a laptop with a Browser connection, and a GitHub account.  You do 
 
 This tutorial is for developers interested in database systems, and the technologies above.  Required background:
 
-* Basic programming familiarity (e.g, understand program structure, event-oriented programming) - Python experience is not required
+* Basic programming familiarity (if you are familiar with `if/else`, parameterized function calls, `row.column` object access, and basic event oriented programming, you are all set).  Python experience is not required.
 
-* Some database background (if you have heard of tables, columns and foreign keys, you are good to go)
+* Some database background (if you have heard of tables, columns and foreign keys, you are good to go).
 
 
 &nbsp;
@@ -96,10 +100,12 @@ This will be a series of short lectures, and hands-on usage (watch and/or do):
 | __Introduction__ | 15 min | * What is API Logic Server<br>* Why we wrote it |
 | __Starting Codespaces__ | 15 min (total 30) | * Create a cloud-based development environment<br> * Access it VSCode via your browser) |
 | __Create Project__  | 15 min (total 45) | Using pre-supplied sample database |
-| __Explore Project__ | 30 min (total 1.25 hours) | * User Interface - a multi-page, multi-table application (underlying technology is React Admin)<br>* API - using Swagger to explore pagination, filtering et |
-| __Customize Project__  | 30 min (total 1.75 hours) | * Explore Project Structure in VSCode<br>API: Add an Endpoint, and test it with the debugger<br>* UI (adjust captions, hide/show fields) |
+| __Explore Project__ | 30 min (total 1.25 hours) | * User Interface - a multi-page, multi-table application<br>* API - using Swagger to explore pagination, filtering etc |
+| __Customize Project__  | 30 min (total 1.75 hours) | * Explore Project Structure in VSCode<br> * API: Add an Endpoint, and test it with the debugger<br>* UI: Adjust captions, hide/show fields |
 | __Business Logic__ | 30 min (total 2.25 hours) | * what it is<br> * how to declare it<br> * how it runs<br> * how to debug it<br> * what it means to be _declarative_ |
 | __Other Topics__ | 15 min (total 2.25 hours) | * Testing with the Behave Framework<br> * Schema Migrations with Alembic |
+
+Yes, a lot to cover, but automation makes it possible.  Even easy.
 
 &nbsp;
 
@@ -111,6 +117,8 @@ Since API Logic Server is open source, you can obtain it - explore its value, an
 
 ## Speaking Experience
 
-I lead the PACE DBMS effort at Wang Labs, so gave many presentations for press briefings, User Conference Keynotes and working sessions, etc.
+I have given hundreds of technology presentations to large and small groups, for both technical and business audiences.
 
-I was the CTO at Versata, so served as the lead technical presenter at User Groups and Conferences.
+* I lead the PACE DBMS effort at Wang Labs, so gave many presentations for press briefings, User Conference Keynotes and working sessions, etc.
+
+* I was the CTO at Versata, so served as the lead technical presenter at User Groups and Conferences.
