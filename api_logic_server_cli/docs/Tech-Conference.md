@@ -44,6 +44,7 @@ This talk will also give you a good intro to other technologies you may have alr
 
 | Technology  | Used For    | Notes   |
 :---------|:-----------|:------------|
+| __Python__  | Popular OO Language | If you are new to Python, this is a great place to learn it, starting with running code you can explore, edit and debug in VSCode<br>* No install, no config |
 | __SQLAlchemy__  | Popular Python ORM | Python-friendly object-oriented database access |
 | __Flask__  | Popular Python Web Framework | Use to add custom endpoints (examples provided) |
 | __VSCode__  | Popular IDE | Use to customize API Logic Projects |
@@ -61,9 +62,9 @@ You will need a laptop with a Browser connection, and a GitHub account.  You do 
 
 This tutorial is for developers interested in database systems, and the technologies above.  Required background:
 
-* basic programming familiarity (e.g, understand program structure, event-oriented programming)
+* Basic programming familiarity (e.g, understand program structure, event-oriented programming) - Python experience is not required
 
-* some database background (you are good to go if you have a basic understanding of tables, columns and foreign keys)
+* Some database background (if you have heard of tables, columns and foreign keys, you are good to go)
 
 
 ## Outline
