@@ -49,6 +49,7 @@ This talk will also give you a good intro to other technologies you may have alr
 | __VSCode__  | Popular IDE | Use to customize API Logic Projects |
 | __Codespaces__  | Cloud-based Dev Container | Provides IDE, git, etc - via a *Browser interface* |
 | __APIs__  | Networked database access | Via the SAFRS framework |
+| __Docker__ | *Isolated* Containers | Eg., DBMS, API Logic Server, Your App |
 | __React-Admin__ | Simplified React UI framework | Further simplified via YAML model |
 | __Declarative__ | Vague term ("what not how") | We'll describe key aspects |
 
@@ -72,16 +73,16 @@ This will be a series of short lectures, and hands-on usage (watch and/or do):
 | Section  | Duration    | We'll cover   |
 :---------|:-----------|:------------|
 | __Introduction__ | 15 min | * What is API Logic Server<br>* Why we wrote it |
-| __Starting Codespaces__ | 5 min | * Create a cloud-based development environment<br> * Access it VSCode via your browser) |
-| __Create Project__  | 10 min (total 30) | Using pre-supplied sample database |
-| __Explore Project__ | 30 min (total 1 hour) | * User Interface - a multi-page, multi-table application (underlying technology is React Admin)<br>* API - using Swagger to explore pagination, filtering et |
-| __Customize Project__  | 45 min (total 1.75 hours) | * Explore Project Structure in VSCode<br>API: Add an Endpoint, and test it with the debugger<br>* UI (adjust captions, hide/show fields) |
-| __Business Logic__ | ?? | * what it is<br> * how to declare it<br> * how it runs<br> * how to debug it<br> * what it means to be _declarative_ (automatic invocation, ordering, optimization) |
-| __Other Topics__ | As time permits | * Testing with the Behave Framework<br> * Schema Migrations with Alembic |
+| __Starting Codespaces__ | 15 min (total 30) | * Create a cloud-based development environment<br> * Access it VSCode via your browser) |
+| __Create Project__  | 15 min (total 45) | Using pre-supplied sample database |
+| __Explore Project__ | 30 min (total 1.25 hours) | * User Interface - a multi-page, multi-table application (underlying technology is React Admin)<br>* API - using Swagger to explore pagination, filtering et |
+| __Customize Project__  | 30 min (total 1.75 hours) | * Explore Project Structure in VSCode<br>API: Add an Endpoint, and test it with the debugger<br>* UI (adjust captions, hide/show fields) |
+| __Business Logic__ | 30 min (total 2.25 hours) | * what it is<br> * how to declare it<br> * how it runs<br> * how to debug it<br> * what it means to be _declarative_ |
+| __Other Topics__ | 15 min (total 2.25 hours) | * Testing with the Behave Framework<br> * Schema Migrations with Alembic |
 
 # Additional Notes
 
-Since API Logic Server is open source, you can obtain it - explore its value, investigate the Popular Technologies listed in the table above
+Since API Logic Server is open source, you can obtain it - explore its value, and/or investigate the Popular Technologies listed in the table above.
 
 ## Speaking Experience
 
