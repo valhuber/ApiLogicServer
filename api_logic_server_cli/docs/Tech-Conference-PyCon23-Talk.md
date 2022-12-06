@@ -2,6 +2,12 @@
 
 [Submittals](https://pretalx.com/pyconus2023/me/submissions/38SUMK/){:target="_blank" rel="noopener"}
 
+&nbsp;
+
+## Title
+
+  > Creating Web Applications Instantly with API Logic Server - create with one command, customize in your IDE
+
 ## Description
 
 This Talk introduces a meaningfully faster and simpler approach for building database web apps.
@@ -73,11 +79,11 @@ This will be 75% live demo, with slides for context and background:
 
 * Explore Project (10) - explore the created UI, exercise the API in Swagger
 
-* Customize Project (15) - use VSCode (in Browser) to add an API Endpoint and debug it, hide/show UI fields
+* Customize Project (10) - use VSCode (in Browser) to add an API Endpoint and debug it, hide/show UI fields
 
 * Declarative Rules (10) - use VSCode to declare spreadsheet like rules, and test/debug
 
-* Wrap (10) - final remarks, other topics to explore (testing, schema migration)
+* Wrap (15) - final remarks, questions, other topics to explore (testing, schema migration)
 
 Yes, a lot to cover, but automation makes it possible.  Even easy.
 
