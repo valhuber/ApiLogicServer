@@ -73,6 +73,7 @@ nav:
     - "CodeSpaces": Tech-CodeSpaces.md
     - "M1 Mac": Tech-m1.md
     - Personal:
+      - "PyCon23 Talk": Tech-Conference-PyCon23-Talk.md
       - "PyCon23 Tutorial": Tech-Conference-PyCon23-Tutorial.md
       - "Conference": Tech-Conference.md
 markdown_extensions:

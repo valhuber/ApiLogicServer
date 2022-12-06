@@ -1,14 +1,18 @@
+[Talk Guidelines](https://us.pycon.org/2023/speaking/talks/){:target="_blank" rel="noopener"}
+
+[Submittals](https://pretalx.com/pyconus2023/me/submissions/38SUMK/){:target="_blank" rel="noopener"}
+
 ## Description
 
-This Tutorial introduces a meaningfully faster and simpler approach for building database web apps.
+This Talk introduces a meaningfully faster and simpler approach for building database web apps.
 
 &nbsp;
 
 ### Overview
 
-In this tutorial:
+In this talk:
 
-* You'll build a complete, multi-table database web app - built, run, customized in VSCode
+* You'll see a complete, multi-table database web app - built, run, customized in VSCode
     * You'll be able to use it tomorrow on your organizations databases
 * You'll see several popular technologies in use (listed below)
     * You can explore these - running code, in a working project
@@ -25,7 +29,7 @@ API Logic Server is an open source Python system for creating __customizable dat
 
 __Projects are Customizable -__ use VSCode for  edit/debug
 
-Declare **spreadsheet-like rules** for multi-table derivations and constraints, extensible with Python (key innovation)
+Declare **spreadsheet-like rules** for multi-table derivations and constraints, extensible with Python :trophy:
 
 &nbsp;
 
@@ -47,12 +51,6 @@ This tutorial introduces other technologies you perhaps wanted to explore, with 
 
 &nbsp;
 
-### Requirements
-
-You'll need a laptop, and a GitHub account.  Your dev environment will *not* be affected.
-
-&nbsp;
-
 ## Audience
 
 This tutorial is for developers interested in database systems, and the technologies above.  Required background:
@@ -65,34 +63,26 @@ This tutorial is for developers interested in database systems, and the technolo
 
 ## Outline
 
-Short lectures, plus watch/do labs:
+This will be 75% live demo, with slides for context and background:
 
-| Section  | Minutes | Contents   |
-:---------|:-----------|:------------|
-| __Introduction__ | 15 | Project origin |
-| __Start Codespace__ | 15 | VSCode, _in your browser_ |
-| __Create Project__  | 15 | Database pre-supplied |
-| __Explore__ | 30 | API, UI |
-| __Customize__  | 30 | * API: add endpoint<br>* UI: hide/show fields |
-| ___Declarative_ Rules__ | 30 | Declare/debug |
-| __Wrap__ | 15 (2.25 hours) | |
+* Introduction (5 min) - why the project was created
+
+* Create Codespace (5) - create Codespace, access in Browser
+
+* Create API Logic Project (5) - use CLI to create project from pre-supplied database
+
+* Explore Project (10) - explore the created UI, exercise the API in Swagger
+
+* Customize Project (15) - use VSCode (in Browser) to add an API Endpoint and debug it, hide/show UI fields
+
+* Declarative Rules (10) - use VSCode to declare spreadsheet like rules, and test/debug
+
+* Wrap (10) - final remarks, other topics to explore (testing, schema migration)
+
+Yes, a lot to cover, but automation makes it possible.  Even easy.
 
 &nbsp;
 
-## Text Outline
+## Requirements
 
-* Introduction (15 min) - why the project was created
-
-* Create Codespace (15 min) - create Codespace, access in Browser
-
-* Create API Logic Project (15) - use CLI to create project from pre-supplied database
-
-* Explore Project (30) - explore the created UI, exercise the API in Swagger
-
-* Customize Project (30) - use VSCode (in Browser) to add an API Endpoint and debug it, hide/show UI fields
-
-* Declarative Rules (30) - use VSCode to declare spreadsheet like rules, and test/debug
-
-* Wrap (15 - 2.25 hours) - final remarks, other topics to explore (testing, schema migration)
-
-Yes, a lot to cover, but automation makes it possible.  Even easy.
+An internet connection, though I can demo locally if that becomes a problem.
