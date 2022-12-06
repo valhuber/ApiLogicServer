@@ -172,3 +172,9 @@ def server_log(request, jsonify):
     else:
         app_logger.info(f'{msg}')
     return jsonify({"result": f'ok'})
+
+
+def row_to_json(row: safrs.DB.Model):
+    row_as_json = jsonify(row).json
+    print(f'Row: {row_as_json}')
+    return row_as_json

@@ -62,6 +62,23 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         os.kill(os.getpid(), signal.SIGINT)
         return jsonify({ "success": True, "message": "Server is shutting down..." })
 
+    
+    @app.route('/customer')
+    def customer():  # test it with: http://localhost:5656/customer?Id=ALFKI
+        """
+        test
+            http://localhost:5656/customer?Id=ALFKI
+            curl -X GET "http://localhost:5656/customer?Id=ALFKI"
+
+        """
+        customer_id = request.args.get('Id')
+        db = safrs.DB         # Use the safrs.DB, not db!
+        session = db.session  # sqlalchemy.orm.scoping.scoped_session
+        customer = session.query(models.Customer).filter(models.Customer.Id == customer_id).one()
+        print(customer)
+        result = util.row_to_json(customer)
+        return result
+
 
     @app.route('/server_log')
     def server_log():
