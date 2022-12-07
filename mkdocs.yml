@@ -69,6 +69,7 @@ nav:
     - "Docker": Tech-Docker.md
     - "Python for a Java developer": Tech-Python.md
     - "Python Installation": Tech-Install-Python.md
+    - "Python 3.11": Tech-Python-311.md
     - "Mkdocs Material": Tech-mkdocs-material.md
     - "CodeSpaces": Tech-CodeSpaces.md
     - "M1 Mac": Tech-m1.md
