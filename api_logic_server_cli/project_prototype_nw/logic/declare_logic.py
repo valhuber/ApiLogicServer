@@ -9,10 +9,13 @@ import logging
 app_logger = logging.getLogger("api_logic_server_app")
 app_logger.debug("logic/declare_logic.py")
 
-declared_rules = []  # rules are objects, you can collect them if you like (see @ end)
-
 def declare_logic():
+    """ 
+        Declare logic (rules and code) for multi-table derivations and constraints on API updates
     """
+
+    """         HOW IT WORKS
+                ============
     Declare, Activate and Run...
 
         *Declare* Logic here, using Python with code completion.
@@ -30,7 +33,10 @@ def declare_logic():
             for multi-table derivations and constraints,
             and events such as sending messages or mail
                 it consists of spreadsheet-like Rules and Python code
+    """
 
+    """         HOW RULES OPERATE
+                =================
     Rules operate much like a spreadsheet:
         Watch, for changes in referenced values
         React, by recomputing value
@@ -50,14 +56,16 @@ def declare_logic():
         * delete order
         * move order to new customer, etc
     This reuse is how 5 rules replace 200 lines of legacy code: https://github.com/valhuber/LogicBank/wiki/by-code
+    """
 
-
-    Feature: Place Order
+    """         FEATURE: Place Order
+                ====================
         Scenario: Bad Order Custom Service
             When Order Placed with excessive quantity
-            Then Rejected per Credit Limit
+            Then Rejected per CHECK CREDIT LIMIT
 
-    Logic Design ("Cocktail Napkin Design")
+    LOGIC DESIGN: ("Cocktail Napkin Design")
+    ========================================
         Customer.Balance <= CreditLimit
         Customer.Balance = Sum(Order.AmountTotal where unshipped)
         Order.AmountTotal = Sum(OrderDetail.Amount)
@@ -192,7 +200,6 @@ def declare_logic():
             row.CreatedOn = datetime.datetime.now()
             logic_row.log("early_row_event_all_classes - handle_all sets 'Created_on"'')
 
-    time_stamp_rule = Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
-    declared_rules.append(time_stamp_rule)  # print ala api/customize_api#rules_report()
+    Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
     
     app_logger.debug("..logic/declare_logic.py (rules + code)")
