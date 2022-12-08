@@ -1,5 +1,6 @@
 nw_readme.md -> README.md
     * remove internal IDE links
+    just a note
 
 https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/nw-readme/cust-api.png
 

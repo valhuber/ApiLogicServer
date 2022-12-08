@@ -6,6 +6,9 @@ from logic_bank.logic_bank import Rule
 from database import models
 import logging
 
+preferred_approach = True
+""" in some cases, we contrast a preferred approach to a more manual one """
+
 app_logger = logging.getLogger("api_logic_server_app")
 app_logger.debug("logic/declare_logic.py")
 
@@ -14,8 +17,8 @@ def declare_logic():
         Declare logic (rules and code) for multi-table derivations and constraints on API updates
     """
 
-    """         HOW IT WORKS
-                ============
+    """         HOW TO USE RULES
+                ================
     Declare, Activate and Run...
 
         *Declare* Logic here, using Python with code completion.
@@ -29,7 +32,7 @@ def declare_logic():
         *Activation* occurs in api_logic_server_run.py:
             LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
 
-        Logic *runs* in response to transaction commits (typically via the API),
+        Logic *runs* automatically, in response to transaction commits (typically via the API),
             for multi-table derivations and constraints,
             and events such as sending messages or mail
                 it consists of spreadsheet-like Rules and Python code
@@ -60,9 +63,14 @@ def declare_logic():
 
     """         FEATURE: Place Order
                 ====================
-        Scenario: Bad Order Custom Service
-            When Order Placed with excessive quantity
-            Then Rejected per CHECK CREDIT LIMIT
+
+    You can capture BDD approach to doc/run test suites
+         See logic/api_logic_server/behave/place_order.feature
+         See https://valhuber.github.io/ApiLogicServer/Behave/
+
+    SCENARIO: Bad Order Custom Service
+        When Order Placed with excessive quantity
+        Then Rejected per CHECK CREDIT LIMIT
 
     LOGIC DESIGN: ("Cocktail Napkin Design")
     ========================================
@@ -73,22 +81,25 @@ def declare_logic():
         OrderDetail.UnitPrice = copy from Product
     """
 
-    Rule.constraint(validate=models.Customer,       # logic design translates directly into rules
-        as_condition=lambda row: row.Balance <= row.CreditLimit,
-        error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+    if preferred_approach:
+        Rule.constraint(validate=models.Customer,       # logic design translates directly into rules
+            as_condition=lambda row: row.Balance <= row.CreditLimit,
+            error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
 
-    Rule.sum(derive=models.Customer.Balance,        # adjust iff AmountTotal or ShippedDate or CustomerID changes
-        as_sum_of=models.Order.AmountTotal,
-        where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
+        Rule.sum(derive=models.Customer.Balance,        # adjust iff AmountTotal or ShippedDate or CustomerID changes
+            as_sum_of=models.Order.AmountTotal,
+            where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
 
-    Rule.sum(derive=models.Order.AmountTotal,       # adjust iff Amount or OrderID changes
-        as_sum_of=models.OrderDetail.Amount)
+        Rule.sum(derive=models.Order.AmountTotal,       # adjust iff Amount or OrderID changes
+            as_sum_of=models.OrderDetail.Amount)
 
-    Rule.formula(derive=models.OrderDetail.Amount,  # compute price * qty
-        as_expression=lambda row: row.UnitPrice * row.Quantity)
+        Rule.formula(derive=models.OrderDetail.Amount,  # compute price * qty
+            as_expression=lambda row: row.UnitPrice * row.Quantity)
 
-    Rule.copy(derive=models.OrderDetail.UnitPrice,  # get Product Price (e,g., on insert, or ProductId change)
-        from_parent=models.Product.UnitPrice)
+        Rule.copy(derive=models.OrderDetail.UnitPrice,  # get Product Price (e,g., on insert, or ProductId change)
+            from_parent=models.Product.UnitPrice)
+    else:
+        pass  # 5 rules above, or these 200 lines of code: https://github.com/valhuber/LogicBank/wiki/by-code
 
     """
         Demonstrate that logic == Rules + Python (for extensibility)
@@ -160,46 +171,53 @@ def declare_logic():
 
     Rule.count(derive=models.Order.OrderDetailCount, as_count_of=models.OrderDetail)
 
+    """
+        STATE TRANSITION LOGIC, using old_row
+    """
     def raise_over_20_percent(row: models.Employee, old_row: models.Employee, logic_row: LogicRow):
         if logic_row.ins_upd_dlt == "upd" and row.Salary > old_row.Salary:
             return row.Salary >= Decimal('1.20') * old_row.Salary
         else:
             return True
-
     Rule.constraint(validate=models.Employee,
                     calling=raise_over_20_percent,
                     error_msg="{row.LastName} needs a more meaningful raise")
 
-    def audit_by_event(row: models.Employee, old_row: models.Employee, logic_row: LogicRow):
-        tedious = False  # tedious code to repeat for every audited class
-        if tedious:      # see instead the following RuleExtension.copy_row below (you can create similar rule extensions)
-            if logic_row.ins_upd_dlt == "upd" and logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]):
-                copy_to_logic_row = logic_row.new_logic_row(models.EmployeeAudit)
-                copy_to_logic_row.link(to_parent=logic_row)
-                copy_to_logic_row.set_same_named_attributes(logic_row)
-                copy_to_logic_row.insert(reason="Manual Copy " + copy_to_logic_row.name)  # triggers rules...
+    """
+        EXTEND RULE TYPES 
+            Events, plus *generic* event handlers
+    """
+    
+    if preferred_approach:  # AUDITING can be as simple as 1 rule
+        RuleExtension.copy_row(copy_from=models.Employee,
+                            copy_to=models.EmployeeAudit,
+                            copy_when=lambda logic_row: logic_row.ins_upd_dlt == "upd" and 
+                                    logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]))
+    else:
+        def audit_by_event(row: models.Employee, old_row: models.Employee, logic_row: LogicRow):
+            tedious = False  # tedious code to repeat for every audited class
+            if tedious:      # see instead the following RuleExtension.copy_row below (you can create similar rule extensions)
+                if logic_row.ins_upd_dlt == "upd" and logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]):
+                    copy_to_logic_row = logic_row.new_logic_row(models.EmployeeAudit)
+                    copy_to_logic_row.link(to_parent=logic_row)
+                    copy_to_logic_row.set_same_named_attributes(logic_row)
+                    copy_to_logic_row.insert(reason="Manual Copy " + copy_to_logic_row.name)  # triggers rules...
 
-    Rule.commit_row_event(on_class=models.Employee, calling=audit_by_event)
+        Rule.commit_row_event(on_class=models.Employee, calling=audit_by_event)
 
-    RuleExtension.copy_row(copy_from=models.Employee,
-                           copy_to=models.EmployeeAudit,
-                           copy_when=lambda logic_row: logic_row.ins_upd_dlt == "upd" and 
-                                logic_row.are_attributes_changed([models.Employee.Salary, models.Employee.Title]))
 
     def clone_order(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         if row.CloneFromOrder is not None and logic_row.nest_level == 0:
             which = ["OrderDetailList"]
             logic_row.copy_children(copy_from=row.parent,
                                     which_children=which)
-
     Rule.row_event(on_class=models.Order, calling=clone_order)
 
-    def handle_all(logic_row: LogicRow):
+    def handle_all(logic_row: LogicRow):  # TIME / DATE STEMPING
         row = logic_row.row
         if logic_row.ins_upd_dlt == "ins" and hasattr(row, "CreatedOn"):
             row.CreatedOn = datetime.datetime.now()
             logic_row.log("early_row_event_all_classes - handle_all sets 'Created_on"'')
-
     Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
     
-    app_logger.debug("..logic/declare_logic.py (rules + code)")
+    app_logger.debug("..logic/declare_logic.py (logic == rules + code)")
