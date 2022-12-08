@@ -62,22 +62,38 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         os.kill(os.getpid(), signal.SIGINT)
         return jsonify({ "success": True, "message": "Server is shutting down..." })
 
-    
-    @app.route('/customer')
-    def customer():  # test it with: http://localhost:5656/customer?Id=ALFKI
+
+    @app.route('/order')
+    def order():
         """
-        test
-            http://localhost:5656/customer?Id=ALFKI
-            curl -X GET "http://localhost:5656/customer?Id=ALFKI"
+        Illustrates:
+            nested result set response
+            use of SQLAlchemy to obtain data
+            how to restructure row results to desired json (e.g., for tool such as Sencha)
+        Test:
+            http://localhost:5656/order?Id=10643
+            curl -X GET "http://localhost:5656/order?Id=10643"
 
         """
-        customer_id = request.args.get('Id')
+        import json
+        from dotmap import DotMap
+        order_id = request.args.get('Id')
         db = safrs.DB         # Use the safrs.DB, not db!
         session = db.session  # sqlalchemy.orm.scoping.scoped_session
-        customer = session.query(models.Customer).filter(models.Customer.Id == customer_id).one()
-        print(customer)
-        result = util.row_to_json(customer)
-        return result
+        order = session.query(models.Order).filter(models.Order.Id == order_id).one()
+
+        result_std_dict = util.row_to_dict(order
+                                        , replace_attribute_tag='data'
+                                        , remove_links_relationships=True)
+        result_std_dict['data']['Customer_Name'] = order.Customer.CompanyName # eager fetch
+        # result_std_dict['data']['OrderDetailListAsRows'] = order.OrderDetailList    # lazy fetch
+        result_std_dict['data']['OrderDetailListAsDicts'] = []
+        for each_order_detail in order.OrderDetailList:
+            each_order_detail_dict = util.row_to_dict(row=each_order_detail
+                                                    , replace_attribute_tag='data'
+                                                    , remove_links_relationships=True)
+            result_std_dict['data']['OrderDetailListAsDicts'].append(each_order_detail_dict)
+        return result_std_dict
 
 
     @app.route('/server_log')

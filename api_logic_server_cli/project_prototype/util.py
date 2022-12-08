@@ -1,3 +1,6 @@
+"""
+Utilities for API Logic Server Projects (1.0)
+"""
 import sqlite3
 from os import path
 import logging
@@ -174,7 +177,25 @@ def server_log(request, jsonify):
     return jsonify({"result": f'ok'})
 
 
-def row_to_json(row: safrs.DB.Model):
-    row_as_json = jsonify(row).json
-    print(f'Row: {row_as_json}')
-    return row_as_json
+def row_to_dict(row: safrs.DB.Model
+                , replace_attribute_tag: str = None
+                , remove_links_relationships: bool = False) -> dict:
+    """
+    returns dict suitable for safrs response
+
+    Args:
+        row (safrs.DB.Model): a SQLAlchemy row
+        replace_attribute_tag (str): replace _attribute_ tag with this name
+        remove_links_relationships (bool): remove these tags
+    Returns:
+        _type_: dict (suitable for flask response)
+    """
+    logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
+    row_as_dict = jsonify(row).json
+    logic_logger.debug(f'Row: {row_as_dict}')
+    if replace_attribute_tag:
+        row_as_dict[replace_attribute_tag] = row_as_dict.pop('attributes')
+    if remove_links_relationships:
+        row_as_dict.pop('links')
+        row_as_dict.pop('relationships')
+    return row_as_dict
