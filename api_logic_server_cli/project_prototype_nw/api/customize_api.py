@@ -67,16 +67,14 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     def order():
         """
         Illustrates:
-            nested result set response
-            use of SQLAlchemy to obtain data
-            how to restructure row results to desired json (e.g., for tool such as Sencha)
+            Returning a nested result set response
+            Using SQLAlchemy to obtain data
+            Restructuring row results to desired json (e.g., for tool such as Sencha)
         Test:
             http://localhost:5656/order?Id=10643
             curl -X GET "http://localhost:5656/order?Id=10643"
 
         """
-        import json
-        from dotmap import DotMap
         order_id = request.args.get('Id')
         db = safrs.DB         # Use the safrs.DB, not db!
         session = db.session  # sqlalchemy.orm.scoping.scoped_session
@@ -86,12 +84,12 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
                                         , replace_attribute_tag='data'
                                         , remove_links_relationships=True)
         result_std_dict['data']['Customer_Name'] = order.Customer.CompanyName # eager fetch
-        # result_std_dict['data']['OrderDetailListAsRows'] = order.OrderDetailList    # lazy fetch
         result_std_dict['data']['OrderDetailListAsDicts'] = []
-        for each_order_detail in order.OrderDetailList:
+        for each_order_detail in order.OrderDetailList:       # lazy fetch
             each_order_detail_dict = util.row_to_dict(row=each_order_detail
                                                     , replace_attribute_tag='data'
                                                     , remove_links_relationships=True)
+            each_order_detail_dict['data']['ProductName'] = each_order_detail.Product.ProductName
             result_std_dict['data']['OrderDetailListAsDicts'].append(each_order_detail_dict)
         return result_std_dict
 

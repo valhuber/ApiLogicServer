@@ -7,7 +7,7 @@ from database import models
 import logging
 
 preferred_approach = True
-""" in some cases, we contrast a preferred approach to a more manual one """
+""" Some examples below contrast a preferred approach with a more manual one """
 
 app_logger = logging.getLogger("api_logic_server_app")
 app_logger.debug("logic/declare_logic.py")
