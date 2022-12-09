@@ -107,7 +107,7 @@ def declare_logic():
     def congratulate_sales_rep(row: models.Order, old_row: models.Order, logic_row: LogicRow):
         """ use events for sending email, messages, etc. """
         if logic_row.ins_upd_dlt == "ins":  # logic engine fills parents for insert
-            sales_rep = row.Employee
+            sales_rep = row.Employee        # parent accessor
             if sales_rep is None:
                 logic_row.log("no salesrep for this order")
             elif sales_rep.Manager is None:
