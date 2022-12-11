@@ -178,7 +178,7 @@ finally, try your own database.
 # Project Information
 
 ### Making Contributions
-This is an open source project.  We are open to suggestions.  Some of our ideas include:
+This is an [open source project](https://github.com/valhuber/ApiLogicServer){:target="_blank" rel="noopener"}.  We are open to suggestions.  Some of our ideas include:
 
 | Component           | Provides         | Consider Adding                                                                |
 |:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
