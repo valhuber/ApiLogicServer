@@ -101,3 +101,7 @@ markdown_extensions:
       alternate_style: true 
 extra_css:
   - stylesheets/extra.css
+extra:
+  social:
+    - icon: fontawesome/brands/slack
+      link: https://join.slack.com/t/apilogicserver/signup
