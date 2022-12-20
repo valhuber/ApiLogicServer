@@ -3,7 +3,8 @@
 #    edit this file: change your_account/your_repository as appropriate
 #    in terminal (not in VSCode docker - docker is not installed there), cd to your project
 #    build a container for your project with terminal commands:
-# docker build -f ApiLogicProject.dockerfile -t your_account/your_repository --rm .
+# docker build -f build-container.dockerfile -t your_account/your_repository --rm .
+#       e.g., docker build -f build-container.dockerfile -t apilogicserver/docker_api_logic_project --rm . 
 # docker tag your_account/your_repository your_account/your_repository:1.00.00
 # docker push your_account/your_repository:1.00.00  # requires docker login 
 
@@ -26,6 +27,6 @@ USER root
 # user api_logic_server comes from apilogicserver/api_logic_server
 WORKDIR /home/api_logic_project
 USER api_logic_server
-COPY . .
+COPY ../../ .
 
 CMD [ "python", "./api_logic_server_run.py" ]
