@@ -51,11 +51,13 @@ class Order(SAFRSBase, Base):
 
 ## Class (end point) for each table
 
-A __class__ is created for each table.  The name (e.g. `Order`) is derived from the table name, but is capitalized and singlularized
+A __class__ is created for each table.  The name (e.g. `Order`) is derived from the table name: capitalized and singlularized.
 
-2. These class names are used as API endpoint names
+&nbsp;
 
-3. The __table name__ is from your schema
+### End point name from Class
+
+These class names are used as the default API endpoint name.  Override them as described below.
 
 &nbsp;
 
