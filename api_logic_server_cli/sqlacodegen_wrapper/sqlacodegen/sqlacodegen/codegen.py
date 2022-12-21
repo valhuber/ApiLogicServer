@@ -263,6 +263,8 @@ class ModelClass(Model):
         if camel_case_name in ["Dates"]:
             camel_case_name = camel_case_name + "_Classs"
         result = inflect_engine.singular_noun(camel_case_name) or camel_case_name
+        if result == "CategoryTableNameTest":  # ApiLogicServer
+            result = "Category"
         return result
 
     @staticmethod
@@ -820,6 +822,7 @@ from sqlalchemy.dialects.mysql import *
         # print("# Render", model.name)
         rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, model.parent_name)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
+        rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, model.name)
 
         if self.do_model_creation_services_hack and not self.model_creation_services.resource_list_complete:
             resource_list = self.model_creation_services.resource_list

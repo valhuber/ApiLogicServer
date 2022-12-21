@@ -67,6 +67,7 @@ app_logger.addHandler(handler)
 app_logger.propagate = True
 
 app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
+
 args = ""
 arg_num = 0
 for each_arg in sys.argv:

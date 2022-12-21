@@ -1,0 +1,1 @@
+Security is under active development.  You can examine the [Proof of Concept here](https://github.com/valhuber/security-poc#readme).  We are seeking design partners, so contact us if you'd like to discuss - we'd love to hear from you!

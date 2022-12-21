@@ -1,6 +1,6 @@
 """Flask configuration variables."""
 from os import environ, path
-import util
+import os
 from dotenv import load_dotenv
 import logging
 
@@ -40,6 +40,11 @@ class Config:
     # override SQLALCHEMY_DATABASE_URI here as required
 
     app_logger.debug(f'config.py - SQLALCHEMY_DATABASE_URI: {SQLALCHEMY_DATABASE_URI}')
+
+    # as desired, use env variable: export SQLALCHEMY_DATABASE_URI='sqlite:////Users/val/dev/servers/docker_api_logic_project/database/db.sqliteXX'
+    if os.getenv('SQLALCHEMY_DATABASE_URI'):
+        SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
+        app_logger.debug(f'.. overridden from env variable: {SQLALCHEMY_DATABASE_URI}')
 
     # SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

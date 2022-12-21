@@ -6,11 +6,14 @@ ls
 if [ $# -eq 0 ]
     then
         echo " "
-        echo "Pushes new API Logic Project to new git repository"
+        echo "Pushes new API Logic Project to new empty git repository"
         echo " "
         echo "Usage:"
         echo "  cd devops                                 # this folder"
-        echo "  git-push-new-project.sh <git repos name>  # copy this from GitHub"
+        echo "  git_push_new_project.sh <git repos name>  # copy this from GitHub"
+        echo " "
+        echo " "
+        echo "For subsequent pushes, use IDE support"
         echo " "
         exit 0
     fi
