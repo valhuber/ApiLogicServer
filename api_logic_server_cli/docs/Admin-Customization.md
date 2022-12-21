@@ -40,8 +40,6 @@ The rebuild commands do not override your customizations.  They do recreate `adm
 
 #### show_when
 
-  > __Coming attraction__ - not yet available
-
 You can provide an expression that determines when a field (and its caption) are hidden.  For example, you might show the `Dues` only when the `EmployeeType` is _Hourly_, by declaring this in your `admin.yaml`:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/show-when/declare.png?raw=true"></figure>
