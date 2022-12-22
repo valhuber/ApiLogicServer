@@ -47,6 +47,7 @@ nav:
     - Data-Model-Keys.md
     - Data-Model-Customization.md
     - "Connection Examples": Database-Connectivity.md
+    - "Multiple Databases": Data-Model-Multi.md
     - "Install pyodbc: SqlServer": Install-pyodbc.md
     - "Install psycopg2: Postgres": Install-psycopg2.md
   - Testing:

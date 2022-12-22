@@ -10,7 +10,7 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.04.06"
+__version__ = "6.05.00"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\

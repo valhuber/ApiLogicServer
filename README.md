@@ -247,6 +247,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project
+
 12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example
 
 11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54)
