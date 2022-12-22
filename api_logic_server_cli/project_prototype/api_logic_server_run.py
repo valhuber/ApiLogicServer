@@ -89,6 +89,7 @@ import socket
 import warnings
 from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase, SAFRSAPI
+from config import Config
 
 def setup_logging(flask_app):
     setup_logic_logger = True
@@ -388,6 +389,8 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
             raise ValidationErrorExt(message=message, detail=detail)
 
         admin_enabled = os.name != "nt"
+        admin_enabled = False
+
         """ internal use, for future enhancements """
         if admin_enabled:
             flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
@@ -402,6 +405,14 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
         db.init_app(flask_app)
         with flask_app.app_context():
+            if Config.SECURITY_ENABLED:
+                import security.authentication_provider.sql.authentication_models
+                flask_app.config.update(SQLALCHEMY_BINDS = \
+                    {'security_bind': flask_app.config['SQLALCHEMY_DATABASE_URI_SECURITY']})
+                from security import declare_security  # activate security
+                app_logger.info("Declare Security complete - security/declare_security.py"
+                    + f' -- {len(security.authentication_provider.sql.authentication_models.metadata.tables)} tables loaded')
+                        
             if admin_enabled:
                 db.create_all()
                 db.create_all(bind='admin')

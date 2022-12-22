@@ -34,3 +34,6 @@
 *[docker repository]: can can be downloaded (pulled) to create a docker image on your local computer
 *[docker image]: created from a docker repository, a set of local files that can be run as a docker container
 *[docker container]: a running image
+*[Authentication]: a login function that confirms a user has access, usually by posting credentials and obtaining a token identifying the users' roles.
+*[Authorization]: controlling access to row/columns based on assigned roles.
+*[Role]: in security, users are assigned one or many roles.  Roles are authorized for access to data, potentially down to the row/column level.

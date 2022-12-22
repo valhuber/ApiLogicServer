@@ -32,6 +32,9 @@ nav:
     - "Rules": Logic.md
     - "Logic Operation": "Logic-Operation.md"
     - "TDD-based Approach": "Logic-Tutorial.md"
+  - 4. Security:
+    - "Overview": Security-Overview.md
+    - "Authorization": Security-Authorization.md
   - "Using Your IDE": IDE-Customize.md
   - Managing API Logic Projects:
     - "DevOps": Project-DevOps.md

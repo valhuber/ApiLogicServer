@@ -46,6 +46,14 @@ class Config:
         SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
         app_logger.debug(f'.. overridden from env variable: {SQLALCHEMY_DATABASE_URI}')
 
+    SECURITY_ENABLED = False
+    from security.authentication_provider.sql.auth_provider import Authentication_Provider
+    SECURITY_PROVIDER = Authentication_Provider
+    security_loc = db_loc = str(project_abs_dir) + "/security/authentication_provider/sql/authentication_db.sqlite"
+    security_url = "sqlite:///" + db_loc      
+    SQLALCHEMY_DATABASE_URI_SECURITY = security_url # TODO required??
+    app_logger.debug(f'config.py - security_url: {security_url}')
+
     # SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = False
