@@ -6,7 +6,9 @@ ls
 if [ $# -eq 0 ]
     then
         echo " "
-        echo "Pushes new API Logic Project to new empty git repository"
+        echo "Pushes new API Logic Project to new empty (existing) git repository"
+        echo " "
+        echo "VSCode provide Source Control >> Publish (New Repository - should *not* exist"
         echo " "
         echo "Usage:"
         echo "  cd devops                                 # this folder"
