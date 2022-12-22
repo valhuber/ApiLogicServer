@@ -34,6 +34,7 @@ nav:
     - "TDD-based Approach": "Logic-Tutorial.md"
   - "Using Your IDE": IDE-Customize.md
   - Managing API Logic Projects:
+    - "DevOps": Project-DevOps.md
     - "Structure": Project-Structure.md
     - "Rebuild": Project-Rebuild.md
     - "Working With Docker": Working-With-Docker.md
