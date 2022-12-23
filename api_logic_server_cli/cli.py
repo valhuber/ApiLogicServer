@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.05.02"
+__version__ = "6.05.04"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/22/2022 - 06.05.02: security prototype  \n"\
+    "\t12/22/2022 - 06.05.04: security prototype  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
     "\t11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54) \n"\
@@ -668,6 +668,8 @@ def get_abs_db_url(msg, db_url):
         print(f'{msg} from: {rtn_abs_db_url}')
     elif db_url == "chinook":
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/Chinook_Sqlite.sqlite'
+    elif db_url == "todo" or db_url == "todos":
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/todos.sqlite'
     elif db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         rtn_abs_db_url = abspath(url)
@@ -867,7 +869,7 @@ def api_logic_server(project_name: str, db_url: str, api_name: str,
         # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
         # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
         run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
-        run_file = "'" + run_file + "'"  # provide for spaces in proj dirname
+        run_file = '"' + run_file + '"'  # spaces in file names - with windows
         run_args = ""
         if command == "create-and-run":
             run_args = "--create_and_run=True"
