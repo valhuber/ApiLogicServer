@@ -663,6 +663,8 @@ def get_abs_db_url(msg, db_url):
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/Chinook_Sqlite.sqlite'
     elif db_url == "todo" or db_url == "todos":
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/todos.sqlite'
+    elif db_url == "classicmodels":
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/classicmodels.sqlite'
     elif db_url.startswith('sqlite:///'):
         url = db_url[10: len(db_url)]
         rtn_abs_db_url = abspath(url)
