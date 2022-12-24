@@ -37,11 +37,6 @@ class Config:
     running_at = Path(__file__)
     project_abs_dir = running_at.parent.absolute()
 
-    """
-    db_loc = str(project_abs_dir) + "/database/db.sqlite"
-    db_url = "sqlite:///" + db_loc
-    """
-
     # Database
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #                          'sqlite:///' + os.path.join(basedir, 'app.db') + '?check_same_thread=False'
