@@ -178,17 +178,32 @@ finally, try your own database.
 # Project Information
 
 ### Making Contributions
+
 This is an [open source project](https://github.com/valhuber/ApiLogicServer){:target="_blank" rel="noopener"}.  We are open to suggestions for enhancements.  Some of our ideas include:
 
 | Component           | Provides         | Consider Adding                                                                |
 |:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
-| 1. [JSON:**API** and Swagger](https://github.com/thomaxxl/safrs){:target="_blank" rel="noopener"} | API Execution    | **Security** authenticate, role-based access control<br/>**Multi-DB** support multiple databases / API<br/>**Serverless** / **Kubernetes** - extend [containerization](Working-With-Docker/#create-docker-hub-from-api-logic-project){:target="_blank" rel="noopener"} | 
+| 1. [JSON:**API** and Swagger](https://github.com/thomaxxl/safrs){:target="_blank" rel="noopener"} | API Execution    | **Security** authenticate, role-based access control [active development](Security-Overview)<br/>**Multi-DB** support multiple databases [active development](Data-Model-Multi)/ API<br/>**Serverless** / **Kubernetes** - extend [containerization](Working-With-Docker/#create-docker-hub-from-api-logic-project){:target="_blank" rel="noopener"} | 
 | 2. [Transactional **Logic**](https://github.com/valhuber/logicbank#readme){:target="_blank" rel="noopener"}   | Rule Enforcement | New rule types |
 | 3. [SAFRS React Admin](https://github.com/thomaxxl/safrs-react-admin){:target="_blank" rel="noopener"} | Admin UI Enhancements | Maps, trees, ... |
 | 4. [This project](https://github.com/valhuber/ApiLogicServer){:target="_blank" rel="noopener"} | API Logic Project Creation | Support for features described above |
 
 
-To get started, please see  the [Architecture.](Internals)
+To get started, please see  the [Architecture.](Internals).
+
+### Preview Version
+
+You can try the pre-release at:
+
+```bash
+python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==6.05.06
+```
+
+Or use:
+
+```bash
+docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server_x
+```
 
 &nbsp;
 
