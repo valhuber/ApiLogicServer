@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.05.04"
+__version__ = "6.05.05"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/22/2022 - 06.05.04: security prototype  \n"\
+    "\t12/24/2022 - 06.05.05: security prototype  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
     "\t11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54) \n"\
@@ -440,13 +440,6 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=return_abs_db_url,
                                 in_file=f'{project_directory}/database/alembic.ini')
-            api_config_file_name = \
-                os.path.dirname(os.path.realpath(__file__)) +"/create_from_model/templates/api_config.txt"
-            with open(api_config_file_name, 'r') as file:
-                api_config = file.read()
-            create_utils.insert_lines_at(lines=api_config,
-                                        at="override SQLALCHEMY_DATABASE_URI here as required",
-                                        file_name=f'{project_directory}/config.py')
 
             print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
             print(f'.. .. ..From {db_loc}')

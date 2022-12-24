@@ -1,5 +1,6 @@
 """Flask configuration variables."""
 from os import environ, path
+from pathlib import Path
 import os
 from dotenv import load_dotenv
 import logging
@@ -33,6 +34,14 @@ class Config:
     FLASK_ENV = environ.get("FLASK_ENV")
     DEBUG = environ.get("DEBUG")
 
+    running_at = Path(__file__)
+    project_abs_dir = running_at.parent.absolute()
+
+    """
+    db_loc = str(project_abs_dir) + "/database/db.sqlite"
+    db_url = "sqlite:///" + db_loc
+    """
+
     # Database
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #                          'sqlite:///' + os.path.join(basedir, 'app.db') + '?check_same_thread=False'
@@ -49,8 +58,8 @@ class Config:
     SECURITY_ENABLED = False
     from security.authentication_provider.sql.auth_provider import Authentication_Provider
     SECURITY_PROVIDER = Authentication_Provider
-    security_loc = db_loc = str(project_abs_dir) + "/security/authentication_provider/sql/authentication_db.sqlite"
-    security_url = "sqlite:///" + db_loc      
+    security_loc = str(project_abs_dir) + "/security/authentication_provider/sql/authentication_db.sqlite"
+    security_url = "sqlite:///" + security_loc      
     SQLALCHEMY_DATABASE_URI_SECURITY = security_url # TODO required??
     app_logger.debug(f'config.py - security_url: {security_url}')
 
