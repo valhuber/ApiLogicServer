@@ -1254,7 +1254,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
 # Kat
-@main.command("add_db")
+@main.command("add_db") 
 @click.option('--db_url',
               default=f'todo',
               prompt="Database url",
@@ -1267,16 +1267,15 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
               default=True,
               help="Prepend bind key to classname")
 @click.pass_context # Kat
-def add_db(ctx, add_db: str, db_url: str, prepend_bind: click.BOOL):
+def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL):
     """
-        Updates database, api, and ui from changed models.
+    update create from model to notice bind key and create new model.py file if needed
     """
+    # Kat TODO 
     global command
     command = "rebuild-from-model"
     db_types = ""
     print("ready to add db!")
-
-
 
 
 @main.command("rebuild-from-model")
@@ -1561,3 +1560,4 @@ def key_module_map(): # Kat
     api_expose_api_models_creator.create()                  # creates api/expose_api_models.py, key input to SAFRS        
     ui_admin_creator.create()                               # creates ui/admin/admin.yaml from resource_list
     get_abs_db_url()                                        # nw set here, dbname
+    add_db()                                                # TODO
