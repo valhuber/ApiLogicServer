@@ -1253,6 +1253,30 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
                      react_admin=react_admin, admin_app=admin_app,
                      favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                      extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
+# Kat
+@main.command("add_db")
+@click.option('--db_url',
+              default=f'todo',
+              prompt="Database url",
+              help="Connect new database here") # TODO
+@click.option('--bind_key',
+              default=f'Todo',
+              prompt="Bind key",
+              help="Add new bind key here") # TODO
+@click.option('--prepend_bind', is_flag=True,
+              default=True,
+              help="Prepend bind key to classname")
+@click.pass_context # Kat
+def add_db(ctx, add_db: str, db_url: str, prepend_bind: click.BOOL):
+    """
+        Updates database, api, and ui from changed models.
+    """
+    global command
+    command = "rebuild-from-model"
+    db_types = ""
+    print("ready to add db!")
+
+
 
 
 @main.command("rebuild-from-model")
@@ -1312,7 +1336,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 @click.option('--infer_primary_key/--no_infer_primary_key',
               default=False, is_flag=True,
               help="Infer primary_key for unique cols")
-@click.pass_context
+@click.pass_context # Kat
 def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_exposed: str,
            from_git: str,
            # db_types: str,
@@ -1518,7 +1542,7 @@ if __name__ == '__main__':  # debugger & python command line start here
     main()
 
 
-def key_module_map():
+def key_module_map(): # Kat
     """ not called - just index of key code - use this for hover, goto etc 
         ctl-l (^l) for last edit
     """

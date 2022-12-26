@@ -818,7 +818,7 @@ from sqlalchemy.dialects.mysql import *
 
         return rendered.rstrip('\n,') + '\n)\n'
 
-    def render_class(self, model):
+    def render_class(self, model): # KAT
         """ returns string for model class, written into model.py by sqlacodegen_wrapper """
         rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, model.parent_name)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
