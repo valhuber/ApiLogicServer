@@ -503,6 +503,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
 
 def final_project_fixup(msg, project_name, project_directory, api_name,
                         host, port, swagger_host, use_model, copy_to_project_directory) -> str:
+    """ fix ports/hosts, inject project names/dates, update info file """
     print(msg)  # "7. Final project fixup"
 
     if False and use_model == "" and command != "rebuild-from-model":  # TODO remove dead code

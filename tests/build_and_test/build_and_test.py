@@ -437,9 +437,21 @@ if Config.do_rebuild_tests:
     rebuild_tests()
 
 if Config.do_other_sqlite_databases:
-    run_command('{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={install}/Chinook_Sqlite.sqlite',
+    chinook_path = get_api_logic_server_path().joinpath('api_logic_server_cli').joinpath('database').joinpath('Chinook_Sqlite.sqlite')
+    chinook_url = f'sqlite:///{chinook_path}'
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=chinook_sqlite --db_url={chinook_url}',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate chinook_sqlite at: {str(install_api_logic_server_path)}')
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=classicmodels_sqlite --db_url=classicmodels',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate classicmodels.sqlite at: {str(install_api_logic_server_path)}')
+    start_api_logic_server(project_name='classicmodels_sqlite')
+    stop_server(msg="classicmodels_sqlite\n")
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=todo_sqlite --db_url=todo',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate todo.sqlite at: {str(install_api_logic_server_path)}')
+    start_api_logic_server(project_name='todo_sqlite')
+    stop_server(msg="todo\n")
 
 if Config.do_allocation_test:
     allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
