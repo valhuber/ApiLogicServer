@@ -106,17 +106,17 @@ For demonstration purposes, the system copies pre-defined logic and services so 
 
 ### 3. Create/verify `database/models.py`, then use that to create api/ and ui/ models
 
-The main driver instantiates `create_from_models/model_creation_services`, whose constructor calls `create_models`.  Described below, this provides access to the model, plus verious services to do things like return favorite fields, joins, etc.
+The main driver instantiates `create_from_models/model_creation_services.ModelCreationServics()`, whose constructor calls `create_models`.  Described below, this provides access to the model, plus verious services to do things like return favorite fields, joins, etc.
 
-The main driver then executes `invoke_creators` which calls the `create_from_models` modules to create api and ui models, based on the `create_from_models/model_creation_services` object.  Before writing `models.py`, import fixes are made in `fix_generated`.
+The main driver then executes `invoke_creators` which calls the `create_from_models` modules to create api and ui models, based on the `create_from_models/model_creation_services` object.  Before writing `models.py`, import fixes are made in `fix_database_models`.
 
 Here is the key excerpt of the main driver in `api_logic_server_cli/cli.py`:
 
 ```
     print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
     model_creation_services = ModelCreationServices(  ...)
-    fix_database_models__inject_db_types(project_directory, db_types)
-    invoke_creators(model_creation_services)  # creates api/expose_api_models, ui/admin & basic_web_app
+    fix_database_models(project_directory, db_types, nw_db_status)
+    invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
 ```
 
 
