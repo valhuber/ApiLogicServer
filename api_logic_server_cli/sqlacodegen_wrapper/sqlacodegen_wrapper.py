@@ -207,7 +207,7 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
 
 
 def create_models_memstring(args) -> str:
-    """ called by ApiLogicServer CLI - ModelCreationServices - to create return models(_py) string
+    """ called by ApiLogicServer CLI > ModelCreationServices > create_models_py
 
     returns str to be written to models.py
     """

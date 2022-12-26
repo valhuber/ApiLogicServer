@@ -128,6 +128,7 @@ generate APIs and UIs.  These models are created in `model_creation_services.py 
 The essence of the process is illustrated in the `key_module_map` at the end of `ApiLogicServer/api_logic_cli/cli.py`.  `ModelCreationServices` provides the model (`resource_list`) and various services (e.g, `findChildList`).  A key function is to __create the model__, which starts in the `__init()__` constructor:
 
 * It calls `sqlacodegen_wrapper.create_models_py` to create a string of the models file, which is then written to disk in `write_models_py()`
+    * See the [code comments for the function: `create_models_py`](https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/sqlacodegen_wrapper/sqlacodegen_wrapper.py){:target="_blank" rel="noopener"} 
 * It then calls `create_resource_list()` (non-trivial)
     * It dynamically loads the created `models.py`
     * And builds the model using metadata create by the SAFRS package

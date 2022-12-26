@@ -1526,13 +1526,14 @@ def key_module_map():
     import create_from_model.api_expose_api_models_creator as api_expose_api_models_creator
     import sqlacodegen_wrapper.sqlacodegen_wrapper as sqlacodegen_wrapper
 
-    api_logic_server()                                  # main driver, calls...
-    create_project_with_nw_samples()                    # clone project, overlay nw
-    model_creation_services = ModelCreationServices()   # creates resource_list (python db model); ctor calls...
+    api_logic_server()                                      # main driver, calls...
+    create_project_with_nw_samples()                        # clone project, overlay nw
+    model_creation_services = ModelCreationServices()       # creates resource_list (python db model); ctor calls...
     def and_the_ctor_calls():
-        sqlacodegen_wrapper.create_models_py({})        # creates models.py via sqlacodegen
-        model_creation_services.create_resource_list()  # creates resource_list via dynamic import of models.py
-    invoke_creators(model_creation_services)            # creates api & ui, via create_from_model...
-    api_expose_api_models_creator.create()              # creates api/expose_api_models.py, key input to SAFRS        
-    ui_admin_creator.create()                           # creates ui/admin/admin.yaml from resource_list
-    get_abs_db_url()                                    # nw set here, dbname
+        sqlacodegen_wrapper.create_models_py({})            # creates models.py via *sqlacodegen*
+        sqlacodegen_wrapper.CodeGenerator.render_class()    # sqlacodegen - creates models_py as string
+        model_creation_services.create_resource_list()      # creates resource_list via *dynamic import* of models.py
+    invoke_creators(model_creation_services)                # creates api & ui, via create_from_model...
+    api_expose_api_models_creator.create()                  # creates api/expose_api_models.py, key input to SAFRS        
+    ui_admin_creator.create()                               # creates ui/admin/admin.yaml from resource_list
+    get_abs_db_url()                                        # nw set here, dbname
