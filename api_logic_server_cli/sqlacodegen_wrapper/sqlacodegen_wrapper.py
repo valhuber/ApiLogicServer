@@ -1,7 +1,32 @@
-#
-# This script exposes an existing database as a webservice.  (Callable version - no on-import code, rated R)
-# A lot of dirty things going on here because we have to handle all sorts of edge cases
-#
+"""
+Create models.py (using sqlacodegen, via this wrapper at create_models_py() ).
+
+Called on creation of ModelCreationServices.__init__ (ctor).
+
+It creates the `models.py` file by calling this method.
+
+    1. It calls `create_models_memstring`:
+        * It returns the `models_py` text to be written to the projects' `database/models.py`.
+        * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
+            * An important consideration is disambiguating multiple relationships between the same w tables
+                * See `nw-plus` relationships between `Department` and `Employee`.
+                * [See here](https://valhuber.github.io/ApiLogicServer/Sample-Database/) for a database diagram.
+            * It transforms database names to resource names - capitalized, singular
+                * These (not table names) are used to create api and ui model
+    2. It then calls `write_models_py`
+
+The ctor then calls `create_resource_list`, to create the `resource_list`
+    * This is the meta data iterated by the creation modules to create api and ui model classes.
+    * Important: models are sometimes _supplied_ (`use_model`), not generated, because:
+        * Many DBs don't define FKs into the db (e.g. nw.db).
+        * Instead, they define "Virtual Keys" in their model files.
+        * To leverage these, we need to get resource Metadata from model classes, not db
+
+:param model_creation_services: ModelCreationServices
+:param abs_db_url:  the actual db_url (not relative, reflects sqlite [nw] copy)
+:param project: project directory
+"""
+
 import sys, logging, inspect, builtins, os, argparse, tempfile, atexit, shutil, io
 import traceback
 
@@ -132,7 +157,7 @@ def write_models_py(model_file_name, models_mem):
 
 def create_models_py(model_creation_services: ModelCreationServices, abs_db_url: str, project_directory: str):
     """
-    Create models.py (using sqlacodegen, via this wrapper).
+    Create models.py (using sqlacodegen, via this wrapper at create_models_py() ).
 
     Called on creation of ModelCreationServices.__init__ (ctor).
 
