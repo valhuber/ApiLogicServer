@@ -205,7 +205,7 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
     num_models = 0
     model_file_name = "*"
     if model_creation_services.project.command in ('create', 'create-and-run', 'rebuild-from-database', 'add_db'):
-        if model_creation_services.project.use_model is None:
+        if model_creation_services.project.use_model is None or model_creation_services.project.use_model == "":
             code_gen_args = get_codegen_args()
             model_file_name = code_gen_args.outfile
             if model_creation_services.project.bind_key is not None:

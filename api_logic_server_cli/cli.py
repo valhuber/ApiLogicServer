@@ -446,20 +446,6 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
     return return_abs_db_url
 
 
-def create_basic_web_app(db_url, project_name, msg):  # remove - now creating by simple copy directory
-    project_abs_path = abspath(project_name)
-    fab_project = project_abs_path + "/ui/basic_web_app"
-    cmd = f'flask fab create-app --name {fab_project} --engine SQLAlchemy'
-    result = create_utils.run_command(cmd, msg=msg)
-    pass
-
-
-def write_expose_api_models(project_name, apis):
-    text_file = open(project_name + '/api/expose_api_models.py', 'a')
-    text_file.write(apis)
-    text_file.close()
-
-
 def get_windows_path_with_slashes(url: str) -> str:
     """ idiotic fix for windows (\ --> \\\\)
 
@@ -1531,7 +1517,8 @@ def check_ports():
         rtn_hostname = socket.gethostname()
         rtn_local_ip = socket.gethostbyname(rtn_hostname)
     except:
-        print(f"cannot get local ip from {rtn_hostname}")
+        rtn_local_ip = f"cannot get local ip from {rtn_hostname}"
+        print(f"{rtn_local_ip}")
     port_check = False
     if port_check or is_docker():
         s = socket.socket()  # Create a socket object
