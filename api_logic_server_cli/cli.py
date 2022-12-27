@@ -266,7 +266,7 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
 
 def get_project_directory_and_api_name(project):
     """
-    user-supplied project_name, less the twiddle (which might be in project_name); typically relative to cwd.
+    user-supplied project_name, less the tilde (which might be in project_name); typically relative to cwd.
 
     :param project_name: a file name, eg, ~/Desktop/a.b
     :param api_name: defaults to 'api'
@@ -747,14 +747,15 @@ def invoke_creators(model_creation_services: ModelCreationServices):
 
 class ProjectRun(Project):
     """ Main Class - instantiate / create_project to run CLI functions """
-    def __init__(self, command: str, project_name: str, db_url: str, api_name: str,
-                     host: str, port: str, swagger_host: str, not_exposed: str,
-                     from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
-                     flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
-                     extended_builder: str, multi_api: bool, infer_primary_key: bool):
+    def __init__(self, command: str, project_name: str, db_url: str, api_name: str=None,
+                     host: str=None, port: str=None, swagger_host: str=None, not_exposed: str=None,
+                     from_git: str=None, db_types: str=None, open_with: str=None, run: bool=None, use_model: str=None, admin_app: bool=None,
+                     flask_appbuilder: bool=None, favorites: str=None, non_favorites: str=None, react_admin: bool=None,
+                     extended_builder: str=None, multi_api: bool=None, infer_primary_key: bool=None, bind_key: str=None):
         super(ProjectRun, self).__init__()
         self.project_name = project_name
         self.db_url = db_url
+        self.bind_key = bind_key
         self.api_name = api_name
         self.host = host
         self.port = port
@@ -776,7 +777,6 @@ class ProjectRun(Project):
         self.command = command
 
         self.create_project()
-        pass
 
 
     def print_options(self):
@@ -789,6 +789,7 @@ class ProjectRun(Project):
         if print_options:
             print(f'\n\nCreating ApiLogicServer with options:')
             print(f'  --db_url={self.db_url}')
+            print(f'  --bind_key={self.bind_key}')
             print(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
             print(f'  --api_name={self.api_name}')
             print(f'  --admin_app={self.admin_app}')
@@ -833,7 +834,7 @@ class ProjectRun(Project):
         self.project_directory, self.api_name, merge_into_prototype = get_project_directory_and_api_name(self)
 
         self.project_directory, self.copy_to_project_directory = copy_if_mounted(self.project_directory)
-        if not self.command.startswith("rebuild"):
+        if not self.command.startswith("rebuild") and not self.command == "add_db":
             self.abs_db_url = create_project_with_nw_samples(self, merge_into_prototype, "2. Create Project:")
         else:
             print("1. Not Deleting Existing Project")
@@ -1277,6 +1278,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
                     extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
 
 # Kat
+
 @main.command("add_db") 
 @click.option('--db_url',
               default=f'todo',
@@ -1293,12 +1295,23 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL):
     """
     update create from model to notice bind key and create new model.py file if needed
+    
+    example: 
+    cd existing_project
+    ApiLogicServer add_db --db_url="todo" --bind_key="Todo"
+    
     """
     # Kat TODO 
-    global command
-    command = "rebuild-from-model"
-    db_types = ""
     print("ready to add db!")
+    project_name=os.getcwd()
+    if project_name == get_api_logic_server_dir():
+      project_name = str(
+            Path(project_name).parent.parent.joinpath("servers").joinpath("ApiLogicProject")
+          )
+    ProjectRun(command="add_db", 
+              project_name=project_name, 
+              db_url=db_url, 
+              bind_key=bind_key)
 
 
 @main.command("rebuild-from-model")

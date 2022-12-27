@@ -6,6 +6,7 @@ class ProjectArgs():
         self.command = None
         self.project_name = None
         self.db_url = None
+        self.bind_key = None
         self.api_name = None
         self.host = None
         self.port = None
