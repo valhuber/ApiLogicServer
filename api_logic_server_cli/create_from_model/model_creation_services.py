@@ -137,6 +137,7 @@ class ModelCreationServices(object):
     Key logic is initiated when a (single) object is created.  The `__init__` calls `create_models`.
     """
 
+    from api_logic_server_cli.cli_args_project import Project
     result_views = ""
     result_apis = ""
 
@@ -159,60 +160,48 @@ class ModelCreationServices(object):
     num_related = 0
 
     def __init__(self,
+                 project: Project,
                  project_directory: str = "~/Desktop/my_project",
-                 api_name: str = "api",
                  copy_to_project_directory: str = "",
-                 api_logic_server_dir: str = "",
-                 os_cwd: str = "",
-                 abs_db_url: str = "sqlite:///nw.sqlite",
-                 db_url: str = "sqlite:///nw.sqlite",
-                 nw_db_status: str = "",
                  my_children_list: dict = None,
                  my_parents_list: dict = None,
-                 host: str = "localhost",
-                 port: str = "5656",
-                 use_model: str = "",
-                 admin_app: bool = True,
-                 flask_appbuilder: bool = True,
-                 react_admin: bool = True,
-                 not_exposed: str = 'ProductDetails_V',
-                 favorite_names: str = "name description",
-                 non_favorite_names: str = "id",
-                 command: str = "",
-                 version: str = "0.0.0",
-                 multi_api: bool = False,
-                 infer_primary_key: bool = False):
+                 version: str = "0.0.0"):
+        self.project = project
         self.project_directory = None
-        self.api_name = api_name
         if project_directory:
             self.project_directory = self.get_windows_path_with_slashes(project_directory)
         self.copy_to_project_directory = ""
         if copy_to_project_directory != "":
             self.copy_to_project_directory = self.get_windows_path_with_slashes(copy_to_project_directory)
+        """
         self.api_logic_server_dir = api_logic_server_dir
         self.abs_db_url = abs_db_url  # actual (not relative, reflects nw copy, etc)
         self.os_cwd = os_cwd
-        self.db_url = db_url  # the original cli parameter
         self.nw_db_status = nw_db_status
-        self.host = host
-        self.port = port
-        self.use_model = use_model
         self.command = command
+        """
         self.resource_list : Dict[str, Resource] = dict()
         self.resource_list_complete = False
+        self.version = version
         self.my_children_list = my_children_list
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.my_parents_list = my_parents_list
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
-        self.not_exposed = not_exposed
-        self.favorite_names = favorite_names
-        self.non_favorite_names = non_favorite_names
-        self.admin_app = admin_app
-        self.flask_appbuilder = flask_appbuilder
-        self.react_admin = react_admin
-        self.version = version
-        self.multi_api = multi_api
-        self.infer_primary_key = infer_primary_key
+        # self.api_name = api_name
+        # self.db_url = db_url  # the original cli parameter
+        # self.host = host
+        # self.port = port
+        # self.use_model = use_model
+        # self.not_exposed = not_exposed
+        # self.favorite_names = favorite_names
+        # self.non_favorite_names = non_favorite_names
+        # self.admin_app = admin_app
+        # self.flask_appbuilder = flask_appbuilder
+        # self.react_admin = react_admin
+        # self.multi_api = multi_api
+        # self.infer_primary_key = infer_primary_key
+        # self._non_favorite_names_list = self.project.non_favorites.split()
+        # self._favorite_names_list = self.project.favorite_names.split()
 
         self.table_to_class_map = {}
         """ keys are table[.column], values are class / attribute """
@@ -222,11 +211,9 @@ class ModelCreationServices(object):
         self.connection = None
         self.app = None
 
-        self._non_favorite_names_list = self.non_favorite_names.split()
-        self._favorite_names_list = self.favorite_names.split()
         model_file_name, msg = sqlacodegen_wrapper.create_models_py(
             model_creation_services = self,
-            abs_db_url= abs_db_url,
+            abs_db_url= self.project.abs_db_url,
             project_directory = project_directory)
         self.create_resource_list(model_file_name, msg)  # whether created or used, build resource_list
 
@@ -729,7 +716,7 @@ class ModelCreationServices(object):
             print(f'\n*** DEBUG/import - self.project_directory={self.project_directory}')
             print(f'*** DEBUG/import - project_abs_path={project_path}')
         model_imported = False
-        path_to_add = project_path if self.command == "create-ui" else \
+        path_to_add = project_path if self.project.command == "create-ui" else \
             project_path + "/database"  # for Api Logic Server projects
         sys.path.insert(0, self.project_directory)    # e.g., /Users/val/dev/servers/install/ApiLogicServer
         sys.path.insert(0, path_to_add)    # e.g., /Users/val/dev/servers/install/ApiLogicServer/database

@@ -103,13 +103,13 @@ class AdminCreator(object):
     def create_admin_application(self):
         """ main driver - loop through resources, write admin.yaml - with backup, nw customization
         """
-        if self.mod_gen.command == "create-ui" or self.mod_gen.command.startswith("rebuild"):
-            if self.mod_gen.command.startswith("rebuild"):
+        if self.mod_gen.project.command == "create-ui" or self.mod_gen.project.command.startswith("rebuild"):
+            if self.mod_gen.project.command.startswith("rebuild"):
                 print(".. .. ..Use existing ui/admin directory")
         else:
             self.create_admin_app(msg=".. .. ..Create ui/admin")
 
-        sys.path.append(self.mod_gen.os_cwd)
+        sys.path.append(self.mod_gen.project.os_cwd)
 
         use_repl = True 
         if use_repl: # enables same admin.yaml for local vs Codespace, by runtime fixup of api_root
@@ -131,7 +131,7 @@ class AdminCreator(object):
         self.create_settings()
         # self.doc_properties()
 
-        if self.mod_gen.command != "create-ui":
+        if self.mod_gen.project.command != "create-ui":
             self.write_yaml_files()
 
 
@@ -494,7 +494,7 @@ class AdminCreator(object):
 
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
         write_file = "Write"  # alert - not just message, drives processing
-        if self.mod_gen.command.startswith("rebuild"):
+        if self.mod_gen.project.command.startswith("rebuild"):
             ''' 
                 creation_time different mac - always appears unaltered (== modified_time)
                 https://stackoverflow.com/questions/946967/get-file-creation-time-with-python-on-mac
@@ -540,9 +540,9 @@ class AdminCreator(object):
             with open(yaml_created_file_name, 'w') as yaml_created_file:
                 yaml_created_file.write(admin_yaml_dump)
 
-        if self.mod_gen.nw_db_status in ["nw"] and self.mod_gen.api_name == "api":
-            if not self.mod_gen.command.startswith("rebuild"):
-                src = os.path.join(Path(self.mod_gen.api_logic_server_dir), Path(f'project_prototype_nw/ui/admin/admin.yaml'))
+        if self.mod_gen.project.nw_db_status in ["nw"] and self.mod_gen.project.api_name == "api":
+            if not self.mod_gen.project.command.startswith("rebuild"):
+                src = os.path.join(self.mod_gen.project.api_logic_server_dir_path, Path(f'project_prototype_nw/ui/admin/admin.yaml'))
                 dest = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
                 shutil.copyfile(src, dest)
                 """  nw fixup (not required, since all copied from prototype_nw)
@@ -690,7 +690,7 @@ class AdminCreator(object):
         set False if alsdock/dockerfile copies this folder:
         RUN cp -r /app/ui/safrs-react-admin /app/ApiLogicServer-main/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
         '''
-        if use_alsdock_sra and self.mod_gen.multi_api:
+        if use_alsdock_sra and self.mod_gen.project.multi_api:
             print(f'{msg} multi_api - copy safrs-react-admin {from_proto_dir} -> {to_project_dir}')
             from_proto_dir = pathlib.Path("/app/ui/safrs-react-admin")  # enables debug for alsdock projects
             shutil.copytree(from_proto_dir, to_project_dir)
@@ -704,8 +704,8 @@ class AdminCreator(object):
             shutil.copytree(from_proto_dir, to_project_dir)
 
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
-        swagger_name = self.mod_gen.api_name
-        if self.mod_gen.multi_api:
+        swagger_name = self.mod_gen.project.api_name
+        if self.mod_gen.project.multi_api:
             swagger_name += "/api"
             print(f'.. ui/admin/home.js updated url: {swagger_name}')
         create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
@@ -716,9 +716,10 @@ def create(model_creation_services: create_from_model.ModelCreationServices):
     """ called by ApiLogicServer CLI -- creates ui/admin application (ui/admin folder, admin.yaml)
     """
     admin_creator = AdminCreator(model_creation_services,
-                                 host=model_creation_services.host, port=model_creation_services.port,
-                                 not_exposed=model_creation_services.not_exposed + " ",
-                                 favorite_names=model_creation_services.favorite_names,
-                                 non_favorite_names=model_creation_services.non_favorite_names)
+                                 host=model_creation_services.project.host,
+                                 port=model_creation_services.project.port,
+                                 not_exposed=model_creation_services.project.not_exposed + " ",
+                                 favorite_names=model_creation_services.project.favorites,
+                                 non_favorite_names=model_creation_services.project.non_favorites)
     admin_creator.create_admin_application()
 

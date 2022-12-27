@@ -371,6 +371,16 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Rebuild-from-database",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/api_logic_server_cli",
+            "program": "cli.py",
+            "redirectOutput": true,
+            "args": ["rebuild-from-database","--project_name=../../servers/ApiLogicProject","--db_url="],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Rebuild-from-model",
             "type": "python",
             "request": "launch",

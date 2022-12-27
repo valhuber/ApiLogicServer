@@ -402,7 +402,6 @@ class CodeGenerator(object):
 
 
 {models}"""
-    do_model_creation_services_hack = False  # fixme remove
 
     def __init__(self, metadata, noindexes=False, noconstraints=False, nojoined=False,
                  noinflect=False, noclasses=False, model_creation_services = None,
@@ -509,7 +508,7 @@ class CodeGenerator(object):
                         has_unique_constraint = True
                         print(f'\n*** ApiLogicServer -- {table.name} has unique constraint, no primary_key')
                 #  print(f'\nTEST *** {table.name} not table.primary_key = {not table.primary_key}, has_unique_constraint = {has_unique_constraint}')
-            unique_constraint_class = model_creation_services.infer_primary_key and has_unique_constraint
+            unique_constraint_class = model_creation_services.project.infer_primary_key and has_unique_constraint
             if unique_constraint_class == False and (noclasses or not table.primary_key or table.name in association_tables):
                 model = self.table_model(table)
             else:
@@ -692,7 +691,7 @@ from sqlalchemy.dialects.mysql import *
         if is_unique:
             column.unique = True
             kwarg.append('unique')
-            if self.model_creation_services.infer_primary_key:
+            if self.model_creation_services.project.infer_primary_key:
                 # print(f'ApiLogicServer infer_primary_key for {column.table.name}.{column.name}')
                 column.primary_key = True
                 kwarg.append('primary_key')
@@ -826,18 +825,6 @@ from sqlalchemy.dialects.mysql import *
         bind_key = "None"
         rendered += '{0}__bind_key__ = {1!r}\n'.format(self.indentation, bind_key)  # usually __bind_key__ = None
 
-        if self.do_model_creation_services_hack and not self.model_creation_services.resource_list_complete:
-            resource_list = self.model_creation_services.resource_list
-            resource = Resource(name=model.name)
-            for each_attr, each_column in model.attributes.items():
-                if isinstance(each_column, Column):
-                    resource_attribute = ResourceAttribute(name=str(each_column.name))
-                    resource.attributes.append(resource_attribute)
-            resource_list[model.name] = resource
-            if not str(model.table.name).startswith("ab_"):
-                self.model_creation_services.table_to_class_map_update(
-                    table_name=model.table.name, class_name=model.name)
-
         # Render constraints and indexes as __table_args__
         autonum_col = False
         table_args = []
@@ -952,8 +939,6 @@ from sqlalchemy.dialects.mysql import *
                     pass
                 elif isinstance(relationship, ManyToManyRelationship):  # eg, chinook:PlayList->PlayListTrack
                     print(f'many to many should not occur on: {model.name}.{unique_name}')
-                elif not self.do_model_creation_services_hack:
-                    pass
                 else:  # fixme dump all this, right?
                     use_old_code = False  # so you can elide this
                     if use_old_code:

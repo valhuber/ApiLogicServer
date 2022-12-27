@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.05.06"
+__version__ = "6.05.07"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/24/2022 - 06.05.06: security prototype, sqlite test dbs  \n"\
+    "\t12/24/2022 - 06.05.07: security prototype, sqlite test dbs, class-based create  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
     "\t11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54) \n"\
@@ -84,6 +84,8 @@ from create_from_model.model_creation_services import ModelCreationServices
 
 import sqlacodegen_wrapper.sqlacodegen_wrapper as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
+
+from api_logic_server_cli.cli_args_project import Project
 
 
 api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
@@ -262,7 +264,7 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
             project_readme_file.write(standard_readme_file.read())
 
 
-def get_project_directory_and_api_name(project_name: str, api_name: str, multi_api: bool):
+def get_project_directory_and_api_name(project):
     """
     user-supplied project_name, less the twiddle (which might be in project_name); typically relative to cwd.
 
@@ -279,8 +281,8 @@ def get_project_directory_and_api_name(project_name: str, api_name: str, multi_a
     """
 
     global os_cwd
-    rtn_project_directory = project_name    # eg, '../../servers/ApiLogicProject'
-    rtn_api_name = api_name                 # typically api
+    rtn_project_directory = project.project_name    # eg, '../../servers/ApiLogicProject'
+    rtn_api_name = project.api_name                 # typically api
     rtn_merge_into_prototype = False        
     if rtn_project_directory.startswith("~"):
         rtn_project_directory = str(Path.home()) + rtn_project_directory[1:]
@@ -294,35 +296,27 @@ def get_project_directory_and_api_name(project_name: str, api_name: str, multi_a
         print(f'1. Merge into project prototype: {rtn_project_directory}{msg}')
     project_path = Path(rtn_project_directory)
     project_path_last_node = project_path.parts[-1]
-    if multi_api or api_name == ".":
+    if project.multi_api or project.api_name == ".":
         rtn_api_name = project_path_last_node
     return rtn_project_directory, \
         rtn_api_name, \
         rtn_merge_into_prototype
 
 
-def create_project_with_nw_samples(project_directory: str, project_name: str,
-                                    merge_into_prototype: bool, api_name: str,
-                                    from_git: str, msg: str,
-                                    abs_db_url: str, nw_db_status: str) -> str:
+def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str) -> str:
     """
     clone prototype to  project directory, copy sqlite db, and remove git folder
 
     if nw/nw+, inject sample logic/declare_logic and api/customize_api.
 
-    :param project_directory: name of project created
-    :param project_name: actual user parameter (might have ~, .)
-    :param merge_into_prototype: if True, merge creation into project_directory
-    :param api_name: node in rest uri
-    :param from_git: name of git project to clone (blank for default)
+    :param project a ProjectRun
     :param msg printed, such as Create Project:
-    :param abs_db_url: non-relative location of db
-    :param nw_db_status one of ["", "nw", "nw+", "nw-"]
+    :param merge_into_prototype for codespaces - create over self
     :return: return_abs_db_url (e.g., reflects sqlite copy to project/database dir)
     """
 
     import tempfile
-    cloned_from = from_git
+    cloned_from = project.from_git
     tmpdirname = ""
     with tempfile.TemporaryDirectory() as tmpdirname:
 
@@ -330,27 +324,27 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             pass
         else:
             remove_project_debug = True
-            if remove_project_debug and project_name != ".":
-                delete_dir(realpath(project_directory), "1.")
+            if remove_project_debug and project.project_name != ".":
+                delete_dir(realpath(project.project_directory), "1.")
 
-        from_dir = from_git
+        from_dir = project.from_git
         api_logic_server_dir_str = str(get_api_logic_server_dir())  # fixme not req'd
-        if from_git.startswith("https://"):
-            cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project_directory
-            cmd = f'git clone --quiet {from_git} {project_directory}'
+        if project.from_git.startswith("https://"):
+            cmd = 'git clone --quiet https://github.com/valhuber/ApiLogicServerProto.git ' + project.project_directory
+            cmd = f'git clone --quiet {project.from_gitfrom_git} {project.project_directory}'
             result = create_utils.run_command(cmd, msg=msg)  # "2. Create Project")
-            delete_dir(f'{project_directory}/.git', "3.")
+            delete_dir(f'{project.project_directory}/.git', "3.")
         else:
             if from_dir == "":
                 from_dir = (Path(api_logic_server_dir_str)).\
                     joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
-            print(f'{msg} {os.path.realpath(project_directory)}')
+            print(f'{msg} {os.path.realpath(project.project_directory)}')
             print(f'.. ..Clone from {from_dir} ')
             cloned_from = from_dir
             try:
                 if merge_into_prototype:
                     # tmpdirname = tempfile.TemporaryDirectory() 
-                    recursive_overwrite(project_directory, str(tmpdirname))       # user proto -> temp
+                    recursive_overwrite(project.from_gitproject_directory, str(tmpdirname))       # user proto -> temp
                     delete_dir(str(Path(str(tmpdirname)) / ".devcontainer"), "")  # clean it up
                     delete_dir(str(Path(str(tmpdirname)) / "api"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "database"), "")
@@ -359,12 +353,12 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
                     delete_dir(str(Path(str(tmpdirname)) / "ui"), "")
                     if os.path.exists(str(Path(str(tmpdirname))  / "api_logic_server_run.py" )):
                         os.remove(str(Path(str(tmpdirname)) / "api_logic_server_run.py"))
-                    delete_dir(realpath(project_directory), "")
-                    recursive_overwrite(from_dir, project_directory)  # ApiLogic Proto -> new project
+                    delete_dir(realpath(project.project_directory), "")
+                    recursive_overwrite(from_dir, project.project_directory)  # ApiLogic Proto -> new project
                 else:
-                    shutil.copytree(from_dir, project_directory)  # normal path (fails if project_directory not empty)
+                    shutil.copytree(from_dir, project.project_directory)  # normal path (fails if project_directory not empty)
             except OSError as e:
-                print(f'\n==>Error - unable to copy to {project_directory} -- see log below'
+                print(f'\n==>Error - unable to copy to {project.project_directory} -- see log below'
                     f'\n\n{str(e)}\n\n'
                     f'Suggestions:\n'
                     f'.. Verify the --project_name argument\n'
@@ -373,31 +367,31 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
             nw_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
-            recursive_overwrite(nw_dir, project_directory)
+            recursive_overwrite(nw_dir, project.project_directory)
 
-            create_nw_tutorial(project_directory, api_logic_server_dir_str)
+            create_nw_tutorial(project.project_directory, api_logic_server_dir_str)
 
         if nw_db_status in ["nw-"]:
             print(".. ..Copy in nw- customizations: readme, perform_customizations")
             nw_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
-            recursive_overwrite(nw_dir, project_directory)
+            recursive_overwrite(nw_dir, project.project_directory)
 
         create_utils.replace_string_in_file(search_for="creation-date",
                             replace_with=str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
-                            in_file=f'{project_directory}/readme.md')
+                            in_file=f'{project.project_directory}/readme.md')
         create_utils.replace_string_in_file(search_for="api_logic_server_version",
                             replace_with=__version__,
-                            in_file=f'{project_directory}/readme.md')
+                            in_file=f'{project.project_directory}/readme.md')
         create_utils.replace_string_in_file(search_for="api_logic_server_template",
                             replace_with=f'{from_dir}',
-                            in_file=f'{project_directory}/readme.md')
+                            in_file=f'{project.project_directory}/readme.md')
         create_utils.replace_string_in_file(search_for="api_logic_server_project_directory",
-                            replace_with=f'{project_directory}',
-                            in_file=f'{project_directory}/readme.md')
+                            replace_with=f'{project.project_directory}',
+                            in_file=f'{project.project_directory}/readme.md')
         create_utils.replace_string_in_file(search_for="api_logic_server_api_name",
-                            replace_with=f'{api_name}',
-                            in_file=f'{project_directory}/readme.md')
+                            replace_with=f'{project.api_name}',
+                            in_file=f'{project.project_directory}/readme.md')
 
         do_fix_docker_for_vscode_dockerfile = True
         """
@@ -408,22 +402,22 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
                                     in_file=f'{project_directory}/For_VSCode.dockerfile')
         """
 
-        project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
-        return_abs_db_url = abs_db_url
+        project_directory_actual = os.path.abspath(project.project_directory)  # make path absolute, not relative (no /../)
+        return_abs_db_url = project.abs_db_url
         copy_sqlite = True
-        if copy_sqlite == False or "sqlite" not in abs_db_url:
-            db_uri = get_windows_path_with_slashes(abs_db_url)
+        if copy_sqlite == False or "sqlite" not in project.abs_db_url:
+            db_uri = get_windows_path_with_slashes(project.abs_db_url)
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=db_uri,
-                                in_file=f'{project_directory}/config.py')
+                                in_file=f'{project.project_directory}/config.py')
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=db_uri,
-                                in_file=f'{project_directory}/database/alembic.ini')
+                                in_file=f'{project.project_directory}/database/alembic.ini')
         else:
             """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
             """
             # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
-            db_loc = abs_db_url.replace("sqlite:///", "")
+            db_loc = project.abs_db_url.replace("sqlite:///", "")
             target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
             copyfile(db_loc, target_db_loc_actual)
             backup_db = project_directory_actual + '/database/db-backup.sqlite'
@@ -436,16 +430,16 @@ def create_project_with_nw_samples(project_directory: str, project_name: str,
             return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=return_abs_db_url,
-                                in_file=f'{project_directory}/config.py')
+                                in_file=f'{project.project_directory}/config.py')
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=return_abs_db_url,
-                                in_file=f'{project_directory}/database/alembic.ini')
+                                in_file=f'{project.project_directory}/database/alembic.ini')
 
             print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
             print(f'.. .. ..From {db_loc}')
             print(f'.. .. ..db_uri set to: {return_abs_db_url} in <project>/config.py')
         if merge_into_prototype:
-            recursive_overwrite(str(tmpdirname), project_directory)
+            recursive_overwrite(str(tmpdirname), project.project_directory)
             # delete_dir(realpath(Path(str(tmpdirname))), "")
             # os.removedirs(Path(str(tmpdirname)))
             # tmpdirname.cleanup()
@@ -501,12 +495,11 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
             replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
 
 
-def final_project_fixup(msg, project_name, project_directory, api_name,
-                        host, port, swagger_host, use_model, copy_to_project_directory) -> str:
+def final_project_fixup(msg, project) -> str:
     """ fix ports/hosts, inject project names/dates, update info file """
     print(msg)  # "7. Final project fixup"
 
-    if False and use_model == "" and command != "rebuild-from-model":  # TODO remove dead code
+    if False and project.use_model == "" and project.command != "rebuild-from-model":  # TODO remove dead code
         msg = f' a.   Appending "from database import customize_models" to database/models.py'
         fix_database_models__import_customize_models(project_directory, msg)
 
@@ -515,18 +508,18 @@ def final_project_fixup(msg, project_name, project_directory, api_name,
         pass
     else:
         print(f' b.   Update api_logic_server_run.py with '
-              f'project_name={project_name} and api_name, host, port')
-        update_api_logic_server_run(project_name, project_directory, api_name, host, port, swagger_host)
+              f'project_name={project.project_name} and api_name, host, port')
+        update_api_logic_server_run(project)
 
-        fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project_directory, host, port)
+        fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project)
 
         copy_project_result = ""
-        if copy_to_project_directory != "":
+        if project.copy_to_project_directory != "":
             copy_project_result = \
-                copy_project_to_local(project_directory, copy_to_project_directory,
+                copy_project_to_local(project.project_directory, copy_to_project_directory,
                                       f'10. Copy temp_created_project over {copy_to_project_directory} ')
 
-        api_logic_server_info_file_dict["last_created_project_name"] = project_directory  # project_name - twiddle
+        api_logic_server_info_file_dict["last_created_project_name"] = project.project_directory  # project_name - twiddle
         api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
         api_logic_server_info_file_dict["last_created_version"] = __version__
         with open(api_logic_server_info_file_name, 'w') as api_logic_server_info_file_file:
@@ -543,16 +536,16 @@ def fix_database_models__import_customize_models(project_directory: str, msg: st
     models_file.close()
 
 
-def update_api_logic_server_run(project_name, project_directory, api_name, host, port, swagger_host):
+def update_api_logic_server_run(project):
     """
     Updates project_name, ApiLogicServer hello, project_dir in api_logic_server_run_py
 
     Note project_directory is from user, and may be relative (and same as project_name)
     """
-    project_directory_actual = os.path.abspath(project_directory)  # make path absolute, not relative (no /../)
-    api_logic_server_run_py = f'{project_directory}/api_logic_server_run.py'
+    project_directory_actual = os.path.abspath(project.project_directory)  # make path absolute, not relative (no /../)
+    api_logic_server_run_py = f'{project.project_directory}/api_logic_server_run.py'
     create_utils.replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
-                           replace_with='"' + os.path.basename(project_name) + '"',
+                           replace_with='"' + os.path.basename(project.project_name) + '"',
                            in_file=api_logic_server_run_py)
     create_utils.replace_string_in_file(search_for="ApiLogicServer hello",
                            replace_with="ApiLogicServer generated at:" +
@@ -565,15 +558,15 @@ def update_api_logic_server_run(project_name, project_directory, api_name, host,
                            replace_with='"' + project_directory_fix + '"',
                            in_file=api_logic_server_run_py)
     create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
-                           replace_with=api_name,
+                           replace_with=project.api_name,
                            in_file=api_logic_server_run_py)
     create_utils.replace_string_in_file(search_for="api_logic_server_host",
-                           replace_with=host,
+                           replace_with=project.host,
                            in_file=api_logic_server_run_py)
     create_utils.replace_string_in_file(search_for="api_logic_server_swagger_host",
-                           replace_with=swagger_host,
+                           replace_with=project.swagger_host,
                            in_file=api_logic_server_run_py)
-    replace_port = f', port="{port}"' if port else ""  # TODO: consider reverse proxy
+    replace_port = f', port="{project.port}"' if project.port else ""  # TODO: consider reverse proxy
 
     create_utils.replace_string_in_file(search_for="api_logic_server_version",
                            replace_with=__version__,
@@ -584,28 +577,28 @@ def update_api_logic_server_run(project_name, project_directory, api_name, host,
                            in_file=api_logic_server_run_py)
 
     create_utils.replace_string_in_file(search_for="api_logic_server_port",   # server port
-                           replace_with=port,
+                           replace_with=project.port,
                            in_file=api_logic_server_run_py)
     pass
 
 
-def fix_host_and_ports(msg, project_name, host, port):
+def fix_host_and_ports(msg, project):
     """ c.   Fixing api/expose_services - port, host """
     print(msg)  # c.   Fixing api/expose_services - port, host
-    replace_port = f':{port}' if port else ""
+    replace_port = f':{project.port}' if project.port else ""
     # replace_with = host + replace_port
-    in_file = f'{project_name}/api/customize_api.py'
+    in_file = f'{project.project_name}/api/customize_api.py'
     create_utils.replace_string_in_file(search_for="api_logic_server_host",
-                           replace_with=host,
+                           replace_with=project.host,
                            in_file=in_file)
     create_utils.replace_string_in_file(search_for="api_logic_server_port",
                            replace_with=replace_port,
                            in_file=in_file)
-    print(f' d.   Updated customize_api_py with port={port} and host={host}')
-    full_path = os.path.abspath(project_name)
+    print(f' d.   Updated customize_api_py with port={project.port} and host={project.host}')
+    full_path = os.path.abspath(project.project_name)
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
-                           in_file=f'{project_name}/python_anywhere_wsgi.py')
+                           in_file=f'{project.project_name}/python_anywhere_wsgi.py')
     print(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
 
 
@@ -729,7 +722,7 @@ def invoke_creators(model_creation_services: ModelCreationServices):
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(model_creation_services)  # invoke create function
 
-    if model_creation_services.admin_app:
+    if model_creation_services.project.admin_app:
         print(" c.  Create ui/admin/admin.yaml from models")
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_admin_creator.py')
         creator = importlib.util.module_from_spec(spec)
@@ -739,7 +732,7 @@ def invoke_creators(model_creation_services: ModelCreationServices):
         pass
         # print(".. .. ..ui/admin_app creation declined")
 
-    if model_creation_services.flask_appbuilder:
+    if model_creation_services.project.flask_appbuilder:
         print(" d.  Create ui/basic_web_app/app/views.py (import / iterate models)")
         creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_basic_web_app_creator.py')
@@ -752,124 +745,157 @@ def invoke_creators(model_creation_services: ModelCreationServices):
     model_creation_services.close_app()  # this may no longer be required
 
 
-def api_logic_server(project_name: str, db_url: str, api_name: str,
+class ProjectRun(Project):
+    """ Main Class - instantiate / create_project to run CLI functions """
+    def __init__(self, command: str, project_name: str, db_url: str, api_name: str,
                      host: str, port: str, swagger_host: str, not_exposed: str,
                      from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
                      flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin: bool,
                      extended_builder: str, multi_api: bool, infer_primary_key: bool):
-    """
-    Creates logic-enabled Python safrs api/admin project, options for FAB and execution
+        super(ProjectRun, self).__init__()
+        self.project_name = project_name
+        self.db_url = db_url
+        self.api_name = api_name
+        self.host = host
+        self.port = port
+        self.swagger_host = swagger_host
+        self.not_exposed = not_exposed
+        self.from_git = from_git
+        self.db_types = db_types
+        self.open_with = open_with
+        self.run = run
+        self.use_model = use_model
+        self.admin_app = admin_app
+        self.flask_appbuilder = flask_appbuilder
+        self.favorites = favorites
+        self.non_favorites = non_favorites
+        self.react_admin = react_admin
+        self.extended_builder = extended_builder
+        self.multi_api = multi_api
+        self.infer_primary_key = infer_primary_key
+        self.command = command
 
-    main driver
+        self.create_project()
+        pass
 
-    :param project_name could be ~, or volume - creates this folder
-    :param db_url SQLAlchemy url
-    :param host where safrs finds the api
-    :param port where safrs finds the port
-    :param extended_builder python file invoked to augment project
-    :returns: none
-    """
 
-    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
-    print_options(project_name = project_name, db_url=db_url, api_name=api_name,
-                  host=host, port=port, swagger_host = swagger_host, not_exposed=not_exposed,
-                  from_git=from_git, db_types=db_types, open_with=open_with, run=run, use_model=use_model,
-                  flask_appbuilder=flask_appbuilder, favorites=favorites, non_favorites=non_favorites,
-                  react_admin=react_admin, admin_app=admin_app,
-                  extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
+    def print_options(self):
+        """ Creating ApiLogicServer with options: (or uri helo) """
+        if self.db_url == "?":
+            print_uri_info()
+            exit(0)
 
-    print(f"\nApiLogicServer {__version__} Creation Log:")
+        print_options = True
+        if print_options:
+            print(f'\n\nCreating ApiLogicServer with options:')
+            print(f'  --db_url={self.db_url}')
+            print(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
+            print(f'  --api_name={self.api_name}')
+            print(f'  --admin_app={self.admin_app}')
+            print(f'  --react_admin={self.react_admin}')
+            print(f'  --flask_appbuilder={self.flask_appbuilder}')
+            print(f'  --from_git={self.from_git}')
+            #        print(f'  --db_types={self.db_types}')
+            print(f'  --run={self.run}')
+            print(f'  --host={self.host}')
+            print(f'  --port={self.port}')
+            print(f'  --swagger_host={self.swagger_host}')
+            print(f'  --not_exposed={self.not_exposed}')
+            print(f'  --open_with={self.open_with}')
+            print(f'  --use_model={self.use_model}')
+            print(f'  --favorites={self.favorites}')
+            print(f'  --non_favorites={self.non_favorites}')
+            print(f'  --extended_builder={self.extended_builder}')
+            print(f'  --multi_api={self.multi_api}')
+            print(f'  --infer_primary_key={self.infer_primary_key}')
 
-    global nw_db_status
-    abs_db_url, nw_db_status = get_abs_db_url("0. Using Sample DB", db_url)
+    def create_project(self):
+        """
+        Creates logic-enabled Python safrs api/admin project, options for FAB and execution
 
-    if extended_builder == "*":
-        extended_builder = abspath(f'{abspath(get_api_logic_server_dir())}/extended_builder.py')
-        print(f'0. Using default extended_builder: {extended_builder}')
+        main driver
 
-    project_directory, api_name, merge_into_prototype = \
-        get_project_directory_and_api_name(project_name=project_name,
-                                           api_name=api_name,
-                                           multi_api=multi_api)
+        :returns: none
+        """
 
-    project_directory, copy_to_project_directory = copy_if_mounted(project_directory)
-    if not command.startswith("rebuild"):
-        abs_db_url = create_project_with_nw_samples(project_directory, # no twiddle, resolve .
-                                                    project_name,      # actual user parameter
-                                                    merge_into_prototype,
-                                                    api_name,
-                                                    from_git, "2. Create Project:",
-                                                    abs_db_url,        # sqlite DBs are copied to proj/database
-                                                    nw_db_status)
-    else:
-        print("1. Not Deleting Existing Project")
-        print("2. Using Existing Project")
+        # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
+        self.print_options()
 
-    print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
-    model_creation_services = ModelCreationServices(  # Create database/models.py from db
-        project_directory=project_directory, command = command, os_cwd=os_cwd,
-        copy_to_project_directory = copy_to_project_directory,
-        api_logic_server_dir = get_api_logic_server_dir(), api_name=api_name,
-        abs_db_url=abs_db_url, db_url=db_url, nw_db_status=nw_db_status,
-        host=host, port=port, use_model = use_model,
-        not_exposed=not_exposed + " ", flask_appbuilder = flask_appbuilder, admin_app=admin_app,
-        favorite_names=favorites, non_favorite_names=non_favorites,
-        react_admin=react_admin, version = __version__, multi_api=multi_api, infer_primary_key=infer_primary_key)
-    fix_database_models(project_directory, db_types, nw_db_status)
-    invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
-    if extended_builder is not None and extended_builder != "":
-        print(f'4. Invoke extended_builder: {extended_builder}({db_url}, {project_directory})')
-        invoke_extended_builder(extended_builder, db_url, project_directory)
+        print(f"\nApiLogicServer {__version__} Creation Log:")
 
-    copy_project_result = final_project_fixup("4. Final project fixup", project_name, project_directory, api_name,
-                                              host, port, swagger_host, 
-                                              use_model, copy_to_project_directory)
+        # fixme global nw_db_status
+        self.abs_db_url, self.nw_db_status = get_abs_db_url("0. Using Sample DB", self.db_url)
 
-    if open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
-        start_open_with(open_with=open_with, project_name=project_name)
+        if self.extended_builder == "*":
+            extended_builder = abspath(f'{self.api_logic_server_dir_path}/extended_builder.py')
+            print(f'0. Using default extended_builder: {extended_builder}')
 
-    print("\n\nApiLogicProject customizable project created.  Next steps:")
-    print("==========================================================")
-    if multi_api:
-        print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
-    else:
-        print("\nRun API Logic Server:")
-        if os.getenv('CODESPACES'):
-            # print(f'  Add port 5656, with Public visibility') - automated in .devcontainer.json
-            print(f'  Execute using Launch Configuration "ApiLogicServer"')
+        self.project_directory, self.api_name, merge_into_prototype = get_project_directory_and_api_name(self)
+
+        self.project_directory, self.copy_to_project_directory = copy_if_mounted(self.project_directory)
+        if not self.command.startswith("rebuild"):
+            self.abs_db_url = create_project_with_nw_samples(self, merge_into_prototype, "2. Create Project:")
         else:
-            print(f'  cd {project_name};  python api_logic_server_run.py')
-    if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
-        print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
-        # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
-    if (is_docker()):
-        if os.getenv('CODESPACES'):
-            print(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
-            print(f'Save customized project to GitHub (TBD)')
+            print("1. Not Deleting Existing Project")
+            print("2. Using Existing Project")
+
+        print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
+        model_creation_services = ModelCreationServices(project = self,   # Create database/models.py from db
+            project_directory=self.project_directory, 
+            copy_to_project_directory = self.copy_to_project_directory)
+        fix_database_models(self.project_directory, self.db_types, self.nw_db_status)
+        invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
+        if self.extended_builder is not None and self.extended_builder != "":
+            print(f'4. Invoke extended_builder: {extended_builder}({self.db_url}, {self.project_directory})')
+            invoke_extended_builder(self.extended_builder, self.db_url, self.project_directory)
+
+        copy_project_result = final_project_fixup("4. Final project fixup", self)
+
+        if self.open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
+            start_open_with(open_with=self.open_with, project_name=self.project_name)
+
+        print("\n\nApiLogicProject customizable project created.  Next steps:")
+        print("==========================================================")
+        if self.multi_api:
+            print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
         else:
-            print(f'\nCustomize Docker project using IDE on local machine:')
-            docker_project_name = project_name
-            if project_name.startswith('/localhost/'):
-                docker_project_name = project_name[11:]
+            print("\nRun API Logic Server:")
+            if os.getenv('CODESPACES'):
+                # print(f'  Add port 5656, with Public visibility') - automated in .devcontainer.json
+                print(f'  Execute using Launch Configuration "ApiLogicServer"')
             else:
-                docker_project_name = f'<local machine directory for: {project_name}>'
-            print(f'  exit  # exit the Docker container ')
-            print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
-    else:
-        print(f'\nCustomize using your IDE:')
-        print(f'  code {project_name}  # e.g., open VSCode on created project')
-        print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
-    print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
+                print(f'  cd {self.project_name};  python api_logic_server_run.py')
+        if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
+            print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
+            # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
+        if (is_docker()):
+            if os.getenv('CODESPACES'):
+                print(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
+                print(f'Save customized project to GitHub (TBD)')
+            else:
+                print(f'\nCustomize Docker project using IDE on local machine:')
+                docker_project_name = self.project_name
+                if self.project_name.startswith('/localhost/'):
+                    docker_project_name = self.project_name[11:]
+                else:
+                    docker_project_name = f'<local machine directory for: {self.project_name}>'
+                print(f'  exit  # exit the Docker container ')
+                print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
+        else:
+            print(f'\nCustomize using your IDE:')
+            print(f'  code {self.project_name}  # e.g., open VSCode on created project')
+            print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
+        print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
-    if run:  # synchronous run of server - does not return
-        # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
-        # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
-        run_file = os.path.abspath(f'{resolve_home(project_name)}/api_logic_server_run.py')
-        run_file = '"' + run_file + '"'  # spaces in file names - with windows
-        run_args = ""
-        if command == "create-and-run":
-            run_args = "--create_and_run=True"
-        create_utils.run_command(f'python {run_file} {run_args}', msg="\nStarting created API Logic Project")
+        if self.run:  # synchronous run of server - does not return
+            # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
+            # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
+            run_file = os.path.abspath(f'{resolve_home(self.project_name)}/api_logic_server_run.py')
+            run_file = '"' + run_file + '"'  # spaces in file names - with windows
+            run_args = ""
+            if command == "create-and-run":
+                run_args = "--create_and_run=True"
+            create_utils.run_command(f'python {run_file} {run_args}', msg="\nStarting created API Logic Project")
 
 '''  exploring no-args, not a clue
 from click_default_group import DefaultGroup
@@ -1058,15 +1084,14 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
         Creates new customizable project (overwrites).
     """
     global command
-    command = "create"
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
-                     not_exposed=not_exposed,
-                     run=run, use_model=use_model, from_git=from_git, db_types = db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
-                     react_admin=react_admin, admin_app=admin_app,
-                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
+    ProjectRun(command="create", project_name=project_name, db_url=db_url, api_name=api_name,
+                    not_exposed=not_exposed,
+                    run=run, use_model=use_model, from_git=from_git, db_types=db_types,
+                    flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
+                    react_admin=react_admin, admin_app=admin_app,
+                    favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                    extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
 
 
 @main.command("create-and-run")
@@ -1149,16 +1174,15 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
     """
         Creates new project and runs it (overwrites).
     """
-    global command
-    command = "create-and-run"
+    global command  # TODO drop this global
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
-                     not_exposed=not_exposed,
-                     run=run, use_model=use_model, from_git=from_git, db_types=db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
-                     react_admin=react_admin, admin_app=admin_app,
-                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
+    ProjectRun(command="create-and-run", project_name=project_name, db_url=db_url, api_name=api_name,
+                    not_exposed=not_exposed,
+                    run=run, use_model=use_model, from_git=from_git, db_types=db_types,
+                    flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
+                    react_admin=react_admin, admin_app=admin_app,
+                    favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                    extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
 
 
 @main.command("rebuild-from-database")
@@ -1243,16 +1267,15 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
         ApiLogicServer rebuild-from-database --project_name=~/dev/servers/ApiLogicProject --db_url=nw
 
     """
-    global command
-    command = "rebuild-from-database"
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
-                     not_exposed=not_exposed,
-                     run=run, use_model=use_model, from_git=from_git, db_types = db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
-                     react_admin=react_admin, admin_app=admin_app,
-                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
+    ProjectRun(command="rebuild-from-database", project_name=project_name, db_url=db_url, api_name=api_name,
+                    not_exposed=not_exposed,
+                    run=run, use_model=use_model, from_git=from_git, db_types=db_types,
+                    flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
+                    react_admin=react_admin, admin_app=admin_app,
+                    favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                    extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
+
 # Kat
 @main.command("add_db") 
 @click.option('--db_url',
@@ -1354,16 +1377,14 @@ def rebuild_from_model(ctx, project_name: str, db_url: str, api_name: str, not_e
     """
         Updates database, api, and ui from changed models.
     """
-    global command
-    command = "rebuild-from-model"
     db_types = ""
-    api_logic_server(project_name=project_name, db_url=db_url, api_name=api_name,
-                     not_exposed=not_exposed,
-                     run=run, use_model=use_model, from_git=from_git, db_types = db_types,
-                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
-                     react_admin=react_admin, admin_app=admin_app,
-                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                     extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
+    ProjectRun(command="rebuild-from-model", project_name=project_name, db_url=db_url, api_name=api_name,
+                    not_exposed=not_exposed,
+                    run=run, use_model=use_model, from_git=from_git, db_types=db_types,
+                    flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
+                    react_admin=react_admin, admin_app=admin_app,
+                    favorites=favorites, non_favorites=non_favorites, open_with=open_with,
+                    extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
 
 
 @main.command("run")
@@ -1549,7 +1570,7 @@ def key_module_map(): # Kat
     import create_from_model.api_expose_api_models_creator as api_expose_api_models_creator
     import sqlacodegen_wrapper.sqlacodegen_wrapper as sqlacodegen_wrapper
 
-    api_logic_server()                                      # main driver, calls...
+    ProjectRun.create_project()                             # main driver, calls...
     create_project_with_nw_samples()                        # clone project, overlay nw
     model_creation_services = ModelCreationServices()       # creates resource_list (python db model); ctor calls...
     def and_the_ctor_calls():

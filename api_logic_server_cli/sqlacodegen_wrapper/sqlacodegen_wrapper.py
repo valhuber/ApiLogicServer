@@ -204,8 +204,8 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
 
     num_models = 0
     model_file_name = "*"
-    if model_creation_services.command in ('create', 'create-and-run', 'rebuild-from-database'):
-        if model_creation_services.use_model == "":
+    if model_creation_services.project.command in ('create', 'create-and-run', 'rebuild-from-database'):
+        if model_creation_services.project.use_model == "":
             print(f' a.  Create Models - create database/models.py, using sqlcodegen')
             print(f'.. .. ..For database:  {abs_db_url}')
             code_gen_args = get_codegen_args()
@@ -219,9 +219,9 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
             print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
             copyfile(use_model_path, model_file_name)
 
-    elif model_creation_services.command == 'create-ui':
+    elif model_creation_services.project.command == 'create-ui':
         model_file_name = model_creation_services.resolve_home(name = model_creation_services.use_model)
-    elif model_creation_services.command == "rebuild-from-model":
+    elif model_creation_services.project.command == "rebuild-from-model":
         print(f' a.  Use existing database/models.py to rebuild api and ui models - verifying')
         model_file_name = project_directory + '/database/models.py'
     else:

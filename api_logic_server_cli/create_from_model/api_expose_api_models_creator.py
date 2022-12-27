@@ -29,7 +29,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
                     + "At: " + str(datetime.datetime.date()) + "\n\n"
                     + '"""\n\n')
     '''
-    port_replace = model_creation_services.port if model_creation_services.port else "None"
+    port_replace = model_creation_services.project.port if model_creation_services.project.port else "None"
     result_apis += \
         f'\n\ndef expose_models(api):\n'
     # result_apis += '    my_host = HOST\n'
@@ -44,13 +44,13 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     result_apis += '            See https://valhuber.github.io/ApiLogicServer/Tutorial/#customize-and-debug \n'
     result_apis += '    """\n'
 
-    sys.path.append(model_creation_services.os_cwd)
+    sys.path.append(model_creation_services.project.os_cwd)
 
     for each_resource_name in model_creation_services.resource_list:
         log.debug("process_each_table: " + each_resource_name)
         if "TRANSFERFUNDx" in each_resource_name:
             log.debug("special table")  # debug stop here
-        if each_resource_name + " " in model_creation_services.not_exposed:
+        if each_resource_name + " " in model_creation_services.project.not_exposed:
             # result_apis += "# not_exposed: api.expose_object(models.{resource_name})"
             continue
         if "ProductDetails_V" in each_resource_name:
@@ -66,7 +66,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     result_apis += f'    return api\n'
     # self.session.close()
     expose_api_models_path = Path(model_creation_services.project_directory).joinpath('api/expose_api_models.py')
-    if not model_creation_services.command.startswith("rebuild"):
+    if not model_creation_services.project.command.startswith("rebuild"):
         expose_api_models_file = open(expose_api_models_path, 'a')
         expose_api_models_file.write(result_apis)
         expose_api_models_file.close()
@@ -74,7 +74,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
         expose_api_models_path = Path(model_creation_services.project_directory).\
             joinpath('api/expose_api_models_created.py')
         print(f'.. .. ..Rebuild - new api at api/expose_api_models_created (merge/replace expose_api_models as nec)')
-        src = Path(model_creation_services.api_logic_server_dir)
+        src = model_creation_services.project.api_logic_server_dir_path
         src = src.joinpath("project_prototype/api/expose_api_models.py")
         assert src.is_file()
         shutil.copyfile(src, expose_api_models_path)
