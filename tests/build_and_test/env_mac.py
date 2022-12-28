@@ -9,7 +9,7 @@ class Config:
     #   what tests to run
     # ***********************
 
-    default_setting = False  # simplify enable / disable most
+    default_setting = True  # simplify enable / disable most
 
     do_install_api_logic_server = default_setting   # verify build wheel and local install
     
@@ -25,7 +25,7 @@ class Config:
 
     do_docker_mysql = default_setting               # requires docker database be running
     do_docker_postgres = default_setting            # requires docker database be running
-    do_docker_sqlserver = True           # requires docker database be running
+    do_docker_sqlserver = default_setting           # requires docker database be running
 
     do_docker_creation_tests = default_setting      # build docker image, start it and create projects
 

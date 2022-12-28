@@ -334,17 +334,21 @@ def validate_sql_server_types():
     Verify sql server types and extended builder
     See https://valhuber.github.io/ApiLogicServer/Project-Builders/
     """
-    post_uri = 'curl -X POST "http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "{  \"location\": \"Sweden\"}"'
-    post_uri = 'curl -X POST "http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" '
-    post_uri = "http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation" # -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" '
+    post_uri = "http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation"
     args = {
         "location": "Sweden"
     }
     r = requests.post(url=post_uri, json=args)
     response_text = r.text
     result_data = json.loads(response_text) 
-    assert len(result_data["result"]) == 2, "TVF: Did not find 2 expected result rows"
-    assert "Sweden" in result_data["result"][0], "TVF: Result row 1 does not contain Sweden"
+    assert len(result_data["result"]) == 2, "TVF/udfEmployeeInLocation: Did not find 2 expected result rows"
+    assert "Sweden" in result_data["result"][0], "TVF/udfEmployeeInLocation: Result row 1 does not contain Sweden"
+
+    get_uri = "http://localhost:5656/api/DataType/?fields%5BDataType%5D=Key%2Cchar_type%2Cvarchar_type&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id"
+    r = requests.get(url=get_uri)
+    response_text = r.text
+    result_data = json.loads(response_text) 
+    assert len(result_data["data"]) == 1, "TVF/DataTypes: Did not find 1 expected result row"
     return
 
 
