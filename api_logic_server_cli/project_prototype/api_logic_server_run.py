@@ -264,7 +264,7 @@ def get_args():
         local_ip = f"Warning - Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}"
         app_logger.info(f"Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}")
 
-    app_logger.debug(f"Warning - Getting args, with hostname={hostname} on local_ip={local_ip}")
+    app_logger.debug(f"Getting args, with hostname={hostname} on local_ip={local_ip}")
     verbose = False
     create_and_run = False
 
