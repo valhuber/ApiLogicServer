@@ -73,7 +73,7 @@ It generates Swagger, with arguments:
 You can run it with this cURL:
 
 ```bash
-curl -X POST "http://localhost:5656/udfEmployeeInLocation/udfEmployeeInLocation" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "{  \"location\": \"Sweden\"}"
+curl -X POST "http://localhost:5656/udfEmployeeInLocation/api/udfEmployeeInLocation" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "{  \"location\": \"Sweden\"}"
 ```
 
 returns the expected data:

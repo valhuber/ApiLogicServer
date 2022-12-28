@@ -116,8 +116,8 @@ metadata = Base.metadata
                     self.tvf_contents += f'\t\t\t{each_arg.ParameterName[1:]} : value\n'
             self.tvf_contents += f'\t\t"""\n'
 
-            # sql_query = db.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
-            self.tvf_contents += f'\t\tsql_query = db.text("SELECT * FROM {args[0].ObjectName}('  # :arg)")\n'
+            # sql_query = DB.text("SELECT * FROM udfEmployeeInLocationWithName(:location, :Name)")
+            self.tvf_contents += f'\t\tsql_query = DB.text("SELECT * FROM {args[0].ObjectName}('  # :arg)")\n'
             arg_number = 0
             if has_args:
                 for each_arg in args:
@@ -128,7 +128,7 @@ metadata = Base.metadata
             self.tvf_contents += ')")\n'
 
             # query_result = db.engine.execute(sql_query, location=location, Name=Name)
-            self.tvf_contents += f'\t\tquery_result = db.engine.execute(sql_query, '  # arg=arg)\n'
+            self.tvf_contents += f'\t\tquery_result = DB.engine.execute(sql_query, '  # arg=arg)\n'
             arg_number = 0
             if has_args:
                 for each_arg in args:

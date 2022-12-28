@@ -128,7 +128,6 @@ def print_byte_string(msg, byte_string):
     for line in byte_string.decode('utf-8').split('\n'):
         print (line)
 
-
 def check_command(command_result):
     result_stdout = ""
     result_stderr = ''
@@ -284,7 +283,6 @@ def delete_build_directories(install_api_logic_server_path):
     except:
         print(f"Unable to create directory {install_api_logic_server_path} -- Windows dir exists?")
 
-
 def docker_creation_tests(api_logic_server_tests_path):
     """ start docker, cp docker_coammands.sh, create projects at dev/servers/install/ApiLogicServer/dockers """
     """
@@ -328,6 +326,13 @@ def docker_creation_tests(api_logic_server_tests_path):
         cwd=api_logic_server_home_path,
         msg=f'\nBuilding projects from Docker container at: {str(api_logic_server_home_path)}')
     print('built projects from container')
+
+def validate_sql_server_types():
+    """
+    Verify sql server types and extended builder
+    See https://valhuber.github.io/ApiLogicServer/Project-Builders/
+    """
+    pass
 
 # ***************************
 #        MAIN CODE
@@ -490,11 +495,12 @@ if Config.do_docker_mysql:
     
 if Config.do_docker_sqlserver:
     result_docker_sqlserver = run_command(
-        f"{set_venv} && ApiLogicServer create --project_name=sqlserver-types --extended_builder=* --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+        f"{set_venv} && ApiLogicServer create --project_name=TVF --extended_builder=* --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
-        msg=f'\nCreate SqlServer sqlserver-types at: {str(install_api_logic_server_path)}')
-    start_api_logic_server(project_name='sqlserver-types')
-    stop_server(msg="sqlserver-types\n")
+        msg=f'\nCreate SqlServer TVF at: {str(install_api_logic_server_path)}')
+    start_api_logic_server(project_name='TVF')
+    validate_sql_server_types()
+    stop_server(msg="TVF\n")
 
     result_docker_sqlserver = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
