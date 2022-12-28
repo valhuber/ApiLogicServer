@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.05.09"
+__version__ = "6.05.10"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/27/2022 - 06.05.09: security prototype, sqlite test dbs, class-based create  \n"\
+    "\t12/27/2022 - 06.05.10: security prototype, sqlite test dbs, class-based create  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
     "\t11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54) \n"\
@@ -814,8 +814,8 @@ class ProjectRun(Project):
         self.abs_db_url, self.nw_db_status = get_abs_db_url("0. Using Sample DB", self.db_url)
 
         if self.extended_builder == "*":
-            extended_builder = abspath(f'{self.api_logic_server_dir_path}/extended_builder.py')
-            print(f'0. Using default extended_builder: {extended_builder}')
+            self.extended_builder = abspath(f'{self.api_logic_server_dir_path}/extended_builder.py')
+            print(f'0. Using default extended_builder: {self.extended_builder}')
 
         self.project_directory, self.api_name, merge_into_prototype = get_project_directory_and_api_name(self)
 
@@ -833,7 +833,7 @@ class ProjectRun(Project):
         fix_database_models(self.project_directory, self.db_types, self.nw_db_status)
         invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
         if self.extended_builder is not None and self.extended_builder != "":
-            print(f'4. Invoke extended_builder: {extended_builder}({self.db_url}, {self.project_directory})')
+            print(f'4. Invoke extended_builder: {self.extended_builder}, ({self.db_url}, {self.project_directory})')
             invoke_extended_builder(self.extended_builder, self.db_url, self.project_directory)
 
         copy_project_result = final_project_fixup("4. Final project fixup", self)
