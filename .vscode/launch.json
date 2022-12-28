@@ -226,6 +226,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "SQL Server Types",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/api_logic_server_cli",
+            "program": "cli.py",
+            "redirectOutput": true,
+            "argsExpansion": "none",
+            "args": ["create","--project_name=../../servers/sqlserver-types","--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no", "--extended_builder=*"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "nw- Create ApiLogicProject",
             "type": "python",
             "request": "launch",
@@ -321,17 +332,6 @@
             "program": "report_behave_logic.py",
             "redirectOutput": true,
             "justMyCode": false,            
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "SQL Server Types",
-            "type": "python",
-            "request": "launch",
-            "cwd": "${workspaceFolder}/api_logic_server_cli",
-            "program": "cli.py",
-            "redirectOutput": true,
-            "argsExpansion": "none",
-            "args": ["create","--project_name=../../servers/sqlserver-types","--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no", "--extended_builder=*"],
             "console": "integratedTerminal"
         },
         {

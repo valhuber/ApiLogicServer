@@ -490,12 +490,19 @@ if Config.do_docker_mysql:
     
 if Config.do_docker_sqlserver:
     result_docker_sqlserver = run_command(
+        f"{set_venv} && ApiLogicServer create --project_name=sqlserver-types --extended_builder=* --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate SqlServer sqlserver-types at: {str(install_api_logic_server_path)}')
+    start_api_logic_server(project_name='sqlserver-types')
+    stop_server(msg="sqlserver-types\n")
+
+    result_docker_sqlserver = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=sqlserver --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
         cwd=install_api_logic_server_path,
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
     start_api_logic_server(project_name='sqlserver')
     stop_server(msg="sqlserver\n")
-    
+
 if Config.do_docker_postgres:
     result_docker_postgres = run_command(
         f"{set_venv} && ApiLogicServer create --project_name=postgres --db_url=postgresql://postgres:p@{db_ip}/postgres",
