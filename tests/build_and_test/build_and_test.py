@@ -4,6 +4,8 @@ import shutil
 from sys import platform
 from subprocess import DEVNULL, STDOUT, check_call
 from pathlib import Path
+from dotmap import DotMap
+import json
 
 class DotDict(dict):
     """ APiLogicServer dot.notation access to dictionary attributes """
@@ -332,7 +334,19 @@ def validate_sql_server_types():
     Verify sql server types and extended builder
     See https://valhuber.github.io/ApiLogicServer/Project-Builders/
     """
-    pass
+    post_uri = 'curl -X POST "http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "{  \"location\": \"Sweden\"}"'
+    post_uri = 'curl -X POST "http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" '
+    post_uri = "http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation" # -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" '
+    args = {
+        "location": "Sweden"
+    }
+    r = requests.post(url=post_uri, json=args)
+    response_text = r.text
+    result_data = json.loads(response_text) 
+    assert len(result_data["result"]) == 2, "TVF: Did not find 2 expected result rows"
+    assert "Sweden" in result_data["result"][0], "TVF: Result row 1 does not contain Sweden"
+    return
+
 
 # ***************************
 #        MAIN CODE
