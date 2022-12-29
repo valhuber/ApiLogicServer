@@ -187,21 +187,6 @@ class ModelCreationServices(object):
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.my_parents_list = my_parents_list
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
-        # self.api_name = api_name
-        # self.db_url = db_url  # the original cli parameter
-        # self.host = host
-        # self.port = port
-        # self.use_model = use_model
-        # self.not_exposed = not_exposed
-        # self.favorite_names = favorite_names
-        # self.non_favorite_names = non_favorite_names
-        # self.admin_app = admin_app
-        # self.flask_appbuilder = flask_appbuilder
-        # self.react_admin = react_admin
-        # self.multi_api = multi_api
-        # self.infer_primary_key = infer_primary_key
-        # self._non_favorite_names_list = self.project.non_favorites.split()
-        # self._favorite_names_list = self.project.favorite_names.split()
 
         self.table_to_class_map = {}
         """ keys are table[.column], values are class / attribute """
@@ -210,7 +195,7 @@ class ModelCreationServices(object):
         self.session = None
         self.connection = None
         self.app = None
-
+        # kat create models
         model_file_name, msg = sqlacodegen_wrapper.create_models_py(
             model_creation_services = self,
             abs_db_url= self.project.abs_db_url,
@@ -727,7 +712,10 @@ class ModelCreationServices(object):
         # print(f'*** DEBUG - sys.path={sys.path}')
         try:
             # credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
-            importlib.import_module('models')
+            models_name = 'models'
+            if self.project.bind_key is not None and self.project.bind_key != "":
+              models_name = self.project.bind_key + "_" + models_name
+            importlib.import_module(models_name)
             model_imported = True
         except:
             print(f'\n===> ERROR - Dynamic model import failed in {path_to_add} - project run will fail')
@@ -741,7 +729,7 @@ class ModelCreationServices(object):
         else:
             try:
                 resource_list: Dict[str, Resource] = dict()
-                cls_members = inspect.getmembers(sys.modules["models"], inspect.isclass)
+                cls_members = inspect.getmembers(sys.modules[models_name], inspect.isclass)
                 for each_cls_member in cls_members:
                     each_class_def_str = str(each_cls_member)
                     #  such as ('Category', <class 'models.Category'>)

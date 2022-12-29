@@ -208,7 +208,7 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
         if model_creation_services.project.use_model is None or model_creation_services.project.use_model == "":
             code_gen_args = get_codegen_args()
             model_file_name = code_gen_args.outfile
-            if model_creation_services.project.bind_key is not None:
+            if model_creation_services.project.bind_key is not None and model_creation_services.project.bind_key != "":
               model_file_name = "/".join(model_file_name.split("/")[:-1]) + "/" + model_creation_services.project.bind_key + "_" + model_file_name.split("/")[-1]
             print(f' a.  Create Models - create database/models.py, using sqlcodegen')
             print(f'.. .. ..For database:  {abs_db_url}')
