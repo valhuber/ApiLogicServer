@@ -9,6 +9,7 @@ from typing import NewType
 import create_from_model.model_creation_services as create_from_model
 
 log = logging.getLogger(__name__)
+log.setLevel(level=logging.DEBUG) # Kat
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)

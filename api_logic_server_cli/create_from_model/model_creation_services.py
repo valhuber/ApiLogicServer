@@ -733,12 +733,12 @@ class ModelCreationServices(object):
                 for each_cls_member in cls_members:
                     each_class_def_str = str(each_cls_member)
                     #  such as ('Category', <class 'models.Category'>)
-                    if ("'models." in str(each_class_def_str) and
+                    if (f"'{models_name}." in str(each_class_def_str) and
                             "Ab" not in str(each_class_def_str)):
                         resource_name = each_cls_member[0]
                         resource_class = each_cls_member[1]
                         table_name = resource_class._s_collection_name
-                        if table_name == "Department":
+                        if table_name == "Todo":
                             debug_str = "Excellent breakpoint"
                         resource = Resource(name=resource_name, create_from_model=self)
                         self.metadata = resource_class.metadata
