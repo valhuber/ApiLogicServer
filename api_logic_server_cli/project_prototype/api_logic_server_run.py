@@ -80,7 +80,7 @@ app_logger.info(f'\nAPI Logic Project ({project_name}) Starting with args: \n.. 
 app_logger.info(f'Created api_logic_server_created_on at {str(current_path)}\n')
 
 from typing import TypedDict
-import safrs
+import safrs  # fails without venv - see https://valhuber.github.io/ApiLogicServer/Project-Env/
 from logic_bank.logic_bank import LogicBank
 from logic_bank.exec_row_logic.logic_row import LogicRow
 from sqlalchemy.ext.declarative import declarative_base
