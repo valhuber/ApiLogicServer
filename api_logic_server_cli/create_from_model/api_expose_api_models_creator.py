@@ -50,7 +50,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
         log.debug("process_each_table: " + each_resource_name)
         if "TRANSFERFUNDx" in each_resource_name:
             log.debug("special table")  # debug stop here
-        if each_resource_name + " " in model_creation_services.project.not_exposed:
+        if model_creation_services.project.not_exposed is not None and each_resource_name + " " in model_creation_services.project.not_exposed:
             # result_apis += "# not_exposed: api.expose_object(models.{resource_name})"
             continue
         if "ProductDetails_V" in each_resource_name:

@@ -103,7 +103,8 @@ class AdminCreator(object):
     def create_admin_application(self):
         """ main driver - loop through resources, write admin.yaml - with backup, nw customization
         """
-        if self.mod_gen.project.command == "create-ui" or self.mod_gen.project.command.startswith("rebuild"):
+        if (self.mod_gen.project.command == "create-ui" or self.mod_gen.project.command.startswith("rebuild")) \
+                                                                  or self.mod_gen.project.command == "add_db":
             if self.mod_gen.project.command.startswith("rebuild"):
                 print(".. .. ..Use existing ui/admin directory")
         else:
@@ -493,6 +494,9 @@ class AdminCreator(object):
         admin_yaml_dump = yaml.dump(admin_yaml_dict)
 
         yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
+        if self.mod_gen.project.command == "add_db":
+          yaml_file_name = os.path.join(Path(self.mod_gen.project_directory), 
+                                        Path(f'ui/admin/{self.mod_gen.project.bind_key}_admin.yaml'))
         write_file = "Write"  # alert - not just message, drives processing
         if self.mod_gen.project.command.startswith("rebuild"):
             ''' 

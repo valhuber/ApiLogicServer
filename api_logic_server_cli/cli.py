@@ -469,7 +469,7 @@ def resolve_home(name: str) -> str:
 def fix_database_models(project_directory: str, db_types: str, nw_db_status: str):
     """ injecting <db_types file> into database/models.py, fix nw cascade delete """
     models_file_name = f'{project_directory}/database/models.py'
-    if db_types != "":
+    if db_types is not None and db_types != "":
         print(f'.. .. ..Injecting file {db_types} into database/models.py')
         with open(db_types, 'r') as file:
             db_types_data = file.read()
@@ -733,11 +733,25 @@ def invoke_creators(model_creation_services: ModelCreationServices):
 
 class ProjectRun(Project):
     """ Main Class - instantiate / create_project to run CLI functions """
-    def __init__(self, command: str, project_name: str, db_url: str, api_name: str=None,
-                     host: str=None, port: str=None, swagger_host: str=None, not_exposed: str=None,
-                     from_git: str=None, db_types: str=None, open_with: str=None, run: bool=None, use_model: str=None, admin_app: bool=None,
-                     flask_appbuilder: bool=None, favorites: str=None, non_favorites: str=None, react_admin: bool=None,
-                     extended_builder: str=None, multi_api: bool=None, infer_primary_key: bool=None, bind_key: str=None):
+    def __init__(self, command: str, project_name: str, 
+                     db_url: str, api_name: str=None,
+                     host: str='localhost', port: str='5656', 
+                     swagger_host: str="localhost", 
+                     not_exposed: str="ProductDetails_V",
+                     from_git: str="", 
+                     db_types: str=None, 
+                     open_with: str="", 
+                     run: bool=False, 
+                     use_model: str="", 
+                     admin_app: bool=True,
+                     flask_appbuilder: bool=False, 
+                     favorites: str="name description", 
+                     non_favorites: str="id", 
+                     react_admin: bool=True,
+                     extended_builder: str="", 
+                     multi_api: bool=False, 
+                     infer_primary_key: bool=False, 
+                     bind_key: str=""):
         super(ProjectRun, self).__init__()
         self.project_name = project_name
         self.db_url = db_url
@@ -1277,8 +1291,11 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 @click.option('--prepend_bind', is_flag=True,
               default=True,
               help="Prepend bind key to classname")
+@click.option('--api_name',
+              default="api",
+              help="api prefix name")
 @click.pass_context # Kat
-def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL):
+def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: str):
     """
     update create from model to notice bind key and create new model.py file if needed
     
@@ -1296,8 +1313,10 @@ def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL):
           )
     ProjectRun(command="add_db", 
               project_name=project_name, 
+              api_name=api_name, 
               db_url=db_url, 
-              bind_key=bind_key)
+              bind_key=bind_key,
+              )
 
 
 @main.command("rebuild-from-model")
