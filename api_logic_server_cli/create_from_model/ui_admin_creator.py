@@ -549,22 +549,6 @@ class AdminCreator(object):
                 src = os.path.join(self.mod_gen.project.api_logic_server_dir_path, Path(f'project_prototype_nw/ui/admin/admin.yaml'))
                 dest = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin.yaml'))
                 shutil.copyfile(src, dest)
-                """  nw fixup (not required, since all copied from prototype_nw)
-                admin_custom_nw_file = open(
-                    os.path.dirname(os.path.realpath(__file__)) + "/templates/admin_custom_nw.yaml")
-                admin_custom_nw = admin_custom_nw_file.read()
-                nw_backup_file_name = \
-                    os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin_custom_nw.yaml'))
-                admin_file = open(nw_backup_file_name, 'w')
-                admin_file.write(admin_custom_nw)
-                admin_file.close()
-                dev_temp_do_not_overwrite = False
-                if not dev_temp_do_not_overwrite:
-                    print('.. .. ..Using customized admin_custom_nw.yaml - compare to admin-created.yaml')
-                    admin_file = open(yaml_file_name, 'w')
-                    admin_file.write(admin_custom_nw)
-                    admin_file.close()
-                """
 
     def create_yaml_merge(self) -> dict:
         """

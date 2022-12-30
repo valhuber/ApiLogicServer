@@ -13,6 +13,7 @@ class Project(ProjectArgs):
         self.abs_db_url = None
         self.nw_db_status = None
         self.project_directory = None
+        self.project_directory_actual = None  # with no relative names (no /../)
         self.copy_to_project_directory = None
 
         running_at = Path(__file__)

@@ -822,7 +822,7 @@ from sqlalchemy.dialects.mysql import *
         rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, model.parent_name)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
         rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, model.name)
-        if self.model_creation_services.project.bind_key is not None:
+        if self.model_creation_services.project.bind_key != "":
           bind_key = self.model_creation_services.project.bind_key
         else:
           bind_key = "None"

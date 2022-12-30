@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.05.14"
+__version__ = "6.05.15"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/28/2022 - 06.05.14: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
+    "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
     "\t11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54) \n"\
@@ -84,9 +84,8 @@ from create_from_model.model_creation_services import ModelCreationServices
 
 import sqlacodegen_wrapper.sqlacodegen_wrapper as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
-
+import create_from_model.multi_db_utils as multi_db_utils
 from api_logic_server_cli.cli_args_project import Project
-
 
 api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
 
@@ -402,7 +401,6 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
                                     in_file=f'{project_directory}/For_VSCode.dockerfile')
         """
 
-        project_directory_actual = os.path.abspath(project.project_directory)  # make path absolute, not relative (no /../)
         return_abs_db_url = project.abs_db_url
         copy_sqlite = True
         if copy_sqlite == False or "sqlite" not in project.abs_db_url:
@@ -418,9 +416,9 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
             """
             # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
             db_loc = project.abs_db_url.replace("sqlite:///", "")
-            target_db_loc_actual = project_directory_actual + '/database/db.sqlite'
+            target_db_loc_actual = project.project_directory_actual + '/database/db.sqlite'
             copyfile(db_loc, target_db_loc_actual)
-            backup_db = project_directory_actual + '/database/db-backup.sqlite'
+            backup_db = project.project_directory_actual + '/database/db-backup.sqlite'
             copyfile(db_loc, backup_db)
 
             if os.name == "nt":  # windows
@@ -528,7 +526,6 @@ def update_api_logic_server_run(project):
 
     Note project_directory is from user, and may be relative (and same as project_name)
     """
-    project_directory_actual = os.path.abspath(project.project_directory)  # make path absolute, not relative (no /../)
     api_logic_server_run_py = f'{project.project_directory}/api_logic_server_run.py'
     create_utils.replace_string_in_file(search_for="\"api_logic_server_project_name\"",  # fix logic_bank_utils.add_python_path
                            replace_with='"' + os.path.basename(project.project_name) + '"',
@@ -537,7 +534,7 @@ def update_api_logic_server_run(project):
                            replace_with="ApiLogicServer generated at:" +
                                         str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")),
                            in_file=api_logic_server_run_py)
-    project_directory_fix = project_directory_actual
+    project_directory_fix = project.project_directory_actual
     if os.name == "nt":  # windows
         project_directory_fix = get_windows_path_with_slashes(str(project_directory_actual))
     create_utils.replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
@@ -581,7 +578,7 @@ def fix_host_and_ports(msg, project):
                            replace_with=replace_port,
                            in_file=in_file)
     print(f' d.   Updated customize_api_py with port={project.port} and host={project.host}')
-    full_path = os.path.abspath(project.project_name)
+    full_path = project.project_directory_actual
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
                            in_file=f'{project.project_name}/python_anywhere_wsgi.py')
@@ -734,8 +731,10 @@ def invoke_creators(model_creation_services: ModelCreationServices):
 class ProjectRun(Project):
     """ Main Class - instantiate / create_project to run CLI functions """
     def __init__(self, command: str, project_name: str, 
-                     db_url: str, api_name: str=None,
-                     host: str='localhost', port: str='5656', 
+                     db_url: str,
+                     api_name: str="api",
+                     host: str='localhost', 
+                     port: str='5656', 
                      swagger_host: str="localhost", 
                      not_exposed: str="ProductDetails_V",
                      from_git: str="", 
@@ -832,6 +831,7 @@ class ProjectRun(Project):
             print(f'0. Using default extended_builder: {self.extended_builder}')
 
         self.project_directory, self.api_name, merge_into_prototype = get_project_directory_and_api_name(self)
+        self.project_directory_actual = os.path.abspath(self.project_directory)  # make path absolute, not relative (no /../)
 
         self.project_directory, self.copy_to_project_directory = copy_if_mounted(self.project_directory)
         if not self.command.startswith("rebuild") and not self.command == "add_db":
@@ -839,6 +839,9 @@ class ProjectRun(Project):
         else:
             print("1. Not Deleting Existing Project")
             print("2. Using Existing Project")
+            if self.command == "add_db":
+                self.abs_db_url = multi_db_utils.update_config_and_copy_sqlite_db(self,
+                    f".. ..Adding Database [{self.bind_key}] to existing project")
 
         print(f'3. Create/verify database/models.py, then use that to create api/ and ui/ models')
         model_creation_services = ModelCreationServices(project = self,   # Create database/models.py from db
@@ -889,8 +892,6 @@ class ProjectRun(Project):
         print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
         if self.run:  # synchronous run of server - does not return
-            # run_file = os.path.abspath(f'{project_directory}/api_logic_server_run.py')
-            # create_utils.run_command(f'python {run_file} {host}', msg="\nRun created ApiLogicServer project")
             run_file = os.path.abspath(f'{resolve_home(self.project_name)}/api_logic_server_run.py')
             run_file = '"' + run_file + '"'  # spaces in file names - with windows
             run_args = ""

@@ -79,7 +79,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
         expose_api_models_file.write(result_apis)
         expose_api_models_file.close()
     else:  # normal path...
-        if model_creation_services.project.bind_key is not None and model_creation_services.project.bind_key != "":
+        if model_creation_services.project.bind_key != "":
             expose_api_models_path = Path(model_creation_services.project_directory).\
                 joinpath(f'api/expose_api_models_{model_creation_services.project.bind_key}.py')
         expose_api_models_file = open(expose_api_models_path, 'a')
