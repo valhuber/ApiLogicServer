@@ -31,4 +31,8 @@ def open_databases(flask_app, session, safrs_api):
 
     """
 
+    # Begin Bind Databases
+
+    # End Bind Databases
+    
     return
