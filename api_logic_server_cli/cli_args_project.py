@@ -12,6 +12,7 @@ class Project(ProjectArgs):
         self.os_cwd = os.getcwd()
         self.abs_db_url = None
         self.nw_db_status = None
+        """ '', nw, nw+, nw- """
         self.project_directory = None
         self.project_directory_actual = None  # with no relative names (no /../)
         self.copy_to_project_directory = None

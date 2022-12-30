@@ -50,7 +50,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     CONFIG_URI = f'SQLALCHEMY_DATABASE_URI_{project.bind_key}'
 
     config_insert = f"""
-    {CONFIG_URI} = {db_uri}
+    {CONFIG_URI} = '{db_uri}'
     app_logger.debug(f'config.py - {CONFIG_URI}: {db_uri}')
 
     # as desired, use env variable: export SQLALCHEMY_DATABASE_URI='sqlite:////Users/val/dev/servers/docker_api_logic_project/database/db.sqliteXX'

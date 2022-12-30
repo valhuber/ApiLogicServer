@@ -107,8 +107,6 @@ os_cwd = os.getcwd()
 if os.path.exists('/home/api_logic_server'):  # docker?
     default_project_name = "/localhost/ApiLogicProject"
     default_fab_host = "0.0.0.0"
-nw_db_status = ""
-""" '', nw, nw+, nw- """
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -363,7 +361,7 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
                     f'Suggestions:\n'
                     f'.. Verify the --project_name argument\n'
                     f'.. If you are using Docker, verify the -v argument\n\n')
-        if nw_db_status in ["nw", "nw+"]:
+        if project.nw_db_status in ["nw", "nw+"]:
             print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
             nw_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
@@ -371,7 +369,7 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
 
             create_nw_tutorial(project.project_directory, api_logic_server_dir_str)
 
-        if nw_db_status in ["nw-"]:
+        if project.nw_db_status in ["nw-"]:
             print(".. ..Copy in nw- customizations: readme, perform_customizations")
             nw_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust

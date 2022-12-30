@@ -7,16 +7,6 @@ info:
   number_relationships: 13
   number_tables: 17
 resources:
-  Category:
-    attributes:
-    - label: ' Category Name*'
-      name: CategoryName
-      search: true
-      sort: true
-    - name: Description
-    - name: Id
-    type: Category
-    user_key: CategoryName
   Customer:
     attributes:
     - label: ' Company Name*'
@@ -48,6 +38,16 @@ resources:
       resource: Order
     type: Customer
     user_key: CompanyName
+  Category:
+    attributes:
+    - label: ' Category*'
+      name: CategoryName
+      search: true
+      sort: true
+    - name: Description
+    - name: Id
+    type: Category
+    user_key: CategoryName
   CustomerDemographic:
     attributes:
     - label: ' Id*'
