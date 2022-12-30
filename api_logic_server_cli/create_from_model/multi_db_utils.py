@@ -20,6 +20,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     :arg: project project setting object
     """
     print(msg)
+    bind_key_upper = project.bind_key.upper()  # configs insist on all caps
     project_directory_actual = os.path.abspath(project.project_directory)  # make path absolute, not relative (no /../)
     return_abs_db_url = project.abs_db_url
 
@@ -47,7 +48,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     if os.name == "nt":  # windows
         # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
         target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
-    CONFIG_URI = f'SQLALCHEMY_DATABASE_URI_{project.bind_key}'
+    CONFIG_URI = f'SQLALCHEMY_DATABASE_URI_{bind_key_upper}'
 
     config_insert = f"""
     {CONFIG_URI} = '{db_uri}'
@@ -71,7 +72,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     from database import <project.bind_key>_models
 
     flask_app.config.update(SQLALCHEMY_BINDS = \\
-        {'<project.bind_key>': flask_app.config['SQLALCHEMY_DATABASE_URI_<project.bind_key>']})
+        {'<project.bind_key>': flask_app.config['SQLALCHEMY_DATABASE_URI_<bind_key_upper>']})
     
     app_logger.info(f"\\n<project.bind_key> Config complete - database/<project.bind_key>_models.py"
         + f'\\n -- with bind: <project.bind_key>'
@@ -81,6 +82,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
 
 """
     bind_insert = bind_insert.replace('<project.bind_key>', f'{project.bind_key}')
+    bind_insert = bind_insert.replace('<bind_key_upper>', f'{bind_key_upper}')
     create_utils.insert_lines_at(lines=bind_insert,
                                 at="# End Bind Databases",
                                 file_name=f'{project.project_directory}/database/bind_databases.py')

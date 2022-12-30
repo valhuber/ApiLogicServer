@@ -5,6 +5,7 @@ import os
 import datetime
 from pathlib import Path
 from typing import NewType
+from shutil import copyfile
 
 import create_from_model.model_creation_services as create_from_model
 
@@ -63,7 +64,10 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
             # result_apis +=  "# skip sqlite_sequence table: " + resource_name + "\n"
             continue
         else:
-            result_apis += f'    api.expose_object(database.models.{each_resource_name})\n'
+            models_file = 'models'
+            if model_creation_services.project.bind_key != "":
+                models_file = model_creation_services.project.bind_key + "_" + models_file
+            result_apis += f'    api.expose_object(database.{models_file}.{each_resource_name})\n'
     result_apis += f'    return api\n'
     # self.session.close()
     expose_api_models_path = Path(model_creation_services.project_directory).joinpath('api/expose_api_models.py')
@@ -82,6 +86,10 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
         if model_creation_services.project.bind_key != "":
             expose_api_models_path = Path(model_creation_services.project_directory).\
                 joinpath(f'api/expose_api_models_{model_creation_services.project.bind_key}.py')
+            src = model_creation_services.project.api_logic_server_dir_path.\
+                    joinpath('project_prototype/api/expose_api_models.py')
+            dest = expose_api_models_path
+            copyfile(src, dest)
         expose_api_models_file = open(expose_api_models_path, 'a')
         expose_api_models_file.write(result_apis)
         expose_api_models_file.close()
