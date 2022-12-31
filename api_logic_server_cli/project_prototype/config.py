@@ -50,14 +50,11 @@ class Config:
         SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
         app_logger.debug(f'.. overridden from env variable: {SQLALCHEMY_DATABASE_URI}')
 
-    SECURITY_ENABLED = False
+    SECURITY_ENABLED = False  # you must also: ApiLogicServer add-db --db-url=auth --bind-key=authentication
     if SECURITY_ENABLED:
         from security.authentication_provider.sql.sqlite.auth_provider import Authentication_Provider
         SECURITY_PROVIDER = Authentication_Provider
-        security_loc = str(project_abs_dir) + "/database/authentication_db.sqlite"
-        security_url = "sqlite:///" + security_loc      
-        SQLALCHEMY_DATABASE_URI_SECURITY = security_url # TODO required??
-        app_logger.debug(f'config.py - security_url: {security_url}')
+        app_logger.debug(f'config.py - security enabled')
     else:
         app_logger.debug(f'config.py - security disabled')
 

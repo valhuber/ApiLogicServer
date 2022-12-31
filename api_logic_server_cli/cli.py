@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.01"
+__version__ = "6.90.02"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/30/2022 - 06.90.01: multi-db create runs swagger/app, tests run  \n"\
+    "\t12/31/2022 - 06.90.02: multi-db create runs swagger/app, tests run, use multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
@@ -635,6 +635,8 @@ def get_abs_db_url(msg, db_url):
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold-plus.sqlite'
         rtn_nw_db_status = "nw+"
         print(f'{msg} from: {rtn_abs_db_url}')
+    elif db_url == "auth" or db_url == "authorization":
+        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/authentication.sqlite'
     elif db_url == "chinook":
         rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/Chinook_Sqlite.sqlite'
     elif db_url == "todo" or db_url == "todos":
@@ -1297,15 +1299,14 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 @click.pass_context # Kat
 def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: str):
     """
-    update create from model to notice bind key and create new model.py file if needed
+    Adds db (model & binds, api, app) to current project
     
     example: 
     cd existing_project
-    ApiLogicServer add_db --db_url="todo" --bind_key="Todo"
+    ApiLogicServer add-db --db-url="todo" --bind-key="Todo"
     
     """
-    # Kat TODO 
-    print("ready to add db!")
+
     project_name=os.getcwd()
     if project_name == get_api_logic_server_dir():
       project_name = str(
@@ -1600,4 +1601,4 @@ def key_module_map(): # Kat
     api_expose_api_models_creator.create()                  # creates api/expose_api_models.py, key input to SAFRS        
     ui_admin_creator.create()                               # creates ui/admin/admin.yaml from resource_list
     get_abs_db_url()                                        # nw set here, dbname
-    add_db()                                                # TODO
+    add_db()                                                # adds db (model, binds, api, app) to curr project

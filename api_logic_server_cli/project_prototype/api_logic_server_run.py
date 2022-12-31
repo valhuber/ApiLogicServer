@@ -406,14 +406,6 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
         db.init_app(flask_app)
         with flask_app.app_context():
-            if Config.SECURITY_ENABLED:
-                import database.authentication_models
-                flask_app.config.update(SQLALCHEMY_BINDS = \
-                    {'authentication': flask_app.config['SQLALCHEMY_DATABASE_URI_SECURITY']})
-                from security import declare_security  # activate security
-                app_logger.info("Declare Security complete - security/declare_security.py"
-                    + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
-                        
             if admin_enabled:
                 db.create_all()
                 db.create_all(bind='admin')
@@ -431,6 +423,11 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
             app_logger.info("\nCustomize Data Model - database/customize_models.py")
             from database import customize_models
+
+            if Config.SECURITY_ENABLED:
+                from security import declare_security  # activate security
+                app_logger.info("Declare Security complete - security/declare_security.py"
+                    + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
 
             SAFRSBase._s_auto_commit = False
             session.close()
