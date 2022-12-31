@@ -98,7 +98,7 @@
 			}
 		],
 		"sqltools.useNodeRuntime": true,
-		"workbench.preferredDarkColorTheme": "One Dark Space Gray",
+		"workbench.preferredDarkColorTheme": "One Dark Pro",
 		"workbench.preferredLightColorTheme": "Thakker Light Mist Theme High Contrast",
 		"workbench.colorTheme": "Blue Light Theme 2022"
 	}
