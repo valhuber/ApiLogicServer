@@ -18,3 +18,14 @@ It operates as follows:
     * Note the shorthand for sqlite versions of `todo`, `classicmodels`, `chinook`.  These are included in the install.
 3. The `bind_databases.py` file is created to bind the table to the database via its `bind-key`
 
+&nbsp;
+
+## API support
+
+Tables in your new databases are available through swagger.
+
+&nbsp;
+
+## Admin support
+
+An admin app is built for the table in your new database.  Access it via a url that prefixes the `bind-key`, such as `http://localhost:5656/admin/Todo_admin`.
