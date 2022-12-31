@@ -64,7 +64,7 @@
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/../todo_example/todos.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/api_logic_server_cli/database/todos.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

@@ -551,9 +551,11 @@ class CodeGenerator(object):
 #    See https://valhuber.github.io/ApiLogicServer/Project-Rebuild/#rebuilding
 
 from safrs import SAFRSBase
-
+from flask_login import UserMixin
 import safrs
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy() 
 Base = declarative_base()
 metadata = Base.metadata
 
@@ -563,6 +565,11 @@ metadata = Base.metadata
 from sqlalchemy.dialects.mysql import *
 ########################################################################################################################
 """
+        if self.model_creation_services.project.bind_key != "":
+            api_logic_server_imports = api_logic_server_imports.replace('Base = declarative_base()',
+                            f'Base{self.model_creation_services.project.bind_key} = declarative_base()')
+            api_logic_server_imports = api_logic_server_imports.replace('metadata = Base.metadata',
+                            f'metadata = Base{self.model_creation_services.project.bind_key}.metadata')
         if "sqlalchemy.ext.declarative" in self.collector:  # Manually Added for safrs (ApiLogicServer)
             dialect_name = self.metadata.bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
             if dialect_name in ["firebird", "mssql", "oracle", "postgresql", "sqlite", "sybase"]:
@@ -571,7 +578,7 @@ from sqlalchemy.dialects.mysql import *
                 rtn_api_logic_server_imports = api_logic_server_imports
                 print(".. .. ..Warning - unknown sql dialect, defaulting to msql - check database/models.py")
             return rtn_api_logic_server_imports
-        return "metadata = MetaData()"
+        return "metadata = MetaData()"  # (stand-alone sql1codegen - never used in API Logic Server)
 
     def _get_compiled_expression(self, statement):
         """Return the statement in a form where any placeholders have been filled in."""
@@ -817,9 +824,13 @@ from sqlalchemy.dialects.mysql import *
 
         return rendered.rstrip('\n,') + '\n)\n'
 
-    def render_class(self, model): # KAT
+    def render_class(self, model):
         """ returns string for model class, written into model.py by sqlacodegen_wrapper """
-        rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, model.parent_name)   # ApiLogicServer
+        super_classes = model.parent_name
+        if self.model_creation_services.project.bind_key != "":
+            super_classes = f'Base{self.model_creation_services.project.bind_key}, db.Model, UserMixin'
+        # f'Base{self.model_creation_services.project.bind_key} = declarative_base()'
+        rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, super_classes)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
         rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, model.name)
         if self.model_creation_services.project.bind_key != "":

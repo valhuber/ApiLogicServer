@@ -69,7 +69,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         print(f'.. .. ..Config file updated for {CONFIG_URI}...')
 
     bind_insert = """
-    from api import expose_api_models_<project.bind_key>
+    from api import <project.bind_key>_expose_api_models
     from database import <project.bind_key>_models
 
     flask_app.config.update(SQLALCHEMY_BINDS = \\
@@ -79,7 +79,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         + f'\\n -- with bind: <project.bind_key>'
         + f'\\n -- len(database.<project.bind_key>_models.<project.bind_key>.metadata.tables) tables loaded')
     
-    expose_api_models_<project.bind_key>.expose_models(safrs_api)
+    <project.bind_key>_expose_api_models.expose_models(safrs_api)
 
 """
     bind_insert = bind_insert.replace('<project.bind_key>', f'{project.bind_key}')
