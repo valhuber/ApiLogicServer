@@ -230,20 +230,21 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
 
 def rebuild_tests():
     print(f'Rebuild tests')
+
     current_path = Path(os.path.abspath(__file__))
     install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
-    api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
+    api_logic_project_path = install_api_logic_server_path.joinpath('Rebuild')
     admin_merge_yaml_path = api_logic_project_path.joinpath('ui').joinpath('admin').joinpath('admin-merge.yaml')
     new_model_path = current_path.parent.parent.joinpath('rebuild_tests').joinpath('models.py')
     models_py_path = api_logic_project_path.joinpath('database').joinpath('models.py')
 
-    result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
+    result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=Rebuild --db_url=',
         cwd=install_api_logic_server_path,
-        msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
+        msg=f'\nCreate Rebuild at: {str(install_api_logic_server_path)}')
     if admin_merge_yaml_path.is_file():
         raise ValueError('System Error - admin-merge.yaml exists on create')
 
-    result_create = run_command(f'{set_venv} && ApiLogicServer rebuild-from-database --project_name=ApiLogicProject --db_url=',
+    result_create = run_command(f'{set_venv} && ApiLogicServer rebuild-from-database --project_name=Rebuild --db_url=',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
     if not admin_merge_yaml_path.is_file():
@@ -254,7 +255,7 @@ def rebuild_tests():
         raise ValueError('System Error - admin-merge.yaml does not contain "new_resources: " ')
 
     copyfile(new_model_path, models_py_path)
-    result_create = run_command(f'{set_venv} && ApiLogicServer rebuild-from-model --project_name=ApiLogicProject --db_url=',
+    result_create = run_command(f'{set_venv} && ApiLogicServer rebuild-from-model --project_name=Rebuild --db_url=',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
     if not admin_merge_yaml_path.is_file():
