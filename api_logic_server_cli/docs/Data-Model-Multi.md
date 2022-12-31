@@ -1,6 +1,6 @@
 If your project needs to connect to multiple physical database, you can configure this as [illustrated in this example](https://github.com/valhuber/MultiDB){:target="_blank" rel="noopener"}.
 
-A [pre-release is available](../#preview-version), providing automation for adding databases to existing projects:
+A [pre-release is available](../#preview-version){:target="_blank" rel="noopener"}, providing automation for adding databases to existing projects:
 
 ```bash
 cd YouApiLogicProject

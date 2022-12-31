@@ -50,7 +50,7 @@ class Config:
         SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
         app_logger.debug(f'.. overridden from env variable: {SQLALCHEMY_DATABASE_URI}')
 
-    SECURITY_ENABLED = False  # you must also: ApiLogicServer add-db --db-url=auth --bind-key=authentication
+    SECURITY_ENABLED = False  # you must also: ApiLogicServer add-db --db_url=auth --bind_key=authentication
     if os.getenv('SECURITY_ENABLED'):  # e.g. export SECURITY_ENABLED=true
         SECURITY_ENABLED = os.getenv('SECURITY_ENABLED')
         app_logger.debug(f'Security .. overridden from env variable: {SECURITY_ENABLED}')

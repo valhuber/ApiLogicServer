@@ -1,4 +1,4 @@
-Security is under active development.  You can examine the [Prototype in the Preview Version](../#preview-version), or the [Proof of Concept Project here](https://github.com/valhuber/security-poc#readme).  We are seeking design partners, so contact us if you'd like to discuss - we'd love to hear from you!
+Security is under active development.  You can examine the [Prototype in the Preview Version](../#preview-version){:target="_blank" rel="noopener"}, or the [Proof of Concept Project here](https://github.com/valhuber/security-poc#readme).  We are seeking design partners, so contact us if you'd like to discuss - we'd love to hear from you!
 
 ## Terms
 

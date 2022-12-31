@@ -38,9 +38,12 @@ This POC is _not_ meant to explore:
 
 You can run this in 2 ways:
 
-1. Use the [experimental build](), and
-     1. Create the sample project
-     2. Set `SECURITY_ENABLED = True` in config.py
+1. Use the [preview build](../#preview-version){:target="_blank" rel="noopener"}, and
+     1. Create the ApiLogicProject (e.g. sample)
+     2. cd ApiLogicProject
+     3. Add security: `ApiLogicServer add-db --db_url=auth --bind_key=authentication`
+         * This uses [Multi-Database Support](../Data-Model-Multi){:target="_blank" rel="noopener"} for the sqlite authentication data
+     4. Set `SECURITY_ENABLED = True` in config.py
 
 2. Or, run the pre-built project in codespaces:
 
