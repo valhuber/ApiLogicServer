@@ -85,7 +85,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     else:  # normal path...
         if model_creation_services.project.bind_key != "":
             expose_api_models_path = Path(model_creation_services.project_directory).\
-                joinpath(f'api/expose_api_models_{model_creation_services.project.bind_key}.py')
+                joinpath(f'api/{model_creation_services.project.bind_key}_expose_api_models.py')
             src = model_creation_services.project.api_logic_server_dir_path.\
                     joinpath('project_prototype/api/expose_api_models.py')
             dest = expose_api_models_path

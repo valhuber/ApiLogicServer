@@ -60,12 +60,13 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         app_logger.debug(f'.. overridden from env variable: {CONFIG_URI}')
 
 """
-    # with open(f'{project.project_directory}/config.py', 'r') as file:
-    #    config_data = file.read()
-    create_utils.insert_lines_at(lines=config_insert,
-                                at="# End Multi-Database URLs (from ApiLogicServer add-db...)",
-                                file_name=f'{project.project_directory}/config.py')
-    print(f'.. .. ..Config file updated for {CONFIG_URI}...')
+    config_file = f'{project.project_directory}/config.py'
+    config_built = create_utils.does_file_contain(search_for=CONFIG_URI, in_file=config_file)
+    if not config_built:
+        create_utils.insert_lines_at(lines=config_insert,
+                                    at="# End Multi-Database URLs (from ApiLogicServer add-db...)",
+                                    file_name=f'{project.project_directory}/config.py')
+        print(f'.. .. ..Config file updated for {CONFIG_URI}...')
 
     bind_insert = """
     from api import expose_api_models_<project.bind_key>
@@ -83,9 +84,14 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
 """
     bind_insert = bind_insert.replace('<project.bind_key>', f'{project.bind_key}')
     bind_insert = bind_insert.replace('<bind_key_upper>', f'{bind_key_upper}')
-    create_utils.insert_lines_at(lines=bind_insert,
-                                at="# End Bind Databases",
-                                file_name=f'{project.project_directory}/database/bind_databases.py')
-    print(f'.. .. ..bind_databases updated for {CONFIG_URI}...')
+    binds_databases_file = f'{project.project_directory}/database/bind_databases.py'
+    binds_built = create_utils.does_file_contain(search_for=bind_key_upper, in_file=binds_databases_file)
+    if not binds_built:
+        create_utils.insert_lines_at(lines=bind_insert,
+                                    at="# End Bind Databases",
+                                    file_name=binds_databases_file)
+        print(f'.. .. ..bind_databases updated for {CONFIG_URI}...')
+    else:
+        print(f'.. .. ..bind_databases *not* updated for {CONFIG_URI}...')
 
     return return_abs_db_url

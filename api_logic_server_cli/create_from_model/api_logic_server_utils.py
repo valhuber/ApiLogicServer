@@ -14,6 +14,18 @@ def get_api_logic_server_dir() -> str:
     return str(parent_path)
 
 
+def does_file_contain(search_for: str, in_file: str) -> bool:
+    """ returns True if <search_for> is <in_file> """
+    with open(in_file, 'r+') as fp:
+        file_lines = fp.readlines()  # lines is list of lines, each element '...\n'
+        found = False
+        insert_line = 0
+        for each_line in file_lines:
+            if search_for in each_line:
+                found = True
+                break
+        return found
+
 def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
     with open(in_file, 'r') as file:
         file_data = file.read()
