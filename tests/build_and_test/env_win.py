@@ -19,6 +19,8 @@ class Config:
 
     do_rebuild_tests = default_setting              # rebuild from model, allembic
 
+    do_multi_database_test = default_setting        # rebuild from model, allembic
+
     do_allocation_test = default_setting            # create / run / test allocation project
 
     do_other_sqlite_databases = default_setting     # classic models

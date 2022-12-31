@@ -18,6 +18,8 @@ class Config:
     do_test_api_logic_project = default_setting     # run the behave tests (test logic, api)
 
     do_rebuild_tests = default_setting              # rebuild from model, allembic
+
+    do_multi_database_test = default_setting        # rebuild from model, allembic
     
     do_allocation_test = default_setting            # create / run / test allocation project
 

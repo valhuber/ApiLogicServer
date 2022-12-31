@@ -180,8 +180,8 @@ def run_command(cmd: str, msg: str = "", new_line: bool=False,
         raise
     return result
 
-def start_api_logic_server(project_name: str):
-    """ start server at path, and wait a few moments """
+def start_api_logic_server(project_name: str, env_list = None):
+    """ start server at path [with env], and wait a few moments """
     import stat
 
     install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
@@ -194,11 +194,14 @@ def start_api_logic_server(project_name: str):
         os.chmod(f'{str(path)}/run.sh', 0o777)
         # start_cmd = ['sh', f'{str(path)}/run x']
         start_cmd = [f'{str(path)}/run.sh', 'calling']
-        # start_cmd = [f'{str(path)}/run.sh']
-        print(f'sh {str(path)}/run.sh x')
+        print(f'start_api_logic_server() - start_cmd[0]: {start_cmd[0]}')
 
     try:
-        pipe = subprocess.Popen(start_cmd, cwd=install_api_logic_server_path)  #, stderr=subprocess.PIPE)
+        my_env = os.environ.copy()
+        if env_list is not None:
+            for each_env_name, env_value in env_list:
+                my_env[each_env_name] = env_value
+        pipe = subprocess.Popen(start_cmd, cwd=install_api_logic_server_path, env=my_env)  #, stderr=subprocess.PIPE)
     except:
         print(f"\nsubprocess.Popen failed trying to start server.. with command: \n {start_cmd}")
         # what = pipe.stderr.readline()
@@ -227,6 +230,33 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
         file_data = file_data.replace(search_for, replace_with)
     with open(in_file, 'w') as file:
         file.write(file_data)
+
+def multi_database_tests():
+    print(f'Multi-Database Tests')
+
+    current_path = Path(os.path.abspath(__file__))
+    install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
+    api_logic_project_path = install_api_logic_server_path.joinpath('MultiDB')
+
+    result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=MultiDB --db_url=',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate MultiDB at: {str(install_api_logic_server_path)}')
+
+    result_create = run_command(f'{set_venv} && ApiLogicServer add-db --db_url=auth --bind_key=authentication --project_name=MultiDB',
+        cwd=install_api_logic_server_path,
+        msg=f'\nAdd AuthDB at: {str(install_api_logic_server_path)}')
+    
+    env = [("SECURITY_ENABLED", "true")]
+    start_api_logic_server(project_name='MultiDB', env_list=env)  # , env='export SECURITY_ENABLED=true')
+
+    # verify 1 Category row (validates multi-db <auth>, and security)
+    get_uri = "http://localhost:5656/api/Category/?fields%5BCategory%5D=Id%2CCategoryName%2CDescription&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id"
+    r = requests.get(url=get_uri)
+    response_text = r.text
+    result_data = json.loads(response_text) 
+    assert len(result_data["data"]) == 1, "MultiDB: Did not find 1 expected result row"
+
+    stop_server(msg="MultiDB\n")
 
 def rebuild_tests():
     print(f'Rebuild tests')
@@ -456,6 +486,9 @@ if Config.do_test_api_logic_project:
         f.close()
     print("\nBehave tests - Success...\n")
     stop_server(msg="*** NW TESTS COMPLETE ***\n")
+
+if Config.do_multi_database_test:
+    multi_database_tests()
 
 if Config.do_rebuild_tests:
     rebuild_tests()

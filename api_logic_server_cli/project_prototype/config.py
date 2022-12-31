@@ -46,11 +46,14 @@ class Config:
     app_logger.debug(f'config.py - SQLALCHEMY_DATABASE_URI: {SQLALCHEMY_DATABASE_URI}')
 
     # as desired, use env variable: export SQLALCHEMY_DATABASE_URI='sqlite:////Users/val/dev/servers/docker_api_logic_project/database/db.sqliteXX'
-    if os.getenv('SQLALCHEMY_DATABASE_URI'):
+    if os.getenv('SQLALCHEMY_DATABASE_URI'):  # e.g. export SECURITY_ENABLED=true
         SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
         app_logger.debug(f'.. overridden from env variable: {SQLALCHEMY_DATABASE_URI}')
 
     SECURITY_ENABLED = False  # you must also: ApiLogicServer add-db --db-url=auth --bind-key=authentication
+    if os.getenv('SECURITY_ENABLED'):  # e.g. export SECURITY_ENABLED=true
+        SECURITY_ENABLED = os.getenv('SECURITY_ENABLED')
+        app_logger.debug(f'Security .. overridden from env variable: {SECURITY_ENABLED}')
     if SECURITY_ENABLED:
         from security.authentication_provider.sql.sqlite.auth_provider import Authentication_Provider
         SECURITY_PROVIDER = Authentication_Provider

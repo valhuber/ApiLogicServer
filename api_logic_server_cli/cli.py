@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.02"
+__version__ = "6.90.03"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/31/2022 - 06.90.02: multi-db create runs swagger/app, tests run, use multi-db  \n"\
+    "\t12/31/2022 - 06.90.03: multi-db create runs swagger/app, tests run, use multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
@@ -1282,22 +1282,25 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 # Kat
 
 @main.command("add-db") 
-@click.option('--db-url',
+@click.option('--db_url',
               default=f'todo',
               prompt="Database url",
               help="Connect new database here") # TODO
-@click.option('--bind-key',
+@click.option('--bind_key',
               default=f'Todo',
               prompt="Bind key",
               help="Add new bind key here") # TODO
-@click.option('--prepend-bind', is_flag=True,
+@click.option('--prepend_bind', is_flag=True,
               default=True,
               help="Prepend bind key to classname")
-@click.option('--api-name',
+@click.option('--project_name',
+              default=f'',
+              help="Project location")
+@click.option('--api_name',
               default="api",
               help="api prefix name")
 @click.pass_context # Kat
-def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: str):
+def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: str, project_name: str):
     """
     Adds db (model & binds, api, app) to current project
     
@@ -1306,12 +1309,12 @@ def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: 
     ApiLogicServer add-db --db-url="todo" --bind-key="Todo"
     
     """
-
-    project_name=os.getcwd()
-    if project_name == get_api_logic_server_dir():
-      project_name = str(
-            Path(project_name).parent.parent.joinpath("servers").joinpath("ApiLogicProject")
-          )
+    if project_name == "":
+        project_name=os.getcwd()
+        if project_name == get_api_logic_server_dir():  # for ApiLogicServer dev (from |> Run and Debug )
+            project_name = str(
+                Path(project_name).parent.parent.joinpath("servers").joinpath("ApiLogicProject")
+            )
     ProjectRun(command="add_db", 
               project_name=project_name, 
               api_name=api_name, 
@@ -1582,7 +1585,7 @@ if __name__ == '__main__':  # debugger & python command line start here
     main()
 
 
-def key_module_map(): # Kat
+def key_module_map():
     """ not called - just index of key code - use this for hover, goto etc 
         ctl-l (^l) for last edit
     """
