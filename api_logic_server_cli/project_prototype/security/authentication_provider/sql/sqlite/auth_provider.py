@@ -1,6 +1,6 @@
 from security.authentication_provider.abstract_authentication_provider import Abstract_Authentication_Provider
 import sqlalchemy as sqlalchemy
-import security.authentication_provider.sql.authentication_models as authentication_models
+import database.authentication_models as authentication_models
 from flask import Flask
 import safrs
 

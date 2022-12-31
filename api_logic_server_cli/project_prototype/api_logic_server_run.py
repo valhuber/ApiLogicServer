@@ -407,12 +407,12 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
         db.init_app(flask_app)
         with flask_app.app_context():
             if Config.SECURITY_ENABLED:
-                import security.authentication_provider.sql.authentication_models
+                import database.authentication_models
                 flask_app.config.update(SQLALCHEMY_BINDS = \
-                    {'security_bind': flask_app.config['SQLALCHEMY_DATABASE_URI_SECURITY']})
+                    {'authentication': flask_app.config['SQLALCHEMY_DATABASE_URI_SECURITY']})
                 from security import declare_security  # activate security
                 app_logger.info("Declare Security complete - security/declare_security.py"
-                    + f' -- {len(security.authentication_provider.sql.authentication_models.metadata.tables)} tables loaded')
+                    + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
                         
             if admin_enabled:
                 db.create_all()

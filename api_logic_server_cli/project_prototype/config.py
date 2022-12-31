@@ -51,12 +51,15 @@ class Config:
         app_logger.debug(f'.. overridden from env variable: {SQLALCHEMY_DATABASE_URI}')
 
     SECURITY_ENABLED = False
-    from security.authentication_provider.sql.auth_provider import Authentication_Provider
-    SECURITY_PROVIDER = Authentication_Provider
-    security_loc = str(project_abs_dir) + "/security/authentication_provider/sql/authentication_db.sqlite"
-    security_url = "sqlite:///" + security_loc      
-    SQLALCHEMY_DATABASE_URI_SECURITY = security_url # TODO required??
-    app_logger.debug(f'config.py - security_url: {security_url}')
+    if SECURITY_ENABLED:
+        from security.authentication_provider.sql.sqlite.auth_provider import Authentication_Provider
+        SECURITY_PROVIDER = Authentication_Provider
+        security_loc = str(project_abs_dir) + "/database/authentication_db.sqlite"
+        security_url = "sqlite:///" + security_loc      
+        SQLALCHEMY_DATABASE_URI_SECURITY = security_url # TODO required??
+        app_logger.debug(f'config.py - security_url: {security_url}')
+    else:
+        app_logger.debug(f'config.py - security disabled')
 
     # Begin Multi-Database URLs (from ApiLogicServer add-db...)
 

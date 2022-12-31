@@ -28,7 +28,7 @@ from sqlalchemy.dialects.sqlite import *
 
 class Role(SAFRSBase, BaseSecurity, db.Model, UserMixin):
     __tablename__ = 'Role'
-    __bind_key__ = 'security_bind'
+    __bind_key__ = 'authentication'
 
     name = Column(String(64), primary_key=True)
     allow_client_generated_ids = True
@@ -38,7 +38,7 @@ class Role(SAFRSBase, BaseSecurity, db.Model, UserMixin):
 
 class User(SAFRSBase, BaseSecurity, db.Model, UserMixin):
     __tablename__ = 'User'
-    __bind_key__ = 'security_bind'
+    __bind_key__ = 'authentication'
 
     name = Column(String(128))
     notes = Column(Text)
@@ -62,7 +62,7 @@ t_sqlite_sequence = Table(
 
 class Api(SAFRSBase, BaseSecurity, db.Model, UserMixin):
     __tablename__ = 'Apis'
-    __bind_key__ = 'security_bind'
+    __bind_key__ = 'authentication'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(32))
@@ -74,7 +74,7 @@ class Api(SAFRSBase, BaseSecurity, db.Model, UserMixin):
 
 class UserRole(SAFRSBase, BaseSecurity, db.Model, UserMixin):
     __tablename__ = 'UserRole'
-    __bind_key__ = 'security_bind'
+    __bind_key__ = 'authentication'
 
     user_id = Column(ForeignKey('User.id'), primary_key=True)
     notes = Column(Text)
