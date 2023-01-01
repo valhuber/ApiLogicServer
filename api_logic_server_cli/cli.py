@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.03"
+__version__ = "6.90.04"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t12/31/2022 - 06.90.03: multi-db create runs swagger/app, tests run, use multi-db  \n"\
+    "\t01/01/2023 - 06.90.04: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
@@ -858,6 +858,19 @@ class ProjectRun(Project):
 
         if self.open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
             start_open_with(open_with=self.open_with, project_name=self.project_name)
+
+        if self.nw_db_status in ["nw", "nw+"] and self.command != "add_db":
+            print("\n\nApiLogicProject customizable project created.  Adding Security:")
+            print("  ..ApiLogicServer add-db --db_url=auth --bind_key=authentication")
+            print("==========================================================")
+            self.command = "add_db"
+            self.bind_key = "authentication"
+            self.db_url = "auth"
+            self.create_project()
+            create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False",
+                                replace_with='SECURITY_ENABLED = True',
+                                in_file=f'{self.project_directory}/config.py')
+            print("\nSecurity Added - enabled in consfig.sys")
 
         print("\n\nApiLogicProject customizable project created.  Next steps:")
         print("==========================================================")
