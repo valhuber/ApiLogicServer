@@ -37,3 +37,4 @@
 *[Authentication]: a login function that confirms a user has access, usually by posting credentials and obtaining a token identifying the users' roles.
 *[Authorization]: controlling access to row/columns based on assigned roles.
 *[Role]: in security, users are assigned one or many roles.  Roles are authorized for access to data, potentially down to the row/column level.
+*[Authentication-Provider]: Developer-supplied Class that, given a id/password, authenticates a user and returns the list of authorized roles (on None).  Invoked by the system when client apps log in.

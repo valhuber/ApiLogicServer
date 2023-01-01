@@ -35,6 +35,7 @@ nav:
   - 4. Security:
     - "Overview": Security-Overview.md
     - "Authorization": Security-Authorization.md
+    - "Authentication Provider": Security-Authentication-Provider.md
   - "Using Your IDE": IDE-Customize.md
   - Managing API Logic Projects:
     - "DevOps": Project-DevOps.md

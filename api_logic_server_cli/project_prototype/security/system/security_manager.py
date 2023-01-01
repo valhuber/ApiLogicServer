@@ -119,7 +119,7 @@ class Grant:
         SQLAlchemy select event for current user's roles, append that role's grant filter to the SQL before execute 
         '''
         user = Security.current_user()
-        mapper = orm_execute_state.bind_arguments['mapper']   # TODO table vs class (!!)
+        mapper = orm_execute_state.bind_arguments['mapper']
         table_name = mapper.persist_selectable.fullname   # mapper.mapped_table.fullname disparaged
         if table_name in Grant.grants_by_table:
             for each_grant in Grant.grants_by_table[table_name]:
@@ -139,7 +139,7 @@ def receive_do_orm_execute(orm_execute_state):
         and not orm_execute_state.is_relationship_load
     ):            
         security_logger.debug(f'receive_do_orm_execute alive')
-        mapper = orm_execute_state.bind_arguments['mapper']   # TODO table vs class (!!case sensitive if names differ)
+        mapper = orm_execute_state.bind_arguments['mapper']
         table_name = mapper.persist_selectable.fullname   # mapper.mapped_table.fullname disparaged
         if table_name == "User":
             pass  # TODO bypass authorization when rules are running
