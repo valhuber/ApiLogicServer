@@ -196,7 +196,7 @@ To get started, please see  the [Architecture.](Internals).
 You can try the pre-release at:
 
 ```bash
-python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==6.90.03
+python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==6.90.04
 ```
 
 Or use:
