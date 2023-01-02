@@ -16,6 +16,8 @@ class Project(ProjectArgs):
         self.project_directory = None
         self.project_directory_actual = None  # with no relative names (no /../)
         self.copy_to_project_directory = None
+        self.merge_into_prototype = None
+        """ used by codespaces - project_name = ./ """
 
         running_at = Path(__file__)
         self.api_logic_server_dir_path = running_at.parent.absolute()  # ne abspath(f'{abspath(get_api_logic_server_dir())}'))

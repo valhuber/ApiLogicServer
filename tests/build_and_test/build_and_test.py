@@ -238,7 +238,7 @@ def multi_database_tests():
     install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
     api_logic_project_path = install_api_logic_server_path.joinpath('MultiDB')
 
-    result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=MultiDB --db_url=',
+    result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=MultiDB --db_url=nw-',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MultiDB at: {str(install_api_logic_server_path)}')
 
@@ -246,9 +246,13 @@ def multi_database_tests():
         cwd=install_api_logic_server_path,
         msg=f'\nAdd AuthDB at: {str(install_api_logic_server_path)}')
     
+    # declare_security
+    src = install_api_logic_server_path.joinpath('ApiLogicProject/security/declare_security.py')
+    dest = install_api_logic_server_path.joinpath('MultiDB/security/declare_security.py')
+    shutil.copyfile(src, dest)
+
     env = [("SECURITY_ENABLED", "true")]
     start_api_logic_server(project_name='MultiDB', env_list=env)  # , env='export SECURITY_ENABLED=true')
-
     # verify 1 Category row (validates multi-db <auth>, and security)
     get_uri = "http://localhost:5656/api/Category/?fields%5BCategory%5D=Id%2CCategoryName%2CDescription&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id"
     r = requests.get(url=get_uri)

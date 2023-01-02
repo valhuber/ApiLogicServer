@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.04"
+__version__ = "6.90.05"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/01/2023 - 06.90.04: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
+    "\t01/01/2023 - 06.90.05: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
@@ -301,7 +301,7 @@ def get_project_directory_and_api_name(project):
         rtn_merge_into_prototype
 
 
-def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str) -> str:
+def create_project_with_nw_samples(project, msg: str) -> str:
     """
     clone prototype to  project directory, copy sqlite db, and remove git folder
 
@@ -309,7 +309,6 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
 
     :param project a ProjectRun
     :param msg printed, such as Create Project:
-    :param merge_into_prototype for codespaces - create over self
     :return: return_abs_db_url (e.g., reflects sqlite copy to project/database dir)
     """
 
@@ -318,7 +317,7 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
     tmpdirname = ""
     with tempfile.TemporaryDirectory() as tmpdirname:
 
-        if merge_into_prototype:
+        if project.merge_into_prototype:
             pass
         else:
             remove_project_debug = True
@@ -340,9 +339,9 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
             print(f'.. ..Clone from {from_dir} ')
             cloned_from = from_dir
             try:
-                if merge_into_prototype:
+                if project.merge_into_prototype:
                     # tmpdirname = tempfile.TemporaryDirectory() 
-                    recursive_overwrite(project.from_gitproject_directory, str(tmpdirname))       # user proto -> temp
+                    recursive_overwrite(project.project_directory, str(tmpdirname))       # user proto -> temp
                     delete_dir(str(Path(str(tmpdirname)) / ".devcontainer"), "")  # clean it up
                     delete_dir(str(Path(str(tmpdirname)) / "api"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "database"), "")
@@ -435,7 +434,7 @@ def create_project_with_nw_samples(project, merge_into_prototype: bool, msg: str
             print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
             print(f'.. .. ..From {db_loc}')
             print(f'.. .. ..db_uri set to: {return_abs_db_url} in <project>/config.py')
-        if merge_into_prototype:
+        if project.merge_into_prototype:
             recursive_overwrite(str(tmpdirname), project.project_directory)
             # delete_dir(realpath(Path(str(tmpdirname))), "")
             # os.removedirs(Path(str(tmpdirname)))
@@ -569,7 +568,7 @@ def fix_host_and_ports(msg, project):
     print(msg)  # c.   Fixing api/expose_services - port, host
     replace_port = f':{project.port}' if project.port else ""
     # replace_with = host + replace_port
-    in_file = f'{project.project_name}/api/customize_api.py'
+    in_file = f'{project.project_directory}/api/customize_api.py'
     create_utils.replace_string_in_file(search_for="api_logic_server_host",
                            replace_with=project.host,
                            in_file=in_file)
@@ -580,7 +579,7 @@ def fix_host_and_ports(msg, project):
     full_path = project.project_directory_actual
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
-                           in_file=f'{project.project_name}/python_anywhere_wsgi.py')
+                           in_file=f'{project.project_directory}/python_anywhere_wsgi.py')
     print(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
 
 
@@ -831,12 +830,12 @@ class ProjectRun(Project):
             self.extended_builder = abspath(f'{self.api_logic_server_dir_path}/extended_builder.py')
             print(f'0. Using default extended_builder: {self.extended_builder}')
 
-        self.project_directory, self.api_name, merge_into_prototype = get_project_directory_and_api_name(self)
+        self.project_directory, self.api_name, self.merge_into_prototype = get_project_directory_and_api_name(self)
         self.project_directory_actual = os.path.abspath(self.project_directory)  # make path absolute, not relative (no /../)
 
         self.project_directory, self.copy_to_project_directory = copy_if_mounted(self.project_directory)
         if not self.command.startswith("rebuild") and not self.command == "add_db":
-            self.abs_db_url = create_project_with_nw_samples(self, merge_into_prototype, "2. Create Project:")
+            self.abs_db_url = create_project_with_nw_samples(self, "2. Create Project:")
         else:
             print("1. Not Deleting Existing Project")
             print("2. Using Existing Project")
