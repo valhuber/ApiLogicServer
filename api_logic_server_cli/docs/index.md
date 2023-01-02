@@ -205,7 +205,7 @@ Or use:
 docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server_x
 ```
 
-Or, on [here on codespaces](https://github.com/ApiLogicServer/beta){:target="_blank" rel="noopener"}.
+Or, you can use [the beta version on codespaces](https://github.com/ApiLogicServer/beta){:target="_blank" rel="noopener"}.
 
 &nbsp;
 
