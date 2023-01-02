@@ -81,4 +81,39 @@ Running in preview build, _without_ authentication (currently hard-wired).
 
 ## Trying this on your own project
 
-We'd love the feedback.  Please contact the authors.
+We'd love the feedback.  Follow the directions below, and please contact the authors.
+
+&nbsp;
+
+## Setup and Test
+
+You can explore this with and without configuration.  Use the [preview build](../#preview-version){:target="_blank" rel="noopener"}.
+
+&nbsp;
+
+### Pre-configured
+
+Security is enabled when building the sample app.  Test it by
+
+* Admin App - verify the `Categories` screen has 1 row
+
+* cURL
+
+```
+curl -X 'GET' \
+'http://localhost:5656/api/CategoryTable/?fields%5BCategory%5D=Id%2CCategoryName%2CDescription&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id' -H 'accept: application/vnd.api+json' -H 'Content-Type: application/vnd.api+json'
+```
+
+&nbsp;
+
+### Configure
+
+Build the sample _without customizations_:
+
+    1. `ApiLogicServer create --project_name=nw --db_url=nw-`
+    2. cd nw
+    3. Add security: `ApiLogicServer add-db --db_url=auth --bind_key=authentication`
+        * This uses [Multi-Database Support](../Data-Model-Multi){:target="_blank" rel="noopener"} for the sqlite authentication data
+    4. Set `SECURITY_ENABLED = True` in config.py
+
+Test as described above.

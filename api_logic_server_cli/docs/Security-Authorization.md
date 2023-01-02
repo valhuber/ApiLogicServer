@@ -32,36 +32,6 @@ This POC is _not_ meant to explore:
 
 * System issues such as performance, caching, etc.
 
-&nbsp;
-
-## Setup and Test
-
-You can run this in 2 ways:
-
-1. Use the [preview build](../#preview-version){:target="_blank" rel="noopener"}, and
-     1. Create the ApiLogicProject (e.g. sample)
-     2. cd ApiLogicProject
-     3. Add security: `ApiLogicServer add-db --db_url=auth --bind_key=authentication`
-         * This uses [Multi-Database Support](../Data-Model-Multi){:target="_blank" rel="noopener"} for the sqlite authentication data
-     4. Set `SECURITY_ENABLED = True` in config.py
-
-2. Or, run the pre-built project in codespaces:
-
-     1. Open [this repository](https://github.com/valhuber/security-poc) in codespaces
-
-         * Takes about a minute; wait until the Ports tab shows up
-
-     2. Start the server, using the provided Launch Configuration
-
-     3. Issue this in the codespaces (_not_ your local machine) terminal window, and verify it returns 1 row:
-
-
-To Test (if running in Codespaces, use the Codespaces terminal - _not_ your local computers' terminal):
-
-```
-curl -X 'GET' \
-'http://localhost:5656/api/CategoryTable/?fields%5BCategory%5D=Id%2CCategoryName%2CDescription&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id' -H 'accept: application/vnd.api+json' -H 'Content-Type: application/vnd.api+json'
-```
 
 &nbsp;
 
@@ -77,6 +47,5 @@ Analogous to logic declarations, Developers declare filters for users' roles (ro
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/security/declare-security.png"></figure>
 
-&nbsp;
 
 
