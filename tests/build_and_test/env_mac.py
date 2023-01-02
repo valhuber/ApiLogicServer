@@ -9,7 +9,7 @@ class Config:
     #   what tests to run
     # ***********************
 
-    default_setting = False  # simplify enable / disable most
+    default_setting = True  # simplify enable / disable most
 
     do_install_api_logic_server = default_setting   # verify build wheel and local install
     
@@ -19,7 +19,7 @@ class Config:
 
     do_rebuild_tests = default_setting              # rebuild from model, allembic
 
-    do_multi_database_test = True        # rebuild from model, allembic
+    do_multi_database_test = default_setting        # rebuild from model, allembic
 
     do_allocation_test = default_setting            # create / run / test allocation project
 
