@@ -28,12 +28,12 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         """
         # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
         db_loc = project.abs_db_url.replace("sqlite:///", "")
-        target_db_loc_actual = project.project_directory_path.joinpath(f'database/{project.bind_key}_db.sqlite')
+        target_db_loc_actual = str(project.project_directory_path.joinpath(f'database/{project.bind_key}_db.sqlite'))
         copyfile(db_loc, target_db_loc_actual)
 
         if os.name == "nt":  # windows
             # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
-            target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + 'database\db.sqlite')
+            target_db_loc_actual = get_windows_path_with_slashes(target_db_loc_actual)
         return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
 
         print(f'.. .. ..Sqlite database setup {target_db_loc_actual}...')
@@ -43,7 +43,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     db_uri = return_abs_db_url
     if os.name == "nt":  # windows
         # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
-        target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual)
+        target_db_loc_actual = get_windows_path_with_slashes(target_db_loc_actual)
     CONFIG_URI = f'SQLALCHEMY_DATABASE_URI_{bind_key_upper}'
 
     config_insert = f"""
