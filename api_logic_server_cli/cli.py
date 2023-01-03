@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.05"
+__version__ = "6.90.06"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/01/2023 - 06.90.05: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
+    "\t01/02/2023 - 06.90.06: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
@@ -421,7 +421,7 @@ def create_project_with_nw_samples(project, msg: str) -> str:
 
             if os.name == "nt":  # windows
                 # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
-                target_db_loc_actual = get_windows_path_with_slashes(project_directory_actual + '\database\db.sqlite')
+                target_db_loc_actual = get_windows_path_with_slashes(project.project_directory_actual + '\database\db.sqlite')
             # db_uri = f'sqlite:///{target_db_loc_actual}'
             return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
             create_utils.replace_string_in_file(search_for="replace_db_url",
@@ -534,7 +534,7 @@ def update_api_logic_server_run(project):
                            in_file=api_logic_server_run_py)
     project_directory_fix = project.project_directory_actual
     if os.name == "nt":  # windows
-        project_directory_fix = get_windows_path_with_slashes(str(project_directory_actual))
+        project_directory_fix = get_windows_path_with_slashes(str(project.project_directory_actual))
     create_utils.replace_string_in_file(search_for="\"api_logic_server_project_dir\"",  # for logging project location
                            replace_with='"' + project_directory_fix + '"',
                            in_file=api_logic_server_run_py)
@@ -750,6 +750,7 @@ class ProjectRun(Project):
                      extended_builder: str="", 
                      multi_api: bool=False, 
                      infer_primary_key: bool=False, 
+                     prepend_bind: bool=True,
                      bind_key: str=""):
         super(ProjectRun, self).__init__()
         self.project_name = project_name
@@ -773,6 +774,7 @@ class ProjectRun(Project):
         self.extended_builder = extended_builder
         self.multi_api = multi_api
         self.infer_primary_key = infer_primary_key
+        self.prepend_bind = prepend_bind
         self.command = command
 
         self.create_project()
@@ -862,13 +864,16 @@ class ProjectRun(Project):
             print("\n\nApiLogicProject customizable project created.  Adding Security:")
             print("  ..ApiLogicServer add-db --db_url=auth --bind_key=authentication")
             print("==========================================================")
-            self.command = "add_db"
-            self.bind_key = "authentication"
-            self.db_url = "auth"
-            self.create_project()
             create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False",
                                 replace_with='SECURITY_ENABLED = True',
                                 in_file=f'{self.project_directory}/config.py')
+            self.command = "add_db"
+            self.bind_key = "authentication"
+            self.db_url = "auth"
+            save_run = self.run
+            self.run = False
+            self.create_project()
+            self.run = save_run
             print("\nSecurity Added - enabled in consfig.sys")
 
         print("\n\nApiLogicProject customizable project created.  Next steps:")
@@ -1332,7 +1337,9 @@ def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: 
               api_name=api_name, 
               db_url=db_url, 
               bind_key=bind_key,
+              prepend_bind=prepend_bind
               )
+    print("DB Added")
 
 
 @main.command("rebuild-from-model")

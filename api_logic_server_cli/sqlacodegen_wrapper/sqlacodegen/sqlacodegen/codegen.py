@@ -832,7 +832,11 @@ from sqlalchemy.dialects.mysql import *
         # f'Base{self.model_creation_services.project.bind_key} = declarative_base()'
         rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, super_classes)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
-        rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, model.name)
+        end_point_name = model.name
+        if self.model_creation_services.project.bind_key != "":
+            if self.model_creation_services.project.prepend_bind:
+                end_point_name = self.model_creation_services.project.bind_key + '-' + model.name
+        rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, end_point_name)
         if self.model_creation_services.project.bind_key != "":
           bind_key = self.model_creation_services.project.bind_key
         else:
