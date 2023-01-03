@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.07"
+__version__ = "6.90.08"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/03/2023 - 06.90.07: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
+    "\t01/03/2023 - 06.90.08: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
@@ -412,16 +412,13 @@ def create_project_with_nw_samples(project, msg: str) -> str:
         else:
             """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
             """
-            # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
+            # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
             db_loc = project.abs_db_url.replace("sqlite:///", "")
-            target_db_loc_actual = project.project_directory_actual + '/database/db.sqlite'
+            target_db_loc_actual = str(project.project_directory_path.joinpath('database/db.sqlite'))
             copyfile(db_loc, target_db_loc_actual)
-            backup_db = project.project_directory_actual + '/database/db-backup.sqlite'
-            copyfile(db_loc, backup_db)
 
             if os.name == "nt":  # windows
-                # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
-                target_db_loc_actual = get_windows_path_with_slashes(project.project_directory_actual + '\database\db.sqlite')
+                target_db_loc_actual = get_windows_path_with_slashes(target_db_loc_actual)
             # db_uri = f'sqlite:///{target_db_loc_actual}'
             return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
             create_utils.replace_string_in_file(search_for="replace_db_url",
@@ -834,6 +831,7 @@ class ProjectRun(Project):
 
         self.project_directory, self.api_name, self.merge_into_prototype = get_project_directory_and_api_name(self)
         self.project_directory_actual = os.path.abspath(self.project_directory)  # make path absolute, not relative (no /../)
+        self.project_directory_path = Path(self.project_directory_actual)
 
         self.project_directory, self.copy_to_project_directory = copy_if_mounted(self.project_directory)
         if not self.command.startswith("rebuild") and not self.command == "add_db":

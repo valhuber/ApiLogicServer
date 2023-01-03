@@ -11,10 +11,19 @@ class Project(ProjectArgs):
 
         self.os_cwd = os.getcwd()
         self.abs_db_url = None
+        
         self.nw_db_status = None
         """ '', nw, nw+, nw- """
+
         self.project_directory = None
-        self.project_directory_actual = None  # with no relative names (no /../)
+        """ string - may have relative /../ """
+
+        self.project_directory_actual = None
+        """ string - no relative /../ """
+
+        self.project_directory_path = None
+        """ Path (project_directory_actual) """
+
         self.copy_to_project_directory = None
         self.merge_into_prototype = None
         """ used by codespaces - project_name = ./ """
