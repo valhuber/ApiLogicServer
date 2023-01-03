@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.06"
+__version__ = "6.90.07"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/02/2023 - 06.90.06: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
+    "\t01/03/2023 - 06.90.07: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
@@ -599,7 +599,7 @@ def is_docker() -> bool:
     return path_result
 
 
-def get_abs_db_url(msg, db_url):
+def get_abs_db_url(msg, project: Project):
     """
     non-relative db location - we work with this
 
@@ -607,10 +607,10 @@ def get_abs_db_url(msg, db_url):
 
     also: compute physical nw db name (usually nw-gold) to be used for copy
 
-    returns abs_db_url - the real url (e.g., for nw), and whether it's really nw
+    returns abs_db_url, nw_db_status - the real url (e.g., for nw), and whether it's really nw
     """
     rtn_nw_db_status = ""  # presume not northwind
-    rtn_abs_db_url = db_url
+    rtn_abs_db_url = project.db_url
 
     # SQL/Server urls make VScode fail due to '?', so unfortunate work-around... (better: internalConsole)
     if rtn_abs_db_url.startswith('{install}'):
@@ -619,31 +619,31 @@ def get_abs_db_url(msg, db_url):
     if rtn_abs_db_url.startswith('SqlServer-arm'):
         pass
 
-    if db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
-        # abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/project_prototype_nw/nw.sqlite'
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold.sqlite'
-        rtn_nw_db_status = "nw"
+    # api_logic_server_dir_std_path = Path(str(Path(str(project.api_logic_server_dir_path)))) 
+    if project.db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
+        rtn_nw_db_status = "nw"  # api_logic_server_dir_path
         print(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
-    elif db_url == "nw-":                                           # nw:           just in case
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold.sqlite'
+    elif project.db_url == "nw-":                                           # nw:           just in case
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
         rtn_nw_db_status = "nw-"
-    elif db_url == "nw--":                                           # nw:           unused - avoid
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw.sqlite'
+    elif project.db_url == "nw--":                                           # nw:           unused - avoid
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw.sqlite"))}'
         rtn_nw_db_status = "nw-"
-    elif db_url == "nw+":                                           # nw-gold-plus: next version
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/nw-gold-plus.sqlite'
+    elif project.db_url == "nw+":                                           # nw-gold-plus: next version
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold-plus.sqlite"))}'
         rtn_nw_db_status = "nw+"
         print(f'{msg} from: {rtn_abs_db_url}')
-    elif db_url == "auth" or db_url == "authorization":
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/authentication.sqlite'
-    elif db_url == "chinook":
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/Chinook_Sqlite.sqlite'
-    elif db_url == "todo" or db_url == "todos":
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/todos.sqlite'
-    elif db_url == "classicmodels":
-        rtn_abs_db_url = f'sqlite:///{abspath(get_api_logic_server_dir())}/database/classicmodels.sqlite'
-    elif db_url.startswith('sqlite:///'):
-        url = db_url[10: len(db_url)]
+    elif project.db_url == "auth" or project.db_url == "authorization":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/authentication.sqlite"))}'
+    elif project.db_url == "chinook":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/Chinook_Sqlite.sqlite"))}'
+    elif project.db_url == "todo" or project.db_url == "todos":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/todos.sqlite"))}'
+    elif project.db_url == "classicmodels":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/classicmodels.sqlite"))}'
+    elif project.db_url.startswith('sqlite:///'):
+        url = project.db_url[10: len(project.db_url)]
         rtn_abs_db_url = abspath(url)
         rtn_abs_db_url = 'sqlite:///' + rtn_abs_db_url
     return rtn_abs_db_url, rtn_nw_db_status
@@ -826,7 +826,7 @@ class ProjectRun(Project):
         print(f"\nApiLogicServer {__version__} Creation Log:")
 
         # fixme global nw_db_status
-        self.abs_db_url, self.nw_db_status = get_abs_db_url("0. Using Sample DB", self.db_url)
+        self.abs_db_url, self.nw_db_status = get_abs_db_url("0. Using Sample DB", self)
 
         if self.extended_builder == "*":
             self.extended_builder = abspath(f'{self.api_logic_server_dir_path}/extended_builder.py')
