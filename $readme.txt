@@ -2,6 +2,16 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
+
+path_test = True
+if path_test:
+    current_path = Path(__file__)
+    cli_path = Path(str(current_path.parent.absolute()))
+    api_logic_server_path_str = str(cli_path.parent.absolute())
+    sys.path.append(api_logic_server_path_str)
+    # project_dir = str(api_logic_server_path)
+    os.chdir(api_logic_server_path_str)  # so admin app can find images, code
+
 https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/docker/VSCode/nw-readme/cust-api.png
 
 https://github.com/community/community/discussions/30205
