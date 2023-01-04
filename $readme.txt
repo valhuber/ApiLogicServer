@@ -2,7 +2,7 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
-
+git 120af3a
 path_test = True
 if path_test:
     current_path = Path(__file__)
