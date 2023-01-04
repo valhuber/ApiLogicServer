@@ -1,13 +1,17 @@
-If your project needs to connect to multiple physical database, you can configure this as [illustrated in this example](https://github.com/valhuber/MultiDB){:target="_blank" rel="noopener"}.
+API Logic Server enables you to create projects that support multiple databases:
 
-A [pre-release is available](../#preview-version){:target="_blank" rel="noopener"}, providing automation for adding databases to existing projects:
+1. Create the project, specifying your "main" database
 
-```bash
-cd YouApiLogicProject
-ApiLogicServer add-db --db-url=todo --bind_key=Todo
-```
+2. As shown in the example below, use the `ApiLogicServer add-db` command to additional each additional database
+
+&nbsp;
+
+## Background
+
+SQLAlchemy supports multiple databases by using the `bind_key` as illustrated below:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/multi-db.png?raw=true"></figure>
+
 
 It operates as follows:
 
@@ -20,12 +24,66 @@ It operates as follows:
 
 &nbsp;
 
-## API support
+## Example
+
+Using the following command:
+
+```bash
+cd YouApiLogicProject
+ApiLogicServer add-db --db-url=todo --bind_key=Todo
+```
+
+will result in the following log:
+
+```bash
+ApiLogicServer 6.90.08 Creation Log:
+1. Not Deleting Existing Project
+2. Using Existing Project
+.. ..Adding Database [Todo] to existing project
+.. .. ..Copying sqlite database to: database/Todo_db.sqlite
+.. .. ..From /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/todos.sqlite
+.. ..Updating config.py file with SQLALCHEMY_DATABASE_URI_TODO...
+.. ..Updating database/bind_databases.py with SQLALCHEMY_DATABASE_URI_TODO...
+3. Create/verify database/Todo_models.py, then use that to create api/ and ui/ models
+ a.  Create Models - create database/Todo_models.py, using sqlcodegen
+.. .. ..For database:  sqlite:////Users/val/dev/servers/ApiLogicProject/database/Todo_db.sqlite
+.. .. ..Setting bind_key = Todo
+.. .. ..Create resource_list - dynamic import database/Todo_models.py, inspect 2 classes in <project>/database
+ b.  Create api/expose_api_models.py from models
+ c.  Create ui/admin/admin.yaml from models
+.. .. ..WARNING - no relationships detected - add them to your database or model
+.. .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design
+.. .. ..Write /Users/val/dev/servers/ApiLogicProject/ui/admin/Todo_admin.yaml
+ d.  Create ui/basic_web_app -- declined
+4. Final project fixup
+ b.   Update api_logic_server_run.py with project_name=/Users/val/dev/servers/ApiLogicProject and api_name, host, port
+ c.   Fixing api/expose_services - port, host
+ d.   Updated customize_api_py with port=5656 and host=localhost
+ e.   Updated python_anywhere_wsgi.py with /Users/val/dev/servers/ApiLogicProject
+```
+
+Notes:
+
+1. In step 2:
+    1. Updating `config.py` file with the location of the new database
+    2. Updating `database/bind_databases.py` to open this database for SQLAlchemy access
+2. In Step 3:
+    1. Creating a `models.py` file; note:
+        * The additional superclasses,
+        * Inclusion of your designated `bind_key`, for step 1.2
+3. Note the shorthand for sqlite versions of `todo`, `classicmodels`, `chinook`.  These are included in the install.
+
+&nbsp;
+
+## Runtime Support
+
+### API support
 
 Tables in your new databases are available through swagger.
 
 &nbsp;
 
-## Admin support
+### Admin support
 
 An admin app is built for the table in your new database.  Access it via a url that prefixes the `bind-key`, such as `http://localhost:5656/admin/Todo_admin`.
+

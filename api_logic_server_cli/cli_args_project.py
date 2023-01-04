@@ -28,6 +28,12 @@ class Project(ProjectArgs):
         self.merge_into_prototype = None
         """ used by codespaces - project_name = ./ """
 
+        self.model_gen_bind_msg = False
+        """ sqlacodegen/codegen msg printed """
+
+        self.model_file_name = "models.py"
+        """ name of models file being processed """
+
         running_at = Path(__file__)
         self.api_logic_server_dir_path = running_at.parent.absolute()  # ne abspath(f'{abspath(get_api_logic_server_dir())}'))
 

@@ -203,34 +203,35 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
         return codegen_args
 
     num_models = 0
-    model_file_name = "*"
-    if model_creation_services.project.command in ('create', 'create-and-run', 'rebuild-from-database', 'add_db'):
-        if model_creation_services.project.use_model is None or model_creation_services.project.use_model == "":
+    model_full_file_name = "*"
+    project = model_creation_services.project
+    if project.command in ('create', 'create-and-run', 'rebuild-from-database', 'add_db'):
+        if project.use_model is None or model_creation_services.project.use_model == "":
             code_gen_args = get_codegen_args()
-            model_file_name = code_gen_args.outfile
+            model_full_file_name = code_gen_args.outfile
             if model_creation_services.project.bind_key != "":
-              model_file_name = "/".join(model_file_name.split("/")[:-1]) + "/" + model_creation_services.project.bind_key + "_" + model_file_name.split("/")[-1]
-            print(f' a.  Create Models - create database/models.py, using sqlcodegen')
+                model_full_file_name = project.project_directory_path.joinpath('database').joinpath(project.model_file_name)
+                # model_full_file_name = "/".join(model_file_name.split("/")[:-1]) + "/" + model_creation_services.project.bind_key + "_" + model_file_name.split("/")[-1]
+            print(f' a.  Create Models - create database/{project.model_file_name}, using sqlcodegen')
             print(f'.. .. ..For database:  {abs_db_url}')
             models_mem, num_models = create_models_memstring(code_gen_args)  # calls sqlcodegen
-            write_models_py(model_file_name, models_mem)
+            write_models_py(model_full_file_name, models_mem)
             model_creation_services.resource_list_complete = True
         else:  # use pre-existing (or repaired) existing model file
-            model_file_name = project_directory + '/database/models.py'
+            model_full_file_name = str(Path(project_directory).joinpath('database/models.py'))
             use_model_path = Path(model_creation_services.project.use_model).absolute()
             print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
-            copyfile(use_model_path, model_file_name)
-
-    elif model_creation_services.project.command == 'create-ui':
-        model_file_name = model_creation_services.resolve_home(name = model_creation_services.use_model)
-    elif model_creation_services.project.command == "rebuild-from-model":
+            copyfile(use_model_path, model_full_file_name)
+    elif project.command == 'create-ui':
+        model_full_file_name = model_creation_services.resolve_home(name = model_creation_services.use_model)
+    elif project.command == "rebuild-from-model":
         print(f' a.  Use existing database/models.py to rebuild api and ui models - verifying')
-        model_file_name = project_directory + '/database/models.py'
+        model_full_file_name = project_directory + '/database/models.py'
     else:
-        error_message = f'System error - unexpected command: {model_creation_services.command}'
+        error_message = f'System error - unexpected command: {project.command}'
         raise ValueError(error_message)
-    msg = f'.. .. ..Create resource_list - dynamic import database/models.py, inspect {num_models} classes'
-    return model_file_name, msg # return to ctor, create resource_list
+    msg = f'.. .. ..Create resource_list - dynamic import database/{model_creation_services.project.model_file_name}, inspect {num_models} classes'
+    return model_full_file_name, msg # return to ctor, create resource_list
 
 
 def create_models_memstring(args) -> str:

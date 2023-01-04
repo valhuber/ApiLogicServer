@@ -26,7 +26,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     if "sqlite" in project.abs_db_url:
         """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
         """
-        # strip sqlite://// from sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/nw.sqlite
+        print(f'.. .. ..Copying sqlite database to: database/{project.bind_key}_db.sqlite')
         db_loc = project.abs_db_url.replace("sqlite:///", "")
         target_db_loc_actual = str(project.project_directory_path.joinpath(f'database/{project.bind_key}_db.sqlite'))
         copyfile(db_loc, target_db_loc_actual)
@@ -35,9 +35,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
             # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
             target_db_loc_actual = get_windows_path_with_slashes(target_db_loc_actual)
         return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
-
-        print(f'.. .. ..Sqlite database setup {target_db_loc_actual}...')
-        print(f'.. .. .. ..From {db_loc}')
+        print(f'.. .. ..From {db_loc}')
 
     # insert me to config
     db_uri = return_abs_db_url
@@ -62,7 +60,9 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         create_utils.insert_lines_at(lines=config_insert,
                                     at="# End Multi-Database URLs (from ApiLogicServer add-db...)",
                                     file_name=f'{project.project_directory}/config.py')
-        print(f'.. .. ..Config file updated for {CONFIG_URI}...')
+        print(f'.. ..Updating config.py file with {CONFIG_URI}...')
+    else:
+        print(f'.. ..Not updating config.py file with {CONFIG_URI}... (already present)')
 
     bind_insert = """
     from api import <project.bind_key>_expose_api_models
@@ -86,8 +86,8 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         create_utils.insert_lines_at(lines=bind_insert,
                                     at="# End Bind Databases",
                                     file_name=binds_databases_file)
-        print(f'.. .. ..bind_databases updated for {CONFIG_URI}...')
+        print(f'.. ..Updating database/bind_databases.py with {CONFIG_URI}...')
     else:
-        print(f'.. .. ..bind_databases *not* updated for {CONFIG_URI}...')
+        print(f'.. ..Not updating database/bind_databases.py with {CONFIG_URI} (already present)')
 
     return return_abs_db_url
