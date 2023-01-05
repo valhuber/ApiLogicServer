@@ -68,6 +68,7 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/../servers/install/ApiLogicServer/ApiLogicProject/api_logic_server_run.py",
+            "justMyCode": false,
             "redirectOutput": true,
             "console": "integratedTerminal"
         },

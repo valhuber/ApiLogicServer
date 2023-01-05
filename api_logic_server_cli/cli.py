@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.08"
+__version__ = "6.90.09"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/03/2023 - 06.90.08: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
+    "\t01/04/2023 - 06.90.09: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
     "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
     "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
