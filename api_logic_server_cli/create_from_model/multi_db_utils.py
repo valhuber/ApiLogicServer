@@ -23,6 +23,10 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     bind_key_upper = project.bind_key.upper()  # configs insist on all caps
     return_abs_db_url = project.abs_db_url
 
+
+    """ **********************
+    sqlite? copy to database/
+    **************************  """
     if "sqlite" in project.abs_db_url:
         """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
         """
@@ -37,7 +41,10 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
         print(f'.. .. ..From {db_loc}')
 
-    # insert me to config
+
+    """ **********************
+    add url to config
+    **************************  """
     db_uri = return_abs_db_url
     if os.name == "nt":  # windows
         # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
@@ -64,12 +71,18 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     else:
         print(f'.. ..Not updating config.py file with {CONFIG_URI}... (already present)')
 
-    bind_insert = """
+
+    """ **********************
+    update bind_databases.py
+    **************************  """
+    # NB: must do all binds in 1 call (not 1 call / db): https://www.youtube.com/watch?v=SB5BfYYpXjE
+
+    bind_insert_urls = """
     from api import <project.bind_key>_expose_api_models
     from database import <project.bind_key>_models
 
-    flask_app.config.update(SQLALCHEMY_BINDS = \\
-        {'<project.bind_key>': flask_app.config['SQLALCHEMY_DATABASE_URI_<bind_key_upper>']})
+    # flask_app.config.update(SQLALCHEMY_BINDS = \\
+    #     {'<project.bind_key>': flask_app.config['SQLALCHEMY_DATABASE_URI_<bind_key_upper>']})
     
     app_logger.info(f"\\n<project.bind_key> Config complete - database/<project.bind_key>_models.py"
         + f'\\n -- with bind: <project.bind_key>'
@@ -77,14 +90,27 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     
     <project.bind_key>_expose_api_models.expose_models(safrs_api)
 
-"""
-    bind_insert = bind_insert.replace('<project.bind_key>', f'{project.bind_key}')
-    bind_insert = bind_insert.replace('<bind_key_upper>', f'{bind_key_upper}')
+""" # not f-string since it contains {}
+
+    flask_app_config__update = \
+        f"\t\t'{project.bind_key}': flask_app.config['SQLALCHEMY_DATABASE_URI_{bind_key_upper}']\n"
+
+    bind_insert_urls = bind_insert_urls.replace('<project.bind_key>', f'{project.bind_key}')
+    bind_insert_urls = bind_insert_urls.replace('<bind_key_upper>', f'{bind_key_upper}')
     binds_databases_file = f'{project.project_directory}/database/bind_databases.py'
-    binds_built = create_utils.does_file_contain(search_for=bind_key_upper, in_file=binds_databases_file)
+    binds_built = create_utils.does_file_contain( \
+        search_for=bind_key_upper, in_file=binds_databases_file)
+    some_configs_built = create_utils.does_file_contain( \
+        search_for='flask_app.config[', in_file=binds_databases_file)
+    if some_configs_built:
+        flask_app_config__update = ', ' + flask_app_config__update
     if not binds_built:
-        create_utils.insert_lines_at(lines=bind_insert,
-                                    at="# End Bind Databases",
+        create_utils.insert_lines_at(lines=bind_insert_urls,
+                                    at="# End Bind URLs",
+                                    file_name=binds_databases_file)
+        # 'Todo': flask_app.config['SQLALCHEMY_DATABASE_URI_TODO'],
+        create_utils.insert_lines_at(lines=flask_app_config__update,
+                                    at="# make multiple databases available",
                                     file_name=binds_databases_file)
         print(f'.. ..Updating database/bind_databases.py with {CONFIG_URI}...')
     else:

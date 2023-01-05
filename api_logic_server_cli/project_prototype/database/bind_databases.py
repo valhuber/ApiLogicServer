@@ -13,8 +13,10 @@ database = __import__('database')
 def open_databases(flask_app, session, safrs_api):
     """ called by api_logic_server_run to open each additional database, and expose APIs """
 
-    # Begin Bind Databases
+    # Begin Bind URLs
 
-    # End Bind Databases
+    # End Bind URLs
 
+    flask_app.config.update(SQLALCHEMY_BINDS = {
+    })  # make multiple databases available to SQLAlchemy
     return
