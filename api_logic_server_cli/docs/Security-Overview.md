@@ -130,29 +130,31 @@ You can explore this with and without configuration.  Use the [preview build](..
 
 &nbsp;
 
-### Pre-configured
+### Sample: Pre-configured
 
-Security is enabled when building the sample app.  Test it by
-
-* Admin App - verify the `Categories` screen has 1 row
-
-* cURL
-
-```
-curl -X 'GET' \
-'http://localhost:5656/api/CategoryTable/?fields%5BCategory%5D=Id%2CCategoryName%2CDescription&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id' -H 'accept: application/vnd.api+json' -H 'Content-Type: application/vnd.api+json'
-```
+Security is enabled when building the sample app.  Test it as described in [Authorization](../Security-Authorization/#sample).
 
 &nbsp;
 
-### Configure
+### Configuring Security 
 
-Build the sample _without customizations_:
+To see how to configure security, you can rebuild the sample app without customizations:
 
-    1. `ApiLogicServer create --project_name=nw --db_url=nw-`
-    2. cd nw
-    3. Add security: `ApiLogicServer add-db --db_url=auth --bind_key=authentication`
+```bash
+ApiLogicServer create --project_name=nw --db_url=nw-
+```
+
+Then:
+
+1. Set `SECURITY_ENABLED = True` in config.py
+2. Configure your Authentication-Provider.  You have 2 options - __either:__
+    * Use your own [Authentication-Provider](Security-Authentication-Provider){:target="_blank" rel="noopener"},
+    * Or, use the sqlite security database:
         * This uses [Multi-Database Support](../Data-Model-Multi){:target="_blank" rel="noopener"} for the sqlite authentication data
-    4. Set `SECURITY_ENABLED = True` in config.py
 
-Test as described above.
+```bash
+    cd nw  # the project created above
+    ApiLogicServer add-db --db_url=auth --bind_key=authentication`
+```
+
+Test it as described in [Authorization](../Security-Authorization/#sample).
