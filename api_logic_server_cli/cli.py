@@ -92,7 +92,7 @@ default_db = "default = nw.sqlite, ? for help"
 default_project_name = "ApiLogicProject"
 default_fab_host = "localhost"
 os_cwd = os.getcwd()
-default_bind_key_url_separator = "-"
+default_bind_key_url_separator = "-"  # admin app fails with "/" or ":" (json issues?)
 
 if os.path.exists('/home/api_logic_server'):  # docker?
     default_project_name = "/localhost/ApiLogicProject"
