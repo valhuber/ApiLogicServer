@@ -1,39 +1,41 @@
-API Logic Server enables you to create projects that support multiple databases:
+API Logic Server enables you to create projects that support multiple databases, as follows:
 
 1. Create the project, specifying your "main" database
 
-2. As shown in the example below, use the `ApiLogicServer add-db` command to additional each additional database
+2. Use the `ApiLogicServer add-db` command for each additional database
 
-&nbsp;
-
-## Background
-
-SQLAlchemy supports multiple databases by using the `bind_key` as illustrated below:
-
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/multi-db.png?raw=true"></figure>
-
-
-It operates as follows:
-
-1. Model files are created (prefixed by you `bind-key`) for each table in your `db-url`.
-    * Note the 'bind-key` is inserted into the table class
-    * Note: Sqlite databases are copied to your database folder, simplifying source control
-2. The `config.py` file is altered per your `db-url`
-    * Note the shorthand for sqlite versions of `todo`, `classicmodels`, `chinook`.  These are included in the install.
-3. The `bind_databases.py` file is created to bind the table to the database via its `bind-key`
+    * See the example below
 
 &nbsp;
 
 ## Example
 
-Using the following command:
+SQLAlchemy supports multiple databases by using the `bind_key` which is [supported by Flask](https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/binds/){:target="_blank" rel="noopener"}.  It is leveraged in creating Api Logic Projects when you add databases like this:
 
 ```bash
-cd YouApiLogicProject
+cd YourApiLogicProject
 ApiLogicServer add-db --db-url=todo --bind_key=Todo
-```
+``` 
 
-will result in the following log:
+&nbsp;
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/model/multi-db.png?raw=true"></figure>
+
+Observe:
+
+1. Model files are created (prefixed by your `bind-key`) for each table in your `db-url`.  Note:
+    * The `bind-key` is inserted into the table class.
+    * Sqlite databases are copied to your database folder, simplifying source control.
+    * This example uses the shorthand for sqlite databases: `todo`, `classicmodels`, `chinook` and `nw`.  These are included in the install, so you can experiment with them.
+2. The `config.py` file is altered per your `db-url`
+    * You can use environment variables to override these assignments, to avoid placing passwords in projects.
+3. The `bind_databases.py` file is created to bind the `bind_key` to the database url.   This enables SQLAlchemy to access the proper database.
+
+&nbsp;
+
+## Internals
+
+The example above will result in the following log:
 
 ```bash
 ApiLogicServer 6.90.08 Creation Log:

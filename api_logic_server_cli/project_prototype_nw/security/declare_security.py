@@ -11,9 +11,9 @@ class Roles():
     tenant = "tenant"
     renter = "renter"
 
-Grant(  on_entity = models.Category,    # need way to say "any model with attr xyx"?
+Grant(  on_entity = models.Category,    # illustrate multi-tenant
         to_role = Roles.tenant,
-        filter = models.Category.Id == Security.current_user().client_id)  # User table attributes
+        filter = models.Category.Client_id == Security.current_user().client_id)  # User table attributes
 
 Grant(  on_entity = models.Category,
         to_role = Roles.renter,
