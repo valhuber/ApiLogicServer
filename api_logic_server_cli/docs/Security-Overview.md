@@ -146,8 +146,10 @@ ApiLogicServer create --project_name=nw --db_url=nw-
 
 Then:
 
-1. Set `SECURITY_ENABLED = True` in config.py
-2. Configure your Authentication-Provider.  You have 2 options - __either:__
+1. Declare Grants
+    * Paste into your `security/declare_security.py` from [this sample](Security-Authorization/#sample){:target="_blank" rel="noopener"}
+2. Set `SECURITY_ENABLED = True` in config.py
+3. Configure your Authentication-Provider.  You have 2 options - __either:__
     * Use your own [Authentication-Provider](Security-Authentication-Provider){:target="_blank" rel="noopener"},
     * Or, use the sqlite security database:
         * This uses [Multi-Database Support](../Data-Model-Multi){:target="_blank" rel="noopener"} for the sqlite authentication data
