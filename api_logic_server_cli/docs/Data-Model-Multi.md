@@ -85,5 +85,5 @@ Tables in your new databases are available through swagger.
 
 ### Admin support
 
-An admin app is built for the table in your new database.  Access it via a url that prefixes the `bind-key`, such as `http://localhost:5656/admin/Todo_admin`.
+An admin app is built for the table in your new database.  Access it via a url that prefixes the `bind-key`, such as `http://localhost:5656/admin/Todo_admin/` (note the trailing slash).
 

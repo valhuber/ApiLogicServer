@@ -10,36 +10,24 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "6.90.10"
+__version__ = "07.00.00"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/05/2023 - 06.90.10: multi-db create runs swagger/app, tests run, nw security via multi-db  \n"\
-    "\t12/29/2022 - 06.05.15: security prototype, sqlite test dbs, class-based create, TVF test  \n"\
-    "\t12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project  \n"\
+    "\t01/05/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
+    "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
-    "\t11/30/2022 - 06.04.00: Python 11 install fails (Issue 55), Remove confusing files (Issue 54) \n"\
     "\t11/22/2022 - 06.03.06: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite \n"\
     "\t10/02/2022 - 06.02.00: Option infer_primary_key, Oct1 SRA (issue 49), cleanup db/api setup, += postgres dvr \n"\
     "\t09/15/2022 - 06.01.00: Multi-app Projects \n"\
     "\t09/07/2022 - 06.00.09: show_when isInserting \n"\
     "\t09/03/2022 - 06.00.07: Codespaces - create to '.' or './', preserve readme, perform_customizations \n"\
     "\t08/29/2022 - 06.00.01: Admin App show_when & cascade add. Simplify Codespaces swagger url & use default config \n"\
-    "\t08/15/2022 - 05.03.34: Remove Postgres driver from local install, Fix ApiLogicServer run fails (Issue 45) \n"\
-    "\t07/24/2022 - 05.03.26: api_logic_server_run refactor, codespaces support \n"\
-    "\t07/15/2022 - 05.03.17: Add swagger_host for create & run, Docker env \n"\
-    "\t06/27/2022 - 05.03.06: nw-, with perform_customizations docker \n"\
-    "\t06/22/2022 - 05.03.00: Docker support to load/run project (env or sh), create ApiLogicProject image \n"\
     "\t06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging \n"\
-    "\t05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info \n"\
     "\t05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml \n"\
     "\t04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.) \n"\
-    "\t04/02/2022 - 05.00.09: Windows Werkzeug version, run Configurations for PyCharm \n"\
     "\t03/27/2022 - 05.00.06: Introducing Behave test framework, LogicBank bugfix \n"\
-    "\t02/07/2022 - 04.01.08: SQLAlchemy 1.4; cli param: api_name (. option), multi_api; db open failure info \n"\
     "\t12/26/2021 - 04.00.05: Introducing the admin app, with Readme Tutorial \n"\
     "\t11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support, port conflict msg \n"\
-    "\t11/04/2021 - 03.40.01: Per MacOS Monterey, default ports to 5001, 5002 \n"\
-    "\t09/29/2021 - 03.01.15: run (now just runs without create), added create-and-run \n"\
     "\t09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug \n"\
 
 from contextlib import closing
@@ -104,6 +92,8 @@ default_db = "default = nw.sqlite, ? for help"
 default_project_name = "ApiLogicProject"
 default_fab_host = "localhost"
 os_cwd = os.getcwd()
+default_bind_key_url_separator = "-"
+
 if os.path.exists('/home/api_logic_server'):  # docker?
     default_project_name = "/localhost/ApiLogicProject"
     default_fab_host = "0.0.0.0"
@@ -731,9 +721,10 @@ def invoke_creators(model_creation_services: ModelCreationServices):
 
 
 def add_security(project: Project, msg: str):
-    print("\n\nApiLogicProject customizable project created.  Adding Security:")
+    print("\n\n==================================================================")
+    print(msg)
     print("  ..ApiLogicServer add-db --db_url=auth --bind_key=authentication")
-    print("==========================================================")
+    print("==================================================================")
     create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False",
                         replace_with='SECURITY_ENABLED = True',
                         in_file=f'{project.project_directory}/config.py')
@@ -769,7 +760,7 @@ class ProjectRun(Project):
                      extended_builder: str="", 
                      multi_api: bool=False, 
                      infer_primary_key: bool=False, 
-                     prepend_bind: bool=True,
+                     bind_key_url_separator: str=default_bind_key_url_separator,
                      bind_key: str=""):
         super(ProjectRun, self).__init__()
         self.project_name = project_name
@@ -793,21 +784,21 @@ class ProjectRun(Project):
         self.extended_builder = extended_builder
         self.multi_api = multi_api
         self.infer_primary_key = infer_primary_key
-        self.prepend_bind = prepend_bind
+        self.bind_key_url_separator = bind_key_url_separator
         self.command = command
 
         self.create_project()
 
 
     def print_options(self):
-        """ Creating ApiLogicServer with options: (or uri helo) """
+        """ Creating ApiLogicProject with options: (or uri helo) """
         if self.db_url == "?":
             print_uri_info()
             exit(0)
 
         print_options = True
         if print_options:
-            print(f'\n\nCreating ApiLogicServer with options:')
+            print(f'\n\nCreating ApiLogicProject with options:')
             print(f'  --db_url={self.db_url}')
             print(f'  --bind_key={self.bind_key}')
             print(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
@@ -881,24 +872,7 @@ class ProjectRun(Project):
             start_open_with(open_with=self.open_with, project_name=self.project_name)
 
         if self.nw_db_status in ["nw", "nw+"] and self.command != "add_db":
-            use_it = True
-            if use_it:
-                add_security(self, "xx")
-            else:
-                print("\n\nApiLogicProject customizable project created.  Adding Security:")
-                print("  ..ApiLogicServer add-db --db_url=auth --bind_key=authentication")
-                print("==========================================================")
-                create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False",
-                                    replace_with='SECURITY_ENABLED = True',
-                                    in_file=f'{self.project_directory}/config.py')
-                self.command = "add_db"
-                self.bind_key = "authentication"
-                self.db_url = "auth"  # shorthand for api_logic_server_cli/database/auth...
-                save_run = self.run
-                self.run = False
-                self.create_project()
-                self.run = save_run
-                print("\nSecurity Added - enabled in config.sys")
+            add_security(self, "ApiLogicProject customizable project created.  Adding Security:")
 
         print("\n\nApiLogicProject customizable project created.  Next steps:")
         print("==========================================================")
@@ -1328,12 +1302,12 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
               prompt="Database url",
               help="Connect new database here") # TODO
 @click.option('--bind_key',
-              default=f'Todo',
+              default=f'Alt',
               prompt="Bind key",
               help="Add new bind key here") # TODO
-@click.option('--prepend_bind', is_flag=True,
-              default=True,
-              help="Prepend bind key to classname")
+@click.option('--bind_key_url_separator',
+              default=default_bind_key_url_separator,
+              help="bindkey / class name url separator")
 @click.option('--project_name',
               default=f'',
               help="Project location")
@@ -1341,7 +1315,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
               default="api",
               help="api prefix name")
 @click.pass_context # Kat
-def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: str, project_name: str):
+def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_name: str, project_name: str):
     """
     Adds db (model & binds, api, app) to current project
     
@@ -1361,7 +1335,7 @@ def add_db(ctx, db_url: str, bind_key: str, prepend_bind: click.BOOL, api_name: 
               api_name=api_name, 
               db_url=db_url, 
               bind_key=bind_key,
-              prepend_bind=prepend_bind
+              bind_key_url_separator=bind_key_url_separator
               )
     print("DB Added")
 

@@ -837,8 +837,8 @@ from sqlalchemy.dialects.mysql import *
             if self.model_creation_services.project.model_gen_bind_msg == False:
                 self.model_creation_services.project.model_gen_bind_msg = True
                 print(f'.. .. ..Setting bind_key = {self.model_creation_services.project.bind_key}')
-            if self.model_creation_services.project.prepend_bind:
-                end_point_name = self.model_creation_services.project.bind_key + '-' + model.name
+            end_point_name = self.model_creation_services.project.bind_key + \
+                self.model_creation_services.project.bind_key_url_separator + model.name
         rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, end_point_name)
         if self.model_creation_services.project.bind_key != "":
           bind_key = self.model_creation_services.project.bind_key

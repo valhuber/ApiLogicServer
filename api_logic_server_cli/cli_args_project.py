@@ -49,7 +49,8 @@ class Project(ProjectArgs):
         if print_options:
             print(f'\n\nCreating ApiLogicServer with options:')
             print(f'  --db_url={self.db_url}')
-            print(f'  --bind_key={self.bind_key}')
+            print(f'  --bind_key={self.bind_key}') 
+            print(f'  --bind_url_separator={self.bind_url_separator}')
             print(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
             print(f'  --api_name={self.api_name}')
             print(f'  --admin_app={self.admin_app}')
