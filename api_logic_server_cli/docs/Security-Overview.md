@@ -43,9 +43,9 @@ Add code to the pre-created (empty) Python module that defines table/role filter
 
 &nbsp;
 
-### System
+### System Processing
 
-System support is summarized below.
+System processing is summarized below.
 
 #### Startup: `declare_security`
 

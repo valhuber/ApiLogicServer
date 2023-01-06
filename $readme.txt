@@ -2,6 +2,22 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
+
+Security notes
+==============
+  * Functional
+    * AND vs Or
+    * Column Level Access?
+    * App Grants?
+  * Architectural Issues
+    * Disable Grants when rules running
+    * Swagger when login/token is required
+    * 
+  * TODO
+    * Grant None
+    * Column
+    * Workflow for non-sqlite (config)
+
 git 120af3a
 https://stackoverflow.com/questions/53653083/how-to-correctly-set-pythonpath-for-visual-studio-code
 path_test = True
