@@ -10,8 +10,8 @@ Security is under active development.  You can examine the [Prototype in the Pre
 
 The overall flow is shown below, where:
 
-* Green - represents developer responsibilities
-* Blue - System processing
+* __Green__ - represents __developer__ responsibilities
+* __Blue__ - __System__ processing
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/security/overview.png"></figure>
 
@@ -71,11 +71,50 @@ The startup process also
 
 Clients make API calls, providing the login token.  The system
 
+## Use Cases
+
+### Data Security
+
+Security enables you to hide certain rows from designated roles, such as a list of HR actions.
+
 &nbsp;
 
-## Status
+### Multi-Tenant
 
-Running in preview build, _without_ authentication (currently hard-wired).
+Some systems require the data to be split between multiple customers.  One approach here is to 'stamp' each row with a client_id, associate client_id with each customers, and then add the client_id to each search.  The sample illustrates how this can be achieved with [authorization](../Security-Authorization){:target="_blank" rel="noopener"}:
+
+```python
+Grant(  on_entity = models.Category,
+        to_role = Roles.tenant,
+        filter = models.Category.Client_id == Security.current_user().client_id)  # User table attributes
+```
+
+&nbsp;
+
+## Status: Preview
+
+This preview is intended to:
+
+* Confirm approach to __role-based row authorization__, using SQLAlchemy [adding-global-where](https://docs.sqlalchemy.org/en/14/orm/session_events.html#adding-global-where-on-criteria) functionality.  See also [the examples](https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.with_loader_criteria).
+     * Note using SQLAlchemy means that filters apply to all SAFRS and custom api access
+     * SQLAlchemy support is working quite well!
+* Confirm whether the basic filtering capability __meets the requirements of 1 real-world app__
+     * Once *certain* use case is *multi-tenent*
+         * Each row is stamped with a `client_id`
+         * User table identifies users' `client_id`
+         * Enforced in `declare_security.py`:
+     * Preliminary finding - first test case worked on real-world app
+
+&nbsp;
+
+This preview is _not_ meant to explore:
+
+* Login Authentication (currently addressed with a place-holder stub)
+
+* Interaction with SAFRS API handling (except to the extent SAFRS uses SQLAlchemy)
+
+* System issues such as performance, caching, etc.
+
 
 &nbsp;
 
