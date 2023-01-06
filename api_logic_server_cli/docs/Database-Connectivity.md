@@ -88,8 +88,18 @@ Designate this as follows: `--db_url={install}/Chinook_Sqlite.sqlite`, e.g.:
 ~/ApiLogicServer/api_logic_server_cli/database/Chinook_Sqlite.sqlite
 ```
 
-
 &nbsp;
+
+## SQLite Database Abbreviations
+
+To make experimenting easier, you can specify a `db_url` shortcut:
+
+* nw - same as the sample (empty `db_url`)
+* nw- - same as nw, but no customizations
+* chinook
+* classic models
+* auth - authentication data
+* todo - a simple 1 table database
 
 # Docker Databases
 
