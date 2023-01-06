@@ -154,7 +154,7 @@ Then:
 
 ```bash
     cd nw  # the project created above
-    ApiLogicServer add-db --db_url=auth --bind_key=authentication`
+    ApiLogicServer add-db --db_url=auth --bind_key=authentication
 ```
 
 Test it as described in [Authorization](../Security-Authorization/#sample).
