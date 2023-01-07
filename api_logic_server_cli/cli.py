@@ -605,8 +605,15 @@ def get_abs_db_url(msg, project: Project):
         rtn_abs_db_url = rtn_abs_db_url.replace('{install}', install_db)
     if rtn_abs_db_url.startswith('SqlServer-arm'):
         pass
+    
+    """
+    per this: https://stackoverflow.com/questions/69950871/sqlalchemy-and-sqlite3-error-if-database-file-does-not-exist
+    I would like to set URL like this to avoid creating empty db, but it fails
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///file:/Users/val/dev/servers/ApiLogicProject/database/db.sqlite'  # ?mode=ro&uri=true'
+    the file: syntax fails, though "current versions" should work:
+    https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#uri-connections
+    """
 
-    # api_logic_server_dir_std_path = Path(str(Path(str(project.api_logic_server_dir_path)))) 
     if project.db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
         rtn_nw_db_status = "nw"  # api_logic_server_dir_path
