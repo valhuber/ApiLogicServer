@@ -398,11 +398,11 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
         db = safrs.DB
         session: Session = db.session
-        import database.models  # opens db
+        import database.models
         from logic import declare_logic
         LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
         app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
-            + f' -- {len(database.models.metadata.tables)} tables loaded')
+            + f' -- {len(database.models.metadata.tables)} tables loaded')  # db opened 1st access
 
         db.init_app(flask_app)
         with flask_app.app_context():
