@@ -16,7 +16,22 @@
 	// "runArgs": ["--network=dev-network"],
 
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": ["ms-python.python"]
+	"extensions": ["ms-python.python"],
+	
+	"portsAttributes": {
+		"5656": {
+			"label": "AdminApp"
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [5656],
+	
+	"features": {
+		"github-cli": "latest"
+	  },
+
+	"postAttachCommand": "/bin/bash .devcontainer/setup.sh"
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
