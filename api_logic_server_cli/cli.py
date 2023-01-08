@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "07.00.00"
+__version__ = "07.00.01"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/05/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
+    "\t01/07/2023 - 07.00.01: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
     "\t12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example \n"\
     "\t11/22/2022 - 06.03.06: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite \n"\
@@ -289,9 +289,73 @@ def get_project_directory_and_api_name(project):
         rtn_merge_into_prototype
 
 
+def get_abs_db_url(msg, project: Project):
+    """
+    non-relative db location - we work with this
+
+    handle db_url abbreviations (nw, nw-, todo etc)
+
+    but NB: we copy sqlite db to <project>/database - see create_project_with_nw_samples (below)
+
+    also: compute physical nw db name (usually nw-gold) to be used for copy
+
+    returns abs_db_url, nw_db_status - the real url (e.g., for nw), and whether it's really nw, and model_file_name
+    """
+    rtn_nw_db_status = ""  # presume not northwind
+    rtn_abs_db_url = project.db_url
+
+    # SQL/Server urls make VScode fail due to '?', so unfortunate work-around... (better: internalConsole)
+    if rtn_abs_db_url.startswith('{install}'):
+        install_db = str(Path(get_api_logic_server_dir()).joinpath('database'))
+        rtn_abs_db_url = rtn_abs_db_url.replace('{install}', install_db)
+    if rtn_abs_db_url.startswith('SqlServer-arm'):
+        pass
+    
+    """
+    per this: https://stackoverflow.com/questions/69950871/sqlalchemy-and-sqlite3-error-if-database-file-does-not-exist
+    I would like to set URL like this to avoid creating empty db, but it fails
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///file:/Users/val/dev/servers/ApiLogicProject/database/db.sqlite'  # ?mode=ro&uri=true'
+    the file: syntax fails, though "current versions" should work:
+    https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#uri-connections
+    """
+
+    if project.db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
+        rtn_nw_db_status = "nw"  # api_logic_server_dir_path
+        print(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
+    elif project.db_url == "nw-":                                           # nw:           just in case
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
+        rtn_nw_db_status = "nw-"
+    elif project.db_url == "nw--":                                           # nw:           unused - avoid
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw.sqlite"))}'
+        rtn_nw_db_status = "nw-"
+    elif project.db_url == "nw+":                                           # nw-gold-plus: next version
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold-plus.sqlite"))}'
+        rtn_nw_db_status = "nw+"
+        print(f'{msg} from: {rtn_abs_db_url}')
+    elif project.db_url == "auth" or project.db_url == "authorization":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/authentication.sqlite"))}'
+    elif project.db_url == "chinook":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/Chinook_Sqlite.sqlite"))}'
+    elif project.db_url == "todo" or project.db_url == "todos":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/todos.sqlite"))}'
+    elif project.db_url == "classicmodels":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/classicmodels.sqlite"))}'
+    elif project.db_url.startswith('sqlite:///'):
+        url = project.db_url[10: len(project.db_url)]
+        rtn_abs_db_url = abspath(url)
+        rtn_abs_db_url = 'sqlite:///' + rtn_abs_db_url
+    model_file_name = "models.py"
+    if project.bind_key != "":
+        model_file_name = project.bind_key + "_" + "models.py"
+    return rtn_abs_db_url, rtn_nw_db_status, model_file_name
+
+
 def create_project_with_nw_samples(project, msg: str) -> str:
     """
     clone prototype to  project directory, copy sqlite db, and remove git folder
+
+    update config.py - SQLALCHEMY_DATABASE_URI
 
     if nw/nw+, inject sample logic/declare_logic and api/customize_api.
 
@@ -404,13 +468,17 @@ def create_project_with_nw_samples(project, msg: str) -> str:
             db_loc = project.abs_db_url.replace("sqlite:///", "")
             target_db_loc_actual = str(project.project_directory_path.joinpath('database/db.sqlite'))
             copyfile(db_loc, target_db_loc_actual)
+            config_url = str(project.api_logic_server_dir_path)
+            # build this:  SQLALCHEMY_DATABASE_URI = sqlite:///{str(project_abs_dir.joinpath('database/db.sqlite'))}
+            # into  this:  SQLALCHEMY_DATABASE_URI = f"replace_db_url"
+            replace_db_url_value = "sqlite:///{str(project_abs_dir.joinpath('database/db.sqlite'))}"
 
             if os.name == "nt":  # windows
                 target_db_loc_actual = get_windows_path_with_slashes(target_db_loc_actual)
-            # db_uri = f'sqlite:///{target_db_loc_actual}'
+            # set this in config.py: SQLALCHEMY_DATABASE_URI = "replace_db_url"
             return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
             create_utils.replace_string_in_file(search_for="replace_db_url",
-                                replace_with=return_abs_db_url,
+                                replace_with=replace_db_url_value,
                                 in_file=f'{project.project_directory}/config.py')
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=return_abs_db_url,
@@ -582,68 +650,6 @@ def is_docker() -> bool:
     env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
     assert path_result == env_result
     return path_result
-
-
-def get_abs_db_url(msg, project: Project):
-    """
-    non-relative db location - we work with this
-
-    handle db_url abbreviations (nw, nw-, todo etc)
-
-    but NB: we copy sqlite db to <project>/database - see create_project_with_nw_samples
-
-    also: compute physical nw db name (usually nw-gold) to be used for copy
-
-    returns abs_db_url, nw_db_status - the real url (e.g., for nw), and whether it's really nw, and model_file_name
-    """
-    rtn_nw_db_status = ""  # presume not northwind
-    rtn_abs_db_url = project.db_url
-
-    # SQL/Server urls make VScode fail due to '?', so unfortunate work-around... (better: internalConsole)
-    if rtn_abs_db_url.startswith('{install}'):
-        install_db = str(Path(get_api_logic_server_dir()).joinpath('database'))
-        rtn_abs_db_url = rtn_abs_db_url.replace('{install}', install_db)
-    if rtn_abs_db_url.startswith('SqlServer-arm'):
-        pass
-    
-    """
-    per this: https://stackoverflow.com/questions/69950871/sqlalchemy-and-sqlite3-error-if-database-file-does-not-exist
-    I would like to set URL like this to avoid creating empty db, but it fails
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///file:/Users/val/dev/servers/ApiLogicProject/database/db.sqlite'  # ?mode=ro&uri=true'
-    the file: syntax fails, though "current versions" should work:
-    https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#uri-connections
-    """
-
-    if project.db_url in [default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
-        rtn_nw_db_status = "nw"  # api_logic_server_dir_path
-        print(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
-    elif project.db_url == "nw-":                                           # nw:           just in case
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
-        rtn_nw_db_status = "nw-"
-    elif project.db_url == "nw--":                                           # nw:           unused - avoid
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw.sqlite"))}'
-        rtn_nw_db_status = "nw-"
-    elif project.db_url == "nw+":                                           # nw-gold-plus: next version
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold-plus.sqlite"))}'
-        rtn_nw_db_status = "nw+"
-        print(f'{msg} from: {rtn_abs_db_url}')
-    elif project.db_url == "auth" or project.db_url == "authorization":
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/authentication.sqlite"))}'
-    elif project.db_url == "chinook":
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/Chinook_Sqlite.sqlite"))}'
-    elif project.db_url == "todo" or project.db_url == "todos":
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/todos.sqlite"))}'
-    elif project.db_url == "classicmodels":
-        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/classicmodels.sqlite"))}'
-    elif project.db_url.startswith('sqlite:///'):
-        url = project.db_url[10: len(project.db_url)]
-        rtn_abs_db_url = abspath(url)
-        rtn_abs_db_url = 'sqlite:///' + rtn_abs_db_url
-    model_file_name = "models.py"
-    if project.bind_key != "":
-        model_file_name = project.bind_key + "_" + "models.py"
-    return rtn_abs_db_url, rtn_nw_db_status, model_file_name
 
 
 def print_options(project_name: str, api_name: str, db_url: str,
@@ -840,7 +846,6 @@ class ProjectRun(Project):
 
         print(f"\nApiLogicServer {__version__} Creation Log:")
 
-        # FIXME global nw_db_status
         self.abs_db_url, self.nw_db_status, self.model_file_name = get_abs_db_url("0. Using Sample DB", self)
 
         if self.extended_builder == "*":
@@ -858,7 +863,7 @@ class ProjectRun(Project):
             if self.command == "add_db":
                 self.abs_db_url = multi_db_utils.update_config_and_copy_sqlite_db(self,
                     f".. ..Adding Database [{self.bind_key}] to existing project")
-        else:  # normal path
+        else:                                                                            # normal path - clone, [overlay nw]
             self.abs_db_url = create_project_with_nw_samples(self, "2. Create Project:")
 
         print(f'3. Create/verify database/{self.model_file_name}, then use that to create api/ and ui/ models')

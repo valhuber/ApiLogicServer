@@ -2,6 +2,7 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
+SQLALCHEMY_DATABASE_URI = f"sqlite:////{project_abs_dir}/database/db.sqlite"
 
 Security notes
 ==============

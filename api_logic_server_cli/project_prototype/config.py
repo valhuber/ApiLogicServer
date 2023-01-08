@@ -38,9 +38,7 @@ class Config:
     project_abs_dir = running_at.parent.absolute()
 
     # Database
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-    #                          'sqlite:///' + os.path.join(basedir, 'app.db') + '?check_same_thread=False'
-    SQLALCHEMY_DATABASE_URI = "replace_db_url"
+    SQLALCHEMY_DATABASE_URI = f"replace_db_url"
     # override SQLALCHEMY_DATABASE_URI here as required
 
     app_logger.debug(f'config.py - SQLALCHEMY_DATABASE_URI: {SQLALCHEMY_DATABASE_URI}')

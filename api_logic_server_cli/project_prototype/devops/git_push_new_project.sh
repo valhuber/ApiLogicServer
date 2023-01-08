@@ -31,4 +31,5 @@ git remote add origin $1
 git remote -v
 git remote set-url origin "$1"
 git push origin main
+git branch --set-upstream-to=origin/main
 popd

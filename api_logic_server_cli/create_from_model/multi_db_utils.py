@@ -22,6 +22,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     print(msg)
     bind_key_upper = project.bind_key.upper()  # configs insist on all caps
     return_abs_db_url = project.abs_db_url
+    config_uri_value = "'" + return_abs_db_url + "'"
 
 
     """ **********************
@@ -39,21 +40,25 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
             # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
             target_db_loc_actual = get_windows_path_with_slashes(target_db_loc_actual)
         return_abs_db_url = f'sqlite:///{target_db_loc_actual}'
+        # build this:  SQLALCHEMY_DATABASE_URI_AUTHENTICATION = f'sqlite:///{str(project_abs_dir.joinpath("database/authentication_db.sqlite"))}'
+        # into  this:  {CONFIG_URI} = '{config_uri_value}'
+        file_name = f'"database/{project.bind_key}_db.sqlite"'
+        config_uri_value = "f'sqlite:///{str(project_abs_dir.joinpath(" + file_name + "))}'"
         print(f'.. .. ..From {db_loc}')
 
 
     """ **********************
     add url to config
     **************************  """
-    db_uri = return_abs_db_url
+    # db_uri = config_uri  # return_abs_db_url
     if os.name == "nt":  # windows
         # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
         target_db_loc_actual = get_windows_path_with_slashes(target_db_loc_actual)
     CONFIG_URI = f'SQLALCHEMY_DATABASE_URI_{bind_key_upper}'
 
     config_insert = f"""
-    {CONFIG_URI} = '{db_uri}'
-    app_logger.debug(f'config.py - {CONFIG_URI}: {db_uri}')
+    {CONFIG_URI} = {config_uri_value}
+    app_logger.info(f'config.py - {CONFIG_URI}: <CONFIG_URI_VALUE>')
 
     # as desired, use env variable: export SQLALCHEMY_DATABASE_URI='sqlite:////Users/val/dev/servers/docker_api_logic_project/database/db.sqliteXX'
     if os.getenv('{CONFIG_URI}'):
@@ -61,6 +66,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         app_logger.debug(f'.. overridden from env variable: {CONFIG_URI}')
 
 """
+    config_insert = config_insert.replace("<CONFIG_URI_VALUE>", "{" + f'{CONFIG_URI}' + "}")
     config_file = f'{project.project_directory}/config.py'
     config_built = create_utils.does_file_contain(search_for=CONFIG_URI, in_file=config_file)
     if not config_built:
