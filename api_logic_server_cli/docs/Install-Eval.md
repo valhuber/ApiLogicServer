@@ -66,37 +66,21 @@ API Logic Server is a low-code, developer-friendly approach that leverages autom
 
 ## 1. Open in Codespaces
 
-Open  in Codespaces, by clicking the **Code > Create Codespace on main** button on [this Github project](https://github.com/ApiLogicServer/ApiLogicProject){:target="_blank" rel="noopener"}.
+No install is required - this runs in the cloud, via your Browser, courtesy Codespaces.  Use your existing GitHub account (no signup is required), and:
+
+1. [__Click here__](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=526240678){:target="_blank" rel="noopener"} to open the *Create Codespace* page.
+
+2. Configure as desired, and click __Create codespace__.
+
+>  This process takes about a minute.  Wait until you see the port created.
 
 <details markdown>
-
-<summary>Show Me How</summary>
-
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/git-codespaces/open-on-codespaces.jpg?raw=true"></figure> 
-
-&nbsp;
-
-__1. Use your GitHub account__ - no additional sign-up required
-
-__2. Load the working_software_now project from GitHub__
-
-To access this GitHub project with Codespaces
-
-1. __Open [this page](https://github.com/ApiLogicServer/ApiLogicProject)  _in a new window___, and 
-2. Click __Code > Codespaces__ as shown above
-3. You will see an empty project.
-
-
-<details markdown>
-
-&nbsp;
-
 
 <summary>What Is Happening</summary>
 
 You will now see the template project - open in VSCode, _in the Browser._  But that's just what you _see..._
 
-Behind the scenes, Codespaces has requisitioned a cloud machine, and loaded the template - with a _complete development environment_ - Python, your dependencies, git, etc.  
+Behind the scenes, Codespaces has requisitioned a cloud machine, and loaded the template - with a _complete development environment_ - Python, your dependencies, git, etc.
 
 You are attached to this machine in your Browser, running VSCode.
 
@@ -104,8 +88,6 @@ These instructions are now visible in VS Code, to minimize window switching.
 
 
 > :trophy: Pretty remarkable.
-
-</details>
 
 </details>
 
