@@ -47,6 +47,7 @@ nav:
     - "Execution - Hosts and Ports": Project-Execution.md
     - "Builders": Project-Builders.md
   - Database:
+    - "Examples": Data-Model-Examples.md
     - Data-Model-Classes.md
     - Data-Model-Keys.md
     - Data-Model-Customization.md

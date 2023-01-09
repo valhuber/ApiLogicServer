@@ -92,14 +92,9 @@ Designate this as follows: `--db_url={install}/Chinook_Sqlite.sqlite`, e.g.:
 
 ## SQLite Database Abbreviations
 
-To make experimenting easier, you can specify a `db_url` shortcut:
+To make experimenting easier, you can specify a [`db_url` shortcut](../Data-Model-Examples).
 
-* nw - same as the sample (empty `db_url`)
-* nw- - same as nw, but no customizations
-* chinook
-* classic models
-* auth - authentication data
-* todo - a simple 1 table database
+&nbsp;
 
 # Docker Databases
 

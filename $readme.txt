@@ -2,7 +2,16 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
-codespace link: https://valhuber-ominous-garbanzo-vw94x5rp57cw5jp.github.dev
+codespace link: nah
+
+https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=586619804
+
+https://github.com/ApiLogicServer/Learn-Flask-SQLAlchemy
+
+<a data-target="create-button.configureAndCreateLink" hidden="hidden" href="/codespaces/new?hide_repo_select=true&amp;ref=main&amp;repo=586619804" target="_blank" data-view-component="true" class="btn btn-primary rounded-2 btn">    Configure and create codespace
+</a>
+
+https://github.com/ApiLogicServer/Learn-Flask-SQLAlchemy/codespaces/new?hide_repo_select=true&amp;ref=main&amp;repo=586619804
 
 Security notes
 ==============
