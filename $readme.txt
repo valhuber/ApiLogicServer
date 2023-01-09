@@ -2,7 +2,7 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
-SQLALCHEMY_DATABASE_URI = f"sqlite:////{project_abs_dir}/database/db.sqlite"
+codespace link: https://valhuber-ominous-garbanzo-vw94x5rp57cw5jp.github.dev
 
 Security notes
 ==============
