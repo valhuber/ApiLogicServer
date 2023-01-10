@@ -19,4 +19,4 @@ class Server():
     
     @classmethod
     def login(cls, id, password):
-        Server._JWT = authentication_provider.get_user("aneu", "")
+        Server._JWT = authentication_provider.get_user(id, password)
