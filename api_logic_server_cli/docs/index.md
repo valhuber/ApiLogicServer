@@ -165,16 +165,34 @@ Click for a video tutorial, showing complete project creation, execution, custom
 API Logic Server is designed to make it easy to get started:
 
 * **Install and run Tutorial** - 
-[install](https://valhuber.github.io/ApiLogicServer/Install-Express/), and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/).  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
+[install](https://valhuber.github.io/ApiLogicServer/Install-Express/){:target="_blank" rel="noopener"}, and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/){:target="_blank" rel="noopener"}.  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
 
 * **Installed Samples** -
-Here are [some installed samples](Data-Model-Examples)
+Here are [some installed samples](Data-Model-Examples){:target="_blank" rel="noopener"}
 
 * **Dockerized Test Databases** - 
-then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/).
+then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/){:target="_blank" rel="noopener"}.
 
 * **Your Database** - 
 finally, try your own database.
+
+&nbsp;
+
+# Use Cases
+
+There are a variety of ways for getting value from API Logic Server:
+
+* __Create and Customize database web apps__ - the core target of the project
+
+* __Admin App for your database__ - the Admin App is a create way to navigate through your database, particularly to explore data relationships
+
+* __Data Repair__ - using the Admin App with logic to ensure integrity, repair data for which you may not have had time to create custom apps
+
+* __Project Creation__ - even if you do not intend to use the API, Admin App or logic, you can use API Logic Server to create project you then edit by hand.  Created projects will include the SQLAlchemy Data Models, and project structure
+
+* __Learning__ - explore the [Learning Center](https://github.com/ApiLogicServer/.github/blob/main/profile/README.md){:target="_blank" rel="noopener"} to learn about key concepts of Flask and SQLAlchemy
+
+
 
 &nbsp;
 
