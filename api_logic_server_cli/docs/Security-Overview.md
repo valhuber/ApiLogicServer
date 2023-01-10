@@ -2,7 +2,7 @@ Security is under active development.  You can examine the [Prototype in the Pre
 
 ## Terms
 
-* Authentication: a login function that confirms a user has access, usually by posting credentials and obtaining a token identifying the users' roles.
+* Authentication: a login function that confirms a user has access, usually by posting credentials and obtaining a JWT token identifying the users' roles.
 * Authorization: controlling access to row/columns based on assigned roles.
 * Role: in security, users are assigned one or many roles.  Roles are authorized for access to data, potentially down to the row/column level.
 
@@ -27,7 +27,7 @@ Developers must:
 
     * Provide this class
 
-    * This class is configured in `config.py`
+    * Identify the class in `config.py`
 
 &nbsp;
 
@@ -39,7 +39,7 @@ Developers must determine the data required to authenticate users.  This can be 
 
 #### `declare_security`
 
-Add code to the pre-created (empty) Python module that defines table/role filters.  The system merges these into each retrieval.
+Add code to the pre-created (empty) Python module that defines table/role filters.  The system merges these into each retrieval.  These declarations are processed on system startup as described below.
 
 &nbsp;
 
@@ -47,29 +47,41 @@ Add code to the pre-created (empty) Python module that defines table/role filter
 
 System processing is summarized below.
 
+&nbsp;
+
 #### Startup: `declare_security`
 
 When you start the server, the system (`api_logic_server_run.py`) imports `declare_security`.  This:
 
 1. Imports `from security.system.security_manager import Grant, Security`, which sets up SQLAlchemy listeners for all database access calls
 
-2. Creates `Grant` objects, internally maintained by the system for subsequent use on API calls.
-
-2. The from security import declare_security  # activate security
+2. Creates `Grant` objects, internally maintained for subsequent use on API calls (SQLAlchemy read events).
 
 &nbsp;
 
-#### Login: Auth Provider
+#### Login: Call Auth-Provider
 
 When users log in, the app `POST`s their id/password to the system, which invokes the Authentication-Provider to autthenticate and return a set of roles.  These are tokenized and returned to the client, and passed in the header of subsequent requests.
-
-The startup process also 
 
 &nbsp;
 
 #### API: Security Manager
 
-Clients make API calls, providing the login token.  The system
+This provides:
+
+* __The `Grant` function__, to save the filters for each table/role
+
+* __Filtering,__ by registering for and processing the SQLAlchemy `receive_do_orm_execute` event to enforce filters.
+
+&nbsp;
+
+#### Server: User State
+
+The server provides the functions for login (using the Authentication-Provider).  This returns the JWT which users supply in the header of subsequent requests.
+
+As the server processes requests, it validates JWT presence, and provides `current_user_from_JWT()` to return this data for the Security Manager.
+
+&nbsp;
 
 ## Use Cases
 
