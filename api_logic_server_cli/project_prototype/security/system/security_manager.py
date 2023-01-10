@@ -12,9 +12,9 @@ You typically do not alter this file.
 from sqlalchemy.orm import session
 from sqlalchemy import event, MetaData
 import safrs
-import database.models
 from sqlalchemy import event, MetaData
 from sqlalchemy.orm import with_loader_criteria
+from security.system.server_proxy import Server
 import logging, sys
 
 import config
@@ -36,38 +36,25 @@ session = db.session  # sqlalchemy.orm.scoping.scoped_session
 
 class Security:
 
-    _current_user = None
-
-    """
-    CurrentUser = Security.current_user()  # TODO - how to enable users to say Security.CurrentUser??
-    Returns user rows, with UserRoleList
-    """
-
-    @classmethod
-    def _authenticate(cls, jwt):
-        """
-        Called by SAFRS and custom endpoints to validate jwt provided in http header
-        
-        Validates JWT (exists, not expired), sets _current_user
-        """
-        return Security._current_user
-    
     @classmethod
     def current_user(cls):
-        """ STUB for authentication """
-        # return authentication_provider.Users.row("Client1")
-        if Security._current_user is None:
-            Security._current_user = authentication_provider.get_user("aneu", "")
-        return Security._current_user
+        """ 
+        User code calls this as required to get user/roles (eg, multi-tenant client_id)
+
+        TODO - how to CurrentUser = Security.current_user?
+        """
+        return Server.current_user()
 
     @staticmethod
     @classmethod
     def current_user_has_role(role_name: str) -> bool: 
         '''
-        If user has role xyz, then for update authorization he/she can... 
+        Helper, e.g. rules can determine if update allowed
+
+        If user has role xyz, then for update authorization s/he can... 
         '''
         result = False
-        for each_role in __class__.current_user.UserRoleList:
+        for each_role in Server.current_user.UserRoleList:
             if role_name == each_role.name:
                 result = True
                 break
@@ -83,7 +70,7 @@ class Grant:
 
     grants_by_table = {}
     '''
-    Dict keyed by Table name, value is a (role,filter)
+    Dict keyed by Table name (obtained from class name), value is a (role,filter)
     '''
 
     def __init__(self, on_entity: object, to_role: object = None, filter: object = None):
@@ -118,7 +105,7 @@ class Grant:
         '''
         SQLAlchemy select event for current user's roles, append that role's grant filter to the SQL before execute 
         '''
-        user = Security.current_user()
+        user = Server.current_user()
         mapper = orm_execute_state.bind_arguments['mapper']
         table_name = mapper.persist_selectable.fullname   # mapper.mapped_table.fullname disparaged
         if table_name in Grant.grants_by_table:
