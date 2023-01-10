@@ -234,7 +234,10 @@ Let's recap what you've seen:
 
 ### Next Steps
 
-Explore the [Logic Tutorial](https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/).
+After the Tutorial, these are excellent next steps:
+
+* Try other databases - here are [some installed samples](https://valhuber.github.io/ApiLogicServer/Data-Model-Examples/), and try your own
+* Explore the [Logic Tutorial](https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/).
 
 
 ### Docker cleanup
