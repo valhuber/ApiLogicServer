@@ -43,7 +43,7 @@ class Security:
 
         TODO - how to CurrentUser = Security.current_user?
         """
-        return Server.current_user()
+        return Server.current_user_from_JWT()
 
     @staticmethod
     @classmethod
@@ -54,7 +54,7 @@ class Security:
         If user has role xyz, then for update authorization s/he can... 
         '''
         result = False
-        for each_role in Server.current_user.UserRoleList:
+        for each_role in Security.current_user().UserRoleList:
             if role_name == each_role.name:
                 result = True
                 break
@@ -105,7 +105,7 @@ class Grant:
         '''
         SQLAlchemy select event for current user's roles, append that role's grant filter to the SQL before execute 
         '''
-        user = Server.current_user()
+        user = Security.current_user()
         mapper = orm_execute_state.bind_arguments['mapper']
         table_name = mapper.persist_selectable.fullname   # mapper.mapped_table.fullname disparaged
         if table_name in Grant.grants_by_table:

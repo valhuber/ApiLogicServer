@@ -8,7 +8,7 @@ class Server():
     _current_user = None
     
     @classmethod
-    def current_user(cls):
+    def current_user_from_JWT(cls):
         """ 
         STUB for authentication - presumably returned from JWT saved during login
         """
