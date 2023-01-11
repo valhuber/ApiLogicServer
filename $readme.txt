@@ -2,31 +2,6 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
-codespace link: nah
-
-https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=586619804
-
-https://github.com/ApiLogicServer/Learn-Flask-SQLAlchemy
-
-<a data-target="create-button.configureAndCreateLink" hidden="hidden" href="/codespaces/new?hide_repo_select=true&amp;ref=main&amp;repo=586619804" target="_blank" data-view-component="true" class="btn btn-primary rounded-2 btn">    Configure and create codespace
-</a>
-
-https://github.com/ApiLogicServer/Learn-Flask-SQLAlchemy/codespaces/new?hide_repo_select=true&amp;ref=main&amp;repo=586619804
-
-Security notes
-==============
-  * Functional
-    * AND vs Or
-    * Column Level Access?
-    * App Grants?
-  * Architectural Issues
-    * Disable Grants when rules running
-    * Swagger when login/token is required
-    * 
-  * TODO
-    * Grant None
-    * Column
-    * Workflow for non-sqlite (config)
 
 git 120af3a
 https://stackoverflow.com/questions/53653083/how-to-correctly-set-pythonpath-for-visual-studio-code

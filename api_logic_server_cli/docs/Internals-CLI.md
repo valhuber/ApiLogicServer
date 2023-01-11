@@ -9,16 +9,18 @@ For reference, projects are created with this structure:
 To create using the source code (e.g, from an IDE), using the ```venv``` created from above:
 
 ```bash
-(venv) val@Vals-MPB-14 ApiLogicServer % python api_logic_server_cli/cli.py create --project_name=~/Desktop/test_project
+(venv) val@Vals-MPB-14 ApiLogicServer % ApiLogicServer create
 
-Welcome to API Logic Server, 6.03.03
+Welcome to API Logic Server 07.00.01
 
+Project to create [ApiLogicProject]: 
 SQLAlchemy Database URI [default = nw.sqlite, ? for help]: 
 
 
-Creating ApiLogicServer with options:
+Creating ApiLogicProject with options:
   --db_url=default = nw.sqlite, ? for help
-  --project_name=~/Desktop/test_project   (pwd: /Users/val/dev/ApiLogicServer)
+  --bind_key=
+  --project_name=ApiLogicProject   (pwd: /Users/val/dev/servers/install/ApiLogicServer)
   --api_name=api
   --admin_app=True
   --react_admin=False
@@ -37,41 +39,108 @@ Creating ApiLogicServer with options:
   --multi_api=False
   --infer_primary_key=False
 
-ApiLogicServer 6.03.03 Creation Log:
-0. Using Sample DB from: sqlite:////Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
-1. Delete dir: /Users/val/Desktop/test_project
-2. Create Project: /Users/val/Desktop/test_project
-.. ..Clone from /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype 
+ApiLogicServer 07.00.01 Creation Log:
+0. Using Sample DB from: sqlite:////Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.10/site-packages/api_logic_server_cli/database/nw-gold.sqlite
+1. Delete dir: /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
+2. Create Project: /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
+.. ..Clone from /Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.10/site-packages/api_logic_server_cli/project_prototype 
 .. ..Copy in nw customizations: logic, custom api, readme, tests, admin app
-.. ..Sqlite database setup /Users/val/Desktop/test_project/database/db.sqlite...
-.. .. ..From /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
-.. .. ..db_uri set to: sqlite:////Users/val/Desktop/test_project/database/db.sqlite in <project>/config.py
+.. ..Sqlite database setup /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject/database/db.sqlite...
+.. .. ..From /Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.10/site-packages/api_logic_server_cli/database/nw-gold.sqlite
+.. .. ..db_uri set to: sqlite:////Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject/database/db.sqlite in <project>/config.py
 3. Create/verify database/models.py, then use that to create api/ and ui/ models
  a.  Create Models - create database/models.py, using sqlcodegen
-.. .. ..For database:  sqlite:////Users/val/Desktop/test_project/database/db.sqlite
+.. .. ..For database:  sqlite:////Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject/database/db.sqlite
 .. .. ..Create resource_list - dynamic import database/models.py, inspect 18 classes in <project>/database
 .. .. ..Setting cascade delete for sample database database/models.py
  b.  Create api/expose_api_models.py from models
  c.  Create ui/admin/admin.yaml from models
-.. .. ..Create ui/admin copy safrs-react-admin to: /Users/val/Desktop/test_project/ui/safrs-react-admin
-.. .. ..  ..From /Users/val/dev/ApiLogicServer/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
-.. .. ..Write /Users/val/Desktop/test_project/ui/admin/admin.yaml
+.. .. ..Create ui/admin copy safrs-react-admin to: ApiLogicProject/ui/safrs-react-admin
+.. .. ..  ..From /Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.10/site-packages/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+.. .. ..Write ApiLogicProject/ui/admin/admin.yaml
  d.  Create ui/basic_web_app -- declined
 4. Final project fixup
- b.   Update api_logic_server_run.py with project_name=~/Desktop/test_project and api_name, host, port
+ b.   Update api_logic_server_run.py with project_name=ApiLogicProject and api_name, host, port
  c.   Fixing api/expose_services - port, host
  d.   Updated customize_api_py with port=5656 and host=localhost
- e.   Updated python_anywhere_wsgi.py with /Users/val/Desktop/test_project
+ e.   Updated python_anywhere_wsgi.py with /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
+
+
+==================================================================
+ApiLogicProject customizable project created.  Adding Security:
+  ..ApiLogicServer add-db --db_url=auth --bind_key=authentication
+==================================================================
+
+
+Creating ApiLogicProject with options:
+  --db_url=auth
+  --bind_key=authentication
+  --project_name=ApiLogicProject   (pwd: /Users/val/dev/servers/install/ApiLogicServer)
+  --api_name=api
+  --admin_app=True
+  --react_admin=False
+  --flask_appbuilder=False
+  --from_git=
+  --run=False
+  --host=localhost
+  --port=5656
+  --swagger_host=localhost
+  --not_exposed=ProductDetails_V
+  --open_with=
+  --use_model=
+  --favorites=name description
+  --non_favorites=id
+  --extended_builder=
+  --multi_api=False
+  --infer_primary_key=False
+
+ApiLogicServer 07.00.01 Creation Log:
+1. Not Deleting Existing Project
+2. Using Existing Project
+.. ..Adding Database [authentication] to existing project
+.. .. ..Copying sqlite database to: database/authentication_db.sqlite
+.. .. ..From /Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.10/site-packages/api_logic_server_cli/database/authentication.sqlite
+.. ..Updating config.py file with SQLALCHEMY_DATABASE_URI_AUTHENTICATION...
+.. ..Updating database/bind_databases.py with SQLALCHEMY_DATABASE_URI_AUTHENTICATION...
+3. Create/verify database/authentication_models.py, then use that to create api/ and ui/ models
+ a.  Create Models - create database/authentication_models.py, using sqlcodegen
+.. .. ..For database:  sqlite:////Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject/database/authentication_db.sqlite
+.. .. ..Setting bind_key = authentication
+.. .. ..Create resource_list - dynamic import database/authentication_models.py, inspect 5 classes in <project>/database
+ b.  Create api/expose_api_models.py from models
+ c.  Create ui/admin/admin.yaml from models
+.. .. ..Write ApiLogicProject/ui/admin/authentication_admin.yaml
+ d.  Create ui/basic_web_app -- declined
+4. Final project fixup
+ b.   Update api_logic_server_run.py with project_name=ApiLogicProject and api_name, host, port
+ c.   Fixing api/expose_services - port, host
+ d.   Updated customize_api_py with port=5656 and host=localhost
+ e.   Updated python_anywhere_wsgi.py with /Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject
 
 
 ApiLogicProject customizable project created.  Next steps:
 ==========================================================
 
 Run API Logic Server:
-  cd ~/Desktop/test_project;  python api_logic_server_run.py
+  cd ApiLogicProject;  python api_logic_server_run.py
 
 Customize using your IDE:
-  code ~/Desktop/test_project  # e.g., open VSCode on created project
+  code ApiLogicProject  # e.g., open VSCode on created project
+  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/
+
+
+
+Security Added - enabled in config.sys
+
+
+ApiLogicProject customizable project created.  Next steps:
+==========================================================
+
+Run API Logic Server:
+  cd ApiLogicProject;  python api_logic_server_run.py
+
+Customize using your IDE:
+  code ApiLogicProject  # e.g., open VSCode on created project
   Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/
 
 
@@ -86,7 +155,7 @@ The ApiLogicServer source code looks like this:
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/apilogicserver-ide.png?raw=true"></figure>
 
-Execution begins at `ApiLogicServer/api_logic_server_cli/cli.py`.  It gathers command line arguments, and proceeds to `def api_logic_server(<cmdline-args>):`, which operates as described in the sections below.
+Execution begins at `ApiLogicServer/api_logic_server_cli/cli.py`.  It gathers command line arguments and creates an instance of `ProjectRun(Project)`, which proceeds to `ProjectRun.create_project() `.  Its operation is described in the sections below.
 
 ### 1. Delete Dir
 The target project directory is deleted.  This does not work on Windows, which requires the directory to not exist.

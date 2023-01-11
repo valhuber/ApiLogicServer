@@ -172,3 +172,9 @@ Then:
 ```
 
 Test it as described in [Authorization](../Security-Authorization/#sample).
+
+&nbsp;
+
+## Appendix: Internals
+
+The Security Manager and sqlite Authentication-Provider are built into created projects from the [system's prototype project](https://github.com/valhuber/ApiLogicServer/tree/main/api_logic_server_cli/project_prototype_nw).
