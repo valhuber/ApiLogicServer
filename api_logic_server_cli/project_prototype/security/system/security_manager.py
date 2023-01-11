@@ -41,6 +41,8 @@ class Security:
         """ 
         User code calls this as required to get user/roles (eg, multi-tenant client_id)
 
+        see https://flask-login.readthedocs.io/en/latest/
+        
         TODO - how to CurrentUser = Security.current_user?
         """
         return Server.current_user_from_JWT()
