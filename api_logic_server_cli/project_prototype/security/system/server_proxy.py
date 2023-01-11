@@ -1,7 +1,12 @@
-
 import config
 authentication_provider = config.Config.SECURITY_PROVIDER
 
+"""
+Stub representing future SAFRS server support.
+
+These APIs are initial proposal only, 
+will be redesigned in SAFRS support.
+"""
 
 class Server():
 
