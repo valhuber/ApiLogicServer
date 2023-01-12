@@ -10,9 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "07.00.04"
+__version__ = "07.00.05"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t01/12/2023 - 07.00.05: Updated venv/setup, no Flask App Builder  \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -719,17 +720,7 @@ def invoke_creators(model_creation_services: ModelCreationServices):
         pass
         # print(".. .. ..ui/admin_app creation declined")
 
-    if model_creation_services.project.flask_appbuilder:
-        print(" d.  Create ui/basic_web_app/app/views.py (import / iterate models)")
-        creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
-        spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_basic_web_app_creator.py')
-        creator = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(creator)
-        creator.create(model_creation_services)
-    else:
-        print(" d.  Create ui/basic_web_app -- declined")
-
-    model_creation_services.close_app()  # this may no longer be required
+    # model_creation_services.close_app()  # this may no longer be required
 
 
 def add_security(project: Project, msg: str):
