@@ -42,7 +42,7 @@ class Security:
         User code calls this as required to get user/roles (eg, multi-tenant client_id)
 
         see https://flask-login.readthedocs.io/en/latest/
-        
+
         TODO - how to CurrentUser = Security.current_user?
         """
         return Server.current_user_from_JWT()
@@ -106,6 +106,8 @@ class Grant:
     def exec_grants(orm_execute_state):
         '''
         SQLAlchemy select event for current user's roles, append that role's grant filter to the SQL before execute 
+
+        TODO - check session._flushing
         '''
         user = Security.current_user()
         mapper = orm_execute_state.bind_arguments['mapper']
