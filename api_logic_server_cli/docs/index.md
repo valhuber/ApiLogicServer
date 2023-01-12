@@ -167,14 +167,14 @@ API Logic Server is designed to make it easy to get started:
 * **Install and run Tutorial** - 
 [install](https://valhuber.github.io/ApiLogicServer/Install-Express/){:target="_blank" rel="noopener"}, and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/){:target="_blank" rel="noopener"}.  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
 
-* **Installed Samples** -
-Here are [some installed samples](Data-Model-Examples){:target="_blank" rel="noopener"}
+* **Installed Sample Databases** -
+Here are [some installed sample databases](Data-Model-Examples){:target="_blank" rel="noopener"}
 
 * **Dockerized Test Databases** - 
-then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/){:target="_blank" rel="noopener"}.
+Then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/){:target="_blank" rel="noopener"}.
 
 * **Your Database** - 
-finally, try your own database.
+Finally, try your own database.
 
 &nbsp;
 
