@@ -1,0 +1,23 @@
+Process:
+    1. Execute curl command below
+    2. Get token, and paste into Browsers local storage
+    3. Start app, try Category (verify 1 row), Customers (verify works)
+
+Note: User.check_password is not created, usage is commented out for now
+    * Can we find a way not to gen this into model?
+
+ curl -X 'POST' 'http://localhost:5656/auth/login'  -H 'Content-Type: application/vnd.api+json' -d '{"username" : "aneu" , "password" : "gg" }'
+
+
+
+-------------------
+
+TOKEN=$(curl -X 'POST' 'http://localhost:5656/auth/login'  -H 'Content-Type: application/vnd.api+json' -d '{"username" : "aneu" , "password" : "" }' | jq -r .access_token)
+
+ curl -X 'GET' 'http://localhost:5656/api/Category/?fields%5BCategory%5D=Id%2CCategoryName%2CDescription&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id' -H 'accept: application/vnd.api+json' -H 'Content-Type: application/vnd.api+json' -H "Authorization: Bearer $TOKEN" -s
+
+ TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3MzU0MDc4MywianRpIjoiMzYwMDE3OGEtNjdmNS00OTZjLWJmYmItZGU4MzNmNDVkNDc4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFuZXUiLCJuYmYiOjE2NzM1NDA3ODMsImV4cCI6MTY3MzU0MjEwM30.UbkYVzBvmxSsh2ZIZTLFOcjGQBqPoFZSUms1LcyxUyY'
+
+  curl -X 'POST' 'http://localhost:5656/auth/login'  -H 'Content-Type: application/vnd.api+json' -d '{"username" : "Sam" , "password" : "gg" }'
+
+  token is 22 mins in _run...

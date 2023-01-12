@@ -17,6 +17,8 @@ from sqlalchemy.orm import with_loader_criteria
 from security.system.server_proxy import Server
 import logging, sys
 
+from flask_jwt_extended import current_user   # th import func
+
 import config
 authentication_provider = config.Config.SECURITY_PROVIDER
 
@@ -45,7 +47,7 @@ class Security:
 
         TODO - how to CurrentUser = Security.current_user?
         """
-        return Server.current_user_from_JWT()
+        return current_user
 
     @staticmethod
     @classmethod
@@ -118,7 +120,7 @@ class Grant:
                     if each_grant.role_name == each_user_role.role_name:
                         security_logger.debug(f'Amend Permission for class / role: {table_name} / {each_grant.role_name} - {each_grant.filter}')
                         orm_execute_state.statement = orm_execute_state.statement.options(
-                            with_loader_criteria(each_grant.entity, each_grant.filter))
+                            with_loader_criteria(each_grant.entity, each_grant.filter()))  # th now function
 
 
 @event.listens_for(session, 'do_orm_execute')

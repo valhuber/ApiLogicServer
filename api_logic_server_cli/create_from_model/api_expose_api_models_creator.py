@@ -33,7 +33,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     '''
     port_replace = model_creation_services.project.port if model_creation_services.project.port else "None"
     result_apis += \
-        f'\n\ndef expose_models(api):\n'
+        f'\n\ndef expose_models(api, method_decorators = []):  # th \n'
     # result_apis += '    my_host = HOST\n'
     # result_apis += '    if HOST == "0.0.0.0":\n'
     # result_apis += '        my_host = "localhost"  # override default HOST for pc"\n'
@@ -67,7 +67,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
             models_file = 'models'
             if model_creation_services.project.bind_key != "":
                 models_file = model_creation_services.project.bind_key + "_" + models_file
-            result_apis += f'    api.expose_object(database.{models_file}.{each_resource_name})\n'
+            result_apis += f'    api.expose_object(database.{models_file}.{each_resource_name}, method_decorators= method_decorators)\n'
     result_apis += f'    return api\n'
     # self.session.close()
     expose_api_models_path = Path(model_creation_services.project_directory).joinpath('api/expose_api_models.py')

@@ -94,7 +94,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
         + f'\\n -- with bind: <project.bind_key>'
         + f'\\n -- len(database.<project.bind_key>_models.<project.bind_key>.metadata.tables) tables loaded')
     
-    <project.bind_key>_expose_api_models.expose_models(safrs_api)
+    <project.bind_key>_expose_api_models.expose_models(safrs_api, method_decorators= method_decorators)
 
 """ # not f-string since it contains {}
 
