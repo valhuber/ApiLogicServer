@@ -14,7 +14,7 @@ You'll discover these soon enough:
 
 2. Non-typed - well-known, but you can (should) use [Type Hints](https://docs.python.org/3/library/typing.html) for clarity, and code completion.
 
-3. CLI - Python includes great tools for making Command Line Interfaces, like Click.  A little fiddly, you might want to have a look at [these examples](https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/cli.py) (near the end)
+3. CLI - Python includes great tools for making Command Line Interfaces, like __Click__.  A little fiddly, you might want to have a look at [these examples](https://github.com/valhuber/ApiLogicServer/blob/main/api_logic_server_cli/cli.py) (near the end), which uses __ArgParse__.
 
 4. Modules - are not packages.  There is a magic file `__init.py__` that makes a directory into a module.
 
