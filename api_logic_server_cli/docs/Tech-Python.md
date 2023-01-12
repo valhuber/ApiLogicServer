@@ -4,6 +4,8 @@ I quite like Python.  I've used assembler, PL/1, and Java.  Python (particularly
 
 Though, there were some surprises I wish I'd been told about.  So, here you go.
 
+&nbsp;
+
 ## Basics
 
 You'll discover these soon enough:
@@ -20,7 +22,7 @@ You'll discover these soon enough:
 
 ## Pip, environments and PythonPath
 
-Pip is how to lead libraries (packages) - not by setting up folder.  It's great, but quickly leads to Pyton's version of "DLL Hell" where libraries interfere from different projects.  So, the best practice is to set up [Virtual Environments](https://docs.python.org/3/library/venv.html?highlight=virtual%20environment).
+Pip is how to load libraries (packages) - not by setting up folder.  It's great, but quickly leads to Pyton's version of "DLL Hell" where libraries interfere from different projects.  So, the best practice is to set up [Virtual Environments](https://docs.python.org/3/library/venv.html?highlight=virtual%20environment).
 
 A related issue is loading classes / modules at runtime.  Be clear on your `PythonPath`.  And, be aware the some IDEs (PyCharm is one) provide super-friendly support to simplify things by setting this automatically.  Which is nice, until you discover that a program that runs in the IDE fails outside it.  Days of fun.
 
@@ -30,15 +32,25 @@ A related issue is loading classes / modules at runtime.  Be clear on your `Pyth
 
 Oy, where do I start.
 
+&nbsp;
+
 ### Executable - non-class code runs on import
 
-First, imports are executable... which means nothing to a Java developer.  The key underlying fact is that Python does not require all code to be in a class.
+First, imports are executable... so what does _that_ mean.
+
+* The key underlying fact is that Python does not require all code to be in a class.  
+
+* On import, all the non-class code ___actually runs___.  It is not just setting up paths.
+
+&nbsp;
 
 ### Imports often fail to compile
 
 I still do not understand where Python and the IDE figure out what I can import.  You'll find lots of Stack Overflow articles on imports (e.g., sibling imports).
 
 For me, it usually degenerates into a trial and error exercise.  You might find [sibling imports](https://github.com/valhuber/SiblingImports) a useful project to fiddle with.
+
+&nbsp;
 
 ### Circular Imports
 
