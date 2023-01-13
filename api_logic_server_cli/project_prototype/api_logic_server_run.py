@@ -90,6 +90,8 @@ import warnings
 from flask import Flask, redirect, send_from_directory, send_file
 from safrs import ValidationError, SAFRSBase, SAFRSAPI
 from config import Config
+from ui.admin.admin_loader import admin_events
+from security.system.authentication import configure_auth
 
 def setup_logging(flask_app):
     setup_logic_logger = True
@@ -149,8 +151,6 @@ class ValidationErrorExt(ValidationError):
         self.message = message
         self.api_code = api_code
         self.detail: TypedDict = detail
-
-
 did_send_spa = False
 
 def flask_events(flask_app):
@@ -247,6 +247,7 @@ def flask_events(flask_app):
             "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
         # app_logger.debug(f'cors after_request - response: {str(response)}')
         return response
+
 
 
 def get_args():
@@ -421,52 +422,56 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
             method_decorators=[]  # th login code (move to separate file??)
             if Config.SECURITY_ENABLED:
-                from security import declare_security  # activate security
-                from flask import jsonify, request
-                from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
-                from flask_jwt_extended import create_access_token
-                from flask_jwt_extended import create_refresh_token
-                from datetime import timedelta
-                import database.authentication_models as authentication_models                
+                use_auth = True
+                if use_auth:
+                    configure_auth(flask_app, database, method_decorators)
+                else:
+                    from security import declare_security  # activate security
+                    from flask import jsonify, request
+                    from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
+                    from flask_jwt_extended import create_access_token
+                    from flask_jwt_extended import create_refresh_token
+                    from datetime import timedelta
+                    import database.authentication_models as authentication_models                
 
-                flask_app.config["PROPAGATE_EXCEPTIONS"] = True
-                flask_app.config["JWT_SECRET_KEY"] = "ApiLogicServerSecret"  # Change this!
-                flask_app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=222)  # th longer exp
-                flask_app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
-                jwt = JWTManager(flask_app)
-                
-                @jwt.user_identity_loader
-                def user_identity_lookup(user):
-                    return user.id
+                    flask_app.config["PROPAGATE_EXCEPTIONS"] = True
+                    flask_app.config["JWT_SECRET_KEY"] = "ApiLogicServerSecret"  # Change this!
+                    flask_app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=222)  # th longer exp
+                    flask_app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+                    jwt = JWTManager(flask_app)
+                    
+                    @jwt.user_identity_loader
+                    def user_identity_lookup(user):
+                        return user.id
 
-                @jwt.user_lookup_loader
-                def user_lookup_callback(_jwt_header, jwt_data):
-                    identity = jwt_data["sub"]
-                    return authentication_models.User.query.filter_by(id=identity).one_or_none()  # th currently re-reading
-                
-                @flask_app.route("/auth/login", methods=["POST"])
-                def login():
-                    username = request.json.get("username", None)
-                    password = request.json.get("password", None)
+                    @jwt.user_lookup_loader
+                    def user_lookup_callback(_jwt_header, jwt_data):
+                        identity = jwt_data["sub"]
+                        return authentication_models.User.query.filter_by(id=identity).one_or_none()  # th currently re-reading
+                    
+                    @flask_app.route("/auth/login", methods=["POST"])
+                    def login():
+                        username = request.json.get("username", None)
+                        password = request.json.get("password", None)
 
-                    user = authentication_models.User.query.filter_by(id=username).one_or_none()
-                    if not user:  # FIXME or not user.check_password(password): avoid model method?
-                        return jsonify("Wrong username or password"), 401
+                        user = authentication_models.User.query.filter_by(id=username).one_or_none()
+                        if not user:  # FIXME or not user.check_password(password): avoid model method?
+                            return jsonify("Wrong username or password"), 401
 
-                    # Notice that we are passing in the actual sqlalchemy user object here
-                    access_token = create_access_token(identity=user)
-                    return jsonify(access_token=access_token)
+                        # Notice that we are passing in the actual sqlalchemy user object here
+                        access_token = create_access_token(identity=user)
+                        return jsonify(access_token=access_token)
 
-                @flask_app.route("/auth/refresh", methods=["POST"])
-                @jwt_required(refresh=True)
-                def refresh():
-                    identity = get_jwt_identity()
-                    access_token = create_access_token(identity=identity)
-                    return jsonify(access_token=access_token)
+                    @flask_app.route("/auth/refresh", methods=["POST"])
+                    @jwt_required(refresh=True)
+                    def refresh():
+                        identity = get_jwt_identity()
+                        access_token = create_access_token(identity=identity)
+                        return jsonify(access_token=access_token)
 
-                method_decorators.append(jwt_required())
-                app_logger.info("Declare Security complete - security/declare_security.py"
-                    + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
+                    method_decorators.append(jwt_required())
+                    app_logger.info("Declare Security complete - security/declare_security.py"
+                        + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
             
             expose_api_models.expose_models(safrs_api, method_decorators)  # th new
 
@@ -499,7 +504,13 @@ if verbose:
     app_logger.setLevel(logging.DEBUG)
 
 flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
-flask_events(flask_app)
+
+use_external = True
+if use_external:
+    admin_events(flask_app = flask_app, swagger_host = swagger_host, swagger_port = swagger_port,
+        API_PREFIX=API_PREFIX, ValidationError=ValidationError, http_type = http_type)
+else:
+    admin_events(flask_app)
 
 if __name__ == "__main__":
     msg = f'API Logic Project loaded (not WSGI), version api_logic_server_version\n'
