@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "07.00.07"
+__version__ = "07.00.08"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/12/2023 - 07.00.07: Updated venv/setup, no Flask App Builder, manual login runs  \n"\
+    "\t01/13/2023 - 07.00.08: Updated venv/setup, no Flask App Builder, manual login runs, disable-able  \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -728,8 +728,8 @@ def add_security(project: Project, msg: str):
     print(msg)
     print("  ..ApiLogicServer add-db --db_url=auth --bind_key=authentication")
     print("==================================================================")
-    create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False",
-                        replace_with='SECURITY_ENABLED = True',
+    create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
+                        replace_with='SECURITY_ENABLED = True  #',
                         in_file=f'{project.project_directory}/config.py')
     project.command = "add_db"
     project.bind_key = "authentication"

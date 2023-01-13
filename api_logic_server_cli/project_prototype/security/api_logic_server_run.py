@@ -151,6 +151,103 @@ class ValidationErrorExt(ValidationError):
         self.message = message
         self.api_code = api_code
         self.detail: TypedDict = detail
+did_send_spa = False
+
+def flask_events(flask_app):
+    """ events for serving minified safrs-admin, using admin.yaml
+    """
+
+    @flask_app.route("/admin/<path:path>")
+    def start_custom_app_return_spa(path=None):
+        """ Step 1 - Start Custom App, and return minified safrs-react-admin app (acquired from safrs-react-admin/build) 
+            Custom url: http://localhost:5656/admin/custom_app
+        """
+        global did_send_spa
+        if True or not did_send_spa:
+            did_send_spa = True
+            app_logger.info(f'\nStart Custom App ({path}): return spa "ui/safrs-react-admin", "index.html"\n')
+        return send_from_directory('ui/safrs-react-admin', 'index.html')  # unsure how admin finds custom url
+
+    @flask_app.route('/')
+    def start_default_app():
+        """ Step 1 - Start default Admin App 
+            Default URL: http://localhost:5656/ 
+        """
+        app_logger.debug(f'API Logic Server - Start Default App - redirect /admin-app/index.html')
+        return redirect('/admin-app/index.html')  # --> return_spa
+
+    @flask_app.route("/admin-app/<path:path>")
+    def return_spa(path=None):
+        """ Step 2 - return minified safrs-react-admin app
+            This is in ui/safrs-react-admin (ultimately acquired from safrs-react-admin/build) 
+        """
+        global did_send_spa
+        if path == "home.js":
+            directory = "ui/admin"
+        else:
+            directory = 'ui/safrs-react-admin'  # typical API Logic Server path (index.yaml)
+        if not did_send_spa:
+            did_send_spa = True
+            app_logger.debug(f'return_spa - directory = {directory}, path= {path}')
+        return send_from_directory(directory, path)
+
+    @flask_app.route('/ui/admin/<path:path>')
+    def admin_yaml(path=None):
+        """ Step 3 - return admin file response: /ui/admin/<path:path> (to now-running safrs-react-admin app)
+            and text-substitutes to get url args from startup args (avoid specify twice for *both* server & admin.yaml)
+            api_root: {http_type}://{swagger_host}:{swagger_port} (from ui_admin_creator)
+            e.g. http://localhost:5656/ui/admin/admin.yaml
+        """
+        use_type = "mem"
+        if use_type == "mem":
+            with open(f'ui/admin/{path}', "r") as f:  # path is admin.yaml for default url/app
+                content = f.read()
+            content = content.replace("{http_type}", http_type)
+            content = content.replace("{swagger_host}", swagger_host)
+            content = content.replace("{port}", str(swagger_port))  # note - codespaces requires 443 here (typically via args)
+            content = content.replace("{api}", API_PREFIX[1:])
+            app_logger.debug(f'loading ui/admin/admin.yaml')
+            mem = io.BytesIO(str.encode(content))
+            return send_file(mem, mimetype='text/yaml')
+        else:
+            response = send_file("ui/admin/admin.yaml", mimetype='text/yaml')
+            return response
+
+    @flask_app.route('/ui/images/<path:path>')
+    def get_image(path=None):
+        """ return requested image
+            data: Employee/janet.jpg
+            url:  http://localhost:5656/ui/images/Employee/janet.jpg
+        """
+        response = send_file(f'ui/images/{path}', mimetype='image/jpeg')
+        return response
+
+    @flask_app.errorhandler(ValidationError)
+    def handle_exception(e: ValidationError):
+        res = {'code': e.status_code,
+            'errorType': 'Validation Error',
+            'errorMessage': e.message}
+        #    if debug:
+        #        res['errorMessage'] = e.message if hasattr(e, 'message') else f'{e}'
+
+        return res, 400
+
+
+    @flask_app.after_request
+    def after_request(response):
+        '''
+        Enable CORS. Disable it if you don't need CORS or install Cors Library
+        https://parzibyte.me/blog
+        '''
+        response.headers[
+            "Access-Control-Allow-Origin"] = "*"  # <- You can change "*" for a domain for example "http://localhost"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE, PATCH"
+        response.headers["Access-Control-Allow-Headers"] = \
+            "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+        # app_logger.debug(f'cors after_request - response: {str(response)}')
+        return response
+
 
 
 def get_args():
@@ -318,13 +415,63 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
             from api import expose_api_models, customize_api
             app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
             safrs_api = SAFRSAPI(flask_app, host=swagger_host, port=swagger_port, prefix = API_PREFIX)
+            # FIXME expose_api_models.expose_models(safrs_api)
             
             app_logger.info(f'Customize API - api/expose_service.py, exposing custom services')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
             method_decorators=[]  # th login code (move to separate file??)
             if Config.SECURITY_ENABLED:
-                configure_auth(flask_app, database, method_decorators)
+                use_auth = True
+                if use_auth:
+                    configure_auth(flask_app, database, method_decorators)
+                else:
+                    from security import declare_security  # activate security
+                    from flask import jsonify, request
+                    from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
+                    from flask_jwt_extended import create_access_token
+                    from flask_jwt_extended import create_refresh_token
+                    from datetime import timedelta
+                    import database.authentication_models as authentication_models                
+
+                    flask_app.config["PROPAGATE_EXCEPTIONS"] = True
+                    flask_app.config["JWT_SECRET_KEY"] = "ApiLogicServerSecret"  # Change this!
+                    flask_app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=222)  # th longer exp
+                    flask_app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+                    jwt = JWTManager(flask_app)
+                    
+                    @jwt.user_identity_loader
+                    def user_identity_lookup(user):
+                        return user.id
+
+                    @jwt.user_lookup_loader
+                    def user_lookup_callback(_jwt_header, jwt_data):
+                        identity = jwt_data["sub"]
+                        return authentication_models.User.query.filter_by(id=identity).one_or_none()  # th currently re-reading
+                    
+                    @flask_app.route("/auth/login", methods=["POST"])
+                    def login():
+                        username = request.json.get("username", None)
+                        password = request.json.get("password", None)
+
+                        user = authentication_models.User.query.filter_by(id=username).one_or_none()
+                        if not user:  # FIXME or not user.check_password(password): avoid model method?
+                            return jsonify("Wrong username or password"), 401
+
+                        # Notice that we are passing in the actual sqlalchemy user object here
+                        access_token = create_access_token(identity=user)
+                        return jsonify(access_token=access_token)
+
+                    @flask_app.route("/auth/refresh", methods=["POST"])
+                    @jwt_required(refresh=True)
+                    def refresh():
+                        identity = get_jwt_identity()
+                        access_token = create_access_token(identity=identity)
+                        return jsonify(access_token=access_token)
+
+                    method_decorators.append(jwt_required())
+                    app_logger.info("Declare Security complete - security/declare_security.py"
+                        + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
             
             expose_api_models.expose_models(safrs_api, method_decorators)  # th new
 
@@ -358,8 +505,12 @@ if verbose:
 
 flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
 
-admin_events(flask_app = flask_app, swagger_host = swagger_host, swagger_port = swagger_port,
-    API_PREFIX=API_PREFIX, ValidationError=ValidationError, http_type = http_type)
+use_external = True
+if use_external:
+    admin_events(flask_app = flask_app, swagger_host = swagger_host, swagger_port = swagger_port,
+        API_PREFIX=API_PREFIX, ValidationError=ValidationError, http_type = http_type)
+else:
+    admin_events(flask_app)
 
 if __name__ == "__main__":
     msg = f'API Logic Project loaded (not WSGI), version api_logic_server_version\n'

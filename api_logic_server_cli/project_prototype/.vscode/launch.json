@@ -15,6 +15,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "ApiLogicServer - No Security (e.g., for behave tests)",
+            "type": "python",
+            "request": "launch",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "env": {"SECURITY_ENABLED": "False"},
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Behave Run",
             "type": "python",
             "request": "launch",

@@ -14,13 +14,12 @@ from sqlalchemy import event, MetaData
 import safrs
 from sqlalchemy import event, MetaData
 from sqlalchemy.orm import with_loader_criteria
-from security.system.server_proxy import Server
 import logging, sys
 
 from flask_jwt_extended import current_user   # th import func
 
-import config
-authentication_provider = config.Config.SECURITY_PROVIDER
+from config import Config
+authentication_provider = Config.SECURITY_PROVIDER
 
 security_logger = logging.getLogger('API Logic Security')
 handler = logging.StreamHandler(sys.stderr)
@@ -127,7 +126,8 @@ class Grant:
 def receive_do_orm_execute(orm_execute_state):
     "listen for the 'do_orm_execute' event from SQLAlchemy"
     if (
-        orm_execute_state.is_select
+        Config.SECURITY_ENABLED
+        and orm_execute_state.is_select
         and not orm_execute_state.is_column_load
         and not orm_execute_state.is_relationship_load
     ):            
