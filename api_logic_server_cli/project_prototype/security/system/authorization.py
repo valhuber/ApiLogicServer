@@ -29,7 +29,7 @@ security_logger.addHandler(handler)
 security_logger.propagate = False
 security_logger.setLevel(logging.DEBUG)  # log levels: critical < error < warning(20) < info(30) < debug
 
-security_logger.info(f'\nsecurity_manager loaded via api_logic_server_run.py -- import \n')
+security_logger.info(f'\nsauthorization loaded via api_logic_server_run.py -- import \n')
 
 db = safrs.DB         # Use the safrs.DB, not db!
 session = db.session  # sqlalchemy.orm.scoping.scoped_session

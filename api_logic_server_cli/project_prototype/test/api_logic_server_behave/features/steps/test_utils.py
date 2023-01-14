@@ -1,4 +1,6 @@
 import requests
+import json
+from dotmap import DotMap
 
 def prt(msg: any, test: str= None) -> None:
     """
@@ -15,6 +17,27 @@ def prt(msg: any, test: str= None) -> None:
         test_val = test[0:25]
     msg_url = f'http://localhost:5656/server_log?msg={msg}&test={test}&dir=test/api_logic_server_behave/logs/scenario_logic_logs'
     r = requests.get(msg_url)
+
+def login():
+    post_uri = 'http://localhost:5656/auth/login'
+    post_data = {"username": "aneu"}
+    r = requests.post(url=post_uri, json = post_data)
+    response_text = r.text
+    status_code = r.status_code
+    if status_code > 300:
+        raise Exception(f'POST login failed with {r.text}')
+    result_data = json.loads(response_text)
+    result_map = DotMap(result_data)
+    token = result_map.access_token
+
+    # https://stackoverflow.com/questions/19069701/python-requests-library-how-to-pass-authorization-header-with-single-token
+    header = {'Authorization': 'Bearer {}'.format(f'{token}')}
+    save_for_session = True
+    if save_for_session:
+        s = requests.Session()
+        s.headers.update(header)
+    return header
+
 
 if __name__ == "__main__":
     print(f'\n test_services.py, starting')

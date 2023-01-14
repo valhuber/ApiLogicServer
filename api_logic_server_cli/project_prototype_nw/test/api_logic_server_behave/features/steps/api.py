@@ -1,6 +1,7 @@
 from behave import *
 import requests, pdb
 import json
+import test_utils
 
 host = "localhost"
 port = "5656"
@@ -16,7 +17,7 @@ def step_impl(context):
     get_order_uri = f'http://localhost:5656/api/Order/?' \
                 f'fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CAmountTotal' \
                 f'&page%5Boffset%5D=0&page%5Blimit%5D=10&filter%5BId%5D=10248'
-    r = requests.get(url=get_order_uri)
+    r = requests.get(url=get_order_uri, headers= test_utils.login())
     response_text = r.text
     context.response_text = response_text
     assert True is not False
@@ -40,7 +41,7 @@ def step_impl(context):
         get_dept_uri = f'http://{host}:{port}/api/Department/2/?' \
                     f'include=DepartmentList%2CEmployeeList%2CEmployeeList1%2CDepartment' \
                     f'&fields%5BDepartment%5D=Id%2CDepartmentId%2CDepartmentName'
-        r = requests.get(url=get_dept_uri)
+        r = requests.get(url=get_dept_uri, headers= test_utils.login())
         response_text = r.text
         result_data = json.loads(response_text)  # 'str' object has no attribute 'read'
         relationships = result_data["data"]["relationships"]

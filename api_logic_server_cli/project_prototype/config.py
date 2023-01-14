@@ -52,7 +52,8 @@ class Config:
     SECURITY_PROVIDER = None
     if os.getenv('SECURITY_ENABLED'):  # e.g. export SECURITY_ENABLED=true
         SECURITY_ENABLED = os.getenv('SECURITY_ENABLED')
-        if SECURITY_ENABLED in ["False", "false", "no", "No"]:  # NO SEC
+        SECURITY_ENABLED = SECURITY_ENABLED.lower()
+        if SECURITY_ENABLED in ["false", "no"]:  # NO SEC
             SECURITY_ENABLED = False
         else:
             SECURITY_ENABLED = True
@@ -62,7 +63,7 @@ class Config:
         SECURITY_PROVIDER = Authentication_Provider
         app_logger.debug(f'config.py - security enabled')
     else:
-        app_logger.debug(f'config.py - security disabled')
+        app_logger.info(f'config.py - security disabled')
 
     # Begin Multi-Database URLs (from ApiLogicServer add-db...)
 

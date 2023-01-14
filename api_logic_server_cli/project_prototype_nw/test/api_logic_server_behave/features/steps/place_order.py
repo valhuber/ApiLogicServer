@@ -19,8 +19,16 @@ Rows used for testing:
 
 def get_ALFLI():
     get_uri = 'http://localhost:5656/api/Customer/ALFKI/?include=OrderList&fields%5BCustomer%5D=Id%2CCompanyName%2CBalance%2CCreditLimit%2COrderCount%2CUnpaidOrderCount'
-    r = requests.get(url=get_uri)
+    header = test_utils.login()
+    r = requests.get(url=get_uri, headers= header)
     response_text = r.text
+    status_code = r.status_code
+    if status_code > 300:
+        raise Exception(f'get_ALFKI failed with {r.text}')
+    save_for_session = True
+    if save_for_session:
+        s = requests.Session()
+        s.headers.update(header)
     result_data = json.loads(response_text)
     result_map = DotMap(result_data)
     result_attrs = result_map.data.attributes
@@ -101,7 +109,7 @@ def step_impl(context):
     }
     test_utils.prt(f'\n\n\n{scenario_name} - verify adjustments...\n',\
         scenario_name)
-    r = requests.post(url=add_order_uri, json=add_order_args)
+    r = requests.post(url=add_order_uri, json=add_order_args, headers=test_utils.login())
     context.response_text = r.text
 
 @then('Logic adjusts Balance (demo: chain up)')
@@ -142,7 +150,7 @@ def step_impl(context):
     test_utils.prt(f'\n\n\n{scenario_name} - verify credit check response...\n', scenario_name)
     # find ALFKI order with freight of 11 and delete it (hmm... cannot get created id)
     order_uri = "http://localhost:5656/api/Order/?include=Customer&fields%5BOrder%5D=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=Id%2CCustomerId%2CEmployeeId%2COrderDate%2CRequiredDate%2CShippedDate%2CShipVia%2CFreight%2CShipName%2CShipAddress%2CShipCity%2CShipRegion%2CShipPostalCode%2CShipCountry%2CAmountTotal%2CCountry%2CCity%2CReady%2COrderDetailCount%2Cid&filter%5BCustomerId%5D=ALFKI&filter%5BFreight%5D=11"
-    r = requests.get(url=order_uri)
+    r = requests.get(url=order_uri, headers= test_utils.login())
     response_text = r.text
     result_data = json.loads(response_text)
     result_map = DotMap(result_data)
@@ -151,7 +159,7 @@ def step_impl(context):
     for each_order in orders:
         order_id = each_order.id
         delete_uri = "http://localhost:5656/api/Order/" + str(order_id) + "/"
-        r = requests.delete(delete_uri)
+        r = requests.delete(delete_uri, headers= test_utils.login())
 
     before = context.alfki_before
     expected_adjustment = 0
@@ -239,7 +247,7 @@ def step_impl(context):
                 "id": "1040"
             }
         }
-    r = requests.patch(url=patch_cust_uri, json=patch_args)
+    r = requests.patch(url=patch_cust_uri, json=patch_args, headers=test_utils.login())
     response_text = r.text
     context.response_text = r.text
 
@@ -266,7 +274,7 @@ def step_impl(context):
                 "type": "Order",
                 "id": 10643
             }}
-    r = requests.patch(url=patch_uri, json=patch_args)
+    r = requests.patch(url=patch_uri, json=patch_args, headers=test_utils.login())
     response_text = r.text
     context.response_text = r.text
 
@@ -310,7 +318,7 @@ def step_impl(context):
                 "type": "Order",
                 "id": 10643
             }}
-    r = requests.patch(url=patch_uri, json=patch_args)
+    r = requests.patch(url=patch_uri, json=patch_args, headers=test_utils.login())
     response_text = r.text
     context.response_text = r.text
 
@@ -348,7 +356,7 @@ def step_impl(context):
                 "type": "Order",
                 "id": 10643
             }}
-    r = requests.patch(url=patch_uri, json=patch_args)
+    r = requests.patch(url=patch_uri, json=patch_args, headers=test_utils.login())
     response_text = r.text
     context.response_text = r.text
 

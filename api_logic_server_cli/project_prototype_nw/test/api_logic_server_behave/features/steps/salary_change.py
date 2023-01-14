@@ -39,7 +39,7 @@ def step_impl(context):
                 "type": "Employee",
                 "id": 5
             }}
-    r = requests.patch(url=patch_emp_uri, json=patch_args)
+    r = requests.patch(url=patch_emp_uri, json=patch_args, headers= test_utils.login())
     context.response_text = r.text
 
 
@@ -52,7 +52,7 @@ def step_impl(context):
     audit_uri = f'http://localhost:5656/api/EmployeeAudit/?' \
                 'include=Employee&fields%5BEmployeeAudit%5D=Id%2CTitle%2CSalary%2CLastName%2CFirstName%2CEmployeeId%2CCreatedOn&' \
                 'page%5Boffset%5D=0&page%5Blimit%5D=10&sort=Id%2CTitle%2CSalary%2CLastName%2CFirstName%2CEmployeeId%2CCreatedOn%2Cid'
-    r = requests.get(url=audit_uri)
+    r = requests.get(url=audit_uri, headers= test_utils.login())
     response_text = r.text
     assert '"Salary": 200000.0' in response_text or '"Salary":200000.0', \
         f'Error - "Salary": 200000.0 not in audit response:\n{response_text}'
@@ -68,7 +68,7 @@ def step_impl(context):
                 "type": "Employee",
                 "id": 5
             }}
-    r = requests.patch(url=patch_emp_uri, json=patch_args)
+    r = requests.patch(url=patch_emp_uri, json=patch_args, headers= test_utils.login())
     response_text = r.text
 
 
@@ -93,7 +93,7 @@ def step_impl(context):
                 "type": "Employee",
                 "id": 5
             }}
-    r = requests.patch(url=patch_emp_uri, json=patch_args)
+    r = requests.patch(url=patch_emp_uri, json=patch_args, headers= test_utils.login())
     context.response_text = r.text
 
 
