@@ -1,3 +1,10 @@
+"""
+System support for authentication.
+
+Applications POST to login to obtain an access token,
+which they provide in the header of subsequent requests.
+"""
+
 import logging, sys
 from flask import Flask
 from security import declare_security  # activate security
@@ -20,6 +27,17 @@ app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) 
 
 
 def configure_auth(flask_app: Flask, database: object, method_decorators: object):
+    """_summary_
+    Called on server start by api_logic_server_run to establish Flask end points and listeners.
+
+    Args:
+        flask_app (Flask): _description_
+        database (object): _description_
+        method_decorators (object): _description_
+
+    Returns:
+        _type_: _description_
+    """
     flask_app.config["PROPAGATE_EXCEPTIONS"] = True
     flask_app.config["JWT_SECRET_KEY"] = "ApiLogicServerSecret"  # Change this!
     flask_app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=222)  # th longer exp
@@ -37,6 +55,12 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
     
     @flask_app.route("/auth/login", methods=["POST"])
     def login():
+        """
+        Post id/password, returns token to be placed in header of subsequent requests.
+
+        Returns:
+            string: access token
+        """
         username = request.json.get("username", None)
         password = request.json.get("password", None)
 
