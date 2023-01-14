@@ -13,9 +13,7 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import create_refresh_token
 from datetime import timedelta
-
-import config
-authentication_provider = config.Config.SECURITY_PROVIDER
+import database.authentication_models as authentication_models
 
 
 app_logger = logging.getLogger('api_logic_server_app')
@@ -53,7 +51,7 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
     @jwt.user_lookup_loader
     def user_lookup_callback(_jwt_header, jwt_data):
         identity = jwt_data["sub"]
-        return authentication_provider.get_user(identity, "")  # val - use auth_provider
+        return authentication_models.User.query.filter_by(id=identity).one_or_none()  # th currently re-reading
     
     @flask_app.route("/auth/login", methods=["POST"])
     def login():
@@ -66,7 +64,7 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         username = request.json.get("username", None)
         password = request.json.get("password", None)
 
-        user = authentication_provider.get_user(username, "")  # val - use auth_provider
+        user = authentication_models.User.query.filter_by(id=username).one_or_none()
         if not user:  # FIXME or not user.check_password(password): avoid model method?
             return jsonify("Wrong username or password"), 401
 
