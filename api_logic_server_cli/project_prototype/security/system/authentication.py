@@ -4,8 +4,8 @@ System support for login / authentication.
 Applications POST to login to obtain an access token,
 which they provide in the header of subsequent requests.
 
-e.g.
-
+e.g. 
+def login():
     post_uri = 'http://localhost:5656/auth/login'
     post_data = {"username": "aneu"}
     r = requests.post(url=post_uri, json = post_data)
@@ -17,6 +17,7 @@ e.g.
     result_map = DotMap(result_data)
     token = result_map.access_token
     header = {'Authorization': 'Bearer {}'.format(f'{token}')}
+    return header
 
 """
 
