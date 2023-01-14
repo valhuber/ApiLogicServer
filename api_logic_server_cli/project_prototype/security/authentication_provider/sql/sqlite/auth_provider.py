@@ -16,7 +16,7 @@ session = db.session  # sqlalchemy.orm.scoping.scoped_session
 class Authentication_Provider(Abstract_Authentication_Provider):
 
     @staticmethod
-    def get_user(id: str, password: str) -> object:
+    def get_user(id: str, password: str = "") -> object:
         """
         Must return a row object with attributes name and role_list
         role_list is a list of row objects with attribute name
