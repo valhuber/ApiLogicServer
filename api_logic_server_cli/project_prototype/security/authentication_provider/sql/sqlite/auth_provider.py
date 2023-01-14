@@ -35,12 +35,16 @@ class Authentication_Provider(Abstract_Authentication_Provider):
                 rtn_dotmap[each_column.name] = getattr(row, each_column.name)
             return rtn_dotmap
 
-
         user = session.query(authentication_models.User).filter(authentication_models.User.id == id).one()
-        rtn_user = row_to_dotmap(user, authentication_models.User)
-        rtn_user.UserRoleList = []
-        user_roles = getattr(user, "UserRoleList")
-        for each_row in user_roles:
-            each_user_role = row_to_dotmap(each_row, authentication_models.UserRole)
-            rtn_user.UserRoleList.append(each_user_role)
-        return rtn_user  # returning user fails per caution above
+        use_db_row = True
+        if use_db_row:
+            return user
+        else:
+            pass
+            rtn_user = row_to_dotmap(user, authentication_models.User)
+            rtn_user.UserRoleList = []
+            user_roles = getattr(user, "UserRoleList")
+            for each_row in user_roles:
+                each_user_role = row_to_dotmap(each_row, authentication_models.UserRole)
+                rtn_user.UserRoleList.append(each_user_role)
+            return rtn_user  # returning user fails per caution above
