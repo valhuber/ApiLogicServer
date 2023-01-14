@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "07.00.12"
+__version__ = "07.00.14"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/14/2023 - 07.00.12: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded  \n"\
+    "\t01/14/2023 - 07.00.14: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded  \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
