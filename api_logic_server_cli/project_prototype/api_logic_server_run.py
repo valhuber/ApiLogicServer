@@ -380,7 +380,7 @@ if __name__ == "__main__":
         app_logger.info(f'API Logic Project (name: {project_name}) starting:\n'
                 f'..Explore data and API at swagger_host: {http_type}://{swagger_host}:{port}/\n')
 
-    flask_app.run(host=flask_host, threaded=False, port=port)
+    flask_app.run(host=flask_host, threaded=True, port=port)
 else:
     msg = f'API Logic Project Loaded (WSGI), version api_logic_server_version\n'
     if is_docker():
