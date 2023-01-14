@@ -7,7 +7,7 @@ which they provide in the header of subsequent requests.
 e.g. 
 def login():
     post_uri = 'http://localhost:5656/auth/login'
-    post_data = {"username": "aneu"}
+    post_data = {"username": "_user_","password": "_password_"}
     r = requests.post(url=post_uri, json = post_data)
     response_text = r.text
     status_code = r.status_code

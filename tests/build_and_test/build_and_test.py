@@ -231,7 +231,23 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
     with open(in_file, 'w') as file:
         file.write(file_data)
 
+def login():
+    post_uri = 'http://localhost:5656/auth/login'
+    post_data = {"username": "aneu"}
+    r = requests.post(url=post_uri, json = post_data)
+    response_text = r.text
+    status_code = r.status_code
+    if status_code > 300:
+        raise Exception(f'POST login failed with {r.text}')
+    result_data = json.loads(response_text)
+    result_map = DotMap(result_data)
+    token = result_map.access_token
+    header = {'Authorization': 'Bearer {}'.format(f'{token}')}
+    return header
+
+
 def multi_database_tests():
+
     print(f'Multi-Database Tests')
 
     current_path = Path(os.path.abspath(__file__))
@@ -255,7 +271,7 @@ def multi_database_tests():
     start_api_logic_server(project_name='MultiDB', env_list=env)  # , env='export SECURITY_ENABLED=true')
     # verify 1 Category row (validates multi-db <auth>, and security)
     get_uri = "http://localhost:5656/api/Category/?fields%5BCategory%5D=Id%2CCategoryName%2CDescription&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id"
-    r = requests.get(url=get_uri)
+    r = requests.get(url=get_uri, headers=login())
     response_text = r.text
     result_data = json.loads(response_text) 
     assert len(result_data["data"]) == 1, "MultiDB: Did not find 1 expected result row"
