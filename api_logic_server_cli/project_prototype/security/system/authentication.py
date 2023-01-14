@@ -3,20 +3,32 @@ System support for login / authentication.
 
 Applications POST to login to obtain an access token,
 which they provide in the header of subsequent requests.
+
+e.g.
+
+    post_uri = 'http://localhost:5656/auth/login'
+    post_data = {"username": "aneu"}
+    r = requests.post(url=post_uri, json = post_data)
+    response_text = r.text
+    status_code = r.status_code
+    if status_code > 300:
+        raise Exception(f'POST login failed with {r.text}')
+    result_data = json.loads(response_text)
+    result_map = DotMap(result_data)
+    token = result_map.access_token
+    header = {'Authorization': 'Bearer {}'.format(f'{token}')}
+
 """
 
 import logging, sys
 from flask import Flask
-from security import declare_security  # activate security
 from flask import jsonify, request
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_jwt_extended import create_access_token
-from flask_jwt_extended import create_refresh_token
 from datetime import timedelta
-
 import config
-authentication_provider = config.Config.SECURITY_PROVIDER
 
+authentication_provider = config.Config.SECURITY_PROVIDER
 
 security_logger = logging.getLogger('API Logic Security')
 handler = logging.StreamHandler(sys.stderr)
@@ -26,12 +38,13 @@ security_logger.addHandler(handler)
 security_logger.propagate = False
 security_logger.setLevel(logging.DEBUG)  # log levels: critical < error < warning(20) < info(30) < debug
 
-security_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
-
 
 def configure_auth(flask_app: Flask, database: object, method_decorators: object):
     """_summary_
-    Called on server start by api_logic_server_run to establish Flask end points for login.
+    Called on server start by api_logic_server_run to 
+    
+    - initialize jwt
+    - establish Flask end points for login.
 
     Args:
         flask_app (Flask): _description_
@@ -39,7 +52,7 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         method_decorators (object): _description_
 
     Returns:
-        _type_: _description_
+        _type_: (no return)
     """
     flask_app.config["PROPAGATE_EXCEPTIONS"] = True
     flask_app.config["JWT_SECRET_KEY"] = "ApiLogicServerSecret"  # Change this!
@@ -59,11 +72,10 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         password = request.json.get("password", None)
 
         user = authentication_provider.get_user(username, password)  # val - use auth_provider
-        if not user:  # FIXME or not user.check_password(password): avoid model method?
+        if not user:  # FIXME or not user.check_password(password): avoid model method? += provider?
             return jsonify("Wrong username or password"), 401
 
-        # Notice that we are passing in the actual sqlalchemy user object here
-        access_token = create_access_token(identity=user)
+        access_token = create_access_token(identity=user)  # serialize and encode
         return jsonify(access_token=access_token)
     
     @jwt.user_identity_loader
