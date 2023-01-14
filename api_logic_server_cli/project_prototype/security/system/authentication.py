@@ -18,14 +18,15 @@ import config
 authentication_provider = config.Config.SECURITY_PROVIDER
 
 
-app_logger = logging.getLogger('api_logic_server_app')
+security_logger = logging.getLogger('API Logic Security')
 handler = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
+formatter = logging.Formatter('%(name)s: %(message)s')  # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
-app_logger.addHandler(handler)
-app_logger.propagate = True
+security_logger.addHandler(handler)
+security_logger.propagate = False
+security_logger.setLevel(logging.DEBUG)  # log levels: critical < error < warning(20) < info(30) < debug
 
-app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
+security_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
 
 
 def configure_auth(flask_app: Flask, database: object, method_decorators: object):
@@ -82,6 +83,5 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         return jsonify(access_token=access_token)
 
     method_decorators.append(jwt_required())
-    app_logger.info("Declare Security complete - security/declare_security.py"
-        + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
+    security_logger.info("authentication loaded")
 
