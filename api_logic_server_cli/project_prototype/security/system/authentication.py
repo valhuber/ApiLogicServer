@@ -58,7 +58,7 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         username = request.json.get("username", None)
         password = request.json.get("password", None)
 
-        user = authentication_provider.get_user(username, "")  # val - use auth_provider
+        user = authentication_provider.get_user(username, password)  # val - use auth_provider
         if not user:  # FIXME or not user.check_password(password): avoid model method?
             return jsonify("Wrong username or password"), 401
 
