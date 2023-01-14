@@ -31,7 +31,7 @@ security_logger.setLevel(logging.INFO)  # log levels: critical < error < warning
 
 def configure_auth(flask_app: Flask, database: object, method_decorators: object):
     """_summary_
-    Called on server start by api_logic_server_run to establish Flask end points and listeners.
+    Called on server start by api_logic_server_run to establish Flask end points for login.
 
     Args:
         flask_app (Flask): _description_
@@ -46,15 +46,6 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
     flask_app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=222)  # th longer exp
     flask_app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
     jwt = JWTManager(flask_app)
-    
-    @jwt.user_identity_loader
-    def user_identity_lookup(user):
-        return user.id
-
-    @jwt.user_lookup_loader
-    def user_lookup_callback(_jwt_header, jwt_data):
-        identity = jwt_data["sub"]
-        return authentication_provider.get_user(identity, "")  # val - use auth_provider
     
     @flask_app.route("/auth/login", methods=["POST"])
     def login():
@@ -74,6 +65,15 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         # Notice that we are passing in the actual sqlalchemy user object here
         access_token = create_access_token(identity=user)
         return jsonify(access_token=access_token)
+    
+    @jwt.user_identity_loader
+    def user_identity_lookup(user):
+        return user.id
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        return authentication_provider.get_user(identity, "")  # val - use auth_provider
 
     @flask_app.route("/auth/refresh", methods=["POST"])
     @jwt_required(refresh=True)
