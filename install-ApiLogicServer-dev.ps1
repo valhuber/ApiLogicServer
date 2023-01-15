@@ -27,7 +27,7 @@ Set-PSDebug -Trace 0
 curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1.2/safrs-react-admin-0.1.2.zip -LO
 echo "unzipping sra to build.."
 set +x
-Expand-Archive -LiteralPath safrs-react-admin-0.1.2.zip -DestinationPath build
+Expand-Archive -LiteralPath safrs-react-admin-0.1.2.zip -DestinationPath .
 set -x
 
 Set-PSDebug -Trace 1
