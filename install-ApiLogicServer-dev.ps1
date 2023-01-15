@@ -8,7 +8,7 @@ Write-Output "IDE specified as: $IDE"
 
 if($IDE -eq "") {
     Write-Output " "
-    Write-Output "Installs dev version of ApiLogicServer and safrs-react-admin (version 8)"
+    Write-Output "Installs dev version of ApiLogicServer and safrs-react-admin (version 7.0.15)"
     Write-Output "   .. vscode option creates venv, and starts vscode on workspace "
     Write-Output " "
     Write-Output " IMPORTANT - run this from empty folder"
@@ -24,11 +24,10 @@ $Ready= Read-Host -Prompt "Verify directory is empty, and [Enter] install dev ve
 Set-PSDebug -Trace 0
 
 # get sra runtime as build folder
-curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1/safrs-react-admin-0.1.1.zip -LO
+curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1.2/safrs-react-admin-0.1.2.zip -LO
 echo "unzipping sra to build.."
 set +x
-unzip safrs-react-admin-0.1.1.zip
-Expand-Archive -LiteralPath safrs-react-admin-0.1.1.zip -DestinationPath .
+Expand-Archive -LiteralPath safrs-react-admin-0.1.2.zip -DestinationPath build
 set -x
 
 Set-PSDebug -Trace 1

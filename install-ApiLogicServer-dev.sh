@@ -19,7 +19,7 @@ if [ $# -eq 0 ]
   then
     echo " "
     # echo "shell: $SHELL"
-    echo "Installs dev version of ApiLogicServer and safrs-react-admin on $ostype (version 8)"
+    echo "Installs dev version of ApiLogicServer and safrs-react-admin on $ostype (version 7.0.15)"
     echo "   .. vscode option creates venv, and starts vscode on workspace"
     echo " "
     echo " IMPORTANT - run this from empty folder"
@@ -36,10 +36,10 @@ if [ $# -eq 0 ]
     mkdir servers    # good place to create ApiLogicProjects
 
     # get sra runtime as build folder
-    curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1/safrs-react-admin-0.1.1.zip -LO
+    curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1.2/safrs-react-admin-0.1.2.zip -LO
     echo "unzipping sra to build.."
     set +x
-    unzip safrs-react-admin-0.1.1.zip
+    unzip safrs-react-admin-0.1.2.zip
     set -x
     
     git clone https://github.com/valhuber/ApiLogicServer
