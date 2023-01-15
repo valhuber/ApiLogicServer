@@ -317,7 +317,12 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
             from api import expose_api_models, customize_api
             app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
-            safrs_api = SAFRSAPI(flask_app, host=swagger_host, port=swagger_port, prefix = API_PREFIX)
+
+            custom_swagger = {
+                "securityDefinitions": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
+                "security": [{"Bearer": []}],
+            }
+            safrs_api = SAFRSAPI(flask_app, host=swagger_host, port=swagger_port, prefix = API_PREFIX, custom_swagger=custom_swagger)
             
             app_logger.info(f'Customize API - api/expose_service.py, exposing custom services')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
