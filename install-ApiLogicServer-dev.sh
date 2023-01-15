@@ -20,8 +20,10 @@ if [ $# -eq 0 ]
     echo " "
     # echo "shell: $SHELL"
     echo "Installs dev version of ApiLogicServer and safrs-react-admin on $ostype"
+    echo "   .. vscode option creates venv, and starts vscode on workspace"
     echo " "
     echo " IMPORTANT - run this from empty folder"
+    echo "   .. will create the ApiLogicServer directory for you"
     echo " "
     echo "  sh Install-ApiLogicServer-Dev [ vscode | charm | x ]"
     echo " "
@@ -29,13 +31,21 @@ if [ $# -eq 0 ]
   else
     ls
     echo " "
-    read -p "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for $1> "
+    read -p "Verify directory is empty, and [Enter] install *dev* version of ApiLogicServer for $1> "
     set -x
     mkdir servers    # good place to create ApiLogicProjects
+
+    # get sra runtime as build folder
+    curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1/safrs-react-admin-0.1.1.zip -LO
+    echo "unzipping sra to build.."
+    set +x
+    unzip safrs-react-admin-0.1.1.zip
+    set -x
+    
     git clone https://github.com/valhuber/ApiLogicServer
     git clone https://github.com/thomaxxl/safrs-react-admin
     git clone https://github.com/valhuber/Docs-ApiLogicServer
-
+    
     cd Docs-ApiLogicServer
     python3 -m venv venv       # may require python -m venv venv
     if contains "ubuntu" $ostype; then
@@ -45,15 +55,13 @@ if [ $# -eq 0 ]
       echo $ostype does not contain ubuntu
       source venv/bin/activate   # windows venv\Scripts\activate
     fi
-    cd safrs-react-admin-builds
-    unzip safrs-react-admin-npm-build.zip
-    cd ..
+    
     cd ..
 
     cd ApiLogicServer
     pwd
-    echo "\ncopying sra (safrs-react-admin) --> ApiLogicServer"
-    cp -r ../Docs-ApiLogicServer/safrs-react-admin-builds/safrs-react-admin-npm-build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+    echo "\ncopying build (sra - safrs-react-admin) --> ApiLogicServer"
+    cp -r ../build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
     #
     #
     # read -p "Installed - ready to launch IDE..."
