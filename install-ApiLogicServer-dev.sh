@@ -19,7 +19,7 @@ if [ $# -eq 0 ]
   then
     echo " "
     # echo "shell: $SHELL"
-    echo "Installs dev version of ApiLogicServer and safrs-react-admin on $ostype"
+    echo "Installs dev version of ApiLogicServer and safrs-react-admin on $ostype (version 8)"
     echo "   .. vscode option creates venv, and starts vscode on workspace"
     echo " "
     echo " IMPORTANT - run this from empty folder"

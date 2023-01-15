@@ -8,9 +8,11 @@ Write-Output "IDE specified as: $IDE"
 
 if($IDE -eq "") {
     Write-Output " "
-    Write-Output "Installs dev version of ApiLogicServer and safrs-react-admin (version 4.01.08)"
+    Write-Output "Installs dev version of ApiLogicServer and safrs-react-admin (version 8)"
+    Write-Output "   .. vscode option creates venv, and starts vscode on workspace "
     Write-Output " "
     Write-Output " IMPORTANT - run this from empty folder"
+    Write-Output "   .. will create the ApiLogicServer directory for you "
     Write-Output " "
     Write-Output "  ./Install-ApiLogicServer-Dev.ps1 [ vscode | charm | x ]"
     Write-Output " "
@@ -20,22 +22,29 @@ ls
 Write-Output " "
 $Ready= Read-Host -Prompt "Verify directory is empty, and [Enter] install dev version of ApiLogicServer for IDE $IDE"
 Set-PSDebug -Trace 0
+
+# get sra runtime as build folder
+curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1/safrs-react-admin-0.1.1.zip -LO
+echo "unzipping sra to build.."
+set +x
+unzip safrs-react-admin-0.1.1.zip
+Expand-Archive -LiteralPath safrs-react-admin-0.1.1.zip -DestinationPath .
+set -x
+
+Set-PSDebug -Trace 1
 mkdir servers    # good place to create ApiLogicProjects
 git clone https://github.com/valhuber/ApiLogicServer ApiLogicServer
 git clone https://github.com/thomaxxl/safrs-react-admin safrs-react-admin
 git clone https://github.com/valhuber/Docs-ApiLogicServer Docs-ApiLogicServer
 
 pushd Docs-ApiLogicServer
-Expand-Archive -LiteralPath safrs-react-admin-builds/safrs-react-admin-npm-build.zip -DestinationPath safrs-react-admin-builds/safrs-react-admin-npm-build
-
-
 python -m venv venv
 python -m pip install -r requirements.txt
 
 popd
 
 cd ApiLogicServer
-cp -r ../Docs-ApiLogicServer/safrs-react-admin-builds/safrs-react-admin-npm-build/safrs-react-admin-npm-build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
+cp -r ../build api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
 
 if ($IDE -eq "vscode") {
     python -m venv venv
