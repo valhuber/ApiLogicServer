@@ -116,14 +116,11 @@ This preview is intended to:
          * User table identifies users' `client_id`
          * Enforced in `declare_security.py`:
      * Preliminary finding - first test case worked on real-world app
+* Confirm the approach to authentication, including using authentication-providers
 
 &nbsp;
 
 This preview is _not_ meant to explore:
-
-* Login Authentication (currently addressed with a place-holder stub)
-
-* Interaction with SAFRS API handling (except to the extent SAFRS uses SQLAlchemy)
 
 * System issues such as performance, caching, etc.
 
