@@ -22,8 +22,8 @@ resources:
           </ul>
           Suggestion - visit the Customer and Employee pages.<br><br>
           <h2>Authorization</h2>
-          The table includes 8 rows (login as 'sam', upper right).<br><br>
-          But, for user 'aneu', only 1 is shown, per <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Security-Authorization/">authorization</a>.
+          The table includes 8 rows (login as 'admin' with password 'p', upper right).<br><br>
+          But, logout and login as 'aneu' -- only 1 is shown, per <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Security-Authorization/">authorization</a>.
           <br><br>
     attributes:
       - label: ' Category Name*'

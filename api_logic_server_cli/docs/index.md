@@ -217,7 +217,7 @@ To get started, please see  the [Architecture.](Internals).
 You can try the pre-release at:
 
 ```bash
-python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==7.0.15
+python3 -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ApiLogicServer==7.0.16
 ```
 
 Or use:
@@ -227,6 +227,12 @@ docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/s
 ```
 
 Or, you can use [the beta version on codespaces](https://github.com/ApiLogicServer/beta){:target="_blank" rel="noopener"}.
+
+Notes - the following are not working:
+
+* Swagger
+* Passwords validation
+* Codespace beta
 
 &nbsp;
 
