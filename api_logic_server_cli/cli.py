@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "07.00.17"
+__version__ = "07.00.19"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/15/2023 - 07.00.17: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, swagger (fails) \n"\
+    "\t01/15/2023 - 07.00.19: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw- \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -1332,6 +1332,8 @@ def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_nam
             project_name = str(
                 Path(project_name).parent.parent.joinpath("servers").joinpath("ApiLogicProject")
             )
+    if db_url == "auth":
+        bind_key = "authentication"
     ProjectRun(command="add_db", 
               project_name=project_name, 
               api_name=api_name, 

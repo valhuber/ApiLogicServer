@@ -1,5 +1,5 @@
 about:
-  date: January 13, 2023 09:04
+  date: January 15, 2023 12:40
   recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, images, security, login
   # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
@@ -8,7 +8,7 @@ info:
   number_relationships: 13
   number_tables: 17
 authentication:
-  endpoint: //localhost:5656/auth/login
+  endpoint: {http_type}://{swagger_host}:{port}/auth/login
 resources:
   Category:
     info_list: <h1>Tour - Application Information, Authorization</h1>

@@ -232,7 +232,6 @@ Notes - the following are not working:
 
 * Swagger
 * Passwords validation
-* Codespace beta
 
 &nbsp;
 
