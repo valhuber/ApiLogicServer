@@ -7,6 +7,7 @@ events handlers for the admin app
 
 import logging, sys, io
 from flask import Flask, redirect, send_from_directory, send_file
+from config import Config
 
 app_logger = logging.getLogger('api_logic_server_app')
 handler = logging.StreamHandler(sys.stderr)
@@ -72,6 +73,8 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
             content = content.replace("{swagger_host}", swagger_host)
             content = content.replace("{port}", str(swagger_port))  # note - codespaces requires 443 here (typically via args)
             content = content.replace("{api}", API_PREFIX[1:])
+            if Config.SECURITY_ENABLED == False:
+                content = content.replace("authentication", 'no-authentication')
             app_logger.debug(f'loading ui/admin/admin.yaml')
             mem = io.BytesIO(str.encode(content))
             return send_file(mem, mimetype='text/yaml')
