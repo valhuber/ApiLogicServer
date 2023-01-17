@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "07.00.21"
+__version__ = "07.00.22"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/16/2023 - 07.00.21: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
+    "\t01/16/2023 - 07.00.22: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -654,41 +654,6 @@ def is_docker() -> bool:
     return path_result
 
 
-def print_options(project_name: str, api_name: str, db_url: str,
-                  host: str, port: str, swagger_host: str, not_exposed: str,
-                  from_git: str, db_types: str, open_with: str, run: bool, use_model: str, admin_app: bool,
-                  flask_appbuilder: bool, favorites: str, non_favorites: str, react_admin:bool,
-                  extended_builder: str, multi_api: bool, infer_primary_key: bool):
-    """ Creating ApiLogicServer with options: (or uri helo) """
-    if db_url == "?":
-        print_uri_info()
-        exit(0)
-
-    print_options = True
-    if print_options:
-        print(f'\n\nCreating ApiLogicServer with options:')
-        print(f'  --db_url={db_url}')
-        print(f'  --project_name={project_name}   (pwd: {os_cwd})')
-        print(f'  --api_name={api_name}')
-        print(f'  --admin_app={admin_app}')
-        print(f'  --react_admin={react_admin}')
-        print(f'  --flask_appbuilder={flask_appbuilder}')
-        print(f'  --from_git={from_git}')
-        #        print(f'  --db_types={db_types}')
-        print(f'  --run={run}')
-        print(f'  --host={host}')
-        print(f'  --port={port}')
-        print(f'  --swagger_host={swagger_host}')
-        print(f'  --not_exposed={not_exposed}')
-        print(f'  --open_with={open_with}')
-        print(f'  --use_model={use_model}')
-        print(f'  --favorites={favorites}')
-        print(f'  --non_favorites={non_favorites}')
-        print(f'  --extended_builder={extended_builder}')
-        print(f'  --multi_api={multi_api}')
-        print(f'  --infer_primary_key={infer_primary_key}')
-
-
 def invoke_extended_builder(builder_path, db_url, project_directory):
     # spec = importlib.util.spec_from_file_location("module.name", "/path/to/file.py")
     spec = importlib.util.spec_from_file_location("module.name", builder_path)
@@ -734,7 +699,7 @@ def add_security(project: Project, msg: str, is_nw: bool = False):
     print("\n\n==================================================================")
     print(msg)
     print("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
-    print("==================================================================\n\n")
+    print("==================================================================5\n")
     project.command = "add_db"
     project.bind_key = "authentication"
     project.db_url = "auth"  # shorthand for api_logic_server_cli/database/auth...
@@ -750,7 +715,7 @@ def add_security(project: Project, msg: str, is_nw: bool = False):
                         in_file=f'{project.project_directory}/config.py')
     if is_nw:
         print("\n==================================================================")
-        print("  ..Step 3. sdding Sample authorization to security/declare_security.p")
+        print("  ..Step 3. Adding Sample authorization to security/declare_security.py")
         print("==================================================================\n\n")
         nw_declare_security_py_path = project.api_logic_server_dir_path.\
             joinpath('project_prototype_nw/security/declare_security.py')
@@ -822,7 +787,10 @@ class ProjectRun(Project):
 
         print_options = True
         if print_options:
-            print(f'\n\nCreating ApiLogicProject with options:')
+            creating_or_updating = "Creating"
+            if self.command.startswith("add_"):
+                creating_or_updating = "Updating"
+            print(f'\n\n{creating_or_updating} ApiLogicProject with options:')
             print(f'  --db_url={self.db_url}')
             print(f'  --bind_key={self.bind_key}')
             print(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
@@ -897,7 +865,7 @@ class ProjectRun(Project):
         if self.nw_db_status in ["nw", "nw+"] and self.command != "add_db":
             add_security(self, "ApiLogicProject customizable project created.  Adding Security:")
 
-        if self.command.startswith("add-"):
+        if self.command.startswith("add_"):
             pass  # keep silent for add-db, add-security...
         else:
             print("\n\nApiLogicProject customizable project created.  Next steps:")
@@ -914,23 +882,26 @@ class ProjectRun(Project):
         if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
-        if (is_docker()):
-            if os.getenv('CODESPACES'):
-                print(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
-                print(f'Save customized project to GitHub (TBD)')
-            else:
-                print(f'\nCustomize Docker project using IDE on local machine:')
-                docker_project_name = self.project_name
-                if self.project_name.startswith('/localhost/'):
-                    docker_project_name = self.project_name[11:]
-                else:
-                    docker_project_name = f'<local machine directory for: {self.project_name}>'
-                print(f'  exit  # exit the Docker container ')
-                print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
+        if self.command.startswith("add_"):
+            pass  # keep silent for add-db, add-security...
         else:
-            print(f'\nCustomize using your IDE:')
-            print(f'  code {self.project_name}  # e.g., open VSCode on created project')
-            print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
+            if (is_docker()):
+                if os.getenv('CODESPACES'):
+                    print(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
+                    print(f'Save customized project to GitHub (TBD)')
+                else:
+                    print(f'\nCustomize Docker project using IDE on local machine:')
+                    docker_project_name = self.project_name
+                    if self.project_name.startswith('/localhost/'):
+                        docker_project_name = self.project_name[11:]
+                    else:
+                        docker_project_name = f'<local machine directory for: {self.project_name}>'
+                    print(f'  exit  # exit the Docker container ')
+                    print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
+            else:
+                print(f'\nCustomize using your IDE:')
+                print(f'  code {self.project_name}  # e.g., open VSCode on created project')
+                print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
         print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
         if self.run:  # synchronous run of server - does not return
