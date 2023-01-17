@@ -24,5 +24,5 @@ Grant(  on_entity = models.Category,
         to_role = Roles.renter,
         filter = lambda : models.Category.Id == 2)
 
-app_logger.info("Declare Security complete - security/declare_security.py"
+app_logger.debug("Declare Security complete - security/declare_security.py"
     + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')

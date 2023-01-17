@@ -9,14 +9,14 @@ import logging, sys, io
 from flask import Flask, redirect, send_from_directory, send_file
 from config import Config
 
-app_logger = logging.getLogger('api_logic_server_app')
+admin_logger = logging.getLogger('admin loader')
 handler = logging.StreamHandler(sys.stderr)
 formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
 handler.setFormatter(formatter)
-app_logger.addHandler(handler)
-app_logger.propagate = True
+admin_logger.addHandler(handler)
+admin_logger.propagate = True
 
-app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
+admin_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
 
 did_send_spa = False
 
@@ -32,7 +32,7 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
         global did_send_spa
         if True or not did_send_spa:
             did_send_spa = True
-            app_logger.info(f'\nStart Custom App ({path}): return spa "ui/safrs-react-admin", "index.html"\n')
+            admin_logger.info(f'\nStart Custom App ({path}): return spa "ui/safrs-react-admin", "index.html"\n')
         return send_from_directory('ui/safrs-react-admin', 'index.html')  # unsure how admin finds custom url
 
     @flask_app.route('/')
@@ -40,7 +40,7 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
         """ Step 1 - Start default Admin App 
             Default URL: http://localhost:5656/ 
         """
-        app_logger.debug(f'API Logic Server - Start Default App - redirect /admin-app/index.html')
+        admin_logger.debug(f'API Logic Server - Start Default App - redirect /admin-app/index.html')
         return redirect('/admin-app/index.html')  # --> return_spa
 
     @flask_app.route("/admin-app/<path:path>")
@@ -55,7 +55,7 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
             directory = 'ui/safrs-react-admin'  # typical API Logic Server path (index.yaml)
         if not did_send_spa:
             did_send_spa = True
-            app_logger.debug(f'return_spa - directory = {directory}, path= {path}')
+            admin_logger.debug(f'return_spa - directory = {directory}, path= {path}')
         return send_from_directory(directory, path)
 
     @flask_app.route('/ui/admin/<path:path>')
@@ -75,7 +75,7 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
             content = content.replace("{api}", API_PREFIX[1:])
             if Config.SECURITY_ENABLED == False:
                 content = content.replace("authentication", 'no-authentication')
-            app_logger.debug(f'loading ui/admin/admin.yaml')
+            admin_logger.debug(f'loading ui/admin/admin.yaml')
             mem = io.BytesIO(str.encode(content))
             return send_file(mem, mimetype='text/yaml')
         else:
@@ -114,5 +114,5 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
         response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE, PATCH"
         response.headers["Access-Control-Allow-Headers"] = \
             "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-        # app_logger.debug(f'cors after_request - response: {str(response)}')
+        # admin_logger.debug(f'cors after_request - response: {str(response)}')
         return response

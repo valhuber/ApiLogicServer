@@ -58,7 +58,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
 
     config_insert = f"""
     {CONFIG_URI} = {config_uri_value}
-    app_logger.info(f'config.py - {CONFIG_URI}: <CONFIG_URI_VALUE>')
+    app_logger.info(f'config.py - {CONFIG_URI}: <CONFIG_URI_VALUE>\\n')
 
     # as desired, use env variable: export SQLALCHEMY_DATABASE_URI='sqlite:////Users/val/dev/servers/docker_api_logic_project/database/db.sqliteXX'
     if os.getenv('{CONFIG_URI}'):
@@ -90,7 +90,7 @@ def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
     # flask_app.config.update(SQLALCHEMY_BINDS = \\
     #     {'<project.bind_key>': flask_app.config['SQLALCHEMY_DATABASE_URI_<bind_key_upper>']})
     
-    app_logger.info(f"\\n<project.bind_key> Config complete - database/<project.bind_key>_models.py"
+    app_logger.debug(f"\\n<project.bind_key> Config complete - database/<project.bind_key>_models.py"
         + f'\\n -- with bind: <project.bind_key>'
         + f'\\n -- len(database.<project.bind_key>_models.<project.bind_key>.metadata.tables) tables loaded')
     

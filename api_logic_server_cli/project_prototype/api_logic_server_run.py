@@ -166,7 +166,7 @@ def get_args():
         local_ip = socket.gethostbyname(hostname)
     except:
         local_ip = f"Warning - Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}"
-        app_logger.info(f"Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}")
+        app_logger.debug(f"Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}")
 
     app_logger.debug(f"Getting args, with hostname={hostname} on local_ip={local_ip}")
     verbose = False
@@ -341,8 +341,8 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
 
             if Config.SECURITY_ENABLED:
                 from security import declare_security  # activate security
-                app_logger.info("Declare Security complete - security/declare_security.py"
-                    + f' -- {len(database.authentication_models.metadata.tables)} tables loaded')
+                app_logger.info("\nDeclare Security - security/declare_security.py"
+                    + f' -- {len(database.authentication_models.metadata.tables)} authentication tables loaded')
 
             SAFRSBase._s_auto_commit = False
             session.close()

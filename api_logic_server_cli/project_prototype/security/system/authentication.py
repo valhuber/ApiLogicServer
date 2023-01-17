@@ -31,14 +31,7 @@ import config
 
 authentication_provider = config.Config.SECURITY_PROVIDER
 
-security_logger = logging.getLogger('API Logic Security')
-handler = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter('%(name)s: %(message)s')  # lead tag - '%(name)s: %(message)s')
-handler.setFormatter(formatter)
-security_logger.addHandler(handler)
-security_logger.propagate = False
-security_logger.setLevel(logging.DEBUG)  # log levels: critical < error < warning(20) < info(30) < debug
-
+security_logger = logging.getLogger('api_logic_server_app')
 
 def configure_auth(flask_app: Flask, database: object, method_decorators: object):
     """_summary_
@@ -96,5 +89,5 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         return jsonify(access_token=access_token)
 
     method_decorators.append(jwt_required())
-    security_logger.info("authentication loaded")
+    security_logger.debug("\nAuthentication loaded")
 
