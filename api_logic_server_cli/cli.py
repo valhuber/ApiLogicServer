@@ -10,10 +10,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
     * See end for key module map quick links...
 '''
 
-__version__ = "07.00.19"
+__version__ = "07.00.20"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/15/2023 - 07.00.19: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw- \n"\
+    "\t01/16/2023 - 07.00.20: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -723,14 +723,18 @@ def invoke_creators(model_creation_services: ModelCreationServices):
     # model_creation_services.close_app()  # this may no longer be required
 
 
-def add_security(project: Project, msg: str):
+def add_security(project: Project, msg: str, is_nw: bool = False):
+    """_summary_
+
+    Args:
+        project (Project): the project object
+        msg (str): eg: ApiLogicProject customizable project created.  Adding Security:")
+        is_nw (str): is northwind, which means we add the nw security logic
+    """
     print("\n\n==================================================================")
     print(msg)
-    print("  ..ApiLogicServer add-db --db_url=auth --bind_key=authentication")
-    print("==================================================================")
-    create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
-                        replace_with='SECURITY_ENABLED = True  #',
-                        in_file=f'{project.project_directory}/config.py')
+    print("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
+    print("==================================================================\n\n")
     project.command = "add_db"
     project.bind_key = "authentication"
     project.db_url = "auth"  # shorthand for api_logic_server_cli/database/auth...
@@ -738,7 +742,22 @@ def add_security(project: Project, msg: str):
     project.run = False
     project.create_project()
     project.run = save_run
-    print("\nSecurity Added - enabled in config.sys")
+    print("\n==================================================================")
+    print("  ..Step 2. Set SECURITY_ENABLED in config.py")
+    print("==================================================================\n")
+    create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
+                        replace_with='SECURITY_ENABLED = True  #',
+                        in_file=f'{project.project_directory}/config.py')
+    if is_nw:
+        print("\n==================================================================")
+        print("  ..Step 3. sdding Sample authorization to security/declare_security.p")
+        print("==================================================================\n\n")
+        nw_declare_security_py_path = project.api_logic_server_dir_path.\
+            joinpath('project_prototype_nw/security/declare_security.py')
+        declare_security_py_path = project.project_directory_path.joinpath('security/declare_security.py')
+        shutil.copyfile(nw_declare_security_py_path, declare_security_py_path)
+    else:
+        print("\n\n  .. Step 3.  TODO: Declare authorization in security/declare_security.py")
 
 
 class ProjectRun(Project):
@@ -764,7 +783,8 @@ class ProjectRun(Project):
                      multi_api: bool=False, 
                      infer_primary_key: bool=False, 
                      bind_key_url_separator: str=default_bind_key_url_separator,
-                     bind_key: str=""):
+                     bind_key: str="",
+                     execute: bool=True):
         super(ProjectRun, self).__init__()
         self.project_name = project_name
         self.db_url = db_url
@@ -790,7 +810,8 @@ class ProjectRun(Project):
         self.bind_key_url_separator = bind_key_url_separator
         self.command = command
 
-        self.create_project()
+        if execute:
+            self.create_project()
 
 
     def print_options(self):
@@ -876,17 +897,20 @@ class ProjectRun(Project):
         if self.nw_db_status in ["nw", "nw+"] and self.command != "add_db":
             add_security(self, "ApiLogicProject customizable project created.  Adding Security:")
 
-        print("\n\nApiLogicProject customizable project created.  Next steps:")
-        print("==========================================================")
-        if self.multi_api:
-            print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
+        if self.command.startswith("add-"):
+            pass  # keep silent for add-db, add-security...
         else:
-            print("\nRun API Logic Server:")
-            if os.getenv('CODESPACES'):
-                # print(f'  Add port 5656, with Public visibility') - automated in .devcontainer.json
-                print(f'  Execute using Launch Configuration "ApiLogicServer"')
+            print("\n\nApiLogicProject customizable project created.  Next steps:")
+            print("==========================================================")
+            if self.multi_api:
+                print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
             else:
-                print(f'  cd {self.project_name};  python api_logic_server_run.py')
+                print("\nRun API Logic Server:")
+                if os.getenv('CODESPACES'):
+                    # print(f'  Add port 5656, with Public visibility') - automated in .devcontainer.json
+                    print(f'  Execute using Launch Configuration "ApiLogicServer"')
+                else:
+                    print(f'  cd {self.project_name};  python api_logic_server_run.py')
         if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
             print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
@@ -1296,7 +1320,6 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                     extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
 
-# Kat
 
 @main.command("add-db") 
 @click.option('--db_url',
@@ -1342,6 +1365,53 @@ def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_nam
               bind_key_url_separator=bind_key_url_separator
               )
     print("DB Added")
+
+
+@main.command("add-security") 
+@click.option('--bind_key_url_separator',
+              default=default_bind_key_url_separator,
+              help="bindkey / class name url separator")
+@click.option('--project_name',
+              default=f'',
+              help="Project location")
+@click.option('--api_name',
+              default="api",
+              help="api prefix name")
+@click.pass_context
+def add_security_cmd(ctx, bind_key_url_separator: str, api_name: str, project_name: str):
+    """
+    Adds sqlite authentication to existing project
+    
+    example: 
+    cd existing_project
+    ApiLogicServer add-security --db-url="todo" --bind-key="Todo"
+    
+    """
+    if project_name == "":
+        project_name=os.getcwd()
+        if project_name == get_api_logic_server_dir():  # for ApiLogicServer dev (from |> Run and Debug )
+            project_name = str(
+                Path(project_name).parent.parent.joinpath("servers").joinpath("ApiLogicProject")
+            )
+    db_url = "auth"
+    bind_key = "authentication"
+    project = ProjectRun(command="add_security", 
+              project_name=project_name, 
+              api_name=api_name, 
+              db_url=db_url, 
+              bind_key=bind_key,
+              bind_key_url_separator=bind_key_url_separator,
+              execute=False
+              )
+    project.project_directory, project.api_name, project.merge_into_prototype = get_project_directory_and_api_name(project)
+    project.project_directory_actual = os.path.abspath(project.project_directory)  # make path absolute, not relative (no /../)
+    project.project_directory_path = Path(project.project_directory_actual)
+    models_py_path = project.project_directory_path.joinpath('database/models.py')
+    project.abs_db_url, project.nw_db_status, project.model_file_name = get_abs_db_url("0. Using Sample DB", project)
+    is_nw = False
+    if create_utils.does_file_contain(search_for="CategoryTableNameTest", in_file=models_py_path):
+        is_nw = True
+    add_security(project, msg="\nADDING SECURITY", is_nw=is_nw)
 
 
 @main.command("rebuild-from-model")
@@ -1626,3 +1696,4 @@ def key_module_map():
     ui_admin_creator.create()                               # creates ui/admin/admin.yaml from resource_list
     get_abs_db_url()                                        # nw set here, dbname
     add_db()                                                # adds db (model, binds, api, app) to curr project
+    add_security_cmd()                                          # add_db, copies in nw declare_security, updates config
