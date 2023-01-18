@@ -1,0 +1,31 @@
+    
+    # authentication-provider extension - password check
+    def check_password(self, password=None):
+        print(password)
+        return True
+    
+    # authentication-provider extension - login endpoint (e.g., for swagger)
+
+    from flask import abort
+    from safrs import jsonapi_rpc
+    from flask_jwt_extended import get_jwt_identity
+    from flask_jwt_extended import create_refresh_token
+
+    @classmethod
+    @jsonapi_rpc(valid_jsonapi=False)
+    def login(cls, *args, **kwargs):
+        """
+            description: Login - Generate a JWT access token
+            args:
+                username: user
+                password: password
+        """
+        username = kwargs.get("username", None)
+        password = kwargs.get("password", None)
+
+        user = cls.query.filter_by(id=username).one_or_none()
+        if not user or not user.check_password(password):
+            abort(401, "Wrong username or password")
+
+        access_token = create_access_token(identity=user)
+        return { "access_token" : access_token}

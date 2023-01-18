@@ -2,6 +2,108 @@
 
 import subprocess, os
 from pathlib import Path
+from os.path import abspath
+from api_logic_server_cli.cli_args_project import Project
+
+
+def get_project_directory_and_api_name(project):
+    """
+    user-supplied project_name, less the tilde (which might be in project_name); typically relative to cwd.
+
+    :param project_name: a file name, eg, ~/Desktop/a.b
+    :param api_name: defaults to 'api'
+    :param multi_api: cli arg - e.g., set by alsdock
+
+    :return:
+            rtn_project_directory -- /users/you/Desktop/a.b (removes the ~)
+
+            rtn_api_name -- api_name, or last node of project_name if multi_api or api_name is "."
+
+            rtn_merge_into_prototype -- preserve contents of current (".", "./") *prototype* project
+    """
+
+    global os_cwd
+    rtn_project_directory = project.project_name    # eg, '../../servers/ApiLogicProject'
+    rtn_api_name = project.api_name                 # typically api
+    rtn_merge_into_prototype = False        
+    if rtn_project_directory.startswith("~"):
+        rtn_project_directory = str(Path.home()) + rtn_project_directory[1:]
+    if rtn_project_directory == '.' or rtn_project_directory == './':
+        rtn_project_directory = os_cwd
+        rtn_merge_into_prototype = True
+        msg = ''
+        if rtn_project_directory == get_api_logic_server_dir():
+            rtn_project_directory = str( Path(get_api_logic_server_dir()) / 'ApiLogicProject' )
+            msg = ' <dev>'
+        print(f'1. Merge into project prototype: {rtn_project_directory}{msg}')
+    project_path = Path(rtn_project_directory)
+    project_path_last_node = project_path.parts[-1]
+    if project.multi_api or project.api_name == ".":
+        rtn_api_name = project_path_last_node
+    return rtn_project_directory, \
+        rtn_api_name, \
+        rtn_merge_into_prototype
+
+def get_abs_db_url(msg, project: Project):
+    """
+    non-relative db location - we work with this
+
+    handle db_url abbreviations (nw, nw-, todo etc)
+
+    but NB: we copy sqlite db to <project>/database - see create_project_with_nw_samples (below)
+
+    also: compute physical nw db name (usually nw-gold) to be used for copy
+
+    returns abs_db_url, nw_db_status - the real url (e.g., for nw), and whether it's really nw, and model_file_name
+    """
+    rtn_nw_db_status = ""  # presume not northwind
+    rtn_abs_db_url = project.db_url
+
+    # SQL/Server urls make VScode fail due to '?', so unfortunate work-around... (better: internalConsole)
+    if rtn_abs_db_url.startswith('{install}'):
+        install_db = str(Path(get_api_logic_server_dir()).joinpath('database'))
+        rtn_abs_db_url = rtn_abs_db_url.replace('{install}', install_db)
+    if rtn_abs_db_url.startswith('SqlServer-arm'):
+        pass
+    
+    """
+    per this: https://stackoverflow.com/questions/69950871/sqlalchemy-and-sqlite3-error-if-database-file-does-not-exist
+    I would like to set URL like this to avoid creating empty db, but it fails
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///file:/Users/val/dev/servers/ApiLogicProject/database/db.sqlite'  # ?mode=ro&uri=true'
+    the file: syntax fails, though "current versions" should work:
+    https://docs.sqlalchemy.org/en/14/dialects/sqlite.html#uri-connections
+    """
+
+    if project.db_url in [project.default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
+        rtn_nw_db_status = "nw"  # api_logic_server_dir_path
+        print(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
+    elif project.db_url == "nw-":                                           # nw:           just in case
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
+        rtn_nw_db_status = "nw-"
+    elif project.db_url == "nw--":                                           # nw:           unused - avoid
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw.sqlite"))}'
+        rtn_nw_db_status = "nw-"
+    elif project.db_url == "nw+":                                           # nw-gold-plus: next version
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold-plus.sqlite"))}'
+        rtn_nw_db_status = "nw+"
+        print(f'{msg} from: {rtn_abs_db_url}')
+    elif project.db_url == "auth" or project.db_url == "authorization":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/authentication.sqlite"))}'
+    elif project.db_url == "chinook":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/Chinook_Sqlite.sqlite"))}'
+    elif project.db_url == "todo" or project.db_url == "todos":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/todos.sqlite"))}'
+    elif project.db_url == "classicmodels":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/classicmodels.sqlite"))}'
+    elif project.db_url.startswith('sqlite:///'):
+        url = project.db_url[10: len(project.db_url)]
+        rtn_abs_db_url = abspath(url)
+        rtn_abs_db_url = 'sqlite:///' + rtn_abs_db_url
+    model_file_name = "models.py"
+    if project.bind_key != "":
+        model_file_name = project.bind_key + "_" + "models.py"
+    return rtn_abs_db_url, rtn_nw_db_status, model_file_name
 
 
 def get_api_logic_server_dir() -> str:
@@ -34,7 +136,7 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
         file.write(file_data)
 
 
-def insert_lines_at(lines: str, at: str, file_name: str):
+def insert_lines_at(lines: str, at: str, file_name: str, after: bool = False):
     """ insert <lines> into file_name after line with <str> """
     with open(file_name, 'r+') as fp:
         file_lines = fp.readlines()  # lines is list of lines, each element '...\n'
@@ -47,6 +149,8 @@ def insert_lines_at(lines: str, at: str, file_name: str):
             insert_line += 1
         if not found:
             raise Exception(f'Internal error - unable to find insert: {at}')
+        if after:
+            insert_line = insert_line + 1
         file_lines.insert(insert_line, lines)  # you can use any index if you know the line index
         fp.seek(0)  # file pointer locates at the beginning to write the whole file again
         fp.writelines(file_lines)  # write whole list again to the same file

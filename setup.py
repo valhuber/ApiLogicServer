@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 find_version = True
 if find_version:
-    with io.open("api_logic_server_cli/cli.py", "rt", encoding="utf8") as f:
+    with io.open("api_logic_server_cli/api_logic_server.py", "rt", encoding="utf8") as f:
         version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 else:
     version = 0.0

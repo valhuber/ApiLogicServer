@@ -12,8 +12,15 @@ def get_windows_path_with_slashes(url: str) -> str:
     return url.replace('\\', '\\\\')
 
 
-def update_config_and_copy_sqlite_db(project: Project, msg: str) -> str:
+def update_config_and_copy_sqlite_db_FIXME(project: Project, msg: str) -> str:
     """
+
+    1. If sqlite, copy db to database folder
+
+    2. Add project.db_url to config 
+
+    3. Update database/bind_databases.py
+
     Parameters:
 
     :arg: msg print this, e.g., ".. ..Adding Database [{self.bind_key}] to existing project"

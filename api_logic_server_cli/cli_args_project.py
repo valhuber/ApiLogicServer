@@ -34,9 +34,13 @@ class Project(ProjectArgs):
         self.model_file_name = "models.py"
         """ name of models file being processed """
 
+        self. default_db = "default = nw.sqlite, ? for help"
+        self.default_project_name = "ApiLogicProject"
+        self.default_fab_host = "localhost"
+        self.default_bind_key_url_separator = "-"  # admin 
+
         running_at = Path(__file__)
         self.api_logic_server_dir_path = running_at.parent.absolute()  # ne abspath(f'{abspath(get_api_logic_server_dir())}'))
-
 
 
     def print_options(self):

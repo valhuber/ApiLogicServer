@@ -6,4 +6,4 @@ recursive-include api_logic_server_cli/create_from_model *.*
 recursive-include api_logic_server_cli/database *.*
 recursive-include api_logic_server_cli/docs *.*
 include api_logic_server_cli/api_logic_server_info.yaml
-include api_logic_server_cli/api_logic_server_info.yaml
+include api_logic_server_cli/login_endpoint.txt

@@ -258,14 +258,14 @@ def multi_database_tests():
         cwd=install_api_logic_server_path,
         msg=f'\nCreate MultiDB at: {str(install_api_logic_server_path)}')
 
-    result_create = run_command(f'{set_venv} && ApiLogicServer add-db --db_url=auth --bind_key=authentication --project_name=MultiDB',
+    result_create = run_command(f'{set_venv} && ApiLogicServer add-db --db_url=todo --bind_key=todo --project_name=MultiDB',
+        cwd=install_api_logic_server_path,
+        msg=f'\nAdd ToDoDB at: {str(install_api_logic_server_path)}')
+
+    # declare_security
+    result_create = run_command(f'{set_venv} && ApiLogicServer add-security --project_name=MultiDB',
         cwd=install_api_logic_server_path,
         msg=f'\nAdd AuthDB at: {str(install_api_logic_server_path)}')
-    
-    # declare_security
-    src = install_api_logic_server_path.joinpath('ApiLogicProject/security/declare_security.py')
-    dest = install_api_logic_server_path.joinpath('MultiDB/security/declare_security.py')
-    shutil.copyfile(src, dest)
 
     env = [("SECURITY_ENABLED", "true")]
     start_api_logic_server(project_name='MultiDB', env_list=env)  # , env='export SECURITY_ENABLED=true')
@@ -431,7 +431,7 @@ api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject
 api_logic_server_tests_path = Path(os.path.abspath(__file__)).parent.parent
 
 api_logic_server_cli_path = get_api_logic_server_path().\
-                            joinpath("api_logic_server_cli").joinpath('cli.py')
+                            joinpath("api_logic_server_cli").joinpath('api_logic_server.py')
 with io.open(str(api_logic_server_cli_path), "rt", encoding="utf8") as f:
     api_logic_server_version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 
