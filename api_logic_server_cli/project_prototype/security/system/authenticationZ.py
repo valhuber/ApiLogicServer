@@ -23,28 +23,14 @@ def login():
 import logging, sys
 from flask import Flask
 from flask import jsonify, request
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import jwt_required as jwt_required_ori
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
-from functools import wraps
 import config
 
 authentication_provider = config.Config.SECURITY_PROVIDER
 
 security_logger = logging.getLogger('api_logic_server_app')
-
-JWT_EXCLUDE = 'jwt_exclude'
-
-def jwt_required(*args, **kwargs):
-    from flask import request
-    _jwt_required_ori = jwt_required_ori(*args, **kwargs)
-    def _wrapper(fn):
-        if request.endpoint == 'api.authentication-User.login':
-            return fn
-        return _jwt_required_ori(fn)
-    return _wrapper
-
 
 def configure_auth(flask_app: Flask, database: object, method_decorators: object):
     """
@@ -92,5 +78,13 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         identity = jwt_data["sub"]
         return authentication_provider.get_user(identity, "")  # val - use auth_provider
 
+    @flask_app.route("/auth/refresh", methods=["POST"])
+    @jwt_required(refresh=True)
+    def refresh():
+        identity = get_jwt_identity()
+        access_token = create_access_token(identity=identity)
+        return jsonify(access_token=access_token)
+
     method_decorators.append(jwt_required())
-    security_logger.info("\nAuthentication loaded -- api calls now require authorization header")
+    security_logger.debug("\nAuthentication loaded -- api calls now require authorization header")
+

@@ -1,5 +1,5 @@
 about:
-  date: January 15, 2023 12:40
+  date: January 18, 2023 15:40
   recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, images, security, login
   # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
@@ -23,7 +23,7 @@ resources:
           Suggestion - visit the Customer and Employee pages.<br><br>
           <h2>Authorization</h2>
           The table includes 8 rows (login as 'admin' with password 'p', upper right).<br><br>
-          But, logout and login as 'aneu' -- only 1 is shown, per <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Security-Authorization/">authorization</a>.
+          But, logout and login as 'u1' -- only 1 is shown, per <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Security-Authorization/">authorization</a>.
           <br><br>
     attributes:
       - label: ' Category Name*'
@@ -78,13 +78,13 @@ resources:
             </li>
           </ul>
     attributes:
+      - name: Id
+        search: true
+        sort: true
       - label: ' Company Name*'
         name: CompanyName
         search: true
         sort: true
-      - name: ContactName
-        search: true
-      - name: ContactTitle
       - name: Balance
         type: DECIMAL
         info: derived as sum(Order.AmountTotal where ShippedDate is None)
@@ -95,6 +95,10 @@ resources:
         info: derived as sum(Order)
       - name: UnpaidOrderCount
         info: derived as count(Order where ShippedDate is None)
+      - name: Client_id
+      - name: ContactName
+        search: true
+      - name: ContactTitle
       - name: Address
       - name: City
       - name: Region
@@ -102,7 +106,6 @@ resources:
       - name: Country
       - name: Phone
       - name: Fax
-      - name: Id
     tab_groups:
       - direction: tomany
         fks:

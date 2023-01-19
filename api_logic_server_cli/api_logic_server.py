@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.25"
+__version__ = "07.00.26"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/17/2023 - 07.00.25: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
+    "\t01/18/2023 - 07.00.26: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -866,12 +866,19 @@ class ProjectRun(Project):
         print("\n==================================================================")
         print("  ..Step 2. Add User.Login endpoint")
         print("==================================================================\n")
-        login_endpoint_filename = f'{self.api_logic_server_dir_path.joinpath("login_endpoint.txt")}'
+        login_endpoint_filename = f'{self.api_logic_server_dir_path.joinpath("templates/login_endpoint.txt")}'
         auth_models_file_name = f'{self.project_directory_path.joinpath("database/authentication_models.py")}'
         with open(login_endpoint_filename, 'r') as file:
             login_endpoint_data = file.read()
         create_utils.insert_lines_at(lines=login_endpoint_data, 
                     at="backref='user'", after=True,
+                    file_name=auth_models_file_name)
+        login_endpoint_filename = f'{self.api_logic_server_dir_path.joinpath("templates/login_endpoint_imports.txt")}'
+        auth_models_file_name = f'{self.project_directory_path.joinpath("database/authentication_models.py")}'
+        with open(login_endpoint_filename, 'r') as file:
+            login_endpoint_data = file.read()
+        create_utils.insert_lines_at(lines=login_endpoint_data, 
+                    at="import declarative_base", after=True,
                     file_name=auth_models_file_name)
 
         print("\n==================================================================")

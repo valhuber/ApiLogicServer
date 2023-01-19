@@ -1,15 +1,10 @@
     
     # authentication-provider extension - password check
     def check_password(self, password=None):
-        print(password)
-        return True
+        # print(password)
+        return password == self.password_hash
     
     # authentication-provider extension - login endpoint (e.g., for swagger)
-
-    from flask import abort
-    from safrs import jsonapi_rpc
-    from flask_jwt_extended import get_jwt_identity
-    from flask_jwt_extended import create_refresh_token
 
     @classmethod
     @jsonapi_rpc(valid_jsonapi=False)
