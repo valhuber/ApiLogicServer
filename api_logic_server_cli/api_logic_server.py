@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.27"
+__version__ = "07.00.28"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/19/2023 - 07.00.27: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
+    "\t01/20/2023 - 07.00.28: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec/cust \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -865,7 +865,7 @@ class ProjectRun(Project):
 
         log.debug("\n\n==================================================================")
         log.info(msg)
-        log.debug("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
+        log.info("  1. ApiLogicServer add-db --db_url=auth --bind_key=authentication")
         log.debug("==================================================================5\n")
         save_run = self.run
         save_command = self.command
@@ -874,13 +874,13 @@ class ProjectRun(Project):
         self.bind_key = "authentication"
         self.db_url = "auth"  # shorthand for api_logic_server_cli/database/auth...
         self.run = False
-        self.create_project()
+        self.create_project()  # not creating project, but using model creation svcs
         self.run = save_run
         self.command = save_command
         self.db_url = save_db_url
         
         log.debug("\n==================================================================")
-        log.debug("  ..Step 2. Add User.Login endpoint")
+        log.info("  2. Add User.Login endpoint")
         log.debug("==================================================================\n")
         login_endpoint_filename = f'{self.api_logic_server_dir_path.joinpath("templates/login_endpoint.txt")}'
         auth_models_file_name = f'{self.project_directory_path.joinpath("database/authentication_models.py")}'
@@ -898,14 +898,14 @@ class ProjectRun(Project):
                     file_name=auth_models_file_name)
 
         log.debug("\n==================================================================")
-        log.debug("  ..Step 3. Set SECURITY_ENABLED in config.py")
+        log.info("  3. Set SECURITY_ENABLED in config.py")
         log.debug("==================================================================\n")
         create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
                             replace_with='SECURITY_ENABLED = True  #',
                             in_file=f'{self.project_directory}/config.py')
         if is_nw:
             log.debug("\n==================================================================")
-            log.debug("  ..Step 4. Adding Sample authorization to security/declare_security.py")
+            log.info("  4. Adding Sample authorization to security/declare_security.py")
             log.debug("==================================================================\n\n")
             nw_declare_security_py_path = self.api_logic_server_dir_path.\
                 joinpath('project_prototype_nw/security/declare_security.py')
@@ -913,7 +913,7 @@ class ProjectRun(Project):
             shutil.copyfile(nw_declare_security_py_path, declare_security_py_path)
         else:
             log.debug("\n==================================================================")
-            log.debug("  .. Step 4. TODO: Declare authorization in security/declare_security.py")
+            log.info("  4. TODO: Declare authorization in security/declare_security.py")
             log.debug("==================================================================\n\n")
 
 
@@ -922,7 +922,7 @@ class ProjectRun(Project):
 
         1. add-sqlite-security
 
-        2. deep copy api_logic_server_cli/project_prototype_nw
+        2. deep copy project_prototype_nw
 
         Args:
         """
@@ -932,7 +932,9 @@ class ProjectRun(Project):
         nw_path = (self.api_logic_server_dir_path).\
             joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
         recursive_overwrite(nw_path, self.project_directory)
+
         create_nw_tutorial(self.project_directory, str(self.api_logic_server_dir_path))
+
         log.info("\nExplore key customization files:")
         log.info(f'..api/customize_api.py')
         log.info(f'..database/customize_models.py')

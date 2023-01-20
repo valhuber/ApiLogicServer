@@ -8,7 +8,7 @@ This is the _no-customizations_ version of the Northwind Sample project.  It ena
 To introduce customizations, use the terminal and run:
 
 ```
-python perform_customizations.py go
+ApiLogicServer add-cust
 ```
 
 &nbsp;&nbsp;

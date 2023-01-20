@@ -552,7 +552,8 @@ def add_security_cmd(ctx, bind_key_url_separator: str, api_name: str, project_na
     is_nw = False
     if create_utils.does_file_contain(search_for="CategoryTableNameTest", in_file=models_py_path):
         is_nw = True
-    project.add_sqlite_security(msg="\nADDING SECURITY", is_nw=is_nw)
+    project.add_sqlite_security(msg="Adding Security", is_nw=is_nw)
+    log.info("")
 
 
 @main.command("add-cust") 
