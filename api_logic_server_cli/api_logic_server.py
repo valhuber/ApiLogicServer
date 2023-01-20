@@ -927,13 +927,17 @@ class ProjectRun(Project):
         Args:
         """
         log.debug("\n\n==================================================================")
-        self.add_sqlite_security(is_nw=True, msg="Add northwind customizations - security")
+        self.add_sqlite_security(is_nw=True, msg="Add northwind customizations - enabling security")
 
-        log.info("Copy in nw customizations: logic, custom api, readme, tests, admin app")
         nw_path = (self.api_logic_server_dir_path).\
             joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
         recursive_overwrite(nw_path, self.project_directory)
         create_nw_tutorial(self.project_directory, str(self.api_logic_server_dir_path))
+        log.info("\nExplore key customization files:")
+        log.info(f'..api/customize_api.py')
+        log.info(f'..database/customize_models.py')
+        log.info(f'..logic/declare_logic.py')
+        log.info(f'..security/declare_security.py\n')
         log.info(".. complete\n")
 
 
@@ -1028,8 +1032,7 @@ class ProjectRun(Project):
             else:
                 log.info(f'\nCustomize using your IDE:')
                 log.info(f'  code {self.project_name}  # e.g., open VSCode on created project')
-                log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
-        log.info("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
+                log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/IDE-Execute/#execute-prebuilt-launch-configurations\n')
 
         if self.run:  # synchronous run of server - does not return
             run_file = os.path.abspath(f'{resolve_home(self.project_name)}/api_logic_server_run.py')

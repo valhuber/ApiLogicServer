@@ -8,7 +8,7 @@ IDE instructions depend on whether you are using a local install, or Docker.  Se
 
 === "VS Code Local -- Local Install"
 
-Follow these instructions:
+    Follow these instructions:
 
     __1. Open your project with VS Code__
 
@@ -51,7 +51,6 @@ Follow these instructions:
     You may be prompted for this (recent versions of VSCode might auto-detect language support):
 
     <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/4-install-python-extension.png"></figure>
-
 
 === "VS Code -- Docker Install"
 
