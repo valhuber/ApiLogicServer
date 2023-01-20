@@ -3,7 +3,7 @@ from __future__ import unicode_literals, division, print_function, absolute_impo
 
 import inspect
 import re
-import sys
+import sys, logging
 from collections import defaultdict
 from importlib import import_module
 from inspect import ArgSpec
@@ -22,6 +22,15 @@ from sqlalchemy.util import OrderedDict
 # The generic ARRAY type was introduced in SQLAlchemy 1.1
 from api_logic_server_cli.create_from_model.model_creation_services import Resource, ResourceRelationship, \
     ResourceAttribute
+
+log = logging.getLogger(__name__)
+"""
+handler = logging.StreamHandler(sys.stderr)
+formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
+handler.setFormatter(formatter)
+log.addHandler(handler)
+log.propagate = True
+"""
 
 try:
     from sqlalchemy import ARRAY
@@ -836,7 +845,7 @@ from sqlalchemy.dialects.mysql import *
         if self.model_creation_services.project.bind_key != "":
             if self.model_creation_services.project.model_gen_bind_msg == False:
                 self.model_creation_services.project.model_gen_bind_msg = True
-                print(f'.. .. ..Setting bind_key = {self.model_creation_services.project.bind_key}')
+                log.debug(f'.. .. ..Setting bind_key = {self.model_creation_services.project.bind_key}')
             end_point_name = self.model_creation_services.project.bind_key + \
                 self.model_creation_services.project.bind_key_url_separator + model.name
         rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, end_point_name)

@@ -233,7 +233,7 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
 
 def login():
     post_uri = 'http://localhost:5656/auth/login'
-    post_data = {"username": "aneu"}
+    post_data = {"username": "aneu", "password": "p"}
     r = requests.post(url=post_uri, json = post_data)
     response_text = r.text
     status_code = r.status_code

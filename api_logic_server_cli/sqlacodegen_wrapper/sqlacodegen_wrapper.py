@@ -48,14 +48,19 @@ from sqlacodegen_wrapper.sqlacodegen.sqlacodegen.codegen import CodeGenerator
 from api_logic_server_cli.create_from_model.model_creation_services import ModelCreationServices
 from pathlib import Path
 from shutil import copyfile
+import os, sys
+from pathlib import Path
+from os.path import abspath
+from api_logic_server_cli.cli_args_project import Project
 
+log = logging.getLogger(__name__)
 
 MODEL_DIR = tempfile.mkdtemp()  # directory where the generated models.py will be saved
 on_import = False
 
 sqlacodegen_dir = os.path.join(os.path.dirname(__file__), "sqlacodegen")
 if not os.path.isdir(sqlacodegen_dir):
-    print("sqlacodegen not found")
+    log.debug("sqlacodegen not found")
 
 sys.path.insert(0, MODEL_DIR)
 sys.path.insert(0, sqlacodegen_dir)
@@ -86,13 +91,13 @@ def get_args():
 
     if args.version:
         version = pkg_resources.get_distribution("sqlacodegen").parsed_version # noqa: F821
-        print(version.public)
+        log.debug(version.public)
         exit()
     if not args.url:
-        print("You must supply a url\n", file=sys.stderr)
+        log.debug("You must supply a url\n", file=sys.stderr)
         parser.print_help()
         exit(1)
-    print(f'.. ..Dynamic model import successful')
+    log.debug(f'.. ..Dynamic model import successful')
     return args
 
 
@@ -212,20 +217,20 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
             if model_creation_services.project.bind_key != "":
                 model_full_file_name = project.project_directory_path.joinpath('database').joinpath(project.model_file_name)
                 # model_full_file_name = "/".join(model_file_name.split("/")[:-1]) + "/" + model_creation_services.project.bind_key + "_" + model_file_name.split("/")[-1]
-            print(f' a.  Create Models - create database/{project.model_file_name}, using sqlcodegen')
-            print(f'.. .. ..For database:  {abs_db_url}')
+            log.debug(f' a.  Create Models - create database/{project.model_file_name}, using sqlcodegen')
+            log.debug(f'.. .. ..For database:  {abs_db_url}')
             models_mem, num_models = create_models_memstring(code_gen_args)  # calls sqlcodegen
             write_models_py(model_full_file_name, models_mem)
             model_creation_services.resource_list_complete = True
         else:  # use pre-existing (or repaired) existing model file
             model_full_file_name = str(Path(project_directory).joinpath('database/models.py'))
             use_model_path = Path(model_creation_services.project.use_model).absolute()
-            print(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
+            log.debug(f' a.  Use existing {use_model_path} - copy to {project_directory + "/database/models.py"}')
             copyfile(use_model_path, model_full_file_name)
     elif project.command == 'create-ui':
         model_full_file_name = model_creation_services.resolve_home(name = model_creation_services.use_model)
     elif project.command == "rebuild-from-model":
-        print(f' a.  Use existing database/models.py to rebuild api and ui models - verifying')
+        log.debug(f' a.  Use existing database/models.py to rebuild api and ui models - verifying')
         model_full_file_name = project_directory + '/database/models.py'
     else:
         error_message = f'System error - unexpected command: {project.command}'
@@ -248,12 +253,12 @@ def create_models_memstring(args) -> str:
         metadata.reflect(engine)
     except:
         track = traceback.format_exc()
-        print(track)
-        print(f'\n***** Database failed to open: {args.url} *****\n')
-        print(f'.. Here are some examples:\n')
+        log.debug(track)
+        log.debug(f'\n***** Database failed to open: {args.url} *****\n')
+        log.debug(f'.. Here are some examples:\n')
         print_uri_info()
-        print(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
-        print(f'\n...see https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
+        log.debug(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
+        log.debug(f'\n...see https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
         exit(1)
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite
@@ -286,7 +291,7 @@ if on_import:
     SAFRSBase.db_commit = False
     db = builtins.db = SQLAlchemy(app)  # set db as a global variable to be used in employees.py
     models = codegen(args)
-    print(models)
+    log.debug(models)
 
     #
     # Write the models to file, we could try to exec() but this makes our code more complicated
@@ -329,8 +334,8 @@ def start_api(HOST="0.0.0.0", PORT=5000):
         # Set the JSON encoder used for object to json marshalling
         # app.json_encoder = SAFRSJSONEncoder
         # Register the API at /api
-        # swaggerui_blueprint = get_swaggerui_blueprint('/api', '/api/swagger.json')
-        # app.register_blueprint(swaggerui_blueprint, url_prefix='/api')
+        # swaggerui_blueprint = get_swaggerui_bluelog.debug('/api', '/api/swagger.json')
+        # app.register_bluelog.debug(swaggerui_blueprint, url_prefix='/api')
 
         @app.route("/")
         def goto_api():
@@ -341,5 +346,5 @@ if __name__ == "__main__":
     HOST = args.host
     PORT = args.port
     start_api(HOST, PORT)
-    print("API URL: http://{}:{}/api , model dir: {}".format(HOST, PORT, MODEL_DIR))
+    log.debug("API URL: http://{}:{}/api , model dir: {}".format(HOST, PORT, MODEL_DIR))
     app.run(host=HOST, port=PORT)

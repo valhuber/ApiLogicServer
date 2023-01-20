@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.26"
+__version__ = "07.00.27"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/18/2023 - 07.00.26: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
+    "\t01/19/2023 - 07.00.27: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -46,17 +46,13 @@ from pathlib import Path
 from shutil import copyfile
 import shutil
 import importlib.util
-
 from flask import Flask
-
-import logging
+import logging, logging.config
 import datetime
 from typing import NewType
 import sys
 import os
 import importlib
-
-
 
 def get_api_logic_server_dir() -> str:
     """
@@ -67,7 +63,21 @@ def get_api_logic_server_dir() -> str:
     return str(python_path)
 
 
-# print("sys.path.append(get_api_logic_server_dir())\n",get_api_logic_server_dir())
+current_path = os.path.abspath(os.path.dirname(__file__))
+with open(f'{get_api_logic_server_dir()}/logging.yml','rt') as f:
+        config=yaml.safe_load(f.read())
+        f.close()
+logging.config.dictConfig(config)
+log=logging.getLogger(__name__)
+debug_value = os.getenv('APILOGICSERVER_DEBUG')
+if debug_value is not None:
+    debug_value = debug_value.upper()
+    if debug_value.startswith("F") or debug_value.startswith("N"):
+        log.setLevel(logging.INFO)
+    else:
+        log.setLevel(logging.DEBUG)
+
+# log.debug("sys.path.append(get_api_logic_server_dir())\n",get_api_logic_server_dir())
 sys.path.append(get_api_logic_server_dir())  # e.g, on Docker: export PATH="/home/api_logic_server/api_logic_server_cli"
 api_logic_server_path = os.path.dirname(get_api_logic_server_dir())  # e.g: export PATH="/home/api_logic_server"
 sys.path.append(api_logic_server_path)
@@ -133,7 +143,7 @@ def delete_dir(dir_path, msg):
             else:
                 raise
         if msg != "":
-            print(f'{msg} Delete dir: {dir_path}')
+            log.debug(f'{msg} Delete dir: {dir_path}')
         use_callback = False
         if use_callback:
             shutil.rmtree(dir_path, ignore_errors=False, onerror=handleRemoveReadonly)
@@ -144,7 +154,7 @@ def delete_dir(dir_path, msg):
                 if "No such file" in e.strerror:
                     pass
                 else:
-                    print("Error: %s : %s" % (dir_path, e.strerror))
+                    log.debug("Error: %s : %s" % (dir_path, e.strerror))
     else:
         # https://stackoverflow.com/questions/22948189/how-to-solve-the-directory-is-not-empty-error-when-running-rmdir-command-in-a
         try:
@@ -188,7 +198,7 @@ def copy_project_to_local(project_directory, copy_to_project_directory, message)
     """
     result = ""
     try:
-        # print(f'10. Copy temp_created_project to {copy_to_project_directory} ')
+        # log.debug(f'10. Copy temp_created_project to {copy_to_project_directory} ')
         delete_dir(copy_to_project_directory, message)
         shutil.copytree(project_directory, copy_to_project_directory)
     except OSError as e:
@@ -196,9 +206,9 @@ def copy_project_to_local(project_directory, copy_to_project_directory, message)
             pass
         else:
             result = "Error: %s : %s" % (copy_to_project_directory, e.strerror)
-            print(result)
-            print(f'\n===> Copy failed (see above), but your project exists at {project_directory}')
-            print(f'===> Resolve the issue, and use the cp command below...')
+            log.debug(result)
+            log.debug(f'\n===> Copy failed (see above), but your project exists at {project_directory}')
+            log.debug(f'===> Resolve the issue, and use the cp command below...')
     return result
 
 
@@ -262,7 +272,7 @@ def create_project_with_nw_samples(project, msg: str) -> str:
     if nw/nw+, inject sample logic/declare_logic and api/customize_api.
 
     :param project a ProjectRun
-    :param msg printed, such as Create Project:
+    :param msg log.debuged, such as Create Project:
     :return: return_abs_db_url (e.g., reflects sqlite copy to project/database dir)
     """
 
@@ -289,8 +299,8 @@ def create_project_with_nw_samples(project, msg: str) -> str:
             if from_dir == "":
                 from_dir = (Path(api_logic_server_dir_str)).\
                     joinpath('project_prototype')  # /Users/val/dev/ApiLogicServer/project_prototype
-            print(f'{msg} {os.path.realpath(project.project_directory)}')
-            print(f'.. ..Clone from {from_dir} ')
+            log.debug(f'{msg} {os.path.realpath(project.project_directory)}')
+            log.debug(f'.. ..Clone from {from_dir} ')
             cloned_from = from_dir
             try:
                 if project.merge_into_prototype:
@@ -309,13 +319,13 @@ def create_project_with_nw_samples(project, msg: str) -> str:
                 else:
                     shutil.copytree(from_dir, project.project_directory)  # normal path (fails if project_directory not empty)
             except OSError as e:
-                print(f'\n==>Error - unable to copy to {project.project_directory} -- see log below'
+                log.debug(f'\n==>Error - unable to copy to {project.project_directory} -- see log below'
                     f'\n\n{str(e)}\n\n'
                     f'Suggestions:\n'
                     f'.. Verify the --project_name argument\n'
                     f'.. If you are using Docker, verify the -v argument\n\n')
         if project.nw_db_status in ["nw", "nw+"]:
-            print(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
+            log.debug(".. ..Copy in nw customizations: logic, custom api, readme, tests, admin app")
             nw_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
             recursive_overwrite(nw_dir, project.project_directory)
@@ -323,7 +333,7 @@ def create_project_with_nw_samples(project, msg: str) -> str:
             create_nw_tutorial(project.project_directory, api_logic_server_dir_str)
 
         if project.nw_db_status in ["nw-"]:
-            print(".. ..Copy in nw- customizations: readme, perform_customizations")
+            log.debug(".. ..Copy in nw- customizations: readme, perform_customizations")
             nw_dir = (Path(api_logic_server_dir_str)).\
                 joinpath('project_prototype_nw_no_cust')  # /Users/val/dev/ApiLogicServer/project_prototype_nw_no_cust
             recursive_overwrite(nw_dir, project.project_directory)
@@ -386,9 +396,9 @@ def create_project_with_nw_samples(project, msg: str) -> str:
                                 replace_with=return_abs_db_url,
                                 in_file=f'{project.project_directory}/database/alembic.ini')
 
-            print(f'.. ..Sqlite database setup {target_db_loc_actual}...')
-            print(f'.. .. ..From {db_loc}')
-            print(f'.. .. ..db_uri set to: {return_abs_db_url} in <project>/config.py')
+            log.debug(f'.. ..Sqlite database setup {target_db_loc_actual}...')
+            log.debug(f'.. .. ..From {db_loc}')
+            log.debug(f'.. .. ..db_uri set to: {return_abs_db_url} in <project>/config.py')
         if project.merge_into_prototype:
             recursive_overwrite(str(tmpdirname), project.project_directory)
             # delete_dir(realpath(Path(str(tmpdirname))), "")
@@ -421,14 +431,14 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
     """ injecting <db_types file> into database/models.py, fix nw cascade delete """
     models_file_name = f'{project_directory}/database/models.py'
     if db_types is not None and db_types != "":
-        print(f'.. .. ..Injecting file {db_types} into database/models.py')
+        log.debug(f'.. .. ..Injecting file {db_types} into database/models.py')
         with open(db_types, 'r') as file:
             db_types_data = file.read()
         create_utils.insert_lines_at(lines=db_types_data,
                                     at="(typically via --db_types)",
                                     file_name=models_file_name)
     if nw_db_status in ["nw", "nw+"]:
-        print(f'.. .. ..Setting cascade delete for sample database database/models.py')
+        log.debug(f'.. .. ..Setting cascade delete for sample database database/models.py')
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
             replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
@@ -436,7 +446,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
 
 def final_project_fixup(msg, project) -> str:
     """ fix ports/hosts, inject project names/dates, update info file """
-    print(msg)  # "7. Final project fixup"
+    log.debug(msg)  # "7. Final project fixup"
 
     if False and project.use_model == "" and project.command != "rebuild-from-model":  # TODO remove dead code
         msg = f' a.   Appending "from database import customize_models" to database/models.py'
@@ -446,7 +456,7 @@ def final_project_fixup(msg, project) -> str:
     if project.command.startswith("rebuild"):
         pass
     else:
-        print(f' b.   Update api_logic_server_run.py with '
+        log.debug(f' b.   Update api_logic_server_run.py with '
               f'project_name={project.project_name} and api_name, host, port')
         update_api_logic_server_run(project)
 
@@ -469,7 +479,7 @@ def final_project_fixup(msg, project) -> str:
 def fix_database_models__import_customize_models(project_directory: str, msg: str):
     """ Append "from database import customize_models" to database/models.py """
     models_file_name = f'{project_directory}/database/models.py'
-    print(msg)
+    log.debug(msg)
     models_file = open(models_file_name, 'a')
     models_file.write("\n\nfrom database import customize_models\n")
     models_file.close()
@@ -522,7 +532,7 @@ def update_api_logic_server_run(project):
 
 def fix_host_and_ports(msg, project):
     """ c.   Fixing api/expose_services - port, host """
-    print(msg)  # c.   Fixing api/expose_services - port, host
+    log.debug(msg)  # c.   Fixing api/expose_services - port, host
     replace_port = f':{project.port}' if project.port else ""
     # replace_with = host + replace_port
     in_file = f'{project.project_directory}/api/customize_api.py'
@@ -532,18 +542,18 @@ def fix_host_and_ports(msg, project):
     create_utils.replace_string_in_file(search_for="api_logic_server_port",
                            replace_with=replace_port,
                            in_file=in_file)
-    print(f' d.   Updated customize_api_py with port={project.port} and host={project.host}')
+    log.debug(f' d.   Updated customize_api_py with port={project.port} and host={project.host}')
     full_path = project.project_directory_actual
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
                            in_file=f'{project.project_directory}/python_anywhere_wsgi.py')
-    print(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
+    log.debug(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
 
 
 def start_open_with(open_with: str, project_name: str):
     """ Creation complete.  Opening {open_with} at {project_name} """
-    print(f'\nCreation complete - Opening {open_with} at {project_name}')
-    print(".. See the readme for install / run instructions")
+    log.debug(f'\nCreation complete - Opening {open_with} at {project_name}')
+    log.debug(".. See the readme for install / run instructions")
     create_utils.run_command(f'{open_with} {project_name}', None, "no-msg")
 
 
@@ -570,22 +580,22 @@ def invoke_creators(model_creation_services: ModelCreationServices):
 
     creator_path = abspath(f'{abspath(get_api_logic_server_dir())}/create_from_model')
 
-    print(" b.  Create api/expose_api_models.py from models")
-    # print(f'---> cwd: {model_creation_services.os_cwd}')
+    log.debug(" b.  Create api/expose_api_models.py from models")
+    # log.debug(f'---> cwd: {model_creation_services.os_cwd}')
     spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/api_expose_api_models_creator.py')
     creator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(creator)  # runs "bare" module code (e.g., initialization)
     creator.create(model_creation_services)  # invoke create function
 
     if model_creation_services.project.admin_app:
-        print(" c.  Create ui/admin/admin.yaml from models")
+        log.debug(" c.  Create ui/admin/admin.yaml from models")
         spec = importlib.util.spec_from_file_location("module.name", f'{creator_path}/ui_admin_creator.py')
         creator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(creator)
         creator.create(model_creation_services)
     else:
         pass
-        # print(".. .. ..ui/admin_app creation declined")
+        # log.debug(".. .. ..ui/admin_app creation declined")
 
     # model_creation_services.close_app()  # this may no longer be required
 
@@ -598,10 +608,10 @@ def add_security_FIXME(project: Project, msg: str, is_nw: bool = False):
         msg (str): eg: ApiLogicProject customizable project created.  Adding Security:")
         is_nw (str): is northwind, which means we add the nw security logic
     """
-    print("\n\n==================================================================")
-    print(msg)
-    print("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
-    print("==================================================================5\n")
+    log.debug("\n\n==================================================================")
+    log.debug(msg)
+    log.debug("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
+    log.debug("==================================================================5\n")
     project.command = "add_db"
     project.bind_key = "authentication"
     project.db_url = "auth"  # shorthand for api_logic_server_cli/database/auth...
@@ -609,24 +619,24 @@ def add_security_FIXME(project: Project, msg: str, is_nw: bool = False):
     project.run = False
     project.create_project()
     project.run = save_run
-    print("\n==================================================================")
-    print("  ..Step 2. Set SECURITY_ENABLED in config.py")
-    print("==================================================================\n")
+    log.debug("\n==================================================================")
+    log.debug("  ..Step 2. Set SECURITY_ENABLED in config.py")
+    log.debug("==================================================================\n")
     create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
                         replace_with='SECURITY_ENABLED = True  #',
                         in_file=f'{project.project_directory}/config.py')
     if is_nw:
-        print("\n==================================================================")
-        print("  ..Step 3. Adding Sample authorization to security/declare_security.py")
-        print("==================================================================\n\n")
+        log.debug("\n==================================================================")
+        log.debug("  ..Step 3. Adding Sample authorization to security/declare_security.py")
+        log.debug("==================================================================\n\n")
         nw_declare_security_py_path = project.api_logic_server_dir_path.\
             joinpath('project_prototype_nw/security/declare_security.py')
         declare_security_py_path = project.project_directory_path.joinpath('security/declare_security.py')
         shutil.copyfile(nw_declare_security_py_path, declare_security_py_path)
     else:
-        print("\n==================================================================")
-        print("  .. Step 3. TODO: Declare authorization in security/declare_security.py")
-        print("==================================================================\n\n")
+        log.debug("\n==================================================================")
+        log.debug("  .. Step 3. TODO: Declare authorization in security/declare_security.py")
+        log.debug("==================================================================\n\n")
 
 
 class ProjectRun(Project):
@@ -686,36 +696,36 @@ class ProjectRun(Project):
     def print_options(self):
         """ Creating ApiLogicProject with options: (or uri helo) """
         if self.db_url == "?":
-            print_uri_info()
+            log.debug_uri_info()
             exit(0)
 
-        print_options = True
-        if print_options:
+        log.debug_options = True
+        if log.debug_options:
             creating_or_updating = "Creating"
             if self.command.startswith("add_"):
                 creating_or_updating = "Updating"
-            print(f'\n\n{creating_or_updating} ApiLogicProject with options:')
-            print(f'  --db_url={self.db_url}')
-            print(f'  --bind_key={self.bind_key}')
-            print(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
-            print(f'  --api_name={self.api_name}')
-            print(f'  --admin_app={self.admin_app}')
-            print(f'  --react_admin={self.react_admin}')
-            print(f'  --flask_appbuilder={self.flask_appbuilder}')
-            print(f'  --from_git={self.from_git}')
-            #        print(f'  --db_types={self.db_types}')
-            print(f'  --run={self.run}')
-            print(f'  --host={self.host}')
-            print(f'  --port={self.port}')
-            print(f'  --swagger_host={self.swagger_host}')
-            print(f'  --not_exposed={self.not_exposed}')
-            print(f'  --open_with={self.open_with}')
-            print(f'  --use_model={self.use_model}')
-            print(f'  --favorites={self.favorites}')
-            print(f'  --non_favorites={self.non_favorites}')
-            print(f'  --extended_builder={self.extended_builder}')
-            print(f'  --multi_api={self.multi_api}')
-            print(f'  --infer_primary_key={self.infer_primary_key}')
+            log.debug(f'\n\n{creating_or_updating} ApiLogicProject with options:')
+            log.debug(f'  --db_url={self.db_url}')
+            log.debug(f'  --bind_key={self.bind_key}')
+            log.debug(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
+            log.debug(f'  --api_name={self.api_name}')
+            log.debug(f'  --admin_app={self.admin_app}')
+            log.debug(f'  --react_admin={self.react_admin}')
+            log.debug(f'  --flask_appbuilder={self.flask_appbuilder}')
+            log.debug(f'  --from_git={self.from_git}')
+            #        log.debug(f'  --db_types={self.db_types}')
+            log.debug(f'  --run={self.run}')
+            log.debug(f'  --host={self.host}')
+            log.debug(f'  --port={self.port}')
+            log.debug(f'  --swagger_host={self.swagger_host}')
+            log.debug(f'  --not_exposed={self.not_exposed}')
+            log.debug(f'  --open_with={self.open_with}')
+            log.debug(f'  --use_model={self.use_model}')
+            log.debug(f'  --favorites={self.favorites}')
+            log.debug(f'  --non_favorites={self.non_favorites}')
+            log.debug(f'  --extended_builder={self.extended_builder}')
+            log.debug(f'  --multi_api={self.multi_api}')
+            log.debug(f'  --infer_primary_key={self.infer_primary_key}')
 
     def update_config_and_copy_sqlite_db(self, msg: str) -> str:
         """
@@ -728,10 +738,10 @@ class ProjectRun(Project):
 
         Parameters:
 
-        :arg: msg print this, e.g., ".. ..Adding Database [{self.bind_key}] to existing project"
+        :arg: msg log.debug this, e.g., ".. ..Adding Database [{self.bind_key}] to existing project"
         :arg: project project setting object
         """
-        print(msg)
+        log.debug(msg)
         bind_key_upper = self.bind_key.upper()  # configs insist on all caps
         return_abs_db_url = self.abs_db_url
         config_uri_value = "'" + return_abs_db_url + "'"
@@ -743,7 +753,7 @@ class ProjectRun(Project):
         if "sqlite" in self.abs_db_url:
             """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
             """
-            print(f'.. .. ..Copying sqlite database to: database/{self.bind_key}_db.sqlite')
+            log.debug(f'.. .. ..Copying sqlite database to: database/{self.bind_key}_db.sqlite')
             db_loc = self.abs_db_url.replace("sqlite:///", "")
             target_db_loc_actual = str(self.project_directory_path.joinpath(f'database/{self.bind_key}_db.sqlite'))
             copyfile(db_loc, target_db_loc_actual)
@@ -756,7 +766,7 @@ class ProjectRun(Project):
             # into  this:  {CONFIG_URI} = '{config_uri_value}'
             file_name = f'"database/{self.bind_key}_db.sqlite"'
             config_uri_value = "f'sqlite:///{str(project_abs_dir.joinpath(" + file_name + "))}'"
-            print(f'.. .. ..From {db_loc}')
+            log.debug(f'.. .. ..From {db_loc}')
 
 
         """ **********************
@@ -785,9 +795,9 @@ class ProjectRun(Project):
             create_utils.insert_lines_at(lines=config_insert,
                                         at="# End Multi-Database URLs (from ApiLogicServer add-db...)",
                                         file_name=f'{self.project_directory}/config.py')
-            print(f'.. ..Updating config.py file with {CONFIG_URI}...')
+            log.debug(f'.. ..Updating config.py file with {CONFIG_URI}...')
         else:
-            print(f'.. ..Not updating config.py file with {CONFIG_URI}... (already present)')
+            log.debug(f'.. ..Not updating config.py file with {CONFIG_URI}... (already present)')
 
 
         """ **********************
@@ -830,11 +840,12 @@ class ProjectRun(Project):
             create_utils.insert_lines_at(lines=flask_app_config__update,
                                         at="# make multiple databases available",
                                         file_name=binds_databases_file)
-            print(f'.. ..Updating database/bind_databases.py with {CONFIG_URI}...')
+            log.debug(f'.. ..Updating database/bind_databases.py with {CONFIG_URI}...')
         else:
-            print(f'.. ..Not updating database/bind_databases.py with {CONFIG_URI} (already present)')
+            log.debug(f'.. ..Not updating database/bind_databases.py with {CONFIG_URI} (already present)')
 
         return return_abs_db_url
+
 
     def add_sqlite_security(self, msg: str, is_nw: bool = False):
         """_summary_
@@ -851,21 +862,26 @@ class ProjectRun(Project):
             msg (str): eg: ApiLogicProject customizable project created.  Adding Security:")
             is_nw (bool): is northwind, which means we add the nw security logic
         """
-        print("\n\n==================================================================")
-        print(msg)
-        print("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
-        print("==================================================================5\n")
+
+        log.debug("\n\n==================================================================")
+        log.info(msg)
+        log.debug("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
+        log.debug("==================================================================5\n")
+        save_run = self.run
+        save_command = self.command
+        save_db_url = self.db_url
         self.command = "add_db"
         self.bind_key = "authentication"
         self.db_url = "auth"  # shorthand for api_logic_server_cli/database/auth...
-        save_run = self.run
         self.run = False
         self.create_project()
         self.run = save_run
+        self.command = save_command
+        self.db_url = save_db_url
         
-        print("\n==================================================================")
-        print("  ..Step 2. Add User.Login endpoint")
-        print("==================================================================\n")
+        log.debug("\n==================================================================")
+        log.debug("  ..Step 2. Add User.Login endpoint")
+        log.debug("==================================================================\n")
         login_endpoint_filename = f'{self.api_logic_server_dir_path.joinpath("templates/login_endpoint.txt")}'
         auth_models_file_name = f'{self.project_directory_path.joinpath("database/authentication_models.py")}'
         with open(login_endpoint_filename, 'r') as file:
@@ -881,24 +897,44 @@ class ProjectRun(Project):
                     at="import declarative_base", after=True,
                     file_name=auth_models_file_name)
 
-        print("\n==================================================================")
-        print("  ..Step 3. Set SECURITY_ENABLED in config.py")
-        print("==================================================================\n")
+        log.debug("\n==================================================================")
+        log.debug("  ..Step 3. Set SECURITY_ENABLED in config.py")
+        log.debug("==================================================================\n")
         create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
                             replace_with='SECURITY_ENABLED = True  #',
                             in_file=f'{self.project_directory}/config.py')
         if is_nw:
-            print("\n==================================================================")
-            print("  ..Step 4. Adding Sample authorization to security/declare_security.py")
-            print("==================================================================\n\n")
+            log.debug("\n==================================================================")
+            log.debug("  ..Step 4. Adding Sample authorization to security/declare_security.py")
+            log.debug("==================================================================\n\n")
             nw_declare_security_py_path = self.api_logic_server_dir_path.\
                 joinpath('project_prototype_nw/security/declare_security.py')
             declare_security_py_path = self.project_directory_path.joinpath('security/declare_security.py')
             shutil.copyfile(nw_declare_security_py_path, declare_security_py_path)
         else:
-            print("\n==================================================================")
-            print("  .. Step 4. TODO: Declare authorization in security/declare_security.py")
-            print("==================================================================\n\n")
+            log.debug("\n==================================================================")
+            log.debug("  .. Step 4. TODO: Declare authorization in security/declare_security.py")
+            log.debug("==================================================================\n\n")
+
+
+    def add_nw_customizations(self):
+        """_summary_
+
+        1. add-sqlite-security
+
+        2. deep copy api_logic_server_cli/project_prototype_nw
+
+        Args:
+        """
+        log.debug("\n\n==================================================================")
+        self.add_sqlite_security(is_nw=True, msg="Add northwind customizations - security")
+
+        log.info("Copy in nw customizations: logic, custom api, readme, tests, admin app")
+        nw_path = (self.api_logic_server_dir_path).\
+            joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
+        recursive_overwrite(nw_path, self.project_directory)
+        create_nw_tutorial(self.project_directory, str(self.api_logic_server_dir_path))
+        log.info(".. complete\n")
 
 
     def create_project(self):
@@ -913,13 +949,13 @@ class ProjectRun(Project):
         # SQLALCHEMY_DATABASE_URI = "sqlite:///" + path.join(basedir, "database/db.sqlite")+ '?check_same_thread=False'
         self.print_options()
 
-        print(f"\nApiLogicServer {__version__} Creation Log:")
+        log.debug(f"\nApiLogicServer {__version__} Creation Log:")
 
         self.abs_db_url, self.nw_db_status, self.model_file_name = create_utils.get_abs_db_url("0. Using Sample DB", self)
 
         if self.extended_builder == "*":
             self.extended_builder = abspath(f'{self.api_logic_server_dir_path}/extended_builder.py')
-            print(f'0. Using default extended_builder: {self.extended_builder}')
+            log.debug(f'0. Using default extended_builder: {self.extended_builder}')
 
         self.project_directory, self.api_name, self.merge_into_prototype = \
             create_utils.get_project_directory_and_api_name(self)
@@ -928,22 +964,22 @@ class ProjectRun(Project):
 
         self.project_directory, self.copy_to_project_directory = copy_if_mounted(self.project_directory)
         if self.command.startswith("rebuild") or self.command == "add_db":
-            print("1. Not Deleting Existing Project")
-            print("2. Using Existing Project")
+            log.debug("1. Not Deleting Existing Project")
+            log.debug("2. Using Existing Project")
             if self.command == "add_db":
                 self.abs_db_url = self.update_config_and_copy_sqlite_db(
                     f".. ..Adding Database [{self.bind_key}] to existing project")
         else:                                                                            # normal path - clone, [overlay nw]
             self.abs_db_url = create_project_with_nw_samples(self, "2. Create Project:")
 
-        print(f'3. Create/verify database/{self.model_file_name}, then use that to create api/ and ui/ models')
+        log.debug(f'3. Create/verify database/{self.model_file_name}, then use that to create api/ and ui/ models')
         model_creation_services = ModelCreationServices(project = self,   # Create database/models.py from db
             project_directory=self.project_directory, 
             copy_to_project_directory = self.copy_to_project_directory)
         fix_database_models(self.project_directory, self.db_types, self.nw_db_status)
         invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
         if self.extended_builder is not None and self.extended_builder != "":
-            print(f'4. Invoke extended_builder: {self.extended_builder}, ({self.db_url}, {self.project_directory})')
+            log.debug(f'4. Invoke extended_builder: {self.extended_builder}, ({self.db_url}, {self.project_directory})')
             invoke_extended_builder(self.extended_builder, self.db_url, self.project_directory)
 
         copy_project_result = final_project_fixup("4. Final project fixup", self)
@@ -953,45 +989,47 @@ class ProjectRun(Project):
 
         if self.nw_db_status in ["nw", "nw+"] and self.command != "add_db":
             self.add_sqlite_security("ApiLogicProject customizable project created.  Adding Security:")
-
+            
         if self.command.startswith("add_"):
             pass  # keep silent for add-db, add-security...
         else:
-            print("\n\nApiLogicProject customizable project created.  Next steps:")
-            print("==========================================================")
+            disp_url = self.db_url
+            if disp_url == "":
+                disp_url = "nw"
+            log.info(f"\n\nCustomizable project {self.project_name} created from database {disp_url}.  Next steps:\n")
             if self.multi_api:
-                print(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
+                log.debug(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
             else:
-                print("\nRun API Logic Server:")
+                log.info("\nRun API Logic Server:")
                 if os.getenv('CODESPACES'):
-                    # print(f'  Add port 5656, with Public visibility') - automated in .devcontainer.json
-                    print(f'  Execute using Launch Configuration "ApiLogicServer"')
+                    # log.debug(f'  Add port 5656, with Public visibility') - automated in .devcontainer.json
+                    log.info(f'  Execute using Launch Configuration "ApiLogicServer"')
                 else:
-                    print(f'  cd {self.project_name};  python api_logic_server_run.py')
+                    log.info(f'  cd {self.project_name};  python api_logic_server_run.py')
         if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
-            print(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
+            log.debug(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
         if self.command.startswith("add_"):
             pass  # keep silent for add-db, add-security...
         else:
             if (is_docker()):
                 if os.getenv('CODESPACES'):
-                    print(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
-                    print(f'Save customized project to GitHub (TBD)')
+                    log.info(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
+                    log.info(f'Save customized project to GitHub (TBD)')
                 else:
-                    print(f'\nCustomize Docker project using IDE on local machine:')
+                    log.info(f'\nCustomize Docker project using IDE on local machine:')
                     docker_project_name = self.project_name
                     if self.project_name.startswith('/localhost/'):
                         docker_project_name = self.project_name[11:]
                     else:
                         docker_project_name = f'<local machine directory for: {self.project_name}>'
-                    print(f'  exit  # exit the Docker container ')
-                    print(f'  code {docker_project_name}  # e.g., open VSCode on created project')
+                    log.info(f'  exit  # exit the Docker container ')
+                    log.info(f'  code {docker_project_name}  # e.g., open VSCode on created project')
             else:
-                print(f'\nCustomize using your IDE:')
-                print(f'  code {self.project_name}  # e.g., open VSCode on created project')
-                print(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
-        print("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
+                log.info(f'\nCustomize using your IDE:')
+                log.info(f'  code {self.project_name}  # e.g., open VSCode on created project')
+                log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/')
+        log.info("\n")  # api_logic_server  ApiLogicServer  SQLAlchemy
 
         if self.run:  # synchronous run of server - does not return
             run_file = os.path.abspath(f'{resolve_home(self.project_name)}/api_logic_server_run.py')
@@ -1008,7 +1046,7 @@ def check_ports():
         rtn_local_ip = socket.gethostbyname(rtn_hostname)
     except:
         rtn_local_ip = f"cannot get local ip from {rtn_hostname}"
-        print(f"{rtn_local_ip}")
+        log.debug(f"{rtn_local_ip}")
     port_check = False
     if port_check or is_docker():
         s = socket.socket()  # Create a socket object

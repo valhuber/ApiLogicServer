@@ -21,12 +21,6 @@ from sqlalchemy.orm.interfaces import ONETOMANY, MANYTOONE, MANYTOMANY
 from api_logic_server_cli.sqlacodegen_wrapper import sqlacodegen_wrapper
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
-handler = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter('%(name)s: %(message)s')     # lead tag - '%(name)s: %(message)s')
-handler.setFormatter(formatter)
-log.addHandler(handler)
-log.propagate = True
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -212,7 +206,7 @@ class ModelCreationServices(object):
         result = full_path.replace('\\', '\\\\')
         if os.name == "nt":  # windows
             result = full_path.replace('/', '\\')
-        print(f'*** DEBUG - how about url_path={url_path}')
+        log.debug(f'*** DEBUG - how about url_path={url_path}')
         """
         url_path = Path(url)
         result = str(url_path)
@@ -697,19 +691,19 @@ class ModelCreationServices(object):
         project_path = self.project_directory
         debug_dynamic_loader = False
         if debug_dynamic_loader:
-            print(f'\n\n ### INSTALL cwd = {os.getcwd()}')
-            print(f'\n*** DEBUG/import - self.project_directory={self.project_directory}')
-            print(f'*** DEBUG/import - project_abs_path={project_path}')
+            log.debug(f'\n\n ### INSTALL cwd = {os.getcwd()}')
+            log.debug(f'\n*** DEBUG/import - self.project_directory={self.project_directory}')
+            log.debug(f'*** DEBUG/import - project_abs_path={project_path}')
         model_imported = False
         path_to_add = project_path if self.project.command == "create-ui" else \
             project_path + "/database"  # for Api Logic Server projects
         sys.path.insert(0, self.project_directory)    # e.g., /Users/val/dev/servers/install/ApiLogicServer
         sys.path.insert(0, path_to_add)    # e.g., /Users/val/dev/servers/install/ApiLogicServer/database
-        print(msg + " in <project>/database")  #  + path_to_add)
+        log.debug(msg + " in <project>/database")  #  + path_to_add)
         # sys.path.insert( 0, '/Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject/database')
         # sys.path.insert( 0, '/Users/val/dev/servers/install/ApiLogicServer/ApiLogicProject')  # AH HA!!
         # sys.path.insert( 0, 'ApiLogicProject')  # or, AH HA!!
-        # print(f'*** DEBUG - sys.path={sys.path}')
+        # log.debug(f'*** DEBUG - sys.path={sys.path}')
         try:
             # credit: https://www.blog.pythonlibrary.org/2016/05/27/python-201-an-intro-to-importlib/
             models_name = 'models'
@@ -718,14 +712,14 @@ class ModelCreationServices(object):
             importlib.import_module(models_name)
             model_imported = True
         except:
-            print(f'\n===> ERROR - Dynamic model import failed in {path_to_add} - project run will fail')
+            log.debug(f'\n===> ERROR - Dynamic model import failed in {path_to_add} - project run will fail')
             traceback.print_exc()
             pass  # try to continue to enable manual fixup
 
         orm_class = None
         if not model_imported:
-            print('.. .. ..Creation proceeding to enable manual database/models.py fixup')
-            print('.. .. .. See https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
+            log.debug('.. .. ..Creation proceeding to enable manual database/models.py fixup')
+            log.debug('.. .. .. See https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
         else:
             try:
                 resource_list: Dict[str, Resource] = dict()
@@ -764,7 +758,7 @@ class ModelCreationServices(object):
                                     debug_rel_str = f'Debug resource_class._s_relationships {resource_name}: ' \
                                                     f'parent_role_name (aka rel_name): {rel_name},    ' \
                                                     f'child_role_name (aka rel.back_populates): {rel.back_populates}'
-                                    print(debug_rel_str)
+                                    log.debug(debug_rel_str)
 
                                 parent_role_name = rel_name
                                 child_role_name = rel.back_populates
@@ -798,7 +792,7 @@ class ModelCreationServices(object):
                              f') -'
                              f' getting metadata from {str(orm_class)}')
             except:
-                print("\n===> ERROR - Unable to introspect model classes")
+                log.debug("\n===> ERROR - Unable to introspect model classes")
                 traceback.print_exc()
                 pass
     

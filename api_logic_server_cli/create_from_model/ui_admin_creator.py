@@ -106,7 +106,7 @@ class AdminCreator(object):
         if (self.mod_gen.project.command == "create-ui" or self.mod_gen.project.command.startswith("rebuild")) \
                                                                   or self.mod_gen.project.command == "add_db":
             if self.mod_gen.project.command.startswith("rebuild"):
-                print(".. .. ..Use existing ui/admin directory")
+                log.debug(".. .. ..Use existing ui/admin directory")
         else:
             self.create_admin_app(msg=".. .. ..Create ui/admin")
 
@@ -529,16 +529,16 @@ class AdminCreator(object):
 
         if write_file.startswith("Rebuild"):
             yaml_merge_file_name = os.path.join(Path(self.mod_gen.project_directory), Path(f'ui/admin/admin-merge.yaml'))
-            print(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
+            log.debug(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
             merge_yaml = self.create_yaml_merge()
             admin_merge_yaml_dump = yaml.dump(merge_yaml)
             with open(yaml_merge_file_name, 'w') as yaml_merge_file:
                 yaml_merge_file.write(admin_merge_yaml_dump)
             if write_file.startswith("Rebuild - overwrite"):
-                print(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
+                log.debug(f'.. .. ..{write_file} {yaml_file_name} - creating merge at {yaml_merge_file_name}')
             
         if write_file == "Write":  #  or write_file.startswith("Rebuild - overwrite"):  # more drastic approach
-            print(f'.. .. ..{write_file} {yaml_file_name}')
+            log.debug(f'.. .. ..{write_file} {yaml_file_name}')
             with open(yaml_file_name, 'w') as yaml_file:
                 yaml_file.write(admin_yaml_dump)
 
@@ -636,8 +636,8 @@ class AdminCreator(object):
         self.admin_yaml.info.number_relationships = self.num_related
         if self.num_related == 0:
             # FIXME what to do self.yaml_lines.append(f'  warning: no_related_view')
-            print(".. .. ..WARNING - no relationships detected - add them to your database or model")
-            print(".. .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
+            log.debug(".. .. ..WARNING - no relationships detected - add them to your database or model")
+            log.debug(".. .. ..  See https://github.com/valhuber/LogicBank/wiki/Managing-Rules#database-design")
 
     def doc_properties(self):
         """ show non-automated properties in yaml, for users' quick reference
@@ -684,15 +684,15 @@ class AdminCreator(object):
         RUN cp -r /app/ui/safrs-react-admin /app/ApiLogicServer-main/api_logic_server_cli/create_from_model/safrs-react-admin-npm-build
         '''
         if use_alsdock_sra and self.mod_gen.project.multi_api:
-            print(f'{msg} multi_api - copy safrs-react-admin {from_proto_dir} -> {to_project_dir}')
+            log.debug(f'{msg} multi_api - copy safrs-react-admin {from_proto_dir} -> {to_project_dir}')
             from_proto_dir = pathlib.Path("/app/ui/safrs-react-admin")  # enables debug for alsdock projects
             shutil.copytree(from_proto_dir, to_project_dir)
         else:
-            print(f'{msg} copy safrs-react-admin to: {to_project_dir}')
-            print(f'.. .. ..  ..From {from_proto_dir}')
+            log.debug(f'{msg} copy safrs-react-admin to: {to_project_dir}')
+            log.debug(f'.. .. ..  ..From {from_proto_dir}')
             if not os.path.isdir(from_proto_dir):
-                print(f'\n==> Error - safrs-react-admin... did you complete setup: https://valhuber.github.io/ApiLogicServer/Internals/')
-                print(".. Setup required.  Really.")
+                log.debug(f'\n==> Error - safrs-react-admin... did you complete setup: https://valhuber.github.io/ApiLogicServer/Internals/')
+                log.debug(".. Setup required.  Really.")
                 exit(1)
             shutil.copytree(from_proto_dir, to_project_dir)
 
@@ -700,7 +700,7 @@ class AdminCreator(object):
         swagger_name = self.mod_gen.project.api_name
         if self.mod_gen.project.multi_api:
             swagger_name += "/api"
-            print(f'.. ui/admin/home.js updated url: {swagger_name}')
+            log.debug(f'.. ui/admin/home.js updated url: {swagger_name}')
         create_utils.replace_string_in_file(search_for="api_logic_server_api_name",  # last node of server url
                                         replace_with=swagger_name,
                                         in_file=to_project_dir.joinpath("home.js"))

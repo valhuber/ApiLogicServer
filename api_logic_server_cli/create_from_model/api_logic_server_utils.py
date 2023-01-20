@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import subprocess, os
+import subprocess, os, sys
 from pathlib import Path
 from os.path import abspath
 from api_logic_server_cli.cli_args_project import Project
+import logging
+
+log = logging.getLogger(__name__)
 
 
 def get_project_directory_and_api_name(project):
@@ -35,7 +38,7 @@ def get_project_directory_and_api_name(project):
         if rtn_project_directory == get_api_logic_server_dir():
             rtn_project_directory = str( Path(get_api_logic_server_dir()) / 'ApiLogicProject' )
             msg = ' <dev>'
-        print(f'1. Merge into project prototype: {rtn_project_directory}{msg}')
+        log.debug(f'1. Merge into project prototype: {rtn_project_directory}{msg}')
     project_path = Path(rtn_project_directory)
     project_path_last_node = project_path.parts[-1]
     if project.multi_api or project.api_name == ".":
@@ -77,7 +80,7 @@ def get_abs_db_url(msg, project: Project):
     if project.db_url in [project.default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
         rtn_nw_db_status = "nw"  # api_logic_server_dir_path
-        print(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
+        log.debug(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
     elif project.db_url == "nw-":                                           # nw:           just in case
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
         rtn_nw_db_status = "nw-"
@@ -87,7 +90,7 @@ def get_abs_db_url(msg, project: Project):
     elif project.db_url == "nw+":                                           # nw-gold-plus: next version
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold-plus.sqlite"))}'
         rtn_nw_db_status = "nw+"
-        print(f'{msg} from: {rtn_abs_db_url}')
+        log.debug(f'{msg} from: {rtn_abs_db_url}')
     elif project.db_url == "auth" or project.db_url == "authorization":
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/authentication.sqlite"))}'
     elif project.db_url == "chinook":
@@ -195,22 +198,22 @@ def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     if msg == "no-msg":
         log_msg = ""
     else:
-        print(f'{log_msg} {cmd}')
+        log.debug(f'{log_msg} {cmd}')
     if new_line:
-        print("")
+        log.debug("")
 
     use_env = env
     if env is None:
         project_dir = get_api_logic_server_dir()
         python_path = str(project_dir) + "/venv/lib/python3.9/site_packages"
         use_env = os.environ.copy()
-        # print("\n\nFixing env for cmd: " + cmd)
+        # log.debug("\n\nFixing env for cmd: " + cmd)
         if hasattr(use_env, "PYTHONPATH"):
             use_env["PYTHONPATH"] = python_path + ":" + use_env["PYTHONPATH"]  # eg, /Users/val/dev/ApiLogicServer/venv/lib/python3.9
-            # print("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+            # log.debug("added PYTHONPATH: " + str(use_env["PYTHONPATH"]))
         else:
             use_env["PYTHONPATH"] = python_path
-            # print("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
+            # log.debug("created PYTHONPATH: " + str(use_env["PYTHONPATH"]))
     use_env_debug = False  # not able to get this working
     if use_env_debug:
         result_b = subprocess.check_output(cmd, shell=True, env=use_env)
@@ -223,5 +226,5 @@ def run_command(cmd: str, env=None, msg: str = "", new_line: bool=False) -> str:
     if msg == "no-msg":
         pass
     elif result != "" and result != "Downloaded the skeleton app, good coding!":
-        print(f'{log_msg} {cmd} result: {spaces}{result}')
+        log.debug(f'{log_msg} {cmd} result: {spaces}{result}')
     return result

@@ -9,8 +9,13 @@ from shutil import copyfile
 
 import create_from_model.model_creation_services as create_from_model
 
-log = logging.getLogger(__name__)
-log.setLevel(level=logging.DEBUG) # Kat
+log = logging.getLogger(__file__)
+handler = logging.StreamHandler(sys.stderr)
+formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
+handler.setFormatter(formatter)
+log.addHandler(handler)
+log.propagate = True
+# log.setLevel(logging.DEBUG)
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
@@ -49,7 +54,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     sys.path.append(model_creation_services.project.os_cwd)
 
     for each_resource_name in model_creation_services.resource_list:
-        log.debug("process_each_table: " + each_resource_name)
+        # log.debug("process_each_table: " + each_resource_name)
         if "TRANSFERFUNDx" in each_resource_name:
             log.debug("special table")  # debug stop here
         if model_creation_services.project.not_exposed is not None and each_resource_name + " " in model_creation_services.project.not_exposed:
@@ -74,7 +79,7 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     if model_creation_services.project.command.startswith("rebuild"):
         expose_api_models_path = Path(model_creation_services.project_directory).\
             joinpath('api/expose_api_models_created.py')
-        print(f'.. .. ..Rebuild - new api at api/expose_api_models_created (merge/replace expose_api_models as nec)')
+        log.debug(f'.. .. ..Rebuild - new api at api/expose_api_models_created (merge/replace expose_api_models as nec)')
         src = model_creation_services.project.api_logic_server_dir_path
         src = src.joinpath("project_prototype/api/expose_api_models.py")
         assert src.is_file()

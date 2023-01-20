@@ -1,0 +1,52 @@
+version: 1
+
+formatters:
+    simple:
+        format: "%(name)s - %(lineno)d -  %(message)s"
+        format: "%(message)s"
+
+    complex:
+        format: "%(asctime)s - %(name)s - %(lineno)d -  %(message)s"
+
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+
+    file:
+        class: logging.handlers.TimedRotatingFileHandler
+        when: midnight
+        backupCount: 5
+        level: DEBUG
+        formatter: simple
+        filename : Thrift.log
+
+root:
+  level: INFO
+  handlers: [console]
+
+loggers:
+# can I
+    create_from_model.api_logic_server_utils:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    sqlacodegen_wrapper.sqlacodegen.sqlacodegen.codegen:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+# find  a.  Create Models
+    api_logic_server_cli.sqlacodegen_wrapper.sqlacodegen_wrapper:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    create_from_model.model_creation_services:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
