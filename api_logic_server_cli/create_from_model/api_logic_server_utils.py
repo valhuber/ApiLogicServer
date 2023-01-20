@@ -25,14 +25,13 @@ def get_project_directory_and_api_name(project):
             rtn_merge_into_prototype -- preserve contents of current (".", "./") *prototype* project
     """
 
-    global os_cwd
     rtn_project_directory = project.project_name    # eg, '../../servers/ApiLogicProject'
     rtn_api_name = project.api_name                 # typically api
     rtn_merge_into_prototype = False        
     if rtn_project_directory.startswith("~"):
         rtn_project_directory = str(Path.home()) + rtn_project_directory[1:]
     if rtn_project_directory == '.' or rtn_project_directory == './':
-        rtn_project_directory = os_cwd
+        rtn_project_directory = project.os_cwd
         rtn_merge_into_prototype = True
         msg = ''
         if rtn_project_directory == get_api_logic_server_dir():
