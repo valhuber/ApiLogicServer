@@ -35,6 +35,7 @@ nav:
   - 4. Security:
     - "Overview": Security-Overview.md
     - "Authorization": Security-Authorization.md
+    - "Authentication": Security-Authentication.md
     - "Authentication Provider": Security-Authentication-Provider.md
     - "Activation": Security-Activation.md
   - "Using Your IDE": IDE-Customize.md

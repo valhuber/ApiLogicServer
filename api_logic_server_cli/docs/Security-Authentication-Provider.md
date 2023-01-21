@@ -1,6 +1,6 @@
 Authentication Providers are developer-supplied code, called by the system during login.  It is passed the id/password, and returns a user row and list of roles.
 
-The underlying presumptions:\
+The underlying presumptions:
 
 1. Multiple systems will share the same authentication data, so this data will be separate from each application
 
@@ -43,8 +43,9 @@ This provided to demonstrate a typical sql-based Authentication-Provider.
 
 Note this uses [Multi-DB Support](..Data-Model-Multi).  
 
-The database file is `security/authentication_provider/sql/authentication_db.sqlite`, patterned after an earlier prototype `admin_api.py` (currently unused).  This database adds:
+The database file is `security/authentication_provider/sql/authentication_db.sqlite`.  This database includes:
 
+* Users
 * Roles (`Role` and `UserRole`)
 * User.client_id, to test multi-tenant (the test user is **aneu**).
 
