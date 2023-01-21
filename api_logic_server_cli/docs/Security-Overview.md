@@ -124,51 +124,11 @@ This preview is _not_ meant to explore:
 
 * System issues such as performance, caching, etc.
 
-
 &nbsp;
 
-## Trying this on your own project
+### Trying this on your own project
 
 We'd love the feedback.  Follow the directions below, and please contact the authors.
-
-&nbsp;
-
-## Setup and Test
-
-You can explore this with and without configuration.  Use the [preview build](../#preview-version){:target="_blank" rel="noopener"}.
-
-&nbsp;
-
-### Sample: Pre-configured
-
-Security is enabled when building the sample app.  Test it as described in [Authorization](../Security-Authorization/#sample).
-
-&nbsp;
-
-### Configuring Security 
-
-To see how to configure security, you can rebuild the sample app without customizations:
-
-```bash
-ApiLogicServer create --project_name=nw --db_url=nw-
-```
-
-Then:
-
-1. Declare Grants
-    * Paste into your `security/declare_security.py` from [this sample](../Security-Authorization/#sample){:target="_blank" rel="noopener"}
-2. Set `SECURITY_ENABLED = True` in config.py
-3. Configure your Authentication-Provider.  You have 2 options - __either:__
-    * Use your own [Authentication-Provider](Security-Authentication-Provider){:target="_blank" rel="noopener"},
-    * Or, use the sqlite security database:
-        * This uses [Multi-Database Support](../Data-Model-Multi){:target="_blank" rel="noopener"} for the sqlite authentication data
-
-```bash
-    cd nw  # the project created above
-    ApiLogicServer add-db --db_url=auth --bind_key=authentication
-```
-
-Test it as described in [Authorization](../Security-Authorization/#sample).
 
 &nbsp;
 
