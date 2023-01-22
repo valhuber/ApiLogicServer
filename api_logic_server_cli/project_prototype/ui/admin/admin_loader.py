@@ -52,7 +52,17 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
         if path == "home.js":
             directory = "ui/admin"
         else:
+            from pathlib import Path
+            import inspect
+            from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
             directory = 'ui/safrs-react-admin'  # typical API Logic Server path (index.yaml)
+            if Path(directory).joinpath('robots.txt').is_file():
+                pass    # if exists, use local directory
+            else:       # else use installed sra
+                utils_str = inspect.getfile(utils)
+                sra_path = Path(utils_str).parent.joinpath('safrs-react-admin-npm-build')
+                directory = str(sra_path)
+
         if not did_send_spa:
             did_send_spa = True
             admin_logger.debug(f'return_spa - directory = {directory}, path= {path}')

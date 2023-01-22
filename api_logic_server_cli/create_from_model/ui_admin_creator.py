@@ -694,7 +694,11 @@ class AdminCreator(object):
                 log.debug(f'\n==> Error - safrs-react-admin... did you complete setup: https://valhuber.github.io/ApiLogicServer/Internals/')
                 log.debug(".. Setup required.  Really.")
                 exit(1)
-            shutil.copytree(from_proto_dir, to_project_dir)
+            use_sra_from_install = True
+            if use_sra_from_install:
+                log.debug(".. created app will use sra from ApiLogicServer install")
+            else:
+                shutil.copytree(from_proto_dir, to_project_dir)
 
         to_project_dir = pathlib.Path(self.mod_gen.project_directory).joinpath("ui", "admin")
         swagger_name = self.mod_gen.project.api_name

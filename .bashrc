@@ -1,4 +1,6 @@
 export PATH=$PATH:/home/api_logic_server/bin
+export PYTHONPATH="$PYTHONPATH:/home/api_logic_server"
+# echo PYTHONPATH=$PYTHONPATH
 
 ApiLogicServer welcome
 
