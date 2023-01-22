@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.29"
+__version__ = "07.00.30"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/20/2023 - 07.00.29: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec/cust \n"\
+    "\t01/21/2023 - 07.00.30: Updated venv/setup, no FAB, login runs, disable-able, tests, threaded, codespace, nw-, add-sec/cust \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -302,19 +302,20 @@ def create_project_with_nw_samples(project, msg: str) -> str:
             log.debug(f'.. ..Clone from {from_dir} ')
             cloned_from = from_dir
             try:
-                if project.merge_into_prototype:
-                    # tmpdirname = tempfile.TemporaryDirectory() 
-                    recursive_overwrite(project.project_directory, str(tmpdirname))       # user proto -> temp
-                    delete_dir(str(Path(str(tmpdirname)) / ".devcontainer"), "")  # clean it up
+                if project.merge_into_prototype:  # create project over current (e.g., docker, learning center)
+                    # tmpdirname = tempfile.TemporaryDirectory() # preserve files like Tech_Bits.md
+                    recursive_overwrite(project.project_directory, str(tmpdirname))  # save, restore @ end
+                    delete_dir(str(Path(str(tmpdirname)) / ".devcontainer"), "")     # except, do NOT restore these
                     delete_dir(str(Path(str(tmpdirname)) / "api"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "database"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "logic"), "")
+                    delete_dir(str(Path(str(tmpdirname)) / "security"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "test"), "")
                     delete_dir(str(Path(str(tmpdirname)) / "ui"), "")
                     if os.path.exists(str(Path(str(tmpdirname))  / "api_logic_server_run.py" )):
                         os.remove(str(Path(str(tmpdirname)) / "api_logic_server_run.py"))
                     delete_dir(realpath(project.project_directory), "")
-                    recursive_overwrite(from_dir, project.project_directory)  # ApiLogic Proto -> new project
+                    recursive_overwrite(from_dir, project.project_directory)  # ApiLogic Proto -> current (new) project
                 else:
                     shutil.copytree(from_dir, project.project_directory)  # normal path (fails if project_directory not empty)
             except OSError as e:
