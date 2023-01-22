@@ -53,8 +53,17 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
             directory = "ui/admin"
         else:
             from pathlib import Path
-            import inspect
-            from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
+            import os, inspect
+            try:
+                from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
+            except:
+                dev_home = os.getenv('APILOGICSERVER_HOME')
+                if dev_home:
+                    sys.path.append(dev_home)
+                    admin_logger.debug("ApiLogicServer not in venv, trying APILOGICSERVER_HOME")
+                    from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
+                else:
+                    raise Exception('ApiLogicServer not in venv, env APILOGICSERVER_HOME must be set')
             directory = 'ui/safrs-react-admin'  # typical API Logic Server path (index.yaml)
             if Path(directory).joinpath('robots.txt').is_file():
                 pass    # if exists, use local directory
@@ -62,6 +71,11 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
                 utils_str = inspect.getfile(utils)
                 sra_path = Path(utils_str).parent.joinpath('safrs-react-admin-npm-build')
                 directory = str(sra_path)
+
+        if not did_send_spa:
+            did_send_spa = True
+            admin_logger.debug(f'return_spa - directory = {directory}, path= {path}')
+        return send_from_directory(directory, path)
 
         if not did_send_spa:
             did_send_spa = True
