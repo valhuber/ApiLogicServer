@@ -26,7 +26,7 @@ class Project(ProjectArgs):
 
         self.copy_to_project_directory = None
         self.merge_into_prototype = None
-        """ used by codespaces - project_name = ./ """
+        """ used by codespaces (create project over current) - project_name = ./ """
 
         self.model_gen_bind_msg = False
         """ sqlacodegen/codegen msg printed """
