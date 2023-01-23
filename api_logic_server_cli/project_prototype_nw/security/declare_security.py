@@ -4,8 +4,7 @@ import database
 import safrs
 import logging
 
-app_logger = logging.getLogger("api_logic_server_app")
-app_logger.debug("logic/declare_logic.py")
+app_logger = logging.getLogger(__name__)
 
 db = safrs.DB
 session = db.session

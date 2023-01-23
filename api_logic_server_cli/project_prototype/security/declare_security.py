@@ -1,9 +1,12 @@
 from security.system.authorization import Grant, Security
+import logging
 from database import models
 import safrs
 
 db = safrs.DB
 session = db.session
+
+app_logger = logging.getLogger(__name__)
 
 '''
 

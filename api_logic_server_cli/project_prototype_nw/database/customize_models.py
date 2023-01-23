@@ -9,7 +9,8 @@ from sqlalchemy.orm import relationship, remote, foreign
     and preserve customizations over iterations (regenerations of models.py).
 """
 
-app_logger = logging.getLogger("api_logic_server_app")
+app_logger = logging.getLogger(__name__)
+
 # add relationship: https://docs.sqlalchemy.org/en/13/orm/join_conditions.html#specifying-alternate-join-conditions
 models.Employee.Manager = relationship('Employee', cascade_backrefs=True, backref='Manages',
                                        primaryjoin=remote(models.Employee.Id) == foreign(models.Employee.ReportsTo))

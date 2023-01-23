@@ -32,7 +32,7 @@ import config
 
 authentication_provider = config.Config.SECURITY_PROVIDER
 
-security_logger = logging.getLogger('api_logic_server_app')
+security_logger = logging.getLogger(__name__)
 
 JWT_EXCLUDE = 'jwt_exclude'
 

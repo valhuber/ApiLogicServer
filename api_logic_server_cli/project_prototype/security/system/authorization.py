@@ -21,7 +21,7 @@ from flask_jwt_extended import current_user   # th import func
 from config import Config
 authentication_provider = Config.SECURITY_PROVIDER
 
-security_logger = logging.getLogger('api_logic_server_app')
+security_logger = logging.getLogger(__name__)
 
 security_logger.debug(f'\nAuthorization loaded via api_logic_server_run.py -- import \n')
 

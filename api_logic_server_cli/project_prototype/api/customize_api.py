@@ -17,8 +17,7 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 # called by api_logic_server_run.py, to customize api (new end points, services).
 # separate from expose_api_models.py, to simplify merge if project recreated
 
-app_logger = logging.getLogger("api_logic_server_app")
-
+app_logger = logging.getLogger(__name__)
 
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ Customize API - new end points for services """

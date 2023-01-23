@@ -9,8 +9,8 @@ import logging
 preferred_approach = True
 """ Some examples below contrast a preferred approach with a more manual one """
 
-app_logger = logging.getLogger("api_logic_server_app")
-app_logger.debug("logic/declare_logic.py")
+app_logger = logging.getLogger(__name__)
+
 
 def declare_logic():
     """ 

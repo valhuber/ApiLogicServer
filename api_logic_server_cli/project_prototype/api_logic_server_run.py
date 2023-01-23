@@ -18,7 +18,7 @@
 ==============================================================================
 """
 
-import os, logging, sys, io
+import os, logging, logging.config, sys, yaml
 
 
 def is_docker() -> bool:
@@ -59,14 +59,20 @@ os.chdir(project_dir)  # so admin app can find images, code
 #       LOGGING SETUP
 # ================================== 
 
-app_logger = logging.getLogger('api_logic_server_app')
-handler = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
-handler.setFormatter(formatter)
-app_logger.addHandler(handler)
-app_logger.propagate = True
+current_path = os.path.abspath(os.path.dirname(__file__))
+with open(f'{current_path}/logging.yml','rt') as f:
+        config=yaml.safe_load(f.read())
+        f.close()
+logging.config.dictConfig(config)  # log levels: critical < error < warning(20) < info(30) < debug
+app_logger = logging.getLogger(__name__)
+debug_value = os.getenv('APILOGICPROJECT')
+if debug_value is not None:
+    debug_value = debug_value.upper()
+    if debug_value.startswith("F") or debug_value.startswith("N"):
+        app_logger.setLevel(logging.INFO)
+    else:
+        app_logger.setLevel(logging.DEBUG)
 
-app_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
 
 args = ""
 arg_num = 0

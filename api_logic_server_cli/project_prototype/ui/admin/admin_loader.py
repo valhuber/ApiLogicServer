@@ -9,12 +9,7 @@ import logging, sys, io
 from flask import Flask, redirect, send_from_directory, send_file
 from config import Config
 
-admin_logger = logging.getLogger('admin loader')
-handler = logging.StreamHandler(sys.stderr)
-formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
-handler.setFormatter(formatter)
-admin_logger.addHandler(handler)
-admin_logger.propagate = True
+admin_logger = logging.getLogger(__name__)
 
 admin_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
 

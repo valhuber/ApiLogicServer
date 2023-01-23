@@ -11,8 +11,8 @@ def declare_logic():
     """
     Declare Logic here, using Python with code completion.
     """
-    app_logger = logging.getLogger("api_logic_server_app")
-    app_logger.debug("logic/declare_logic.py")
+    app_logger = logging.getLogger(__name__)
+
 
     """ example from default database
     
