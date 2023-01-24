@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.34"
+__version__ = "07.00.35"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/22/2023 - 07.00.34: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log \n"\
+    "\t01/23/2023 - 07.00.35: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\

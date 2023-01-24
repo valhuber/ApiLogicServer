@@ -1,12 +1,6 @@
 from security.authentication_provider.abstract_authentication_provider import Abstract_Authentication_Provider
 from typing import List, Optional
-import safrs
 from safrs import jsonapi_rpc
-from safrs import SAFRSBase
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import create_refresh_token
-from flask_jwt_extended import create_access_token
-from flask import abort
 
 # **********************
 # in mem auth provider
@@ -20,47 +14,8 @@ from dataclasses import dataclass
 class DataClassUserRole:
     role_name: str
 
-
-class DataClassUser(safrs.JABase):
-    """
-    Required machinery for swagger visibility
-    """
-
-    def __init__(self, name: str, id: str, client_id: int, password: str):
-        self.id = id
-        self.password= password
-        self.client_id = client_id
-        self.name = name
-        self.UserRoleList = []
-
-    # called by authentication
-    def check_password(self, password=None):
-        # print(password)
-        return password == self.password
-
-    @classmethod
-    @jsonapi_rpc(http_methods=["POST"])
-    def login(self, *args, **kwargs):  # yaml comment => swagger description
-        """ # yaml creates Swagger description
-            args :
-                id: u1
-                password: p
-        """
-
-        # test using swagger -> try it out (includes sample data, above)
-
-        id = kwargs.get("id", None)
-        password = kwargs.get("password", None)
-
-        user = users[id]
-        if not user or not user.check_password(password):
-            abort(401, "Wrong username or password")
-
-        access_token = create_access_token(identity=user)
-        return { "access_token" : access_token}
-
 @dataclass
-class DataClassUserZ(SAFRSBase):
+class DataClassUser:
     name: str
     client_id: int
     id: str
@@ -103,11 +58,6 @@ class Authentication_Provider(Abstract_Authentication_Provider):
         row object is a DotMap (as here) or a SQLAlchemy row
         """
         return users[id]
-    
-
-    @staticmethod
-    def initialize(api):
-        api.expose_object(DataClassUser)
 
 def add_user(name: str, id: int, password: str):
     user = DataClassUser( name=name, id=name, client_id=id, password=password)
