@@ -245,7 +245,6 @@ def login():
     header = {'Authorization': 'Bearer {}'.format(f'{token}')}
     return header
 
-
 def multi_database_tests():
 
     print(f'Multi-Database Tests')
@@ -477,6 +476,10 @@ if Config.do_install_api_logic_server:
         f'{set_venv} && {python} -m pip install pyodbc==4.0.34',
         cwd=install_api_logic_server_path,
         msg=f'\nInstall pyodbc')
+
+if len(sys.argv) > 0 and sys.argv[1] == 'build-only':
+    print("\nBuild/Install successful\n\n")
+    exit (0)
 
 if Config.do_create_api_logic_project:
     result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',

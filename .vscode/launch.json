@@ -15,6 +15,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "BUILD ONLY",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/tests/build_and_test",
+            "program": "build_and_test.py",
+            "redirectOutput": true,
+            "args": ["build-only"],
+            "justMyCode": false,
+            "console": "integratedTerminal"
+        },
+        {
             "name": "0 - Create and Run ApiLogicProject",
             "type": "python",
             "request": "launch",

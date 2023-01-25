@@ -60,7 +60,7 @@ os.chdir(project_dir)  # so admin app can find images, code
 # ================================== 
 
 current_path = os.path.abspath(os.path.dirname(__file__))
-with open(f'{current_path}/logging.yml','rt') as f:
+with open(f'{current_path}/logging.yml','rt') as f:  # see also logic/declare_logic.py
         config=yaml.safe_load(f.read())
         f.close()
 logging.config.dictConfig(config)  # log levels: critical < error < warning(20) < info(30) < debug
