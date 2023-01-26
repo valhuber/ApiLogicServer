@@ -20,7 +20,6 @@ To __explore code__, click the _Sample Code_ link - that will open that code fil
 
 To __run__, use the Run/Debug configurations ("play" button, upper left).  There are 3 web apps you can run:
 
-
 1. __Basic Flask: hand-coded__ web app with minimal functionality
 
 2. __API Logic Server: Uncustomized *automation*__.  Using the [Northwind Database](https://valhuber.github.io/ApiLogicServer/Sample-Database/), this illustrates what you can expect for an initial project using your own database
@@ -59,9 +58,9 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 
 &nbsp;
 
-Instead of frameworks, we might employ a Low Code approach.  However, these often require extensive screen painting, and typically require a proprietary IDE.
+Instead of frameworks, we might employ a Low Code approach.  Low Code tools provide excellent custom user interfaces.  However, these often require extensive screen painting, and typically require a proprietary IDE.
 
-The *API Logic Project No Customization* app provides an alternative, creating an entire project by reading your schema:
+The *API Logic Project No Customization* app provides an alternative, creating an entire project by reading your schema.  This approach is:
 
 * **Faster** than Low Code, with instant APIs and Admin User Interfaces:
 
@@ -72,6 +71,12 @@ The *API Logic Project No Customization* app provides an alternative, creating a
       * Custom UIs can be built using your tool of choice (React, Angular, etc), using the API
 
 * **Fully Extensible** using standard IDEs such as VSCode or PyCharm.  All of the key technology concepts you mastered above (Flask, SQLAlchemy) still fully apply.
+
+This application was created using the API Logic Server CLI (Command Language Interface), as follows:
+
+```bash
+ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
+```
 
 
 </details>
@@ -92,6 +97,16 @@ A unique feature of API Logic Server is provision for:
 * **Business Logic Automation:** using unique spreadsheet-like rules, extensible with Python 🏆
 
 * These are declared in your IDE, with full support for code completion, logging, and debugging
+
+This application is a clone of the prior example, customized in VSCode:
+
+* **API:** additional endpoints are defined in ```ApiLogicProject/api/customize_api.py```
+* **Logic:**
+  ** **Rules** are declared in  ```ApiLogicProject/logic/declare_logic.py```
+  ** **Security** (multi-tenant support) is declared in ```ApiLogicProject/security/declare_security.py```
+* **User Interface:** alterations are visible in ```ApiLogicProject/ui/admin/admin.yaml```
+
+You can use VSCode to *diff* these from their originals in the *ApiLogicProjectNoCustomizations*.
 
 </details>
 
