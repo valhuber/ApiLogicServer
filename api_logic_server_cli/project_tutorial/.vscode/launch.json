@@ -1,0 +1,94 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Basic Flask",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/Basic_app",
+            "program": "flask_basic.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "ApiLogicProjectNoCust",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/ApiLogicProjectNoCust",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "ApiLogicProject",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/ApiLogicProject",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Behave Run",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/ApiLogicProject/test/api_logic_server_behave",
+            "program": "${workspaceFolder}/test/api_logic_server_behave/behave_run.py",
+            "redirectOutput": true,
+            "args": [ "--outfile=${workspaceFolder}/test/api_logic_server_behave/logs/behave.log"],
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Behave Scenario",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}ApiLogicProject/test/api_logic_server_behave",
+            "program": "${workspaceFolder}/test/api_logic_server_behave/behave_run.py",
+            "redirectOutput": true,
+            "args": [ "--outfile=${workspaceFolder}/test/api_logic_server_behave/logs/behave.log",
+                "--name=Clone Existing Order"],
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Behave Logic Report",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/test/api_logic_server_behave",
+            "program": "${workspaceFolder}/ApiLogicProject/test/api_logic_server_behave/behave_logic_report.py",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "args": ["run"
+                ,"--prepend_wiki=reports/Behave Logic Report Intro.md"
+                ,"--wiki=reports/Behave Logic Report.md"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Module",
+            "type": "python",
+            "request": "launch",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "module": "enter-your-module-name"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "console": "integratedTerminal"
+        }
+    ]
+}

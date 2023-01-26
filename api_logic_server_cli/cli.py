@@ -187,6 +187,34 @@ def welcome(ctx):
     """
 
 
+@main.command("tutorial")
+@click.pass_context
+def tutorial(ctx):
+    """
+    Creates (updates) Tutorial
+
+    Contains 3 project: basic_flask, ApiLogicProject, ApiLogicProjectNoCustomizations
+    
+    example: 
+    cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
+    ApiLogicServer add-security
+    
+    """
+    project_name=os.getcwd()
+    if project_name == get_api_logic_server_dir():  # for ApiLogicServer dev (from |> Run and Debug )
+        project_name = str(Path(project_name).parent.parent.joinpath("servers"))
+    else:
+        project_name = str(Path(project_name))
+
+    project = PR.ProjectRun(command="tutorial", 
+              project_name=project_name, 
+              db_url="",
+              execute=False
+              )
+    project.tutorial(msg="Create Tutorial")
+    log.info("")
+
+
 @main.command("create")
 @click.option('--project_name',
               default=f'{default_project_name}',

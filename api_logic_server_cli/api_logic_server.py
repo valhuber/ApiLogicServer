@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.35"
+__version__ = "07.00.37"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/23/2023 - 07.00.35: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log \n"\
+    "\t01/25/2023 - 07.00.37: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -599,45 +599,6 @@ def invoke_creators(model_creation_services: ModelCreationServices):
     # model_creation_services.close_app()  # this may no longer be required
 
 
-def add_security_FIXME(project: Project, msg: str, is_nw: bool = False):
-    """_summary_
-
-    Args:
-        project (Project): the project object
-        msg (str): eg: ApiLogicProject customizable project created.  Adding Security:")
-        is_nw (str): is northwind, which means we add the nw security logic
-    """
-    log.debug("\n\n==================================================================")
-    log.debug(msg)
-    log.debug("  ..Step 1.  ApiLogicServer add-db --db_url=auth --bind_key=authentication")
-    log.debug("==================================================================5\n")
-    project.command = "add_db"
-    project.bind_key = "authentication"
-    project.db_url = "auth"  # shorthand for api_logic_server_cli/database/auth...
-    save_run = project.run
-    project.run = False
-    project.create_project()
-    project.run = save_run
-    log.debug("\n==================================================================")
-    log.debug("  ..Step 2. Set SECURITY_ENABLED in config.py")
-    log.debug("==================================================================\n")
-    create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
-                        replace_with='SECURITY_ENABLED = True  #',
-                        in_file=f'{project.project_directory}/config.py')
-    if is_nw:
-        log.debug("\n==================================================================")
-        log.debug("  ..Step 3. Adding Sample authorization to security/declare_security.py")
-        log.debug("==================================================================\n\n")
-        nw_declare_security_py_path = project.api_logic_server_dir_path.\
-            joinpath('project_prototype_nw/security/declare_security.py')
-        declare_security_py_path = project.project_directory_path.joinpath('security/declare_security.py')
-        shutil.copyfile(nw_declare_security_py_path, declare_security_py_path)
-    else:
-        log.debug("\n==================================================================")
-        log.debug("  .. Step 3. TODO: Declare authorization in security/declare_security.py")
-        log.debug("==================================================================\n\n")
-
-
 class ProjectRun(Project):
     """ Main Class - instantiate / create_project to run CLI functions """
     def __init__(self, command: str, project_name: str, 
@@ -942,6 +903,51 @@ class ProjectRun(Project):
         log.info(".. complete\n")
 
 
+    def tutorial(self, msg: str=""):
+        """_summary_
+        Creates (updates) Tutorial
+
+        Contains 3 project: basic_flask, ApiLogicProject, ApiLogicProjectNoCustomizations
+        
+        example: 
+        cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
+        """
+        
+        target_project = self.project_name  # eg, ApiLogicServer (or, in dev, server)
+        target_project_path = Path(target_project)
+        self.project_directory_path = Path(self.project_name)
+        self.project_directory_actual = self.project_directory_path
+        # if not self.project_directory_path.exists():
+        #    os.mkdir(self.project_directory_path, mode = 0o777)
+        
+        shutil.copytree(dirs_exist_ok=True,
+            src=self.api_logic_server_dir_path.joinpath('project_tutorial'),
+            dst=target_project_path.joinpath('tutorial'))
+
+        self.command = "create"
+        self.project_name = str(target_project_path.joinpath("tutorial/ApiLogicProjectNoCust"))
+        self.db_url = "nw-"  # shorthand for sample db, no cust
+        save_run = self.run
+        self.run = False
+        self.create_project()
+
+        no_cust = self.project_name
+        with_cust = str(target_project_path.joinpath("tutorial/ApiLogicProject"))
+        shutil.copytree(dirs_exist_ok=True,
+            src=no_cust,
+            dst=with_cust)
+        
+        self.project_name = with_cust
+        """
+        self.project_directory = str(with_cust)
+        self.project_directory_path = Path(with_cust)
+        self.project_directory_actual = self.project_directory
+        """
+        self.command = "add-cust"
+        self.add_nw_customizations()
+        self.run = save_run
+
+
     def create_project(self):
         """
         Creates logic-enabled Python safrs api/admin project, options for FAB and execution
@@ -1094,3 +1100,4 @@ def key_module_map():
     create_utils.get_abs_db_url()                           # nw set here, dbname
     ProjectRun.update_config_and_copy_sqlite_db()           # adds db (model, binds, api, app) to curr project
     ProjectRun.add_sqlite_security()                        # add_db(auth), adds nw declare_security, upd config
+    ProjectRun.tutorial()                                   # creates basic, nw, nw + cust

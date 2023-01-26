@@ -1,0 +1,13 @@
+.DS_Store
+/build/
+/dist/
+**/__pycache__
+*.egg-info
+venv/
+test/api_logic_server_behave/scenario_logic_logs/
+*.idea
+ApiLogicProject/.devcontainer
+ApiLogicProject/.vscode
+ApiLogicProject/**/__pycache__
+Thrift.log
+*.pyc
