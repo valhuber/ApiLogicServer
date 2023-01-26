@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Basic Flask",
+            "name": "1. Basic Flask: hand-coded",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/Basic_app",
@@ -15,7 +15,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "ApiLogicProjectNoCust",
+            "name": "2. API Logic Server: Uncustomized Automation",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/ApiLogicProjectNoCust",
@@ -26,7 +26,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "ApiLogicProject",
+            "name": "3. API Logic Project: Logic and Security",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/ApiLogicProject",

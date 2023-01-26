@@ -21,11 +21,11 @@ To __explore code__, click the _Sample Code_ link - that will open that code fil
 To __run__, use the Run/Debug configurations ("play" button, upper left).  There are 3 web apps you can run:
 
 
-* Basic Flask - a __hand-coded__ web app with minimal functionality
+1. __Basic Flask: hand-coded__ web app with minimal functionality
 
-* API Logic Server No Customizations - __automated__ by API Logic server.  Using the [Northwind Database](https://valhuber.github.io/ApiLogicServer/Sample-Database/), this illustrates what you can expect for an initial project using your own database
+2. __API Logic Server: Uncustomized *automation*__.  Using the [Northwind Database](https://valhuber.github.io/ApiLogicServer/Sample-Database/), this illustrates what you can expect for an initial project using your own database
 
-* API Logic Project - Customized, illustrating the use of a standard IDE to add code, and declarative logic and security
+3. __API Logic Project: Logic and Security__, illustrating the use of a standard IDE to add code, and declarative logic and security
 
 
 </details>
@@ -36,7 +36,7 @@ To __run__, use the Run/Debug configurations ("play" button, upper left).  There
 
 &nbsp;
 
-<summary>1. Basic Flask / SQLAlchemy</summary>
+<summary>1. Basic Flask: hand-coded Flask / SQLAlchemy</summary>
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
@@ -55,7 +55,7 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 <details markdown>
 
 
-<summary>2. API Logic Server: automation, standard customization</summary>
+<summary>2. API Logic Server: Uncustomized Automation, standard customization</summary>
 
 &nbsp;
 
@@ -81,7 +81,7 @@ The *API Logic Project No Customization* app provides an alternative, creating a
 <details markdown>
 
 
-<summary>3. Api Logic Server: Unique Declarative Logic and Security</summary>
+<summary>3. Api Logic Server: Logic and Security - Unique Declarative Rules</summary>
 
 &nbsp;
 
