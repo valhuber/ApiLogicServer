@@ -45,10 +45,28 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 
 * any security, or business logic (multi-table derivations and constraints).
 
+To run:
+
+1. Execute the Run Configuration: **Basic App: Flask / SQLAlchemy**
+
+2. Use cURL to exercise the endpoint, as shown in the console log
+
+<details markdown>
+
+<summary> Show me how </summary>
+
+&nbsp;
+
+TBD
+
+</details>
 
 </details>
 
 &nbsp;
+
+</details>
+
 
 <details markdown>
 
@@ -72,6 +90,7 @@ The *API Logic Project No Customization* app provides an alternative, creating a
 * **Open:** a fully open approach:
 
   * **Open Source:** install with pip or docker
+
   * **Open Technology:** using standard IDEs such as VSCode or PyCharm.  All of the key technology concepts you mastered above (Flask, SQLAlchemy) still fully apply.
 
 This application was created using the API Logic Server CLI (Command Language Interface), with 1 command:
@@ -82,7 +101,7 @@ ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwi
 
 To run:
 
-1. Execute the Run Configuration: 2. API Logic Server: Uncustomized Automation
+1. Execute the Run Configuration: **2. API Logic Server: Instant, Open**
 
 2. Run the admin app: **Ports > Admin App > globe**
 
@@ -99,10 +118,11 @@ TBD
 </details>
 
 &nbsp;
+
 <details markdown>
 
 
-<summary>3. Api Logic Project Logic: Unique Spreadsheet-like Rules are 40X More Concise</summary>
+<summary>3. Api Logic Project Logic: Unique Spreadsheet-like Rules -- 40X More Concise</summary>
 
 &nbsp;
 

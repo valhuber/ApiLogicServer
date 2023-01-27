@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "1. Basic Flask: hand-coded",
+            "name": "1. Basic App: Flask / SQLAlchemy",
             "type": "python",
             "env": {"APILOGICPROJECT": "False"},
             "request": "launch",
