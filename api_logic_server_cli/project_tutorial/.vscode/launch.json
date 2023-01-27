@@ -38,6 +38,39 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Execute ToDo",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/todo",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Execute Chinook",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/chinook",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Execute Classic Models",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/classicmodels",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Behave Run",
             "type": "python",
             "request": "launch",

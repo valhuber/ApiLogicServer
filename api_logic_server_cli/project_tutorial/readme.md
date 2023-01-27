@@ -1,5 +1,3 @@
-&nbsp;&nbsp;&nbsp;
-
 # Tutorial
 
 <details markdown>
@@ -78,6 +76,11 @@ This application was created using the API Logic Server CLI (Command Language In
 ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
 ```
 
+To run:
+
+1. Execute the Run Configuration: 2. API Logic Server: Uncustomized Automation
+
+2. Run the admin app: **Ports > Admin App > globe**
 
 </details>
 
@@ -107,6 +110,30 @@ This application is a clone of the prior example, customized in VSCode:
 * **User Interface:** alterations are visible in ```ApiLogicProject/ui/admin/admin.yaml```
 
 You can use VSCode to *diff* these from their originals in the *ApiLogicProjectNoCustomizations*.
+
+</details>
+
+&nbsp;
+
+<details markdown>
+
+&nbsp;
+
+<summary>Next steps: create a new project</summary>
+
+
+As shown, easy, prepackaged
+
+```bash
+cd tutorial
+ApiLogicServer create --project_name=todo --db_url=todo
+```
+You can also try (be sure to `cd tutorial`):
+
+* chinook
+* classicmodels
+
+Launch configurations have been pre-created, then re-execute the Admin app as above.
 
 </details>
 
