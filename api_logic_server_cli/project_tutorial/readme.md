@@ -57,7 +57,13 @@ To run:
 
 &nbsp;
 
-TBD
+To run the basic app:
+
+1. Click Run Configurations, and the green button to start the server
+
+2. Copy the `cURL` text, and paste it into the `bash` window
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/1-basic-app.png?raw=true"></figure>
 
 </details>
 
@@ -111,7 +117,16 @@ To run:
 
 &nbsp;
 
-TBD
+To run the ApiLogicProject app:
+
+1. Click Run Configurations, select **2. API Logic Server: Instant, Open**, and click the green button to start the server
+
+2. Click the **Ports** tab
+
+3. Click the **globe** to start your Browser
+
+
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/2-apilogicproject.png?raw=true"></figure>
 
 </details>
 
