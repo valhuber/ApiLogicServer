@@ -7,6 +7,7 @@
         {
             "name": "1. Basic Flask: hand-coded",
             "type": "python",
+            "env": {"APILOGICPROJECT": "False"},
             "request": "launch",
             "cwd": "${workspaceFolder}/Basic_app",
             "program": "flask_basic.py",

@@ -65,13 +65,14 @@ with open(f'{current_path}/logging.yml','rt') as f:  # see also logic/declare_lo
         f.close()
 logging.config.dictConfig(config)  # log levels: critical < error < warning(20) < info(30) < debug
 app_logger = logging.getLogger(__name__)
-debug_value = os.getenv('APILOGICPROJECT')
-if debug_value is not None:
+debug_value = os.getenv('APILOGICPROJECT_DEBUG')
+if debug_value is not None:  # > export APILOGICPROJECT_DEBUG=True
     debug_value = debug_value.upper()
     if debug_value.startswith("F") or debug_value.startswith("N"):
         app_logger.setLevel(logging.INFO)
     else:
         app_logger.setLevel(logging.DEBUG)
+        app_logger.debug(f'\nDEBUG level set from env\n')
 
 
 args = ""

@@ -8,12 +8,41 @@ events handlers for the admin app
 import logging, sys, io
 from flask import Flask, redirect, send_from_directory, send_file
 from config import Config
+from pathlib import Path
+import os, inspect
 
-admin_logger = logging.getLogger(__name__)
-
-admin_logger.setLevel(logging.INFO)  # log levels: critical < error < warning(20) < info(30) < debug
+admin_logger = logging.getLogger(__name__)  # log levels: critical < error < warning(20) < info(30) < debug
 
 did_send_spa = False
+
+def get_sra_directory() -> str:
+    """
+    return location of minified sra, which can be...
+
+    1. in the venv (from install or Docker) -- the normal case (small projects, less git)
+    2. local to project: ui/safrs-react-admin
+    3. for internal dev use, in env(APILOGICSERVER_HOME) (dev venv does not contain ALS)
+    """
+    directory = 'ui/safrs-react-admin'  # local project sra typical API Logic Server path (index.yaml)
+    if Path(directory).joinpath('robots.txt').is_file():
+        admin_logger.debug("return_spa - using local directory")
+    else:       # else use installed sra - from venv, or, for dev, in APILOGICSERVER_HOME
+        try:
+            from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
+        except:
+            dev_home = os.getenv('APILOGICSERVER_HOME')
+            if dev_home:
+                sys.path.append(dev_home)
+                admin_logger.debug("ApiLogicServer not in venv, trying APILOGICSERVER_HOME")
+                from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
+            else:
+                raise Exception('ApiLogicServer not in venv, env APILOGICSERVER_HOME must be set')
+        admin_logger.debug("return_spa - install directory")
+        utils_str = inspect.getfile(utils)
+        sra_path = Path(utils_str).parent.joinpath('safrs-react-admin-npm-build')
+        directory = str(sra_path)
+    return directory
+
 
 def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PREFIX: str, ValidationError: object, http_type: str):
     """ events for serving minified safrs-admin, using admin.yaml
@@ -25,63 +54,45 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
             Custom url: http://localhost:5656/admin/custom_app
         """
         global did_send_spa
+        admin_logger.debug(f'API Logic Server - Start Custom App, return minified sra')
         if True or not did_send_spa:
             did_send_spa = True
             admin_logger.info(f'\nStart Custom App ({path}): return spa "ui/safrs-react-admin", "index.html"\n')
-        return send_from_directory('ui/safrs-react-admin', 'index.html')  # unsure how admin finds custom url
+        directory = get_sra_directory()
+        return send_from_directory(directory, 'index.html')  # unsure how admin finds custom url
 
     @flask_app.route('/')
     def start_default_app():
         """ Step 1 - Start default Admin App 
             Default URL: http://localhost:5656/ 
         """
-        admin_logger.debug(f'API Logic Server - Start Default App - redirect /admin-app/index.html')
+        admin_logger.info(f'API Logic Server - Start Default App - redirect /admin-app/index.html')
         return redirect('/admin-app/index.html')  # --> return_spa
 
     @flask_app.route("/admin-app/<path:path>")
     def return_spa(path=None):
-        """ Step 2 - return minified safrs-react-admin app
-            This is in ui/safrs-react-admin (ultimately acquired from safrs-react-admin/build) 
+        """ Step 2 - return minified sra for default admin app
         """
         global did_send_spa
         if path == "home.js":
             directory = "ui/admin"
         else:
-            from pathlib import Path
-            import os, inspect
-            try:
-                from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
-            except:
-                dev_home = os.getenv('APILOGICSERVER_HOME')
-                if dev_home:
-                    sys.path.append(dev_home)
-                    admin_logger.debug("ApiLogicServer not in venv, trying APILOGICSERVER_HOME")
-                    from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
-                else:
-                    raise Exception('ApiLogicServer not in venv, env APILOGICSERVER_HOME must be set')
-            directory = 'ui/safrs-react-admin'  # typical API Logic Server path (index.yaml)
-            if Path(directory).joinpath('robots.txt').is_file():
-                pass    # if exists, use local directory
-            else:       # else use installed sra
-                utils_str = inspect.getfile(utils)
-                sra_path = Path(utils_str).parent.joinpath('safrs-react-admin-npm-build')
-                directory = str(sra_path)
+            directory = get_sra_directory()
 
         if not did_send_spa:
             did_send_spa = True
             admin_logger.debug(f'return_spa - directory = {directory}, path= {path}')
+
         return send_from_directory(directory, path)
 
-        if not did_send_spa:
-            did_send_spa = True
-            admin_logger.debug(f'return_spa - directory = {directory}, path= {path}')
-        return send_from_directory(directory, path)
 
     @flask_app.route('/ui/admin/<path:path>')
     def admin_yaml(path=None):
-        """ Step 3 - return admin file response: /ui/admin/<path:path> (to now-running safrs-react-admin app)
+        """ Step 3 - return admin file response (to now-running safrs-react-admin app)
             and text-substitutes to get url args from startup args (avoid specify twice for *both* server & admin.yaml)
+
             api_root: {http_type}://{swagger_host}:{swagger_port} (from ui_admin_creator)
+
             e.g. http://localhost:5656/ui/admin/admin.yaml
         """
         use_type = "mem"
@@ -109,6 +120,7 @@ def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PRE
         """
         response = send_file(f'ui/images/{path}', mimetype='image/jpeg')
         return response
+
 
     @flask_app.errorhandler(ValidationError)
     def handle_exception(e: ValidationError):

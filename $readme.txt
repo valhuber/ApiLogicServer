@@ -2,6 +2,21 @@ nw_readme.md -> README.md
     * remove internal IDE links
     just a note
 
+"""  Admin App Failing
+should see...
+Start Custom App (authentication_admin/): return spa "ui/safrs-react-admin", "index.html"
+127.0.0.1 - - [26/Jan/2023 10:20:55] "GET /admin/authentication_admin/ HTTP/1.1" 200 -
+127.0.0.1 - - [26/Jan/2023 10:20:55] "GET /admin-app/manifest.json HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jan/2023 10:20:55] "GET /admin-app/static/css/main.a0c288b7.css HTTP/1.1" 304 -
+127.0.0.1 - - [26/Jan/2023 10:20:55] "GET /admin-app/static/js/main.d382c846.js HTTP/1.1" 304 -
+
+But see...
+Start Custom App (authentication_admin/): return spa "ui/safrs-react-admin", "index.html"
+127.0.0.1 - - [26/Jan/2023 10:16:54] "GET /admin/authentication_admin/ HTTP/1.1" 404 -
+
+It's due to getting sra from install instead of project (whether dev or installed).
+But (!) it does run from dev.
+"""
 
 git 120af3a
 https://stackoverflow.com/questions/53653083/how-to-correctly-set-pythonpath-for-visual-studio-code
