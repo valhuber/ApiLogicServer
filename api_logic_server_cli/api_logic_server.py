@@ -436,7 +436,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
         create_utils.insert_lines_at(lines=db_types_data,
                                     at="(typically via --db_types)",
                                     file_name=models_file_name)
-    if nw_db_status in ["nw", "nw+"]:
+    if nw_db_status in ["nw", "nw+", "nw-"]:
         log.debug(f'.. .. ..Setting cascade delete for sample database database/models.py')
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
