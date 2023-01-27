@@ -21,14 +21,11 @@
 	"portsAttributes": {
 		"5656": {
 			"label": "AdminApp"
-		},
-		"8080": {
-			"label": "Basic"
-		},
+		}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [5656, 8080],
+	"forwardPorts": [5656],
 	
 	"features": {
 		"github-cli": "latest"

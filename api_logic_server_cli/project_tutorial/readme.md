@@ -33,7 +33,7 @@ To __run__, use the Run/Debug configurations ("play" button, upper left).  There
 
 &nbsp;
 
-<summary>1. Basic App: hand-coded Flask / SQLAlchemy</summary>
+<summary>1. Basic App: Flask / SQLAlchemy -- flexible, but slow</summary>
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
@@ -49,10 +49,11 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 </details>
 
 &nbsp;
+
 <details markdown>
 
 
-<summary>2. API Logic Project NoCust: Uncustomized Automation, standard customization</summary>
+<summary>2. API Logic Project: Instant, Open</summary>
 
 &nbsp;
 
@@ -60,7 +61,7 @@ Instead of frameworks, we might employ a Low Code approach.  Low Code tools prov
 
 The *API Logic Project No Customization* app provides an alternative, creating an entire project by reading your schema.  This approach is:
 
-* **Faster** than Low Code, with instant APIs and Admin User Interfaces:
+* **Instant:** faster than Low Code screen painting, with instant APIs and Admin User Interfaces:
 
   * **API:** an endpoint for each table, with filtering, sorting, pagination and related data access
 
@@ -68,9 +69,12 @@ The *API Logic Project No Customization* app provides an alternative, creating a
 
       * Custom UIs can be built using your tool of choice (React, Angular, etc), using the API
 
-* **Fully Extensible** using standard IDEs such as VSCode or PyCharm.  All of the key technology concepts you mastered above (Flask, SQLAlchemy) still fully apply.
+* **Open:** a fully open approach:
 
-This application was created using the API Logic Server CLI (Command Language Interface), as follows:
+  * **Open Source:** install with pip or docker
+  * **Open Technology:** using standard IDEs such as VSCode or PyCharm.  All of the key technology concepts you mastered above (Flask, SQLAlchemy) still fully apply.
+
+This application was created using the API Logic Server CLI (Command Language Interface), with 1 command:
 
 ```bash
 ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
@@ -82,14 +86,23 @@ To run:
 
 2. Run the admin app: **Ports > Admin App > globe**
 
+<details markdown>
+
+<summary> Show me how </summary>
+
+&nbsp;
+
+TBD
+
 </details>
 
+</details>
 
 &nbsp;
 <details markdown>
 
 
-<summary>3. Api Logic Project: Logic and Security - Unique Declarative Rules</summary>
+<summary>3. Api Logic Project Logic: Unique Spreadsheet-like Rules are 40X More Concise</summary>
 
 &nbsp;
 

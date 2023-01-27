@@ -9,17 +9,17 @@
             "type": "python",
             "env": {"APILOGICPROJECT": "False"},
             "request": "launch",
-            "cwd": "${workspaceFolder}/Basic_app",
+            "cwd": "${workspaceFolder}/Basic_App",
             "program": "flask_basic.py",
             "redirectOutput": true,
             "justMyCode": false,
             "console": "integratedTerminal"
         },
         {
-            "name": "2. API Logic Server: Uncustomized Automation",
+            "name": "2. API Logic Server: Instant, Open",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/ApiLogicProjectNoCust",
+            "cwd": "${workspaceFolder}/ApiLogicProject",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,
@@ -27,10 +27,10 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "3. API Logic Project: Logic and Security",
+            "name": "3. API Logic Project: Logic",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/ApiLogicProject",
+            "cwd": "${workspaceFolder}/ApiLogicProject_Logic",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,
