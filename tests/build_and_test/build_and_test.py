@@ -477,7 +477,7 @@ if Config.do_install_api_logic_server:
         cwd=install_api_logic_server_path,
         msg=f'\nInstall pyodbc')
 
-if len(sys.argv) > 0 and sys.argv[1] == 'build-only':
+if len(sys.argv) > 1 and sys.argv[1] == 'build-only':
     print("\nBuild/Install successful\n\n")
     exit (0)
 
