@@ -10,10 +10,10 @@ ApiLogicServer create --project_name=Allocation --db_url=sqlite:////Users/val/De
 
 So, API Logic Server supports the following `db_url` shortcuts:
 
-* nw - same as the sample (empty `db_url`)
+* nw - same as the sample (customers and orders; you can also use an empty `db_url`)
 * nw- - same as nw, but no customizations
-* chinook
-* classic models
+* chinook - albums and artists
+* classicmodels - customers and orders
 * auth - authentication data
 * todo - a simple 1 table database
 

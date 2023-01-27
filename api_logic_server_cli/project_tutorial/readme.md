@@ -33,7 +33,7 @@ To __run__, use the Run/Debug configurations ("play" button, upper left).  There
 
 &nbsp;
 
-<summary>1. Basic Flask: hand-coded Flask / SQLAlchemy</summary>
+<summary>1. Basic App: hand-coded Flask / SQLAlchemy</summary>
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
@@ -52,7 +52,7 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 <details markdown>
 
 
-<summary>2. API Logic Server: Uncustomized Automation, standard customization</summary>
+<summary>2. API Logic Project NoCust: Uncustomized Automation, standard customization</summary>
 
 &nbsp;
 
@@ -89,7 +89,7 @@ To run:
 <details markdown>
 
 
-<summary>3. Api Logic Server: Logic and Security - Unique Declarative Rules</summary>
+<summary>3. Api Logic Project: Logic and Security - Unique Declarative Rules</summary>
 
 &nbsp;
 
@@ -119,19 +119,19 @@ You can use VSCode to *diff* these from their originals in the *ApiLogicProjectN
 
 &nbsp;
 
-<summary>Next steps: create a new project</summary>
+<summary>Next steps: new projects</summary>
 
 
-As shown, easy, prepackaged
+As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several prepackaged sqlite databases.  For example, create a project for this 1 table database:
 
 ```bash
 cd tutorial
 ApiLogicServer create --project_name=todo --db_url=todo
 ```
-You can also try (be sure to `cd tutorial`):
+You can also try these other examples (be sure to `cd tutorial`; use the name below for both the _project_name_ and the _db_url_):
 
-* chinook
-* classicmodels
+* **chinook** - albums and artists
+* **classicmodels** - customers and orders
 
 Launch configurations have been pre-created, then re-execute the Admin app as above.
 
