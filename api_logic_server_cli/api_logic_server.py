@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.39"
+__version__ = "07.00.40"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/27/2023 - 07.00.39: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t01/27/2023 - 07.00.40: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -903,16 +903,21 @@ class ProjectRun(Project):
         log.info(".. complete\n")
 
 
-    def tutorial(self, msg: str=""):
+    def tutorial(self, msg: str="", create: str='tutorial'):
+        """
+        """
+
         """_summary_
         Creates (updates) Tutorial
 
-        Contains 3 project: basic_flask, ApiLogicProject, ApiLogicProjectNoCustomizations
+        Contains 3 project: basic_app, ApiLogicProject, ApiLogicProject_Logic
         
         example: 
         cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
+
+        :param create: 'fiddle' or 'tutorial'
         """
-        
+        log.info(f'\n{msg} {create}')
         target_project = self.project_name  # eg, ApiLogicServer (or, in dev, server)
         target_project_path = Path(target_project)
         self.project_directory_path = Path(self.project_name)
@@ -922,27 +927,25 @@ class ProjectRun(Project):
         
         shutil.copytree(dirs_exist_ok=True,
             src=self.api_logic_server_dir_path.joinpath('project_tutorial'),
-            dst=target_project_path.joinpath('tutorial'))
+            dst=target_project_path.joinpath(create))
+        read_me_src = self.api_logic_server_dir_path.joinpath(f'templates/{create}.md')
+        read_me_target = target_project_path.joinpath(f'{create}/readme.md')
+        shutil.copyfile(src= read_me_src, dst=read_me_target)
 
         self.command = "create"
-        self.project_name = str(target_project_path.joinpath("tutorial/ApiLogicProject"))
+        self.project_name = str(target_project_path.joinpath(f"{create}/ApiLogicProject"))
         self.db_url = "nw-"  # shorthand for sample db, no cust
         save_run = self.run
         self.run = False
         self.create_project()
 
         no_cust = self.project_name
-        with_cust = str(target_project_path.joinpath("tutorial/ApiLogicProject_Logic"))
+        with_cust = str(target_project_path.joinpath(f"{create}/ApiLogicProject_Logic"))
         shutil.copytree(dirs_exist_ok=True,
             src=no_cust,
             dst=with_cust)
         
         self.project_name = with_cust
-        """
-        self.project_directory = str(with_cust)
-        self.project_directory_path = Path(with_cust)
-        self.project_directory_actual = self.project_directory
-        """
         self.command = "add-cust"
         self.add_nw_customizations()
         self.run = save_run

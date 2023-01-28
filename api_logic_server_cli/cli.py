@@ -188,8 +188,11 @@ def welcome(ctx):
 
 
 @main.command("tutorial")
+@click.option('--create',
+              default='tutorial',
+              help="tutorial or fiddle")
 @click.pass_context
-def tutorial(ctx):
+def tutorial(ctx, create):
     """
     Creates (updates) Tutorial
 
@@ -211,7 +214,7 @@ def tutorial(ctx):
               db_url="",
               execute=False
               )
-    project.tutorial(msg="Create Tutorial")
+    project.tutorial(msg="Creating:", create=create)
     log.info("")
 
 
