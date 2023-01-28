@@ -4,7 +4,7 @@
 ==============================================================================
 
     This file starts the API Logic Server (v api_logic_server_version, api_logic_server_created_on):
-        $ python3 api_logic_server_run.py [--help  # host, port arguments]
+        $ python3 api_logic_server_run.py [--help]
 
     Then, access the Admin App and API via the Browser, eg:  
         http://api_logic_server_host:api_logic_server_port

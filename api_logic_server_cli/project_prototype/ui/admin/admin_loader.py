@@ -1,8 +1,6 @@
-"""_summary_
-
-events handlers for the admin app
-    return minified app
-    return admin.yaml file
+""" event handlers for the admin app
+        return minified app
+        return admin.yaml file
 """
 
 import logging, sys, io

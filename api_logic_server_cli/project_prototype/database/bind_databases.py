@@ -1,8 +1,4 @@
 from safrs import SAFRSAPI
-import safrs
-import flask
-import importlib
-import pathlib
 import logging as logging
 
 app_logger = logging.getLogger("api_logic_server_app")

@@ -1,18 +1,9 @@
 import logging
-
 import util
-from typing import List
-
 import safrs
-import sqlalchemy
 from flask import request, jsonify
-from safrs import jsonapi_rpc, SAFRSAPI
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import object_mapper
-
+from safrs import jsonapi_rpc
 from database import models
-
-from logic_bank.rule_bank.rule_bank import RuleBank
 
 # called by api_logic_server_run.py, to customize api (new end points, services).
 # separate from expose_api_models.py, to simplify merge if project recreated
