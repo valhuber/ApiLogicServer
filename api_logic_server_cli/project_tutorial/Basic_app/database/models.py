@@ -6,14 +6,9 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 ########################################################################################################################
-# Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
-#
-# Alter this file per your database maintenance policy
-#    See https://valhuber.github.io/ApiLogicServer/Project-Rebuild/#rebuilding
+# Classes describing database for SqlAlchemy ORM.
+########################################################################################################################
 
-from safrs import SAFRSBase
-from flask_login import UserMixin
-import safrs
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy() 
@@ -28,7 +23,7 @@ from sqlalchemy.dialects.sqlite import *
 
 
 
-class Category(SAFRSBase, Base):
+class Category(Base):
     __tablename__ = 'CategoryTableNameTest'
     _s_collection_name = 'Category'
     __bind_key__ = 'None'
@@ -39,7 +34,7 @@ class Category(SAFRSBase, Base):
     Client_id = Column(Integer)
 
 
-class Customer(SAFRSBase, Base):
+class Customer(Base):
     __tablename__ = 'Customer'
     _s_collection_name = 'Customer'
     __bind_key__ = 'None'
@@ -65,7 +60,7 @@ class Customer(SAFRSBase, Base):
     OrderList = relationship('Order', cascade_backrefs=True, backref='Customer')
 
 
-class CustomerDemographic(SAFRSBase, Base):
+class CustomerDemographic(Base):
     __tablename__ = 'CustomerDemographic'
     _s_collection_name = 'CustomerDemographic'
     __bind_key__ = 'None'
@@ -75,7 +70,7 @@ class CustomerDemographic(SAFRSBase, Base):
     allow_client_generated_ids = True
 
 
-class Department(SAFRSBase, Base):
+class Department(Base):
     __tablename__ = 'Department'
     _s_collection_name = 'Department'
     __bind_key__ = 'None'
@@ -91,7 +86,7 @@ class Department(SAFRSBase, Base):
     EmployeeList1 = relationship('Employee', primaryjoin='Employee.WorksForDepartmentId == Department.Id', cascade_backrefs=True, backref='Department1')
 
 
-class Location(SAFRSBase, Base):
+class Location(Base):
     __tablename__ = 'Location'
     _s_collection_name = 'Location'
     __bind_key__ = 'None'
@@ -104,7 +99,7 @@ class Location(SAFRSBase, Base):
     OrderList = relationship('Order', cascade_backrefs=True, backref='Location')
 
 
-class Product(SAFRSBase, Base):
+class Product(Base):
     __tablename__ = 'Product'
     _s_collection_name = 'Product'
     __bind_key__ = 'None'
@@ -124,7 +119,7 @@ class Product(SAFRSBase, Base):
     OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Product')
 
 
-class Region(SAFRSBase, Base):
+class Region(Base):
     __tablename__ = 'Region'
     _s_collection_name = 'Region'
     __bind_key__ = 'None'
@@ -133,7 +128,7 @@ class Region(SAFRSBase, Base):
     RegionDescription = Column(String(8000))
 
 
-class SampleDBVersion(SAFRSBase, Base):
+class SampleDBVersion(Base):
     __tablename__ = 'SampleDBVersion'
     _s_collection_name = 'SampleDBVersion'
     __bind_key__ = 'None'
@@ -142,7 +137,7 @@ class SampleDBVersion(SAFRSBase, Base):
     Notes = Column(String(800))
 
 
-class Shipper(SAFRSBase, Base):
+class Shipper(Base):
     __tablename__ = 'Shipper'
     _s_collection_name = 'Shipper'
     __bind_key__ = 'None'
@@ -152,7 +147,7 @@ class Shipper(SAFRSBase, Base):
     Phone = Column(String(8000))
 
 
-class Supplier(SAFRSBase, Base):
+class Supplier(Base):
     __tablename__ = 'Supplier'
     _s_collection_name = 'Supplier'
     __bind_key__ = 'None'
@@ -171,7 +166,7 @@ class Supplier(SAFRSBase, Base):
     HomePage = Column(String(8000))
 
 
-class Territory(SAFRSBase, Base):
+class Territory(Base):
     __tablename__ = 'Territory'
     _s_collection_name = 'Territory'
     __bind_key__ = 'None'
@@ -184,7 +179,7 @@ class Territory(SAFRSBase, Base):
     EmployeeTerritoryList = relationship('EmployeeTerritory', cascade_backrefs=True, backref='Territory')
 
 
-class Union(SAFRSBase, Base):
+class Union(Base):
     __tablename__ = 'Union'
     _s_collection_name = 'Union'
     __bind_key__ = 'None'
@@ -202,7 +197,7 @@ t_sqlite_sequence = Table(
 )
 
 
-class Employee(SAFRSBase, Base):
+class Employee(Base):
     __tablename__ = 'Employee'
     _s_collection_name = 'Employee'
     __bind_key__ = 'None'
@@ -241,7 +236,7 @@ class Employee(SAFRSBase, Base):
     OrderList = relationship('Order', cascade_backrefs=True, backref='Employee')
 
 
-class EmployeeAudit(SAFRSBase, Base):
+class EmployeeAudit(Base):
     __tablename__ = 'EmployeeAudit'
     _s_collection_name = 'EmployeeAudit'
     __bind_key__ = 'None'
@@ -257,7 +252,7 @@ class EmployeeAudit(SAFRSBase, Base):
     # see backref on parent: Employee = relationship('Employee', cascade_backrefs=True, backref='EmployeeAuditList')
 
 
-class EmployeeTerritory(SAFRSBase, Base):
+class EmployeeTerritory(Base):
     __tablename__ = 'EmployeeTerritory'
     _s_collection_name = 'EmployeeTerritory'
     __bind_key__ = 'None'
@@ -271,7 +266,7 @@ class EmployeeTerritory(SAFRSBase, Base):
     # see backref on parent: Territory = relationship('Territory', cascade_backrefs=True, backref='EmployeeTerritoryList')
 
 
-class Order(SAFRSBase, Base):
+class Order(Base):
     __tablename__ = 'Order'
     _s_collection_name = 'Order'
     __bind_key__ = 'None'
@@ -309,7 +304,7 @@ class Order(SAFRSBase, Base):
     OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix
 
 
-class OrderDetail(SAFRSBase, Base):
+class OrderDetail(Base):
     __tablename__ = 'OrderDetail'
     _s_collection_name = 'OrderDetail'
     __bind_key__ = 'None'

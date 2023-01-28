@@ -7,17 +7,14 @@ from config import Config
 import yaml
 
 """
-This illustrates the use of "raw" (hand-coded) Flask.
+This illustrates a hand-coded) Flask application.
 
-API Logic Server creates your project and automates your API, Admin App, and Logic.
-
-Or, you can code it all by hand.
 See: https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/quickstart/
 
 """
 
 """
- Logging configuration
+Logging configuration
 """
 current_path = os.path.abspath(os.path.dirname(__file__))
 with open(f'{current_path}/logging.yml','rt') as f:  # see also api/end_points
@@ -29,13 +26,13 @@ app_logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.config.from_object("config")
 
-db = SQLAlchemy()      # create the extension
+db = SQLAlchemy()      # database access
 
-app = Flask(__name__)  # create the app
+app = Flask(__name__)  # server creation
 
 app.config["SQLALCHEMY_DATABASE_URI"] = Config.SQLALCHEMY_DATABASE_URI  # db location
 
-db.init_app(app)  # initialize the app with the extension
+db.init_app(app)        # initialize the app with the extension
 
 import api.end_points as api_end_points
 api_end_points.flask_events(app, db)  # register endpoints

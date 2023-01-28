@@ -17,10 +17,10 @@ def flask_events(app, db):
     """ 
     Illustrate flask events
     """
-    app_logger = logging.getLogger("api_logic_server_app")
+    app_logger = logging.getLogger(__name__)
 
     @app.route('/hello_world')
-    def hello_world():  # test it with: http://localhost:8080/hello_world?user=ApiLogicServer
+    def hello_world():  # test it with: http://localhost:8080/hello_world?user=Basic_App
         """ simplest possible endpoint """
         user = request.args.get('user')
         app_logger.info(f'{user}')
@@ -28,7 +28,7 @@ def flask_events(app, db):
 
 
     @app.route('/stop')
-    def stop():  # test it with: http://localhost:8080/stop?msg=API stop - Stop Raw Flask Server
+    def stop():  # test it with: http://localhost:8080/stop?msg=API stop - Stop Basic App Server
         """
         Use this to stop the server from the Browser.
 
@@ -72,5 +72,5 @@ def flask_events(app, db):
             result_std_dict['OrderDetailListAsDicts'].append(each_order_detail_dict)
         return result_std_dict
     
-    logging.info("\n\n..Raw Flask, exposing custom services: hello_world, order, stop\n")
+    logging.info("\n\n..Basic App, exposing end points: hello_world, order, stop\n")
 
