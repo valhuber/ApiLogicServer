@@ -105,6 +105,10 @@ def no_args(config):
 def mainZ(ctx):
     """
     Creates [and runs] logic-enabled Python database API Logic Projects.
+\b
+    Get Started:
+\b
+        ApiLogicServer tutorial
 
 \b
     Doc: https://valhuber.github.io/ApiLogicServer
@@ -126,6 +130,11 @@ def mainZ(ctx):
 def main(ctx):
     """
     Creates [and runs] logic-enabled Python database API Logic Projects.
+
+\b
+    Get Started:
+\b
+        ApiLogicServer tutorial
 
 \b
     Doc: https://valhuber.github.io/ApiLogicServer

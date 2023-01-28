@@ -1,10 +1,10 @@
-# Tutorial
+# App Fiddle
 
 <details markdown>
 
 &nbsp;
 
-<summary>Welcome to the Flask/SQLAlchemy “Application Fiddle”</summary>
+<summary>Welcome to the Flask/SQLAlchemy “App Fiddle”</summary>
 
 Use this ***Application Fiddle*** to learn Flask/SQLAlchemy in Codespaces.  You have 3 running apps - execute them, explore the code, alter them (e.g., create endpoints, issue queries), use the debugger, etc.
 

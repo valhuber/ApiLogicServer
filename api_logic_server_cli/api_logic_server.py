@@ -900,7 +900,8 @@ class ProjectRun(Project):
         log.info(f'..database/customize_models.py')
         log.info(f'..logic/declare_logic.py')
         log.info(f'..security/declare_security.py\n')
-        log.info(".. complete\n")
+        if self.is_tutorial == False:
+            log.info(".. complete\n")
 
 
     def tutorial(self, msg: str="", create: str='tutorial'):
@@ -925,6 +926,7 @@ class ProjectRun(Project):
         # if not self.project_directory_path.exists():
         #    os.mkdir(self.project_directory_path, mode = 0o777)
         
+        log.info(f"\nCreating Basic_app")
         shutil.copytree(dirs_exist_ok=True,
             src=self.api_logic_server_dir_path.joinpath('project_tutorial'),
             dst=target_project_path.joinpath(create))
@@ -937,8 +939,11 @@ class ProjectRun(Project):
         self.db_url = "nw-"  # shorthand for sample db, no cust
         save_run = self.run
         self.run = False
+        self.is_tutorial = True
+        log.info(f"\nCreating ApiLogicProject")
         self.create_project()
 
+        log.info(f"\nCreating ApiLogicProject_Logic\n")
         no_cust = self.project_name
         with_cust = str(target_project_path.joinpath(f"{create}/ApiLogicProject_Logic"))
         shutil.copytree(dirs_exist_ok=True,
@@ -949,6 +954,9 @@ class ProjectRun(Project):
         self.command = "add-cust"
         self.add_nw_customizations()
         self.run = save_run
+        log.info(f"\nTutorial created.  Next steps:\n")
+        log.info(f'  Open the project in your VSCode')
+        log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/IDE-Execute/#execute-prebuilt-launch-configurations\n')
 
 
     def create_project(self):
@@ -1006,6 +1014,9 @@ class ProjectRun(Project):
             
         if self.command.startswith("add_"):
             pass  # keep silent for add-db, add-security...
+        elif self.is_tutorial:
+            log.debug(f"\nTutorial created.  Next steps:\n")
+            log.debug(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/IDE-Execute/#execute-prebuilt-launch-configurations\n')
         else:
             disp_url = self.db_url
             if disp_url == "":
@@ -1025,6 +1036,8 @@ class ProjectRun(Project):
             # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
         if self.command.startswith("add_"):
             pass  # keep silent for add-db, add-security...
+        elif self.is_tutorial:
+            log.debug(f"  Proceed as described in the readme\n")
         else:
             if (is_docker()):
                 if os.getenv('CODESPACES'):
