@@ -6,6 +6,8 @@
 
 <summary>Welcome to the Flask/SQLAlchemy “App Fiddle”</summary>
 
+You've perhaps used JS Fiddle to explore JavaScript and HTML.  With the power of Codespaces, we can now provide a "fiddle" for a *complete application.*
+
 Use this ***Application Fiddle*** to learn Flask/SQLAlchemy in Codespaces.  You have 3 running apps - execute them, explore the code, alter them (e.g., create endpoints, issue queries), use the debugger, etc.
 
 The Key Technology Concepts (at end) is an inventory of essential skills for creating Flask/SQLAlchemy systems.  Each are illustrated here.
@@ -28,14 +30,6 @@ Then, discover **API Logic Server** - an Open Source CLI to create executable pr
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
-Frameworks are flexible, and leverage your existing dev environment (IDE, git, etc).  But the manual effort is time-consuming, and complex.  This minimal project does not provide:
-
-* an API endpoint for each table
-
-* a User Interface
-
-* any security, or business logic (multi-table derivations and constraints).
-
 Execute using the Run Configuration, and test with `cURL`.  The relevant code is `api/end_points.py`.
 
 <details markdown>
@@ -54,6 +48,15 @@ To run the basic app:
 
 </details>
 
+Frameworks are flexible, and leverage your existing dev environment (IDE, git, etc).  But the manual effort is time-consuming, and complex.  This minimal project **does not provide:**
+
+* an API endpoint for each table
+
+* a User Interface
+
+* any security, or business logic (multi-table derivations and constraints).
+
+
 </details>
 
 &nbsp;
@@ -70,7 +73,7 @@ To run the basic app:
 
 Instead of frameworks, we might employ a Low Code approach.  Low Code tools provide excellent custom user interfaces.  However, these often require extensive screen painting, and typically require a proprietary IDE.
 
-The *API Logic Project No Customization* app provides an alternative, creating an entire project by reading your schema.  This approach is:
+The *API Logic Project* app provides an alternative, creating an entire project by reading your schema.  This approach is:
 
 * **Instant:** faster than Low Code screen painting, with instant APIs and Admin User Interfaces:
 
@@ -123,7 +126,7 @@ Things to note:
 
   * Don't spend much time exploring this app - we'll see a much more useful version in just a moment.
 
-3. You can explore, and customize, the app in VSCode
+3. You can explore (and customize) the app in VSCode
 
 4. It's a great start, but there are some serious short-comings:
 
