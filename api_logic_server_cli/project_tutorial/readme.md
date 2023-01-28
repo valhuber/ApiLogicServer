@@ -169,15 +169,14 @@ This application is a clone of the prior example, customized in VSCode:
 
 * **Logic:**
 
-  ** **Rules** are declared in  ```ApiLogicProject_Logic/logic/declare_logic.py```
+  * **Rules** are declared in  ```ApiLogicProject_Logic/logic/declare_logic.py```
 
-  ** **Security** (multi-tenant support) is declared in ```ApiLogicProject_Logic/security/declare_security.py```
-  
+  * **Security** (multi-tenant support) is declared in ```ApiLogicProject_Logic/security/declare_security.py```
+
 * **User Interface:** alterations are visible in ```ApiLogicProject/ui/admin/admin.yaml```
 
 You can use VSCode to *diff* these from their originals in the *ApiLogicProject*.
 
-</details>
 
 You can run the app (same procedure as Step 2, above), and observe:
 
@@ -189,6 +188,7 @@ You can run the app (same procedure as Step 2, above), and observe:
 
 4. Our Delete Order test works, since we how have logic in ```ApiLogicProject_Logic/logic/declare_logic.py```
 
+</details>
 &nbsp;
 
 <details markdown>
