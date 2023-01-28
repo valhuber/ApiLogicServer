@@ -1,6 +1,6 @@
 # docker build -f docker/api_logic_server_x.Dockerfile -t apilogicserver/api_logic_server_x --rm .
-# docker tag apilogicserver/api_logic_server_x apilogicserver/api_logic_server_x:7.00.39
-# docker push apilogicserver/api_logic_server_x:7.00.39
+# docker tag apilogicserver/api_logic_server_x apilogicserver/api_logic_server_x:7.00.40
+# docker push apilogicserver/api_logic_server_x:7.00.40
 
 # docker run -it --name api_logic_server --rm -p 5656:5656 -p 5002:5002 -v ~/dev/servers:/localhost apilogicserver/api_logic_server_x
 #   docker run -it --name api_logic_server --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/api_logic_server_x

@@ -32,6 +32,7 @@ set -x
 
 Set-PSDebug -Trace 1
 mkdir servers    # good place to create ApiLogicProjects
+mkdir Org-ApiLogicServer  # build app-fiddle here
 git clone https://github.com/valhuber/ApiLogicServer ApiLogicServer
 git clone https://github.com/thomaxxl/safrs-react-admin safrs-react-admin
 git clone https://github.com/valhuber/Docs-ApiLogicServer Docs-ApiLogicServer

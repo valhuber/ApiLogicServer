@@ -34,6 +34,7 @@ if [ $# -eq 0 ]
     read -p "Verify directory is empty, and [Enter] install *dev* version of ApiLogicServer for $1> "
     set -x
     mkdir servers    # good place to create ApiLogicProjects
+    mkdir Org-ApiLogicServer  # app-fiddle is built here
 
     # get sra runtime as build folder
     curl https://github.com/thomaxxl/safrs-react-admin/releases/download/0.1.2/safrs-react-admin-0.1.2.zip -LO
