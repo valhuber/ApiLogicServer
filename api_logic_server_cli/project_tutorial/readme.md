@@ -4,26 +4,17 @@
 
 &nbsp;
 
-<summary>Approach: Learn By Example</summary>
+<summary>Welcome to this Tutorial: Flask/SQLAlchemy “Application Fiddle”</summary>
 
-Tutorials are useful ways to learn, but the __key concepts__ can be overshadowed by mechanics, and often don't include the real-world __IDE experience__.
+Use this Tutorial to learn Flask/SQLAlchemy, using running apps in Codespaces.  Think of this as an ***Application Fiddle:*** run the app, explore the code, alter it (e.g., create endpoints, issue queries), use the debugger, etc.
 
-Here we take a different approach: a __running app__ you can explore, using the table below:
+The Key Technology Concepts (at end) is an inventory of essential skills for creating Flask/SQLAlchemy systems.  Each are illustrated here.
 
-* Explore code samples for key technology areas
-* In a _running_ project
-* That you can experiment with (debug, alter...)
+These projects all use the [Northwind Sample Database](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  Other databases are also provided in Next Steps.
 
-To __explore code__, click the _Sample Code_ link - that will open that code file.
+Start with the first application - a Basic Flask/SQLAlchemy App.
 
-To __run__, use the Run/Debug configurations ("play" button, upper left).  There are 3 web apps you can run:
-
-1. __Basic Flask: hand-coded__ web app with minimal functionality
-
-2. __API Logic Server: Uncustomized *automation*__.  Using the [Northwind Database](https://valhuber.github.io/ApiLogicServer/Sample-Database/), this illustrates what you can expect for an initial project using your own database
-
-3. __API Logic Project: Logic and Security__, illustrating the use of a standard IDE to add code, and declarative logic and security
-
+Then, discover **API Logic Server** - an Open Source CLI to create executable projects, **instantly,** with a single command.  Its open source, and **open** technology: customize projects in your IDE, including unique spreadsheet like rules for logic and security - 40X more concise than manual code.
 
 </details>
 
@@ -45,7 +36,7 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 
 * any security, or business logic (multi-table derivations and constraints).
 
-Execute using the Run Configuration, and test with `cURL`.  The relvevant code is 
+Execute using the Run Configuration, and test with `cURL`.  The relevant code is `api/end_points.py`.
 
 <details markdown>
 
@@ -188,6 +179,8 @@ You can run the app (same procedure as Step 2, above), and observe:
 
 4. Our Delete Order test works, since we how have logic in ```ApiLogicProject_Logic/logic/declare_logic.py```
 
+Use the [```Detailed Tutorial```](ApiLogicProject/readme.md) to further explore this app.
+
 </details>
 &nbsp;
 
@@ -195,7 +188,7 @@ You can run the app (same procedure as Step 2, above), and observe:
 
 &nbsp;
 
-<summary>Next steps: new projects</summary>
+<summary>Next Steps: new projects</summary>
 
 
 As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several prepackaged sqlite databases.  For example, create a project for this 1 table database:
@@ -210,6 +203,9 @@ You can also try these other examples (be sure to `cd tutorial`; use the name be
 * **classicmodels** - customers and orders
 
 Launch configurations have been pre-created, then re-execute the Admin app as above.
+
+
+> Next, try it on your own databases: if you have a database, you can have an API and an Admin app in minutes.
 
 </details>
 
