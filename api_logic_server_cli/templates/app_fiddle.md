@@ -128,7 +128,7 @@ An instant Admin App and API are a great start, but there are some serious short
 
 * **No logic -** multi-table derivations and constraints for save logic
 
-    * For example, open **Customers**, **double-click first Order**, and **delete the first Order**.  Re-click Customer from the left nav menu - it should have reduced the customer's balance from 2102, but it's unchanged.   That's because there is no logic... 
+    * For example, open **Customers**, **double-click first Order**, and **delete the first Order**.  Re-click Customer from the left nav menu - it should have reduced the customer's balance from 2102, but it's unchanged.   That's because there is *no logic...*
 
 Let's see how these are addressed, in the next section.
 
@@ -147,27 +147,27 @@ A running API and UI are a great start, but completing the project still require
 
 A unique feature of API Logic Server is provision for:
 
-* **Business Logic Automation:** using unique spreadsheet-like rules, extensible with Python 🏆
+* **Business Logic Automation:** using unique spreadsheet-like rules for multi-table derivations and constraints, extensible with Python 🏆
 
-* These are declared in your IDE, with full support for code completion, logging, and debugging
+* These are **declared in your IDE,** with full support for code completion, logging, and debugging
 
 This application is a clone of the prior example, customized in VSCode:
 
 * **API:** additional endpoints are defined in ```ApiLogicProject_Logic/api/customize_api.py```
 
-* **Logic:** the app now implements logic and security
+* **Logic:** the project now implements logic and security
 
 * **User Interface:** the app now has help text that walks you through the key features
 
-You can run the app (stop the server using the red "stop" button), then restart with the same procedure as Step 2, above, choosing ***3. API Logic Project: Logic***, and observe:
+You can run the app.  First, stop the server using the red "stop" button).  Then, restart with the same procedure as Step 2, above, choosing ***3. API Logic Project: Logic***.  Observe the customizations:
 
-1. Click Category - you need to login now (user u1, password p).  That's because authentication has been activated.
+1. Click Category - you need to **login** now (user u1, password p).  That's because authentication has been activated.
 
-2. Categories has fewer rows per multi-tenant Grants in ```ApiLogicProject_Logic/security/declare_security.py```
+2. Categories has fewer rows per **multi-tenant Grant logic** in ```ApiLogicProject_Logic/security/declare_security.py```
 
-3. The app now shows help text to introduce its features per updates in ```ApiLogicProject/ui/admin/admin.yaml```
+3. The app now shows **help text** to introduce its features per updates in ```ApiLogicProject/ui/admin/admin.yaml```
 
-4. Our Delete Order test works, since we how have logic in ```ApiLogicProject_Logic/logic/declare_logic.py```
+4. Our Delete Order test adjusts the customer balance, since we how have **business logic** in ```ApiLogicProject_Logic/logic/declare_logic.py```
 
 You can use VSCode to *diff* these from their originals in the *ApiLogicProject*.
 
