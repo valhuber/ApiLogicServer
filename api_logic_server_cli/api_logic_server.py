@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.42"
+__version__ = "07.00.43"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/29/2023 - 07.00.42: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t01/29/2023 - 07.00.43: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -965,7 +965,7 @@ class ProjectRun(Project):
                         in_file=read_me_target)
 
         self.command = "create"
-        self.project_name = str(target_project_path.joinpath(f"{create}/ApiLogicProject"))
+        self.project_name = str(target_project_path.joinpath(f"{create}/2. ApiLogicProject"))
         self.db_url = "nw-"  # shorthand for sample db, no cust
         save_run = self.run
         self.run = False
@@ -975,7 +975,7 @@ class ProjectRun(Project):
 
         log.info(f"\nCreating ApiLogicProject_Logic\n")
         no_cust = self.project_name
-        with_cust = str(target_project_path.joinpath(f"{create}/ApiLogicProject_Logic"))
+        with_cust = str(target_project_path.joinpath(f"{create}/3. ApiLogicProject_Logic"))
         shutil.copytree(dirs_exist_ok=True,
             src=no_cust,
             dst=with_cust)
