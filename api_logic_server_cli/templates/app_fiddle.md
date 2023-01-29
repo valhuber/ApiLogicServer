@@ -122,6 +122,10 @@ To run the ApiLogicProject app:
 
 &nbsp;
 
+> Key Takeway: you will achieve this level of schema-driven automation for your own databases on initial creation. 
+
+&nbsp;
+
 An instant Admin App and API are a great start, but there are some serious short-comings:
 
 * **No security -** no login authentication
@@ -149,7 +153,7 @@ A unique feature of API Logic Server is provision for:
 
 * **Business Logic Automation:** using unique spreadsheet-like rules for multi-table derivations and constraints, extensible with Python 🏆
 
-* These are **declared in your IDE,** with full support for code completion, logging, and debugging
+* These are **declared in *your IDE,*** with full support for code completion, logging, and debugging
 
 This application is a clone of the prior example, customized in VSCode:
 
