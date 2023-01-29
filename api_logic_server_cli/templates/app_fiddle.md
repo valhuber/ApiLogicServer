@@ -95,7 +95,7 @@ This application was created using the API Logic Server CLI (Command Language In
 ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
 ```
 
-Execute the Run and Debug **2. API Logic Server: Instant, Open**, and **Ports > Admin App > globe**
+Execute: **Run and Debug >> *2. API Logic Server: Instant, Open***, and then  **Ports > Admin App > globe**
 
 &nbsp;
 
@@ -113,28 +113,22 @@ To run the ApiLogicProject app:
 
 3. Click the (top "Admin App" row) **globe** to start your Browser
 
+    * Don't spend too much time exploring the app, we'll see a much better version in just a moment...
+
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/2-apilogicproject.png?raw=true"></figure>
 
 </details>
 
-Things to note:
+&nbsp;
 
-1. Note the API has been created, including swagger.  Explore it in the Browser.
+An instant Admin App and API are a great start, but there are some serious short-comings:
 
-2. You have in instant multi-page, multi-table admin app.
+* **No security -** no login authentication
 
-  * Don't spend much time exploring this app - we'll see a much more useful version in just a moment.
+* **No logic -** multi-table derivations and constraints for save logic
 
-3. You can explore (and customize) the app in VSCode
-
-4. It's a great start, but there are some serious short-comings:
-
-  * **No security -** no login authentication
-
-  * **No logic -** multi-table derivations and constraints for save logic
-
-      * For example, open **Customers**, **double-click first Order**, and **delete the first Order**.  Re-click Customer from the left nav menu - it should have reduced the customer's balance from 2102, but it's unchanged.   That's because there is no logic... 
+    * For example, open **Customers**, **double-click first Order**, and **delete the first Order**.  Re-click Customer from the left nav menu - it should have reduced the customer's balance from 2102, but it's unchanged.   That's because there is no logic... 
 
 Let's see how these are addressed, in the next section.
 
@@ -171,8 +165,7 @@ This application is a clone of the prior example, customized in VSCode:
 
 You can use VSCode to *diff* these from their originals in the *ApiLogicProject*.
 
-
-You can run the app (same procedure as Step 2, above), and observe:
+You can run the app (stop the server using the red "stop" button), then restart with the same procedure as Step 2, above, choosing ***3. API Logic Project: Logic***, and observe:
 
 1. Click Category - you need to login now (user u1, password p).  That's because authentication has been activated.
 

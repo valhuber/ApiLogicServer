@@ -2,6 +2,8 @@ submissions: https://pycoders.com/submissions
 
 pycoders: https://pycoders.com
 
+Careful - browser launch is different for local (tutorial) vs. codespaces
+
 App Fiddle to learn Flask/SQLAlchemy, Discover API Logic Server
 
 App Fiddle to learn Flask/SQLAlchemy, API Logic Server     x
