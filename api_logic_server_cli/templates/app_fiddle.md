@@ -191,7 +191,7 @@ Use the [```Detailed Tutorial```](ApiLogicProject/readme.md) to further explore 
 As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several prepackaged sqlite databases.  For example, create a project for this 1 table database:
 
 ```bash
-cd tutorial
+cd app_fiddle
 ApiLogicServer create --project_name=todo --db_url=todo
 ```
 You can also try these other examples (be sure to `cd tutorial`; use the name below for both the _project_name_ and the _db_url_):
