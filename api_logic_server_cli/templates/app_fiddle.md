@@ -155,15 +155,9 @@ This application is a clone of the prior example, customized in VSCode:
 
 * **API:** additional endpoints are defined in ```ApiLogicProject_Logic/api/customize_api.py```
 
-* **Logic:**
+* **Logic:** the app now implements logic and security
 
-  * **Rules** are declared in  ```ApiLogicProject_Logic/logic/declare_logic.py```
-
-  * **Security** (multi-tenant support) is declared in ```ApiLogicProject_Logic/security/declare_security.py```
-
-* **User Interface:** alterations are visible in ```ApiLogicProject/ui/admin/admin.yaml```
-
-You can use VSCode to *diff* these from their originals in the *ApiLogicProject*.
+* **User Interface:** the app now has help text that walks you through the key features
 
 You can run the app (stop the server using the red "stop" button), then restart with the same procedure as Step 2, above, choosing ***3. API Logic Project: Logic***, and observe:
 
@@ -171,9 +165,11 @@ You can run the app (stop the server using the red "stop" button), then restart 
 
 2. Categories has fewer rows per multi-tenant Grants in ```ApiLogicProject_Logic/security/declare_security.py```
 
-3. The app now shows help text to introduce its features 
+3. The app now shows help text to introduce its features per updates in ```ApiLogicProject/ui/admin/admin.yaml```
 
 4. Our Delete Order test works, since we how have logic in ```ApiLogicProject_Logic/logic/declare_logic.py```
+
+You can use VSCode to *diff* these from their originals in the *ApiLogicProject*.
 
 Use the [```Detailed Tutorial```](ApiLogicProject/readme.md) to further explore this app.
 
