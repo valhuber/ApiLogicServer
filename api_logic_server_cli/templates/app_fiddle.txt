@@ -10,3 +10,7 @@ App Fiddle to learn Flask/SQLAlchemy, API Logic Server     x
 
 
 Use this App Fiddle to learn Flask/SQLAlchemy, using a running app in Codespaces.  Then, discover API Logic Server - an Open Source CLI to create executable projects with a single command.  Customize projects in your IDE, including powerful spreadsheet-like rules for logic and security - 40X more concise than manual code.
+
+Issue - tutorial vs. fiddle
+    * browser launch (globe)
+    * screen shots

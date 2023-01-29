@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.40"
+__version__ = "07.00.42"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/27/2023 - 07.00.40: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t01/29/2023 - 07.00.42: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -911,13 +911,14 @@ class ProjectRun(Project):
         """_summary_
         Creates (updates) Tutorial
 
-        Contains 3 project: basic_app, ApiLogicProject, ApiLogicProject_Logic
+        Contains 3 projects: basic_app, ApiLogicProject, ApiLogicProject_Logic
         
         example: 
         cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
 
-        :param create: 'fiddle' or 'tutorial'
+        :param create: 'fiddle' (for codespaces), or 'tutorial'
         """
+
         log.info(f'\n{msg} {create}')
         target_project = self.project_name  # eg, ApiLogicServer (or, in dev, server)
         target_project_path = Path(target_project)
@@ -930,9 +931,38 @@ class ProjectRun(Project):
         shutil.copytree(dirs_exist_ok=True,
             src=self.api_logic_server_dir_path.joinpath('project_tutorial'),
             dst=target_project_path.joinpath(create))
-        read_me_src = self.api_logic_server_dir_path.joinpath(f'templates/{create}.md')
-        read_me_target = target_project_path.joinpath(f'{create}/readme.md')
-        shutil.copyfile(src= read_me_src, dst=read_me_target)
+        
+        if True:  # create readme (ellide to hide tiresome fiddly code)
+            read_me_src = self.api_logic_server_dir_path.joinpath(f'templates/{create}.md')
+            read_me_target = target_project_path.joinpath(f'{create}/readme.md')
+            shutil.copyfile(src= read_me_src, dst=read_me_target)  # this is the readme "header"
+            body_path = self.api_logic_server_dir_path.joinpath(f'templates/app_fiddle_body_steps_2_3.md')
+            body_file = open(body_path, "r")
+            body_data = body_file.read()
+            body_file.close()
+            readme_file = open(read_me_target, "a")  # append body_data to header
+            readme_file.write(body_data)
+            readme_file.close()
+            if create == "app_fiddle":  # starting browser via port mappings
+                start_browser = '''
+
+    1. Click the **Ports** tab
+
+    3. Click the **globe** in the top "AdminApp" row
+'''
+                create_utils.insert_lines_at(lines = start_browser,
+                        at = "2. Start the Browser",
+                        file_name = read_me_target,
+                        after = True)
+                create_utils.replace_string_in_file(search_for="cd tutorial",
+                        replace_with='cd app_fiddle',
+                        in_file=read_me_target)
+                create_utils.replace_string_in_file(search_for="start the Browser at localhost:5656",
+                        replace_with='start the Browser via **Ports > AdminApp > globe**',
+                        in_file=read_me_target)
+                create_utils.replace_string_in_file(search_for="Start the Browser at localhost:5656",
+                        replace_with='Start the Browser:',
+                        in_file=read_me_target)
 
         self.command = "create"
         self.project_name = str(target_project_path.joinpath(f"{create}/ApiLogicProject"))
