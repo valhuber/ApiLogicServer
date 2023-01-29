@@ -30,7 +30,7 @@ Then, discover **API Logic Server** - an Open Source CLI to create executable pr
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
-Execute using the Run Configuration, and test with `cURL`.  The relevant code is `api/end_points.py`.
+Execute using the Run and Debug (*1. Basic App: Flask / SQLAlchemy*), and test with `cURL`.  The relevant code is `api/end_points.py`.
 
 <details markdown>
 
@@ -40,7 +40,7 @@ Execute using the Run Configuration, and test with `cURL`.  The relevant code is
 
 To run the basic app:
 
-1. Click Run Configurations, and the green button to start the server
+1. Click **Run and Debug** (you should see *1. Basic App: Flask / SQLAlchemy*), and the green button to start the server
 
 2. Copy the `cURL` text, and paste it into the `bash`/`zsh` window
 
@@ -95,7 +95,7 @@ This application was created using the API Logic Server CLI (Command Language In
 ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
 ```
 
-Execute the Run Configuration **2. API Logic Server: Instant, Open**, and **Ports > Admin App > globe**
+Execute the Run and Debug **2. API Logic Server: Instant, Open**, and **Ports > Admin App > globe**
 
 &nbsp;
 
@@ -107,11 +107,11 @@ Execute the Run Configuration **2. API Logic Server: Instant, Open**, and **Port
 
 To run the ApiLogicProject app:
 
-1. Click Run Configurations, select **2. API Logic Server: Instant, Open**, and click the green button to start the server
+1. Click **Run and Debug**, select **2. API Logic Server: Instant, Open**, and click the green button to start the server
 
 2. Click the **Ports** tab
 
-3. Click the **globe** to start your Browser
+3. Click the (top "Admin App" row) **globe** to start your Browser
 
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/2-apilogicproject.png?raw=true"></figure>
