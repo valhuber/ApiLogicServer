@@ -132,13 +132,14 @@ As shown above, it's easy to create projects with a single command.  To help you
 cd tutorial
 ApiLogicServer create --project_name=todo --db_url=todo
 ```
+Then, run the server as above, using the Run Configuration for `Execute ToDo`.
+
 You can also try these other examples (be sure to `cd tutorial`; use the name below for both the _project_name_ and the _db_url_):
 
 * **chinook** - albums and artists
 * **classicmodels** - customers and orders
 
 Launch configurations have been pre-created, then re-execute the Admin app as above.
-
 
 > Next, try it on your own databases: if you have a database, you can have an API and an Admin app in minutes.
 

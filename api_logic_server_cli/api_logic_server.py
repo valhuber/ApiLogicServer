@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.43"
+__version__ = "07.00.44"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/29/2023 - 07.00.43: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t01/29/2023 - 07.00.44: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -955,7 +955,7 @@ class ProjectRun(Project):
                         file_name = read_me_target,
                         after = True)
                 create_utils.replace_string_in_file(search_for="cd tutorial",
-                        replace_with='cd app_fiddle',
+                        replace_with='cd /workspaces/app_fiddle',
                         in_file=read_me_target)
                 create_utils.replace_string_in_file(search_for="start the Browser at localhost:5656",
                         replace_with='start the Browser via **Ports > AdminApp > globe**',
