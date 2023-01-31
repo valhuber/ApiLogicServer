@@ -1,5 +1,7 @@
 This section applies only to `pip` installs.  Docker based installs eliminate such environment issues, and are therefore recommended.
 
+Important: in addition to Python environment, there are other configuration settings to consider as described in the [Quick Start](../IDE-Execute).
+
 ## Per-project `venv`
 
 You created a virtual environment when you installed ApiLogicServer.  This ```venv``` will work for all of your created ApiLogicServer projects, or you can use a per-project ```venv```, as follows.

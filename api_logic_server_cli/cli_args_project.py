@@ -43,6 +43,10 @@ class Project(ProjectArgs):
         running_at = Path(__file__)
         self.api_logic_server_dir_path = running_at.parent.absolute()  # ne abspath(f'{abspath(get_api_logic_server_dir())}'))
 
+        self.is_codespaces = os.getenv('CODESPACES')
+        self.is_docker = os.getenv('DOCKER')
+
+
 
     def print_options(self):
         """ Creating ApiLogicServer with options: (or uri helo) """

@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.45"
+__version__ = "07.00.46"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/30/2023 - 07.00.45: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t01/31/2023 - 07.00.46: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -824,8 +824,9 @@ class ProjectRun(Project):
         """
 
         log.debug("\n\n==================================================================")
-        log.info(msg)
-        log.info("  1. ApiLogicServer add-db --db_url=auth --bind_key=authentication")
+        if msg != "":
+            log.info(msg)
+            log.info("  1. ApiLogicServer add-db --db_url=auth --bind_key=authentication")
         log.debug("==================================================================5\n")
         save_run = self.run
         save_command = self.command
@@ -840,7 +841,8 @@ class ProjectRun(Project):
         self.db_url = save_db_url
         
         log.debug("\n==================================================================")
-        log.info("  2. Add User.Login endpoint")
+        if msg != "":
+            log.info("  2. Add User.Login endpoint")
         log.debug("==================================================================\n")
         login_endpoint_filename = f'{self.api_logic_server_dir_path.joinpath("templates/login_endpoint.txt")}'
         auth_models_file_name = f'{self.project_directory_path.joinpath("database/authentication_models.py")}'
@@ -858,14 +860,17 @@ class ProjectRun(Project):
                     file_name=auth_models_file_name)
 
         log.debug("\n==================================================================")
-        log.info("  3. Set SECURITY_ENABLED in config.py")
+        if msg != "":
+            log.info("  3. Set SECURITY_ENABLED in config.py")
         log.debug("==================================================================\n")
         create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = False  #",
                             replace_with='SECURITY_ENABLED = True  #',
                             in_file=f'{self.project_directory}/config.py')
         if is_nw:
             log.debug("\n==================================================================")
-            log.info("  4. Adding Sample authorization to security/declare_security.py")
+        if msg != "":
+            if msg != "":
+                log.info("  4. Adding Sample authorization to security/declare_security.py")
             log.debug("==================================================================\n\n")
             nw_declare_security_py_path = self.api_logic_server_dir_path.\
                 joinpath('project_prototype_nw/security/declare_security.py')
@@ -873,11 +878,12 @@ class ProjectRun(Project):
             shutil.copyfile(nw_declare_security_py_path, declare_security_py_path)
         else:
             log.debug("\n==================================================================")
-            log.info("  4. TODO: Declare authorization in security/declare_security.py")
+            if msg != "":
+                log.info("  4. TODO: Declare authorization in security/declare_security.py")
             log.debug("==================================================================\n\n")
 
 
-    def add_nw_customizations(self):
+    def add_nw_customizations(self, do_show_messages: bool = True):
         """_summary_
 
         1. add-sqlite-security
@@ -887,7 +893,10 @@ class ProjectRun(Project):
         Args:
         """
         log.debug("\n\n==================================================================")
-        self.add_sqlite_security(is_nw=True, msg="Add northwind customizations - enabling security")
+        nw_messages = ""
+        if do_show_messages:
+            nw_messages = "Add northwind customizations - enabling security"
+        self.add_sqlite_security(is_nw=True, msg=nw_messages)
 
         nw_path = (self.api_logic_server_dir_path).\
             joinpath('project_prototype_nw')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/project_prototype
@@ -895,13 +904,14 @@ class ProjectRun(Project):
 
         create_nw_tutorial(self.project_directory, str(self.api_logic_server_dir_path))
 
-        log.info("\nExplore key customization files:")
-        log.info(f'..api/customize_api.py')
-        log.info(f'..database/customize_models.py')
-        log.info(f'..logic/declare_logic.py')
-        log.info(f'..security/declare_security.py\n')
-        if self.is_tutorial == False:
-            log.info(".. complete\n")
+        if do_show_messages:
+            log.info("\nExplore key customization files:")
+            log.info(f'..api/customize_api.py')
+            log.info(f'..database/customize_models.py')
+            log.info(f'..logic/declare_logic.py')
+            log.info(f'..security/declare_security.py\n')
+            if self.is_tutorial == False:
+                log.info(".. complete\n")
 
 
     def tutorial(self, msg: str="", create: str='tutorial'):
@@ -986,11 +996,18 @@ class ProjectRun(Project):
         
         self.project_name = with_cust
         self.command = "add-cust"
-        self.add_nw_customizations()
+        self.add_nw_customizations(do_show_messages=False)
         self.run = save_run
-        log.info(f"\nTutorial created.  Next steps:\n")
-        log.info(f'  Open the project in your VSCode')
-        log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/IDE-Execute/#execute-prebuilt-launch-configurations\n')
+        log.info(f"Tutorial project successfully created.  Next steps:\n")
+        log.info(f'  Open the tutorial project in your VSCode\n')
+        log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Project-Env/')
+        if is_docker() == False:
+            docker_info = """
+        cd tutorial
+        python3 -m venv venv       # may require python -m venv venv
+        source venv/bin/activate   # windows venv\Scripts\activate
+        python3 -m pip install -r requirements.txt"""
+            log.info(f'{docker_info}\n')
 
 
     def create_project(self):
