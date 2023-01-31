@@ -1000,8 +1000,8 @@ class ProjectRun(Project):
         self.run = save_run
         log.info(f"Tutorial project successfully created.  Next steps:\n")
         log.info(f'  Open the tutorial project in your VSCode\n')
-        log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Project-Env/')
         if is_docker() == False:
+            log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Project-Env/')
             docker_info = """
         cd tutorial
         python3 -m venv venv       # may require python -m venv venv
