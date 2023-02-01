@@ -46,8 +46,7 @@ api_logic_server_path = os.path.dirname(get_api_logic_server_dir())  # e.g: expo
 sys.path.append(api_logic_server_path)
 from create_from_model.model_creation_services import ModelCreationServices
 
-import sqlacodegen_wrapper.sqlacodegen_wrapper as expose_existing_callable
-import create_from_model.api_logic_server_utils as create_utils
+import api_logic_server_cli.create_from_model.uri_info as uri_info
 import api_logic_server_cli.api_logic_server as PR  # ProjectRun (main class)
 
 api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
@@ -823,30 +822,10 @@ def examples(ctx):
     """
     Example commands, including SQLAlchemy URIs.
     """
-    print_uri_info()
+    uri_info.print_uri_info()
 
 
 log = logging.getLogger(__name__)
-
-
-def print_uri_info():
-    """
-    Creates and optionally runs a customizable Api Logic Project, Example
-
-    URI examples, Docs URL
-    """
-    header = [
-        '',
-        'Creates and optionally runs a customizable Api Logic Project',
-        ''
-    ]
-
-    for each_line in header:
-        sys.stdout.write(each_line + '\n')
-
-    for each_line in expose_existing_callable.uri_info:
-        sys.stdout.write(each_line + '\n')
-    sys.stdout.write('\n')
 
 
 def print_args(args, msg):

@@ -9,6 +9,20 @@ import logging
 log = logging.getLogger(__name__)
 
 
+
+def resolve_home(name: str) -> str:
+    """
+    :param name: a file name, eg, ~/Desktop/a.b
+    :return: /users/you/Desktop/a.b
+
+    This just removes the ~, the path may still be relative to run location
+    """
+    result = name
+    if result.startswith("~"):
+        result = str(Path.home()) + result[1:]
+    return result
+
+
 def get_project_directory_and_api_name(project):
     """
     user-supplied project_name, less the tilde (which might be in project_name); typically relative to cwd.

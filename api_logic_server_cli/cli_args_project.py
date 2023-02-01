@@ -1,9 +1,10 @@
+import api_logic_server_cli.create_from_model.uri_info as uri_info
 from api_logic_server_cli.cli_args import ProjectArgs
 from os.path import abspath
 from pathlib import Path
 import os
 
-class Project(ProjectArgs):
+class Project(ProjectArgs):  # extend user-visible args with internal values
     
     def __init__(self):
         
@@ -44,14 +45,12 @@ class Project(ProjectArgs):
         self.api_logic_server_dir_path = running_at.parent.absolute()  # ne abspath(f'{abspath(get_api_logic_server_dir())}'))
 
         self.is_codespaces = os.getenv('CODESPACES')
-        self.is_docker = os.getenv('DOCKER')
-
 
 
     def print_options(self):
         """ Creating ApiLogicServer with options: (or uri helo) """
-        if self.db_url == "?":
-            print_uri_info()
+        if self.db_url == "?":  # can only test interactively, not from launch
+            uri_info.print_uri_info()
             exit(0)
 
         print_options = True
@@ -59,7 +58,7 @@ class Project(ProjectArgs):
             print(f'\n\nCreating ApiLogicServer with options:')
             print(f'  --db_url={self.db_url}')
             print(f'  --bind_key={self.bind_key}') 
-            print(f'  --bind_url_separator={self.bind_url_separator}')
+            print(f'  --bind_url_separator={self.bind_key_url_separator}')
             print(f'  --project_name={self.project_name}   (pwd: {self.os_cwd})')
             print(f'  --api_name={self.api_name}')
             print(f'  --admin_app={self.admin_app}')
