@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.46"
+__version__ = "07.00.48"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t01/31/2023 - 07.00.46: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t02/01/2023 - 07.00.48: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -84,6 +84,7 @@ from create_from_model.model_creation_services import ModelCreationServices
 
 import sqlacodegen_wrapper.sqlacodegen_wrapper as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
+import api_logic_server_cli.create_from_model.uri_info as uri_info
 from api_logic_server_cli.cli_args_project import Project
 
 api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
@@ -656,11 +657,11 @@ class ProjectRun(Project):
     def print_options(self):
         """ Creating ApiLogicProject with options: (or uri helo) """
         if self.db_url == "?":
-            log.debug_uri_info()
+            uri_info.print_uri_info()
             exit(0)
 
-        log.debug_options = True
-        if log.debug_options:
+        print_options = True
+        if print_options:
             creating_or_updating = "Creating"
             if self.command.startswith("add_"):
                 creating_or_updating = "Updating"
