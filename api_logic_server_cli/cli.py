@@ -45,7 +45,7 @@ sys.path.append(get_api_logic_server_dir())  # e.g, on Docker: export PATH="/hom
 api_logic_server_path = os.path.dirname(get_api_logic_server_dir())  # e.g: export PATH="/home/api_logic_server"
 sys.path.append(api_logic_server_path)
 from create_from_model.model_creation_services import ModelCreationServices
-
+import create_from_model.api_logic_server_utils as create_utils
 import api_logic_server_cli.create_from_model.uri_info as uri_info
 import api_logic_server_cli.api_logic_server as PR  # ProjectRun (main class)
 
