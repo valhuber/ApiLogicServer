@@ -25,7 +25,6 @@ class Project(ProjectArgs):  # extend user-visible args with internal values
         self.project_directory_path = None
         """ Path (project_directory_actual) """
 
-        self.copy_to_project_directory = None
         self.merge_into_prototype = None
         """ used by codespaces (create project over current) - project_name = ./ """
 

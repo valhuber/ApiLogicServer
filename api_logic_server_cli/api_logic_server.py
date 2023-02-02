@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.49"
+__version__ = "07.00.50"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/01/2023 - 07.00.49: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t02/01/2023 - 07.00.50: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -188,59 +188,6 @@ def recursive_overwrite(src, dest, ignore=None):
                                     ignore)
     else:
         shutil.copyfile(src, dest)
-
-
-def copy_project_to_local(project_directory, copy_to_project_directory, message) -> str:
-    """
-    fab cannot create-app on a mount, so we created temp_created_project, and then copy_to_local
-
-    test with create, silent, copy (lock /Users/Shared/copy_test for negative test)
-    """
-    result = ""
-    try:
-        # log.debug(f'10. Copy temp_created_project to {copy_to_project_directory} ')
-        delete_dir(copy_to_project_directory, message)
-        shutil.copytree(project_directory, copy_to_project_directory)
-    except OSError as e:
-        if "Delete or copy tree failed" in e.strerror:
-            pass
-        else:
-            result = "Error: %s : %s" % (copy_to_project_directory, e.strerror)
-            log.debug(result)
-            log.debug(f'\n===> Copy failed (see above), but your project exists at {project_directory}')
-            log.debug(f'===> Resolve the issue, and use the cp command below...')
-    return result
-
-
-def copy_if_mounted(project_directory):
-    """
-    fab is unable to create-app in mounted path
-    so, if mounted, create files in "created_project" and later copy to 
-    
-    this approach is superceded by not using fab.create-app, now just copy the fab skeleton project files
-
-    :param project_directory: name of project created
-    :return: project_directory: name of project created (or "created_project"), copy_to_project (target copy when mounted, else "")
-    """
-    return_project_directory = project_directory
-    return_copy_to_directory = ""
-    cwd = os_cwd
-    if project_directory == ".":
-        code_path = os.path.dirname(os.path.realpath(__file__))
-        if cwd == code_path:  # '/Users/val/dev/ApiLogicServer/api_logic_server_cli':
-            return_project_directory = "/Users/val/dev/servers/current"
-        else:
-            return_project_directory = cwd
-    use_copy_strategy = False  # must be true for fab-based creation (see fab_creator - use_fab_based_creation)
-    if use_copy_strategy and os.name == "posix":  # mac, docker...
-        directory_is_mounted = project_directory.startswith("/local") or "copy_test" in project_directory
-        if directory_is_mounted:  # TODO: https://www.baeldung.com/linux/bash-is-directory-mounted
-            running_at =  Path(__file__)
-            cli_path = running_at.parent.absolute()
-            root_path = cli_path.parent.absolute()
-            return_project_directory = str(root_path) + f'/{temp_created_project}'
-            return_copy_to_directory = project_directory
-    return return_project_directory, return_copy_to_directory
 
 
 def create_nw_tutorial(project_name, api_logic_server_dir_str):
@@ -463,10 +410,6 @@ def final_project_fixup(msg, project) -> str:
         fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project)
 
         copy_project_result = ""
-        if project.copy_to_project_directory != "":
-            copy_project_result = \
-                copy_project_to_local(project.project_directory, copy_to_project_directory,
-                                      f'10. Copy temp_created_project over {copy_to_project_directory} ')
 
         api_logic_server_info_file_dict["last_created_project_name"] = project.project_directory  # project_name - twiddle
         api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
@@ -1036,7 +979,6 @@ class ProjectRun(Project):
         self.project_directory_actual = os.path.abspath(self.project_directory)  # make path absolute, not relative (no /../)
         self.project_directory_path = Path(self.project_directory_actual)
 
-        self.project_directory, self.copy_to_project_directory = copy_if_mounted(self.project_directory)
         if self.command.startswith("rebuild") or self.command == "add_db":
             log.debug("1. Not Deleting Existing Project")
             log.debug("2. Using Existing Project")
@@ -1048,8 +990,7 @@ class ProjectRun(Project):
 
         log.debug(f'3. Create/verify database/{self.model_file_name}, then use that to create api/ and ui/ models')
         model_creation_services = ModelCreationServices(project = self,   # Create database/models.py from db
-            project_directory=self.project_directory, 
-            copy_to_project_directory = self.copy_to_project_directory)
+            project_directory=self.project_directory)
         fix_database_models(self.project_directory, self.db_types, self.nw_db_status)
         invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
         if self.extended_builder is not None and self.extended_builder != "":
@@ -1075,7 +1016,7 @@ class ProjectRun(Project):
                 disp_url = "nw"
             log.info(f"\n\nCustomizable project {self.project_name} created from database {disp_url}.  Next steps:\n")
             if self.multi_api:
-                log.debug(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{api_name}')
+                log.debug(f'Server already running.  To Access: Configuration > Load > //localhost:5656/{self.api_name}')
             else:
                 log.info("\nRun API Logic Server:")
                 if os.getenv('CODESPACES'):
@@ -1083,9 +1024,6 @@ class ProjectRun(Project):
                     log.info(f'  Execute using Launch Configuration "ApiLogicServer"')
                 else:
                     log.info(f'  cd {self.project_name};  python api_logic_server_run.py')
-        if copy_project_result != "":  # never used...  or project_directory.endswith("api_logic_server")?
-            log.debug(f'  copy project to local machine, e.g. cp -r {project_directory}/. {copy_to_project_directory}/ ')
-            # cp -r '/Users/val/dev/ApiLogicServer/temp_created_project'. /Users/Shared/copy_test/
         if self.command.startswith("add_"):
             pass  # keep silent for add-db, add-security...
         elif self.is_tutorial:
