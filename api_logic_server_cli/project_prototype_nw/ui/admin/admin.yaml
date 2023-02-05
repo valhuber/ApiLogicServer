@@ -8,7 +8,7 @@ info:
   number_relationships: 13
   number_tables: 17
 authentication:
-  endpoint: '{http_type}://{swagger_host}:{port}/auth/login'
+  endpoint: '{http_type}://{swagger_host}:{port}/api/auth/login'
 resources:
   Category:
     info_list: <h1>Tour - Application Information, Authorization</h1>

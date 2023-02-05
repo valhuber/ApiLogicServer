@@ -116,7 +116,7 @@ class AdminCreator(object):
         if use_repl: # enables same admin.yaml for local vs Codespace, by runtime fixup of api_root
             self.admin_yaml.api_root = '{http_type}://{swagger_host}:{port}/{api}'
             self.admin_yaml.authentication = {}
-            self.admin_yaml.authentication['endpoint'] = '{http_type}://{swagger_host}:{port}/auth/login'
+            self.admin_yaml.authentication['endpoint'] = '{http_type}://{swagger_host}:{port}/api/auth/login'
         else:  # old code - ignore
             self.admin_yaml.api_root = f'http://localhost:5656/{self.mod_gen.api_name}'
             self.admin_yaml.authentication = f'http://localhost:5656/auth/login'
