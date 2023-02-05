@@ -60,6 +60,7 @@ if [ $# -eq 0 ]
     fi
     
     cd ..
+    cd ..
 
     cd ApiLogicServer
     pwd
