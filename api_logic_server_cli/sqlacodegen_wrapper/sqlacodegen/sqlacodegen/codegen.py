@@ -557,7 +557,7 @@ class CodeGenerator(object):
 # Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
 #
 # Alter this file per your database maintenance policy
-#    See https://valhuber.github.io/ApiLogicServer/Project-Rebuild/#rebuilding
+#    See https://apilogicserver.github.io/Docs/Project-Rebuild/#rebuilding
 
 from safrs import SAFRSBase
 from flask_login import UserMixin

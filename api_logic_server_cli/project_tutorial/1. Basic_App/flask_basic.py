@@ -1,6 +1,6 @@
 import os
 import logging, logging.config
-from flask import Flask  # fails without venv - see https://valhuber.github.io/ApiLogicServer/Project-Env/
+from flask import Flask  # fails without venv - see https://apilogicserver.github.io/Docs/Project-Env/
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from config import Config

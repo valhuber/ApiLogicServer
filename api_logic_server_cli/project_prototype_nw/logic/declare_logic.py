@@ -26,8 +26,8 @@ def declare_logic():
             This logic pre-created for default database, nw.sqlite.
                 You would normally declare your *own* rules.
                 For details on these rules, see
-                    https://valhuber.github.io/ApiLogicServer/Logic/
-                    https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/
+                    https://apilogicserver.github.io/Docs/Logic/
+                    https://apilogicserver.github.io/Docs/Logic-Tutorial/
 
         *Activation* occurs in api_logic_server_run.py:
             LogicBank.activate(session=session, activator=declare_logic, constraint_event=constraint_handler)
@@ -66,7 +66,7 @@ def declare_logic():
 
     You can capture BDD approach to doc/run test suites
          See logic/api_logic_server/behave/place_order.feature
-         See https://valhuber.github.io/ApiLogicServer/Behave/
+         See https://apilogicserver.github.io/Docs/Behave/
 
     SCENARIO: Bad Order Custom Service
         When Order Placed with excessive quantity

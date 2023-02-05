@@ -719,7 +719,7 @@ class ModelCreationServices(object):
         orm_class = None
         if not model_imported:
             log.debug('.. .. ..Creation proceeding to enable manual database/models.py fixup')
-            log.debug('.. .. .. See https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
+            log.debug('.. .. .. See https://apilogicserver.github.io/Docs/Troubleshooting/')
         else:
             try:
                 resource_list: Dict[str, Resource] = dict()

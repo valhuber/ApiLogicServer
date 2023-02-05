@@ -45,9 +45,11 @@ if [ $# -eq 0 ]
     
     git clone https://github.com/valhuber/ApiLogicServer
     git clone https://github.com/thomaxxl/safrs-react-admin
-    git clone https://github.com/valhuber/Docs-ApiLogicServer
-    
-    cd Docs-ApiLogicServer
+    # git clone https://github.com/valhuber/Docs-ApiLogicServer
+    cd Org-ApiLogicServer
+    git clone https://github.com/ApiLogicServer/Docs
+
+    cd Docs
     python3 -m venv venv       # may require python -m venv venv
     if contains "ubuntu" $ostype; then
       echo $ostype contains ubuntu

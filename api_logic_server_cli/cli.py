@@ -104,20 +104,17 @@ def no_args(config):
 def mainZ(ctx):
     """
     Creates [and runs] logic-enabled Python database API Logic Projects.
-\b
-    Get Started:
-\b
-        ApiLogicServer tutorial
 
 \b
-    Doc: https://valhuber.github.io/ApiLogicServer
+    Doc: https://apilogicserver.github.io/Docs
 
 \b
     Examples:
 
 \b
-        ApiLogicServer create-and-run --db_url= project_name=  # defaults to Tutorial
-        ApiLogicServer create                                  # prompts
+        ApiLogicServer tutorial                                # *** start here ***
+        ApiLogicServer create-and-run --db_url= project_name=  # defaults to Northwind
+        ApiLogicServer create                                  # prompts for project, db
 
     Then, customize created API Logic Project in your IDE
     """
@@ -131,19 +128,15 @@ def main(ctx):
     Creates [and runs] logic-enabled Python database API Logic Projects.
 
 \b
-    Get Started:
-\b
-        ApiLogicServer tutorial
-
-\b
-    Doc: https://valhuber.github.io/ApiLogicServer
+    Doc: https://apilogicserver.github.io/Docs
 
 \b
     Examples:
 
 \b
-        ApiLogicServer create-and-run --db_url= project_name=  # defaults to Tutorial
-        ApiLogicServer create                                  # prompts
+        ApiLogicServer tutorial                                # *** Start Here ***
+        ApiLogicServer create-and-run --db_url= project_name=  # defaults to Northwind
+        ApiLogicServer create                                  # prompts for project name, db url
 
     Then, customize created API Logic Project in your IDE
     """
@@ -158,7 +151,7 @@ def about(ctx):
     """
 
     print(f'\tInstalled at {abspath(__file__)}\n')
-    print(f'\thttps://valhuber.github.io/ApiLogicServer/Tutorial/\n')
+    print(f'\thttps://apilogicserver.github.io/Docs/Tutorial/\n')
 
     def print_at(label: str, value: str):
         tab_to = 30 - len(label)

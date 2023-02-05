@@ -12,7 +12,7 @@ Use this ***Application Fiddle*** to learn Flask/SQLAlchemy in Codespaces.  You 
 
 The Key Technology Concepts (at end) is an inventory of essential skills for creating Flask/SQLAlchemy systems.  Each are illustrated here.
 
-These projects all use the [Northwind Sample Database](https://valhuber.github.io/ApiLogicServer/Sample-Database/).  Other databases are also provided in Next Steps.
+These projects all use the [Northwind Sample Database](https://apilogicserver.github.io/Docs/Sample-Database/).  Other databases are also provided in Next Steps.
 
 Start with the first application - a Basic Flask/SQLAlchemy App.
 

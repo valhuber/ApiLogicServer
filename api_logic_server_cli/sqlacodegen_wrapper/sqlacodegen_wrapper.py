@@ -10,7 +10,7 @@ It creates the `models.py` file by calling this method.
         * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
             * An important consideration is disambiguating multiple relationships between the same w tables
                 * See `nw-plus` relationships between `Department` and `Employee`.
-                * [See here](https://valhuber.github.io/ApiLogicServer/Sample-Database/) for a database diagram.
+                * [See here](https://apilogicserver.github.io/Docs/Sample-Database/) for a database diagram.
             * It transforms database names to resource names - capitalized, singular
                 * These (not table names) are used to create api and ui model
     2. It then calls `write_models_py`
@@ -134,12 +134,12 @@ uri_info = [
     '    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook',
     '',
     'Where --db_url is one of...',
-    '   <default>                     Sample DB                    - https://valhuber.github.io/ApiLogicServer/Sample-Database/',
+    '   <default>                     Sample DB                    - https://apilogicserver.github.io/Docs/Sample-Database/',
     '   nw-                           Sample DB, no customizations - add later with perform_customizations.py',
     '   <SQLAlchemy Database URI>     Your own database            - https://docs.sqlalchemy.org/en/14/core/engines.html',
-    '                                      Other URI examples:     - https://valhuber.github.io/ApiLogicServer/Database-Connectivity/',
+    '                                      Other URI examples:     - https://apilogicserver.github.io/Docs/Database-Connectivity/',
     ' ',
-    'Docs: https://valhuber.github.io/ApiLogicServer/'
+    'Docs: https://apilogicserver.github.io/Docs/'
 ]
 
 
@@ -173,7 +173,7 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
             * It uses a modification of [sqlacodgen](https://github.com/agronholm/sqlacodegen), by Alex Grönholm -- many thanks!
                 * An important consideration is disambiguating multiple relationships between the same w tables
                     * See `nw-plus` relationships between `Department` and `Employee`.
-                    * [See here](https://valhuber.github.io/ApiLogicServer/Sample-Database/) for a database diagram.
+                    * [See here](https://apilogicserver.github.io/Docs/Sample-Database/) for a database diagram.
                 * It transforms database names to resource names - capitalized, singular
                     * These (not table names) are used to create api and ui model
         2. It then calls `write_models_py`
@@ -258,7 +258,7 @@ def create_models_memstring(args) -> str:
         log.debug(f'.. Here are some examples:\n')
         print_uri_info()
         log.debug(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
-        log.debug(f'\n...see https://valhuber.github.io/ApiLogicServer/Troubleshooting/')
+        log.debug(f'\n...see https://apilogicserver.github.io/Docs/Troubleshooting/')
         exit(1)
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite

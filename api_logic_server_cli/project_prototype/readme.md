@@ -8,7 +8,7 @@ Edit / extend this readme as desired.
 
 # Setup and Run
 
-To run your project, the system requires various runtime systems for data access, api, and logic.  These are [included with API Logic Server](https://valhuber.github.io/ApiLogicServer/Architecture-What-Is/).  So, to run your project:
+To run your project, the system requires various runtime systems for data access, api, and logic.  These are [included with API Logic Server](https://apilogicserver.github.io/Docs/Architecture-What-Is/).  So, to run your project:
 
 1.  __Establish your Python Environment__ to activate these runtime systems
     * Choose the __either__ the _Local Install_ __or__ the _Docker_ approach below, then 
@@ -31,13 +31,13 @@ Notes:
 
 * See also the `venv_setup` directory in this API Logic Project.
 
-* If using SqlServer, install `pyodbc`.  Not required for docker-based projects.  For local installs, see the [Quick Start](https://valhuber.github.io/ApiLogicServer/Install-pyodbc/).
+* If using SqlServer, install `pyodbc`.  Not required for docker-based projects.  For local installs, see the [Quick Start](https://apilogicserver.github.io/Docs/Install-pyodbc/).
 
 &nbsp;
 
 ## Establish Your Python Environment - Docker
 
-Your runtime systems are part of Dev Container, which you probably activated when you [opened the project](https://valhuber.github.io/ApiLogicServer/IDE-Execute/).  If you did not accept the "Open in Container" option when you started VSCode, use __View > Command Palette > Remote-Containers: Reopen in Container__.
+Your runtime systems are part of Dev Container, which you probably activated when you [opened the project](https://apilogicserver.github.io/Docs/IDE-Execute/).  If you did not accept the "Open in Container" option when you started VSCode, use __View > Command Palette > Remote-Containers: Reopen in Container__.
 
 &nbsp;
 
@@ -101,7 +101,7 @@ swagger/OpenAPI and JSON:API compliant API implementation.
 
 ### LogicBank
 
-[Transaction Logic for SQLAlchemy Object Models](https://valhuber.github.io/ApiLogicServer/Logic-Why/)
+[Transaction Logic for SQLAlchemy Object Models](https://apilogicserver.github.io/Docs/Logic-Why/)
 
 Use Logic Bank to govern SQLAlchemy update transaction logic - 
 multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
@@ -147,13 +147,13 @@ This project was created with the following directory structure:
 | ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema                       |
 | ```logic``` | Transactional Logic           | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and events such as send mail / messages |
 | ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display - order, captions etc.                                          |
-| ```tests``` | Behave Test Suite              | ```tests/api_logic_server_behave/features```          | Declare and implement [Behave Tests](https://valhuber.github.io/ApiLogicServer/Behave/)                                          |
+| ```tests``` | Behave Test Suite              | ```tests/api_logic_server_behave/features```          | Declare and implement [Behave Tests](https://apilogicserver.github.io/Docs/Behave/)                                          |
 &nbsp;
 
 ### Key Customization File - Typical Customization
 
 In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
 the created API, Logic and Web App.  Since they are separate files, the project can be
-[rebuilt](https://valhuber.github.io/ApiLogicServer/Project-Rebuild/) (e.g., synchronized with a revised schema), preserving your customizations.
+[rebuilt](https://apilogicserver.github.io/Docs/Project-Rebuild/) (e.g., synchronized with a revised schema), preserving your customizations.
 
 Please see the ```nw``` sample for examples of typical customizations.

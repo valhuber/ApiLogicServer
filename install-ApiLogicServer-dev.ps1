@@ -35,9 +35,12 @@ mkdir servers    # good place to create ApiLogicProjects
 mkdir Org-ApiLogicServer  # build app-fiddle here
 git clone https://github.com/valhuber/ApiLogicServer ApiLogicServer
 git clone https://github.com/thomaxxl/safrs-react-admin safrs-react-admin
-git clone https://github.com/valhuber/Docs-ApiLogicServer Docs-ApiLogicServer
+# git clone https://github.com/valhuber/Docs-ApiLogicServer Docs-ApiLogicServer
+cd Org-ApiLogicServer
+git clone https://github.com/ApiLogicServer/Docs
+cd ..
 
-pushd Docs-ApiLogicServer
+pushd Org-ApiLogicServer/docs
 python -m venv venv
 python -m pip install -r requirements.txt
 

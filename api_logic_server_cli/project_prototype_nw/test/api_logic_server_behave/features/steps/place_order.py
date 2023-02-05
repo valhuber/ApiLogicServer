@@ -66,7 +66,7 @@ def step_impl(context):
     Inspect the log for __Hi, Andrew - Congratulate Nancy on their new order__. 
 
     The `congratulate_sales_rep` event illustrates logic 
-    [Extensibility](https://valhuber.github.io/ApiLogicServer/Logic/#extensibility-python-events) 
+    [Extensibility](https://apilogicserver.github.io/Docs/Logic/#extensibility-python-events) 
     - using Python to provide logic not covered by rules, 
     like non-database operations such as sending email or messages.
 

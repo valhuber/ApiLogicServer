@@ -691,7 +691,7 @@ class AdminCreator(object):
             log.debug(f'{msg} copy safrs-react-admin to: {to_project_dir}')
             log.debug(f'.. .. ..  ..From {from_proto_dir}')
             if not os.path.isdir(from_proto_dir):
-                log.debug(f'\n==> Error - safrs-react-admin... did you complete setup: https://valhuber.github.io/ApiLogicServer/Internals/')
+                log.debug(f'\n==> Error - safrs-react-admin... did you complete setup: https://apilogicserver.github.io/Docs/Internals/')
                 log.debug(".. Setup required.  Really.")
                 exit(1)
             use_sra_from_install = True

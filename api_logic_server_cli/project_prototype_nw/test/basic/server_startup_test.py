@@ -10,7 +10,7 @@ app_logger = logging.getLogger("api_logic_server_app")
 
 """
     These are server tests for the default Sample DB.
-    See https://valhuber.github.io/ApiLogicServer/Tutorial/
+    See https://apilogicserver.github.io/Docs/Tutorial/
 
     These verify the following, and are useful coding examples of API Usage:
 """
@@ -157,7 +157,7 @@ def server_tests(host, port, version):
         prt(f''
             f'Custom Service and Logic verified, by Posting intentionally invalid order to Custom Service to: {add_order_uri}.\n'
             f'Logic Log (above) shows proper detection of Customer Constraint Failure...\n'
-            f' - see https://valhuber.github.io/ApiLogicServer/Tutorial/#api-customization\n'
+            f' - see https://apilogicserver.github.io/Docs/Tutorial/#api-customization\n'
             f'.. The logic illustrates MULTI-TABLE CHAINING (note indents):\n'
             f'....FORMULA OrderDetail.Amount (19998), which...\n'
             f'......ADJUSTS Order.AmountTotal (19998), which...\n'
@@ -183,11 +183,11 @@ def server_tests(host, port, version):
             f'4. BASIC WEB APP Created\n'
             f'     .. First, start it: python ui/basic_web_app/run.py [host port]]\n'
             f'     .. Then, explore it - http://{host}:8080/ (login: admin, p)\n'
-            f'     .. See https://valhuber.github.io/ApiLogicServer/Tutorial/#admin-app-multi-page-multi-table-automatic-joins\n'
+            f'     .. See https://apilogicserver.github.io/Docs/Tutorial/#admin-app-multi-page-multi-table-automatic-joins\n'
             f'5. Server Startup DIAGNOSTICS have PASSED (see log above)\n'
-            f'     .. See https://valhuber.github.io/ApiLogicServer/Tutorial/#test\n'
+            f'     .. See https://apilogicserver.github.io/Docs/Tutorial/#test\n'
             f'\n'
-            f'===> For more information, see https://valhuber.github.io/ApiLogicServer/Tutorial\n'
+            f'===> For more information, see https://apilogicserver.github.io/Docs/Tutorial\n'
             f'\n'
             f'SUCCESSFUL SERVER START (ApiLogicServer Version {version}) - see ApiLogicServer Summary, above\n')
 

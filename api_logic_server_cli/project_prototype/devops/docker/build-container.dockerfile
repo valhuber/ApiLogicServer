@@ -9,7 +9,7 @@
 # docker push your_account/your_repository:1.00.00  # requires docker login 
 # ... consider repeating the prior 2 commands for :latest
 
-# see - https://valhuber.github.io/ApiLogicServer/Working-With-Docker/
+# see - https://apilogicserver.github.io/Docs/Working-With-Docker/
 
 # run image directly...
 # docker run -it --name docker_api_logic_project --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost your_account/your_repository

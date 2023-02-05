@@ -10,7 +10,9 @@ theme:
 nav:
   - " ": index.md
   - Quick Start:
+    - Express Eval x: Install-Eval-x.md
     - Express Eval: Install-Eval.md
+    - Express Install-x: Install-Express-x.md
     - Express Install: Install-Express.md
     - Detailed Install:
       - "Install API Logic Server": Install.md
@@ -19,6 +21,7 @@ nav:
         - Execute in your IDE: IDE-Execute.md
         - Execute From Terminal: Execute.md
   - Tutorial:
+    - "Tutorial-x": Tutorial-x.md
     - "Tutorial": Tutorial.md
     - Sample-Database.md
   - 1. Admin Web App:

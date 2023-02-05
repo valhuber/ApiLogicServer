@@ -126,7 +126,7 @@ Run API Logic Server:
 
 Customize using your IDE:
   code ApiLogicProject  # e.g., open VSCode on created project
-  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/
+  Establish your Python environment - see https://apilogicserver.github.io/Docs/Execute-VSCode-Local/
 
 
 
@@ -141,7 +141,7 @@ Run API Logic Server:
 
 Customize using your IDE:
   code ApiLogicProject  # e.g., open VSCode on created project
-  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Execute-VSCode-Local/
+  Establish your Python environment - see https://apilogicserver.github.io/Docs/Execute-VSCode-Local/
 
 
 (venv) val@Vals-MPB-14 ApiLogicServer % 

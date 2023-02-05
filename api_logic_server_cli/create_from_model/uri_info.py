@@ -17,12 +17,12 @@ uri_info = [
     '    --db_url=mysql+pymysql://ApiLogicServer:***@ApiLogicServer.mysql.pythonanywhere-services.com/ApiLogicServer\$Chinook',
     '',
     'Where --db_url is one of...',
-    '   <default>                     Sample DB                    - https://valhuber.github.io/ApiLogicServer/Sample-Database/',
+    '   <default>                     Sample DB                    - https://apilogicserver.github.io/Docs/Sample-Database/',
     '   nw-                           Sample DB, no customizations - add later with perform_customizations.py',
     '   <SQLAlchemy Database URI>     Your own database            - https://docs.sqlalchemy.org/en/14/core/engines.html',
-    '                                      Other URI examples:     - https://valhuber.github.io/ApiLogicServer/Database-Connectivity/',
+    '                                      Other URI examples:     - https://apilogicserver.github.io/Docs/Database-Connectivity/',
     ' ',
-    'Docs: https://valhuber.github.io/ApiLogicServer/'
+    'Docs: https://apilogicserver.github.io/Docs/'
 ]
 
 

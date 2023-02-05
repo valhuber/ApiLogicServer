@@ -24,7 +24,7 @@ resources:
           use <span style="font-family:'Courier New'">info_list</span> and 
           <span style="font-family:'Courier New'">info_show</span> to provide user information.<br><br>
           In this
-          <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Sample-Database/">Northwind demo,</a>      
+          <a target="_blank" href="https://apilogicserver.github.io/Docs/Sample-Database/">Northwind demo,</a>      
           Info provides Tour suggestions.  On this page...
           <ul>
             <li> <strong>Search</strong> on multiple fields (Company, Contact Name) -- try z</li>
@@ -247,7 +247,7 @@ resources:
           <ul>
             <li> Observe the Product Name in the Order Detail list.</li>
             <li> In the
-              <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Sample-Database/">sample database,</a>      
+              <a target="_blank" href="https://apilogicserver.github.io/Docs/Sample-Database/">sample database,</a>      
               the Order Detail is related to the Product by
               <span style="font-family:'Courier New'">ProductId.</span>
               which makes no sense to End Users.<br>
@@ -255,7 +255,7 @@ resources:
             </li>
             <li> 
               Automatic joins are configurable
-              <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Admin-Customization/">configurable.</a>
+              <a target="_blank" href="https://apilogicserver.github.io/Docs/Admin-Customization/">configurable.</a>
             </li>
           </ul>
           <h3>Update Support - Lookups, Logic</h3>
@@ -270,7 +270,7 @@ resources:
                 <ul>
                   <li>
                     This is not from code, but from
-                    <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Admin-Tour/#logic-enforcement">this logic.</a>
+                    <a target="_blank" href="https://apilogicserver.github.io/Docs/Admin-Tour/#logic-enforcement">this logic.</a>
                   </li>
                 </ul>
             </li>

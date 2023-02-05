@@ -12,7 +12,7 @@
 	// Set *default* container specific settings.json values on container create.
 	"settings": {},
 
-	// add network -- enable this as required, e.g., https://valhuber.github.io/ApiLogicServer/Database-Connectivity/
+	// add network -- enable this as required, e.g., https://apilogicserver.github.io/Docs/Database-Connectivity/
 	// "runArgs": ["--network=dev-network"],
 
 	// Add the IDs of extensions you want installed when the container is created.

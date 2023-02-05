@@ -54,7 +54,7 @@ export default function CustomizedAccordions() {
       <Typography variant="h4" align="center">Welcome to API Logic Server -- Sample System</Typography>
       <Typography lineHeight = {2}><br></br><a   rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md/" target="_blank">API Logic Server</a>
       &nbsp;creates <i>customizable</i> model-driven systems, instantly from your&nbsp;
-      <a  href="https://valhuber.github.io/ApiLogicServer/Sample-Database/" target="_blank">database</a>.
+      <a  href="https://apilogicserver.github.io/Docs/Sample-Database/" target="_blank">database</a>.
       <Typography><br></br></Typography>
       </Typography>
       <Accordion  >
@@ -72,7 +72,7 @@ export default function CustomizedAccordions() {
               </pre>
               </li>
             <li><i>Model-driven: </i>creation builds executable&nbsp;
-            <a rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/Architecture/#customizable-declarative-models" target="_blank">models</a>
+            <a rel="nofollow" href="https://apilogicserver.github.io/Docshitecture/#customizable-declarative-models" target="_blank">models</a>
               , not code
                 <ul>
                     <li>
@@ -81,7 +81,7 @@ export default function CustomizedAccordions() {
                 </ul>
               <Typography>&nbsp;</Typography></li>
             <li><i>Customizable: </i>models are created into a project;&nbsp;
-              <a rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/Project-Structure/" target="_blank">customize</a>
+              <a rel="nofollow" href="https://apilogicserver.github.io/Docsject-Structure/" target="_blank">customize</a>
               &nbsp;with Python and your IDE
               <ul>
                   <li>This system has about 20 rules, and 20 lines of code</li>
@@ -93,13 +93,13 @@ export default function CustomizedAccordions() {
       </Accordion>
       <Typography><br></br>
       1.&nbsp;
-          <a href="https://valhuber.github.io/ApiLogicServer/Admin-Tour/" target="_blank">Automatic Admin App</a>
+          <a href="https://apilogicserver.github.io/Docsin-Tour/" target="_blank">Automatic Admin App</a>
           , you are running it now
       <ul>
          <li>For instant collaboration and Back Office data maintenance</li>
          <li>Rich functionality: multi-page, multi-table, automatic joins</li>
          <li>Explore this app (e.g., click Customer, at left),
-              and how to <a  rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/Admin-Customization/" target="_blank">customize it</a></li>
+              and how to <a  rel="nofollow" href="https://apilogicserver.github.io/Docsin-Customization/" target="_blank">customize it</a></li>
       </ul>
       2. <a href="/api" target="_blank">API</a>, with oas/Swagger
       <ul>
@@ -108,7 +108,7 @@ export default function CustomizedAccordions() {
          <li><a rel="nofollow" href="https://github.com/valhuber/ApiLogicServer/wiki#customize-the-api-with-expose_servicespy-add-rpcs-services" target="_blank">Customizable</a>: add your own endpoints</li>
       </ul>
       3.&nbsp;
-      <a  rel="nofollow" href="https://valhuber.github.io/ApiLogicServer/Logic/" target="_blank">Business Logic</a>
+      <a  rel="nofollow" href="https://apilogicserver.github.io/Docsic/" target="_blank">Business Logic</a>
           , for <span title="Often nearly half the app -- automation required"><span>backend processing</span> </span>
       <ul>
          <li>Spreadsheet-like rules for multi-table derivations and constraints</li>

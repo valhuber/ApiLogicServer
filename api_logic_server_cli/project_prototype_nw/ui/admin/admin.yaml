@@ -23,7 +23,7 @@ resources:
           Suggestion - visit the Customer and Employee pages.<br><br>
           <h2>Authorization</h2>
           The table includes 8 rows (login as 'admin' with password 'p', upper right).<br><br>
-          But, logout and login as 'u1' -- only 1 is shown, per <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Security-Authorization/">authorization</a>.
+          But, logout and login as 'u1' -- only 1 is shown, per <a target="_blank" href="https://apilogicserver.github.io/Docs/Security-Authorization/">authorization</a>.
           <br><br>
     attributes:
       - label: ' Category Name*'
@@ -38,7 +38,7 @@ resources:
   Customer:
     info_list: <h1>List Pages</h1>
           In this
-          <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Sample-Database/">Northwind demo,</a>      
+          <a target="_blank" href="https://apilogicserver.github.io/Docs/Sample-Database/">Northwind demo,</a>      
           Info provides Tour suggestions (see Category for instructions).  On this page...
           <ul>
             <li> <strong>Search</strong> on multiple fields (Company, Contact Name) -- try z</li>
@@ -160,7 +160,7 @@ resources:
   Employee:
     info_list: <h1>Show When</h1>
           Support for
-          <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Admin-Customization/#show_when">Show When</a>      
+          <a target="_blank" href="https://apilogicserver.github.io/Docs/Admin-Customization/#show_when">Show When</a>      
           means you can define expressions that determine when a field is shown or hidden.  On this page...
             <ul>
               <li> Click <strong>Suyama</strong> and note
@@ -310,7 +310,7 @@ resources:
           <ul>
             <li> Observe the Product Name in the Order Detail list.</li>
             <li> In the
-              <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Sample-Database/">sample database,</a>      
+              <a target="_blank" href="https://apilogicserver.github.io/Docs/Sample-Database/">sample database,</a>      
               the Order Detail is related to the Product by
               <span style="font-family:'Courier New'">ProductId.</span>
               which makes no sense to End Users.<br>
@@ -318,7 +318,7 @@ resources:
             </li>
             <li> 
               Automatic joins are configurable
-              <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Admin-Customization/">configurable.</a>
+              <a target="_blank" href="https://apilogicserver.github.io/Docs/Admin-Customization/">configurable.</a>
             </li>
           </ul>
           <h3>Update Support - Lookups, Logic</h3>
@@ -333,7 +333,7 @@ resources:
                 <ul>
                   <li>
                     This is not from code, but from
-                    <a target="_blank" href="https://valhuber.github.io/ApiLogicServer/Tutorial/#logic">this logic.</a>
+                    <a target="_blank" href="https://apilogicserver.github.io/Docs/Tutorial/#logic">this logic.</a>
                   </li>
                 </ul>
             </li>
