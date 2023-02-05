@@ -65,7 +65,7 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
     flask_app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
     jwt = JWTManager(flask_app)
     
-    @flask_app.route("/auth/login", methods=["POST"])
+    @flask_app.route("/api/auth/login", methods=["POST"])
     def login():
         """
         Post id/password, returns token to be placed in header of subsequent requests.

@@ -326,8 +326,65 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
             app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
 
             custom_swagger = {
-                "securityDefinitions": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
-                "security": [{"Bearer": []}],
+            "securityDefinitions": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
+            "security": [{"Bearer": []}],
+            "paths": {
+                "/auth/login": {
+                "post": {
+                    "tags": [
+                    "auth"
+                    ],
+                    "summary": "Authenticate User",
+                    "description": "Creates an access token",
+                    "operationId": "AuthLogin",
+                    "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Authentication Failed"
+                    }
+                    },
+                    "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "type": "string",
+                        "default": "application/vnd.api+json",
+                        "enum": [
+                        "application/vnd.api+json",
+                        "application/json"
+                        ],
+                        "required": True
+                    },
+                    {
+                        "name": "POST body",
+                        "in": "body",
+                        "description": "Category attributes",
+                        "schema": {
+                        "$ref": "#/definitions/auth_login"
+                        },
+                        "required": True
+                    }
+                    ]
+                }
+                }
+            },
+            "definitions": {
+                "auth_login": {
+                    "properties": {
+                        "username": {
+                        "example": "u1",
+                        "type": "string"
+                        },
+                        "password": {
+                        "example": "p",
+                        "type": "string"
+                        }
+                    },
+                    "description": "authentication payload"
+                    }
+                }
             }
             safrs_api = SAFRSAPI(flask_app, host=swagger_host, port=swagger_port, prefix = API_PREFIX, custom_swagger=custom_swagger)
             
