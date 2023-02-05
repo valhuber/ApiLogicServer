@@ -232,7 +232,7 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
         file.write(file_data)
 
 def login():
-    post_uri = 'http://localhost:5656/auth/login'
+    post_uri = 'http://localhost:5656/api/auth/login'
     post_data = {"username": "aneu", "password": "p"}
     r = requests.post(url=post_uri, json = post_data)
     response_text = r.text
