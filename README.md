@@ -6,12 +6,12 @@ title:
 [![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 
-[![API Logic Server Intro](https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true)](https://valhuber.github.io/ApiLogicServer/ "Single command creates executable, customizable projects")
+[![API Logic Server Intro](https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true)](https://apilogicserver.github.io/Docs/ "Single command creates executable, customizable projects")
 
 &nbsp;
 ---
 
-Find the [documentation here](https://valhuber.github.io/ApiLogicServer/).
+Find the [documentation here](https://apilogicserver.github.io/Docs/).
 
 &nbsp;
 
@@ -72,13 +72,13 @@ ApiLogicServer create --project_name=ApiLogicProject db_url=
 
 |   | Feature    | Providing   | Why it Matters   |
 :-------|:-----------|:------------|:-----------------|
-| __Instant__ | 1. [**Admin App**](Admin-Tour) | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](http://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)              | Engage Business Users<br>Back-office Admin       |
-| | 2. [JSON:**API** and Swagger](API)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           |
+| __Instant__ | 1. [**Admin App**](https://apilogicserver.github.io/Docs/Admin-Tour/) | Instant **multi-page, multi-table** app  [(running here on PythonAnywhere)](https://apilogicserver.pythonanywhere.com/admin-app/index.html#/Home)              | Engage Business Users<br>Back-office Admin       |
+| | 2. [JSON:**API** and Swagger](https://apilogicserver.github.io/Docs/API/)                     | Endpoint for each table, with... <br>Filtering, pagination, related data                                                                        | Unblock custom App Dev<br>Application Integration                           |
 | | 3. Data Model Class Creation                                                     | Classes for Python-friendly ORM                                                                                                                             | Custom Data Access<br>Used by API                |
-| __Customizable__ | 4. [**Customizable Project**](Project-Structure)                   | Custom Endpoints, Logic <br>Use Python and your IDE  |Customize and run <br>Re-creation *not* required |                                                                                      
-| __Unique Logic__ | 5. [Spreadsheet-like Business Rules](Logic-Rules-plus-Python)  &nbsp; :trophy:      | **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation <br> ... nearly half the system  |
+| __Customizable__ | 4. [**Customizable Project**](https://apilogicserver.github.io/Docs/Project-Structure/)                   | Custom Endpoints, Logic <br>Use Python and your IDE  |Customize and run <br>Re-creation *not* required |                                                                                      
+| __Unique Logic__ | 5. [Spreadsheet-like Business Rules](https://apilogicserver.github.io/Docs/Logic-Why/)  &nbsp; :trophy:      | **40X more concise** - compare [legacy code](https://github.com/valhuber/LogicBank/wiki/by-code) | Unique backend automation <br> ... nearly half the system  |
 |  | Extensible with Python      | Familiar Event Model | Eg., Send messages, email  |
-| Testing | 6. [Behave **Test Framework**](Behave)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                |
+| Testing | 6. [Behave **Test Framework**](https://apilogicserver.github.io/Docs/Behave/)         | Test Suite Automation<br/>Behave Logic Report<br/>Drive Automation with Agile                                                                                                                           | Optimize Automation to get it fast<br/>Agile Collaboration to get it right                |
 
 &nbsp;
 
@@ -101,7 +101,7 @@ ApiLogicServer create-and-run --project_name=/localhost/ApiLogicProject --db_url
 &nbsp;
 
 ### Or, Create With Local Install
-Presuming Python 3.7+ [is installed](Install), it's typically:
+Presuming Python 3.7+ [is installed](https://apilogicserver.github.io/Docs/Install/), it's typically:
 
 ```bash title="Run API Logic Server from a local pip install"
 python -m venv venv                  # may require python3 -m venv venv
@@ -115,17 +115,17 @@ ApiLogicServer create-and-run        # create, or create-and-run; accept default
 
 ## Execute
 
-Your server is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](Tutorial/), the recommended quick start for API Logic Server.
+Your server is running - explore the data and api at [localhost:5656](http://localhost:5656).  Using the defaults provided above, you have started the [Tutorial](https://apilogicserver.github.io/Docs/Tutorial), the recommended quick start for API Logic Server.
 
 &nbsp;
 
 # Customize in IDE
 
-VSCode and PyCharm users can customize and run/debug within their IDE with [these steps](IDE-Execute).  Created projects include Launch and Docker configurations.  
+VSCode and PyCharm users can customize and run/debug within their IDE with [these steps](https://apilogicserver.github.io/Docs/IDE-Execute/).  Created projects include Launch and Docker configurations.  
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/generated-project.png?raw=true"></figure>
 
-[Rebuild services](https://valhuber.github.io/ApiLogicServer/Project-Rebuild/) are provided to accomodate changes to database structure or ORM classes.
+[Rebuild services](https://apilogicserver.github.io/Docs/Project-Rebuild/) are provided to accomodate changes to database structure or ORM classes.
 
 &nbsp;
 
@@ -155,10 +155,10 @@ We think you'll find Codespaces pretty amazing - check it out!
 API Logic Server is designed to make it easy to get started:
 
 * **Install and run Tutorial** - 
-[install](https://valhuber.github.io/ApiLogicServer/Install-Express/), and explore the [tutorial](https://valhuber.github.io/ApiLogicServer/Tutorial/).  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
+[install](https://apilogicserver.github.io/Docs/Install-Express/), and explore the [tutorial](https://apilogicserver.github.io/Docs/Tutorial/).  You'll create a complete project using the pre-installed sample database, explore its features, and support for customization and debugging. 
 
 * **Dockerized Test Databases** - 
-then, you might like to try out some of our [dockerized test databases](https://valhuber.github.io/ApiLogicServer/Database-Connectivity/).
+then, you might like to try out some of our [dockerized test databases](https://apilogicserver.github.io/Docs/Database-Connectivity/).
 
 * **Your Database** - 
 finally, try your own database.
@@ -170,7 +170,7 @@ finally, try your own database.
 ### Tutorials
 There are a number of facilities that will quickly enable you to get familiar with API Logic Server:
 
-* [Tutorial](Tutorial) walks you through the steps of creating a server
+* [Tutorial](https://apilogicserver.github.io/Docs/Tutorial/) walks you through the steps of creating a server
 * [Video](https://www.youtube.com/watch?v=gVTdu6c0iSI) shows the steps of creating a server
 
 &nbsp;
@@ -185,13 +185,13 @@ This is an open source project.  We are open to suggestions.  Some of our ideas 
 | 3. This project | API Logic Project Creation | Support for features described above |
 
 
-To get started, please see  the [Architecture.](Internals)
+To get started, please see  the [Architecture.](https://apilogicserver.github.io/Docs/Internals/)
 
 &nbsp;
 
 ### Status
 
-We have tested several databases - see [status here.](Database-Connectivity)
+We have tested several databases - see [status here.](https://apilogicserver.github.io/Docs/Database-Connectivity/)
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
@@ -269,7 +269,7 @@ There are a few articles that provide some orientation to API Logic Server:
 
 04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.)
 
-03/27/2022 - 05.00.06: Introducing [Behave test framework](https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/), LogicBank bugfix
+03/27/2022 - 05.00.06: Introducing [Behave test framework](https://apilogicserver.github.io/Docs/Logic-Tutorial/), LogicBank bugfix
 
 12/26/2021 - 04.00.05: Introducing the Admin app, with Readme Tutorial
 
