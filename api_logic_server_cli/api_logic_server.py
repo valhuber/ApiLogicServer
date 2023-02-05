@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.50"
+__version__ = "c"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/01/2023 - 07.00.50: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut \n"\
+    "\t02/01/2023 - 07.00.51: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -860,9 +860,6 @@ class ProjectRun(Project):
 
     def tutorial(self, msg: str="", create: str='tutorial'):
         """
-        """
-
-        """_summary_
         Creates (updates) Tutorial
 
         Contains 3 projects: basic_app, ApiLogicProject, ApiLogicProject_Logic
@@ -905,16 +902,16 @@ class ProjectRun(Project):
     3. Click the **globe** in the top "AdminApp" row
 '''
                 create_utils.insert_lines_at(lines = start_browser,
-                        at = "2. Start the Browser",
+                        at = "2. Start the Browser XX",
                         file_name = read_me_target,
                         after = True)
                 create_utils.replace_string_in_file(search_for="cd tutorial",
                         replace_with='cd /workspaces/app_fiddle',
                         in_file=read_me_target)
-                create_utils.replace_string_in_file(search_for="start the Browser at localhost:5656",
+                create_utils.replace_string_in_file(search_for="start the Browser at localhost:5656 XX",
                         replace_with='start the Browser via **Ports > AdminApp > globe**',
                         in_file=read_me_target)
-                create_utils.replace_string_in_file(search_for="Start the Browser at localhost:5656",
+                create_utils.replace_string_in_file(search_for="Start the Browser at localhost:5656 XX",
                         replace_with='Start the Browser:',
                         in_file=read_me_target)
             else:
@@ -945,7 +942,7 @@ class ProjectRun(Project):
         log.info(f"Tutorial project successfully created.  Next steps:\n")
         log.info(f'  Open the tutorial project in your VSCode\n')
         if is_docker() == False:
-            log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/Project-Env/')
+            log.info(f'  Establish your Python environment - see https://apilogicserver.github.io/Docs/Project-Env/')
             docker_info = """
         cd tutorial
         python3 -m venv venv       # may require python -m venv venv
@@ -956,7 +953,7 @@ class ProjectRun(Project):
 
     def create_project(self):
         """
-        Creates logic-enabled Python safrs api/admin project, options for FAB and execution
+        Creates logic-enabled Python safrs api/admin project, options for execution
 
         main driver
 
@@ -1009,7 +1006,7 @@ class ProjectRun(Project):
             pass  # keep silent for add-db, add-security...
         elif self.is_tutorial:
             log.debug(f"\nTutorial created.  Next steps:\n")
-            log.debug(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/IDE-Execute/#execute-prebuilt-launch-configurations\n')
+            log.debug(f'  Establish your Python environment - see https://apilogicserver.github.io/Docs/IDE-Execute/#execute-prebuilt-launch-configurations\n')
         else:
             disp_url = self.db_url
             if disp_url == "":
@@ -1045,7 +1042,7 @@ class ProjectRun(Project):
             else:
                 log.info(f'\nCustomize using your IDE:')
                 log.info(f'  code {self.project_name}  # e.g., open VSCode on created project')
-                log.info(f'  Establish your Python environment - see https://valhuber.github.io/ApiLogicServer/IDE-Execute/#execute-prebuilt-launch-configurations\n')
+                log.info(f'  Establish your Python environment - see https://apilogicserver.github.io/Docs/IDE-Execute/#execute-prebuilt-launch-configurations\n')
 
         if self.run:  # synchronous run of server - does not return
             run_file = os.path.abspath(f'{resolve_home(self.project_name)}/api_logic_server_run.py')
