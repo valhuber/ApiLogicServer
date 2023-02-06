@@ -26,7 +26,7 @@ This application was created using the API Logic Server CLI (Command Language In
 ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
 ```
 
-To execute (see *Show me how*, below, for details): start the server with **Run and Debug >> *2.API...***, and then start the Browser at localhost:5656 **(url in the console log)**
+To execute (see *Show me how*, below, for details): **restart the server** with **Run and Debug >> *2.API...***, and then start the Browser at localhost:5656 **(url in the console log)**
 
 &nbsp;
 
@@ -36,9 +36,9 @@ To execute (see *Show me how*, below, for details): start the server with **Run 
 
 &nbsp;
 
-To run the ApiLogicProject app:
+To run the ApiLogicProject app, **stop the running server** (see figure above), and
 
-1. Start the Server:
+1. Restart the Server:
 
     1. Click **Run and Debug**
     2. Use the dropdown to select **2. API Logic Server: Instant, Open**, and
@@ -96,7 +96,12 @@ This application is a clone of the prior example, customized in VSCode:
 
 * **User Interface:** the app now has help text that walks you through the key features
 
-You can run the app.  First, stop the server using the red "stop" button).  Then, restart with the same procedure as Step 2, above, but choose Run Configuration ***3. API Logic Project: Logic***.  Observe the customizations:
+You can run the app.  
+
+1. **Stop the server** using the red "stop" button).
+2. **Restart the server** with the same procedure as Step 2, above, but choose Run Configuration ***3. API Logic Project: Logic***.  
+
+Observe the customizations:
 
 1. Click Category - you need to **login** now (user u1, password p).  That's because authentication has been activated.
 
@@ -131,7 +136,7 @@ As shown above, it's easy to create projects with a single command.  To help you
 cd tutorial
 ApiLogicServer create --project_name=todo --db_url=todo
 ```
-Then, run the server as above, using the Run Configuration for `Execute ToDo`.
+Then, **restart** the server as above, using the Run Configuration for `Execute ToDo`.
 
 You can also try these other examples (be sure to `cd tutorial`; use the name below for both the _project_name_ and the _db_url_):
 
