@@ -59,7 +59,7 @@ To run your project:
         2. Explore the swagger - open another simple Browser with URL `http://localhost:5656/api` 
             * Note: you can drag windows to arrange your viewing area
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/ui-admin/run-admin-app.png?raw=true"></figure>
 
 &nbsp;&nbsp;
 
