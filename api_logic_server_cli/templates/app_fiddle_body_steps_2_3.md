@@ -26,7 +26,7 @@ This application was created using the API Logic Server CLI (Command Language In
 ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
 ```
 
-To execute (see *Show me how*, below, for details): start the server with **Run and Debug >> *2.API...***, and then start the Browser at localhost:5656
+To execute (see *Show me how*, below, for details): start the server with **Run and Debug >> *2.API...***, and then start the Browser at localhost:5656 **(url in the console log)**
 
 &nbsp;
 
@@ -45,12 +45,12 @@ To run the ApiLogicProject app:
     3. Click the green button to start the server
 <br><br>
 
-2. Start the Browser at localhost:5656
+2. Start the Browser at localhost:5656, using the **url shown in the console log**
 
 Don't spend too much time exploring the app, we'll see a much better version in just a moment...
 
 
-<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/2-apilogicproject.png?raw=true"></figure>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject.png?raw=true"></figure>
 
 </details>
 

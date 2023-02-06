@@ -901,19 +901,21 @@ class ProjectRun(Project):
 
     3. Click the **globe** in the top "AdminApp" row
 '''
+                create_utils.replace_string_in_file(search_for="cd tutorial",
+                        replace_with='cd /workspaces/app_fiddle',
+                        in_file=read_me_target)
+                """ appears codespaces can start from the console link, no globe confusion req'd
                 create_utils.insert_lines_at(lines = start_browser,
                         at = "2. Start the Browser XX",
                         file_name = read_me_target,
                         after = True)
-                create_utils.replace_string_in_file(search_for="cd tutorial",
-                        replace_with='cd /workspaces/app_fiddle',
-                        in_file=read_me_target)
                 create_utils.replace_string_in_file(search_for="start the Browser at localhost:5656 XX",
                         replace_with='start the Browser via **Ports > AdminApp > globe**',
                         in_file=read_me_target)
                 create_utils.replace_string_in_file(search_for="Start the Browser at localhost:5656 XX",
                         replace_with='Start the Browser:',
                         in_file=read_me_target)
+                """
             else:
                 create_utils.replace_string_in_file(search_for=".png",
                         replace_with='-tutorial.png',

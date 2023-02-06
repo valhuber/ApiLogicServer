@@ -1,3 +1,5 @@
+The readme is a concatentation of { app_fiddle.md | tutorial.md} + app_fiddle_body_steps_2_3.md
+
 submissions: https://pycoders.com/submissions
 
 pycoders: https://pycoders.com
