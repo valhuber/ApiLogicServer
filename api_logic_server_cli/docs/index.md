@@ -12,6 +12,8 @@ title:
 
 # Welcome to API Logic Server
 
+> This is an old version of the docs - please see the [current version](https://apilogicserver.github.io/Docs/)
+
 API Logic Server creates __customizable database web app projects:__
 
 * Creation is __Instant:__ create _executable_ projects from your database with a _single_ command.  Projects are __Highly Functional,__ providing:
