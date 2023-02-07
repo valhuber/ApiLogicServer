@@ -24,3 +24,6 @@ Use this App Fiddle to learn Flask/SQLAlchemy, using a running app in Codespaces
 
 Fiddle Link:
 https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622
+
+Tutorial Link:
+https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=593459232

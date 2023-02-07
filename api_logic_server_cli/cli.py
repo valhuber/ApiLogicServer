@@ -134,7 +134,7 @@ def main(ctx):
     Examples:
 
 \b
-        ApiLogicServer tutorial                                # *** Start Here ***
+        ApiLogicServer tutorial                                # <=== Start Here
         ApiLogicServer create-and-run --db_url= project_name=  # defaults to Northwind
         ApiLogicServer create                                  # prompts for project name, db url
 
