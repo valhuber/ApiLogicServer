@@ -97,7 +97,6 @@ resources:
         info: derived as count(Order where ShippedDate is None)
       - name: Client_id
       - name: ContactName
-        search: true
       - name: ContactTitle
       - name: Address
       - name: City

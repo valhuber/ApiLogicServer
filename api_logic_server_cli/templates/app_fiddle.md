@@ -4,7 +4,7 @@
 
 &nbsp;
 
-<summary>Welcome to the Flask/SQLAlchemy “App Fiddle”</summary>
+<summary>Welcome to the Flask/SQLAlchemy "App Fiddle"</summary>
 
 You've perhaps used JS Fiddle to explore JavaScript and HTML.  With the power of Codespaces, we can now provide a "fiddle" for a *complete application.*
 
