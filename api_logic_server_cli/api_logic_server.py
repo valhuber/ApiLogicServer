@@ -191,12 +191,18 @@ def recursive_overwrite(src, dest, ignore=None):
 
 
 def create_nw_tutorial(project_name, api_logic_server_dir_str):
-    """ copy tutorial from docs, and link to it from readme.md """
+    """ copy tutorial from docs, and link to it from readme.md 
+    
+    alert 2 copies
+    * /Users/val/dev/Org-ApiLogicServer/Docs/docs/Tutorial.md
+    * /Users/val/dev/ApiLogicServer/Docs/api_logic_server_cli/docs/Tutorial.md <=
+    """
+
 
     tutorial_file_proj = open(project_name + '/Tutorial.md', 'w')
-    tutorial_file_docs_path = Path(api_logic_server_dir_str).parent.parent.\
-        joinpath('Org-ApiLogicServer/Docs/docs/Tutorial.md')
-    tutorial_file_docs = open(tutorial_file_docs_path)  # /Users/val/dev/Org-ApiLogicServer/Docs/docs/Tutorial.md
+    tutorial_file_docs_path = Path(api_logic_server_dir_str).\
+        joinpath('docs/Tutorial.md')
+    tutorial_file_docs = open(tutorial_file_docs_path)
     tutorial_readme = tutorial_file_docs.read()
     tutorial_file_proj.write(tutorial_readme)
     tutorial_file_proj.close()
