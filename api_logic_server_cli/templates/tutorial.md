@@ -46,7 +46,9 @@ To run the basic app:
 
 2. Copy the `cURL` text, and paste it into the `bash`/`zsh` window
 
-<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app-tutorial.png?raw=true"></figure>
+3. When you have reviewed the result, stop the server
+
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app.png?raw=true"></figure>
 
 </details>
 

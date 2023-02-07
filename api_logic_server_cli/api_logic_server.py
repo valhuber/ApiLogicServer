@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.53"
+__version__ = "07.00.54"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/05/2023 - 07.00.53: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs \n"\
+    "\t02/06/2023 - 07.00.54: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -194,14 +194,14 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
     """ copy tutorial from docs, and link to it from readme.md """
 
     tutorial_file_proj = open(project_name + '/Tutorial.md', 'w')
-    tutorial_file_docs_path = Path(api_logic_server_dir_str).\
-        joinpath('docs').joinpath("Tutorial.md")
-    tutorial_file_docs = open(tutorial_file_docs_path)  # /Users/val/dev/ApiLogicServer/docs/Tutorial.md
+    tutorial_file_docs_path = Path(api_logic_server_dir_str).parent.parent.\
+        joinpath('Org-ApiLogicServer/Docs/docs/Tutorial.md')
+    tutorial_file_docs = open(tutorial_file_docs_path)  # /Users/val/dev/Org-ApiLogicServer/Docs/docs/Tutorial.md
     tutorial_readme = tutorial_file_docs.read()
     tutorial_file_proj.write(tutorial_readme)
     tutorial_file_proj.close()
 
-    project_readme_file_path = project_name + '/readme.md'
+    project_readme_file_path = project_name + '/readme.md'  # brief 'go read tutorial' - add std readme
     standard_readme_file_path = str(Path(api_logic_server_dir_str).\
         joinpath('project_prototype').joinpath("readme.md"))
     with open(project_readme_file_path, 'a') as project_readme_file:

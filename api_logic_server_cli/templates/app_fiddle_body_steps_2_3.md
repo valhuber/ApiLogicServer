@@ -113,8 +113,6 @@ Observe the customizations:
 
 You can use VSCode to *diff* these from their originals in the *ApiLogicProject*.
 
-Use the [```Detailed Tutorial```](ApiLogicProject/readme.md) to further explore this app.
-
 &nbsp;
 
 > **Key Take-aways** <br>1. **Instant** project creation<br>2. Spreadsheet-like **Rules**<br>3. Fully Customizable in **your IDE**.
@@ -128,6 +126,8 @@ Use the [```Detailed Tutorial```](ApiLogicProject/readme.md) to further explore 
 &nbsp;
 
 <summary>Next Steps: new projects</summary>
+
+Use the [```Detailed Tutorial```](3.%20ApiLogicProject_Logic/Tutorial.md) to further explore this app.
 
 
 As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several prepackaged sqlite databases.  For example, create a project for this 1 table database:
