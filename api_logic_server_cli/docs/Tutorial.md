@@ -2,7 +2,7 @@
 
 This Detailed Tutorial is designed for these scenarios:
 
-* You are using **codespaces** / VSCode, open to either the [tutorial project](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=593459232), or [appfiddle](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622).
+* You are using **codespaces** / VSCode, open to either the [tutorial project](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=593459232), or [app_fiddle](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622).
 
 * You are using a **local install** (pip install) version of API Logic Server, and have reviewed the [tutorial readme](https://github.com/ApiLogicServer/tutorial#readme).
 
@@ -64,7 +64,7 @@ After creation, you must establish your Python environment:
 
 > Stop any running servers that might still be running from the readme.
 
-To execute (see *Show me how*, below, for details): start the server with **Run and Debug >> *3. API Logic Project: Logic***, and then start the Browser at localhost:5656
+To execute (see *Show me how*, below, for details): start the server with **Run and Debug >> *3. API Logic Project: Logic***, and then start the Browser at localhost:5656 by **clicking the url shown in the console log.**
 
 &nbsp;
 
@@ -83,7 +83,7 @@ To run the ApiLogicProject app:
     3. Click the green button to start the server
 <br><br>
 
-2. Start the Browser at localhost:5656
+2. Start the Browser at localhost:5656 by **clicking the url shown in the console log.**
 
 <figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject.png?raw=true"></figure>
 
@@ -104,6 +104,7 @@ With the server started and the Admin App open in your Browser, we are ready to 
 After starting the server and browser, explore the Admin App in your browser:
 
 1. Navigate to `Customer`
+      * Login using the recommended credentials
       * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu<br/><br/>
 2. Click the Customer row  to see Customer Details
 3. Observe the `Placed Order List` tab at the bottom
