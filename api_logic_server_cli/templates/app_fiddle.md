@@ -30,7 +30,7 @@ Then, discover **API Logic Server** - an Open Source CLI to create executable pr
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
-Execute using the Run and Debug (*1. Basic App: Flask / SQLAlchemy*), and test with `cURL`.  The relevant code is `api/end_points.py`.
+Execute using the Run and Debug (*1. Basic App: Flask / SQLAlchemy*), and test with `cURL`.  The relevant code is `1. Basic_App/api/end_points.py`.
 
 <details markdown>
 

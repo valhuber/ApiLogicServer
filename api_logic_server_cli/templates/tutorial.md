@@ -32,7 +32,7 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 
 * any security, or business logic (multi-table derivations and constraints).
 
-Execute using the Run Configuration, and test with `cURL`.  The relevant code is `api/end_points.py`.
+Execute using the Run Configuration, and test with `cURL`.  The relevant code is `1. Basic_App/api/end_points.py`.
 
 <details markdown>
 

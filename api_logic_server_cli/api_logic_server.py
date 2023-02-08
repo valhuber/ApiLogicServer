@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.55"
+__version__ = "07.00.56"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/06/2023 - 07.00.55: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs \n"\
+    "\t02/07/2023 - 07.00.56: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -954,7 +954,7 @@ class ProjectRun(Project):
             docker_info = """
         cd tutorial
         python3 -m venv venv       # may require python -m venv venv
-        source venv/bin/activate   # windows venv\Scripts\activate
+        source venv/bin/activate   # windows venv\Scripts\\activate
         python3 -m pip install -r requirements.txt"""
             log.info(f'{docker_info}\n')
 
