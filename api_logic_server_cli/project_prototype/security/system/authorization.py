@@ -43,8 +43,6 @@ class Security:
         User code calls this as required to get user/roles (eg, multi-tenant client_id)
 
         see https://flask-login.readthedocs.io/en/latest/
-
-        TODO - how to CurrentUser = Security.current_user?
         """
         return current_user
 
@@ -113,8 +111,6 @@ class Grant:
         e.g. existing_statement.where(or_(f1, f2)) .
 
         u2 is a manager and a tenant
-
-        TODO - check session._flushing
         '''
         user = Security.current_user()
         mapper = orm_execute_state.bind_arguments['mapper']
@@ -156,6 +152,8 @@ def receive_do_orm_execute(orm_execute_state):
         table_name = mapper.persist_selectable.fullname   # mapper.mapped_table.fullname disparaged
         if table_name == "User":
             pass  # TODO bypass authorization when rules are running
-            security_logger.debug(f'avoid recursion on User table')
+            security_logger.debug(f'No grants - avoid recursion on User table')
+        elif  session._proxied._flushing:
+            security_logger.debug(f'No grants during logic processing')
         else:
             Grant.exec_grants(orm_execute_state) # SQL read check grants

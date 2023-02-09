@@ -101,7 +101,7 @@ from ui.admin.admin_loader import admin_events
 from security.system.authentication import configure_auth
 
 def setup_logging(flask_app):
-    setup_logic_logger = True
+    setup_logic_logger = False
     if setup_logic_logger:
         logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
         handler = logging.StreamHandler(sys.stderr)
@@ -132,7 +132,7 @@ def setup_logging(flask_app):
         engine_logger.addHandler(handler)
         engine_logger.setLevel(logging.DEBUG)
 
-    do_safrs_logging = True
+    do_safrs_logging = False
     if do_safrs_logging:
         safrs_init_logger = logging.getLogger('safrs.safrs_init')
         safrs_init_logger.setLevel(logging.DEBUG)

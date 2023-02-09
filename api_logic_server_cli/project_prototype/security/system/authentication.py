@@ -76,8 +76,8 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
         username = request.json.get("username", None)
         password = request.json.get("password", None)
 
-        user = authentication_provider.get_user(username, password)  # val - use auth_provider
-        if not user or not user.check_password(password): # TODO avoid model method? += provider?
+        user = authentication_provider.get_user(username, password)
+        if not user or not user.check_password(password):
             return jsonify("Wrong username or password"), 401
 
         access_token = create_access_token(identity=user)  # serialize and encode
@@ -90,7 +90,7 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
     @jwt.user_lookup_loader
     def user_lookup_callback(_jwt_header, jwt_data):
         identity = jwt_data["sub"]
-        return authentication_provider.get_user(identity, "")  # val - use auth_provider
+        return authentication_provider.get_user(identity, "")
 
     method_decorators.append(jwt_required())
     security_logger.info("\nAuthentication loaded -- api calls now require authorization header")

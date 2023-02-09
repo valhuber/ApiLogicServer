@@ -84,9 +84,14 @@ A running API and UI are a great start, but completing the project still require
 
 A unique feature of API Logic Server is provision for:
 
-* **Business Logic Automation:** using unique spreadsheet-like rules for multi-table derivations and constraints, extensible with Python
+* **Business Logic Automation:** using unique spreadsheet-like rules for multi-table derivations and constraints, extensible with Python.  Rules offer significant advantages:
 
-* These are **declared in *your IDE,*** with full support for code completion, logging, and debugging
+  * Remarkable agility with automatic dependency management - 40x more concise than code
+  * Simplify maintenance with automatic ordering
+  * Improve quality through automatic reuse and partitioning
+  * Faciliate collaboration since business users can read them
+
+* Rules are **declared in *your IDE,*** with full support for code completion, logging, and debugging.
 
 This application is a clone of the prior example, customized in VSCode:
 
