@@ -88,7 +88,7 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         """
         Explore SQLAlchemy and/or 
         
-        test (returns rows 2-5):
+        Test (returns rows 2-5):
             curl -X GET "http://localhost:5656/cats [no-filter | simple-filter]"
         """
 
@@ -124,9 +124,10 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     def order():
         """
         Illustrates:
-            Returning a nested result set response
-            Using SQLAlchemy to obtain data
-            Restructuring row results to desired json (e.g., for tool such as Sencha)
+        * Returning a nested result set response
+        * Using SQLAlchemy to obtain data
+        * Restructuring row results to desired json (e.g., for tool such as Sencha)
+
         Test:
             http://localhost:5656/order?Id=10643
             curl -X GET "http://localhost:5656/order?Id=10643"
@@ -164,7 +165,8 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
 
 class ServicesEndPoint(safrs.JABase):
     """
-    Illustrate custom service
+    Illustrate custom service - visible in swagger
+    
     Quite small, since transaction logic comes from shared rules
     """
 
