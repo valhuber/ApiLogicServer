@@ -10,11 +10,12 @@ You typically do not alter this file.
 """
 
 from sqlalchemy.orm import session
-from sqlalchemy import event, MetaData
+from sqlalchemy import event, MetaData, and_, or_
 import safrs
 from sqlalchemy import event, MetaData
 from sqlalchemy.orm import with_loader_criteria
 import logging, sys
+
 
 from flask_jwt_extended import current_user   # th import func
 
@@ -30,6 +31,11 @@ session = db.session  # sqlalchemy.orm.scoping.scoped_session
 
 
 class Security:
+
+    @classmethod
+    def set_user_sa(cls):
+        from flask import g
+        g.isSA = True
 
     @classmethod
     def current_user(cls):
@@ -102,19 +108,39 @@ class Grant:
         '''
         SQLAlchemy select event for current user's roles, append that role's grant filter to the SQL before execute 
 
+        if you have a select() construct, you can add new AND things just calling .where() again.
+        
+        e.g. existing_statement.where(or_(f1, f2)) .
+
+        u2 is a manager and a tenant
+
         TODO - check session._flushing
         '''
         user = Security.current_user()
         mapper = orm_execute_state.bind_arguments['mapper']
         table_name = mapper.persist_selectable.fullname   # mapper.mapped_table.fullname disparaged
+        try:
+            from flask import g
+            if g.isSA or user.id == 'sa':
+                security_logger.debug("sa (eg, set_user_sa()) - no grants apply")
+                return
+        except:
+            security_logger.debug("no user - ok (eg, system initialization)")
         if table_name in Grant.grants_by_table:
+            grant_list = list()
+            grant_entity = None
             for each_grant in Grant.grants_by_table[table_name]:
+                grant_entity = each_grant.entity
                 for each_user_role in user.UserRoleList:
                     if each_grant.role_name == each_user_role.role_name:
-                        security_logger.debug(f'Amend Permission for class / role: {table_name} / {each_grant.role_name} - {each_grant.filter}')
-                        orm_execute_state.statement = orm_execute_state.statement.options(
-                            with_loader_criteria(each_grant.entity, each_grant.filter()))  # th now function
-
+                        security_logger.debug(f'Amend Grant for class / role: {table_name} / {each_grant.role_name} - {each_grant.filter}')
+                        grant_list.append(each_grant.filter())
+            grant_filter = or_(*grant_list)
+            orm_execute_state.statement = orm_execute_state.statement.options(
+                with_loader_criteria(grant_entity, grant_filter ))
+            security_logger.debug(f"Grants applied for {table_name}")
+        else:
+            security_logger.debug(f"No Grants for {table_name}")
 
 @event.listens_for(session, 'do_orm_execute')
 def receive_do_orm_execute(orm_execute_state):

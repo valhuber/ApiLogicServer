@@ -1,9 +1,4 @@
-from functools import wraps
 import logging
-
-from flask_jwt_extended import get_jwt, jwt_required, verify_jwt_in_request
-from config import Config
-from security.system.authorization import Security
 
 import util
 from typing import List
@@ -68,65 +63,36 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         return jsonify({ "success": True, "message": "Server is shutting down..." })
 
 
-    def admin_required():
-        """
-        see https://flask-jwt-extended.readthedocs.io/en/stable/custom_decorators/
-        """
-        def wrapper(fn):
-            @wraps(fn)
-            def decorator(*args, **kwargs):
-                if Config.SECURITY_ENABLED == False:
-                    return fn(*args, **kwargs)
-                always_allow = True
-                verify_jwt_in_request(True)
-                if always_allow:
-                    return fn(*args, **kwargs)
-                claims = get_jwt()
-                if claims["is_administrator"]:
-                    return fn(*args, **kwargs)
-                else:
-                    return jsonify(msg="Admins only!"), 403
-            return decorator
-        return wrapper
-
-
     @app.route('/cats')
-    @admin_required()
     def cats():
         """
         Explore SQLAlchemy and/or 
+
+        Requires Security False in config.py, else get:
+        RuntimeError: You must call `@jwt_required()` or `verify_jwt_in_request()` before using this method
+        arising from 
         
-        test (returns rows 2-5):
-            curl -X GET "http://localhost:5656/cats [no-filter]"
+        test (returns rows 4-8):
+            curl -X GET "http://localhost:5656/cats [filter]"
         """
 
         from sqlalchemy import and_, or_
-        no_filter = request.args.get('filter')
+        do_filter = request.args.get('filter')
         db = safrs.DB         # Use the safrs.DB, not db!
         session = db.session  # sqlalchemy.orm.scoping.scoped_session
-        Security.set_user_sa()
 
-        if no_filter:
-            results = session.query(models.Category)  # .filter(models.Category.Id > 1)
-        else:
+        results = session.query(models.Category)  # .filter(models.Category.Id > 1)
+        if do_filter:
             results = session.query(models.Category) \
                 .filter(models.Category.Id > 1) \
-                .filter(or_((models.Category.Client_id == 2), (models.Category.Id == 5)))
-            multi_filter = True
-            if multi_filter:  # simulate intended @event.listens_for
-                client_grant = models.Category.Client_id == 2
-                id_grant = models.Category.Id == 5
-                or_list = (client_grant, id_grant)
-                grant_filter = or_( client_grant, id_grant)
-                # or_filter = or_[*or_list]  # this fails
-                results = session.query(models.Category) \
-                    .filter(models.Category.Id > 1)  \
-                    .filter(grant_filter)
-        return_result = []
+                .filter(or_((models.Category.Id > 5), (models.Category.Id > 3)))
+        
+        result = []
         for each_result in results:
             row = { 'id': each_result.Id, 'name': each_result.CategoryName}
-            return_result.append(row)
-        return jsonify({ "success": True, "results":  return_result})
+            result.append(row)
+        return jsonify({ "success": True, "results":  result})
+
 
     @app.route('/order')
     def order():
