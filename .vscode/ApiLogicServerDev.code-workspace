@@ -103,7 +103,7 @@
 		"sqltools.useNodeRuntime": true,
 		"workbench.preferredDarkColorTheme": "One Dark Pro Darker",
 		"workbench.preferredLightColorTheme": "Blue Light Theme 2022",
-		"workbench.colorTheme": "Atom One Dark",
+		"workbench.colorTheme": "One Dark Pro Flat",
 		"search.exclude": {
 			"**api_logic_server_cli/ApiLogicProject/": true,
 			"**api_logic_server_cli/create_from_model/safrs-react-admin-npm-build": true
