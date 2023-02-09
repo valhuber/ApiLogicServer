@@ -1,22 +1,17 @@
 from functools import wraps
 import logging
-
 from flask_jwt_extended import get_jwt, jwt_required, verify_jwt_in_request
 from config import Config
 from security.system.authorization import Security
-
 import util
 from typing import List
-
 import safrs
 import sqlalchemy
 from flask import request, jsonify
 from safrs import jsonapi_rpc, SAFRSAPI
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper
-
 from database import models
-
 from logic_bank.rule_bank.rule_bank import RuleBank
 
 # Called by api_logic_server_run.py, to customize api (new end points, services -- see add_order).
@@ -26,8 +21,10 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ Customize API - new end points for services
 
-    This sample illustrates the classic hello world,
-    and a more interesting add_order.
+    This sample illustrates
+    * classic hello world,
+    * a more interesting add_order,
+    * and some endpoints illustrating SQLAlchemy usage (cats, order).
 
      """
 
@@ -70,6 +67,8 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
 
     def admin_required():
         """
+        support option to bypass security (see cats, below).
+
         see https://flask-jwt-extended.readthedocs.io/en/stable/custom_decorators/
         """
         def wrapper(fn):
@@ -77,15 +76,8 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
             def decorator(*args, **kwargs):
                 if Config.SECURITY_ENABLED == False:
                     return fn(*args, **kwargs)
-                always_allow = True
-                verify_jwt_in_request(True)
-                if always_allow:
-                    return fn(*args, **kwargs)
-                claims = get_jwt()
-                if claims["is_administrator"]:
-                    return fn(*args, **kwargs)
-                else:
-                    return jsonify(msg="Admins only!"), 403
+                verify_jwt_in_request(True)  # must be issued if security enabled
+                return fn(*args, **kwargs)
             return decorator
         return wrapper
 
@@ -97,36 +89,36 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         Explore SQLAlchemy and/or 
         
         test (returns rows 2-5):
-            curl -X GET "http://localhost:5656/cats [no-filter]"
+            curl -X GET "http://localhost:5656/cats [no-filter | simple-filter]"
         """
 
         from sqlalchemy import and_, or_
-        no_filter = request.args.get('filter')
-        db = safrs.DB         # Use the safrs.DB, not db!
-        session = db.session  # sqlalchemy.orm.scoping.scoped_session
-        Security.set_user_sa()
+        filter_type = request.args.get('filter')
+        if filter_type is None:
+            filter_type = "multiple filters"
+        db = safrs.DB           # Use the safrs.DB, not db!
+        session = db.session    # sqlalchemy.orm.scoping.scoped_session
+        Security.set_user_sa()  # an endpoint that requires no auth header (see also @admin_required)
 
-        if no_filter:
-            results = session.query(models.Category)  # .filter(models.Category.Id > 1)
-        else:
+        if filter_type.startswith("n"):
+            results = session.query(models.Category)    # .filter(models.Category.Id > 1)
+        elif filter_type.startswith("s"):               # normally coded like this
             results = session.query(models.Category) \
                 .filter(models.Category.Id > 1) \
                 .filter(or_((models.Category.Client_id == 2), (models.Category.Id == 5)))
-            multi_filter = True
-            if multi_filter:  # simulate intended @event.listens_for
-                client_grant = models.Category.Client_id == 2
-                id_grant = models.Category.Id == 5
-                or_list = (client_grant, id_grant)
-                grant_filter = or_( client_grant, id_grant)
-                # or_filter = or_[*or_list]  # this fails
-                results = session.query(models.Category) \
-                    .filter(models.Category.Id > 1)  \
-                    .filter(grant_filter)
+        else:                                           # simulate grant logic (multiple filters)
+            client_grant = models.Category.Client_id == 2
+            id_grant = models.Category.Id == 5
+            grant_filter = or_( client_grant, id_grant)
+            results = session.query(models.Category) \
+                .filter(models.Category.Id > 1)  \
+                .filter(grant_filter)
         return_result = []
         for each_result in results:
             row = { 'id': each_result.Id, 'name': each_result.CategoryName}
             return_result.append(row)
         return jsonify({ "success": True, "results":  return_result})
+
 
     @app.route('/order')
     def order():

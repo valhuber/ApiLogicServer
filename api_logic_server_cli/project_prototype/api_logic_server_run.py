@@ -391,11 +391,11 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
             app_logger.info(f'Customize API - api/expose_service.py, exposing custom services')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
-            method_decorators=[]  # th login code (move to separate file??)
+            method_decorators=[]
             if Config.SECURITY_ENABLED:
                 configure_auth(flask_app, database, method_decorators)
             
-            expose_api_models.expose_models(safrs_api, method_decorators)  # th new
+            expose_api_models.expose_models(safrs_api, method_decorators)
 
             from database.bind_databases import open_databases
             open_databases(flask_app, session, safrs_api, method_decorators)

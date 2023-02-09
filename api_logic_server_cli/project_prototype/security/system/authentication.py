@@ -61,7 +61,7 @@ def configure_auth(flask_app: Flask, database: object, method_decorators: object
     """
     flask_app.config["PROPAGATE_EXCEPTIONS"] = True
     flask_app.config["JWT_SECRET_KEY"] = "ApiLogicServerSecret"  # Change this!
-    flask_app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=222)  # th longer exp
+    flask_app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=222)  #  change as you see fit
     flask_app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
     jwt = JWTManager(flask_app)
     

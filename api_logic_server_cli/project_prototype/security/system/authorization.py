@@ -17,7 +17,7 @@ from sqlalchemy.orm import with_loader_criteria
 import logging, sys
 
 
-from flask_jwt_extended import current_user   # th import func
+from flask_jwt_extended import current_user
 
 from config import Config
 authentication_provider = Config.SECURITY_PROVIDER
