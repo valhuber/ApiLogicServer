@@ -231,9 +231,19 @@ def replace_string_in_file(search_for: str, replace_with: str, in_file: str):
     with open(in_file, 'w') as file:
         file.write(file_data)
 
-def login():
+def login(user: str='aneu'):
+    """
+
+    Login as <specified user>, password p
+
+    Raises:
+        Exception: if login fails
+
+    Returns:
+        _type_: header = {'Authorization': 'Bearer {}'.format(f'{token}')}
+    """
     post_uri = 'http://localhost:5656/api/auth/login'
-    post_data = {"username": "aneu", "password": "p"}
+    post_data = {"username": user, "password": "p"}
     r = requests.post(url=post_uri, json = post_data)
     response_text = r.text
     status_code = r.status_code
@@ -379,6 +389,37 @@ def docker_creation_tests(api_logic_server_tests_path):
         msg=f'\nBuilding projects from Docker container at: {str(api_logic_server_home_path)}')
     print('built projects from container')
 
+def validate_nw():
+    """
+    With NW open, verifies:
+    * Behave test
+
+    TODO:
+    * RPCs: add_order, cats(2)
+    """
+    try:
+        api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
+        api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
+        result_behave = run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
+            cwd=api_logic_project_behave_path,
+            msg="\nBehave Test Run",
+            show_output=True)
+        result_behave_report = run_command(f"{python} behave_logic_report.py run --prepend_wiki='reports/Behave Logic Report Intro.md' --wiki='reports/Behave Logic Report.md'",
+            cwd=api_logic_project_behave_path,
+            msg="\nBehave Logic Report",
+            show_output=True)  # note: report lost due to rebuild tests
+        if result_behave.returncode != 0:
+            raise("Behave Run Error")
+    except:
+        print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
+        f = open(str(api_logic_project_logs_path), 'r')
+        file_contents = f.read()
+        print (file_contents)
+        f.close()
+        exit(result_behave.returncode)
+    print("\nBehave tests - Success...\n")
+
+
 def validate_sql_server_types():
     """
     Verify sql server types and extended builder
@@ -490,24 +531,7 @@ if Config.do_run_api_logic_project or Config.do_test_api_logic_project:
     start_api_logic_server(project_name="ApiLogicProject")
 
 if Config.do_test_api_logic_project:
-    try:
-        api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
-        api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
-        result_behave = run_command(f'{python} behave_run.py --outfile={str(api_logic_project_logs_path)}',
-            cwd=api_logic_project_behave_path,
-            msg="\nBehave Test Run",
-            show_output=True)
-        result_behave_report = run_command(f"{python} behave_logic_report.py run --prepend_wiki='reports/Behave Logic Report Intro.md' --wiki='reports/Behave Logic Report.md'",
-            cwd=api_logic_project_behave_path,
-            msg="\nBehave Logic Report",
-            show_output=True)  # note: report lost due to rebuild tests
-    except:
-        print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
-        f = open(str(api_logic_project_logs_path), 'r')
-        file_contents = f.read()
-        print (file_contents)
-        f.close()
-    print("\nBehave tests - Success...\n")
+    validate_nw()
     stop_server(msg="*** NW TESTS COMPLETE ***\n")
 
 if Config.do_multi_database_test:

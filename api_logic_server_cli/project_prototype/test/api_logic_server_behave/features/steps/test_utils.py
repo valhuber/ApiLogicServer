@@ -19,8 +19,8 @@ def prt(msg: any, test: str= None) -> None:
     r = requests.get(msg_url)
 
 def login():
-    post_uri = 'http://localhost:5656/auth/login'
-    post_data = {"username": "aneu"}
+    post_uri = 'http://localhost:5656/api/auth/login'
+    post_data = {"username": "aneu", "password": "p"}
     r = requests.post(url=post_uri, json = post_data)
     response_text = r.text
     status_code = r.status_code
