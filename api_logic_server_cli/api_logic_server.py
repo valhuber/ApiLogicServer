@@ -12,7 +12,7 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.65"
+__version__ = "07.00.66"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
     "\t02/11/2023 - 07.00.66: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs, logic \n"\
@@ -272,7 +272,7 @@ def create_project_with_nw_samples(project, msg: str) -> str:
                 else:
                     shutil.copytree(from_dir, project.project_directory)  # normal path (fails if project_directory not empty)
             except OSError as e:
-                log.debug(f'\n==>Error - unable to copy to {project.project_directory} -- see log below'
+                raise Exception(f'\n==>Error - unable to copy to {project.project_directory} -- see log below'
                     f'\n\n{str(e)}\n\n'
                     f'Suggestions:\n'
                     f'.. Verify the --project_name argument\n'
