@@ -198,7 +198,6 @@ class ServicesEndPoint(safrs.JABase):
         util.json_to_entities(kwargs, new_order)  # generic function - any db object
         return {}  # automatic commit, which executes transaction logic
 
-from safrs import SAFRSAPI, jsonapi_rpc, DB
 
 class CategoriesEndPoint(safrs.JABase):
 
