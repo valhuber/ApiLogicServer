@@ -213,6 +213,11 @@ def rows_to_dict(result: object) -> list:
     """
     rows = []
     for each_row in result:
-        row_as_dict = each_row._asdict()
+        row_as_dict = None
+        print(f'type(each_row): {type(each_row)}')
+        if isinstance (each_row, sqlalchemy.engine.row.LegacyRow):  # sqlalchemy.engine.row
+            row_as_dict = each_row._asdict()
+        else:
+            row_as_dict = each_row.to_dict()
         rows.append(row_as_dict)
     return rows

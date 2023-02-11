@@ -161,6 +161,7 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     
     app_logger.info("..api/expose_service.py, exposing custom services: hello_world, add_order")
     api.expose_object(ServicesEndPoint)
+    api.expose_object(CategoriesEndPoint)
 
 
 class ServicesEndPoint(safrs.JABase):
@@ -196,3 +197,24 @@ class ServicesEndPoint(safrs.JABase):
 
         util.json_to_entities(kwargs, new_order)  # generic function - any db object
         return {}  # automatic commit, which executes transaction logic
+
+from safrs import SAFRSAPI, jsonapi_rpc, DB
+
+class CategoriesEndPoint(safrs.JABase):
+
+    @staticmethod
+    @jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
+    def get_cats():
+        db = safrs.DB
+        session = db.session
+        Security.set_user_sa()  # an endpoint that requires no auth header (see also @admin_required)
+
+        result = session.query(models.Category)
+        for each_row in result:
+            print(f'each_row: {each_row}')
+        dont_rely_on_safrs_debug = True
+        # response = {"result" : list(result)}
+        if dont_rely_on_safrs_debug:
+            rows = util.rows_to_dict(result)
+            response = {"result": rows}
+        return response
