@@ -86,7 +86,7 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     @admin_required()
     def cats():
         """
-        Explore SQLAlchemy and/or 
+        Explore SQLAlchemy and/or filters.
         
         Test (returns rows 2-5):
             curl -X GET "http://localhost:5656/cats [no-filter | simple-filter]"
@@ -168,7 +168,7 @@ class ServicesEndPoint(safrs.JABase):
     """
     Illustrate custom service - visible in swagger
     
-    Quite small, since transaction logic comes from shared rules
+    Quite small, since transaction logic comes from shared logic
     """
 
     @classmethod
@@ -200,13 +200,23 @@ class ServicesEndPoint(safrs.JABase):
 
 
 class CategoriesEndPoint(safrs.JABase):
+    """
+    Illustrates swagger-visible RPC that requires authentication (@jwt_required()).
+
+    Observe authorization is thus enforced.  In swagger:
+    * Post to endpoint auth to obtain <access_token> value - copy it to clipboard
+    * Authorize (top of swagger), using Bearer <access_token>
+    * Post to CategoriesEndPoint/getcats, observe only rows 2-5 returned
+
+    """
 
     @staticmethod
+    @jwt_required()
     @jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
     def get_cats():
         db = safrs.DB
         session = db.session
-        Security.set_user_sa()  # an endpoint that requires no auth header (see also @admin_required)
+        # Security.set_user_sa()  # use to bypass authorization (also requires @admin_required)
 
         result = session.query(models.Category)
         for each_row in result:
