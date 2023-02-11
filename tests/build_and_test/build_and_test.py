@@ -392,7 +392,7 @@ def validate_sql_server_types():
     response_text = r.text
     result_data = json.loads(response_text) 
     assert len(result_data["result"]) == 2, "TVF/udfEmployeeInLocation: Did not find 2 expected result rows"
-    assert "Sweden" in result_data["result"][0], "TVF/udfEmployeeInLocation: Result row 1 does not contain Sweden"
+    assert "Sweden" == result_data["result"][0]["Location"], "TVF/udfEmployeeInLocation: Result row 1 does not contain Sweden"
 
     get_uri = "http://localhost:5656/api/DataType/?fields%5BDataType%5D=Key%2Cchar_type%2Cvarchar_type&page%5Boffset%5D=0&page%5Blimit%5D=10&sort=id"
     r = requests.get(url=get_uri)
@@ -583,6 +583,22 @@ if Config.do_docker_sqlserver:
         msg=f'\nCreate SqlServer NORTHWND at: {str(install_api_logic_server_path)}')
     start_api_logic_server(project_name='sqlserver')
     stop_server(msg="sqlserver\n")
+    """
+url above works, but this run config fails:
+        {
+            "name": "SQL Server Types",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/api_logic_server_cli",
+            "program": "cli.py",
+            "redirectOutput": true,
+            "argsExpansion": "none",
+            "args": ["create",
+                "--project_name=../../servers/sqlserver-types",
+fails           "--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no",
+
+works            --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+    """
 
 if Config.do_docker_postgres:
     result_docker_postgres = run_command(

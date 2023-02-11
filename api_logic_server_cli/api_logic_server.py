@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.60"
+__version__ = "07.00.61"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/09/2023 - 07.00.60: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs, logic \n"\
+    "\t02/10/2023 - 07.00.61: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs, logic \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -1000,7 +1000,7 @@ class ProjectRun(Project):
         invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
         if self.extended_builder is not None and self.extended_builder != "":
             log.debug(f'4. Invoke extended_builder: {self.extended_builder}, ({self.db_url}, {self.project_directory})')
-            invoke_extended_builder(self.extended_builder, self.db_url, self.project_directory)
+            invoke_extended_builder(self.extended_builder, self.abs_db_url, self.project_directory)
 
         copy_project_result = final_project_fixup("4. Final project fixup", self)
 

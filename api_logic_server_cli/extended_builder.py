@@ -4,11 +4,6 @@ from sqlalchemy.sql import text
 from typing import List
 import sqlalchemy
 
-"""
-    Example
-        APILogicServer run --project_name='~/dev/servers/sqlserver-types' --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no' --extended_builder='*'
-"""
-
 
 def log(msg: any) -> None:
     print(msg, file=sys.stderr)
@@ -47,6 +42,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
 from safrs import SAFRSAPI, jsonapi_rpc
 from safrs import JABase, DB
+import util
 
 ########################################################################################################################
 # Classes describing database for SqlAlchemy ORM, initially created by schema introspection.
@@ -138,7 +134,12 @@ metadata = Base.metadata
                         self.tvf_contents += ", "
             self.tvf_contents += ")\n"
             self.tvf_contents += f'\t\tresult = query_result.fetchall()\n'
-            self.tvf_contents += '\t\treturn {"result" : list(result)}\n'
+            self.tvf_contents += f'\t\tdont_rely_on_safrs_debug = True\n'
+            self.tvf_contents += '\t\tresponse = {"result" : list(result)}\n'
+            self.tvf_contents += f'\t\tif dont_rely_on_safrs_debug:\n'
+            self.tvf_contents += '\t\t\trows = util.rows_to_dict(result)\n'
+            self.tvf_contents += '\t\t\tresponse = {"result": rows}\n'
+            self.tvf_contents += f'\t\treturn response\n'
             self.tvf_contents += f'\n\n'
 
     def write_tvf_file(self):
@@ -166,17 +167,18 @@ metadata = Base.metadata
         """
         print(f'extended_builder.extended_builder("{self.db_url}", "{self.project_directory}"')
 
-        cols_sql = "" \
-                   "SELECT TABLE_CATALOG AS [Database], TABLE_SCHEMA AS [Schema], TABLE_NAME AS [Function], " \
-                    "COLUMN_NAME AS [Column], DATA_TYPE AS [Data_Type], CHARACTER_MAXIMUM_LENGTH AS [Char_Max_Length] " \
-                    "FROM INFORMATION_SCHEMA.ROUTINE_COLUMNS " \
-                    "WHERE TABLE_NAME IN " \
-                        "(SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = 'FUNCTION' AND DATA_TYPE = 'TABLE') " \
-                   "ORDER BY TABLE_NAME, COLUMN_NAME;"
+        cols_sql = """
+                   SELECT TABLE_CATALOG AS [Database], TABLE_SCHEMA AS [Schema], TABLE_NAME AS [Function],
+                    COLUMN_NAME AS [Column], DATA_TYPE AS [Data_Type], CHARACTER_MAXIMUM_LENGTH AS [Char_Max_Length]
+                    FROM INFORMATION_SCHEMA.ROUTINE_COLUMNS 
+                    WHERE TABLE_NAME IN 
+                        (SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = 'FUNCTION' AND DATA_TYPE = 'TABLE')
+                   ORDER BY TABLE_NAME, COLUMN_NAME;
+        """
         engine = sqlalchemy.create_engine(self.db_url, echo=False)  # sqlalchemy sqls...
         cols = []
         current_table_name = ""
-        with engine.connect() as connection:
+        with engine.connect() as connection:                # first, get all the TVF cols & build class
             result = connection.execute(text(cols_sql))
             for row_dict in result:
                 row = DotDict(row_dict)
@@ -195,26 +197,29 @@ metadata = Base.metadata
 
         if len(cols) > 0:
             self.number_of_services += 1
-            self.build_tvf_class(cols)
+            self.build_tvf_class(cols)  # eg, udfEmployeeInLocationWithName
 
-        args_sql = "SELECT " \
-                   "SCHEMA_NAME(SCHEMA_ID) AS [Schema]" \
-                   ",SO.name AS [ObjectName]" \
-                   ",SO.Type_Desc AS [ObjectType (UDF/SP)]" \
-                   ",P.parameter_id AS [ParameterID]" \
-                   ",P.name AS [ParameterName]" \
-                   ",TYPE_NAME(P.user_type_id) AS [ParameterDataType]" \
-                   ",P.max_length AS [ParameterMaxBytes]" \
-                   ",P.is_output AS [IsOutPutParameter]" \
-                   " FROM sys.objects AS SO" \
-                   " LEFT OUTER JOIN sys.parameters AS P ON SO.OBJECT_ID = P.OBJECT_ID" \
-                   " WHERE SO.Type_Desc = 'SQL_INLINE_TABLE_VALUED_FUNCTION'" \
-                   "   OR  SO.Type_Desc = 'SQL_TABLE_VALUED_FUNCTION'" \
-                   " ORDER BY [Schema], SO.name, P.parameter_id"
+        args_sql = """
+                   SELECT 
+                   SCHEMA_NAME(SCHEMA_ID) AS [Schema]
+                    ,SO.name AS [ObjectName]
+                    ,SO.Type_Desc AS [ObjectType (UDF/SP)]
+                    ,P.parameter_id AS [ParameterID]
+                    ,P.name AS [ParameterName]
+                    ,TYPE_NAME(P.user_type_id) AS [ParameterDataType]
+                    ,P.max_length AS [ParameterMaxBytes]
+                    ,P.is_output AS [IsOutPutParameter]
+                     FROM sys.objects AS SO
+                     LEFT OUTER JOIN sys.parameters AS P ON SO.OBJECT_ID = P.OBJECT_ID
+                     WHERE SO.Type_Desc = 'SQL_INLINE_TABLE_VALUED_FUNCTION'
+                       OR  SO.Type_Desc = 'SQL_TABLE_VALUED_FUNCTION'
+                     ORDER BY [Schema], SO.name, P.parameter_id
+        
+        """
         args = []
         current_object_name = ""
 
-        with engine.connect() as connection:
+        with engine.connect() as connection:                # next, get all the TVF args
             result = connection.execute(text(args_sql))
             for row_dict in result:
                 row = DotDict(row_dict)
@@ -239,15 +244,40 @@ metadata = Base.metadata
 
         self.append_expose_services_file()
 
+    """ 
+                
+    args
+        db_url - use this to open the target database, e.g. for meta data
+        project_directory - the created project... create / alter files here
+    """
 
-def extended_builder(db_url, project_directory):
-    """ called by ApiLogicServer CLI -- scan db_url schema for TVFs, create api/tvf.py
-            for each TVF:
-                class t_<TVF_Name> -- the model
-                class <TVF_Name>   -- the service
-        args
-            db_url - use this to open the target database, e.g. for meta data
-            project_directory - the created project... create / alter files here
+def extended_builder(db_url: str, project_directory: str):
+    """
+    Illustrate Extended Builder -- CLI calls EB to create / update project files.
+    
+    Expose TVFs (Sql Server Table Valued Functions) as apis
+   
+    Scan db_url schema for TVFs, create api/tvf.py:
+
+    * Create api/tvf.py -- 
+            - for each TVF found in db_url:
+                    - class t_<TVF_Name> -- the model
+                    - class <TVF_Name>   -- the service
+            - at end, add endpoints to safrs api - executed on import
+    * Update api/customize.api to import tvf
+
+    Example
+
+        APILogicServer run --project_name='~/dev/servers/sqlserver-types' \
+\b
+            --extended_builder='*' \
+\b
+            --db_url='mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+17+for+SQL+Server?trusted_connection=no'
+
+
+    Args:
+        db_url (str): SQLAlchemy db uri
+        project_directory (str): project location
     """
     log(f'extended_builder.extended_builder("{db_url}", "{project_directory}"')
     tvf_builder = TvfBuilder(db_url, project_directory)

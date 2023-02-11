@@ -334,7 +334,10 @@
             "program": "cli.py",
             "redirectOutput": true,
             "argsExpansion": "none",
-            "args": ["create","--project_name=../../servers/sqlserver-types","--db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no", "--extended_builder=*"],
+            "args": ["create",
+                "--project_name=../../servers/sqlserver-types",
+                "--db_url=sqlsvr-sample",
+                "--extended_builder=*"],
             "console": "integratedTerminal"
         },
         {

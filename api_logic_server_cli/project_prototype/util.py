@@ -199,3 +199,20 @@ def row_to_dict(row: safrs.DB.Model
         row_as_dict.pop('links')
         row_as_dict.pop('relationships')
     return row_as_dict
+
+
+def rows_to_dict(result: object) -> list:
+    """
+    Converts SQLAlchemy result to dict array
+
+    Args:
+        result (object): SQLAlchemy result
+
+    Returns:
+        dict: dict array
+    """
+    rows = []
+    for each_row in result:
+        row_as_dict = each_row._asdict()
+        rows.append(row_as_dict)
+    return rows
