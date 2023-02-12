@@ -31,7 +31,7 @@ def dbpath(dbname: str) -> str:
     return PATH
 
 
-def json_to_entities(from_row: object, to_row: safrs.DB.Model):
+def json_to_entities(from_row: object, to_row):
     """
     transform json object to SQLAlchemy rows, for save & logic
 
@@ -177,7 +177,7 @@ def server_log(request, jsonify):
     return jsonify({"result": f'ok'})
 
 
-def row_to_dict(row: safrs.DB.Model
+def row_to_dict(row
                 , replace_attribute_tag: str = None
                 , remove_links_relationships: bool = False) -> dict:
     """

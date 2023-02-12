@@ -19,6 +19,7 @@
 """
 
 import os, logging, logging.config, sys, yaml
+from flask_sqlalchemy import SQLAlchemy
 
 
 def is_docker() -> bool:
@@ -307,13 +308,7 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
         if admin_enabled:
             flask_app.config.update(SQLALCHEMY_BINDS={'admin': 'sqlite:////tmp/4LSBE.sqlite.4'})
 
-        db = safrs.DB
-        session: Session = db.session
-        import database.models
-        from logic import declare_logic
-        LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
-        app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
-            + f' -- {len(database.models.metadata.tables)} tables loaded')  # db opened 1st access
+        db = SQLAlchemy()
 
         db.init_app(flask_app)
         with flask_app.app_context():
@@ -386,7 +381,15 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
                     }
                 }
             }
-            safrs_api = SAFRSAPI(flask_app, host=swagger_host, port=swagger_port, prefix = API_PREFIX, custom_swagger=custom_swagger)
+            safrs_api = SAFRSAPI(flask_app, app_db= db, host=swagger_host, port=swagger_port, prefix = API_PREFIX, custom_swagger=custom_swagger)
+            
+            db = safrs.DB
+            session: Session = db.session
+            import database.models
+            from logic import declare_logic
+            LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
+            app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
+                + f' -- {len(database.models.metadata.tables)} tables loaded')  # db opened 1st access
             
             app_logger.info(f'Customize API - api/expose_service.py, exposing custom services')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services

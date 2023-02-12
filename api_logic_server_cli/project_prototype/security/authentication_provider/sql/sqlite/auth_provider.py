@@ -10,8 +10,8 @@ from sqlalchemy import inspect
 # sql auth provider
 # **********************
 
-db = safrs.DB         # Use the safrs.DB, not db!
-session = db.session  # sqlalchemy.orm.scoping.scoped_session
+# FIXME db = safrs.DB         # Use the safrs.DB, not db!
+# session = db.session  # sqlalchemy.orm.scoping.scoped_session
 
 class Authentication_Provider(Abstract_Authentication_Provider):
 
