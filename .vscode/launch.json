@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Run P5",
+            "type": "python",
+            "request": "launch",
+            "env": {"APILOGICSERVER_HOME": "${workspaceFolder}"},
+            "program": "${workspaceFolder}/../servers/P5/api_logic_server_run.py",
+            "justMyCode": false,
+            "redirectOutput": true,
+            "console": "integratedTerminal"
+        },
+        {
             "name": "BUILD AND TEST",
             "type": "python",
             "request": "launch",

@@ -26,10 +26,10 @@ security_logger = logging.getLogger(__name__)
 
 security_logger.debug(f'\nAuthorization loaded via api_logic_server_run.py -- import \n')
 
-"""  FIXME remove
+
 db = safrs.DB         # Use the safrs.DB, not db!
 session = db.session  # sqlalchemy.orm.scoping.scoped_session
-"""
+
 
 class Security:
 
@@ -138,7 +138,7 @@ class Grant:
             security_logger.debug(f"Grants applied for {table_name}")
         else:
             security_logger.debug(f"No Grants for {table_name}")
-"""
+
 @event.listens_for(session, 'do_orm_execute')
 def receive_do_orm_execute(orm_execute_state):
     "listen for the 'do_orm_execute' event from SQLAlchemy"
@@ -158,4 +158,3 @@ def receive_do_orm_execute(orm_execute_state):
             security_logger.debug(f'No grants during logic processing')
         else:
             Grant.exec_grants(orm_execute_state) # SQL read check grants
-"""

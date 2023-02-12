@@ -317,8 +317,8 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
                 db.create_all(bind='admin')
                 session.commit()
 
-            from api import expose_api_models, customize_api
-            app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
+            # FIXME moved from api import expose_api_models, customize_api
+            # app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
 
             custom_swagger = {
             "securityDefinitions": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
@@ -382,9 +382,13 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
                 }
             }
             safrs_api = SAFRSAPI(flask_app, app_db= db, host=swagger_host, port=swagger_port, prefix = API_PREFIX, custom_swagger=custom_swagger)
-            
+
             db = safrs.DB
             session: Session = db.session
+
+            from api import expose_api_models, customize_api
+            app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
+
             import database.models
             from logic import declare_logic
             LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
