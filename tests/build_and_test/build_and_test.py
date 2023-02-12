@@ -407,12 +407,15 @@ def validate_nw():
             cwd=api_logic_project_behave_path,
             msg="\nBehave Test Run",
             show_output=True)
+        if result_behave.returncode != 0:
+            raise Exception("Behave Run Error")
+        print("\nBehave tests run - now run report..\n")
         result_behave_report = run_command(f"{python} behave_logic_report.py run --prepend_wiki='reports/Behave Logic Report Intro.md' --wiki='reports/Behave Logic Report.md'",
             cwd=api_logic_project_behave_path,
             msg="\nBehave Logic Report",
             show_output=True)  # note: report lost due to rebuild tests
         if result_behave.returncode != 0:
-            raise("Behave Run Error")
+            raise Exception("Behave Report Error")
     except:
         print(f'\n\n** Behave Test failed\nHere is log from: {str(api_logic_project_logs_path)}\n\n')
         f = open(str(api_logic_project_logs_path), 'r')
@@ -420,7 +423,7 @@ def validate_nw():
         print (file_contents)
         f.close()
         exit(result_behave.returncode)
-    print("\nBehave tests - Success...\n")
+    print("\nBehave tests & report - Success...\n")
 
 
 def validate_sql_server_types():
