@@ -203,7 +203,7 @@ class CategoriesEndPoint(safrs.JABase):
     """
     Illustrates swagger-visible RPC that requires authentication (@jwt_required()).
 
-    Observe authorization is thus enforced.  Test in swagger:
+    Observe authorization is thus enforced.  Test in swagger --
     * Post to endpoint auth to obtain <access_token> value - copy it to clipboard
     * Authorize (top of swagger), using Bearer <access_token>
     * Post to CategoriesEndPoint/getcats, observe only rows 2-5 returned

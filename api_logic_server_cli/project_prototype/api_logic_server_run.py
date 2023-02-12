@@ -20,7 +20,8 @@
 
 import os, logging, logging.config, sys, yaml
 from flask_sqlalchemy import SQLAlchemy
-
+import json
+from pathlib import Path
 
 def is_docker() -> bool:
     """ running docker?  dir exists: /home/api_logic_server """
@@ -317,83 +318,24 @@ def create_app(swagger_host: str = None, swagger_port: int = None):
                 db.create_all(bind='admin')
                 session.commit()
 
-            # FIXME moved from api import expose_api_models, customize_api
+            # VH moved from api import expose_api_models, customize_api
             # app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
 
-            custom_swagger = {
-            "securityDefinitions": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
-            "security": [{"Bearer": []}],
-            "paths": {
-                "/auth/login": {
-                "post": {
-                    "tags": [
-                    "auth"
-                    ],
-                    "summary": "Authenticate User",
-                    "description": "Creates an access token",
-                    "operationId": "AuthLogin",
-                    "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "401": {
-                        "description": "Authentication Failed"
-                    }
-                    },
-                    "parameters": [
-                    {
-                        "name": "Content-Type",
-                        "in": "header",
-                        "type": "string",
-                        "default": "application/vnd.api+json",
-                        "enum": [
-                        "application/vnd.api+json",
-                        "application/json"
-                        ],
-                        "required": True
-                    },
-                    {
-                        "name": "POST body",
-                        "in": "body",
-                        "description": "Category attributes",
-                        "schema": {
-                        "$ref": "#/definitions/auth_login"
-                        },
-                        "required": True
-                    }
-                    ]
-                }
-                }
-            },
-            "definitions": {
-                "auth_login": {
-                    "properties": {
-                        "username": {
-                        "example": "u1",
-                        "type": "string"
-                        },
-                        "password": {
-                        "example": "p",
-                        "type": "string"
-                        }
-                    },
-                    "description": "authentication payload"
-                    }
-                }
-            }
+            with open(Path(current_path).joinpath('security/system/custom_swagger.json')) as json_file:
+                custom_swagger = json.load(json_file)
             safrs_api = SAFRSAPI(flask_app, app_db= db, host=swagger_host, port=swagger_port, prefix = API_PREFIX, custom_swagger=custom_swagger)
 
-            db = safrs.DB
+            db = safrs.DB  # valid only after is initialized, above
             session: Session = db.session
 
             from api import expose_api_models, customize_api
-            app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}')
+            app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}\n')
 
             import database.models
             from logic import declare_logic
             LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
             app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
-                + f' -- {len(database.models.metadata.tables)} tables loaded')  # db opened 1st access
+                + f' -- {len(database.models.metadata.tables)} tables loaded\n')  # db opened 1st access
             
             app_logger.info(f'Customize API - api/expose_service.py, exposing custom services')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services

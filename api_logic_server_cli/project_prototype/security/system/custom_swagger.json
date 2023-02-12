@@ -1,0 +1,62 @@
+{
+    "securityDefinitions": {"Bearer": {"type": "apiKey", "in": "header", "name": "Authorization"}},
+    "security": [{"Bearer": []}],
+    "paths": {
+        "/auth/login": {
+        "post": {
+            "tags": [
+            "auth"
+            ],
+            "summary": "Authenticate User",
+            "description": "Creates an access token",
+            "operationId": "AuthLogin",
+            "responses": {
+            "200": {
+                "description": "Successful operation"
+            },
+            "401": {
+                "description": "Authentication Failed"
+            }
+            },
+            "parameters": [
+            {
+                "name": "Content-Type",
+                "in": "header",
+                "type": "string",
+                "default": "application/vnd.api+json",
+                "enum": [
+                "application/vnd.api+json",
+                "application/json"
+                ],
+                "required": true
+            },
+            {
+                "name": "POST body",
+                "in": "body",
+                "description": "Category attributes",
+                "schema": {
+                "$ref": "#/definitions/auth_login"
+                },
+                "required": true
+            }
+            ]
+        }
+        }
+    },
+    "definitions": {
+        "auth_login": {
+            "properties": {
+                "username": {
+                "example": "u1",
+                "type": "string"
+                },
+                "password": {
+                "example": "p",
+                "type": "string"
+                }
+            },
+            "description": "authentication payload"
+            }
+        }
+    }
+
