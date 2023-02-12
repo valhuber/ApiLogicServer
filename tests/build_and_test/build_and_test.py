@@ -248,7 +248,7 @@ def login(user: str='aneu'):
     response_text = r.text
     status_code = r.status_code
     if status_code > 300:
-        raise Exception(f'POST login failed with {r.text}')
+        raise Exception(f'POST login failed - status_code = {status_code}, with response text {r.text}')
     result_data = json.loads(response_text)
     result_map = DotMap(result_data)
     token = result_map.access_token
@@ -256,6 +256,9 @@ def login(user: str='aneu'):
     return header
 
 def multi_database_tests():
+    """
+    NW-, plus todo and security
+    """
 
     print(f'Multi-Database Tests')
 
