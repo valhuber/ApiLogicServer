@@ -396,10 +396,33 @@ def validate_nw():
     """
     With NW open, verifies:
     * Behave test
-
-    TODO:
-    * RPCs: add_order, cats(2)
+    * order nested result
+    * get_cats RPC
     """
+
+    get_uri = "http://localhost:5656/order?Id=10643"
+    r = requests.get(url=get_uri, headers=login())
+    response_text = r.text
+    result_data = json.loads(response_text) 
+    assert result_data['data']['Id'] == 10643, \
+        "order endpoint failed to find 10643"
+    assert result_data['data']['OrderDetailListAsDicts'][1]['data']['ProductName'] == 'Chartreuse verte', \
+        "OrderDetail does not contain 'Chartreuse verte'"
+
+    post_uri = "http://localhost:5656/api/CategoriesEndPoint/get_cats"
+    post_data = {}
+    headers = login('u1')
+    r = requests.post(url=post_uri, headers=headers, json=post_data)
+    response_text = r.text
+    status_code = r.status_code
+    if status_code > 300:
+        raise Exception(f'POST CategoriesEndPoint/get_cats failed - status_code = {status_code}, with response text {r.text}')
+    result_data = json.loads(response_text)
+    assert len(result_data['result']) == 1, \
+        "Failed to get 1 CategoriesEndPoint/get_cats row - security ok?"
+    assert result_data['result'][0]['Id'] == 1, \
+        "Failed to get Id=1 from CategoriesEndPoint/get_cats"
+
     try:
         api_logic_project_behave_path = api_logic_project_path.joinpath('test').joinpath('api_logic_server_behave')
         api_logic_project_logs_path = api_logic_project_behave_path.joinpath('logs').joinpath('behave.log')
@@ -533,9 +556,9 @@ if Config.do_create_api_logic_project:
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
 
-if Config.do_run_api_logic_project or Config.do_test_api_logic_project:
+if Config.do_run_api_logic_project:  # so you can start and set breakpoint, then run tests
     start_api_logic_server(project_name="ApiLogicProject")
-
+    
 if Config.do_test_api_logic_project:
     validate_nw()
     stop_server(msg="*** NW TESTS COMPLETE ***\n")
