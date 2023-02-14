@@ -2,9 +2,9 @@
 
 &nbsp;
 
-Instead of frameworks, we might employ a Low Code approach.  Low Code tools provide excellent custom user interfaces.  However, these often require extensive screen painting, and typically require a proprietary IDE.
+Instead of frameworks, we might consider a Low Code approach.  Low Code tools provide excellent custom user interfaces.  However, these often require extensive screen painting, and typically require a proprietary IDE.
 
-The *API Logic Project* app provides an alternative, creating an entire project by reading your schema.  This approach is:
+The *2. ApiLogicProject* app provides an alternative, creating an entire project by reading your schema.  This approach is:
 
 * **Instant:** faster than Low Code screen painting, with instant APIs and Admin User Interfaces:
 
@@ -59,7 +59,7 @@ Don't spend too much time exploring the app, we'll see a much better version in 
 
 &nbsp;
 
-An instant Admin App and API are a great start, but there are some serious short-comings:
+An instant Admin App and API are a great start, but there are some significant short-comings:
 
 * **No security -** no login authentication
 
@@ -84,16 +84,17 @@ A running API and UI are a great start, but completing the project still require
 
 A unique feature of API Logic Server is provision for:
 
-* **Business Logic Automation:** using unique spreadsheet-like rules for multi-table derivations and constraints, extensible with Python.  Rules offer significant advantages:
+* **Business Logic Automation:** using unique spreadsheet-like rules for multi-table derivation and constraint update logic, extensible with Python.  Rules offer significant advantages:
 
   * Remarkable agility with automatic dependency management - 40x more concise than code
   * Simplify maintenance with automatic ordering
   * Improve quality through automatic reuse and partitioning
   * Faciliate collaboration since business users can read them
 
+
 * Rules are **declared in *your IDE,*** with full support for code completion, logging, and debugging.
 
-This application is a clone of the prior example, customized in VSCode:
+The *3. ApiLogicProject_Logic* application is a clone of the prior example, customized in VSCode:
 
 * **API:** additional endpoints are defined in ```ApiLogicProject_Logic/api/customize_api.py```
 
@@ -115,6 +116,12 @@ Observe the customizations in `3. ApiLogicProject_Logic`:
 3. The app now shows **help text** to introduce its features per updates in ```ApiLogicProject/ui/admin/admin.yaml```
 
 4. Our Delete Order test adjusts the customer balance, since we how have **business logic** in ```ApiLogicProject_Logic/logic/declare_logic.py```
+
+5. You can explore the Swagger via *item 2 on the Home* page
+
+    * You will need to authenticate as explained in the [project documentation](https://apilogicserver.github.io/Docs/Security-Overview/)
+
+    * You can try the customized API with the custom service using *CategoriesEndPoint/get_cats,* authenticated as *u1*.  See  ```ApiLogicProject_Logic/api/customize_api.py```
 
 You can use VSCode to *diff* these from their originals in the `2. ApiLogicProject`.
 

@@ -6,7 +6,7 @@
 
 <summary>Welcome to this Tutorial</summary>
 
-Use this Tutorial for a quick tour of API Logic Server - automated project creation from a database, and customization including logic.  As a reference background, a "native" hand-code Flask app is provided for experimentation.
+Use this Tutorial for a quick tour of API Logic Server - automated project creation from a database, and customization including logic.  As a reference background, a "native" hand-coded Flask app (*1. Basic_App*) is provided for experimentation.
 
 The Key Technology Concepts (at end) is an inventory of essential skills for creating Flask/SQLAlchemy systems.  Each are illustrated here.
 
