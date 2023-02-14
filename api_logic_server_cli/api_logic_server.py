@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "07.00.76"
+__version__ = "07.00.77"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/14/2023 - 07.00.76: Updated venv/setup, no FAB, threaded, nw-, add-sec/cust, app-lite docker, std log, tut, org-docs, logic, safrs 3 \n"\
+    "\t02/14/2023 - 07.00.77: Updated venv/setup, no FAB, threaded, nw-, add-auth/cust, app-lite docker, std log, tut, org-docs, logic, safrs 3 \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -1011,7 +1011,7 @@ class ProjectRun(Project):
             self.add_sqlite_security("ApiLogicProject customizable project created.  Adding Security:")
             
         if self.command.startswith("add_"):
-            pass  # keep silent for add-db, add-security...
+            pass  # keep silent for add-db, add-auth...
         elif self.is_tutorial:
             log.debug(f"\nTutorial created.  Next steps:\n")
             log.debug(f'  Establish your Python environment - see https://apilogicserver.github.io/Docs/IDE-Execute/#execute-prebuilt-launch-configurations\n')
@@ -1030,7 +1030,7 @@ class ProjectRun(Project):
                 else:
                     log.info(f'  cd {self.project_name};  python api_logic_server_run.py')
         if self.command.startswith("add_"):
-            pass  # keep silent for add-db, add-security...
+            pass  # keep silent for add-db, add-auth...
         elif self.is_tutorial:
             log.debug(f"  Proceed as described in the readme\n")
         else:

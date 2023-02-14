@@ -18,14 +18,14 @@ Security is enabled when building the sample app.  Explore / test it as describe
 
 ## Automatic - sqlite Auth Provider
 
-Activate security using the `ApiLogicServer add-security` command.
+Activate security using the `ApiLogicServer add-auth` command.
 
 Suggestion: you can test it using the sample _without customizations_, as follows:
 
 ```bash
 ApiLogicServer create --project_name=nw --db_url=nw-
 cd nw
-ApiLogicServer add-security
+ApiLogicServer add-auth
 ```
 
 Test it as described in [Authorization](../Security-Authorization/#sample).

@@ -201,7 +201,7 @@ def tutorial(ctx, create):
     
     example: 
     cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
-    ApiLogicServer add-security
+    ApiLogicServer add-auth
     
     """
     project_name=os.getcwd()
@@ -539,7 +539,7 @@ def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_nam
     print("DB Added")
 
 
-@main.command("add-security") 
+@main.command("add-auth") 
 @click.option('--bind_key_url_separator',
               default=default_bind_key_url_separator,
               help="bindkey / class name url separator")
@@ -556,7 +556,7 @@ def add_security_cmd(ctx, bind_key_url_separator: str, api_name: str, project_na
     
     example: 
     cd existing_project
-    ApiLogicServer add-security"
+    ApiLogicServer add-auth"
     
     """
     if project_name == "":

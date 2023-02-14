@@ -275,7 +275,7 @@ def multi_database_tests():
         msg=f'\nAdd ToDoDB at: {str(install_api_logic_server_path)}')
 
     # declare_security
-    result_create = run_command(f'{set_venv} && ApiLogicServer add-security --project_name=MultiDB',
+    result_create = run_command(f'{set_venv} && ApiLogicServer add-auth --project_name=MultiDB',
         cwd=install_api_logic_server_path,
         msg=f'\nAdd AuthDB at: {str(install_api_logic_server_path)}')
 
@@ -396,7 +396,7 @@ def validate_nw():
     """
     With NW open, verifies:
     * Behave test
-    * order nested result
+    * order nested
     * get_cats RPC
     """
 

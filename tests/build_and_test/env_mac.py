@@ -19,7 +19,7 @@ class Config:
 
     do_rebuild_tests = default_setting              # rebuild from model, allembic
 
-    do_multi_database_test = default_setting        # add-db todo, add-security
+    do_multi_database_test = default_setting        # add-db todo, add-auth
 
     do_allocation_test = default_setting            # create / run / test allocation project
 
