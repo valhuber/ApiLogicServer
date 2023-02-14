@@ -4,6 +4,14 @@ import database
 import safrs
 import logging
 
+"""
+Illustrates declarative security - role-based authorization to database rows.
+
+* See [documentation](https://apilogicserver.github.io/Docs/Security-Overview/)
+
+* Security is activate in `config.py`
+"""
+
 app_logger = logging.getLogger(__name__)
 
 db = safrs.DB
@@ -16,7 +24,7 @@ class Roles():
     renter = "renter"
     manager = "manager"
 
-Grant(  on_entity = models.Category,    # illustrate multi-tenant
+Grant(  on_entity = models.Category,    # illustrate multi-tenant - u1 shows only row 1
         to_role = Roles.tenant,
         filter = lambda : models.Category.Client_id == Security.current_user().client_id)  # User table attributes
 
