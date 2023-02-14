@@ -8,6 +8,7 @@ import safrs
 import sqlalchemy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper
+from logic_bank.rule_bank.rule_bank import RuleBank
 
 app_logger = logging.getLogger("api_logic_server_app")
 
