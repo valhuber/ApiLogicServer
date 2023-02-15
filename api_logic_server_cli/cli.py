@@ -195,13 +195,13 @@ def welcome(ctx):
 @click.pass_context
 def tutorial(ctx, create):
     """
-    Creates (updates) Tutorial
+    Creates (updates) Tutorial.
 
-    Contains 3 project: basic_flask, ApiLogicProject, ApiLogicProjectNoCustomizations
+    Contains 3 projects: basic_flask, ApiLogicProject, ApiLogicProjectNoCustomizations
     
     example: 
     cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
-    ApiLogicServer add-auth
+    ApiLogicServer tutorial
     
     """
     project_name=os.getcwd()
@@ -517,7 +517,9 @@ def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_nam
     Adds db (model & binds, api, app) to current project
     
     example: 
+
     cd existing_project
+
     ApiLogicServer add-db --db-url="todo" --bind-key="Todo"
     
     """
@@ -552,11 +554,13 @@ def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_nam
 @click.pass_context
 def add_security_cmd(ctx, bind_key_url_separator: str, api_name: str, project_name: str):
     """
-    Adds sqlite authentication to existing project
+    Adds authorization/authentication to existing project
     
     example: 
+
     cd existing_project
-    ApiLogicServer add-auth"
+
+    ApiLogicServer add-auth
     
     """
     if project_name == "":

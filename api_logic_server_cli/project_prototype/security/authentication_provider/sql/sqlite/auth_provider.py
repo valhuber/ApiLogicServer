@@ -10,7 +10,7 @@ from sqlalchemy import inspect
 # sql auth provider
 # **********************
 
-db = None  # VH
+db = None
 session = None
 
 class Authentication_Provider(Abstract_Authentication_Provider):
@@ -18,14 +18,21 @@ class Authentication_Provider(Abstract_Authentication_Provider):
     @staticmethod
     def get_user(id: str, password: str = "") -> object:
         """
-        Must return a row object with attributes name and role_list
-        role_list is a list of row objects with attribute name
+        Must return a row object with attributes:
+        
+        * name
 
-        TP: id / pwd or token
+        * role_list: a list of row objects with attribute name
 
-        row object is a SQLAlchemy row (could have been a DotMap)
 
-        Row Caution: https://docs.sqlalchemy.org/en/14/errors.html#error-bhk3
+        Args:
+            id (str): _description_
+            password (str, optional): _description_. Defaults to "".
+
+        Returns:
+            object: row object is a SQLAlchemy row
+
+                * Row Caution: https://docs.sqlalchemy.org/en/14/errors.html#error-bhk3
         """
 
         def row_to_dotmap(row, row_class):
@@ -35,7 +42,7 @@ class Authentication_Provider(Abstract_Authentication_Provider):
                 rtn_dotmap[each_column.name] = getattr(row, each_column.name)
             return rtn_dotmap
 
-        global db, session  # VH
+        global db, session
         if db is None:
             db = safrs.DB         # Use the safrs.DB for database access
             session = db.session  # sqlalchemy.orm.scoping.scoped_session
