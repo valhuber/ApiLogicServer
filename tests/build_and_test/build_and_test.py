@@ -555,6 +555,9 @@ if Config.do_create_api_logic_project:
     result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=ApiLogicProject --db_url=',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate ApiLogicProject at: {str(install_api_logic_server_path)}')
+    result_create = run_command(f'{set_venv} && ApiLogicServer tutorial',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate Tutorial at: {str(install_api_logic_server_path)}')
 
 if Config.do_run_api_logic_project:  # so you can start and set breakpoint, then run tests
     start_api_logic_server(project_name="ApiLogicProject")

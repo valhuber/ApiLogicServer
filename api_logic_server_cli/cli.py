@@ -514,7 +514,7 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
 @click.pass_context # Kat
 def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_name: str, project_name: str):
     """
-    Adds db (model & binds, api, app) to current project
+    Adds db (model, binds, api, app) to curr project.
     
     example: 
 
@@ -554,7 +554,7 @@ def add_db(ctx, db_url: str, bind_key: str, bind_key_url_separator: str, api_nam
 @click.pass_context
 def add_security_cmd(ctx, bind_key_url_separator: str, api_name: str, project_name: str):
     """
-    Adds authorization/authentication to existing project
+    Adds authorization/authentication to curr project.
     
     example: 
 
@@ -605,7 +605,7 @@ def add_security_cmd(ctx, bind_key_url_separator: str, api_name: str, project_na
 @click.pass_context
 def add_cust(ctx, bind_key_url_separator: str, api_name: str, project_name: str):
     """
-    Adds customizations to northwind project
+    Adds customizations to northwind project.
     
     example: 
     cd existing_project
@@ -759,7 +759,7 @@ def run_api(ctx, project_name: str, host: str="localhost", port: str="5656", swa
     if proj_dir == "":
         proj_dir = last_created_project_name
     else:
-        proj_dir = os.path.abspath(f'{resolve_home(project_name)}')
+        proj_dir = os.path.abspath(f'{create_utils.resolve_home(project_name)}')
     run_file = f'{proj_dir}/api_logic_server_run.py '  # alert: sending args makes it hang: {host} {port} {swagger_host}
     create_utils.run_command(f'python {run_file}', msg="Run Created ApiLogicServer Project", new_line=True)
     print("run complete")
@@ -780,7 +780,7 @@ def create_ui(ctx, use_model: str,
               favorites: str, non_favorites: str,
               ):
     """
-        Creates models.yaml from models.py (internal admin ui).
+        Creates models.yaml from models.py (internal).
 
 
 \b

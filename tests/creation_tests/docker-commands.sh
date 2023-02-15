@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ApiLogicServer create --project_name=/localhost/ApiLogicServer --db_url=
+ApiLogicServer create --project_name=/localhost/ApiLogicProject --db_url=
 
 ApiLogicServer create --project_name=/localhost/classicmodels --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels
 
