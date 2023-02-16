@@ -143,7 +143,7 @@ Click for a video tutorial, showing complete project creation, execution, custom
 
 ### Quick Evaluation - _no install_
 
-You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/ApiLogicServer/ApiLogicProject#readme).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
+You can avoid install hassles by exploring the [Sample Project in Codespaces](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=593459232).  This will enable you to use VSCode - _in your Browser, zero install_ - to:
 
 * see the created project
 * use the Tutorial to run, customize and debug it 
@@ -180,7 +180,7 @@ This is an open source project.  We are open to suggestions.  Some of our ideas 
 
 | Component           | Provides         | Consider Adding                                                                |
 |:---------------------------|:-----------------|:-------------------------------------------------------------------------------|
-| 1. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) | API Execution    | Security, Serverless, Kubernetes                                                                       | 
+| 1. [JSON:**API** and Swagger](#jsonapi---related-data-filtering-sorting-pagination-swagger) | API Execution    | Serverless, Kubernetes                                                                       | 
 | 2. [Transactional **Logic**](#logic)   | Rule Enforcement | New rule types        |
 | 3. This project | API Logic Project Creation | Support for features described above |
 
@@ -195,13 +195,6 @@ We have tested several databases - see [status here.](https://apilogicserver.git
 
 We are tracking [issues in git](https://github.com/valhuber/ApiLogicServer/issues).
 
-We have introduced several renames to clarify operation.
-These do not affect existing projects.  However, we've not updated all the docs to reflect these changes:
-
-* `logic/declare_logic.py` replaces `logic_bank.py`
-* `api/customize_api.py` replaces `expose_services.py`
-* `database/customize_models.py` replaces `models_ext.py`
-
  &nbsp;
 
 ### Acknowledgements
@@ -213,14 +206,13 @@ Many thanks to
 - Armin Ronacher, for Flask
 - Mike Bayer, for SQLAlchemy
 - Alex Grönholm, for Sqlacodegen
+- Thomas Peters, for review and testing
 - [Meera Datey](https://www.linkedin.com/in/meeradatey/), for React Admin prototyping
 - Denny McKinney, for Tutorial review
 - Achim Götz, for design collaboration and testing
 - Max Tardiveau, for testing and help with Docker
 - Michael Holleran, for design collaboration and testing
 - Nishanth Shyamsundar, for review and testing
-- Thomas Peters, for review and testing
-- Daniel Gaspar, for Flask AppBuilder
 - Gloria Huber and Denny McKinney, for doc review
 
 &nbsp;
