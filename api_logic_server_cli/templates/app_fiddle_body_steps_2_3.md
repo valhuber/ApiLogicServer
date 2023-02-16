@@ -142,7 +142,7 @@ You can use VSCode to *diff* these from their originals in the `2. ApiLogicProje
 Use the [```Detailed Tutorial```](3.%20ApiLogicProject_Logic/Tutorial.md) to further explore this app.
 
 
-As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several prepackaged sqlite databases.  For example, create a project for this 1 table database:
+As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several pre-installed sqlite databases.  For example, create a project for this 1 table database:
 
 ```bash
 cd tutorial
@@ -158,6 +158,43 @@ You can also try these other examples (be sure to `cd tutorial`; use the name be
 Launch configurations have been pre-created, then re-execute the Admin app as above.
 
 > Next, try it on your own databases: if you have a database, you can have an API and an Admin app in minutes.
+
+&nbsp;
+
+<details markdown>
+
+<summary> Providing the db_url for your own database </summary>
+
+&nbsp;
+
+The system provides shorthand notations for the pre-installed sample databases above.  For your own databases, you will need to provide a SQLAlchemy URI for the `db_url` parameter.  These can be tricky - try `ApiLogicServer examples`, or, when all else fails, [try the docs](https://apilogicserver.github.io/Docs/Database-Connectivity/).
+
+</details>
+
+
+</details>
+
+&nbsp;
+
+<details markdown>
+
+<summary> Notes </summary>
+
+
+
+
+Please find additional notes below.
+
+<details markdown>
+
+<summary> Project Structure </summary>
+
+&nbsp;
+
+This tutorial is actually 3 independent projects.  When you create a project using `ApiLogicServer create --project_name=my_project`, the system will create a free-standing project.  The project will include your container settings, IDE settings etc, so you can just open it your IDE to run and debug.
+
+</details>
+
 
 </details>
 

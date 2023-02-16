@@ -3,7 +3,7 @@
 """
 ==============================================================================
 
-    This file starts the API Logic Server (v api_logic_server_version, api_logic_server_created_on):
+    This file initializes and starts the API Logic Server (v api_logic_server_version, api_logic_server_created_on):
         $ python3 api_logic_server_run.py [--help]
 
     Then, access the Admin App and API via the Browser, eg:  

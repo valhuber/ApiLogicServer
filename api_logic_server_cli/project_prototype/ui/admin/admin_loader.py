@@ -1,6 +1,6 @@
-""" event handlers for the admin app
-        return minified app
-        return admin.yaml file
+""" flask event handlers for the admin app
+        * return minified app
+        * return admin.yaml file
 """
 
 import logging, sys, io
