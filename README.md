@@ -247,7 +247,7 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
-02/15/2023 - 08.00.00: Declarative Authorization and Authentication
+02/15/2023 - 08.00.01: Declarative Authorization and Authentication
 
 01/05/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config
 
