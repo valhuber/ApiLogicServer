@@ -105,7 +105,6 @@ With the server started and the Admin App open in your Browser, we are ready to 
 After starting the server and browser, explore the Admin App in your browser:
 
 1. Navigate to `Customer`
-      * Login using the recommended credentials
       * Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu<br/><br/>
 2. Click the first Customer row  to see Customer Details
 3. Observe the `Placed Order List` tab at the bottom
@@ -170,17 +169,19 @@ To run the customized app:
 &nbsp;
 
 **Get `access_token`:**
-   * Click the `auth/Post` endpoint (at the end of the swagger)
-   * Click **Try it out**
-   * Click **Execute** (you'll need to scroll down a bit)
-   * Copy the `access_token` to your clipboard
+
+* Click the `auth/Post` endpoint (at the end of the swagger)
+* Click **Try it out**
+* Click **Execute** (you'll need to scroll down a bit)
+* Copy the `access_token` to your clipboard
 
 <figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/security/token-get.png?raw=true"></figure>
 
 &nbsp;
 **Authenticate with your `access_token`**
-      * Scroll up to the top of the swagger, and click **Authorize**
-      * Enter **Bearer**, add a space, **paste** your `access_token`, click **Authorize**, and **Close** the dialog 
+
+* Scroll up to the top of the swagger, and click **Authorize**
+* Enter **Bearer**, add a space, **paste** your `access_token`, click **Authorize**, and **Close** the dialog 
 
 <figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/security/token-auth.png?raw=true"></figure>
 
@@ -241,7 +242,7 @@ To review the implementation:
 ### Logic
 API and UI automation are impressive answers to _familiar_ challenges.  Logic automation is a _unique_ answer to a significant and unaddressed problem:
 
-> :exclamation: For transaction systems, backend constraint and derivation logic is often nearly *half* the system.  This is not addressed by conventional approaches of "your code goes here".
+> For transaction systems, backend constraint and derivation logic is often nearly *half* the system.  This is not addressed by conventional approaches of "your code goes here".
  
 The *logic* portion of API *Logic* server is a declarative approach - you declare spreadsheet-like rules for multi-table constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable **40X.**
 

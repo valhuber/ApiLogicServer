@@ -96,7 +96,7 @@ A unique feature of API Logic Server is provision for:
 
 The *3. ApiLogicProject_Logic* application is a clone of the prior example, customized in VSCode:
 
-* **API:** additional endpoints are defined in ```ApiLogicProject_Logic/api/customize_api.py```
+* **API:** additional endpoints are defined in ```3. ApiLogicProject_Logic/api/customize_api.py```
 
 * **Logic:** the project now implements logic and security
 
@@ -111,11 +111,11 @@ Observe the customizations in `3. ApiLogicProject_Logic`:
 
 1. Click Category - you need to **login** now (user u1, password p).  That's because authentication has been activated.
 
-2. Categories has fewer rows per **multi-tenant Grant logic** in ```ApiLogicProject_Logic/security/declare_security.py```
+2. Categories has fewer rows per **multi-tenant Grant logic** in ```3. ApiLogicProject_Logic/security/declare_security.py```
 
-3. The app now shows **help text** to introduce its features per updates in ```ApiLogicProject/ui/admin/admin.yaml```
+3. The app now shows **help text** to introduce its features per updates in ```3. ApiLogicProject_Logic/ui/admin/admin.yaml```
 
-4. Our Delete Order test adjusts the customer balance, since we how have **business logic** in ```ApiLogicProject_Logic/logic/declare_logic.py```
+4. Our Delete Order test adjusts the customer balance, since we how have **business logic** in ```3. ApiLogicProject_Logic/logic/declare_logic.py```
 
 5. You can explore the Swagger via *item 2 on the Home* page
 
@@ -211,7 +211,7 @@ This tutorial is actually 3 independent projects.  When you create a project usi
 
 | Tech Area | Skill | Basic App Example | APILogicProject Logic Example | Notes   |
 |:---- |:------|:-----------|:--------|:--------|
-| __Flask__ | Setup | [```flask_basic.py```](1.%20Basic_App/flask_basic.py) |  [```api_logic_server_run.py```](3. ApiLogicProject_Logic/api_logic_server_run.py) |  |
+| __Flask__ | Setup | [```flask_basic.py```](1.%20Basic_App/flask_basic.py) |  [```api_logic_server_run.py```](3.%20ApiLogicProject_Logic/api_logic_server_run.py) |  |
 |  | Events | |  [```ui/admin/admin_loader.py```](3.%20ApiLogicProject_Logic/ui/admin/admin_loader.py) |  |
 | __API__ | Create End Point | [```api/end_points.py```](Basic_App/api/end_points.py) | [```api/customize_api.py```](3.%20ApiLogicProject_Logic/api/customize_api.py) |  see `def order():` |
 |  | Call endpoint |  | [```test/.../place_order.py```](3.%20ApiLogicProject_Logic/test/api_logic_server_behave/features/steps/place_order.py) | |
