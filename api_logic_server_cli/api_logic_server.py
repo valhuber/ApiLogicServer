@@ -12,10 +12,11 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.00.01"
+__version__ = "08.00.02"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/15/2023 - 08.00.01: Declarative Authorization and Authentication \n"\
+    "\t02/17/2023 - 08.00.02: Werkzeug==2.2.3 \n"\
+    "\t02/15/2023 - 08.00.01: Declarative Authorization and Authentication, Werkzeug==2.2.3 \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
     "\t12/21/2022 - 06.05.00: Devops, env db uri, api endpoint names, git-push-new-project  \n"\
@@ -871,10 +872,45 @@ class ProjectRun(Project):
         Contains 3 projects: basic_app, ApiLogicProject, ApiLogicProject_Logic
         
         example: 
+\b    
         cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
+\b
+        ApiLogicServer tutorial
+
+        - use existing for tutorial
+        - if fiddle, delete top, read app_fiddle.md -> fiddle.extend(tutorial-top)
 
         :param create: 'fiddle' (for codespaces), or 'tutorial'
         """
+
+        def create_readme():
+            """
+            Creates the readme file for either tutorial or fiddle:
+            - use existing for tutorial
+            - if fiddle, delete top, read app_fiddle.md -> fiddle.extend(tutorial-top)
+            """
+
+            read_me_target = target_project_path.joinpath(f'{create}/readme.md')
+            if create == "app_fiddle":  # starting browser via port mappings
+                fiddle_header_path = self.api_logic_server_dir_path.joinpath(f'templates/{create}.md')
+                fiddle_header_file = open(fiddle_header_path, "r")
+                fiddle_header_data = fiddle_header_file.read()
+                fiddle_header_file.close()
+                readme_file = open(read_me_target)
+                readme_data = readme_file.read()
+                end_of_tutorial_header = readme_data.find('<summary>2.')
+                readme_fiddle_data = fiddle_header_data + readme_data[end_of_tutorial_header:]
+                readme_file = open(read_me_target, "w")  # write the fiddle over the readme
+                readme_file.write(readme_fiddle_data)
+                readme_file.close()
+                create_utils.replace_string_in_file(search_for="cd tutorial",
+                        replace_with='cd /workspaces/app_fiddle',
+                        in_file=read_me_target)
+            else:
+                create_utils.replace_string_in_file(search_for=".png",
+                        replace_with='-tutorial.png',
+                        in_file=read_me_target)
+        
 
         log.info(f'\n{msg} {create}')
         target_project = self.project_name  # eg, ApiLogicServer (or, in dev, server)
@@ -889,43 +925,7 @@ class ProjectRun(Project):
             src=self.api_logic_server_dir_path.joinpath('project_tutorial'),
             dst=target_project_path.joinpath(create))
         
-        if True:  # create readme (ellide to hide tiresome fiddly code)
-            read_me_src = self.api_logic_server_dir_path.joinpath(f'templates/{create}.md')
-            read_me_target = target_project_path.joinpath(f'{create}/readme.md')
-            shutil.copyfile(src= read_me_src, dst=read_me_target)  # this is the readme "header"
-            body_path = self.api_logic_server_dir_path.joinpath(f'templates/app_fiddle_body_steps_2_3.md')
-            body_file = open(body_path, "r")
-            body_data = body_file.read()
-            body_file.close()
-            readme_file = open(read_me_target, "a")  # append body_data to header
-            readme_file.write(body_data)
-            readme_file.close()
-            if create == "app_fiddle":  # starting browser via port mappings
-                start_browser = '''
-
-    1. Click the **Ports** tab
-
-    3. Click the **globe** in the top "AdminApp" row
-'''
-                create_utils.replace_string_in_file(search_for="cd tutorial",
-                        replace_with='cd /workspaces/app_fiddle',
-                        in_file=read_me_target)
-                """ appears codespaces can start from the console link, no globe confusion req'd
-                create_utils.insert_lines_at(lines = start_browser,
-                        at = "2. Start the Browser XX",
-                        file_name = read_me_target,
-                        after = True)
-                create_utils.replace_string_in_file(search_for="start the Browser at localhost:5656 XX",
-                        replace_with='start the Browser via **Ports > AdminApp > globe**',
-                        in_file=read_me_target)
-                create_utils.replace_string_in_file(search_for="Start the Browser at localhost:5656 XX",
-                        replace_with='Start the Browser:',
-                        in_file=read_me_target)
-                """
-            else:
-                create_utils.replace_string_in_file(search_for=".png",
-                        replace_with='-tutorial.png',
-                        in_file=read_me_target)
+        create_readme()
 
         self.command = "create"
         self.project_name = str(target_project_path.joinpath(f"{create}/2. ApiLogicProject"))

@@ -1,4 +1,4 @@
-    "\t02/15/2023 - 08.00.00: Updated venv/setup, no FAB, threaded, nw-, add-auth/cust, app-lite docker, std log, tut, org-docs, logic, safrs 3 \n"\
+Updated venv/setup, no FAB, threaded, nw-, add-auth/cust, app-lite docker, std log, tut, org-docs, logic, safrs 3 \n"\
 
 
 nw_readme.md -> README.md

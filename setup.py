@@ -67,7 +67,7 @@ setup(
         "SQLAlchemy==1.4.29",
         "Flask-SQLAlchemy==2.5.1",
         "SQLAlchemy-Utils==0.38.2",
-        "Werkzeug==2.2.2",
+        "Werkzeug==2.2.3",
         "logicbankutils==0.6.0",
         "inflect==5.0.2",
         "itsdangerous==2.1.2",

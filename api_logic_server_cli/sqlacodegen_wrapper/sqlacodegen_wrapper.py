@@ -156,7 +156,13 @@ def print_uri_info():
     sys.stdout.write('\n')
 
 def write_models_py(model_file_name, models_mem):
-    """ write models_mem to disk as model_file_name """
+    """
+    write models_mem to disk as model_file_name
+
+    Args:
+        model_file_name (str): name of models.py file
+        models_mem (str): the actual models code (long string with \n)
+    """
     with open(model_file_name, "w") as text_file:
         text_file.write(models_mem)
 
