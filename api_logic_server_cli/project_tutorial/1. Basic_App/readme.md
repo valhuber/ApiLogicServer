@@ -1,4 +1,4 @@
-# Tutorial
+# 1. Basic App: Flask / SQLAlchemy -- manually coded app
 
 This is a manually coded server providing a few APIs for [this database]().
 
