@@ -27,3 +27,14 @@ https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622
 
 Tutorial Link:
 https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=593459232
+
+
+Hi! 
+
+I am the creator of API Logic Server, which creates Flask/SQLAlchemy projects from a database.  Open Source on git.  Recently, I came up with the notion of an "App Fiddle" - an online ability to fiddle with a complete app - full project, database - via the Browser.  See the link below.  
+
+I see you are very active in the area of instruction, especially Flask/SQLAlchemy.  I am writing to see if you'd like to discuss how this might support your endeavors.  
+
+Regards, Val  
+
+Access it via codespaces:  https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622

@@ -20,7 +20,7 @@ These projects all use the [Northwind Sample Database](https://apilogicserver.gi
 
 &nbsp;
 
-<summary>1. Basic App: Flask / SQLAlchemy -- flexible, but slow</summary>
+<summary>1. Basic App: Flask / SQLAlchemy -- manually coded app - flexible, but slow</summary>
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
@@ -73,9 +73,11 @@ The *2. ApiLogicProject* app provides an alternative, creating an entire project
 
   * **API:** an endpoint for each table, with filtering, sorting, pagination and related data access.  Swagger is automatic.
 
+      * We saw above it's straightforward to provide a *single endpoint.*  It's quite another matter -- *weeks to months* -- to provide endpoints for **all** the tables, that include all the services noted above.<br><br>
+
   * **Admin UI:** multi-page / multi-table apps, with page navigations, automatic joins and declarative hide/show.  It executes a yaml file, so basic customizations do not require HTML or JavaScript background.
 
-      * Custom UIs can be built using your tool of choice (React, Angular, etc), using the API
+      * Custom UIs can be built using your tool of choice (React, Angular, etc), using the API<br><br>
 
 * **Open:** a fully open approach:
 
@@ -296,7 +298,7 @@ This tutorial is actually 3 independent projects.  When you create a project usi
 |:---- |:------|:-----------|:--------|:--------|
 | __Flask__ | Setup | [```flask_basic.py```](1.%20Basic_App/flask_basic.py) |  [```api_logic_server_run.py```](3.%20ApiLogicProject_Logic/api_logic_server_run.py) |  |
 |  | Events | |  [```ui/admin/admin_loader.py```](3.%20ApiLogicProject_Logic/ui/admin/admin_loader.py) |  |
-| __API__ | Create End Point | [```api/end_points.py```](Basic_App/api/end_points.py) | [```api/customize_api.py```](3.%20ApiLogicProject_Logic/api/customize_api.py) |  see `def order():` |
+| __API__ | Create End Point | [```api/end_points.py```](1.%20Basic_App/api/end_points.py) | [```api/customize_api.py```](3.%20ApiLogicProject_Logic/api/customize_api.py) |  see `def order():` |
 |  | Call endpoint |  | [```test/.../place_order.py```](3.%20ApiLogicProject_Logic/test/api_logic_server_behave/features/steps/place_order.py) | |
 | __Config__ | Config | [```config.py```](3.%20ApiLogicProject_Logic/config.py) | | |
 |  | Env variables |  | [```config.py```](3.%20ApiLogicProject_Logic/config.py) | os.getenv(...)  |

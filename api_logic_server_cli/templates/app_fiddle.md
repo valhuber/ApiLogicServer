@@ -26,7 +26,7 @@ Then, discover **API Logic Server** - an Open Source CLI to create executable pr
 
 &nbsp;
 
-<summary>1. Basic App: Flask / SQLAlchemy -- flexible, but slow</summary>
+<summary>1. Basic App: Flask / SQLAlchemy -- manually coded app - flexible, but slow</summary>
 
 This illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.
 
