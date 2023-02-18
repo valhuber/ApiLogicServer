@@ -20,11 +20,20 @@ def flask_events(app, db):
     app_logger = logging.getLogger(__name__)
 
     @app.route('/hello_world')
-    def hello_world():  # test it with: http://localhost:8080/hello_world?user=Basic_App
-        """ simplest possible endpoint """
-        user = request.args.get('user')
+    def hello_world():
+        """
+        Illustrates simplest possible endpoint, with url args.
+
+        The url suffix is specified in the annotation.
+
+        Test it with: http://localhost:8080/hello_world?user=Basic_App
+
+        Returns:
+            json : a simple string
+        """
+        user = request.args.get('user')  # obtain URL argument from Flask via built-in request object
         app_logger.info(f'{user}')
-        return jsonify({"result": f'hello, {user}'})
+        return jsonify({"result": f'hello, {user}'})  # the api response (in json)
 
 
     @app.route('/stop')
@@ -48,25 +57,24 @@ def flask_events(app, db):
     def order():
         """
         Illustrates:
-            Returning a nested result set response
-            Using SQLAlchemy to obtain data
-            Restructuring row results to desired json (e.g., for tool such as Sencha)
+        * End point to return a nested result set response
+        * Using SQLAlchemy to obtain data, and related data (via foreign keys)
+        * Restructuring row results to desired json (e.g., for tool such as Sencha)
+
         Test:
             http://localhost:8080/order?Id=10643
             curl -X GET "http://localhost:8080/order?Id=10643"
 
         """
-        order_id = request.args.get('Id')
-        order = db.session.query(models.Order).filter(models.Order.Id == order_id).one()
+        order_id = request.args.get('Id')  # obtain URL argument from Flask
+        order = db.session.query(models.Order).filter(models.Order.Id == order_id).one()  # SQLAlchemy query
 
         result_std_dict = util.row_to_dict(row2dict(order)
-                                        # , replace_attribute_tag='data'
                                         , remove_links_relationships=False)
         result_std_dict['Customer_Name'] = order.Customer.CompanyName # eager fetch
         result_std_dict['OrderDetailListAsDicts'] = []
-        for each_order_detail in order.OrderDetailList:
+        for each_order_detail in order.OrderDetailList:  # SQLAlchemy related data access
             each_order_detail_dict = util.row_to_dict(row=row2dict(each_order_detail)
-                                                    # , replace_attribute_tag=None
                                                     , remove_links_relationships=False)
             each_order_detail_dict['ProductName'] = each_order_detail.Product.ProductName
             result_std_dict['OrderDetailListAsDicts'].append(each_order_detail_dict)
