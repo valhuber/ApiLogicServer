@@ -64,8 +64,8 @@ def declare_logic():
     """         FEATURE: Place Order
                 ====================
 
-    You can capture BDD approach to doc/run test suites
-         See logic/api_logic_server/behave/place_order.feature
+    You can use a BDD approach to doc/run test suites
+         See test/api_logic_server/behave/features/place_order.feature
          See https://apilogicserver.github.io/Docs/Behave/
 
     SCENARIO: Bad Order Custom Service

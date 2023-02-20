@@ -898,7 +898,7 @@ class ProjectRun(Project):
                 fiddle_header_file.close()
                 readme_file = open(read_me_target)
                 readme_data = readme_file.read()
-                end_of_tutorial_header = readme_data.find('<summary>2.')
+                end_of_tutorial_header = readme_data.find('<summary>1.')
                 readme_fiddle_data = fiddle_header_data + readme_data[end_of_tutorial_header:]
                 readme_file = open(read_me_target, "w")  # write the fiddle over the readme
                 readme_file.write(readme_fiddle_data)
