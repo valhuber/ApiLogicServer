@@ -11,7 +11,11 @@ title:
 &nbsp;
 ---
 
-Find the [documentation here](https://apilogicserver.github.io/Docs/).
+Find the [documentation here](https://apilogicserver.github.io/Docs/).  Click...
+
+* here for an [*App Fiddle*](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622) for learning Flask, SQLAlchemy and API Logic Server 
+
+* here for an [Instant Eval](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=593459232)
 
 &nbsp;
 
