@@ -11,7 +11,7 @@ title:
 &nbsp;
 ---
 
-Find the [documentation here](https://apilogicserver.github.io/Docs/).  Click...
+Find the [documentation here](https://apilogicserver.github.io/Docs/).  To explore (no downlaod, no install), click...
 
 * here for an [*App Fiddle*](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622) for learning Flask, SQLAlchemy and API Logic Server 
 
