@@ -22,6 +22,8 @@ App Fiddle: Learn Flask/SQLAlchemy “In Action"
 
 Use this App Fiddle to learn Flask/SQLAlchemy, using a running app in Codespaces.  Then, discover API Logic Server - an Open Source CLI to create executable projects with a single command.  Customize projects in your IDE, including powerful spreadsheet-like rules for logic and security - 40X more concise than manual code.
 
+Use this App Fiddle to learn Flask/SQLAlchemy, using a running app in Codespaces.  Use VSCode in your Browser to explore, customize and debug a complete project, including a database.  Then, discover API Logic Server - automate the creation of Flask/SQLAlchemy projects with 1 command.
+
 
 Fiddle Link:
 https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622
@@ -43,3 +45,21 @@ I see you are very active in the area of instruction, especially Flask/SQLAlchem
 Regards, Val  
 
 Access it via codespaces:  https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622
+
+
+Rule.constraint(validate=models.Customer,       # logic design translates directly into rules
+    as_condition=lambda row: row.Balance <= row.CreditLimit,
+    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+
+Rule.sum(derive=models.Customer.Balance,        # adjust iff AmountTotal or ShippedDate or CustomerID changes
+    as_sum_of=models.Order.AmountTotal,
+    where=lambda row: row.ShippedDate is None)  # adjusts - *not* a sql select sum...
+
+Rule.sum(derive=models.Order.AmountTotal,       # adjust iff Amount or OrderID changes
+    as_sum_of=models.OrderDetail.Amount)
+
+Rule.formula(derive=models.OrderDetail.Amount,  # compute price * qty
+    as_expression=lambda row: row.UnitPrice * row.Quantity)
+
+Rule.copy(derive=models.OrderDetail.UnitPrice,  # get Product Price (e,g., on insert, or ProductId change)
+    from_parent=models.Product.UnitPrice)
