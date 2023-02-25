@@ -1,20 +1,24 @@
 # create a mysql that stores data in the container, not a volume (simpler, for dev env)
 # create database for auth
 
-# build image from this file
+# you might first create a project for mysql like this:
+# ApiLogicServer create --project_name=my_project --db_url='mysql+pymysql://root:p@localhost:3306/my_project_db'
+# cd my_project  # create your venv as usual...
+
+# now, build MySQL image from this file
+# cd devops/docker
 # docker build -t my-org/my-project-mysql --file authdb_mysql.Dockerfile --rm .
 
 # run container from built image
 # docker run --name my-project-mysql-container --net dev-network -p 3306:3306 -d -e MYSQL_ROOT_PASSWORD=p my-org/my-project-mysql
 
-
 # Now set up your mysql database.
-
 # docker exec -it my-project-mysql-container /bin/bash
 # bash> cd home
 # bash> mkdir mysql_ddl
 
 # on your local machine, copy the ddl (create tables) dump file
+# cd devops/docker
 # docker cp authdb_mysql.sql my-project-mysql-container:/home/mysql_ddl
 
 # back to docker terminal...
@@ -31,8 +35,6 @@
 # after adding users/roles (see below), you can dump authdb
 # mysqldump -p authdb > /home/mysql_ddl/authdb_dump.sql
 # bash> exit
-
-# ApiLogicServer create --project_name=my_project --db_url='mysql+pymysql://root:p@localhost:3306/my_project_db'
 
 # optionally add security
 # create the Dockers' MySql authdb as above, using auth-db.sql
