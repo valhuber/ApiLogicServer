@@ -33,6 +33,8 @@ Using this tutorial:
 
 Projects 1-3 use the [Northwind Sample Database](https://apilogicserver.github.io/Docs/Sample-Database/).  
 
+If you are running via `pip install` (not Docker or Codespaces), you need to [setup your virtual environment](https://apilogicserver.github.io/Docs/Project-Env/#shared-venv).
+
 
 </details>
 
