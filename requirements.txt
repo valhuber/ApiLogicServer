@@ -19,7 +19,7 @@ Flask-Login==0.6.2
 Flask-OpenID==1.3.0
 python-dotenv==0.15.0
 email-validator==1.1.1
-LogicBank==1.08.00
+LogicBank==1.08.01
 PyMySQL==1.0.2
 # pyodbc==4.0.32
 cryptography==36.0.1

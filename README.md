@@ -243,6 +243,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+02/26/2023 - 08.01.00: python 3.11.2, authdb_mysql script
+
 02/15/2023 - 08.00.01: Declarative Authorization and Authentication
 
 01/05/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config

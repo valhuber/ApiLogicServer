@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.00.05"
+__version__ = "08.01.00"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/24/2023 - 08.00.05: authdb_mysql \n"\
+    "\t02/26/2023 - 08.01.00: python 3.11.2, authdb_mysql script \n"\
     "\t02/17/2023 - 08.00.04: Werkzeug==2.2.3, fiddle comments/links \n"\
     "\t02/15/2023 - 08.00.01: Declarative Authorization and Authentication, Werkzeug==2.2.3 \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\

@@ -1,6 +1,6 @@
 # docker build -f docker/arm-slim.Dockerfile -t apilogicserver/arm-slim --rm .
-# docker tag apilogicserver/arm-slim apilogicserver/arm-slim:8.00.01
-# docker push apilogicserver/arm-slim:8.00.01
+# docker tag apilogicserver/arm-slim apilogicserver/arm-slim:8.00.06
+# docker push apilogicserver/arm-slim:8.00.06
 
 # cd ~/dev/servers/install/ApiLogicServer/dockers
 # docker run -it --name api_logic_server-arm-slim --rm --net dev-network -p 5656:5656 -p 5002:5002 -v ${PWD}:/localhost apilogicserver/arm-slim

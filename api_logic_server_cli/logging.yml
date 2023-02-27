@@ -16,12 +16,9 @@ handlers:
         formatter: simple
 
     file:
-        class: logging.handlers.TimedRotatingFileHandler
-        when: midnight
-        backupCount: 5
+        class: logging.NullHandler
         level: DEBUG
         formatter: simple
-        filename : Thrift.log
 
 root:
   level: INFO

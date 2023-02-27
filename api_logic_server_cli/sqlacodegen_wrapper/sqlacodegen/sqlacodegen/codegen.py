@@ -6,7 +6,7 @@ import re
 import sys, logging
 from collections import defaultdict
 from importlib import import_module
-from inspect import ArgSpec
+from inspect import FullArgSpec  # val-311
 from keyword import iskeyword
 
 import sqlalchemy

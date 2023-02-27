@@ -4,6 +4,7 @@ uri_info = [
     'Examples:',
     '  ApiLogicServer create-and-run',
     '  ApiLogicServer create-and-run --db_url=sqlite:////Users/val/dev/todo_example/todos.db --project_name=todo',
+    '  ApiLogicServer create-and-run --db_url=sqlite:///c:\ApiLogicServer\\nw.sqlite --project_name=nw',
     '  ApiLogicServer create-and-run --db_url=mysql+pymysql://root:p@mysql-container:3306/classicmodels '
     '--project_name=/localhost/docker_db_project',
     '  ApiLogicServer create-and-run --db_url=mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?'
@@ -24,7 +25,6 @@ uri_info = [
     ' ',
     'Docs: https://apilogicserver.github.io/Docs/'
 ]
-
 
 
 def print_uri_info():

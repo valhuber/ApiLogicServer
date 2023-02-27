@@ -82,7 +82,7 @@ setup(
         "Flask-OpenID==1.3.0",
         "python-dotenv==0.15.0",
         "email-validator==1.1.1",
-        "LogicBank>=1.08.00",
+        "LogicBank>=1.08.01",
         "PyMySQL==1.0.2",
 #         "pyodbc==4.0.32",
         "cryptography==36.0.1",
@@ -101,11 +101,12 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.8",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    python_requires=">=3.8, <11",
+    python_requires=">=3.8, !=3.11.0, !=3.11.1",
     setup_requires=['wheel']
 )

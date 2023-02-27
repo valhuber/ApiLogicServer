@@ -40,7 +40,7 @@
 # create the Dockers' MySql authdb as above, using auth-db.sql
 # cd my_project
 # ApiLogicServer add-auth
-# update config.sys: SQLALCHEMY_DATABASE_URI_AUTHENTICATION = f'mysql+pymysql://root:p@localhost:3306/authdb'
+# update config.py: SQLALCHEMY_DATABASE_URI_AUTHENTICATION = f'mysql+pymysql://root:p@localhost:3306/authdb'
 # comment out sample lines in security/declare_security.py (lines around 27 or so)
 # you should now be able to start server, login and access data
 # add users via http://localhost:5656/admin/authentication_admin/
