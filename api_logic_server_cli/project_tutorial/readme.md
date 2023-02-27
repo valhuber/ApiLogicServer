@@ -64,7 +64,7 @@ To run the basic app:
 
 3. When you have reviewed the result ([here's the readme](./1.%20Basic_App/readme.md)), **stop** the server
 
-<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app-tutorial.png?raw=true"></figure>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app-tutorial-tutorial.png?raw=true"></figure>
 
 </details>
 
@@ -140,7 +140,7 @@ To run the ApiLogicProject app, **stop the running server** (see figure above), 
 
 Don't spend too much time exploring the app, we'll see a much better version in just a moment...
 
-<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial-tutorial.png?raw=true"></figure>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial-tutorial-tutorial.png?raw=true"></figure>
 
 </details>
 
@@ -198,6 +198,12 @@ Customizations are illustrated in the project [`3. ApiLogicProject_Logic`](3.%20
 2. Start the Browser at localhost:5656, using the **url shown in the console log**
 
 </details>
+
+&nbsp;
+
+This project is the customized version of _2. ApiLogicProject_, above.  The table below lists some of the key customizations you can explore.
+
+&nbsp;
 
 <p align="center">
   <h2 align="center">Explore Key Customizations</h2>

@@ -263,6 +263,13 @@ Internally, rules execute by listening to SQLAlchemy `before_flush` events, as [
 
 > This rule architecture ensures that rules are always re-used across all client applications and integrations.  This avoids common "fat client" approaches that embed logic in user interface controllers, which leads to replication and inconsistency.
 
+&nbsp;
+
+### Security Logic
+The declarative approach addresses not only multi-table derivation and constraint logic, it addresses security.  This controls who can login, and what data they see.  
+
+The overview Tutorial noted how grants on the `Category` table controlled what rows users like _u1_ and _u2_ were able to see.  The grant logic is in `security/declare_security.py`.  For more on security, [see here](https://apilogicserver.github.io/Docs/Security-Overview/).
+
 &nbsp;&nbsp;
 
 ---
