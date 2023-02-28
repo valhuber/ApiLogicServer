@@ -73,7 +73,7 @@ To run the basic app:
 
 <details markdown>
 
-<summary>&nbsp;&nbsp;&nbsp;Fully Customizable, but slow</summary>
+<summary>&nbsp;&nbsp;&nbsp;--> Fully Customizable, but slow</summary>
 
 &nbsp;
 
@@ -163,7 +163,7 @@ Don't spend too much time exploring the app, we'll see a much better version in 
 
 <details markdown>
 
-<summary>&nbsp;&nbsp;&nbsp;Instant, But Customization Required</summary>
+<summary>&nbsp;&nbsp;&nbsp;--> Instant, But Customization Required</summary>
 
 &nbsp;
 
@@ -174,6 +174,8 @@ An instant Admin App and API are a great start, but there are some significant s
 * **No logic -** multi-table derivations and constraints for save logic
 
     * For example, open **Customer** (left nav menu), **click `ALFKI`**, and **EDIT > DELETE the first Order**.  Re-click Customer from the left nav menu - it should have reduced the customer's balance from 2102, but it's unchanged.   That's because there is *no logic...*
+
+    * Backend update logic can be as much as half the effort, so we really haven't achieved "Low Code" until this are addressed.
 
 Let's see how these are addressed, in the next section.
 
@@ -189,16 +191,14 @@ Let's see how these are addressed, in the next section.
 
 <br>
 
-A running API and UI are a great start, but completing the project requires customization - new endpoints, and particularly business logic for integrity and security.  This can be as much as half the effort, so we really haven't achieved "Low Code" until these are addressed.
-
-These are addressed using your IDE, with:
+Customizations are addressed using your IDE, with:
 
 * **Standard Code:** use Flask and SQLAlchemy, exactly as you normally do, and
 
 
 * **Logic:** unique spreadsheet-like rules address multi-table constraints and derivations, improving conciseness by a remarkable 40x.  Rules are **declared in *your IDE,*** with full support for code completion, logging, and debugging.
 
-Customizations are illustrated in the project [`3. ApiLogicProject_Logic`](3.%20ApiLogicProject_Logic/).  To see the changes, run the app like this:
+Customizations are illustrated in the project [`3. ApiLogicProject_Logic`](3.%20ApiLogicProject_Logic/).  To see the effect of the changes, run the app like this:
 
 1. **Stop the server** using the red "stop" button.
 2. **Restart the server** with the same procedure as Step 2, above, but choose Run Configuration ***3. API Logic Project: Logic***.<br>
@@ -206,6 +206,8 @@ Customizations are illustrated in the project [`3. ApiLogicProject_Logic`](3.%20
 <details markdown>
 
 <summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remind me how</summary>
+
+&nbsp;
 
 1. Restart the Server:
 
@@ -215,6 +217,8 @@ Customizations are illustrated in the project [`3. ApiLogicProject_Logic`](3.%20
 <br><br>
 
 2. Start the Browser at localhost:5656, using the **url shown in the console log**
+
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial.png?raw=true"></figure>
 
 </details>
 
