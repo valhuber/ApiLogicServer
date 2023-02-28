@@ -52,7 +52,7 @@ To run, use the Run Configuration, and test with `cURL`.
 
 <details markdown>
 
-<summary> Show me how </summary>
+<summary>&nbsp;&nbsp;&nbsp;Show me how </summary>
 
 &nbsp;
 
@@ -73,7 +73,7 @@ To run the basic app:
 
 <details markdown>
 
-<summary>Fully Customizable, but slow</summary>
+<summary>&nbsp;&nbsp;&nbsp;Fully Customizable, but slow</summary>
 
 &nbsp;
 
@@ -132,7 +132,7 @@ To execute (see *Show me how*, below, for details): **restart the server** with 
 
 <details markdown>
 
-<summary> Show me how </summary>
+<summary>&nbsp;&nbsp;&nbsp;Show me how </summary>
 
 &nbsp;
 
@@ -151,13 +151,19 @@ You can explore key aspects of this app in the [1. Basic_app/readme.md](./1.%20B
 
 Don't spend too much time exploring the app, we'll see a much better version in just a moment...
 
-<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial-tutorial-tutorial.png?raw=true"></figure>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial.png?raw=true"></figure>
 
 </details>
 
 &nbsp;
 
 > Key Takeway: you will achieve this level automation for your projects: provide a database, get an instant API and Admin App.  Then, customize in your IDE. 
+
+&nbsp;
+
+<details markdown>
+
+<summary>&nbsp;&nbsp;&nbsp;Instant, But Customization Required</summary>
 
 &nbsp;
 
@@ -170,6 +176,8 @@ An instant Admin App and API are a great start, but there are some significant s
     * For example, open **Customer** (left nav menu), **click `ALFKI`**, and **EDIT > DELETE the first Order**.  Re-click Customer from the left nav menu - it should have reduced the customer's balance from 2102, but it's unchanged.   That's because there is *no logic...*
 
 Let's see how these are addressed, in the next section.
+
+</details>
 
 </details>
 
