@@ -77,7 +77,6 @@ To run the basic app:
 
 &nbsp;
 
-To run the ApiLogicProject app, **stop the running server** (see figure above), and
 Frameworks are flexible, and leverage your existing dev environment (IDE, git, etc).  But the manual effort is time-consuming, and complex.  This minimal project **does not provide:**
 
 * an API endpoint for each table
@@ -101,7 +100,7 @@ The next section introduces an approach that is as flexible as a framework, but 
 
 <details markdown>
 
-<summary>2. API Logic Project: Automation -- Flexible as a Framework, Faster than Low Code</summary>
+<summary>2. API Logic Project: Automation -- Customizable as a framework, Faster than Low Code</summary>
 
 <br>
 
@@ -178,7 +177,7 @@ Let's see how these are addressed, in the next section.
 
 <details markdown>
 
-<summary>3. Api Logic Project Logic: Customized (code and unique spreadsheet-like Rules -- 40X more concise)</summary>
+<summary>3. Api Logic Project Logic: Customized -- Code and unique spreadsheet-like Rules (40X more concise)</summary>
 
 <br>
 
