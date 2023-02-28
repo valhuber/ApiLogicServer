@@ -68,9 +68,6 @@ To run the basic app:
 
 </details>
 
-&nbsp;
-
-You can explore key aspects of this app in the [1. Basic_app/readme.md](./1.%20Basic_App/readme.md).
 
 &nbsp;
 
@@ -104,11 +101,11 @@ The next section introduces an approach that is as flexible as a framework, but 
 
 <details markdown>
 
-<summary>2. API Logic Project: Automation -- Instant, Fully Customizable, Open Source</summary>
+<summary>2. API Logic Project: Automation -- Flexible as a Framework, Faster than Low Code</summary>
 
 <br>
 
-The *2. ApiLogicProject* app provides an alternative, creating an entire project by reading your schema.  This automated approach is:
+The *2. ApiLogicProject* app illustrates an alternative, creating an entire project by reading your schema.  This automated approach is:
 
 * **Instant:** faster than Low Code screen painting, with instant APIs and Admin User Interfaces:
 
@@ -128,6 +125,7 @@ This application was *not coded* - **it was created** using the API Logic Server
 ```bash
 ApiLogicServer create --project_name=ApiLogicProject --db_url=nw-  # use Northwind, no customizations
 ```
+&nbsp;
 
 To execute (see *Show me how*, below, for details): **restart the server** with **Run and Debug >> *2. API Logic Server: Instant, Open***, and then start the Browser at localhost:5656 **(url in the console log)**
 
@@ -149,6 +147,8 @@ To run the ApiLogicProject app, **stop the running server** (see figure above), 
 <br><br>
 
 2. Start the Browser at localhost:5656, using the **url shown in the console log**
+
+You can explore key aspects of this app in the [1. Basic_app/readme.md](./1.%20Basic_App/readme.md).
 
 Don't spend too much time exploring the app, we'll see a much better version in just a moment...
 
