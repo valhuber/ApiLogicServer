@@ -6,15 +6,15 @@ It is the smallest example of a typical project for a modern database API server
 
 &nbsp;
 
-## Key Tools
+## Background - Key Tools
 
-Creating an API server requires 2 basic tools: a Framework, and database access.
+Creating an API Server requires 2 basic tools: a Framework, and database access.
 
 &nbsp;
 
 ### Framework - Flask
 
-A framework is a "your code goes here" library backend functions to handle api calls, html calls.  The framework provides key basic functions such as:
+A framework is a "your code goes here" library, provding backend functions to handle api calls, html calls, etc.  The framework provides key basic functions such as:
 
 * listening for incoming calls, and **invoking your code** (your 'handler')
 
@@ -66,6 +66,12 @@ There are also important devops artifacts:
 
 &nbsp;
 
+### Server
+
+See [```flask_basic.py```](../1.%20Basic_App/flask_basic.py) to see how to establish a Flask server.  It's this program you ran to start the server.
+
+&nbsp;
+
 ### API
 
 Explore [```api/end_points.py```](../1.%20Basic_App/api/end_points.py) for examples of handling api calls.  See `def order():`.
@@ -79,3 +85,27 @@ There are 2 aspects to explore for SQLAlchemy:
 * See [```database/models.py```](../1.%20Basic_App/database/models.py) for examples of defining objects (models) for database rows.  These correspond to the tables in your database.
 
 * See [```api/end_points.py```](../1.%20Basic_App/api/end_points.py) for examples of SQLAlchemy calls.  See `def order():`.
+
+&nbsp;
+
+## Appendix
+
+&nbsp;
+
+### API
+
+An API is a set of endpoints, accessible via the web, that clients (e.g, mobile apps) can invoke by providing:
+
+* **a command:** such as GET, POST or PATCH
+
+* **a URL:** this identifies the server, the endpoint (e.g, Order), and the arguments (e.g. the OrderNumber)
+
+* **a payload:** data being sent to the server (e.g, to be saved), typically in `json` format (not provided for GET commands)
+
+* **a header:** typically identifying the authenticated user
+
+&nbsp;
+
+### API Server
+
+A server that implements an API.  In the context of this tutorial, it's a Flask server, using SQLAlchemy for data access.

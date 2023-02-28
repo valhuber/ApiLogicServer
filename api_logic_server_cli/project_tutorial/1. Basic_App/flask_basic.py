@@ -37,7 +37,7 @@ db.init_app(app)        # initialize the app with the extension
 import api.end_points as api_end_points
 api_end_points.flask_events(app, db)  # register endpoints
 
-logging.info("Starting server: test as follows...")
+logging.info("Server started: test by copying the cURL commands to a terminal window...")
 logging.info('  curl -X GET "http://localhost:8080/hello_world"')
 logging.info('  curl -X GET "http://localhost:8080/order?Id=10643"')
 logging.info('')

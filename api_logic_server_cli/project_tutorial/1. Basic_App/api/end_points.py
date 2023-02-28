@@ -3,8 +3,6 @@ from flask import request, jsonify
 from database import models
 import util
 
-app_logger = logging.getLogger(__name__)
-
 
 def row2dict(row):
     return {
@@ -36,23 +34,6 @@ def flask_events(app, db):
         return jsonify({"result": f'hello, {user}'})  # the api response (in json)
 
 
-    @app.route('/stop')
-    def stop():  # test it with: http://localhost:8080/stop?msg=API stop - Stop Basic App Server
-        """
-        Use this to stop the server from the Browser.
-
-        See: https://stackoverflow.com/questions/15562446/how-to-stop-flask-application-without-using-ctrl-c
-        """
-
-        import os, signal
-
-        msg = request.args.get('msg')
-        app_logger.info(f'\nStopped server: {msg}\n')
-
-        os.kill(os.getpid(), signal.SIGINT)
-        return jsonify({ "success": True, "message": "Server is shutting down..." })
-
-
     @app.route('/order')
     def order():
         """
@@ -80,5 +61,23 @@ def flask_events(app, db):
             result_std_dict['OrderDetailListAsDicts'].append(each_order_detail_dict)
         return result_std_dict
     
+
+    @app.route('/stop')
+    def stop():  # test it with: http://localhost:8080/stop?msg=API stop - Stop Basic App Server
+        """
+        Use this to stop the server from the Browser.
+
+        See: https://stackoverflow.com/questions/15562446/how-to-stop-flask-application-without-using-ctrl-c
+        """
+
+        import os, signal
+
+        msg = request.args.get('msg')
+        app_logger.info(f'\nStopped server: {msg}\n')
+
+        os.kill(os.getpid(), signal.SIGINT)
+        return jsonify({ "success": True, "message": "Server is shutting down..." })
+
+
     logging.info("\n\n..Basic App, exposing end points: hello_world, order, stop\n")
 
