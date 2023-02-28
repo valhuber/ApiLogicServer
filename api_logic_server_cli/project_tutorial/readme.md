@@ -72,6 +72,15 @@ To run the basic app:
 
 You can explore key aspects of this app in the [1. Basic_app/readme.md](./1.%20Basic_App/readme.md).
 
+&nbsp;
+
+<details markdown>
+
+<summary>Fully Customizable, but slow</summary>
+
+&nbsp;
+
+To run the ApiLogicProject app, **stop the running server** (see figure above), and
 Frameworks are flexible, and leverage your existing dev environment (IDE, git, etc).  But the manual effort is time-consuming, and complex.  This minimal project **does not provide:**
 
 * an API endpoint for each table
@@ -86,6 +95,7 @@ Instead of frameworks, we might consider a Low Code approach.  Low Code tools pr
 
 The next section introduces an approach that is as flexible as a framework, but faster than Low Code for APIs and Admin Apps.
 
+</details>
 
 </details>
 
@@ -168,7 +178,7 @@ Let's see how these are addressed, in the next section.
 
 <details markdown>
 
-<summary>3. Api Logic Project Logic: Customized (code and unique spreadsheet-like Rules -- 40X More Concise)</summary>
+<summary>3. Api Logic Project Logic: Customized (code and unique spreadsheet-like Rules -- 40X more concise)</summary>
 
 <br>
 
