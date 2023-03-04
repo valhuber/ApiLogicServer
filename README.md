@@ -243,7 +243,7 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
-02/26/2023 - 08.01.00: python 3.11.2, authdb_mysql script
+03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3
 
 02/15/2023 - 08.00.01: Declarative Authorization and Authentication
 

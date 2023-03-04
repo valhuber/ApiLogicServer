@@ -18,14 +18,14 @@ models.Employee.Manager = relationship('Employee', cascade_backrefs=True, backre
 
 # add derived attribute: https://github.com/thomaxxl/safrs/blob/master/examples/demo_pythonanywhere_com.py
 @jsonapi_attr
-def proper_salary(row):
+def proper_salary(row):  # type: ignore [no-redef]
     if not hasattr(row, "_proper_salary"):
         row._proper_salary = row.Salary * 1.25  # create the attr with default value
     return row._proper_salary
 
 
 @proper_salary.setter
-def proper_salary(row, value):
+def proper_salary(row, value):  # type: ignore [no-redef]
     row._proper_salary = value
     # print(f'_proper_salary={row._proper_salary}')
     pass

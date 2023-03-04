@@ -82,7 +82,7 @@ setup(
         "Flask-OpenID==1.3.0",
         "python-dotenv==0.15.0",
         "email-validator==1.1.1",
-        "LogicBank>=1.08.02",
+        "LogicBank>=1.08.03",
         "PyMySQL==1.0.2",
 #         "pyodbc==4.0.32",
         "cryptography==36.0.1",

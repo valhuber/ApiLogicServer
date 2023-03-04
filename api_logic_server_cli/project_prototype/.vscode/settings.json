@@ -4,5 +4,16 @@
             "viewType": "vscode.markdown.preview.editor",
             "filenamePattern": "*.md"
         }
+    ],
+    "cSpell.words": [
+        "APILOGICSERVER",
+        "sqlalchemy",
+        "backref",
+        "cascade_backrefs",
+        "proxied",
+        "redef",
+        "jsonapi",
+        "jsonify",
+        "sqltypes"
     ]
 }

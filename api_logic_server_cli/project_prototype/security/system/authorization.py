@@ -9,11 +9,13 @@ and enforcing them using SQLAlchemy
 You typically do not alter this file.
 """
 
+from typing import Dict, Tuple
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import session
 from sqlalchemy import event, MetaData, and_, or_
 import safrs
 from sqlalchemy import event, MetaData
-from sqlalchemy.orm import with_loader_criteria
+from sqlalchemy.orm import with_loader_criteria, DeclarativeMeta
 import logging, sys
 
 
@@ -70,12 +72,14 @@ class Grant:
     Use code completion to discover models.
     """
 
-    grants_by_table = {}
+    grants_by_table : Dict[str, list[object]] = {}
     '''
-    Dict keyed by Table name (obtained from class name), value is a (role,filter)
+    Dict keyed by Table name (obtained from class name), value is a (role, filter)
     '''
 
-    def __init__(self, on_entity: object, to_role: object = None, filter: object = None):
+    def __init__(self, on_entity: DeclarativeMeta, 
+                 to_role: str = "",
+                 filter: object = None):
         '''
         Create grant for <on_entity> / <to_role>
 
@@ -93,11 +97,11 @@ class Grant:
         
         per calls from declare_security.py
         '''
-        self.class_name = on_entity._s_class_name
-        self.role_name = to_role
+        self.class_name : str = on_entity._s_class_name  # type: ignore
+        self.role_name : str = to_role
         self.filter = filter
-        self.entity = on_entity
-        self.table_name = on_entity.__tablename__
+        self.entity :DeclarativeMeta = on_entity
+        self.table_name : str = on_entity.__tablename__  # type: ignore
         if (self.table_name not in self.grants_by_table):
             Grant.grants_by_table[self.table_name] = []
         Grant.grants_by_table[self.table_name].append( self )
@@ -152,9 +156,9 @@ def receive_do_orm_execute(orm_execute_state):
         mapper = orm_execute_state.bind_arguments['mapper']
         table_name = mapper.persist_selectable.fullname   # mapper.mapped_table.fullname disparaged
         if table_name == "User":
-            pass  # TODO bypass authorization when rules are running
+            pass
             security_logger.debug(f'No grants - avoid recursion on User table')
-        elif  session._proxied._flushing:
+        elif  session._proxied._flushing:  # type: ignore
             security_logger.debug(f'No grants during logic processing')
         else:
             Grant.exec_grants(orm_execute_state) # SQL read check grants

@@ -4,15 +4,18 @@ Utilities for API Logic Server Projects (1.0)
 import sqlite3
 from os import path
 import logging
+import sys
+from typing import Any, Optional, Tuple
 import safrs
 import sqlalchemy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper
+import flask_sqlalchemy
 from logic_bank.rule_bank.rule_bank import RuleBank
 
 app_logger = logging.getLogger("api_logic_server_app")
 
-def log(msg: any) -> None:
+def log(msg: object) -> None:
     app_logger.info(msg)
     # print("TIL==> " + msg)
 
@@ -32,7 +35,7 @@ def dbpath(dbname: str) -> str:
     return PATH
 
 
-def json_to_entities(from_row: object, to_row):
+def json_to_entities(from_row: str or object, to_row):
     """
     transform json object to SQLAlchemy rows, for save & logic
 
@@ -41,7 +44,7 @@ def json_to_entities(from_row: object, to_row):
     :return: updates to_row with contents of from_row (recursively for lists)
     """
 
-    def get_attr_name(mapper, attr)-> str:
+    def get_attr_name(mapper, attr)-> Tuple[Optional[Any], str]:
         """ returns name, type of SQLAlchemy attr metadata object """
         attr_name = None
         attr_type = "attr"
@@ -142,11 +145,9 @@ def server_log(request, jsonify):
             try:
                 os.makedirs(log_dir)
             except:
-                print('{}: Cannot create directory {}. '.format(
-                    self.__class__.__name__, log_dir),
-                    end='', file=sys.stderr)
+                app_logger.info(f'util.add_file_handler unable to create dir {log_dir}')
                 log_dir = '/tmp' if sys.platform.startswith('linux') else '.'
-                print(f'Defaulting to {log_dir}.', file=sys.stderr)
+                app_logger.info(f'Defaulting to {log_dir}.')
 
         log_file = os.path.join(log_dir, log_name) + '.log'
         if os.path.exists(log_file):
@@ -179,7 +180,7 @@ def server_log(request, jsonify):
 
 
 def row_to_dict(row
-                , replace_attribute_tag: str = None
+                , replace_attribute_tag: str = ""
                 , remove_links_relationships: bool = False) -> dict:
     """
     returns dict suitable for safrs response
@@ -194,7 +195,7 @@ def row_to_dict(row
     logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
     row_as_dict = jsonify(row).json
     logic_logger.debug(f'Row: {row_as_dict}')
-    if replace_attribute_tag:
+    if replace_attribute_tag != "":
         row_as_dict[replace_attribute_tag] = row_as_dict.pop('attributes')
     if remove_links_relationships:
         row_as_dict.pop('links')
@@ -202,7 +203,7 @@ def row_to_dict(row
     return row_as_dict
 
 
-def rows_to_dict(result: object) -> list:
+def rows_to_dict(result: flask_sqlalchemy.BaseQuery) -> list:
     """
     Converts SQLAlchemy result to dict array
 

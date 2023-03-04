@@ -145,6 +145,15 @@ def declare_logic():
     Rule.early_row_event(on_class=models.Order, calling=order_defaults)
     Rule.early_row_event(on_class=models.OrderDetail, calling=order_detail_defaults)
 
+
+    """
+        Simple constraint for error testing 
+    """
+    Rule.constraint(validate=models.Customer,
+        as_condition=lambda row: row.CompanyName != 'x',
+        error_msg="CustomerName cannot be 'x'")
+
+
     """
         More complex rules follow - see: 
             https://github.com/valhuber/LogicBank/wiki/Examples

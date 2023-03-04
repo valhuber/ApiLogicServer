@@ -12,11 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.01.01"
+__version__ = "08.01.04"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t02/26/2023 - 08.01.01: python 3.11.2, authdb_mysql script, syntax / log fixes \n"\
-    "\t02/17/2023 - 08.00.04: Werkzeug==2.2.3, fiddle comments/links \n"\
+    "\t03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3 \n"\
     "\t02/15/2023 - 08.00.01: Declarative Authorization and Authentication, Werkzeug==2.2.3 \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
     "\t01/06/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config  \n"\
@@ -696,7 +695,7 @@ class ProjectRun(Project):
 
     # as desired, use env variable: export SQLALCHEMY_DATABASE_URI='sqlite:////Users/val/dev/servers/docker_api_logic_project/database/db.sqliteXX'
     if os.getenv('{CONFIG_URI}'):
-        {CONFIG_URI} = os.getenv('{CONFIG_URI}')
+        {CONFIG_URI} = os.getenv('{CONFIG_URI}')  # type: ignore # type: str
         app_logger.debug(f'.. overridden from env variable: {CONFIG_URI}')
 
     """

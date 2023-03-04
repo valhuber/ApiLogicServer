@@ -29,8 +29,9 @@ from flask_jwt_extended import create_access_token
 from datetime import timedelta
 from functools import wraps
 import config
+from security.authentication_provider.abstract_authentication_provider import Abstract_Authentication_Provider
 
-authentication_provider = config.Config.SECURITY_PROVIDER
+authentication_provider : Abstract_Authentication_Provider = config.Config.SECURITY_PROVIDER  # type: ignore
 
 security_logger = logging.getLogger(__name__)
 
@@ -46,7 +47,7 @@ def jwt_required(*args, **kwargs):
     return _wrapper
 
 
-def configure_auth(flask_app: Flask, database: object, method_decorators: object):
+def configure_auth(flask_app: Flask, database: object, method_decorators: list[object]):
     """
     Called on server start by api_logic_server_run to 
     - initialize jwt

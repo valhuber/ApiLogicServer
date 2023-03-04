@@ -558,14 +558,16 @@ class CodeGenerator(object):
 #
 # Alter this file per your database maintenance policy
 #    See https://apilogicserver.github.io/Docs/Project-Rebuild/#rebuilding
+#
+# mypy: ignore-errors
 
 from safrs import SAFRSBase
 from flask_login import UserMixin
-import safrs
+import safrs, flask_sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy() 
-Base = declarative_base()
+Base = declarative_base()  # type: flask_sqlalchemy.model.DefaultMeta
 metadata = Base.metadata
 
 #NullType = db.String  # datatype fixup
@@ -838,8 +840,10 @@ from sqlalchemy.dialects.mysql import *
         super_classes = model.parent_name
         if self.model_creation_services.project.bind_key != "":
             super_classes = f'Base{self.model_creation_services.project.bind_key}, db.Model, UserMixin'
+            rendered = 'class {0}(SAFRSBase, {1}):  # type: ignore\n'.format(model.name, super_classes)   # ApiLogicServer
         # f'Base{self.model_creation_services.project.bind_key} = declarative_base()'
-        rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, super_classes)   # ApiLogicServer
+        else:
+            rendered = 'class {0}(SAFRSBase, {1}):\n'.format(model.name, super_classes)   # ApiLogicServer
         rendered += '{0}__tablename__ = {1!r}\n'.format(self.indentation, model.table.name)
         end_point_name = model.name
         if self.model_creation_services.project.bind_key != "":
@@ -848,7 +852,7 @@ from sqlalchemy.dialects.mysql import *
                 log.debug(f'.. .. ..Setting bind_key = {self.model_creation_services.project.bind_key}')
             end_point_name = self.model_creation_services.project.bind_key + \
                 self.model_creation_services.project.bind_key_url_separator + model.name
-        rendered += '{0}_s_collection_name = {1!r}\n'.format(self.indentation, end_point_name)
+        rendered += '{0}_s_collection_name = {1!r}  # type: ignore\n'.format(self.indentation, end_point_name)
         if self.model_creation_services.project.bind_key != "":
           bind_key = self.model_creation_services.project.bind_key
         else:

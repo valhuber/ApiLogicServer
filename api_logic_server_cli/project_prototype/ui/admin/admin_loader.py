@@ -8,6 +8,7 @@ from flask import Flask, redirect, send_from_directory, send_file
 from config import Config
 from pathlib import Path
 import os, inspect
+from safrs import ValidationError
 
 admin_logger = logging.getLogger(__name__)  # log levels: critical < error < warning(20) < info(30) < debug
 
@@ -42,7 +43,7 @@ def get_sra_directory() -> str:
     return directory
 
 
-def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PREFIX: str, ValidationError: object, http_type: str):
+def admin_events(flask_app: Flask, swagger_host: str, swagger_port: str, API_PREFIX: str, validation_error: ValidationError, http_type: str):
     """ events for serving minified safrs-admin, using admin.yaml
     """
 

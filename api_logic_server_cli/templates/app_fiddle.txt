@@ -11,6 +11,10 @@ Walk-throughs
 submissions: https://pycoders.com/submissions
 
 pycoders: https://pycoders.com
+    95 on Tues, 128 on Thurs (same on Wed)
+
+dzone: https://dzone.com/articles/learn-flask-with-an-app-fiddle
+    55 on Thurs, 
 
 Careful - browser launch is different for local (tutorial) vs. codespaces
 
@@ -63,3 +67,8 @@ Rule.formula(derive=models.OrderDetail.Amount,  # compute price * qty
 
 Rule.copy(derive=models.OrderDetail.UnitPrice,  # get Product Price (e,g., on insert, or ProductId change)
     from_parent=models.Product.UnitPrice)
+
+
+Darkwind
+    - mypy checks
+    - pytest
