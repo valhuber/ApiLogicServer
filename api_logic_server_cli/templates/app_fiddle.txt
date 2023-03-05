@@ -29,10 +29,10 @@ Use this App Fiddle to learn Flask/SQLAlchemy, using a running app in Codespaces
 Use this App Fiddle to learn Flask/SQLAlchemy, using a running app in Codespaces.  Use VSCode in your Browser to explore, customize and debug a complete project, including a database.  Then, discover API Logic Server - automate the creation of Flask/SQLAlchemy projects with 1 command.
 
 
-Fiddle Link:
+Fiddle Link (now pre-loaded - 60 sec):
 https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=594296622
 
-Tutorial Link:
+Tutorial Link (100 sec):
 https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=593459232
 
 Learning Link:
