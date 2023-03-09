@@ -32,7 +32,7 @@ loggers:
         propagate: no
 
     sqlacodegen_wrapper.sqlacodegen.sqlacodegen.codegen:   
-#        level: DEBUG
+#         level: DEBUG
         handlers: [console]
         propagate: no
 

@@ -276,6 +276,9 @@ def tutorial(ctx, create):
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
+@click.option('--include_tables',
+              default=f'',
+              help="yml for include: exclude:")
 @click.option('--infer_primary_key/--no_infer_primary_key',
               default=False, is_flag=True,
               help="Infer primary_key for unique cols")
@@ -294,6 +297,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            swagger_host: str,
            favorites: str, non_favorites: str,
            extended_builder: str,
+           include_tables: str,
            multi_api: click.BOOL,
            infer_primary_key: click.BOOL):
     """
@@ -307,7 +311,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                     react_admin=react_admin, admin_app=admin_app,
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                    extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
+                    extended_builder=extended_builder, include_tables=include_tables,
+                    multi_api=multi_api, infer_primary_key=infer_primary_key)
 
 
 @main.command("create-and-run")

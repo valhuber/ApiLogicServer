@@ -110,8 +110,10 @@ def get_abs_db_url(msg, project: Project):
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/Chinook_Sqlite.sqlite"))}'
     elif project.db_url == "todo" or project.db_url == "todos":
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/todos.sqlite"))}'
-    elif project.db_url == "todo" or project.db_url == "new":
+    elif  project.db_url == "new":
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/new.sqlite"))}'
+    elif  project.db_url == "table_filters_tests":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/table_filters_tests.sqlite"))}'
     elif project.db_url == "classicmodels":
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/classicmodels.sqlite"))}'
     elif project.db_url.startswith('sqlite:///'):

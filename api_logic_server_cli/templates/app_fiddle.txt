@@ -11,11 +11,12 @@ Walk-throughs
 submissions: https://pycoders.com/submissions
 
 pycoders: https://pycoders.com
-    95 on Tues, 128 on Thurs (same on Wed)
+    95 on Tues, 128 on Thurs (same on Wed), 115 on Mon (47 unique)
 
-dzone: https://dzone.com/articles/learn-flask-with-an-app-fiddle
-    55 on Thurs, 
-
+dzone: https://dzone.com/articles/learn-flask-with-an-app-fiddle (tutorial)
+    55 on Thurs, 48
+    115 unique
+    
 Careful - browser launch is different for local (tutorial) vs. codespaces
 
 App Fiddle to learn Flask/SQLAlchemy, Discover API Logic Server

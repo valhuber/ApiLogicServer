@@ -24,5 +24,6 @@ class ProjectArgs():
         self.non_favorites = None
         self.react_admin = None
         self.extended_builder = None
+        self.include_tables = None
         self.multi_api = None
         self.infer_primary_key = None

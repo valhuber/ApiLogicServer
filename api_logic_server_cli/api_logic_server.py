@@ -12,9 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.01.06"
+__version__ = "08.01.08"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t03/08/2023 - 08.01.08: Data Model Filters (no debug) \n"\
     "\t03/06/2023 - 08.01.06: db abbr: new \n"\
     "\t03/05/2023 - 08.01.05: fix Employee.Photo \n"\
     "\t03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3 \n"\
@@ -572,6 +573,7 @@ class ProjectRun(Project):
                      non_favorites: str="id", 
                      react_admin: bool=True,
                      extended_builder: str="", 
+                     include_tables: str="",
                      multi_api: bool=False, 
                      infer_primary_key: bool=False, 
                      bind_key_url_separator: str=default_bind_key_url_separator,
@@ -597,6 +599,7 @@ class ProjectRun(Project):
         self.non_favorites = non_favorites
         self.react_admin = react_admin
         self.extended_builder = extended_builder
+        self.include_tables = include_tables
         self.multi_api = multi_api
         self.infer_primary_key = infer_primary_key
         self.bind_key_url_separator = bind_key_url_separator
@@ -637,6 +640,7 @@ class ProjectRun(Project):
             log.debug(f'  --favorites={self.favorites}')
             log.debug(f'  --non_favorites={self.non_favorites}')
             log.debug(f'  --extended_builder={self.extended_builder}')
+            log.debug(f'  --include_tables={self.include_tables}')
             log.debug(f'  --multi_api={self.multi_api}')
             log.debug(f'  --infer_primary_key={self.infer_primary_key}')
 

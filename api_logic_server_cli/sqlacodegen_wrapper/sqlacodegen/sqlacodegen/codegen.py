@@ -18,10 +18,12 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.types import Boolean, String
 from sqlalchemy.util import OrderedDict
+import yaml
 
 # The generic ARRAY type was introduced in SQLAlchemy 1.1
 from api_logic_server_cli.create_from_model.model_creation_services import Resource, ResourceRelationship, \
     ResourceAttribute
+from api_logic_server_cli.create_from_model.model_creation_services import ModelCreationServices
 
 log = logging.getLogger(__name__)
 """
@@ -424,7 +426,7 @@ class CodeGenerator(object):
         self.nojoined = nojoined
         self.noinflect = noinflect
         self.noclasses = noclasses
-        self.model_creation_services = model_creation_services  # ApiLogicServer
+        self.model_creation_services = model_creation_services  # type: ModelCreationServices
         self.generate_relationships_on = "parent"  # "child"
         self.indentation = indentation
         self.model_separator = model_separator
@@ -437,6 +439,25 @@ class CodeGenerator(object):
         self.parents_map = dict()
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.inflect_engine = self.create_inflect_engine()
+        include_tables_dict = {"include": [], "exclude": []}
+        if self.model_creation_services.project.include_tables != "":
+            with open(self.model_creation_services.project.include_tables,'rt') as f:  # 
+                include_tables_dict = yaml.safe_load(f.read())
+                f.close()
+            log.debug(f"include_tables specified: \n{include_tables_dict}\n")  # {'include': ['I*', 'J', 'X*'], 'exclude': ['X1']}
+        
+        # https://stackoverflow.com/questions/3040716/python-elegant-way-to-check-if-at-least-one-regex-in-list-matches-a-string
+        # https://www.w3schools.com/python/trypython.asp?filename=demo_regex
+        # ApiLogicServer create --project_name=table_filters_tests --db_url=table_filters_tests --include_tables=../table_filters_tests.yml
+        self.include_tables = include_tables_dict["include"]              # ['I.*', 'J', 'X.*']
+        self.include_regex = "(" + ")|(".join(self.include_tables) + ")"  # include_regex: (I.*)|(J)|(X.*)
+        self.include_regex_list = map(re.compile, self.include_tables)
+        self.exclude_tables = include_tables_dict["exclude"]
+        self.exclude_regex = "(" + ")|(".join(self.exclude_tables) + ")"
+        if self.model_creation_services.project.include_tables != "":
+            log.debug(f"include_regex: {self.include_regex}")
+            log.debug(f"exclude_regex: {self.exclude_regex}\n")
+            log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
         if template:
             self.template = template
 
@@ -467,6 +488,37 @@ class CodeGenerator(object):
             # Support for Alembic and sqlalchemy-migrate -- never expose the schema version tables
             if table.name in self.ignored_tables:
                 continue
+            
+            table_included = True
+            if len(self.include_tables) == 0:
+                log.debug(f"All tables included: {table.name}")
+            else:
+                if re.match(self.include_regex, table.name):
+                    log.debug(f"table included: {table.name}")
+                else:
+                    log.debug(f"table excluded: {table.name}")
+                    table_included = False
+            if not table_included:
+                log.debug(f".. skipping exlusions")
+            else:
+                if len(self.exclude_tables) == 0:
+                    log.debug(f"No tables excluded: {table.name}")
+                else:
+                    if re.match(self.exclude_regex, table.name):
+                        log.debug(f"table excluded: {table.name}")
+                        table_included = False
+                    else:
+                        log.debug(f"table not excluded: {table.name}")
+            if not table_included:
+                log.debug(f"====> table skipped: {table.name}")
+                continue
+
+            """
+            if any(regex.match(table.name) for regex in self.include_regex_list):
+                log.debug(f"list table included: {table.name}")
+            else:
+                log.debug(f"list table excluded: {table.name}")
+            """
 
             if noindexes:
                 table.indexes.clear()
