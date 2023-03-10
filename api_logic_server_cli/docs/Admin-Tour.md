@@ -55,7 +55,7 @@ The Admin App is created in your ApiLogicProject, and operates as follows:
 1. The applications are Single Page React applications executing in the Browser, acquiring data via the SAFRS JSON:API.  
 2. Updates are submitted to SQLAlchemy; LogicBank listens for `before_flush` events, and enforces the logic declared in your `declare_logic.py`.
 
-For more information on Architecture, [see Architecture](../Architecture).
+For more information on Architecture, [see Project Operation](../Project-Operation).
 
 <figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/admin-arch.png"></figure>
 
