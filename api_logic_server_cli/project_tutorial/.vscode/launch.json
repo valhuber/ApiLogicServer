@@ -38,6 +38,18 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "3a. API Logic Project: Logic No Security",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/3. ApiLogicProject_Logic",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "env": {"SECURITY_ENABLED": "False"},
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Execute ToDo",
             "type": "python",
             "request": "launch",

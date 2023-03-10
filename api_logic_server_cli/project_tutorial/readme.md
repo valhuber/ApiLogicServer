@@ -233,16 +233,18 @@ This project is the customized version of _2. ApiLogicProject_, above.  The tabl
 </p>
 <p align="center">
   Explore customizations in project: <i>3. ApiLogicProject_Logic</i><br>
-  Click Explore Code to see the code.
+  Click Explore Code to see the code.<br>
+  <b>TL;DR - scan code marked by <--</b>
 </p>
 
 | Customization Area           | Try It                                                                                                                                                                                            | Click to Explore Code                                                                                  | Notes                |
 |:-----------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------|:---------------------|
+| **New API endpoint <--**         | Use Swagger for endpoint: *CategoriesEndPoint/get_cats*<br><br>See [docs](https://apilogicserver.github.io/Docs/Security-Swagger/) - authenticate as **u1**  | [```api/customize_api.py```](3.%20ApiLogicProject_Logic/api/customize_api.py)                 | Standard Flask/SQLAlchemy  |
+| **Multi-table Update Logic <--** | Delete Order now adjusts the customer balance                                                                                                                                                    | [```logic/declare_logic.py```](3.%20ApiLogicProject_Logic/logic/declare_logic.py)             |  Spreadsheet-like logic                    |                                                                
+| **Admin App <--**  | Observe **help text** describes features                                                                                                                                                 | [```ui/admin/admin.yaml```](3.%20ApiLogicProject_Logic/ui/admin/admin.yaml)                  | Not complex JS, HTML                     |
 | **Login Authentication**     | Click Category - observe you need to **login** now (user u1, password p)                                                                                                                                  | [```config.py```](3.%20ApiLogicProject_Logic/config.py)                                       | See SECURITY_ENABLED |
 | **Role-Based Authorization** | Observe categories has **fewer rows**                                                                                                                                                                         | [```security/declare_security.py```](3.%20ApiLogicProject_Logic/security/declare_security.py) |                      |
-| **Admin App**                | Observe **help text** describes features                                                                                                                                                 | [```ui/admin/admin.yaml```](3.%20ApiLogicProject_Logic/ui/admin/admin.yaml)                  | Not complex JS, HTML                     |
-| **Multi-table Update Logic** | Delete Order now adjusts the customer balance                                                                                                                                                    | [```logic/declare_logic.py```](3.%20ApiLogicProject_Logic/logic/declare_logic.py)             |  Spreadsheet-like logic                    |                                                                
-| **New API endpoint**         | Use Swagger for endpoint: *CategoriesEndPoint/get_cats*<br><br>See [docs](https://apilogicserver.github.io/Docs/Security-Swagger/) - authenticate as **u1**  | [```api/customize_api.py```](3.%20ApiLogicProject_Logic/api/customize_api.py)                 | Standard Flask/SQLAlchemy  |
+
 
 &nbsp;
 
@@ -250,7 +252,9 @@ This project is the customized version of _2. ApiLogicProject_, above.  The tabl
 
 &nbsp;
 
-Use the [```Detailed Tutorial```](3.%20ApiLogicProject_Logic/Tutorial.md) to further explore this app.
+Use the [```Detailed Tutorial```](3.%20ApiLogicProject_Logic/Tutorial.md) to further explore this app.  
+
+> **TL;DR  Scan the code marked with <-- in the table above.**
 
 </details>
 

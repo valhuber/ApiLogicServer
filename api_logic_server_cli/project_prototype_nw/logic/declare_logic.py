@@ -224,7 +224,7 @@ def declare_logic():
                                     which_children=which)
     Rule.row_event(on_class=models.Order, calling=clone_order)
 
-    def handle_all(logic_row: LogicRow):  # TIME / DATE STEMPING
+    def handle_all(logic_row: LogicRow):  # TIME / DATE STAMPING
         row = logic_row.row
         if logic_row.ins_upd_dlt == "ins" and hasattr(row, "CreatedOn"):
             row.CreatedOn = datetime.datetime.now()
