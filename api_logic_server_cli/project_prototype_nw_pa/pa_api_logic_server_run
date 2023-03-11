@@ -203,8 +203,12 @@ def create_app(config_filename=None):
 
 # address where the api will be hosted, change this if you're not running the app on localhost!
 network_diagnostics = True
-hostname = socket.gethostname()
-local_ip = socket.gethostbyname(hostname)
+try:
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+except:
+    local_ip = f"cannot get local ip from {hostname}"
+    app_logger.info(f"{local_ip}")
 host = "apilogicserver.pythonanywhere.com"  # "localhost"
 port = ""   # "5656"
 if __name__ == "__main__":  # gunicorn-friendly host/port settings

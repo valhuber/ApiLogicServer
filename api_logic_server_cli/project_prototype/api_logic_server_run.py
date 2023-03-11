@@ -325,32 +325,31 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
                 session.commit()
 
             from api import expose_api_models, customize_api
-            app_logger.info(f'\nDeclare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}\n')
 
             import database.models
+            app_logger.info("Data Model Loaded, customizing...")
+            from database import customize_models
+
             from logic import declare_logic
+            app_logger.info("")
             LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
             app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
                 + f' -- {len(database.models.metadata.tables)} tables loaded\n')  # db opened 1st access
             
-            app_logger.info(f'Customize API - api/expose_service.py, exposing custom services')
+            method_decorators : list = []
+            expose_api_models.expose_models(safrs_api, method_decorators)
+            app_logger.info(f'Declare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}, customizing...')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
 
-            method_decorators : list = []
             if Config.SECURITY_ENABLED:
                 configure_auth(flask_app, database, method_decorators)
-            
-            expose_api_models.expose_models(safrs_api, method_decorators)
 
             from database.bind_databases import open_databases
             open_databases(flask_app, session, safrs_api, method_decorators)
 
-            app_logger.info("\nCustomize Data Model - database/customize_models.py")
-            from database import customize_models
-
             if Config.SECURITY_ENABLED:
                 from security import declare_security  # activate security
-                app_logger.info("\nDeclare Security - security/declare_security.py"
+                app_logger.info("..declare security - security/declare_security.py"
                     + f' -- {len(database.authentication_models.metadata.tables)} authentication tables loaded')
 
             SAFRSBase._s_auto_commit = False

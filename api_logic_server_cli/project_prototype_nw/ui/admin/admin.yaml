@@ -1,6 +1,6 @@
 about:
-  date: January 18, 2023 15:40
-  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, images, security, login
+  date: Mar 10
+  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, images, security, login, virtual relns
   # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
 api_root: '{http_type}://{swagger_host}:{port}/{api}'
 info_toggle_checked: true
@@ -177,6 +177,9 @@ resources:
             </ul>
             <h1>Images</h1>
             Observe that "show" pages support images.
+            <h1>Virtual Relationships</h1>
+            Observe that "show" pages have tabs for Manages and Manager.<br>
+            These foreign keys are *not* defined in the database, but in <span style="font-family:'Courier New'">database/customize_models.py</span>.<br>
     attributes:
       - label: ' Last Name*'
         name: LastName
@@ -239,6 +242,16 @@ resources:
         - UnionId
         name: Union
         resource: Union
+      - direction: tomany
+        fks:
+          - ReportsTo
+        name: Manages
+        resource: Employee
+      - direction: toone
+        fks:
+        - ReportsTo
+        name: Manager
+        resource: Employee
     type: Employee
     user_key: LastName
   EmployeeAudit:

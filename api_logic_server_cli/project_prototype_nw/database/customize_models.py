@@ -14,6 +14,23 @@ app_logger = logging.getLogger(__name__)
 # add relationship: https://docs.sqlalchemy.org/en/13/orm/join_conditions.html#specifying-alternate-join-conditions
 models.Employee.Manager = relationship('Employee', cascade_backrefs=True, backref='Manages',
                                        primaryjoin=remote(models.Employee.Id) == foreign(models.Employee.ReportsTo))
+"""
+added relationships appear in your api / swagger, automatically.
+
+They must be manually added to your ui/admin/admin.yaml, e.g.
+
+      - direction: tomany
+        fks:
+          - ReportsTo
+        name: Manages
+        resource: Employee
+      - direction: toone
+        fks:
+        - ReportsTo
+        name: Manager
+        resource: Employee
+
+"""
 
 
 # add derived attribute: https://github.com/thomaxxl/safrs/blob/master/examples/demo_pythonanywhere_com.py

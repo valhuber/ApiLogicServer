@@ -166,8 +166,13 @@ def about(ctx):
     for key, value in api_logic_server_info_file_dict.items():
         print_at(f'  {key}', value)
     print("")
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
+    try:
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+    except:
+        local_ip = f"cannot get local ip from {hostname}"
+        log.debug(f"{local_ip}")
+
     print_at('ApiLogicServer version', PR.__version__)
     print_at('ip (gethostbyname)', local_ip)
     print_at('on hostname', hostname)

@@ -166,8 +166,12 @@ def server_tests(host, port, version):
             f'All from just 5 rules in ({get_project_dir()}/logic/declare_logic.py)\n\n')
 
     if api_logic_server_summary:
-        hostname = socket.gethostname()
-        local_ip = socket.gethostbyname(hostname)
+        try:
+            hostname = socket.gethostname()
+            local_ip = socket.gethostbyname(hostname)
+        except:
+            local_ip = f"cannot get local ip from {hostname}"
+            app_logger.info(f"{local_ip}")
 
         app_logger.info(f'\nAPILOGICSERVER SUMMARY')
         app_logger.info(f'======================\n')

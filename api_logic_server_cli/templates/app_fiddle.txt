@@ -73,3 +73,8 @@ Rule.copy(derive=models.OrderDetail.UnitPrice,  # get Product Price (e,g., on in
 Darkwind
     - mypy checks
     - pytest
+
+
+Tyler
+    - missing "="s
+    - onboard credit card issuers and support credit card ranges - 1440 tables
