@@ -1043,7 +1043,7 @@ class ProjectRun(Project):
             if (is_docker()):
                 if os.getenv('CODESPACES'):
                     log.info(f'\nCustomize right here, in Browser/VSCode - just as you would locally')
-                    log.info(f'Save customized project to GitHub (TBD)')
+                    log.info(f'Save customized project to GitHub')
                 else:
                     log.info(f'\nCustomize Docker project using IDE on local machine:')
                     docker_project_name = self.project_name
