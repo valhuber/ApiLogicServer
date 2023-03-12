@@ -34,7 +34,7 @@ Observe that the files for the Admin App and API are models that describe _what,
 The system is designed to enable `rebuild`, so you can iterate the data model - _without losing your customizations._  In general, such customizations are kept in separate files from the model files.  So, the model files can be rebuilt without affecting customization files.
 
 ### Logic Automation
-A unique feature of API Logic Server is provision for spreadsheet-like rules, extensible with Python.  Rules address update logic (multi-table derivations and constraints), and security (authorization).
+A unique feature of API Logic Server is provision for spreadsheet-like rules, customizable with Python.  Rules address update logic (multi-table derivations and constraints), and security (authorization).
 
 &nbsp;&nbsp;
 
@@ -253,7 +253,7 @@ The *logic* portion of API *Logic* server is a declarative approach - you declar
 1. Open **Explorer > 3. ApiLogicProject_Logic/logic/declare_logic.py**:
    * Observe the 5 rules highlighted in the diagram below.  These are built with code completion.
 2. Set a breakpoint as shown in `congratulate_sales_rep`
-   * This event illustrates that logic is mainly _rules,_ extensible with standard _Python code_
+   * This event illustrates that logic is mainly _rules,_ customizable with standard _Python code_
 3. Using swagger, re-execute the `add_order` endpoint
 4. When you hit the breakpoint, expand `row` VARIABLES list (top left)
 
