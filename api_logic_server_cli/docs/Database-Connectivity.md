@@ -26,7 +26,7 @@ Where --db_url is one of...
    <default>                     Sample DB                    - https://valhuber.github.io/ApiLogicServer/Sample-Database/
    nw-                           Sample DB, no customizations - add later with perform_customizations.py
    <SQLAlchemy Database URI>     Your own database            - https://docs.sqlalchemy.org/en/14/core/engines.html
-                                      Other URI examples:     - https://valhuber.github.io/ApiLogicServer/Database-Connectivity/
+                                      Other URI examples:     - https://apilogicserver.github.io/Docs/Database-Connectivity/
  
 Docs: https://valhuber.github.io/ApiLogicServer/
 ```

@@ -137,7 +137,7 @@ uri_info = [
     '   <default>                     Sample DB                    - https://apilogicserver.github.io/Docs/Sample-Database/',
     '   nw-                           Sample DB, no customizations - add later with perform_customizations.py',
     '   <SQLAlchemy Database URI>     Your own database            - https://docs.sqlalchemy.org/en/14/core/engines.html',
-    '                                      Other URI examples:     - https://apilogicserver.github.io/Docs/Database-Connectivity/',
+    '                                      Other URI examples:     - https://apilogicserver.github.io/Docs/Database-Connectivity//',
     ' ',
     'Docs: https://apilogicserver.github.io/Docs/'
 ]
