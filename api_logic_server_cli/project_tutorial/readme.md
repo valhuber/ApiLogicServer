@@ -135,6 +135,8 @@ To execute (see *Show me how*, below, for details): **restart the server** with 
 
 <summary>&nbsp;&nbsp;&nbsp;Show me how </summary>
 
+![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial.png?raw=true)
+
 &nbsp;
 
 </details>
