@@ -189,7 +189,7 @@ This is an open source project.  We are open to suggestions.  Some of our ideas 
 | 3. This project | API Logic Project Creation | Support for features described above |
 
 
-To get started, please see  the [Architecture.](https://apilogicserver.github.io/Docs/Internals/)
+To get started, please see  the [Architecture.](https://apilogicserver.github.io/Docs/Architecture-Internals/)
 
 &nbsp;
 
