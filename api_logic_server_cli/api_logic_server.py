@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.01.10"
+__version__ = "08.01.11"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t03/10/2023 - 08.01.10: Data Model Filters, get-host fix (62), swagger ext relns (63) \n"\
+    "\t03/12/2023 - 08.01.11: Table Filters, get-host fix (62), swagger ext relns (63), tutorial images \n"\
     "\t03/06/2023 - 08.01.06: db abbr: new \n"\
     "\t03/05/2023 - 08.01.05: fix Employee.Photo \n"\
     "\t03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3 \n"\
@@ -913,8 +913,8 @@ class ProjectRun(Project):
                         replace_with='cd /workspaces/app_fiddle',
                         in_file=read_me_target)
             else:
-                create_utils.replace_string_in_file(search_for=".png",
-                        replace_with='-tutorial.png',
+                create_utils.replace_string_in_file(search_for="2-apilogicproject.png",
+                        replace_with='2-apilogicproject-tutorial.png',
                         in_file=read_me_target)
         
 
