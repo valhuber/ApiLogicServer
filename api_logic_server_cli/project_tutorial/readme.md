@@ -143,7 +143,7 @@ To execute (see *Show me how*, below, for details): **restart the server** with 
 
 &nbsp;
 
-> Key Takeway: you will achieve this level automation for your projects: provide a database, get an instant API and Admin App.  Then, customize in your IDE. 
+> Key Takeway: you will achieve this level automation for your projects: provide a database, get an instant API and Admin App.  Ready for agile collaboration, custom app dev.  Then, customize in your IDE. 
 
 &nbsp;
 
