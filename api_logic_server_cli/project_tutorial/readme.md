@@ -109,13 +109,13 @@ The *2. ApiLogicProject* app illustrates an alternative, creating an entire proj
 
 * **Instant:** faster than Low Code screen painting, with instant APIs and Admin User Interfaces:
 
-  * **API:** an endpoint for each table, with filtering, sorting, pagination and related data access.  Swagger is automatic.
-
-  * **Admin UI:** multi-page / multi-table apps, with page navigations, automatic joins and declarative hide/show.  It executes a yaml (model) file, so basic customizations do not require HTML or JavaScript background.
+  * **Admin UI:** multi-page / multi-table apps, with page navigations, automatic joins and declarative hide/show.  It executes a yaml (model) file, so basic customizations do not require HTML or JavaScript background.  Ready for Agile collaboration.
 
       * Custom UIs can be built using your tool of choice (React, Angular, etc), using the API<br><br>
 
-* **Fully Customizable:** use Python and standard IDEs such as VSCode or PyCharm. We'll see several examples in the `ApiLogicProject_Logic`, below. 
+  * **API:** an endpoint for each table, with filtering, sorting, pagination and related data access.  Swagger is automatic.  Ready for custom app dev.
+
+* **Fully Customizable:** with **standard dev tools**.  Use *your IDE*, Python, and Flask/SQLAlchemy to create new services.  We'll see several examples in the `ApiLogicProject_Logic`, below. 
 
 * **Open Source:** install with pip or docker.
 
@@ -284,7 +284,7 @@ As shown above, it's easy to create projects with a single command.  To help you
 
 ```bash
 cd tutorial
-ApiLogicServer create --project_name=nw --db_url=nw                        # same sample as above
+ApiLogicServer create --project_name=nw --db_url=nw-                       # same sample as 2, above
 ApiLogicServer create --project_name=chinook --db_url=chinook              # artists and albums
 ApiLogicServer create --project_name=classicmodels --db_url=classicmodels  # customers, orders
 ApiLogicServer create --project_name=todo --db_url=todo                    # 1 table database
