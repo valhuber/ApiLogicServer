@@ -255,21 +255,34 @@ This project is the customized version of _2. ApiLogicProject_, above.  The tabl
 | Customization Area           | Try It                                                                                                                                                                                            | Click to Explore Code                                                                                  | Notes                |
 |:-----------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------|:---------------------|
 | **New API endpoint <--**         | Use Swagger for endpoint: *CategoriesEndPoint/get_cats*<br><br>See [docs](https://apilogicserver.github.io/Docs/Security-Swagger/) - authenticate as **u1**  | [```api/customize_api.py```](3.%20ApiLogicProject_Logic/api/customize_api.py)                 | Standard Flask/SQLAlchemy  |
-| **Multi-table Update Logic <--** | Delete Order now adjusts the customer balance                                                                                                                                                    | [```logic/declare_logic.py```](3.%20ApiLogicProject_Logic/logic/declare_logic.py)             |  Spreadsheet-like logic                    |                                                                
+| **Multi-table Update Logic <--** | Delete Order now adjusts the customer balance                                                                                                                                                    | [```logic/declare_logic.py```](3.%20ApiLogicProject_Logic/logic/declare_logic.py)             |  Spreadsheet-like rules                    |                                                                
 | **Admin App <--**  | Observe **help text** describes features                                                                                                                                                 | [```ui/admin/admin.yaml```](3.%20ApiLogicProject_Logic/ui/admin/admin.yaml)                  | Not complex JS, HTML                     |
 | **Login Authentication**     | Click Category - observe you need to **login** now (user u1, password p)                                                                                                                                  | [```config.py```](3.%20ApiLogicProject_Logic/config.py)                                       | See SECURITY_ENABLED |
 | **Role-Based Authorization** | Observe categories has **fewer rows**                                                                                                                                                                         | [```security/declare_security.py```](3.%20ApiLogicProject_Logic/security/declare_security.py) |                      |
-
-
-&nbsp;
-
-> **Key Take-aways** <br>1. **Instant** project creation -- 1 command for an executable project<br>2. Spreadsheet-like **Rules** -- rules are a key topic, driving agility, quality and collaboration; for more information, [see here](https://apilogicserver.github.io/Docs/Logic-Why/)<br>3. Fully Customizable in ***your* IDE** -- standard Flask/SQLAlchemy
 
 &nbsp;
 
 Use the [```Detailed Tutorial```](3.%20ApiLogicProject_Logic/Tutorial.md) to further explore this app.  
 
-> **TL;DR  Scan the code marked with <-- in the table above.**
+</details>
+
+&nbsp;
+
+<details markdown>
+
+&nbsp;
+
+<summary>Key Takeaways: Instant Projects, Standard-based Customization, Unique Declarative Rules</summary>
+
+As shown above
+1. Use the `ApiLogicServer create` command to create a Flask/SQLAlchemy project from your database. Zero learning curve. Projects are **instantly executable**, providing:
+
+    * **an Admin App:** multi-page, multi-table apps -- ready for business user agile collaboration
+    * **an API:** end points for each table, with filtering, sorting, pagination and related data access -- ready for custom add dev
+
+2. **Customize** and debug your application with **standard dev tools**.  Use *your IDE*, Python, and Flask/SQLAlchemy to create new services.
+
+3. ***Declare* security and multi-table constraint/validation logic**, using unique spreadsheet-like rules - 40X more concise than code. :trophy:  Logic consists of rules, extensible with Python event code as required.
 
 </details>
 
