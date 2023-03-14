@@ -449,10 +449,16 @@ class CodeGenerator(object):
         # https://stackoverflow.com/questions/3040716/python-elegant-way-to-check-if-at-least-one-regex-in-list-matches-a-string
         # https://www.w3schools.com/python/trypython.asp?filename=demo_regex
         # ApiLogicServer create --project_name=table_filters_tests --db_url=table_filters_tests --include_tables=../table_filters_tests.yml
-        self.include_tables = include_tables_dict["include"]              # ['I.*', 'J', 'X.*']
+        self.include_tables = include_tables_dict["include"]  \
+            if "include" in include_tables_dict else ['.*']         # ['I.*', 'J', 'X.*']
+        if self.include_tables is None:
+            self.include_tables = ['.*']
         self.include_regex = "(" + ")|(".join(self.include_tables) + ")"  # include_regex: (I.*)|(J)|(X.*)
         self.include_regex_list = map(re.compile, self.include_tables)
-        self.exclude_tables = include_tables_dict["exclude"]
+        self.exclude_tables = include_tables_dict["exclude"] \
+            if "exclude" in include_tables_dict else ['a^'] 
+        if self.exclude_tables is None:
+            self.exclude_tables = ['a^']
         self.exclude_regex = "(" + ")|(".join(self.exclude_tables) + ")"
         if self.model_creation_services.project.include_tables != "":
             log.debug(f"include_regex: {self.include_regex}")
