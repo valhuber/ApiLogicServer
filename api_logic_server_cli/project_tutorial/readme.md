@@ -284,16 +284,13 @@ As shown above, it's easy to create projects with a single command.  To help you
 
 ```bash
 cd tutorial
-ApiLogicServer create --project_name=todo --db_url=todo
+ApiLogicServer create --project_name=nw --db_url=nw                        # same sample as above
+ApiLogicServer create --project_name=chinook --db_url=chinook              # artists and albums
+ApiLogicServer create --project_name=classicmodels --db_url=classicmodels  # customers, orders
+ApiLogicServer create --project_name=todo --db_url=todo                    # 1 table database
+
 ```
-Then, **restart** the server as above, using the Run Configuration for `Execute ToDo`.
-
-You can also try these other examples (be sure to `cd tutorial`; use the name below for both the _project_name_ and the _db_url_):
-
-* **chinook** - albums and artists
-* **classicmodels** - customers and orders
-
-Launch configurations have been pre-created, then re-execute the Admin app as above.<br><br>
+Then, **restart** the server as above, using the pre-created Run Configuration for `Execute <new project>`.<br><br>
 
 > Next, try it on your own databases: if you have a database, you can have an API and an Admin app in minutes.
 
