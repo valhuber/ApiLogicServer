@@ -80,6 +80,8 @@ To run the basic app:
 
 Frameworks are flexible, and leverage your existing dev environment (IDE, git, etc).  But the manual effort is time-consuming, and complex.  This minimal project **does not provide:**
 
+<img align="right" width="150" height="150" src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/vscode/app-fiddle/horse-feathers.jpg?raw=true" alt="Horse Feathers">
+
 * an API endpoint for each table
 
     * We saw above it's straightforward to provide a *single endpoint.*  It's quite another matter -- *weeks to months* -- to provide endpoints for **all** the tables, with pagination, filtering, and related data access.  That's a horse of an entirely different feather.<br><br>
