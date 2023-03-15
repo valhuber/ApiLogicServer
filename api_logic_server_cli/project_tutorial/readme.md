@@ -287,7 +287,7 @@ You have seen the **fastest and simplest** way to create **modern API-based data
 
      * Flexible as a framework, faster than Low Code for Admin Apps<br><br>
 
-3. ***Declare* security and multi-table constraint/validation logic**, using unique spreadsheet-like rules - 40X more concise than code. :trophy:  Logic consists of rules, extensible with Python event code as required.
+3. ***Declare* security and multi-table constraint/validation logic**, using unique spreadsheet-like rules - 40X more concise than code. Logic consists of rules, extensible with Python event code as required.
 
 </details>
 
