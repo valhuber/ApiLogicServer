@@ -274,7 +274,8 @@ Use the [```Detailed Tutorial```](3.%20ApiLogicProject_Logic/Tutorial.md) to fur
 
 <summary>Key Takeaways: Instant Projects, Standard-based Customization, Unique Declarative Rules</summary>
 
-As shown above
+We have seen a **remarkably simple** approach to creating database systems with a **modern API-based softare architecture:**
+
 1. Use the `ApiLogicServer create` command to create a Flask/SQLAlchemy project from your database. Zero learning curve. Projects are **instantly executable**, providing:
 
     * **an Admin App:** multi-page, multi-table apps -- ready for business user agile collaboration
