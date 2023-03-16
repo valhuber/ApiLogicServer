@@ -153,5 +153,12 @@
         </library>
       </libraries>
     </data-source>
+    <data-source source="LOCAL" name="Microsoft - nwlogic" uuid="ce2442ec-5dcd-4cef-a6bf-c06bbc1bb67c">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://localhost:1433;database=nwlogic</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

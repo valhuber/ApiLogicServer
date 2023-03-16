@@ -122,6 +122,8 @@ def get_abs_db_url(msg, project: Project):
         rtn_abs_db_url = 'sqlite:///' + rtn_abs_db_url
     elif project.db_url.startswith('sqlsvr-sample'):  # work-around - VSCode run config arg parsing
         rtn_abs_db_url = 'mssql+pyodbc://sa:Posey3861@localhost:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
+    elif project.db_url.startswith('sqlsvr-nwlogic'):  # work-around - VSCode run config arg parsing
+        rtn_abs_db_url = 'mssql+pyodbc://sa:Posey3861@localhost:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
     elif project.db_url.startswith('sqlsvr-nw'):  # work-around - VSCode run config arg parsing
         rtn_abs_db_url = 'mssql+pyodbc://sa:Posey3861@localhost:1433/NORTHWND?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'
     model_file_name = "models.py"
