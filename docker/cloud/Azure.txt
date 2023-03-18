@@ -1,0 +1,25 @@
+mssql -s sa -p Posey3861
+
+Driver={ODBC Driver 18 for SQL Server};Server=tcp:mysqlserver-nwlogic.database.windows.net,1433;Database=nwlogic;Uid=valhuber;Pwd={your_password_here};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;
+
+Driver={ODBC Driver 18 for SQL Server};Server=tcp:mysqlserver-nwlogic.database.windows.net,1433;Database=nwlogic;Uid=valhuber;Pwd=Posey3861;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;
+
+works for PyCharm:
+jdbc:sqlserver://mysqlserver-nwlogic.database.windows.net:1433;database=nwlogic;user=valhuber@mysqlserver-nwlogic;password=Posey3861;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+
+valhuber; Posey3861
+
+Login failed for user '<token-identified principal>'. The server is not currently configured to accept this token.
+==> Use SqlServer auth (not AD)
+
+ApiLogicServer create --project_name=TVF --extended_builder=* --db_url='mssql+pyodbc://sa:Posey3861@{db_ip}:1433/SampleDB?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no'",
+
+ApiLogicServer create --project_name=Az --db_url="mssql+pyodbc://valhuber:Posey3861@tcp:mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"
+
+ValueError: invalid literal for int() with base 10: 'mysqlserver-nwlogic.database.windows.net:1433'
+
+
+slow, but works:
+ApiLogicServer create --project_name=Az --db_url="mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"
+
+SQLALCHEMY_DATABASE_URI : typing.Optional[str] = f"mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"
