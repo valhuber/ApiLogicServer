@@ -256,6 +256,29 @@ create index dbo.OrderDetail_ProductId_index
     on dbo.OrderDetail (ProductId);
 */
 
+/*
+
+808 - not working
+select Customer.Id, `Order`.* from `Order` left outer join Customer where `Order`.CustomerId = Customer.Id;
+
+22 orphan Orders for DUMO, OCEA, QUEE
+select `Order`.Id, `Order`.CustomerId,
+       (select count(*) from Customer where `Order`.CustomerId = Customer.Id) as rowcount
+from `Order`
+where rowcount = 0;
+
+Customer: 91, 91
+Order:  830, 830   select count(*) from nwlogic.dbo.[Order];
+orderDetail:  2155, 2155
+Product:  77, 77
+
+backup to: /var/opt/mssql/data/nwlogic-202316-17-50-13.bak
+BACKUP DATABASE [nwlogic] TO  DISK = N'/var/opt/mssql/data/nwlogic-2023316-17-50-13.bak' WITH NOFORMAT, NOINIT,  NAME = N'nwlogic-Full-2023-03-17T00:50:13', NOSKIP, REWIND, NOUNLOAD,  STATS = 10
+docker cp b5d1aed6408e:/var/opt/mssql/data/nwlogic-2023316-17-50-13.bak ~/Desktop/nwlogic-bkp.bak 
+docker cp sqlsvr-container:/var/opt/mssql/data/nwlogic-2023316-17-50-13.bak ~/Desktop/nwlogic-bkp.bak 
+docker cp sqlsvr-container:/var/opt/mssql/data/nwlogic.bak ~/Desktop/nwlogic-bkp.bak 
+*/
+
 
 
 

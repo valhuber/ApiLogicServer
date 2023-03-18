@@ -335,7 +335,7 @@
             "redirectOutput": true,
             "argsExpansion": "none",
             "args": ["create",
-                "--project_name=../../servers/nwlogic",
+                "--project_name=../../servers/cloud/nwlogic",
                 "--db_url=sqlsvr-nwlogic"
             ],
             "console": "integratedTerminal"
