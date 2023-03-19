@@ -12,9 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.01.12"
+__version__ = "08.01.14"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t03/14/2023 - 08.01.14: Azure PythonPath for api_logic_server_cli (Issue 64) \n"\
     "\t03/14/2023 - 08.01.12: Table Filters, get-host fix (62), swagger ext relns (63), tutorial images \n"\
     "\t03/06/2023 - 08.01.06: db abbr: new \n"\
     "\t03/05/2023 - 08.01.05: fix Employee.Photo \n"\

@@ -223,3 +223,22 @@ def rows_to_dict(result: flask_sqlalchemy.BaseQuery) -> list:
             row_as_dict = each_row.to_dict()
         rows.append(row_as_dict)
     return rows
+
+
+def sys_info():  
+    """
+    Print env and path
+    """  
+    import os
+    print("\n\nsys_info here")
+    print("\nEnvironment Variables...")
+    env = os.environ
+    for each_variable in os.environ:
+            print(f'.. {each_variable} = {env[each_variable]}')
+
+    print("\nPYTHONPATH..")
+    for p in sys.path:
+        print(".." + p)
+        
+    print("")
+    print(f'sys.prefix (venv): {sys.prefix}\n\n')

@@ -55,6 +55,7 @@ current_path = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(current_path)
 project_dir = str(current_path)
 os.chdir(project_dir)  # so admin app can find images, code
+import util as util
 
 
 # ==================================
@@ -368,6 +369,8 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
 
 if verbose:
     app_logger.setLevel(logging.DEBUG)
+if app_logger.getEffectiveLevel() == logging.DEBUG:
+    util.sys_info()
 
 flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)
 

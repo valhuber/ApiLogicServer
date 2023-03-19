@@ -25,19 +25,21 @@ def get_sra_directory() -> str:
     directory = 'ui/safrs-react-admin'  # local project sra typical API Logic Server path (index.yaml)
     if Path(directory).joinpath('robots.txt').is_file():
         admin_logger.debug("return_spa - using local directory")
-    else:       # else use installed sra - from venv, or, for dev, in APILOGICSERVER_HOME
-        try:
-            from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
+    else:     # else use installed sra - from venv, or, for dev, in APILOGICSERVER_HOME
+        try:  # works for installed, docker, codespaces.  not Azure
+            from api_logic_server_cli.create_from_model import api_logic_server_utils as api_logic_server_utils
         except:
             dev_home = os.getenv('APILOGICSERVER_HOME')
             if dev_home:
-                sys.path.append(dev_home)
                 admin_logger.debug("ApiLogicServer not in venv, trying APILOGICSERVER_HOME")
-                from api_logic_server_cli.create_from_model import api_logic_server_utils as utils
             else:
-                raise Exception('ApiLogicServer not in venv, env APILOGICSERVER_HOME must be set')
+                dev_home = os.getenv('HOME')
+                if not dev_home:
+                    raise Exception('ApiLogicServer not in venv, env APILOGICSERVER_HOME or HOME must be set')
+            sys.path.append(dev_home)
+            from api_logic_server_cli.create_from_model import api_logic_server_utils as api_logic_server_utils
         admin_logger.debug("return_spa - install directory")
-        utils_str = inspect.getfile(utils)
+        utils_str = inspect.getfile(api_logic_server_utils)
         sra_path = Path(utils_str).parent.joinpath('safrs-react-admin-npm-build')
         directory = str(sra_path)
     return directory
