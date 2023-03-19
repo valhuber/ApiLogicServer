@@ -23,3 +23,94 @@ slow, but works:
 ApiLogicServer create --project_name=Az --db_url="mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"
 
 SQLALCHEMY_DATABASE_URI : typing.Optional[str] = f"mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"
+
+
+deploy container to Azure
+
+https://docs.docker.com/cloud/aci-integration/
+
+val@Vals-MBP-16 docker_api_logic_project % docker --context myacicontext run -p 5656:5656 docker_api_logic_project
+[+] Running 0/1
+ ⠿ Group wonderful-snyder  Error                                                                                                                 1.9s
+containerinstance.ContainerGroupsClient#CreateOrUpdate: Failure sending request: StatusCode=400 -- Original Error: Code="MoreImageRegistryCredentialsThanContainers" Message="More image registry credentials provided than containers in container group 'wonderful-snyder'."
+val@Vals-MBP-16 docker_api_logic_project % 
+
+
+
+Try MS doc: https://learn.microsoft.com/en-us/azure/container-instances/quickstart-docker-cli
+docker run -p 80:80 mcr.microsoft.com/azuredocs/aci-helloworld
+docker run -p 5656:5656 hub.docker.com/repository/docker/apilogicserver/docker_api_logic_project
+
+
+try: https://learn.microsoft.com/en-us/azure/container-instances/container-instances-quickstart
+
+az container create --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656
+
+az container delete --resource-group myResourceGroup --name mycontainer
+
+---> look for env variables here
+
+az container show --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656
+
+az container show --resource-group myResourceGroup --name mycontainer --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table
+
+run: http://val-demo.eastus.azurecontainer.io:5656
+
+az container logs --resource-group myResourceGroup --name mycontainer
+
+
+Unable to open cmd line to container
+====================================
+
+ssh to container: https://learn.microsoft.com/en-us/azure/app-service/configure-linux-open-ssh-session
+
+https://<app-name>.scm.azurewebsites.net/webssh/host
+
+FQDN: val-demo.eastus.azurecontainer.io
+
+https://val-demo.eastus.azurecontainer.io.scm.azurewebsites.net/webssh/host  fails
+https://val-demo.io.scm.azurewebsites.net/webssh/host
+
+https://learn.microsoft.com/en-us/azure/app-service/configure-linux-open-ssh-session
+
+ssh root@20.75.149.168 -p 21382  fails
+
+az webapp config set --resource-group myResourceGroup -n val-demo.eastus.azurecontainer.io --remote-debugging-enabled=false
+
+
+nuttin... add debug info:
+=========================
+
+sys_info here
+
+Environment Variables...
+.. TERM = xterm
+.. HOSTNAME = SandboxHost-638147929225359375
+.. PATH = /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+.. LANG = C.UTF-8
+.. GPG_KEY = E3FF2839C048B25C084DEBE9B26995E310250568
+.. PYTHON_VERSION = 3.9.16
+.. PYTHON_PIP_VERSION = 22.0.4
+.. PYTHON_SETUPTOOLS_VERSION = 58.1.0
+.. PYTHON_GET_PIP_URL = https://github.com/pypa/get-pip/raw/d5cb0afaf23b8520f1bbcfed521017b4a95f5c01/public/get-pip.py
+.. PYTHON_GET_PIP_SHA256 = 394be00f13fa1b9aaa47e911bdb59a09c3b2986472130f30aa0bfaf7f3980637
+.. APILOGICSERVER_RUNNING = DOCKER
+.. Fabric_ApplicationName = caas-2d67e51dbd824c1ca5828f1e2b240a28
+.. Fabric_CodePackageName = mycontainer
+.. Fabric_Id = 8444ee2d-dd96-4508-95dc-42341ed38572
+.. Fabric_NET-0-[Other] = Other
+.. Fabric_NetworkingMode = Other
+.. Fabric_NodeIPOrFQDN = 10.92.0.13
+.. Fabric_ServiceDnsName = service.caas-2d67e51dbd824c1ca5828f1e2b240a28
+.. Fabric_ServiceName = service
+.. HOME = /home/api_logic_server
+
+PYTHONPATH..
+../home/api_logic_project
+../usr/local/lib/python39.zip
+../usr/local/lib/python3.9
+../usr/local/lib/python3.9/lib-dynload
+../usr/local/lib/python3.9/site-packages
+../home/api_logic_project
+
+sys.prefix (venv): /usr/local
