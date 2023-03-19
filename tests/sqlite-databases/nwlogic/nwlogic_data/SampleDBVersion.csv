@@ -1,0 +1,5 @@
+1,04/16/2020 - Add SampleDBVersion
+3,11/16/2022 - Add image urls
+4,12/30/2022 - CategoryTableNameTest
+5,03/04/2023 - Drop Employee.Photo (blob)
+6,"03/10/2023 - Add 3 missing customers (DUMO,...)"
