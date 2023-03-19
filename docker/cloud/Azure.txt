@@ -54,7 +54,9 @@ az container show --resource-group myResourceGroup --name mycontainer --image ap
 
 az container show --resource-group myResourceGroup --name mycontainer --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table
 
-run: http://val-demo.eastus.azurecontainer.io:5656
+run: http://val-demo.eastus.azurecontainer.io:5656 times out
+
+run: http://val-demo.eastus.azurecontainer.io
 
 az container logs --resource-group myResourceGroup --name mycontainer
 
