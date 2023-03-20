@@ -1,0 +1,33 @@
+sys_info here
+
+Environment Variables...
+.. TERM = xterm
+.. HOSTNAME = SandboxHost-638147929225359375
+.. PATH = /usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+.. LANG = C.UTF-8
+.. GPG_KEY = E3FF2839C048B25C084DEBE9B26995E310250568
+.. PYTHON_VERSION = 3.9.16
+.. PYTHON_PIP_VERSION = 22.0.4
+.. PYTHON_SETUPTOOLS_VERSION = 58.1.0
+.. PYTHON_GET_PIP_URL = https://github.com/pypa/get-pip/raw/d5cb0afaf23b8520f1bbcfed521017b4a95f5c01/public/get-pip.py
+.. PYTHON_GET_PIP_SHA256 = 394be00f13fa1b9aaa47e911bdb59a09c3b2986472130f30aa0bfaf7f3980637
+.. APILOGICSERVER_RUNNING = DOCKER
+.. Fabric_ApplicationName = caas-2d67e51dbd824c1ca5828f1e2b240a28
+.. Fabric_CodePackageName = mycontainer
+.. Fabric_Id = 8444ee2d-dd96-4508-95dc-42341ed38572
+.. Fabric_NET-0-[Other] = Other
+.. Fabric_NetworkingMode = Other
+.. Fabric_NodeIPOrFQDN = 10.92.0.13
+.. Fabric_ServiceDnsName = service.caas-2d67e51dbd824c1ca5828f1e2b240a28
+.. Fabric_ServiceName = service
+.. HOME = /home/api_logic_server
+
+PYTHONPATH..
+../home/api_logic_project
+../usr/local/lib/python39.zip
+../usr/local/lib/python3.9
+../usr/local/lib/python3.9/lib-dynload
+../usr/local/lib/python3.9/site-packages
+../home/api_logic_project
+
+sys.prefix (venv): /usr/local
