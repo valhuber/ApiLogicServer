@@ -91,13 +91,21 @@ ssh root@20.75.149.168 -p 21382  fails
 docker_api_logic_project access
 ===============================
 
-Big mac
+Vals-MBP-16 (x86)
 
     local / std launch -    yes     api_root: http://localhost:5656/api
     local / env variables - yes
 
     docker / std -          FAILS - different IP so rejected by Azure?
     docker / env variables - ??
+
+14 mac (arm)
+
+    local / std launch -    ?     api_root: http://localhost:5656/api
+    local / env variables - Yes
+
+    docker / std -          unable to install Python extension
+    docker / env variables -??
 
 Azure Container
 
