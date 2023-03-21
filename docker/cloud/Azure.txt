@@ -54,7 +54,9 @@ az container create --resource-group myResourceGroup --name mycontainer --image 
 https://learn.microsoft.com/en-us/azure/container-instances/container-instances-environment-variables#azure-cli-example
 --environment-variables 'NumWords'='5' 'MinLength'='8'
  
-az container create --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656 --environment-variables 'FLASK_HOST'='val-demo.eastus.azurecontainer.io' 'SQLALCHEMY_DATABASE_URI'='mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no' 'VERBOSE'='True'
+az container create --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656 --environment-variables 'FLASK_HOST'='mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no' 'VERBOSE'='True'
+
+mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no
 
 az container delete --resource-group myResourceGroup --name mycontainer
 
@@ -96,7 +98,7 @@ Vals-MBP-16 (x86)
     local / std launch -    yes     api_root: http://localhost:5656/api
     local / env variables - yes
 
-    docker / std -          FAILS - different IP so rejected by Azure?
+    docker / std -          yes, iff using driver 17 (see Critical, below)
     docker / env variables - ??
 
 14 mac (arm)
@@ -110,3 +112,10 @@ Vals-MBP-16 (x86)
 Azure Container
 
     env variables           FAILS
+
+
+Critical configuration is the pyodbc version
+    docker has pyodbc 17, venv has 18, so url fails no driver
+    so, to run with venv, activate line 43 in config.py
+        to run with docker, use run config ApiLogicServer AZ SQL
+            mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no
