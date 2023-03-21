@@ -52,7 +52,7 @@ az container create --resource-group myResourceGroup --name mycontainer --image 
 https://learn.microsoft.com/en-us/azure/container-instances/container-instances-environment-variables#azure-cli-example
 --environment-variables 'NumWords'='5' 'MinLength'='8'
  
-az container create --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656 --environment-variables 'FLASK_HOST'='val-demo.eastus.azurecontainer.io' 'SQLALCHEMY_DATABASE_URI'='mssql+pyodbc://sa:Posey3861@localhost:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no' 'VERBOSE'='True'
+az container create --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656 --environment-variables 'FLASK_HOST'='val-demo.eastus.azurecontainer.io' 'SQLALCHEMY_DATABASE_URI'='mssql+pyodbc://sa:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no' 'VERBOSE'='True'
 
 az container delete --resource-group myResourceGroup --name mycontainer
 
