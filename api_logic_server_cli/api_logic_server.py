@@ -59,6 +59,16 @@ import sys
 import os
 import importlib
 
+
+def is_docker() -> bool:
+    """ running docker?  dir exists: /home/api_logic_server """
+    path = '/home/api_logic_server'
+    path_result = os.path.isdir(path)  # this *should* exist only on docker
+    env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
+    assert path_result == env_result
+    return path_result
+
+
 def get_api_logic_server_dir() -> str:
     """
     :return: ApiLogicServer dir, eg, /Users/val/dev/ApiLogicServer
@@ -106,17 +116,14 @@ if Path(api_logic_server_info_file_name).is_file():
 last_created_project_name = api_logic_server_info_file_dict.get("last_created_project_name","")
 default_db = "default = nw.sqlite, ? for help"
 default_project_name = "ApiLogicProject"
-default_fab_host = "localhost"
 os_cwd = os.getcwd()
 default_bind_key_url_separator = "-"  # admin app fails with "/" or ":" (json issues?)
 
-if os.path.exists('/home/api_logic_server'):  # docker?
+if is_docker():
     default_project_name = "/localhost/ApiLogicProject"
-    default_fab_host = "0.0.0.0"
 
 #  MetaData = NewType('MetaData', object)
 MetaDataTable = NewType('MetaDataTable', object)
-
 
 def create_app(config_filename=None, host="localhost"):
     import safrs
@@ -170,7 +177,6 @@ def delete_dir(dir_path, msg):
             remove_project = create_utils.run_command(f'rmdir /s /q {dir_path}')  # no prompt, no complaints if non-exists
         except:
             pass
-
 
 
 def recursive_overwrite(src, dest, ignore=None):
@@ -509,15 +515,6 @@ def start_open_with(open_with: str, project_name: str):
     log.debug(f'\nCreation complete - Opening {open_with} at {project_name}')
     log.debug(".. See the readme for install / run instructions")
     create_utils.run_command(f'{open_with} {project_name}', None, "no-msg")
-
-
-def is_docker() -> bool:
-    """ running docker?  dir exists: /home/api_logic_server """
-    path = '/home/api_logic_server'
-    path_result = os.path.isdir(path)  # this *should* exist only on docker
-    env_result = "DOCKER" == os.getenv('APILOGICSERVER_RUNNING')
-    assert path_result == env_result
-    return path_result
 
 
 def invoke_extended_builder(builder_path, db_url, project_directory):
