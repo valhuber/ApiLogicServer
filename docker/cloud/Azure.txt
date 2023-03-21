@@ -4,6 +4,8 @@ Driver={ODBC Driver 18 for SQL Server};Server=tcp:mysqlserver-nwlogic.database.w
 
 Driver={ODBC Driver 18 for SQL Server};Server=tcp:mysqlserver-nwlogic.database.windows.net,1433;Database=nwlogic;Uid=valhuber;Pwd=Posey3861;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;
 
+    SQLALCHEMY_DATABASE_URI : typing.Optional[str] = f"mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no"
+
 works for PyCharm:
 jdbc:sqlserver://mysqlserver-nwlogic.database.windows.net:1433;database=nwlogic;user=valhuber@mysqlserver-nwlogic;password=Posey3861;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
 
@@ -52,7 +54,7 @@ az container create --resource-group myResourceGroup --name mycontainer --image 
 https://learn.microsoft.com/en-us/azure/container-instances/container-instances-environment-variables#azure-cli-example
 --environment-variables 'NumWords'='5' 'MinLength'='8'
  
-az container create --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656 --environment-variables 'FLASK_HOST'='val-demo.eastus.azurecontainer.io' 'SQLALCHEMY_DATABASE_URI'='mssql+pyodbc://sa:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no' 'VERBOSE'='True'
+az container create --resource-group myResourceGroup --name mycontainer --image apilogicserver/docker_api_logic_project:latest --dns-name-label val-demo --ports 5656 --environment-variables 'FLASK_HOST'='val-demo.eastus.azurecontainer.io' 'SQLALCHEMY_DATABASE_URI'='mssql+pyodbc://valhuber:Posey3861@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=no&Encrypt=no' 'VERBOSE'='True'
 
 az container delete --resource-group myResourceGroup --name mycontainer
 
