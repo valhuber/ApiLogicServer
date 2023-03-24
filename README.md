@@ -243,7 +243,7 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
-03/10/2023 - 08.01.10: Data Model Filters, get-host fix (62), swagger ext relns (63)
+03/23/2023 - 08.01.15: table filters, cloud debug additions, issue 59, 62-4 
 
 03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3
 
