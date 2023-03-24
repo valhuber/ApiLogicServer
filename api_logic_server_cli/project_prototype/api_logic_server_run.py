@@ -366,10 +366,15 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
 # ================================== 
 
 (flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run) = get_args()
+if os.getenv('SWAGGER_HOST'):
+    swagger_host = os.getenv('SWAGGER_HOST')  # type: ignore # type: str
+if os.getenv('VERBOSE'):
+    verbose = True  # type: ignore # type: str
 
 if verbose:
     app_logger.setLevel(logging.DEBUG)
-if app_logger.getEffectiveLevel() == logging.DEBUG:
+    safrs.log.setLevel(logging.DEBUG)  # debug is 10, warn is 20, info 30
+if True or app_logger.getEffectiveLevel() == logging.DEBUG:
     util.sys_info()
 
 flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)

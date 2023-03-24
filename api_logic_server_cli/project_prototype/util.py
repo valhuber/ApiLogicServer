@@ -229,7 +229,7 @@ def sys_info():
     """
     Print env and path
     """  
-    import os
+    import os, socket
     print("\n\nsys_info here")
     print("\nEnvironment Variables...")
     env = os.environ
@@ -241,4 +241,13 @@ def sys_info():
         print(".." + p)
         
     print("")
-    print(f'sys.prefix (venv): {sys.prefix}\n\n')
+    print(f'sys.prefix (venv): {sys.prefix}\n')
+
+    print("")
+    hostname = socket.gethostname()
+    try:
+        local_ip = socket.gethostbyname(hostname)
+    except:
+        local_ip = f"Warning - Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}"
+
+    print(f"hostname={hostname} on local_ip={local_ip}\n\n")

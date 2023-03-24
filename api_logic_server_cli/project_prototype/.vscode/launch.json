@@ -16,6 +16,21 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "ApiLogicServer ENV",
+            "type": "python",
+            "env": {
+                "APILOGICPROJECT_DEBUG": "False",
+                "VERBOSE": "true",
+                "SQLALCHEMY_DATABASE_URI": "mssql+pyodbc://valhuber:PWD@mysqlserver-nwlogic.database.windows.net:1433/nwlogic?driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=no"
+            },
+            "request": "launch",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "ApiLogicServer - No Security (e.g., for behave tests)",
             "type": "python",
             "request": "launch",
