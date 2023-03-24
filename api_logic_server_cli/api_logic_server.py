@@ -15,11 +15,7 @@ Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 __version__ = "08.01.15"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t03/23/2023 - 08.01.15: cloud debug additions \n"\
-    "\t03/14/2023 - 08.01.14: Azure PythonPath for api_logic_server_cli (Issue 64) \n"\
-    "\t03/14/2023 - 08.01.12: Table Filters, get-host fix (62), swagger ext relns (63), tutorial images \n"\
-    "\t03/06/2023 - 08.01.06: db abbr: new \n"\
-    "\t03/05/2023 - 08.01.05: fix Employee.Photo \n"\
+    "\t03/23/2023 - 08.01.15: cloud debug additions, issue 59, 62-4, table filters \n"\
     "\t03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3 \n"\
     "\t02/15/2023 - 08.00.01: Declarative Authorization and Authentication, Werkzeug==2.2.3 \n"\
     "\t01/10/2023 - 07.00.04: Portable projects, server_proxy  \n"\
