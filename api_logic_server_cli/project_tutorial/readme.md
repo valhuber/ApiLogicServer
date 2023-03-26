@@ -164,14 +164,23 @@ API Logic server installs with `pip`, in a docker container, or in codespaces.  
 
 &nbsp;
 
-It operates as shown below:
+**Development Time Architecture**
 
-* Reads your database to create an executable API Logic Project; customize and debug it in VSCode, PyCharm, etc.
-* The executing server is a standard horizontally scalable Flask project, using SQLAlchemy for database access.  
-
+* Reads your database to create an executable API Logic Project
+* **Standards-based customization** - debug it in and standard IDE (VSCode, PyCharm), using standard packages (Flask, SQLAlchemy)
+  
 ![](https://apilogicserver.github.io/Docs/images/creates-and-runs.png)
 
-For production deployment, the project includes a dockerfile to containerize it to DockerHub.
+&nbsp;
+
+**Deployment Architecture**
+
+* A modern 3-tiered architecture, accessed by **APIs**
+* Logic is **automatically reused**, factored out of web apps and custom services
+* **Containerized** for scalable cloud deployment - the project includes a dockerfile to containerize it to DockerHub.
+
+
+![](https://apilogicserver.github.io/Docs/images/Architecture.png)
 
 </details>
 
