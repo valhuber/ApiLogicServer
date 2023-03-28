@@ -117,7 +117,7 @@ The *2. ApiLogicProject* app illustrates an alternative, creating an entire proj
 
   * **API:** an endpoint for each table, with filtering, sorting, pagination and related data access.  Swagger is automatic.  Ready for custom app dev.
 
-* **Fully Customizable:** with **standard dev tools**.  Use *your IDE*, Python, and Flask/SQLAlchemy to create new services.  We'll see several examples in the `ApiLogicProject_Logic`, below. 
+* **Fully Customizable:** with **standard dev tools**.  Use *your IDE* (VSCode, PyCharm), Python, and Flask/SQLAlchemy to create new services.  We'll see several examples in the `ApiLogicProject_Logic`, below. 
 
 * **Open Source:** install with pip or docker.
 
@@ -298,7 +298,13 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
 
 3. ***Declare* security and multi-table constraint/validation logic**, using unique spreadsheet-like rules. Logic consists of rules, extensible with Python event code as required.
 
-     * 40X more concise than code - unique to API Logic Server
+     * 40X more concise than code - unique to API Logic Server<br><br>
+
+4. **DevOps Ready** - container support presupplied:
+
+     * `.devcontainer` to **develop** under Docker, or Codespaces
+
+     * `dockerfile` to **deploy** containers to cloud (Azure, etc)
 
 </details>
 
