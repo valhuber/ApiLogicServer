@@ -292,7 +292,7 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
     * **an Admin App:** multi-page, multi-table apps -- ready for business user agile collaboration
     * **an API:** end points for each table, with filtering, sorting, pagination and related data access -- ready for custom app dev<br><br>
 
-2. **Customize** and debug your application with **standard dev tools**.  Use *your IDE*, Python, and Flask/SQLAlchemy to create new services.
+2. **Customize** and debug your application with **standard dev tools**.  Use *your IDE* (VSCode, PyCharm), Python, and Flask/SQLAlchemy to create new services.  Manage and share products with GitHub.
 
      * Flexible as a framework, faster than Low Code for Admin Apps<br><br>
 
