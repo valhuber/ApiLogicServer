@@ -12,9 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.01.15"
+__version__ = "08.01.16"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t03/23/2023 - 08.01.16: tutorial revision \n"\
     "\t03/23/2023 - 08.01.15: cloud debug additions, issue 59, 62-4, table filters \n"\
     "\t03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3 \n"\
     "\t02/15/2023 - 08.00.01: Declarative Authorization and Authentication, Werkzeug==2.2.3 \n"\
@@ -868,7 +869,7 @@ class ProjectRun(Project):
 
     def tutorial(self, msg: str="", create: str='tutorial'):
         """
-        Creates (updates) Tutorial
+        Creates (overwrites) Tutorial (`api_logic_server_cli/project_tutorial`)
 
         Contains 3 projects: basic_app, ApiLogicProject, ApiLogicProject_Logic
         
@@ -878,17 +879,23 @@ class ProjectRun(Project):
 \b
         ApiLogicServer tutorial
 
-        - use existing for tutorial
-        - if fiddle, delete top, read app_fiddle.md -> fiddle.extend(tutorial-top)
+            * use existing readme.md for tutorial
+            * if fiddle, delete and replace welcome section with templates/app_fiddle.md
 
-        :param create: 'fiddle' (for codespaces), or 'tutorial'
+        Args:
+            msg (str): eg: ApiLogicProject customizable project created.  Adding Security:")
+            create: 'fiddle', or 'tutorial'
         """
+
+        def create_project(directory: str):
+            pass
+
 
         def create_readme():
             """
             Creates the readme file for either tutorial or fiddle:
             - use existing for tutorial
-            - if fiddle, delete top, read app_fiddle.md -> fiddle.extend(tutorial-top)
+            - if fiddle, delete and replace welcome section with templates/app_fiddle.md
             """
 
             read_me_target = target_project_path.joinpath(f'{create}/readme.md')
@@ -899,7 +906,7 @@ class ProjectRun(Project):
                 fiddle_header_file.close()
                 readme_file = open(read_me_target)
                 readme_data = readme_file.read()
-                end_of_tutorial_header = readme_data.find('<summary>1.')
+                end_of_tutorial_header = readme_data.find('<summary>0.')
                 readme_fiddle_data = fiddle_header_data + readme_data[end_of_tutorial_header:]
                 readme_file = open(read_me_target, "w")  # write the fiddle over the readme
                 readme_file.write(readme_fiddle_data)
@@ -914,7 +921,7 @@ class ProjectRun(Project):
         
 
         log.info(f'\n{msg} {create}')
-        target_project = self.project_name  # eg, ApiLogicServer (or, in dev, server)
+        target_project = self.project_name  # eg, /Users/val/dev/Org-ApiLogicServer
         target_project_path = Path(target_project)
         self.project_directory_path = Path(self.project_name)
         self.project_directory_actual = self.project_directory_path
@@ -929,7 +936,7 @@ class ProjectRun(Project):
         create_readme()
 
         self.command = "create"
-        self.project_name = str(target_project_path.joinpath(f"{create}/2. ApiLogicProject"))
+        self.project_name = str(target_project_path.joinpath(f"{create}/1. Instant_Creation"))
         self.db_url = "nw-"  # shorthand for sample db, no cust
         save_run = self.run
         self.run = False
@@ -937,9 +944,9 @@ class ProjectRun(Project):
         log.info(f"\nCreating ApiLogicProject")
         self.create_project()
 
-        log.info(f"\nCreating ApiLogicProject_Logic\n")
+        log.info(f"\nCreating Customized\n")
         no_cust = self.project_name
-        with_cust = str(target_project_path.joinpath(f"{create}/3. ApiLogicProject_Logic"))
+        with_cust = str(target_project_path.joinpath(f"{create}/2. Customized"))
         shutil.copytree(dirs_exist_ok=True,
             src=no_cust,
             dst=with_cust)
@@ -948,6 +955,34 @@ class ProjectRun(Project):
         self.command = "add-cust"
         self.add_nw_customizations(do_show_messages=False)
         self.run = save_run
+
+        log.info(f"\nCreating Logic\n")
+        no_cust = self.project_name
+        with_cust = str(target_project_path.joinpath(f"{create}/3. Logic"))
+        shutil.copytree(dirs_exist_ok=True,
+            src=no_cust,
+            dst=with_cust)
+        
+        self.project_name = with_cust
+        self.command = "add-cust"
+        self.add_nw_customizations(do_show_messages=False)
+        self.run = save_run
+
+        # remove logic and database customizations from "2. Customized"
+        shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized/logic")))
+        shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized/database")))
+        shutil.copytree(dirs_exist_ok=True,
+            src=str(target_project_path.joinpath(f"{create}/1. Instant_Creation/logic")),
+            dst=str(target_project_path.joinpath(f"{create}/2. Customized/logic")))
+        shutil.copytree(dirs_exist_ok=True,
+            src=str(target_project_path.joinpath(f"{create}/1. Instant_Creation/database")),
+            dst=str(target_project_path.joinpath(f"{create}/2. Customized/database")))
+        create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = True",
+                replace_with='SECURITY_ENABLED = False',
+                in_file=str(target_project_path.joinpath(f"{create}/2. Customized/config.py")))
+        shutil.copyfile(src=self.api_logic_server_dir_path.joinpath('templates/admin.yaml'),
+                        dst=str(target_project_path.joinpath(f"{create}/2. Customized/ui/admin/admin.yaml")))
+
         log.info(f"Tutorial project successfully created.  Next steps:\n")
         log.info(f'  Open the tutorial project in your VSCode\n')
         if is_docker() == False:

@@ -5,21 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "1. Basic App: Flask / SQLAlchemy",
+            "name": "1. App_Fiddle: Flask / SQLAlchemy",
             "type": "python",
             "env": {"APILOGICPROJECT": "False"},
             "request": "launch",
-            "cwd": "${workspaceFolder}/1. Basic_App",
+            "cwd": "${workspaceFolder}/0. App_Fiddle",
             "program": "flask_basic.py",
             "redirectOutput": true,
             "justMyCode": false,
             "console": "integratedTerminal"
         },
         {
-            "name": "2. API Logic Server: Instant, Open",
+            "name": "1. Instant Creation",
             "type": "python",
+            "env": {"APILOGICPROJECT": "False"},
             "request": "launch",
-            "cwd": "${workspaceFolder}/2. ApiLogicProject",
+            "cwd": "${workspaceFolder}/1. Instant_Creation",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,
@@ -27,10 +28,10 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "3. API Logic Project: Logic",
+            "name": "2. Customized",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/3. ApiLogicProject_Logic",
+            "cwd": "${workspaceFolder}/2. Customized",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,
@@ -38,36 +39,25 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "3a. API Logic Project: Logic No Security",
+            "name": "3. Logic",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/3. ApiLogicProject_Logic",
+            "cwd": "${workspaceFolder}/3. Logic",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "3a. Logic: No Security",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/3. Logic",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,
             "env": {"SECURITY_ENABLED": "False"},
-            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Execute ToDo",
-            "type": "python",
-            "request": "launch",
-            "cwd": "${workspaceFolder}/todo",
-            "program": "api_logic_server_run.py",
-            "redirectOutput": true,
-            "justMyCode": false,
-            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Execute NW - No Customizations",
-            "type": "python",
-            "request": "launch",
-            "cwd": "${workspaceFolder}/nw",
-            "program": "api_logic_server_run.py",
-            "redirectOutput": true,
-            "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
             "console": "integratedTerminal"
         },

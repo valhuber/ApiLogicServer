@@ -1,0 +1,521 @@
+about:
+  date: Mar 10
+  recent_changes: api_root, altered Customer/Order/Employee attribute ordering, tab captions, info, EmpType, dept emps, defaults, show_when, cascade add, toggles, images, security, login, virtual relns
+  # this file illustrates customizations; compare it to admin-created.yaml to see the spedific changes.  version: 6.00.08
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+info_toggle_checked: true
+info:
+  number_relationships: 13
+  number_tables: 17
+authentication:
+  endpoint: '{http_type}://{swagger_host}:{port}/api/auth/login'
+resources:
+  Category:
+    info_list: <h1>Tour - Application Information, Authorization</h1>
+          <h2>Application Information</h2>
+          Info is set in the <span style="font-family:'Courier New'">ui/admin/admin.yaml</span> file with <span style="font-family:'Courier New'">info_list</span> and 
+          <span style="font-family:'Courier New'">info_show</span>.  To show info...
+          <ul>
+            <li>On the page, click (?) to see the info dialog box</li>
+            <li>On the personalization icon (upper right), click the (?) toggle to see info on the page</li>
+            <li>In the admin.yaml, set <span style="font-family:'Courier New'">info_toggle_checked</span></li>
+          </ul>
+          Suggestion - visit the Customer and Employee pages.<br><br>
+          <br><br>
+    attributes:
+      - label: ' Category Name*'
+        name: CategoryName
+        search: true
+        sort: true
+      - name: Description
+      - name: Client_id
+      - name: Id
+    type: Category
+    user_key: CategoryName
+  Customer:
+    info_list: <h1>List Pages</h1>
+          In this
+          <a target="_blank" href="https://apilogicserver.github.io/Docs/Sample-Database/">Northwind demo,</a>      
+          Info provides Tour suggestions (see Category for instructions).  On this page...
+          <ul>
+            <li> <strong>Search</strong> on multiple fields (Company, Contact Name) -- try z</li>
+            <li> <strong>Sort</strong> by column headers</li>
+            <li> <strong>Pagination</strong> (at bottom) to handle large result sets</li>
+            <li> <strong>Multi-page</strong>
+              <ul>
+                <li>Reset your search / sort so that
+                  <span style="font-family:'Courier New'">Alfreds</span> is at the top </li>
+                <li>Click <span style="font-family:'Courier New'">Alfreds,</span>
+                    to "zoom in" to the <i>show</i> page
+                      <ul><li>More info there</li></ul></li>
+              </ul>
+            </li>
+          </ul>
+    info_show: <h1>Multi-table</h1>
+          <ul>
+            <li><strong>Multi-Table Browsing - </strong>Note the list of related orders
+              <ul>
+                <li><strong>Navigations - </strong> Click first Order</li>
+              </ul>
+            </li>
+          </ul>
+    attributes:
+      - name: Id
+        search: true
+        sort: true
+      - label: ' Company Name*'
+        name: CompanyName
+        search: true
+        sort: true
+      - name: Balance
+        type: DECIMAL
+        info: derived as sum(Order.AmountTotal where ShippedDate is None)
+      - name: CreditLimit
+        type: DECIMAL
+        info: Balance may not exceed this value
+      - name: OrderCount
+        info: derived as sum(Order)
+      - name: UnpaidOrderCount
+        info: derived as count(Order where ShippedDate is None)
+      - name: Client_id
+      - name: ContactName
+      - name: ContactTitle
+      - name: Address
+      - name: City
+      - name: Region
+      - name: PostalCode
+      - name: Country
+      - name: Phone
+      - name: Fax
+    tab_groups:
+      - direction: tomany
+        fks:
+          - CustomerId
+        name: OrderList
+        label: Placed Order List
+        resource: Order
+    type: Customer
+    user_key: CompanyName
+  CustomerDemographic:
+    attributes:
+      - label: ' Id*'
+        name: Id
+        search: true
+        sort: true
+      - name: CustomerDesc
+    type: CustomerDemographic
+    user_key: Id
+  Department:
+    attributes:
+      - label: ' Department Name*'
+        name: DepartmentName
+        search: true
+        sort: true
+      - name: DepartmentId
+      - name: Id
+    tab_groups:
+      - direction: tomany
+        fks:
+          - DepartmentId
+        name: DepartmentList
+        resource: Department
+      - direction: tomany
+        fks:
+          - OnLoanDepartmentId
+        name: EmployeeList
+        label: Employees On Loan
+        resource: Employee
+      - direction: tomany
+        fks:
+          - WorksForDepartmentId
+        name: EmployeeList1
+        label: Employees
+        resource: Employee
+      - direction: toone
+        fks:
+          - DepartmentId
+        name: Department
+        resource: Department
+    type: Department
+    user_key: DepartmentName
+  Employee:
+    info_list: <h1>Show When</h1>
+          Support for
+          <a target="_blank" href="https://apilogicserver.github.io/Docs/Admin-Customization/#show_when">Show When</a>      
+          means you can define expressions that determine when a field is shown or hidden.  On this page...
+            <ul>
+              <li> Click <strong>Suyama</strong> and note
+              <span style="font-family:'Courier New'">Dues</span> is hidden,
+              but visible if you click <strong>Steele</strong>
+                <ul>
+                  <li>
+                    That is because <span style="font-family:'Courier New'">Admin.yaml</span> has a
+                    expression for the <span style="font-family:'Courier New'">show_when expression</span> for the
+                    <span style="font-family:'Courier New'">Dues</span> field
+                  </li>
+                </ul>
+              </li>
+              <li> Observe the same effect on Update / Insert screens as you alter the value of <span style="font-family:'Courier New'">EmployeeType</span></li>
+            </ul>
+            <h1>Images</h1>
+            Observe that "show" pages support images.
+    attributes:
+      - label: ' Last Name*'
+        name: LastName
+        search: true
+        sort: true
+      - name: OnLoanDepartmentId
+      - name: WorksForDepartmentId
+      - name: Salary
+        type: DECIMAL
+      - name: EmployeeType
+      - name: Dues
+        type: DECIMAL
+        show_when: record["EmployeeType"] == "Hourly"
+      - name: FirstName
+      - name: Id
+      - name: Title
+      - name: TitleOfCourtesy
+      - name: BirthDate
+      - name: HireDate
+      - name: Address
+      - name: City
+      - name: Region
+      - name: PostalCode
+      - name: Country
+      - name: HomePhone
+      - name: Extension
+      - name: Notes
+      - name: ReportsTo
+      - name: PhotoPath
+        type: Image
+      - name: IsCommissioned
+    tab_groups:
+      - direction: tomany
+        fks:
+          - EmployeeId
+        name: EmployeeAuditList
+        resource: EmployeeAudit
+      - direction: tomany
+        fks:
+          - EmployeeId
+        name: EmployeeTerritoryList
+        resource: EmployeeTerritory
+      - direction: tomany
+        fks:
+          - EmployeeId
+        name: OrderList
+        resource: Order
+      - direction: toone
+        fks:
+          - OnLoanDepartmentId
+        name: Department
+        resource: Department
+      - direction: toone
+        fks:
+          - WorksForDepartmentId
+        name: Department1
+        resource: Department
+      - direction: toone
+        fks:
+        - UnionId
+        name: Union
+        resource: Union
+      - direction: tomany
+        fks:
+          - ReportsTo
+        name: Manages
+        resource: Employee
+      - direction: toone
+        fks:
+        - ReportsTo
+        name: Manager
+        resource: Employee
+    type: Employee
+    user_key: LastName
+  EmployeeAudit:
+    attributes:
+      - label: ' Last Name*'
+        name: LastName
+        search: true
+        sort: true
+      - name: EmployeeId
+      - name: Title
+      - name: Salary
+        type: DECIMAL
+      - name: FirstName
+      - name: CreatedOn
+      - name: Id
+    tab_groups:
+      - direction: toone
+        fks:
+          - EmployeeId
+        name: Employee
+        resource: Employee
+    type: EmployeeAudit
+    user_key: LastName
+  EmployeeTerritory:
+    attributes:
+      - label: ' Id*'
+        name: Id
+        search: true
+        sort: true
+      - name: TerritoryId
+      - name: EmployeeId
+        required: true
+    tab_groups:
+      - direction: toone
+        fks:
+          - TerritoryId
+        name: Territory
+        resource: Territory
+      - direction: toone
+        fks:
+          - EmployeeId
+        name: Employee
+        resource: Employee
+    type: EmployeeTerritory
+    user_key: Id
+  Location:
+    attributes:
+      - label: ' country*'
+        name: country
+        required: true
+        search: true
+        sort: true
+      - name: city
+        required: true
+      - name: notes
+    tab_groups:
+      - direction: tomany
+        fks:
+          - Country
+          - City
+        name: OrderList
+        resource: Order
+    type: Location
+    user_key: country
+  Order:
+    info_show: <h1>Tour</h1>
+          <h3>Automatic Joins</h3>
+          <ul>
+            <li> Observe the Product Name in the Order Detail list.</li>
+            <li> In the
+              <a target="_blank" href="https://apilogicserver.github.io/Docs/Sample-Database/">sample database,</a>      
+              the Order Detail is related to the Product by
+              <span style="font-family:'Courier New'">ProductId.</span>
+              which makes no sense to End Users.<br>
+              So, the system joins a suitable field, automatically.
+            </li>
+            <li> 
+              Automatic joins are configurable
+              <a target="_blank" href="https://apilogicserver.github.io/Docs/Admin-Customization/">configurable.</a>
+            </li>
+          </ul>
+    attributes:
+      - name: Id
+        show_when: isInserting == false
+      - name: EmployeeId
+      - name: ShippedDate
+        info: set reduces Customer Balance, decreases Product Stock
+        show_when: isInserting == false
+      - name: OrderDate
+        type: DATE
+      - name: AmountTotal
+        type: DECIMAL
+        info: derived as sum(OrderDetail.Amount)
+        show_when: isInserting == false
+      - name: Ready
+        type : Boolean
+      - name: CloneFromOrder
+      - name: OrderDetailCount
+        show_when: isInserting == false
+      - name: Freight
+        type: DECIMAL
+      - name: Country
+        label: Country
+      - name: City
+        label: City
+      - name: RequiredDate
+      - name: CustomerId
+        required: true
+      - label: ' Ship Name*'
+        name: ShipName
+        search: true
+        sort: true
+      - name: ShipVia
+      - name: ShipAddress
+      - name: ShipCity
+      - name: ShipRegion
+      - name: ShipPostalCode
+      - name: ShipCountry
+    tab_groups:
+      - direction: tomany
+        fks:
+          - OrderId
+        name: OrderDetailList
+        label: Order Detail List
+        resource: OrderDetail
+      - direction: toone
+        fks:
+          - CustomerId
+        name: Customer
+        resource: Customer
+      - direction: toone
+        fks:
+          - Country
+          - City
+        name: Location
+        resource: Location
+      - direction: toone
+        fks:
+          - EmployeeId
+        name: Employee
+        resource: Employee
+    type: Order
+    user_key: Id
+  OrderDetail:
+    attributes:
+      - label: ' Id*'
+        name: Id
+        search: true
+        sort: true
+        show_when: isInserting == false
+      - name: ProductId
+        required: true
+      - name: OrderId
+        required: true
+        show_when: isInserting == false
+      - name: UnitPrice
+        info: derived as copy(Product.UnitPrice)
+        type: DECIMAL
+        show_when: isInserting == false
+      - name: Quantity
+      - name: Discount
+      - name: Amount
+        type: DECIMAL
+        info: derived as UnitPrice * Quantity
+        show_when: isInserting == false
+      - name: ShippedDate
+        info: derived as Order.ShippedDate
+        show_when: isInserting == false
+    tab_groups:
+      - direction: toone
+        fks:
+          - ProductId
+        name: Product
+        resource: Product
+      - direction: toone
+        fks:
+          - OrderId
+        name: Order
+        resource: Order
+    type: OrderDetail
+    user_key: Id
+  Product:
+    attributes:
+      - label: ' Product Name*'
+        name: ProductName
+        search: true
+        sort: true
+      - name: QuantityPerUnit
+      - name: UnitPrice
+        required: true
+        type: DECIMAL
+      - name: UnitsInStock
+        required: true
+        info: derived as UnitsInStock - (UnitsShipped - old_row.UnitsShipped)
+      - name: UnitsOnOrder
+        required: true
+      - name: ReorderLevel
+        required: true
+      - name: Discontinued
+        required: true
+      - name: UnitsShipped
+      - name: Id
+        info: derived as sum(OrderDetail.Quantity where ShippedDate is not None)
+      - name: SupplierId
+        required: true
+      - name: CategoryId
+        required: true
+    tab_groups:
+      - direction: tomany
+        fks:
+          - ProductId
+        name: OrderDetailList
+        resource: OrderDetail
+    type: Product
+    user_key: ProductName
+  Region:
+    attributes:
+      - label: ' Region Description*'
+        name: RegionDescription
+        search: true
+        sort: true
+      - name: Id
+    type: Region
+    user_key: RegionDescription
+  Shipper:
+    attributes:
+      - label: ' Company Name*'
+        name: CompanyName
+        search: true
+        sort: true
+      - name: Phone
+      - name: Id
+    type: Shipper
+    user_key: CompanyName
+  Supplier:
+    attributes:
+      - label: ' Company Name*'
+        name: CompanyName
+        search: true
+        sort: true
+      - name: ContactName
+      - name: ContactTitle
+      - name: Address
+      - name: City
+      - name: Region
+      - name: PostalCode
+      - name: Country
+      - name: Phone
+      - name: Fax
+      - name: HomePage
+      - name: Id
+    type: Supplier
+    user_key: CompanyName
+  Territory:
+    attributes:
+      - label: ' Territory Description*'
+        name: TerritoryDescription
+        search: true
+        sort: true
+      - name: Id
+      - name: RegionId
+        required: true
+    tab_groups:
+      - direction: tomany
+        fks:
+          - TerritoryId
+        name: EmployeeTerritoryList
+        resource: EmployeeTerritory
+    type: Territory
+    user_key: TerritoryDescription
+  Union:
+    attributes:
+    - label: ' Name*'
+      name: Name
+      search: true
+      sort: true
+    - name: Id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - UnionId
+      name: EmployeeList
+      resource: Employee
+    type: Union
+    user_key: Name
+settings:
+  HomeJS: http://localhost:5656/admin-app/home.js
+  max_list_columns: 8
