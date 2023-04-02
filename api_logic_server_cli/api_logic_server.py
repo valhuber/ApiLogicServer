@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.01.16"
+__version__ = "08.01.18"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t03/23/2023 - 08.01.16: tutorial revision \n"\
+    "\t04/02/2023 - 08.01.18: tutorial revision, with SQLAlchemy url, create_image \n"\
     "\t03/23/2023 - 08.01.15: cloud debug additions, issue 59, 62-4, table filters \n"\
     "\t03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3 \n"\
     "\t02/15/2023 - 08.00.01: Declarative Authorization and Authentication, Werkzeug==2.2.3 \n"\
@@ -407,31 +407,39 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
 
 
 def final_project_fixup(msg, project) -> str:
-    """ fix ports/hosts, inject project names/dates, update info file """
+    """
+    * fix ports/hosts, 
+    * inject project names/dates, 
+    * update info file
+
+    Args:
+        msg (_type_): _description_
+        project (_type_): _description_
+
+    Returns:
+        str: _description_
+    """
+
     log.debug(msg)  # "7. Final project fixup"
 
-    if False and project.use_model == "" and project.command != "rebuild-from-model":  # TODO remove dead code
-        msg = f' a.   Appending "from database import customize_models" to database/models.py'
-        fix_database_models__import_customize_models(project_directory, msg)
-
-    copy_project_result = ""
     if project.command.startswith("rebuild"):
         pass
     else:
         log.debug(f' b.   Update api_logic_server_run.py with '
               f'project_name={project.project_name} and api_name, host, port')
+        
         update_api_logic_server_run(project)
 
         fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project)
 
-        copy_project_result = ""
+        fix_build_image(" d.   Fixing devops/docker/build_image.sh - project name", project)
 
         api_logic_server_info_file_dict["last_created_project_name"] = project.project_directory  # project_name - twiddle
         api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
         api_logic_server_info_file_dict["last_created_version"] = __version__
         with open(api_logic_server_info_file_name, 'w') as api_logic_server_info_file_file:
             yaml.dump(api_logic_server_info_file_dict, api_logic_server_info_file_file, default_flow_style=False)
-    return copy_project_result
+    return
 
 
 def fix_database_models__import_customize_models(project_directory: str, msg: str):
@@ -506,6 +514,17 @@ def fix_host_and_ports(msg, project):
                            replace_with=full_path,
                            in_file=f'{project.project_directory}/python_anywhere_wsgi.py')
     log.debug(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
+
+
+def fix_build_image(msg, project: Project):
+    """  d.   Fixing devops/docker/build_image.sh - project name """
+    log.debug(msg)  #  d.   Fixing devops/docker/build_image.sh - project name
+    replace_port = f':{project.port}' if project.port else ""
+    # replace_with = host + replace_port
+    in_file = f'{project.project_directory}/devops/docker/build_image.sh'
+    create_utils.replace_string_in_file(search_for="apilogicserver_project_name_lower",
+                           replace_with=project.project_name_last_node.lower(),
+                           in_file=in_file)
 
 
 def start_open_with(open_with: str, project_name: str):
@@ -600,6 +619,10 @@ class ProjectRun(Project):
         self.infer_primary_key = infer_primary_key
         self.bind_key_url_separator = bind_key_url_separator
         self.command = command
+
+        name_nodes = self.project_name.split("/") # type: str
+        self.project_name_last_node = name_nodes[len(name_nodes) - 1]
+
 
         if execute:
             self.create_project()
@@ -1038,7 +1061,7 @@ class ProjectRun(Project):
             log.debug(f'4. Invoke extended_builder: {self.extended_builder}, ({self.db_url}, {self.project_directory})')
             invoke_extended_builder(self.extended_builder, self.abs_db_url, self.project_directory)
 
-        copy_project_result = final_project_fixup("4. Final project fixup", self)
+        final_project_fixup("4. Final project fixup", self)
 
         if self.open_with != "":  # open project with open_with (vscode, charm, atom) -- NOT for docker!!
             start_open_with(open_with=self.open_with, project_name=self.project_name)

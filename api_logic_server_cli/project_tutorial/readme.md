@@ -129,7 +129,7 @@ To execute (see *Show me how*, below, for details): **start the server** with **
 This application was *not coded* - **it was created** using the API Logic Server CLI (Command Language Interface), with 1 command (not necessary to do now - it's already been done):
 
 ```bash
-ApiLogicServer create --project_name=nw --db_url=nw-  # northwind, no customizations
+ApiLogicServer create-and-run --db_url=sqlite:///sample_db.sqlite --project_name=nw
 ```
 
 If you *do* want to execute: **stop** the server, restart with **Run and Debug >> nw**, and then start the Browser at localhost:5656 (url in the console log).
@@ -386,10 +386,14 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
 
 <summary>Next Steps: New Projects</summary>
 
-As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several pre-installed sqlite databases.  For example, create a project for this 1 table database:
+As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several pre-installed sqlite sample databases:
 
 ```bash
 cd tutorial
+
+ApiLogicServer create-and-run --db_url=sqlite:///sample_db.sqlite --project_name=nw
+
+# that's a bit of a mouthful, so abbreviations are provided for pre-included samples
 ApiLogicServer create --project_name=nw --db_url=nw-                       # same sample as 2, above
 ApiLogicServer create --project_name=chinook --db_url=chinook              # artists and albums
 ApiLogicServer create --project_name=classicmodels --db_url=classicmodels  # customers, orders
@@ -404,7 +408,7 @@ Then, **restart** the server as above, using the pre-created Run Configuration f
 
 <details markdown>
 
-<summary> Providing the db_url for your own database </summary>
+<summary> SQLAlchemy url required for your own databases </summary>
 
 &nbsp;
 

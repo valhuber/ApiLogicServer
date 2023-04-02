@@ -40,6 +40,8 @@ class Project(ProjectArgs):  # extend user-visible args with internal values
         self.default_bind_key_url_separator = "-"  # admin 
         self.is_tutorial = False
 
+        self.project_name_last_node = "TBD"
+
         running_at = Path(__file__)
         self.api_logic_server_dir_path = running_at.parent.absolute()  # ne abspath(f'{abspath(get_api_logic_server_dir())}'))
 
