@@ -432,7 +432,7 @@ def final_project_fixup(msg, project) -> str:
 
         fix_host_and_ports(" c.   Fixing api/expose_services - port, host", project)
 
-        fix_build_image(" d.   Fixing devops/docker/build_image.sh - project name", project)
+        fix_build_docker_image(" d.   Fixing devops/docker/build_image.sh - project name", project)
 
         api_logic_server_info_file_dict["last_created_project_name"] = project.project_directory  # project_name - twiddle
         api_logic_server_info_file_dict["last_created_date"] = str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S"))
@@ -516,7 +516,7 @@ def fix_host_and_ports(msg, project):
     log.debug(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
 
 
-def fix_build_image(msg, project: Project):
+def fix_build_docker_image(msg, project: Project):
     """  d.   Fixing devops/docker/build_image.sh - project name """
     log.debug(msg)  #  d.   Fixing devops/docker/build_image.sh - project name
     replace_port = f':{project.port}' if project.port else ""
@@ -622,7 +622,6 @@ class ProjectRun(Project):
 
         name_nodes = self.project_name.split("/") # type: str
         self.project_name_last_node = name_nodes[len(name_nodes) - 1]
-
 
         if execute:
             self.create_project()
