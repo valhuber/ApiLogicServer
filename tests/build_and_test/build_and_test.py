@@ -1,4 +1,5 @@
 import subprocess, os, time, requests, sys, re, io
+from typing import List
 from shutil import copyfile
 import shutil
 from sys import platform
@@ -336,6 +337,30 @@ def rebuild_tests():
 
     print(f'..rebuild tests compete')
 
+
+def verify_include_models( project_name : str ='include_exclude',
+                          check_classes: List[str] = []) -> bool:
+    """
+    Searches project's model.py file to insure each entry in check_classes is present
+
+    Args:
+        project_name (str, optional): dir name of project. Defaults to 'include_exclude'.
+        check_classes (List[str], optional): list of strings to search for. Defaults to [].
+
+    Raises:
+        f: verify_include_models - {each_term} not in file {model_file_str}
+
+    Returns:
+        bool: True means all found
+    """
+    model_file_str = str(get_servers_install_path().joinpath(f'ApiLogicServer/{project_name}/database/models.py'))
+    for each_term in check_classes:
+        is_in_file = does_file_contain(in_file = model_file_str, search_for=each_term)
+        if not is_in_file:
+            raise Exception(f'verify_include_models - {each_term} not in file {model_file_str}')
+
+
+
 def delete_build_directories(install_api_logic_server_path):
     if os.path.exists(install_api_logic_server_path):
         # rm -r ApiLogicServer.egg-info; rm -r build; rm -r dist
@@ -495,12 +520,13 @@ else:
 set_venv = Config.set_venv
 db_ip = Config.docker_database_ip
 
-install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")
+install_api_logic_server_path = get_servers_install_path().joinpath("ApiLogicServer")   # eg /Users/val/dev/servers/install/ApiLogicServer
 api_logic_project_path = install_api_logic_server_path.joinpath('ApiLogicProject')
 api_logic_server_tests_path = Path(os.path.abspath(__file__)).parent.parent
 
 api_logic_server_cli_path = get_api_logic_server_path().\
-                            joinpath("api_logic_server_cli").joinpath('api_logic_server.py')
+                            joinpath("api_logic_server_cli").joinpath('api_logic_server.py')  # eg, /Users/val/dev/ApiLogicServer/api_logic_server_cli/api_logic_server.py
+
 with io.open(str(api_logic_server_cli_path), "rt", encoding="utf8") as f:
     api_logic_server_version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 
@@ -588,6 +614,25 @@ if Config.do_other_sqlite_databases:
         msg=f'\nCreate todo.sqlite at: {str(install_api_logic_server_path)}')
     start_api_logic_server(project_name='todo_sqlite')
     stop_server(msg="todo\n")
+
+if Config.do_include_exclude:
+    filter_path = str(get_api_logic_server_path().joinpath('api_logic_server_cli/database'))
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=include_exclude --db_url=table_filters_tests --include_tables={filter_path}/table_filters_tests.yml',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate include_exclude at: {str(install_api_logic_server_path)}')
+    verify_include_models( project_name='include_exclude',
+                          check_classes = ["class I", "class I1", "class J", "class X"])
+    start_api_logic_server(project_name='include_exclude')
+    stop_server(msg="include_exclude\n")
+
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=include_exclude_typical --db_url=table_filters_tests --include_tables={filter_path}/table_filters_tests_typical.yml',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate include_exclude_typical at: {str(install_api_logic_server_path)}')
+    verify_include_models( project_name='include_exclude_typical',
+                          check_classes = ["class X", "class X1"])
+    start_api_logic_server(project_name='include_exclude_typical')  # X, X1
+    stop_server(msg="include_exclude_typical\n")
+
 
 if Config.do_allocation_test:
     allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')

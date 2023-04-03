@@ -414,6 +414,70 @@ class CodeGenerator(object):
 
 {models}"""
 
+    def is_table_included(self, table_name: str) -> bool:
+        """
+
+        Determines table included per self.include_tables / exclude tables.
+
+        See Run Config: Table Filters Tests
+
+        Args:
+            table_name (str): _description_
+
+        Returns:
+            bool: True means included
+        """
+        if self.include_tables is None:  # first time initialization
+            include_tables_dict = {"include": [], "exclude": []}
+            if self.model_creation_services.project.include_tables != "":
+                with open(self.model_creation_services.project.include_tables,'rt') as f:  # 
+                    include_tables_dict = yaml.safe_load(f.read())
+                    f.close()
+                log.debug(f"include_tables specified: \n{include_tables_dict}\n")  # {'include': ['I*', 'J', 'X*'], 'exclude': ['X1']}
+
+            # https://stackoverflow.com/questions/3040716/python-elegant-way-to-check-if-at-least-one-regex-in-list-matches-a-string
+            # https://www.w3schools.com/python/trypython.asp?filename=demo_regex
+            # ApiLogicServer create --project_name=table_filters_tests --db_url=table_filters_tests --include_tables=../table_filters_tests.yml
+            self.include_tables = include_tables_dict["include"]  \
+                if "include" in include_tables_dict else ['.*']         # ['I.*', 'J', 'X.*']
+            if self.include_tables is None:
+                self.include_tables = ['.*']
+            self.include_regex = "(" + ")|(".join(self.include_tables) + ")"  # include_regex: (I.*)|(J)|(X.*)
+            self.include_regex_list = map(re.compile, self.include_tables)
+            self.exclude_tables = include_tables_dict["exclude"] \
+                if "exclude" in include_tables_dict else ['a^'] 
+            if self.exclude_tables is None:
+                self.exclude_tables = ['a^']
+            self.exclude_regex = "(" + ")|(".join(self.exclude_tables) + ")"
+            if self.model_creation_services.project.include_tables != "":
+                log.debug(f"include_regex: {self.include_regex}")
+                log.debug(f"exclude_regex: {self.exclude_regex}\n")
+                log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
+
+        table_included = True
+        if len(self.include_tables) == 0:
+            log.debug(f"All tables included: {table_name}")
+        else:
+            if re.match(self.include_regex, table_name):
+                log.debug(f"table included: {table_name}")
+            else:
+                log.debug(f"table excluded: {table_name}")
+                table_included = False
+        if not table_included:
+            log.debug(f".. skipping exlusions")
+        else:
+            if len(self.exclude_tables) == 0:
+                log.debug(f"No tables excluded: {table_name}")
+            else:
+                if re.match(self.exclude_regex, table_name):
+                    log.debug(f"table excluded: {table_name}")
+                    table_included = False
+                else:
+                    log.debug(f"table not excluded: {table_name}")
+
+        return table_included
+    
+
     def __init__(self, metadata, noindexes=False, noconstraints=False, nojoined=False,
                  noinflect=False, noclasses=False, model_creation_services = None,
                  indentation='    ', model_separator='\n\n',
@@ -438,32 +502,39 @@ class CodeGenerator(object):
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
         self.parents_map = dict()
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
+
+        self.include_tables = None  # regex of tables included
+        self.exclude_tables = None  # excluded
+
         self.inflect_engine = self.create_inflect_engine()
-        include_tables_dict = {"include": [], "exclude": []}
-        if self.model_creation_services.project.include_tables != "":
-            with open(self.model_creation_services.project.include_tables,'rt') as f:  # 
-                include_tables_dict = yaml.safe_load(f.read())
-                f.close()
-            log.debug(f"include_tables specified: \n{include_tables_dict}\n")  # {'include': ['I*', 'J', 'X*'], 'exclude': ['X1']}
-        
-        # https://stackoverflow.com/questions/3040716/python-elegant-way-to-check-if-at-least-one-regex-in-list-matches-a-string
-        # https://www.w3schools.com/python/trypython.asp?filename=demo_regex
-        # ApiLogicServer create --project_name=table_filters_tests --db_url=table_filters_tests --include_tables=../table_filters_tests.yml
-        self.include_tables = include_tables_dict["include"]  \
-            if "include" in include_tables_dict else ['.*']         # ['I.*', 'J', 'X.*']
-        if self.include_tables is None:
-            self.include_tables = ['.*']
-        self.include_regex = "(" + ")|(".join(self.include_tables) + ")"  # include_regex: (I.*)|(J)|(X.*)
-        self.include_regex_list = map(re.compile, self.include_tables)
-        self.exclude_tables = include_tables_dict["exclude"] \
-            if "exclude" in include_tables_dict else ['a^'] 
-        if self.exclude_tables is None:
-            self.exclude_tables = ['a^']
-        self.exclude_regex = "(" + ")|(".join(self.exclude_tables) + ")"
-        if self.model_creation_services.project.include_tables != "":
-            log.debug(f"include_regex: {self.include_regex}")
-            log.debug(f"exclude_regex: {self.exclude_regex}\n")
-            log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
+
+        old_include = False  # FIXME remove
+        if old_include:
+            include_tables_dict = {"include": [], "exclude": []}
+            if self.model_creation_services.project.include_tables != "":
+                with open(self.model_creation_services.project.include_tables,'rt') as f:  # 
+                    include_tables_dict = yaml.safe_load(f.read())
+                    f.close()
+                log.debug(f"include_tables specified: \n{include_tables_dict}\n")  # {'include': ['I*', 'J', 'X*'], 'exclude': ['X1']}
+            
+            # https://stackoverflow.com/questions/3040716/python-elegant-way-to-check-if-at-least-one-regex-in-list-matches-a-string
+            # https://www.w3schools.com/python/trypython.asp?filename=demo_regex
+            # ApiLogicServer create --project_name=table_filters_tests --db_url=table_filters_tests --include_tables=../table_filters_tests.yml
+            self.include_tables = include_tables_dict["include"]  \
+                if "include" in include_tables_dict else ['.*']         # ['I.*', 'J', 'X.*']
+            if self.include_tables is None:
+                self.include_tables = ['.*']
+            self.include_regex = "(" + ")|(".join(self.include_tables) + ")"  # include_regex: (I.*)|(J)|(X.*)
+            self.include_regex_list = map(re.compile, self.include_tables)
+            self.exclude_tables = include_tables_dict["exclude"] \
+                if "exclude" in include_tables_dict else ['a^'] 
+            if self.exclude_tables is None:
+                self.exclude_tables = ['a^']
+            self.exclude_regex = "(" + ")|(".join(self.exclude_tables) + ")"
+            if self.model_creation_services.project.include_tables != "":
+                log.debug(f"include_regex: {self.include_regex}")
+                log.debug(f"exclude_regex: {self.exclude_regex}\n")
+                log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
         if template:
             self.template = template
 
@@ -495,26 +566,28 @@ class CodeGenerator(object):
             if table.name in self.ignored_tables:
                 continue
             
-            table_included = True
-            if len(self.include_tables) == 0:
-                log.debug(f"All tables included: {table.name}")
-            else:
-                if re.match(self.include_regex, table.name):
-                    log.debug(f"table included: {table.name}")
+            table_included = self.is_table_included(table_name= table.name)
+            if old_include:
+                table_included = True
+                if len(self.include_tables) == 0:
+                    log.debug(f"All tables included: {table.name}")
                 else:
-                    log.debug(f"table excluded: {table.name}")
-                    table_included = False
-            if not table_included:
-                log.debug(f".. skipping exlusions")
-            else:
-                if len(self.exclude_tables) == 0:
-                    log.debug(f"No tables excluded: {table.name}")
-                else:
-                    if re.match(self.exclude_regex, table.name):
+                    if re.match(self.include_regex, table.name):
+                        log.debug(f"table included: {table.name}")
+                    else:
                         log.debug(f"table excluded: {table.name}")
                         table_included = False
+                if not table_included:
+                    log.debug(f".. skipping exlusions")
+                else:
+                    if len(self.exclude_tables) == 0:
+                        log.debug(f"No tables excluded: {table.name}")
                     else:
-                        log.debug(f"table not excluded: {table.name}")
+                        if re.match(self.exclude_regex, table.name):
+                            log.debug(f"table excluded: {table.name}")
+                            table_included = False
+                        else:
+                            log.debug(f"table not excluded: {table.name}")
             if not table_included:
                 log.debug(f"====> table skipped: {table.name}")
                 continue
