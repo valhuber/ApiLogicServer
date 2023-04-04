@@ -494,7 +494,7 @@
             "program": "cli.py",
             "redirectOutput": true,
             "args": ["create","--project_name=../../servers/table_filters_nw",
-                    "--db_url=nw",
+                    "--db_url=nw-",
                     "--include_tables=database/table_filters_tests_nw.yml"],
             "console": "integratedTerminal"
         },

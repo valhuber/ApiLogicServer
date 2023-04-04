@@ -455,26 +455,28 @@ class CodeGenerator(object):
                 log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
 
         table_included = True
-        if len(self.include_tables) == 0:
-            log.debug(f"All tables included: {table_name}")
+        if self.model_creation_services.project.bind_key == "authentication":
+            log.debug(f".. authentication always included")
         else:
-            if re.match(self.include_regex, table_name):
-                log.debug(f"table included: {table_name}")
+            if len(self.include_tables) == 0:
+                log.debug(f"All tables included: {table_name}")
             else:
-                log.debug(f"table excluded: {table_name}")
-                table_included = False
-        if not table_included:
-            log.debug(f".. skipping exlusions")
-        else:
-            if len(self.exclude_tables) == 0:
-                log.debug(f"No tables excluded: {table_name}")
-            else:
-                if re.match(self.exclude_regex, table_name):
+                if re.match(self.include_regex, table_name):
+                    log.debug(f"table included: {table_name}")
+                else:
                     log.debug(f"table excluded: {table_name}")
                     table_included = False
+            if not table_included:
+                log.debug(f".. skipping exlusions")
+            else:
+                if len(self.exclude_tables) == 0:
+                    log.debug(f"No tables excluded: {table_name}")
                 else:
-                    log.debug(f"table not excluded: {table_name}")
-
+                    if re.match(self.exclude_regex, table_name):
+                        log.debug(f"table excluded: {table_name}")
+                        table_included = False
+                    else:
+                        log.debug(f"table not excluded: {table_name}")
         return table_included
     
 
