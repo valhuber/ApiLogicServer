@@ -391,7 +391,7 @@ As shown above, it's easy to create projects with a single command.  To help you
 ```bash
 cd tutorial
 
-ApiLogicServer create-and-run --db_url=sqlite:///sample_db.sqlite --project_name=nw
+ApiLogicServer create --db_url=sqlite:///sample_db.sqlite --project_name=nw
 
 # that's a bit of a mouthful, so abbreviations are provided for pre-included samples
 ApiLogicServer create --project_name=nw --db_url=nw-                       # same sample as 2, above

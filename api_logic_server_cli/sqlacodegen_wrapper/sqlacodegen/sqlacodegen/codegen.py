@@ -242,6 +242,7 @@ class ModelClass(Model):
         pk_column_names = set(col.name for col in table.primary_key.columns)
         for constraint in sorted(table.constraints, key=_get_constraint_sort_key):
             if isinstance(constraint, ForeignKeyConstraint):
+                # FIXME prune relns here??  parent_included = self.i
                 target_cls = self._tablename_to_classname(constraint.elements[0].column.table.name,
                                                           inflect_engine)
                 if (detect_joined and self.parent_name == 'Base' and
