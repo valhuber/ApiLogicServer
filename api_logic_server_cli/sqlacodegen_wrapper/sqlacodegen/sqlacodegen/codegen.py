@@ -238,20 +238,24 @@ class ModelClass(Model):
         for column in table.columns:
             self._add_attribute(column.name, column)
 
-        # Add many-to-one relationships
+        # Add many-to-one relationships (to parent)
         pk_column_names = set(col.name for col in table.primary_key.columns)
         for constraint in sorted(table.constraints, key=_get_constraint_sort_key):
             if isinstance(constraint, ForeignKeyConstraint):
-                # FIXME prune relns here??  parent_included = self.i
                 target_cls = self._tablename_to_classname(constraint.elements[0].column.table.name,
                                                           inflect_engine)
+                this_included = code_generator.is_table_included(self.table.name)
+                target_included = code_generator.is_table_included(constraint.elements[0].column.table.name)
                 if (detect_joined and self.parent_name == 'Base' and
                         set(_get_column_names(constraint)) == pk_column_names):
                     self.parent_name = target_cls
                 else:
                     relationship_ = ManyToOneRelationship(self.name, target_cls, constraint,
-                                                          inflect_engine)
-                    self._add_attribute(relationship_.preferred_name, relationship_)
+                                                        inflect_engine)
+                    if this_included and target_included:
+                        self._add_attribute(relationship_.preferred_name, relationship_)
+                    else:
+                        log.debug(f"Parent Relationship excluded: {relationship_.preferred_name}")
 
         # Add many-to-many relationships
         for association_table in association_tables:
@@ -404,6 +408,8 @@ class ManyToManyRelationship(Relationship):
                 repr('and_({0})'.format(', '.join(sec_joins)))
                 if len(sec_joins) > 1 else repr(sec_joins[0]))
 
+code_generator = None  # type: CodeGenerator
+""" Model needs to access state here, eg, included/excluded tables """
 
 class CodeGenerator(object):
     template = """\
@@ -484,9 +490,25 @@ class CodeGenerator(object):
     def __init__(self, metadata, noindexes=False, noconstraints=False, nojoined=False,
                  noinflect=False, noclasses=False, model_creation_services = None,
                  indentation='    ', model_separator='\n\n',
-                 ignored_tables=('alembic_version', 'migrate_version'), table_model=ModelTable,
-                 class_model=ModelClass,  template=None, nocomments=False):
+                 ignored_tables=('alembic_version', 'migrate_version'), 
+                 table_model=ModelTable,
+                 class_model=ModelClass,  
+                 template=None, nocomments=False):
+        """
+            ApiLogicServer sqlacodegen_wrapper invokes this as follows;
+
+                capture = StringIO()  # generate and return the model
+                generator = CodeGenerator(metadata, args.noindexes, args.noconstraints,
+                              args.nojoined, args.noinflect, args.noclasses, 
+                              args.model_creation_services)
+                args.model_creation_services.metadata = generator.metadata
+                generator.render(capture)  # generates (preliminary) models as memstring
+                models_py = capture.getvalue()
+
+        """
         super(CodeGenerator, self).__init__()
+        global code_generator
+        code_generator = self
         self.metadata = metadata
         self.noindexes = noindexes
         self.noconstraints = noconstraints
@@ -500,6 +522,7 @@ class CodeGenerator(object):
         self.ignored_tables = ignored_tables
         self.table_model = table_model
         self.class_model = class_model
+        """ class (not instance) of ModelClass [defaulted for ApiLogicServer] """
         self.nocomments = nocomments
         self.children_map = dict()
         """ key is table name, value is list of (parent-role-name, child-role-name, relationship) ApiLogicServer """
@@ -659,7 +682,7 @@ class CodeGenerator(object):
                 self.classes[model.name] = model
 
             self.models.append(model)
-            model.add_imports(self.collector)
+            model.add_imports(self.collector)  # end mega-loop for table in metadata.sorted_tables
 
         # Nest inherited classes in their superclasses to ensure proper ordering
         for model in self.classes.values():
@@ -818,9 +841,22 @@ from sqlalchemy.dialects.mysql import *
         return 'Index({0!r}, {1})'.format(index.name, ', '.join(extra_args))
 
     def render_column(self, column, show_name):
+        global code_generator
         kwarg = []
         is_sole_pk = column.primary_key and len(column.table.primary_key) == 1
-        dedicated_fks = [c for c in column.foreign_keys if len(c.constraint.columns) == 1]
+        dedicated_fks_old = [c for c in column.foreign_keys if len(c.constraint.columns) == 1]
+        dedicated_fks = []  # c for c in column.foreign_keys if len(c.constraint.columns) == 1
+        for each_foreign_key in column.foreign_keys:
+            log.debug(f'FK: {each_foreign_key}')  # 
+            log.debug(f'render_column - is fk: {dedicated_fks}')
+            if code_generator.is_table_included(each_foreign_key.column.table.name) \
+                                and len(each_foreign_key.constraint.columns) == 1:
+                dedicated_fks.append(each_foreign_key)
+            else:
+                log.debug(f'Excluded single field fl on {column.table.name}.{column.name}')
+        if len(dedicated_fks) > 1:
+            log.error(f'codegen render_column finds unexpected col with >1 fk:' 
+                      f'{column.table.name}.{column.name}')
         is_unique = any(isinstance(c, UniqueConstraint) and set(c.columns) == {column}
                         for c in column.table.constraints)
         is_unique = is_unique or any(i.unique and set(i.columns) == {column}
@@ -1004,7 +1040,16 @@ from sqlalchemy.dialects.mysql import *
             if (isinstance(constraint, (ForeignKeyConstraint, UniqueConstraint)) and
                     len(constraint.columns) == 1):
                 continue
-            table_args.append(self.render_constraint(constraint))
+            # eg, Order: ForeignKeyConstraint(['Country', 'City'], ['Location.country', 'Location.city'])
+            this_included = code_generator.is_table_included(model.table.name)
+            target_included = True
+            if isinstance(constraint, ForeignKeyConstraint):  # CheckConstraints don't have elements
+                target_included = code_generator.is_table_included(constraint.elements[0].column.table.name)
+            if this_included and target_included:
+                table_args.append(self.render_constraint(constraint))
+            else:
+                log.debug(f'foreign key constraint excluded on {model.table.name}: '
+                          f'{self.render_constraint(constraint)}')
         for index in model.table.indexes:
             if len(index.columns) > 1:
                 table_args.append(self.render_index(index))
@@ -1152,7 +1197,7 @@ from sqlalchemy.dialects.mysql import *
         """ create model from db, and write models.py file to in-memory buffer (outfile)
             relns created from not-yet-seen children, so save *all* class info, then append rendered_model_relationships
         """
-        for model in self.models:
+        for model in self.models:  # class, with __tablename__ & __collection_name__ cls variables, attrs
             if isinstance(model, self.class_model):
                 # rendered_models.append(self.render_class(model))
                 model.rendered_model = self.render_class(model)  # also sets parent_model.rendered_model_relationships
@@ -1161,7 +1206,7 @@ from sqlalchemy.dialects.mysql import *
         for model in self.models:
             if isinstance(model, self.class_model):
                 # rendered_models.append(self.render_class(model))
-                if model.rendered_model_relationships != "":
+                if model.rendered_model_relationships != "":  # child relns (OrderDetailList etc)
                     model.rendered_model_relationships = "\n" + model.rendered_model_relationships
                 rendered_models.append(model.rendered_model + model.rendered_model_relationships)
             elif isinstance(model, self.table_model):  # eg, views, database id generators, etc

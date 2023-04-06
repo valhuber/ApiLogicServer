@@ -339,26 +339,28 @@ def rebuild_tests():
 
 
 def verify_include_models( project_name : str ='include_exclude',
-                          check_classes: List[str] = []) -> bool:
+                          check_for: List[str] = [], verify_found : bool = True):
     """
-    Searches project's model.py file to insure each entry in check_classes is present
+    Searches project's model.py file to insure each entry in check_classes is/is not present
 
     Args:
         project_name (str, optional): dir name of project. Defaults to 'include_exclude'.
         check_classes (List[str], optional): list of strings to search for. Defaults to [].
+        verify_found (bool): check_for must exist or must *not* exist
 
     Raises:
-        f: verify_include_models - {each_term} not in file {model_file_str}
+        f: verify_include_models - expected string not found: {check_for}
 
     Returns:
         bool: True means all found
     """
     model_file_str = str(get_servers_install_path().joinpath(f'ApiLogicServer/{project_name}/database/models.py'))
-    for each_term in check_classes:
+    for each_term in check_for:
         is_in_file = does_file_contain(in_file = model_file_str, search_for=each_term)
-        if not is_in_file:
-            raise Exception(f'verify_include_models - {each_term} not in file {model_file_str}')
-
+        if verify_found and not is_in_file:
+            raise Exception(f"{project_name} - expected string not found {each_term} ")
+        if verify_found == False and is_in_file == True:
+            raise Exception(f"{project_name}  - unexpected string found: {each_term} ")
 
 
 def delete_build_directories(install_api_logic_server_path):
@@ -617,11 +619,30 @@ if Config.do_other_sqlite_databases:
 
 if Config.do_include_exclude:
     filter_path = str(get_api_logic_server_path().joinpath('api_logic_server_cli/database'))
+
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=include_exclude_nw --db_url=nw- --include_tables={filter_path}/table_filters_tests_nw.yml',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate include_exclude_typical at: {str(install_api_logic_server_path)}')
+    verify_include_models( project_name='include_exclude_nw',
+                          check_for = ["Location"],
+                          verify_found=False)
+    start_api_logic_server(project_name='include_exclude_nw') 
+    stop_server(msg="include_exclude_nw\n")
+
+    run_command(f'{set_venv} && ApiLogicServer create --project_name=include_exclude_nw_1 --db_url=nw- --include_tables={filter_path}/table_filters_tests_nw_1.yml',
+        cwd=install_api_logic_server_path,
+        msg=f'\nCreate include_exclude_typical at: {str(install_api_logic_server_path)}')
+    verify_include_models( project_name='include_exclude_nw_1',
+                          check_for = ["Location", "OrderDetailList"],
+                          verify_found=False)
+    start_api_logic_server(project_name='include_exclude_nw_1')
+    stop_server(msg="include_exclude_nw_1\n")
+
     run_command(f'{set_venv} && ApiLogicServer create --project_name=include_exclude --db_url=table_filters_tests --include_tables={filter_path}/table_filters_tests.yml',
         cwd=install_api_logic_server_path,
         msg=f'\nCreate include_exclude at: {str(install_api_logic_server_path)}')
     verify_include_models( project_name='include_exclude',
-                          check_classes = ["class I", "class I1", "class J", "class X"])
+                          check_for = ["class I", "class I1", "class J", "class X"])
     start_api_logic_server(project_name='include_exclude')
     stop_server(msg="include_exclude\n")
 
@@ -629,8 +650,8 @@ if Config.do_include_exclude:
         cwd=install_api_logic_server_path,
         msg=f'\nCreate include_exclude_typical at: {str(install_api_logic_server_path)}')
     verify_include_models( project_name='include_exclude_typical',
-                          check_classes = ["class X", "class X1"])
-    start_api_logic_server(project_name='include_exclude_typical')  # X, X1
+                          check_for = ["class X", "class X1"])
+    start_api_logic_server(project_name='include_exclude_typical')
     stop_server(msg="include_exclude_typical\n")
 
 
