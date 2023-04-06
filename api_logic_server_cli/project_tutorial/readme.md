@@ -129,7 +129,8 @@ To execute (see *Show me how*, below, for details): **start the server** with **
 This application was *not coded* - **it was created** using the API Logic Server CLI (Command Language Interface), with 1 command (not necessary to do now - it's already been done):
 
 ```bash
-ApiLogicServer create-and-run --db_url=sqlite:///sample_db.sqlite --project_name=nw
+cd tutorial
+ApiLogicServer create --db_url=sqlite:///sample_db.sqlite --project_name=nw
 ```
 
 If you *do* want to execute: **stop** the server, restart with **Run and Debug >> nw**, and then start the Browser at localhost:5656 (url in the console log).
