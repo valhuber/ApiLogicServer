@@ -364,7 +364,7 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
     * **an Admin App:** multi-page, multi-table apps -- ready for business user agile collaboration
     * **an API:** end points for each table, with filtering, sorting, pagination and related data access -- ready for custom app dev<br><br>
 
-2. **Customize** and debug your application with **<span style="background-color:Azure;">standard dev tools</span>**.  Use *your IDE* (<span style="background-color:Azure;">VSCode, PyCharm</span>), <span style="background-color:Azure;">Python</span>, and Flask/SQLAlchemy to create new services.  Manage / Share your project with <span style="background-color:Azure;">GitHub</span>.
+2. **Customize** and debug with the full flexibility of **<span style="background-color:Azure;">standard dev tools</span>**.  Use *your IDE (e.g. <span style="background-color:Azure;">VSCode, PyCharm</span>)*, <span style="background-color:Azure;">Python</span>, and Flask/SQLAlchemy to create new services.  Manage projects with <span style="background-color:Azure;">GitHub</span>.
 
      * Flexible as a framework, faster than Low Code for Admin Apps<br><br>
 
@@ -376,7 +376,7 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
 
      * `.devcontainer` to **develop** under Docker, or <span style="background-color:Azure;">Codespaces</span>
 
-     * `dockerfile` to **deploy** containers to cloud (<span style="background-color:Azure;">Azure, AWS</span>, etc)
+     * `dockerfile` to **deploy** images to the cloud <span style="background-color:Azure;">(Azure, AWS, etc)</span>
 
 </details>
 
