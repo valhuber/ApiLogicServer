@@ -218,7 +218,7 @@ Let's see how these are addressed, in the next sections.
 
 <details markdown>
 
-<summary>2. Customized -- Admin App, New Endpoint</summary>
+<summary>2. Customized -- Admin App, New Endpoint... Standard Dev Tools</summary>
 
 <br>
 
