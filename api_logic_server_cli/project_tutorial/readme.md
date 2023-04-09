@@ -355,7 +355,7 @@ Use the [```Detailed Tutorial```](3.%20Logic/Tutorial.md) to further explore thi
 
 &nbsp;
 
-<summary>Key Takeaways: Instant App/API, Standard-based Customization, Unique Declarative Rules</summary>
+<summary>Key Takeaways: instant App/API, fully flexible, *unique* declarative rules</summary>
 
 You have seen the **fastest and simplest** way to create **modern, scalable API-based database systems:**
 
@@ -364,11 +364,11 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
     * **an Admin App:** multi-page, multi-table apps -- ready for business user agile collaboration
     * **an API:** end points for each table, with filtering, sorting, pagination and related data access -- ready for custom app dev<br><br>
 
-2. **Customize** and debug with the full flexibility of **<span style="background-color:Azure;">standard dev tools</span>**.  Use *your IDE (e.g. <span style="background-color:Azure;">VSCode, PyCharm</span>)*, <span style="background-color:Azure;">Python</span>, and Flask/SQLAlchemy to create new services.  Manage projects with <span style="background-color:Azure;">GitHub</span>.
+2. **Fully Flexible:** customize and debug with **<span style="background-color:Azure;">standard dev tools</span>**.  Use *your IDE (e.g. <span style="background-color:Azure;">VSCode, PyCharm</span>)*, <span style="background-color:Azure;">Python</span>, and Flask/SQLAlchemy to create new services.  Manage projects with <span style="background-color:Azure;">GitHub</span>.
 
      * Flexible as a framework, faster than Low Code for Admin Apps<br><br>
 
-3. ***Declare* security and multi-table constraint/validation logic**, using unique spreadsheet-like rules. Logic consists of rules, extensible with Python event code as required.
+3. ***Declare* security and multi-table constraint/validation logic**, using **declarative spreadsheet-like rules**.  Logic consists of rules, extensible with Python event code as required.
 
      * 40X more concise than code - unique to API Logic Server<br><br>
 
@@ -376,7 +376,7 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
 
      * `.devcontainer` to **develop** under Docker, or <span style="background-color:Azure;">Codespaces</span>
 
-     * `dockerfile` to **deploy** images to the cloud <span style="background-color:Azure;">(Azure, AWS, etc)</span>
+     * `dockerfile` to **deploy** images on-premise or to the cloud <span style="background-color:Azure;">(Azure, AWS, etc)</span>
 
 </details>
 
