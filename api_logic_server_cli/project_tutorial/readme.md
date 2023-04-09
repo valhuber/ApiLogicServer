@@ -355,7 +355,7 @@ Use the [```Detailed Tutorial```](3.%20Logic/Tutorial.md) to further explore thi
 
 &nbsp;
 
-<summary>Key Takeaways: instant App/API, fully flexible, *unique* declarative rules</summary>
+<summary>Key Takeaways: Instant App/API, Fully Flexible, Unique Declarative Rules</summary>
 
 You have seen the **fastest and simplest** way to create **modern, scalable API-based database systems:**
 
