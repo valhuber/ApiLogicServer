@@ -364,7 +364,7 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
     * **an Admin App:** multi-page, multi-table apps -- ready for business user agile collaboration
     * **an API:** end points for each table, with filtering, sorting, pagination and related data access -- ready for custom app dev<br><br>
 
-2. **Fully Flexible:** leverage standards for development and deployment:
+2. **Open Flexibility:** leverage standards for development and deployment:
 
     * Dev: customize and debug with **<span style="background-color:Azure;">standard dev tools</span>**.  Use *your IDE (e.g. <span style="background-color:Azure;">VSCode, PyCharm</span>)*, <span style="background-color:Azure;">Python</span>, and Flask/SQLAlchemy to create new services.  Manage projects with <span style="background-color:Azure;">GitHub</span>.
 
