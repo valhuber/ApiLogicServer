@@ -571,7 +571,7 @@ if Config.do_install_api_logic_server:
     delete_build_directories(install_api_logic_server_path)
 
     if platform == "win32":
-        print("not for windows")
+        print("not for windows")  # https://github.com/mkleehammer/pyodbc/issues/1010
     else:
         result_pyodbc = run_command(
             f'{set_venv} && {python} -m pip install pyodbc==4.0.34',
