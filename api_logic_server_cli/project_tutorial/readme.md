@@ -372,9 +372,9 @@ You have seen the **fastest and simplest** way to create **modern, scalable API-
     
     * *Flexible as a framework, Faster then Low Code for Admin Apps*
 
-3. ***Declare* security and multi-table constraint/validation logic**, using **declarative spreadsheet-like rules**.  Logic consists of rules, extensible with Python event code as required.
+3. ***Declare* security and multi-table constraint/validation logic**, using **declarative spreadsheet-like rules**.  Addressing the backend *half* of your system, logic consists of rules, extensible with Python event code.
 
-     * 40X more concise than code - unique to API Logic Server<br><br>
+     * *40X more concise than code - unique to API Logic Server*<br><br>
 
 </details>
 
