@@ -1,5 +1,10 @@
 Updated venv/setup, no FAB, threaded, nw-, add-auth/cust, app-lite docker, std log, tut, org-docs, logic, safrs 3 \n"\
 
+debug wrapping
+  2 screen shots use terminal - fixable
+  so, could just use internalConsole
+    maybe good since provides interpreter
+    it does preserve the browser launch
 
 nw_readme.md -> README.md
     * remove internal IDE links

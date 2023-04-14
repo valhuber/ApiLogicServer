@@ -13,7 +13,8 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "ApiLogicServer ENV",
@@ -28,7 +29,9 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "ApiLogicServer - No Security (e.g., for behave tests)",
@@ -39,7 +42,8 @@
             "env": {"SECURITY_ENABLED": "False"},
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Behave Run",
@@ -50,7 +54,8 @@
             "redirectOutput": true,
             "args": [ "--outfile=${workspaceFolder}/test/api_logic_server_behave/logs/behave.log"],
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Windows Behave Run",
@@ -61,7 +66,8 @@
             "redirectOutput": true,
             "args": [ "--outfile=${workspaceFolder}\\test\\api_logic_server_behave\\logs\\behave.log"],
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Perform Customizations",
@@ -72,7 +78,8 @@
             "redirectOutput": true,
             "args": [ "go"],
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Behave Scenario",
@@ -84,7 +91,8 @@
             "args": [ "--outfile=${workspaceFolder}/test/api_logic_server_behave/logs/behave.log",
                 "--name=Clone Existing Order"],
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Behave Logic Report",
@@ -98,7 +106,8 @@
                 ,"--prepend_wiki=reports/Behave Logic Report Intro.md"
                 ,"--wiki=reports/Behave Logic Report.md"
             ],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Codespaces-ApiLogicServer",
@@ -112,7 +121,8 @@
                 "--swagger_host=valhuber-tutorial-apilogicproject-jjr5qwg72vxg-5656.githubpreview.dev", 
                 "--swagger_port=443", "--http_type=https"
             ],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Basic Server Test",
@@ -122,18 +132,8 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["go"],
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Basic Web App",
-            "type": "python",
-            "request": "launch",
-            "program": "run.py",
-            "args": ["localhost", "5002"],
-            "redirectOutput": true,
-            "justMyCode": false,            
-            "cwd": "${workspaceFolder}/ui/basic_web_app",
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Python: Module",
@@ -150,7 +150,7 @@
             "program": "${file}",
             "redirectOutput": true,
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole"
         }
     ]
 }

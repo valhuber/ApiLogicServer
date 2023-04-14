@@ -374,7 +374,7 @@ if os.getenv('VERBOSE'):
 if verbose:
     app_logger.setLevel(logging.DEBUG)
     safrs.log.setLevel(logging.DEBUG)  # debug is 10, warn is 20, info 30
-if True or app_logger.getEffectiveLevel() == logging.DEBUG:
+if app_logger.getEffectiveLevel() == logging.DEBUG:
     util.sys_info()
 
 flask_app = create_app(swagger_host = swagger_host, swagger_port = swagger_port)

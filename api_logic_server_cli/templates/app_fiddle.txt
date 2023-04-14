@@ -1,11 +1,11 @@
-The readme is a concatentation of { app_fiddle.md | tutorial.md} + app_fiddle_body_steps_2_3.md
+For the app_fiddle, the readme / section 1 is replaced by app_fiddle.md
 
 
 Walk-throughs
 
     * app_fiddle is for general learning --> ALS
 
-    *tutorial is for ALS - reinforce "or else"... cloud (Express Eval) or local
+    * tutorial is for ALS - reinforce "or else"... cloud (Express Eval) or local
 
 
 submissions: https://pycoders.com/submissions

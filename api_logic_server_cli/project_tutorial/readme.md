@@ -118,7 +118,7 @@ To execute (see *Show me how*, below, for details): **start the server** with **
 
 <summary>&nbsp;&nbsp;&nbsp;Show me how </summary>
 
-![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-demo.png?raw=true)
+![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject.png?raw=true)
 
 &nbsp;
 
@@ -244,7 +244,7 @@ Customizations are illustrated in the project [`2. Customized`](2.%20Customized/
 
 2. Start the Browser at localhost:5656, using the **url shown in the console log**
 
-![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject-demo.png)
+![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject-tutorial.png)
 
 </details>
 
@@ -291,8 +291,8 @@ Rules plug into SQLAlchemy events, and execute as follows:
 | Logic Phase | Why It Matters |
 |:-----------------------------|:---------------------|
 | **Watch** for changes at the attribute level | Performance - Automatic Attribute-level Pruning |
-| **React** if referenced data is changed | Ensures Reuse - Invocation is automatic |
-| **Chain** to other referencing dat | Simplifies Maintenance - ordering is automatic |
+| **React** if referenced data is changed | Ensures Reuse - Invocation is automatic<br>Derivations are optimized (e.g. *adjustment updates* - not aggregate queries) |
+| **Chain** to other referencing data | Simplifies Maintenance - ordering is automatic |
 
 &nbsp;
 
@@ -316,7 +316,7 @@ Customizations are illustrated in the project [`3. Logic`](3.%20Logic/).  To see
 
 2. Start the Browser at localhost:5656, using the **url shown in the console log**
 
-![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject-demo.png)
+![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject-tutorial.png)
 
 </details>
 

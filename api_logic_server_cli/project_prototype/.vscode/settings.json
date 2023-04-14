@@ -15,5 +15,8 @@
         "jsonapi",
         "jsonify",
         "sqltypes"
-    ]
+    ],
+    "[Log]": {
+        "editor.wordWrap": "off"
+      }
 }

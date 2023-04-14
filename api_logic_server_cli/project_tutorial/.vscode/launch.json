@@ -25,7 +25,8 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "2. Customized",
@@ -36,7 +37,8 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "3. Logic",
@@ -47,7 +49,8 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "3a. Logic: No Security",
@@ -59,7 +62,8 @@
             "justMyCode": false,
             "env": {"SECURITY_ENABLED": "False"},
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Execute Chinook",
@@ -70,7 +74,8 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Execute Classic Models",
@@ -81,7 +86,8 @@
             "redirectOutput": true,
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Behave Run",
@@ -92,7 +98,8 @@
             "redirectOutput": true,
             "args": [ "--outfile=logs/behave.log"],
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Behave Scenario",
@@ -104,7 +111,8 @@
             "args": [ "--outfile=logs/behave.log",
                 "--name=Clone Existing Order"],
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Behave Logic Report",
@@ -118,7 +126,8 @@
                 ,"--prepend_wiki=reports/Behave Logic Report Intro.md"
                 ,"--wiki=reports/Behave Logic Report.md"
             ],
-            "console": "integratedTerminal"
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "name": "Python: Module",
@@ -135,7 +144,7 @@
             "program": "${file}",
             "redirectOutput": true,
             "justMyCode": false,            
-            "console": "integratedTerminal"
+            "console": "internalConsole"
         }
     ]
 }
