@@ -3,7 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="" />
-    <mapping directory="$PROJECT_DIR$/../ApiLogicServer.wiki" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../Org-ApiLogicServer/Docs" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../safrs-react-admin" vcs="Git" />
   </component>
