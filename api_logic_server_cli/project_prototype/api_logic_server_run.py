@@ -18,7 +18,7 @@
 ==============================================================================
 """
 
-import os, logging, logging.config, sys, yaml
+import os, logging, logging.config, sys, yaml  # failure here means venv probably not set
 from flask_sqlalchemy import SQLAlchemy
 import json
 from pathlib import Path
