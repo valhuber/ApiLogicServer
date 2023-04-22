@@ -15,7 +15,7 @@ Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 __version__ = "08.02.01"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t04/32/2023 - 08.02.01: Logging / Env \n"\
+    "\t04/32/2023 - 08.02.01: Logging / Env, cleaner readme \n"\
     "\t04/13/2023 - 08.02.00: integratedConsole, logic logging (66), table relns fix (65) \n"\
     "\t04/06/2023 - 08.01.24: create_image, bugfix for excluded table relationships \n"\
     "\t03/23/2023 - 08.01.15: cloud debug additions, issue 59, 62-4, table filters \n"\
