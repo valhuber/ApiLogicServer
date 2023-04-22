@@ -25,14 +25,14 @@ root:
   handlers: [console]
 
 loggers:
-# can I
+
     create_from_model.api_logic_server_utils:   
 #        level: DEBUG
         handlers: [console]
         propagate: no
 
     sqlacodegen_wrapper.sqlacodegen.sqlacodegen.codegen:   
-#         level: DEBUG
+#        level: DEBUG
         handlers: [console]
         propagate: no
 

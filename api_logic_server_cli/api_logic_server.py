@@ -12,9 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.02.00"
+__version__ = "08.02.01"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t04/32/2023 - 08.02.01: Logging / Env \n"\
     "\t04/13/2023 - 08.02.00: integratedConsole, logic logging (66), table relns fix (65) \n"\
     "\t04/06/2023 - 08.01.24: create_image, bugfix for excluded table relationships \n"\
     "\t03/23/2023 - 08.01.15: cloud debug additions, issue 59, 62-4, table filters \n"\
@@ -81,7 +82,7 @@ with open(f'{get_api_logic_server_dir()}/logging.yml','rt') as f:
         config=yaml.safe_load(f.read())
         f.close()
 logging.config.dictConfig(config)
-log=logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 debug_value = os.getenv('APILOGICSERVER_DEBUG')
 if debug_value is not None:
     debug_value = debug_value.upper()
@@ -89,6 +90,12 @@ if debug_value is not None:
         log.setLevel(logging.INFO)
     else:
         log.setLevel(logging.DEBUG)
+        logging.getLogger('create_from_model.api_logic_server_utils').setLevel(logging.DEBUG)
+        logging.getLogger('sqlacodegen_wrapper.sqlacodegen.sqlacodegen.codegen').setLevel(logging.DEBUG)
+        logging.getLogger('api_logic_server_cli.sqlacodegen_wrapper.sqlacodegen_wrapper').setLevel(logging.DEBUG)
+        logging.getLogger('create_from_model.model_creation_services').setLevel(logging.DEBUG)
+        
+
 
 # log.debug("sys.path.append(get_api_logic_server_dir())\n",get_api_logic_server_dir())
 sys.path.append(get_api_logic_server_dir())  # e.g, on Docker: export PATH="/home/api_logic_server/api_logic_server_cli"

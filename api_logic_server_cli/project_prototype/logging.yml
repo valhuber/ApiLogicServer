@@ -27,7 +27,7 @@ root:
 loggers:
 
     api.expose_api_models:   
-    #        level: DEBUG
+#        level: DEBUG
         handlers: [console]
         propagate: no
 
@@ -42,7 +42,7 @@ loggers:
         propagate: no
 
     api.customize_api:   
-    #        level: DEBUG
+#        level: DEBUG
         handlers: [console]
         propagate: no
 
