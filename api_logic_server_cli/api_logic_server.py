@@ -398,7 +398,7 @@ def resolve_home(name: str) -> str:
 
 
 def fix_database_models(project_directory: str, db_types: str, nw_db_status: str):
-    """ injecting <db_types file> into database/models.py, fix nw cascade delete """
+    """ injecting <db_types file> into database/models.py, fix nw cascade delete, jsonapi_attr """
     models_file_name = f'{project_directory}/database/models.py'
     if db_types is not None and db_types != "":
         log.debug(f'.. .. ..Injecting file {db_types} into database/models.py')
@@ -412,6 +412,10 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
             replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
+        log.debug(f'.. .. ..And json_attr')
+        create_utils.insert_lines_at(lines=db_types_data,
+                                    at="manual fix",
+                                    file_name=models_file_name)
 
 
 def final_project_fixup(msg, project) -> str:
