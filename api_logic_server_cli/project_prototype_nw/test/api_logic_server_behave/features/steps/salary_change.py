@@ -101,3 +101,25 @@ def step_impl(context):
 def step_impl(context):
     response_text = context.response_text
     assert 'meaningful raise' in response_text, f'Error - "meaningful raise" not in response:\n{response_text}'
+
+
+@when('Retrieve Employee Row')
+def step_impl(context):
+    """
+    Observe the use of `old_row
+    `
+    > **Key Takeaway:** State Transition Logic enabled per `old_row`
+
+    """
+    scenario_name = 'Manage ProperSalary'
+    test_utils.prt(f'\n\n\n{scenario_name}... Get Employee - verify contains virtual ProperSalary\n\n', scenario_name)
+    header = test_utils.login()
+    get_emp_uri = f'http://localhost:5656/api/Employee/5/'
+    r = requests.get(url=get_emp_uri, headers= header)
+    context.response_text = r.text
+
+
+@then("Verify Contains ProperSalary")
+def step_impl(context):
+    response_text = context.response_text
+    assert 'ProperSalary' in response_text, f'Error - "ProperSalary" not in response:\n{response_text}'

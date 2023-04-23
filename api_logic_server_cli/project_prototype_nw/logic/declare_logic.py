@@ -153,6 +153,9 @@ def declare_logic():
         as_condition=lambda row: row.CompanyName != 'x',
         error_msg="CustomerName cannot be 'x'")
 
+    Rule.constraint(validate=models.Employee,
+        as_condition=lambda row: row.LastName != 'x',
+        error_msg="LastName cannot be 'x'")
 
     """
         More complex rules follow - see: 
