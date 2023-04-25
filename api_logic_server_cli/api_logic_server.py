@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.02.04"
+__version__ = "08.02.05"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t04/23/2023 - 08.02.04: virt attrs (Issue 56), Logging / Env (internal), cleaner readme \n"\
+    "\t04/24/2023 - 08.02.05: virt attrs (Issue 56), safrs 3.0.2, Logging / Env (internal), cleaner readme \n"\
     "\t04/13/2023 - 08.02.00: integratedConsole, logic logging (66), table relns fix (65) \n"\
     "\t04/06/2023 - 08.01.24: create_image, bugfix for excluded table relationships \n"\
     "\t03/23/2023 - 08.01.15: cloud debug additions, issue 59, 62-4, table filters \n"\
@@ -412,7 +412,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
             replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
-        if not "include_exclude" in project_directory:
+"""         if not "include_exclude" in project_directory and False:  #
             log.debug(f'.. .. ..And Employee Virtual Attributes')
             nw_virtuals_attrs_file_name = Path(get_api_logic_server_dir()).\
                                         joinpath('fragments/nw_virtual_attrs.py')
@@ -423,7 +423,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
                                         at="OrderList = relationship('Order', cascade_backrefs=True, backref='Employee')",
                                         file_name=models_file_name,
                                         after=True)
-
+ """
 
 def final_project_fixup(msg, project) -> str:
     """
