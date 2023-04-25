@@ -180,6 +180,9 @@ resources:
             <h1>Virtual Relationships</h1>
             Observe that "show" pages have tabs for Manages and Manager.<br>
             These foreign keys are *not* defined in the database, but in <span style="font-family:'Courier New'">database/customize_models.py</span>.<br>
+            <h1>Derived Attributes</h1>
+            <span style="font-family:'Courier New'">ProperSalary</span> is not defined in the database.<br>
+            See <span style="font-family:'Courier New'">database/customize_models.py</span>.<br>
     attributes:
       - label: ' Last Name*'
         name: LastName
@@ -188,6 +191,8 @@ resources:
       - name: OnLoanDepartmentId
       - name: WorksForDepartmentId
       - name: Salary
+        type: DECIMAL
+      - name: ProperSalary
         type: DECIMAL
       - name: EmployeeType
       - name: Dues
