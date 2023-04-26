@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.02.05"
+__version__ = "08.02.06"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t04/24/2023 - 08.02.05: virt attrs (Issue 56), safrs 3.0.2, Logging / Env (internal), cleaner readme \n"\
+    "\t04/25/2023 - 08.02.06: virt attrs (Issue 56), safrs 3.0.2, Logging / Env (internal), cleaner readme \n"\
     "\t04/13/2023 - 08.02.00: integratedConsole, logic logging (66), table relns fix (65) \n"\
     "\t04/06/2023 - 08.01.24: create_image, bugfix for excluded table relationships \n"\
     "\t03/23/2023 - 08.01.15: cloud debug additions, issue 59, 62-4, table filters \n"\

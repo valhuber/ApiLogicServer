@@ -6,23 +6,16 @@ from logic_bank.logic_bank import Rule
 from database import models
 import logging
 
+app_logger = logging.getLogger(__name__)
 
 def declare_logic():
-    """
-    Declare Logic here, using Python with code completion.
-    """
-    app_logger = logging.getLogger(__name__)
+    ''' Declarative multi-table derivations and constraints, extensible with Python. 
 
-
-    """ example from default database
+    Brief background: see readme_declare_logic.md
     
-    Rule.constraint(validate=models.Customer,
-                    as_condition=lambda row: row.Balance <= row.CreditLimit,
-                    error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
-    
-    use code completion to declare rules here """
+    Use code completion (Rule.) to declare rules here:
+    '''
 
-    import database.models
-    app_logger.debug("\n..logic/declare_logic.py (rules + code)"
-        + f' -- {len(database.models.metadata.tables)} tables loaded')
+
+    app_logger.debug("..logic/declare_logic.py (logic == rules + code)")
 
