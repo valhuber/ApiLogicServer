@@ -6,7 +6,7 @@ Flask-SQLAlchemy==2.5.1
 SQLAlchemy-Utils==0.38.2
 Werkzeug==2.2.3
 logicbankutils==0.6.0
-LogicBank==1.08.03
+LogicBank==1.08.04
 inflect==5.0.2
 itsdangerous==2.1.2
 Jinja2==3.1.2

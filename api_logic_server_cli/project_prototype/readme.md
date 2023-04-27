@@ -14,50 +14,29 @@ To run your project, the system requires various runtime systems for data access
     * Choose the __either__ the _Local Install_ __or__ the _Docker_ approach below, then 
 2. __Run__
 
+For instructions, [see here](#setup-instructions).
 
 &nbsp;
 
-## Establish Your Python Environment - Local Install
+# Project Structure
+This project was created with the directory structure shown below.
 
-You `requirements.txt` has already been created, so...
+The ___Key Customization Files___ in the table are created as stubs, intended for you to add customizations that extend
+the created API, Logic and Web App.  Since they are separate files, the project can be
+[rebuilt](https://apilogicserver.github.io/Docs/Project-Rebuild/) (e.g., synchronized with a revised schema), preserving your customizations.
 
-```bash title="Install API Logic Server in a Virtual Environment"
-python -m venv venv                        # may require python3 -m venv venv
-venv\Scripts\activate                      # mac/linux: source venv/bin/activate
-python -m pip install -r requirements.txt  # accept "new Virtual environment"
-```
+Please see the ```nw``` sample for examples of typical customizations.  You can open it in GitHub (use Shift + "." to view in project mode) - [click here](https://github.com/ApiLogicServer/demo).
 
-Notes:
-
-* See also the `venv_setup` directory in this API Logic Project.
-
-* If using SqlServer, install `pyodbc`.  Not required for docker-based projects.  For local installs, see the [Quick Start](https://apilogicserver.github.io/Docs/Install-pyodbc/).
-
-&nbsp;
-
-## Establish Your Python Environment - Docker
-
-Your runtime systems are part of Dev Container, which you probably activated when you [opened the project](https://apilogicserver.github.io/Docs/IDE-Execute/).  If you did not accept the "Open in Container" option when you started VSCode, use __View > Command Palette > Remote-Containers: Reopen in Container__.
+| Directory | Usage                         | Key Customization File             | Typical Customization                                                                 |
+|:-------------- |:------------------------------|:-----------------------------------|:--------------------------------------------------------------------------------------|
+| ```api``` | JSON:API                      | ```api/customize_api.py```         | Add new end points / services                                                         |
+| ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema                       |
+| ```logic``` | Transactional Logic           | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and events such as send mail / messages |
+| ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display - order, captions etc.                                          |
+| ```security``` | Authentication, Authorization   | ```security/declare_security.py```          | Control login, role-based row access         |
+| ```tests``` | Behave Test Suite              | ```tests/api_logic_server_behave/features```          | Declare and implement [Behave Tests](https://apilogicserver.github.io/Docs/Behave/)                                          |
 
 &nbsp;
-
-## Run
-
-To run your project
-
-![Start Project](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/nutshell/project-executable.png?raw=true)
-
-As shown above:
-
-1. Use the pre-supplied Run Configuration
-2. Click the url in the console to start the Admin App
-    * Use it to explore your data (shown below)
-    * And your API (via Swagger)
-
-![Admin App](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/ui-admin/run-admin-app.png?raw=true)
-
-
-&nbsp;&nbsp;
 
 # Project Information
 
@@ -68,31 +47,8 @@ As shown above:
 | Created in directory     | api_logic_server_project_directory |
 | API Name                 | api_logic_server_api_name          |
 
-&nbsp;&nbsp;
 
-# Project Structure
-This project was created with the following directory structure:
-
-| Directory | Usage                         | Key Customization File             | Typical Customization                                                                 |
-|:-------------- |:------------------------------|:-----------------------------------|:--------------------------------------------------------------------------------------|
-| ```api``` | JSON:API                      | ```api/customize_api.py```         | Add new end points / services                                                         |
-| ```database``` | SQLAlchemy Data Model Classes | ```database/customize_models.py``` | Add derived attributes, and relationships missing in the schema                       |
-| ```logic``` | Transactional Logic           | ```logic/declare_logic.py```       | Declare multi-table derivations, constraints, and events such as send mail / messages |
-| ```ui``` | Admin App                     | ```ui/admin/admin.yaml```          | Control field display - order, captions etc.                                          |
-| ```security``` | Authentication, Authorization   | ```security/declare_security.py```          | Control login, role-based row access         |
-| ```tests``` | Behave Test Suite              | ```tests/api_logic_server_behave/features```          | Declare and implement [Behave Tests](https://apilogicserver.github.io/Docs/Behave/)                                          |
 &nbsp;
-
-### Key Customization File - Typical Customization
-
-In the table above, the _Key Customization Files_ are created as stubs, intended for you to add customizations that extend
-the created API, Logic and Web App.  Since they are separate files, the project can be
-[rebuilt](https://apilogicserver.github.io/Docs/Project-Rebuild/) (e.g., synchronized with a revised schema), preserving your customizations.
-
-Please see the ```nw``` sample for examples of typical customizations.
-
-&nbsp;&nbsp;
-
 
 # Key Technologies
 
@@ -146,7 +102,6 @@ created automatically by API Logic Server from your database,
 and saved in the `database` directory.
 
 
-
 ### Admin App
 
 This generated project also contains a React Admin app:
@@ -154,3 +109,49 @@ This generated project also contains a React Admin app:
 * Multi-table - master / details (with tab sheets)
 * Intelligent layout - favorite fields first, predictive joins, etc
 * Logic Aware - updates are monitored by business logic
+
+
+&nbsp;
+
+# Setup Instructions
+
+&nbsp;
+
+## Establish Your Python Environment - Local Install
+
+You `requirements.txt` has already been created, so...
+
+```bash title="Install API Logic Server in a Virtual Environment"
+python -m venv venv                        # may require python3 -m venv venv
+venv\Scripts\activate                      # mac/linux: source venv/bin/activate
+python -m pip install -r requirements.txt  # accept "new Virtual environment"
+```
+
+Notes:
+
+* See also the `venv_setup` directory in this API Logic Project.
+
+* If using SqlServer, install `pyodbc`.  Not required for docker-based projects.  For local installs, see the [Quick Start](https://apilogicserver.github.io/Docs/Install-pyodbc/).
+
+&nbsp;
+
+## Establish Your Python Environment - Docker
+
+Your runtime systems are part of Dev Container, which you probably activated when you [opened the project](https://apilogicserver.github.io/Docs/IDE-Execute/).  If you did not accept the "Open in Container" option when you started VSCode, use __View > Command Palette > Remote-Containers: Reopen in Container__.
+
+&nbsp;
+
+## Run
+
+To run your project
+
+![Start Project](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/nutshell/project-executable.png?raw=true)
+
+As shown above:
+
+1. Use the pre-supplied Run Configuration
+2. Click the url in the console to start the Admin App
+    * Use it to explore your data (shown below)
+    * And your API (via Swagger)
+
+![Admin App](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/ui-admin/run-admin-app.png?raw=true)
