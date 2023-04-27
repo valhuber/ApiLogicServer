@@ -243,6 +243,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+04/26/2023 - 08.03.00: virt attrs (Issue 56), safrs 3.0.2, LogicBank 1.8.4, project readme updates
+
 04/13/2023 - 08.02.00: integratedConsole, logic logging (66), table relns fix (65)
 
 04/06/2023 - 08.01.24: create_image, bugfix for excluded table relationships (Issue 65)
