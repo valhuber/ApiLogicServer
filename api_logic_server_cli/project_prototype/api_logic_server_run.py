@@ -56,6 +56,9 @@ sys.path.append(current_path)
 project_dir = str(current_path)
 os.chdir(project_dir)  # so admin app can find images, code
 import util as util
+logic_logger_activate_debug = False
+""" True prints all rules on startup """
+
 
 
 # ==================================
@@ -278,6 +281,8 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
 
     from sqlalchemy import exc as sa_exc
 
+    global logic_logger_activate_debug
+
     with warnings.catch_warnings():
 
         flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
@@ -332,8 +337,13 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
             from database import customize_models
 
             from logic import declare_logic
+            logic_logger = logging.getLogger('logic_logger')
+            logic_logger_level = logic_logger.getEffectiveLevel()
+            if logic_logger_activate_debug == False:
+                logic_logger.setLevel(logging.INFO)
             app_logger.info("")
             LogicBank.activate(session=session, activator=declare_logic.declare_logic, constraint_event=constraint_handler)
+            logic_logger.setLevel(logic_logger_level)
             app_logger.info("Declare   Logic complete - logic/declare_logic.py (rules + code)"
                 + f' -- {len(database.models.metadata.tables)} tables loaded\n')  # db opened 1st access
             
