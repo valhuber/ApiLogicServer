@@ -1,25 +1,23 @@
 # Readme - API Logic Project
 
-This API Logic Project was created by the API Logic Server with the `ApiLogicServer create` command.  
-
-Edit / extend this readme as desired.
+This API Logic Project was created with the `ApiLogicServer create` command.  Edit this readme as desired.
 
 &nbsp;&nbsp;
 
 # Setup and Run
 
-To run your project, the system requires various runtime systems for data access, api, and logic.  These are [included with API Logic Server](https://apilogicserver.github.io/Docs/Architecture-What-Is/).  So, to run your project:
+To run your project, the system requires various runtime systems for data access, api, and logic.  These are included with API Logic Server ([architecture doc here](https://apilogicserver.github.io/Docs/Architecture-What-Is/)).  So, to run your project:
 
-1.  __Establish your Python Environment__ to activate these runtime systems
-    * Choose the __either__ the _Local Install_ __or__ the _Docker_ approach below, then 
+1.  __Establish your Python Environment__ to activate these runtime system
 2. __Run__
 
-For instructions, [see here](#setup-instructions).
+For instructions, [click here](#setup-instructions).
 
 &nbsp;
 
-# Project Structure
-This project was created with the directory structure shown below.
+# Key Customization Files
+
+Your project is ready to run, but it's likely you'll want to customize it - add logic, new endpoints, etc.
 
 The ___Key Customization Files___ in the table are created as stubs, intended for you to add customizations that extend
 the created API, Logic and Web App.  Since they are separate files, the project can be
@@ -114,6 +112,8 @@ This generated project also contains a React Admin app:
 &nbsp;
 
 # Setup Instructions
+
+Setup your Python environment, according to whether you did a *local install*, or *Docker*.  Choose the appropriate section, then run.
 
 &nbsp;
 

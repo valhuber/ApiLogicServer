@@ -18,7 +18,17 @@
 ==============================================================================
 """
 
-import os, logging, logging.config, sys, yaml  # failure here means venv probably not set
+import traceback
+try:
+    import os, logging, logging.config, sys, yaml  # failure here means venv probably not set
+except:
+    track = traceback.format_exc()
+    print(" ")
+    print(track)
+    print("venv probably not set")
+    print("Please see https://apilogicserver.github.io/Docs/Project-Env/ \n")
+    exit(1)
+
 from flask_sqlalchemy import SQLAlchemy
 import json
 from pathlib import Path

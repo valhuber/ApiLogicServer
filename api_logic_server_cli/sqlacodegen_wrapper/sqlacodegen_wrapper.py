@@ -259,12 +259,12 @@ def create_models_memstring(args) -> str:
         metadata.reflect(engine)
     except:
         track = traceback.format_exc()
-        log.debug(track)
-        log.debug(f'\n***** Database failed to open: {args.url} *****\n')
-        log.debug(f'.. Here are some examples:\n')
-        print_uri_info()
-        log.debug(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
-        log.debug(f'\n...see https://apilogicserver.github.io/Docs/Troubleshooting/')
+        log.info(track)
+        log.info(f'\n***** Database failed to open: {args.url} *****\n')
+        # log.info(f'.. See example above\n')
+        # print_uri_info()
+        log.info(f'\n...see https://apilogicserver.github.io/Docs/Troubleshooting/#database-failed-to-open \n\n')
+        # log.info(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
         exit(1)
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
         # dirty hack for sqlite
