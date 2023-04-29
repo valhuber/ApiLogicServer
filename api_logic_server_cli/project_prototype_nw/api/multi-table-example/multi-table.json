@@ -1,0 +1,1282 @@
+{
+    "data": {
+      "attributes": {
+        "Address": "Obere Str. 57A",
+        "Balance": 2102,
+        "City": "Berlin",
+        "Client_id": 1,
+        "CompanyName": "Alfreds Futterkiste",
+        "ContactName": "Maria Anders",
+        "ContactTitle": "Sales Representative",
+        "Country": "Germany",
+        "CreditLimit": 2300,
+        "Fax": "030-0076545",
+        "Id": "ALFKI",
+        "OrderCount": 15,
+        "Phone": "030-0074321",
+        "PostalCode": "12209",
+        "Region": "Western Europe",
+        "UnpaidOrderCount": 10
+      },
+      "id": "ALFKI",
+      "links": {
+        "self": "http://localhost:5656/api/Customer/ALFKI/"
+      },
+      "relationships": {
+        "OrderList": {
+          "data": [
+            {
+              "id": "10643",
+              "type": "Order"
+            },
+            {
+              "id": "10692",
+              "type": "Order"
+            },
+            {
+              "id": "10702",
+              "type": "Order"
+            },
+            {
+              "id": "10835",
+              "type": "Order"
+            },
+            {
+              "id": "10952",
+              "type": "Order"
+            },
+            {
+              "id": "11011",
+              "type": "Order"
+            }
+          ],
+          "links": {
+            "self": "http://localhost:5656/api/Customer/ALFKI/OrderList"
+          },
+          "meta": {
+            "count": 6,
+            "limit": 250,
+            "total": 6
+          }
+        }
+      },
+      "type": "Customer"
+    },
+    "included": [
+      {
+        "attributes": {
+          "AmountTotal": 851,
+          "City": null,
+          "CloneFromOrder": null,
+          "Country": null,
+          "CustomerId": "ALFKI",
+          "EmployeeId": 1,
+          "Freight": 69.53,
+          "Id": 10835,
+          "OrderDate": "2014-01-15",
+          "OrderDetailCount": 2,
+          "Ready": true,
+          "RequiredDate": "2014-02-12",
+          "ShipAddress": "Obere Str. 57",
+          "ShipCity": "Berlin",
+          "ShipCountry": "Germany",
+          "ShipName": "Alfred's Futterkiste",
+          "ShipPostalCode": "12209",
+          "ShipRegion": "Western Europe",
+          "ShipVia": 3,
+          "ShippedDate": "2014-01-21"
+        },
+        "id": "10835",
+        "links": {
+          "self": "http://localhost:5656/api/Order/10835/"
+        },
+        "relationships": {
+          "Customer": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10835/Customer"
+            }
+          },
+          "Employee": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10835/Employee"
+            }
+          },
+          "Location": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10835/Location"
+            }
+          },
+          "OrderDetailList": {
+            "data": [
+              {
+                "id": "1534",
+                "type": "OrderDetail"
+              },
+              {
+                "id": "1535",
+                "type": "OrderDetail"
+              }
+            ],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10835/OrderDetailList"
+            },
+            "meta": {
+              "count": 2,
+              "limit": 250,
+              "total": 2
+            }
+          },
+          "OrderList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10835/OrderList"
+            }
+          },
+          "parent": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10835/parent"
+            }
+          }
+        },
+        "type": "Order"
+      },
+      {
+        "attributes": {
+          "AmountTotal": 1086,
+          "City": null,
+          "CloneFromOrder": null,
+          "Country": null,
+          "CustomerId": "ALFKI",
+          "EmployeeId": 6,
+          "Freight": 29.46,
+          "Id": 10643,
+          "OrderDate": "2013-08-25",
+          "OrderDetailCount": 3,
+          "Ready": true,
+          "RequiredDate": "2013-09-22",
+          "ShipAddress": "Obere Str. 57",
+          "ShipCity": "Berlin",
+          "ShipCountry": "Germany",
+          "ShipName": "Alfreds Futterkiste",
+          "ShipPostalCode": "12209",
+          "ShipRegion": "Western Europe",
+          "ShipVia": 1,
+          "ShippedDate": null
+        },
+        "id": "10643",
+        "links": {
+          "self": "http://localhost:5656/api/Order/10643/"
+        },
+        "relationships": {
+          "Customer": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10643/Customer"
+            }
+          },
+          "Employee": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10643/Employee"
+            }
+          },
+          "Location": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10643/Location"
+            }
+          },
+          "OrderDetailList": {
+            "data": [
+              {
+                "id": "1040",
+                "type": "OrderDetail"
+              },
+              {
+                "id": "1041",
+                "type": "OrderDetail"
+              },
+              {
+                "id": "1042",
+                "type": "OrderDetail"
+              }
+            ],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10643/OrderDetailList"
+            },
+            "meta": {
+              "count": 3,
+              "limit": 250,
+              "total": 3
+            }
+          },
+          "OrderList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10643/OrderList"
+            }
+          },
+          "parent": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10643/parent"
+            }
+          }
+        },
+        "type": "Order"
+      },
+      {
+        "attributes": {
+          "Amount": 26,
+          "Discount": 0.2,
+          "Id": 1535,
+          "OrderId": 10835,
+          "ProductId": 77,
+          "Quantity": 2,
+          "ShippedDate": "2014-01-21",
+          "UnitPrice": 13
+        },
+        "id": "1535",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1535/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1535/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "77",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1535/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "AmountTotal": 491.2,
+          "City": null,
+          "CloneFromOrder": null,
+          "Country": null,
+          "CustomerId": "ALFKI",
+          "EmployeeId": 1,
+          "Freight": 40.42,
+          "Id": 10952,
+          "OrderDate": "2014-03-16",
+          "OrderDetailCount": 2,
+          "Ready": true,
+          "RequiredDate": "2014-04-27",
+          "ShipAddress": "Obere Str. 57",
+          "ShipCity": "Berlin",
+          "ShipCountry": "Germany",
+          "ShipName": "Alfred's Futterkiste",
+          "ShipPostalCode": "12209",
+          "ShipRegion": "Western Europe",
+          "ShipVia": 1,
+          "ShippedDate": "2014-03-24"
+        },
+        "id": "10952",
+        "links": {
+          "self": "http://localhost:5656/api/Order/10952/"
+        },
+        "relationships": {
+          "Customer": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10952/Customer"
+            }
+          },
+          "Employee": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10952/Employee"
+            }
+          },
+          "Location": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10952/Location"
+            }
+          },
+          "OrderDetailList": {
+            "data": [
+              {
+                "id": "1826",
+                "type": "OrderDetail"
+              },
+              {
+                "id": "1827",
+                "type": "OrderDetail"
+              }
+            ],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10952/OrderDetailList"
+            },
+            "meta": {
+              "count": 2,
+              "limit": 250,
+              "total": 2
+            }
+          },
+          "OrderList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10952/OrderList"
+            }
+          },
+          "parent": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10952/parent"
+            }
+          }
+        },
+        "type": "Order"
+      },
+      {
+        "attributes": {
+          "AmountTotal": 960,
+          "City": null,
+          "CloneFromOrder": null,
+          "Country": null,
+          "CustomerId": "ALFKI",
+          "EmployeeId": 3,
+          "Freight": 1.21,
+          "Id": 11011,
+          "OrderDate": "2014-04-09",
+          "OrderDetailCount": 2,
+          "Ready": true,
+          "RequiredDate": "2014-05-07",
+          "ShipAddress": "Obere Str. 57",
+          "ShipCity": "Berlin",
+          "ShipCountry": "Germany",
+          "ShipName": "Alfred's Futterkiste",
+          "ShipPostalCode": "12209",
+          "ShipRegion": "Western Europe",
+          "ShipVia": 1,
+          "ShippedDate": null
+        },
+        "id": "11011",
+        "links": {
+          "self": "http://localhost:5656/api/Order/11011/"
+        },
+        "relationships": {
+          "Customer": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/11011/Customer"
+            }
+          },
+          "Employee": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/11011/Employee"
+            }
+          },
+          "Location": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/11011/Location"
+            }
+          },
+          "OrderDetailList": {
+            "data": [
+              {
+                "id": "1972",
+                "type": "OrderDetail"
+              },
+              {
+                "id": "1973",
+                "type": "OrderDetail"
+              }
+            ],
+            "links": {
+              "self": "http://localhost:5656/api/Order/11011/OrderDetailList"
+            },
+            "meta": {
+              "count": 2,
+              "limit": 250,
+              "total": 2
+            }
+          },
+          "OrderList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Order/11011/OrderList"
+            }
+          },
+          "parent": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/11011/parent"
+            }
+          }
+        },
+        "type": "Order"
+      },
+      {
+        "attributes": {
+          "Amount": 24,
+          "Discount": 0.25,
+          "Id": 1042,
+          "OrderId": 10643,
+          "ProductId": 46,
+          "Quantity": 2,
+          "ShippedDate": null,
+          "UnitPrice": 12
+        },
+        "id": "1042",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1042/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1042/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "46",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1042/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "Amount": 400,
+          "Discount": 0.05,
+          "Id": 1826,
+          "OrderId": 10952,
+          "ProductId": 6,
+          "Quantity": 16,
+          "ShippedDate": "2014-03-24",
+          "UnitPrice": 25
+        },
+        "id": "1826",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1826/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1826/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "6",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1826/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "CategoryId": 2,
+          "Discontinued": 0,
+          "Id": 6,
+          "ProductName": "Grandma's Boysenberry Spread",
+          "QuantityPerUnit": "12 - 8 oz jars",
+          "ReorderLevel": 25,
+          "SupplierId": 3,
+          "UnitPrice": 25,
+          "UnitsInStock": 120,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "6",
+        "links": {
+          "self": "http://localhost:5656/api/Product/6/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/6/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "AmountTotal": 878,
+          "City": null,
+          "CloneFromOrder": null,
+          "Country": null,
+          "CustomerId": "ALFKI",
+          "EmployeeId": 4,
+          "Freight": 61.02,
+          "Id": 10692,
+          "OrderDate": "2013-10-03",
+          "OrderDetailCount": 1,
+          "Ready": true,
+          "RequiredDate": "2013-10-31",
+          "ShipAddress": "Obere Str. 57",
+          "ShipCity": "Berlin",
+          "ShipCountry": "Germany",
+          "ShipName": "Alfred's Futterkiste",
+          "ShipPostalCode": "12209",
+          "ShipRegion": "Western Europe",
+          "ShipVia": 2,
+          "ShippedDate": "2013-10-13"
+        },
+        "id": "10692",
+        "links": {
+          "self": "http://localhost:5656/api/Order/10692/"
+        },
+        "relationships": {
+          "Customer": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10692/Customer"
+            }
+          },
+          "Employee": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10692/Employee"
+            }
+          },
+          "Location": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10692/Location"
+            }
+          },
+          "OrderDetailList": {
+            "data": [
+              {
+                "id": "1167",
+                "type": "OrderDetail"
+              }
+            ],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10692/OrderDetailList"
+            },
+            "meta": {
+              "count": 1,
+              "limit": 250,
+              "total": 1
+            }
+          },
+          "OrderList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10692/OrderList"
+            }
+          },
+          "parent": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10692/parent"
+            }
+          }
+        },
+        "type": "Order"
+      },
+      {
+        "attributes": {
+          "Amount": 684,
+          "Discount": 0.25,
+          "Id": 1040,
+          "OrderId": 10643,
+          "ProductId": 28,
+          "Quantity": 15,
+          "ShippedDate": null,
+          "UnitPrice": 45.6
+        },
+        "id": "1040",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1040/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1040/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "28",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1040/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "CategoryId": 2,
+          "Discontinued": 0,
+          "Id": 77,
+          "ProductName": "Original Frankfurter grüne Soße",
+          "QuantityPerUnit": "12 boxes",
+          "ReorderLevel": 15,
+          "SupplierId": 12,
+          "UnitPrice": 13,
+          "UnitsInStock": 32,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "77",
+        "links": {
+          "self": "http://localhost:5656/api/Product/77/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/77/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "Amount": 430,
+          "Discount": 0,
+          "Id": 1973,
+          "OrderId": 11011,
+          "ProductId": 71,
+          "Quantity": 20,
+          "ShippedDate": null,
+          "UnitPrice": 21.5
+        },
+        "id": "1973",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1973/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1973/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "71",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1973/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "Amount": 825,
+          "Discount": 0,
+          "Id": 1534,
+          "OrderId": 10835,
+          "ProductId": 59,
+          "Quantity": 15,
+          "ShippedDate": "2014-01-21",
+          "UnitPrice": 55
+        },
+        "id": "1534",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1534/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1534/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "59",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1534/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "CategoryId": 8,
+          "Discontinued": 0,
+          "Id": 46,
+          "ProductName": "Spegesild",
+          "QuantityPerUnit": "4 - 450 g glasses",
+          "ReorderLevel": 0,
+          "SupplierId": 21,
+          "UnitPrice": 12,
+          "UnitsInStock": 95,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "46",
+        "links": {
+          "self": "http://localhost:5656/api/Product/46/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/46/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "AmountTotal": 330,
+          "City": null,
+          "CloneFromOrder": null,
+          "Country": null,
+          "CustomerId": "ALFKI",
+          "EmployeeId": 4,
+          "Freight": 23.94,
+          "Id": 10702,
+          "OrderDate": "2013-10-13",
+          "OrderDetailCount": 2,
+          "Ready": true,
+          "RequiredDate": "2013-11-24",
+          "ShipAddress": "Obere Str. 57",
+          "ShipCity": "Berlin",
+          "ShipCountry": "Germany",
+          "ShipName": "Alfred's Futterkiste",
+          "ShipPostalCode": "12209",
+          "ShipRegion": "Western Europe",
+          "ShipVia": 1,
+          "ShippedDate": "2013-10-21"
+        },
+        "id": "10702",
+        "links": {
+          "self": "http://localhost:5656/api/Order/10702/"
+        },
+        "relationships": {
+          "Customer": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10702/Customer"
+            }
+          },
+          "Employee": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10702/Employee"
+            }
+          },
+          "Location": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10702/Location"
+            }
+          },
+          "OrderDetailList": {
+            "data": [
+              {
+                "id": "1197",
+                "type": "OrderDetail"
+              },
+              {
+                "id": "1198",
+                "type": "OrderDetail"
+              }
+            ],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10702/OrderDetailList"
+            },
+            "meta": {
+              "count": 2,
+              "limit": 250,
+              "total": 2
+            }
+          },
+          "OrderList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Order/10702/OrderList"
+            }
+          },
+          "parent": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/Order/10702/parent"
+            }
+          }
+        },
+        "type": "Order"
+      },
+      {
+        "attributes": {
+          "Amount": 91.2,
+          "Discount": 0,
+          "Id": 1827,
+          "OrderId": 10952,
+          "ProductId": 28,
+          "Quantity": 2,
+          "ShippedDate": "2014-03-24",
+          "UnitPrice": 45.6
+        },
+        "id": "1827",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1827/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1827/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "28",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1827/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "Amount": 378,
+          "Discount": 0.25,
+          "Id": 1041,
+          "OrderId": 10643,
+          "ProductId": 39,
+          "Quantity": 21,
+          "ShippedDate": null,
+          "UnitPrice": 18
+        },
+        "id": "1041",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1041/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1041/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "39",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1041/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "Amount": 878,
+          "Discount": 0,
+          "Id": 1167,
+          "OrderId": 10692,
+          "ProductId": 63,
+          "Quantity": 20,
+          "ShippedDate": "2013-10-13",
+          "UnitPrice": 43.9
+        },
+        "id": "1167",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1167/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1167/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "63",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1167/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "CategoryId": 4,
+          "Discontinued": 0,
+          "Id": 71,
+          "ProductName": "Flotemysost",
+          "QuantityPerUnit": "10 - 500 g pkgs.",
+          "ReorderLevel": 0,
+          "SupplierId": 15,
+          "UnitPrice": 21.5,
+          "UnitsInStock": 46,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": -20
+        },
+        "id": "71",
+        "links": {
+          "self": "http://localhost:5656/api/Product/71/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/71/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "CategoryId": 4,
+          "Discontinued": 0,
+          "Id": 59,
+          "ProductName": "Raclette Courdavault",
+          "QuantityPerUnit": "5 kg pkg.",
+          "ReorderLevel": 0,
+          "SupplierId": 28,
+          "UnitPrice": 55,
+          "UnitsInStock": 79,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "59",
+        "links": {
+          "self": "http://localhost:5656/api/Product/59/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/59/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "CategoryId": 1,
+          "Discontinued": 0,
+          "Id": 39,
+          "ProductName": "Chartreuse verte",
+          "QuantityPerUnit": "750 cc per bottle",
+          "ReorderLevel": 5,
+          "SupplierId": 18,
+          "UnitPrice": 18,
+          "UnitsInStock": 69,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "39",
+        "links": {
+          "self": "http://localhost:5656/api/Product/39/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/39/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "Amount": 60,
+          "Discount": 0,
+          "Id": 1197,
+          "OrderId": 10702,
+          "ProductId": 3,
+          "Quantity": 6,
+          "ShippedDate": "2013-10-21",
+          "UnitPrice": 10
+        },
+        "id": "1197",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1197/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1197/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "3",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1197/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "Amount": 530,
+          "Discount": 0.05,
+          "Id": 1972,
+          "OrderId": 11011,
+          "ProductId": 58,
+          "Quantity": 40,
+          "ShippedDate": null,
+          "UnitPrice": 13.25
+        },
+        "id": "1972",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1972/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1972/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "58",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1972/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "Amount": 270,
+          "Discount": 0,
+          "Id": 1198,
+          "OrderId": 10702,
+          "ProductId": 76,
+          "Quantity": 15,
+          "ShippedDate": "2013-10-21",
+          "UnitPrice": 18
+        },
+        "id": "1198",
+        "links": {
+          "self": "http://localhost:5656/api/OrderDetail/1198/"
+        },
+        "relationships": {
+          "Order": {
+            "data": null,
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1198/Order"
+            }
+          },
+          "Product": {
+            "data": {
+              "id": "76",
+              "type": "Product"
+            },
+            "links": {
+              "self": "http://localhost:5656/api/OrderDetail/1198/Product"
+            }
+          }
+        },
+        "type": "OrderDetail"
+      },
+      {
+        "attributes": {
+          "CategoryId": 2,
+          "Discontinued": 0,
+          "Id": 3,
+          "ProductName": "Aniseed Syrup",
+          "QuantityPerUnit": "12 - 550 ml bottles",
+          "ReorderLevel": 25,
+          "SupplierId": 1,
+          "UnitPrice": 10,
+          "UnitsInStock": 13,
+          "UnitsOnOrder": 70,
+          "UnitsShipped": 0
+        },
+        "id": "3",
+        "links": {
+          "self": "http://localhost:5656/api/Product/3/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/3/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "CategoryId": 8,
+          "Discontinued": 0,
+          "Id": 58,
+          "ProductName": "Escargots de Bourgogne",
+          "QuantityPerUnit": "24 pieces",
+          "ReorderLevel": 20,
+          "SupplierId": 27,
+          "UnitPrice": 13.25,
+          "UnitsInStock": 102,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "58",
+        "links": {
+          "self": "http://localhost:5656/api/Product/58/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/58/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "CategoryId": 7,
+          "Discontinued": 1,
+          "Id": 28,
+          "ProductName": "Rössle Sauerkraut",
+          "QuantityPerUnit": "25 - 825 g cans",
+          "ReorderLevel": 0,
+          "SupplierId": 12,
+          "UnitPrice": 45.6,
+          "UnitsInStock": 26,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "28",
+        "links": {
+          "self": "http://localhost:5656/api/Product/28/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/28/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "CategoryId": 2,
+          "Discontinued": 0,
+          "Id": 63,
+          "ProductName": "Vegie-spread",
+          "QuantityPerUnit": "15 - 625 g jars",
+          "ReorderLevel": 5,
+          "SupplierId": 7,
+          "UnitPrice": 43.9,
+          "UnitsInStock": 24,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "63",
+        "links": {
+          "self": "http://localhost:5656/api/Product/63/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/63/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      },
+      {
+        "attributes": {
+          "CategoryId": 1,
+          "Discontinued": 0,
+          "Id": 76,
+          "ProductName": "Lakkalikööri",
+          "QuantityPerUnit": "500 ml",
+          "ReorderLevel": 20,
+          "SupplierId": 23,
+          "UnitPrice": 18,
+          "UnitsInStock": 57,
+          "UnitsOnOrder": 0,
+          "UnitsShipped": 0
+        },
+        "id": "76",
+        "links": {
+          "self": "http://localhost:5656/api/Product/76/"
+        },
+        "relationships": {
+          "OrderDetailList": {
+            "data": [],
+            "links": {
+              "self": "http://localhost:5656/api/Product/76/OrderDetailList"
+            }
+          }
+        },
+        "type": "Product"
+      }
+    ],
+    "jsonapi": {
+      "version": "1.0"
+    },
+    "links": {
+      "related": "http://localhost:5656/api/Customer/ALFKI/?include=OrderList,OrderList.OrderDetailList,OrderList.OrderDetailList.Product&fields%5BCustomer%5D=Id,CompanyName,ContactName,ContactTitle,Address,City,Region,PostalCode,Country,Phone,Fax,Balance,CreditLimit,OrderCount,UnpaidOrderCount,Client_id",
+      "self": "http://localhost:5656/api/Customer/ALFKI/"
+    },
+    "meta": {
+      "count": 1,
+      "instance_meta": {},
+      "limit": 250,
+      "total": 1
+    }
+  }

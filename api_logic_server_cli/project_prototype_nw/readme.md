@@ -8,9 +8,3 @@ You must _Establish Your Python Environment_ to run the Tutorial:
 The standard API Logic Project Readme follows, below.
 
 &nbsp;
-
----
-
-&nbsp;
-
-&nbsp;

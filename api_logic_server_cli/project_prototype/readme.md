@@ -1,9 +1,3 @@
-# Readme - API Logic Project
-
-This API Logic Project was created with the `ApiLogicServer create` command.  Edit this readme as desired.
-
-&nbsp;&nbsp;
-
 # Setup and Run
 
 To run your project, the system requires various runtime systems for data access, api, and logic.  These are included with API Logic Server ([architecture doc here](https://apilogicserver.github.io/Docs/Architecture-What-Is/)).  So, to run your project:
@@ -17,7 +11,7 @@ For instructions, [click here](#setup-instructions).
 
 # Key Customization Files
 
-Your project is ready to run, but it's likely you'll want to customize it - add logic, new endpoints, etc.
+Your project is ready to run, but it's likely you'll want to customize it - declare logic, new endpoints, etc.
 
 The ___Key Customization Files___ in the table are created as stubs, intended for you to add customizations that extend
 the created API, Logic and Web App.  Since they are separate files, the project can be
@@ -38,76 +32,14 @@ Please see the ```nw``` sample for examples of typical customizations.  You can 
 
 # Project Information
 
+This API Logic Project was created with the `ApiLogicServer create` command.
+
 | About                    | Info                               |
 |:-------------------------|:-----------------------------------|
 | Created                  | creation-date                      |
 | API Logic Server Version | api_logic_server_version           |
 | Created in directory     | api_logic_server_project_directory |
 | API Name                 | api_logic_server_api_name          |
-
-
-&nbsp;
-
-# Key Technologies
-
-API Logic Server is based on the projects shown below.
-Consult their documentation for important information.
-
-### SARFS JSON:API Server
-
-[SAFRS: Python OpenAPI & JSON:API Framework](https://github.com/thomaxxl/safrs)
-
-SAFRS is an acronym for SqlAlchemy Flask-Restful Swagger.
-The purpose of this framework is to help python developers create
-a self-documenting JSON API for sqlalchemy database objects and relationships.
-
-These objects are serialized to JSON and 
-created, retrieved, updated and deleted through the JSON API.
-Optionally, custom resource object methods can be exposed and invoked using JSON.
-
-Class and method descriptions and examples can be provided
-in yaml syntax in the code comments.
-
-The description is parsed and shown in the swagger web interface.
-The result is an easy-to-use
-swagger/OpenAPI and JSON:API compliant API implementation.
-
-### LogicBank
-
-[Transaction Logic for SQLAlchemy Object Models](https://apilogicserver.github.io/Docs/Logic-Why/)
-
-Use Logic Bank to govern SQLAlchemy update transaction logic - 
-multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
-
-*   **Rules - 40X** more concise using a spreadsheet-like paradigm, and
-
-*   **Python - control and extensibility,** using standard tools and techniques
-
-Logic Bank is based on SQLAlchemy - it handles `before_flush` events to enforce your logic.
-Your logic therefore applies to any SQLAlchemy-based access - JSON:Api, Admin App, etc.
-
-
-### SQLAlchemy
-
-[Object Relational Mapping for Python](https://docs.sqlalchemy.org/en/13/).
-
-SQLAlchemy provides Python-friendly database access for Python.
-
-It is used by JSON:Api, Logic Bank, and the Admin App.
-
-SQLAlchemy processing is based on Python `model` classes,
-created automatically by API Logic Server from your database,
-and saved in the `database` directory.
-
-
-### Admin App
-
-This generated project also contains a React Admin app:
-* Multi-page - including page transitions to "drill down"
-* Multi-table - master / details (with tab sheets)
-* Intelligent layout - favorite fields first, predictive joins, etc
-* Logic Aware - updates are monitored by business logic
-
 
 &nbsp;
 
@@ -155,3 +87,71 @@ As shown above:
     * And your API (via Swagger)
 
 ![Admin App](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/ui-admin/run-admin-app.png?raw=true)
+
+
+&nbsp;
+
+# Appendix: Key Technologies
+
+API Logic Server is based on the projects shown below.
+Consult their documentation for important information.
+
+&nbsp;
+
+### SARFS JSON:API Server
+
+[SAFRS: Python OpenAPI & JSON:API Framework](https://github.com/thomaxxl/safrs)
+
+SAFRS is an acronym for SqlAlchemy Flask-Restful Swagger.
+The purpose of this framework is to help python developers create
+a self-documenting JSON API for sqlalchemy database objects and relationships.
+
+These objects are serialized to JSON and 
+created, retrieved, updated and deleted through the JSON API.
+Optionally, custom resource object methods can be exposed and invoked using JSON.
+
+Class and method descriptions and examples can be provided
+in yaml syntax in the code comments.
+
+The description is parsed and shown in the swagger web interface.
+The result is an easy-to-use
+swagger/OpenAPI and JSON:API compliant API implementation.
+
+&nbsp;
+
+### LogicBank
+[Transaction Logic for SQLAlchemy Object Models](https://apilogicserver.github.io/Docs/Logic-Why/)
+
+Use Logic Bank to govern SQLAlchemy update transaction logic - 
+multi-table derivations, constraints, and actions such as sending mail or messages. Logic consists of _both:_
+
+*   **Rules - 40X** more concise using a spreadsheet-like paradigm, and
+
+*   **Python - control and extensibility,** using standard tools and techniques
+
+Logic Bank is based on SQLAlchemy - it handles `before_flush` events to enforce your logic.
+Your logic therefore applies to any SQLAlchemy-based access - JSON:Api, Admin App, etc.
+
+&nbsp;
+
+### SQLAlchemy
+
+[Object Relational Mapping for Python](https://docs.sqlalchemy.org/en/13/).
+
+SQLAlchemy provides Python-friendly database access for Python.
+
+It is used by JSON:Api, Logic Bank, and the Admin App.
+
+SQLAlchemy processing is based on Python `model` classes,
+created automatically by API Logic Server from your database,
+and saved in the `database` directory.
+
+&nbsp;
+
+### Admin App
+
+This generated project also contains a React Admin app:
+* Multi-page - including page transitions to "drill down"
+* Multi-table - master / details (with tab sheets)
+* Intelligent layout - favorite fields first, predictive joins, etc
+* Logic Aware - updates are monitored by business logic
