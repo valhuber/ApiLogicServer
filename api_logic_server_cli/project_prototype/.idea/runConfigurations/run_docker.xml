@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="run docker" type="PythonConfigurationType" factoryName="Python">
+  <configuration default="false" name="ApiLogicServer docker" type="PythonConfigurationType" factoryName="Python">
     <module name="py-ApiLogicProject" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
