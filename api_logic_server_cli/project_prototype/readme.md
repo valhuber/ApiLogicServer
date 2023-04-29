@@ -13,11 +13,13 @@ For instructions, [click here](#setup-instructions).
 
 Your project is ready to run, but it's likely you'll want to customize it - declare logic, new endpoints, etc.
 
-The ___Key Customization Files___ in the table are created as stubs, intended for you to add customizations that extend
-the created API, Logic and Web App.  Since they are separate files, the project can be
+The ___Key Customization Files___ listed in the table below are created as stubs, intended for you to add customizations that extend
+the created API, Logic and Web App.
+
+* Since they are separate files, the project can be
 [rebuilt](https://apilogicserver.github.io/Docs/Project-Rebuild/) (e.g., synchronized with a revised schema), preserving your customizations.
 
-Please see the ```nw``` sample for examples of typical customizations.  You can open it in GitHub (use Shift + "." to view in project mode) - [click here](https://github.com/ApiLogicServer/demo).
+Please see the `nw` sample for examples of typical customizations.  You can open it in GitHub (use Shift + "." to view in project mode) - [click here](https://github.com/ApiLogicServer/demo).
 
 | Directory | Usage                         | Key Customization File             | Typical Customization                                                                 |
 |:-------------- |:------------------------------|:-----------------------------------|:--------------------------------------------------------------------------------------|
@@ -33,6 +35,7 @@ Please see the ```nw``` sample for examples of typical customizations.  You can 
 # Project Information
 
 This API Logic Project was created with the `ApiLogicServer create` command.
+For information on Managing API Logic Projects, [click here](https://apilogicserver.github.io/Docs/Project-Structure).
 
 | About                    | Info                               |
 |:-------------------------|:-----------------------------------|
@@ -40,6 +43,7 @@ This API Logic Project was created with the `ApiLogicServer create` command.
 | API Logic Server Version | api_logic_server_version           |
 | Created in directory     | api_logic_server_project_directory |
 | API Name                 | api_logic_server_api_name          |
+| Execution begins with    | `api_logic_server_run.py`          |
 
 &nbsp;
 

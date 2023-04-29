@@ -1,4 +1,6 @@
-This describes how to add endpoints; for more information, [see here](https://apilogicserver.github.io/Docs/API-Customize).
+Without customization, your API supports multi-table retrieval.  For more information, [see here](https://apilogicserver.github.io/Docs/API-Multi-Table).
+
+This describes how to *add new endpoints*.  For more information, [see here](https://apilogicserver.github.io/Docs/API-Customize).
 
 &nbsp;
 
