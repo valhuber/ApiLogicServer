@@ -243,23 +243,17 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+04/29/2023 - 08.03.03: restore missing debug info for open database failures
+
 04/26/2023 - 08.03.00: virt attrs (Issue 56), safrs 3.0.2, LogicBank 1.8.4, project readme updates
 
 04/13/2023 - 08.02.00: integratedConsole, logic logging (66), table relns fix (65)
 
-04/06/2023 - 08.01.24: create_image, bugfix for excluded table relationships (Issue 65)
-
-03/23/2023 - 08.01.15: table filters, cloud debug additions, issue 59, 62-4 
-
-03/05/2023 - 08.01.04: python 3.11.2, Werkzeug==2.2.3, mypy initial, logicbank 1.8.3
+03/23/2023 - 08.01.15: table filters, cloud debug additions, issue 59, 62-4
 
 02/15/2023 - 08.00.01: Declarative Authorization and Authentication
 
 01/05/2023 - 07.00.00: Multi-db, sqlite test dbs, tests run, security prototype, env config
-
-12/21/2022 - 06.05.00: devops, env db uri, api endpoint names, git-push-new-project
-
-12/08/2022 - 06.04.05: Clarify creating docker repo, IP info, logic comments, nested result example
 
 11/22/2022 - 06.03.06: Image, Chkbox, Dialects, run.sh, SQL/Server url change, stop endpoint, Chinook Sqlite
 
@@ -271,8 +265,6 @@ There are a few articles that provide some orientation to API Logic Server:
 
 06/12/2022 - 05.02.22: No pyodbc by default, model customizations simplified, better logging
 
-05/30/2022 - 05.02.16: Python 3.10, Dockerfile include, start info
-
 05/04/2022 - 05.02.03: alembic for database migrations, admin-merge.yaml
 
 04/27/2022 - 05.01.02: copy_children, with support for nesting (children and grandchildren, etc.)
@@ -281,6 +273,3 @@ There are a few articles that provide some orientation to API Logic Server:
 
 12/26/2021 - 04.00.05: Introducing the Admin app, with Readme Tutorial
 
-11/13/2021 - 03.50.01: rebuild-from-database/model, improved relationship support 
-
-09/15/2021 - 03.00.09: auto-create .devcontainer for vscode, configure network, python & debug
