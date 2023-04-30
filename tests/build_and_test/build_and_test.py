@@ -510,7 +510,11 @@ os.chdir(program_dir)  # so admin app can find images, code
 
 python = find_valid_python_name()  # geesh - allow for python vs python3
 
-if platform == "darwin":
+personal_env_path = Path(current_path).joinpath("env.py")
+""" personal env (excluded in .gitignore)"""
+if os.path.exists(personal_env_path):
+    from env import Config  
+elif platform == "darwin":  # no personal path, use platform defaults
     from env_mac import Config
 elif platform == "win32":
     from env_win import Config
