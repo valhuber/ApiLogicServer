@@ -62,7 +62,7 @@ def __proper_salary__(self):  # type: ignore [no-redef]
         self._proper_salary = int(rtn_value)
         return self._proper_salary
     else:
-        print("class")
+        # print("class")
         return None
 
 @add_method(models.Employee)
