@@ -243,6 +243,8 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
+05/01/2023 - 08.03.06: allocation sample
+
 04/29/2023 - 08.03.03: restore missing debug info for open database failures
 
 04/26/2023 - 08.03.00: virt attrs (Issue 56), safrs 3.0.2, LogicBank 1.8.4, project readme updates
