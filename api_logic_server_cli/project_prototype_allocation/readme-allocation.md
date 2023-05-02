@@ -1,13 +1,3 @@
-# Project Information - Allocation Test
-
-| About                    | Info                               |
-|:-------------------------|:-----------------------------------|
-| Created                  | February 28, 2022 19:09:37                      |
-| API Logic Server Version | 4.02.08           |
-| Created in directory     | Allocation |
-| API Name                 | api          |
-
-
 # Allocate Payment to Outstanding Orders
 
 This project is to illustrate the use of [Allocation](https://github.com/valhuber/LogicBank/wiki/Sample-Project---Allocation).
@@ -60,15 +50,6 @@ cURL:
 ```
 curl -X POST "http://localhost:5656/api/Payment/" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "{  \"data\": {    \"attributes\": {      \"Amount\": 100,      \"AmountUnAllocated\": 0,      \"CustomerId\": \"ALFKI\"    },    \"type\": \"Payment\"  }}"
 ```
-
-&nbsp;&nbsp;
-
-
-# Temp Bug Fixes
-
-See [these 2 bugs](https://github.com/valhuber/ApiLogicServer/issues/39).  
-
-This project requires LogicBank==1.4.3 (`requirements.txt` updated), and manual fixes to `expose_api_models`.
 
 
 &nbsp;&nbsp;

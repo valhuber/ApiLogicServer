@@ -665,20 +665,6 @@ if Config.do_include_exclude:
 
 if Config.do_allocation_test:
     allocation_project_path = install_api_logic_server_path.joinpath('Allocation')
-
-    """ 
-        allocation_path = api_logic_server_tests_path.joinpath('allocation_test').joinpath('allocation.sqlite')
-        
-        allocation_url = f'sqlite:///{allocation_path}'
-        run_command(f'{set_venv} && ApiLogicServer create --project_name=Allocation --db_url={allocation_url}',
-            cwd=install_api_logic_server_path,
-            msg=f'\nCreate Allocation at: {str(install_api_logic_server_path)}')
-        pass
-
-        src = api_logic_server_tests_path.joinpath('allocation_test').joinpath('Allocation-src')
-        recursive_overwrite(src = src,
-                            dest = str(allocation_project_path))
-    """
     run_command(f'{set_venv} && ApiLogicServer create --project_name=Allocation --db_url=allocation',
             cwd=install_api_logic_server_path,
             msg=f'\nCreate Allocation at: {str(install_api_logic_server_path)}')    
