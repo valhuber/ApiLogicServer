@@ -64,7 +64,7 @@ def get_abs_db_url(msg, project: Project):
     """
     non-relative db location - we work with this
 
-    handle db_url abbreviations (nw, nw-, todo etc)
+    handle db_url abbreviations (nw, nw-, todo, allocation, etc)
 
     but NB: we copy sqlite db to <project>/database - see create_project_with_nw_samples (below)
 
@@ -93,6 +93,7 @@ def get_abs_db_url(msg, project: Project):
     if project.db_url in [project.default_db, "", "nw", "sqlite:///nw.sqlite"]:     # nw-gold:      default sample
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
         rtn_nw_db_status = "nw"  # api_logic_server_dir_path
+        # see also create_project_with_nw_samples for overlaying other project files
         log.debug(f'{msg} from: {rtn_abs_db_url}')  # /Users/val/dev/ApiLogicServer/api_logic_server_cli/database/nw-gold.sqlite
     elif project.db_url == "nw-":                                           # nw:           just in case
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/nw-gold.sqlite"))}'
@@ -116,6 +117,8 @@ def get_abs_db_url(msg, project: Project):
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/table_filters_tests.sqlite"))}'
     elif project.db_url == "classicmodels":
         rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/classicmodels.sqlite"))}'
+    elif project.db_url == "allocation":
+        rtn_abs_db_url = f'sqlite:///{str(project.api_logic_server_dir_path.joinpath("database/allocation.sqlite"))}'
     elif project.db_url.startswith('sqlite:///'):
         url = project.db_url[10: len(project.db_url)]
         rtn_abs_db_url = abspath(url)

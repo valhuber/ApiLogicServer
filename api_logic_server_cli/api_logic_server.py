@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.03.05"
+__version__ = "08.03.06"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/01/2023 - 08.03.05: build_and_test - personal env.py, readme tweak \n"\
+    "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\
     "\t04/26/2023 - 08.03.00: virt attrs (Issue 56), safrs 3.0.2, readme updates, LogicBank 1.8.4 \n"\
     "\t04/13/2023 - 08.02.00: integratedConsole, logic logging (66), table relns fix (65) \n"\
@@ -242,6 +242,8 @@ def create_project_with_nw_samples(project, msg: str) -> str:
 
     if nw/nw+, inject sample logic/declare_logic and api/customize_api.
 
+    nw, allocation etc databases are resolved in api_logic_server_utils.get_abs_db_url()
+
     :param project a ProjectRun
     :param msg log.debuged, such as Create Project:
     :return: return_abs_db_url (e.g., reflects sqlite copy to project/database dir)
@@ -303,6 +305,12 @@ def create_project_with_nw_samples(project, msg: str) -> str:
             recursive_overwrite(nw_dir, project.project_directory)
 
             create_nw_tutorial(project.project_directory, api_logic_server_dir_str)
+
+        if project.db_url in ["allocation"]:
+            log.debug(".. ..Copy in allocation customizations: readme, logic, tests")
+            nw_dir = (Path(api_logic_server_dir_str)).\
+                joinpath('project_prototype_allocation')  # /Users/val/dev/ApiLogicServer/project_prototype_allocation
+            recursive_overwrite(nw_dir, project.project_directory)
 
         if project.nw_db_status in ["nw-"]:
             log.debug(".. ..Copy in nw- customizations: readme, perform_customizations")
@@ -1178,6 +1186,7 @@ def key_module_map():
     import sqlacodegen_wrapper.sqlacodegen_wrapper as sqlacodegen_wrapper
 
     ProjectRun.create_project()                             # main driver, calls...
+    create_utils.get_abs_db_url()                           # nw set here, dbname, db abbrevs
     create_project_with_nw_samples()                        # clone project, overlay nw
     model_creation_services = ModelCreationServices()       # creates resource_list (python db model); ctor calls...
     def and_the_ctor_calls():
@@ -1187,7 +1196,6 @@ def key_module_map():
     invoke_creators(model_creation_services)                # creates api & ui, via create_from_model...
     api_expose_api_models_creator.create()                  # creates api/expose_api_models.py, key input to SAFRS        
     ui_admin_creator.create()                               # creates ui/admin/admin.yaml from resource_list
-    create_utils.get_abs_db_url()                           # nw set here, dbname
     ProjectRun.update_config_and_copy_sqlite_db()           # adds db (model, binds, api, app) to curr project
     ProjectRun.add_sqlite_security()                        # add_db(auth), adds nw declare_security, upd config
     ProjectRun.tutorial()                                   # creates basic, nw, nw + cust
