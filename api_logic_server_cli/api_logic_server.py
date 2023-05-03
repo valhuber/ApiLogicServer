@@ -15,7 +15,7 @@ Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 __version__ = "08.03.07"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/01/2023 - 08.03.07: move pythonanywhere out of project root \n"\
+    "\t05/03/2023 - 08.03.07: move pythonanywhere out of project root \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\
     "\t04/26/2023 - 08.03.00: virt attrs (Issue 56), safrs 3.0.2, readme updates, LogicBank 1.8.4 \n"\
