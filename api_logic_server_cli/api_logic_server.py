@@ -541,7 +541,7 @@ def fix_host_and_ports(msg, project):
     full_path = project.project_directory_actual
     create_utils.replace_string_in_file(search_for="python_anywhere_path",
                            replace_with=full_path,
-                           in_file=f'{project.project_directory}/python_anywhere_wsgi.py')
+                           in_file=f'{project.project_directory}/devops/python-anywhere/python_anywhere_wsgi.py')
     log.debug(f' e.   Updated python_anywhere_wsgi.py with {full_path}')
 
 
