@@ -1,6 +1,6 @@
 # Allocate Payment to Outstanding Orders
 
-This project is to illustrate the use of [Allocation](https://github.com/valhuber/LogicBank/wiki/Sample-Project---Allocation).
+This project is to illustrate the use of Allcation.
 
 Allocation is a pattern where:
 
@@ -16,7 +16,7 @@ For example, imagine a ```Customer``` has a set of outstanding
 
 ## Data Model
 
-![Background](/images/db.png?raw=true "Optional Title")
+![Background](images/allocation/db.png "Overview")
 
 ## Requirements
 When the ```Payment``` is inserted, our system must:
@@ -33,28 +33,23 @@ a ```PaymentAllocation```
 
 # Setup
 
-The usual:
-```
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+Create the project:
 
-This should enable you to run launch configuration `ApiLogicServer`.
+```
+ApiLogicServer create --project_name=allocation --db_url=allocation
+```
+After you establish the venv in the usual manner, you canopen the project in your IDE and run launch configuration `ApiLogicServer`.
 
 
 # Test
-Use Admin app, or
 
-cURL:
-```
-curl -X POST "http://localhost:5656/api/Payment/" -H  "accept: application/vnd.api+json" -H  "Content-Type: application/json" -d "{  \"data\": {    \"attributes\": {      \"Amount\": 100,      \"AmountUnAllocated\": 0,      \"CustomerId\": \"ALFKI\"    },    \"type\": \"Payment\"  }}"
-```
-
+Use `sh test/test.sh`
 
 &nbsp;&nbsp;
 
 # Walkthrough
+
+![Walkthrough](images/allocation/logic-diagram.png "Overview")
 
 The test illustrates allocation logic for our inserted payment,
 which operates as follows:

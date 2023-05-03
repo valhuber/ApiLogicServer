@@ -326,7 +326,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Create and run Allocation  (abbr)",
+            "name": "Create Allocation  (abbr)",
             "type": "python",
             "request": "launch",
             "env": {"APILOGICSERVER_HOME": "${workspaceFolder}"},
