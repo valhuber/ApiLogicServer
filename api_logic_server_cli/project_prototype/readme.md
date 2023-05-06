@@ -80,11 +80,13 @@ Your runtime systems are part of Dev Container, which you probably activated whe
 
 To run your project
 
-![Start Project](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/nutshell/project-executable.png?raw=true)
+![Start Project](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-nutshell.png?raw=true)
 
 As shown above:
 
-1. Use the pre-supplied Run Configuration
+1. Use the pre-supplied Run Configuration; use either:
+    * `**ApiLogicServer - No Security (e.g., for behave tests** to run *with security* (recommended initially)
+    * `**ApiLogicServer** to run [with security](https://apilogicserver.github.io/Docs/Security-Swagger/)
 2. Click the url in the console to start the Admin App
     * Use it to explore your data (shown below)
     * And your API (via Swagger)

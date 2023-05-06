@@ -215,8 +215,8 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
     """ copy tutorial from docs, and link to it from readme.md 
     
     alert 2 copies
-    * /Users/val/dev/Org-ApiLogicServer/Docs/docs/Tutorial.md
-    * /Users/val/dev/ApiLogicServer/Docs/api_logic_server_cli/docs/Tutorial.md <=
+    * /Users/val/dev/Org-ApiLogicServer/Docs/docs/Tutorial.md <= master
+    * /Users/val/dev/ApiLogicServer/api_logic_server_cli/docs/Tutorial.md
     """
 
 
