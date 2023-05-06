@@ -12,9 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.03.07"
+__version__ = "08.03.08"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t05/05/2023 - 08.03.08: nutshell demo, move pythonanywhere out of project root \n"\
     "\t05/03/2023 - 08.03.07: move pythonanywhere out of project root \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\

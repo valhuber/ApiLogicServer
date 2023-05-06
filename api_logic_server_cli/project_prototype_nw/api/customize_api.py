@@ -15,7 +15,7 @@ from database import models
 from logic_bank.rule_bank.rule_bank import RuleBank
 
 # Called by api_logic_server_run.py, to customize api (new end points, services -- see add_order).
-# Separate from expose_api_models.py, to simplify merge if project recreated
+# Separate from expose_api_models.py, to simplify merge if project rebuilt
 
 
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):

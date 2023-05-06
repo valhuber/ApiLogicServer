@@ -38,13 +38,13 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     '''
     port_replace = model_creation_services.project.port if model_creation_services.project.port else "None"
     result_apis += \
-        f'\n\ndef expose_models(api, method_decorators = []):  # th \n'
+        f'\n\ndef expose_models(api, method_decorators = []): \n'
     # result_apis += '    my_host = HOST\n'
     # result_apis += '    if HOST == "0.0.0.0":\n'
     # result_apis += '        my_host = "localhost"  # override default HOST for pc"\n'
     result_apis += '    """\n'
     result_apis += '        Declare API - on existing SAFRSAPI \n'
-    result_apis += '            This exposes each model (note: end point names are table names) \n'
+    result_apis += '            This exposes each model - API automation\n'
     result_apis += '            Including get (filtering, pagination, related data access) \n'
     result_apis += '            And post/patch/update (including logic enforcement) \n'
     result_apis += '        You typically do not customize this file \n'

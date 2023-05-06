@@ -108,7 +108,7 @@ def declare_logic():
         """ use events for sending email, messages, etc. """
         if logic_row.ins_upd_dlt == "ins":  # logic engine fills parents for insert
             sales_rep = row.Employee        # parent accessor
-            if sales_rep is None:
+            if sales_rep is None:           # breakpoint here
                 logic_row.log("no salesrep for this order")
             elif sales_rep.Manager is None:
                 logic_row.log("no manager for this order's salesrep")

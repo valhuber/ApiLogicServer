@@ -2,7 +2,7 @@
 
 To run your project, the system requires various runtime systems for data access, api, and logic.  These are included with API Logic Server ([architecture doc here](https://apilogicserver.github.io/Docs/Architecture-What-Is/)).  So, to run your project ([instructions here](#setup-instructions)):
 
-1.  __Establish your Python Environment__ to activate these runtime system
+1.  __Establish your Python Environment__ to activate these runtime systems
 2. __Run__
 
 &nbsp;
