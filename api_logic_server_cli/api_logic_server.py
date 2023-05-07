@@ -7,7 +7,7 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
         * ui/admin/admin.yaml for the Admin App     - using introspected models.py
         * api/expose_api_models.py for a safrs api  - using introspected models.py
     * Special provisions for NW Sample, to show customizations.
-    * See end for key_module_map() quick links...
+    * See end for key_module_map() quick links
 
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
