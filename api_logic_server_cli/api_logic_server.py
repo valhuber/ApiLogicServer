@@ -12,11 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.03.09"
+__version__ = "08.03.10"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/06/2023 - 08.03.09: tutorial nutshell demo, move pythonanywhere out of project root \n"\
-    "\t05/03/2023 - 08.03.07: move pythonanywhere out of project root \n"\
+    "\t05/07/2023 - 08.03.10: tutorial nutshell demo 2, rm cli/docs, move pythonanywhere out of project root \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\
     "\t04/26/2023 - 08.03.00: virt attrs (Issue 56), safrs 3.0.2, readme updates, LogicBank 1.8.4 \n"\
@@ -214,12 +213,14 @@ def recursive_overwrite(src, dest, ignore=None):
 def create_nw_tutorial(project_name, api_logic_server_dir_str):
     """ copy tutorial from docs, and link to it from readme.md 
     
-    alert 2 copies
-    * /Users/val/dev/Org-ApiLogicServer/Docs/docs/Tutorial.md <= master
-    * /Users/val/dev/ApiLogicServer/api_logic_server_cli/docs/Tutorial.md
+    Alert: 2 copies:
+    * ~/dev/ApiLogicServer/api_logic_server_cli/project_prototype_nw/Tutorial.md
+    * ~/dev/Org-ApiLogicServer/Docs/docs/Tutorial.md
+    * cli version is master -->
+    * cp api_logic_server_cli/project_prototype_nw/Tutorial.md ../Org-ApiLogicServer/Docs/docs/Tutorial.md
     """
 
-
+    """
     tutorial_file_proj = open(project_name + '/Tutorial.md', 'w')
     tutorial_file_docs_path = Path(api_logic_server_dir_str).\
         joinpath('docs/Tutorial.md')
@@ -227,6 +228,7 @@ def create_nw_tutorial(project_name, api_logic_server_dir_str):
     tutorial_readme = tutorial_file_docs.read()
     tutorial_file_proj.write(tutorial_readme)
     tutorial_file_proj.close()
+    """
 
     project_readme_file_path = project_name + '/readme.md'  # brief 'go read tutorial' - add std readme
     standard_readme_file_path = str(Path(api_logic_server_dir_str).\

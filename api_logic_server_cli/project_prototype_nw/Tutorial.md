@@ -14,7 +14,7 @@ This Detailed Tutorial is designed for these scenarios:
 
 In this tutorial, we will explore:
 
-* **create** - we will briefly review what actually happens during the create process
+* **create** - we will briefly review what actually happens during the create process.
 
 * **run** - we will first run the Admin App and the JSON:API.  These will illustrate how automation creates an app and API from a data model.  You can then infer what you'd get for one of your databases.
 
