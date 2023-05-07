@@ -1,0 +1,18 @@
+:root
+  {
+    --md-admonition-icon--pied-piper:url('../api_logic_server_cli/docs/assets/images/bulb_icon.svg')
+  }
+  .md-typeset .admonition.pied-piper,
+  .md-typeset details.pied-piper {
+    border-color: rgb(43, 155, 70);
+  }
+  .md-typeset .pied-piper > .admonition-title,
+  .md-typeset .pied-piper > summary {
+    background-color: rgba(43, 155, 70, 0.1);
+  }
+  .md-typeset .pied-piper > .admonition-title::before,
+  .md-typeset .pied-piper > summary::before {
+    background-color: rgb(43, 155, 70);
+    -webkit-mask-image: var(--md-admonition-icon--pied-piper);
+            mask-image: var(--md-admonition-icon--pied-piper);
+  }

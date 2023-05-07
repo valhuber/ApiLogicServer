@@ -1,0 +1,2201 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../API-Customize/">
+      
+      
+        <link rel="next" href="../Logic/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+    
+    
+      
+        <title>Rules: 40X, Extensible - API Logic Server</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.85bb2934.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#problem-code-explosion" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="API Logic Server" class="md-header__button md-logo" aria-label="API Logic Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            API Logic Server
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Rules: 40X, Extensible
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="API Logic Server" class="md-nav__button md-logo" aria-label="API Logic Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    API Logic Server
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+         
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Quick Start
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Quick Start
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Eval-x/" class="md-nav__link">
+        Express Eval x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Eval/" class="md-nav__link">
+        Express Eval
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Express-x/" class="md-nav__link">
+        Express Install-x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Express/" class="md-nav__link">
+        Express Install
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Detailed Install
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Detailed Install
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install/" class="md-nav__link">
+        Install API Logic Server
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Create-ApiLogicProject/" class="md-nav__link">
+        Create an API Logic Project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5_3" id="__nav_2_5_3_label" tabindex="0">
+          Execute an API Logic Project
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Execute an API Logic Project
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IDE-Execute/" class="md-nav__link">
+        Execute in your IDE
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Execute/" class="md-nav__link">
+        Execute From Terminal
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorial
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tutorial-x.md" class="md-nav__link">
+        Tutorial-x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tutorial/" class="md-nav__link">
+        Tutorial
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sample-Database/" class="md-nav__link">
+        Sample Database
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          1. Admin Web App
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          1. Admin Web App
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Admin-Tour/" class="md-nav__link">
+        Admin App Features
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Admin-Customization/" class="md-nav__link">
+        Admin Customization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          2. API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          2. API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/" class="md-nav__link">
+        JSON:API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API-Customize/" class="md-nav__link">
+        API Customization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          3. Logic
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          3. Logic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Rules: 40X, Extensible
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Rules: 40X, Extensible
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this Page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this Page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem-code-explosion" class="md-nav__link">
+    Problem: Code Explosion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution-rules-are-an-executable-design" class="md-nav__link">
+    Solution: Rules are an Executable Design
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#declare-extend-manage" class="md-nav__link">
+    Declare, Extend, Manage
+  </a>
+  
+    <nav class="md-nav" aria-label="Declare, Extend, Manage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declare-python" class="md-nav__link">
+    Declare: Python
+  </a>
+  
+    <nav class="md-nav" aria-label="Declare: Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-completion" class="md-nav__link">
+    Code Completion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extend-python" class="md-nav__link">
+    Extend: Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manage-your-ide-sccs" class="md-nav__link">
+    Manage: Your IDE, SCCS
+  </a>
+  
+    <nav class="md-nav" aria-label="Manage: Your IDE, SCCS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vscode-debugging" class="md-nav__link">
+    VSCode debugging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-aspects-of-logic" class="md-nav__link">
+    Key Aspects of Logic
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Aspects of Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-reuse" class="md-nav__link">
+    Automatic Reuse
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scalability-prune-and-optimize" class="md-nav__link">
+    Scalability: Prune and Optimize
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatic-ordering" class="md-nav__link">
+    Automatic Ordering
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Ordering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#control-for-actions-and-constraints" class="md-nav__link">
+    Control for actions and constraints
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Logic/" class="md-nav__link">
+        Rules
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Logic-Operation/" class="md-nav__link">
+        Logic Operation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Logic-Tutorial/" class="md-nav__link">
+        TDD-based Approach
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          4. Security
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          4. Security
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Authorization/" class="md-nav__link">
+        Authorization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Authentication/" class="md-nav__link">
+        Authentication
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Authentication-Provider/" class="md-nav__link">
+        Authentication Provider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Activation/" class="md-nav__link">
+        Activation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IDE-Customize/" class="md-nav__link">
+        Using Your IDE
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Managing API Logic Projects
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Managing API Logic Projects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-DevOps/" class="md-nav__link">
+        DevOps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Structure/" class="md-nav__link">
+        Structure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Rebuild/" class="md-nav__link">
+        Rebuild
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Working-With-Docker/" class="md-nav__link">
+        Working With Docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Manage-GitHub/" class="md-nav__link">
+        GitHub and Codespaces
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Env/" class="md-nav__link">
+        Virtual Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Execution/" class="md-nav__link">
+        Execution - Hosts and Ports
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Builders/" class="md-nav__link">
+        Builders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          Database
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Database
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Examples/" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Classes/" class="md-nav__link">
+        Data Model Classes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Keys/" class="md-nav__link">
+        Data Model Keys
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Customization/" class="md-nav__link">
+        Data Model Customization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database-Connectivity/" class="md-nav__link">
+        Connection Examples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Multi/" class="md-nav__link">
+        Multiple Databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-pyodbc/" class="md-nav__link">
+        Install pyodbc: SqlServer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-psycopg2/" class="md-nav__link">
+        Install psycopg2: Postgres
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+          Testing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Testing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Behave/" class="md-nav__link">
+        Testing With Behave
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Behave-Logic-Report/" class="md-nav__link">
+        Behave Logic Report
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+          Architecture
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_12">
+          <span class="md-nav__icon md-icon"></span>
+          Architecture
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Architecture-What-Is/" class="md-nav__link">
+        What is API Logic Server
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Architecture/" class="md-nav__link">
+        Architectural Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Working-with-Flask-AppBuilder/" class="md-nav__link">
+        Working with Flask AppBuilder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Internals/" class="md-nav__link">
+        API Logic Server Development
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Internals-CLI/" class="md-nav__link">
+        Internals - CLI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Troubleshooting/" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+          FAQs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          FAQs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ-Low-Code/" class="md-nav__link">
+        Is this a Low Code approach?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ-Frameworks/" class="md-nav__link">
+        Is this a Framework?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ-RETE/" class="md-nav__link">
+        Is this a RETE Engine?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-4GL/" class="md-nav__link">
+        Is this a 4GL?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Proven/" class="md-nav__link">
+        Is this a Proven Technology?
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+          Tech Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          Tech Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech--Notes/" class="md-nav__link">
+        About Tech Notes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Docker/" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Python/" class="md-nav__link">
+        Python for a Java developer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Install-Python/" class="md-nav__link">
+        Python Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Python-311/" class="md-nav__link">
+        Python 3.11
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-mkdocs-material/" class="md-nav__link">
+        Mkdocs Material
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-CodeSpaces/" class="md-nav__link">
+        CodeSpaces
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-m1/" class="md-nav__link">
+        M1 Mac
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_15_9" id="__nav_15_9_label" tabindex="0">
+          Personal
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_15_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_15_9">
+          <span class="md-nav__icon md-icon"></span>
+          Personal
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Conference-PyCon23-Talk/" class="md-nav__link">
+        PyCon23 Talk
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Conference-PyCon23-Tutorial/" class="md-nav__link">
+        PyCon23 Tutorial
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Conference/" class="md-nav__link">
+        Conference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this Page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this Page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#problem-code-explosion" class="md-nav__link">
+    Problem: Code Explosion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution-rules-are-an-executable-design" class="md-nav__link">
+    Solution: Rules are an Executable Design
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#declare-extend-manage" class="md-nav__link">
+    Declare, Extend, Manage
+  </a>
+  
+    <nav class="md-nav" aria-label="Declare, Extend, Manage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declare-python" class="md-nav__link">
+    Declare: Python
+  </a>
+  
+    <nav class="md-nav" aria-label="Declare: Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#code-completion" class="md-nav__link">
+    Code Completion
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extend-python" class="md-nav__link">
+    Extend: Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manage-your-ide-sccs" class="md-nav__link">
+    Manage: Your IDE, SCCS
+  </a>
+  
+    <nav class="md-nav" aria-label="Manage: Your IDE, SCCS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vscode-debugging" class="md-nav__link">
+    VSCode debugging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-aspects-of-logic" class="md-nav__link">
+    Key Aspects of Logic
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Aspects of Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automatic-reuse" class="md-nav__link">
+    Automatic Reuse
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scalability-prune-and-optimize" class="md-nav__link">
+    Scalability: Prune and Optimize
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatic-ordering" class="md-nav__link">
+    Automatic Ordering
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Ordering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#control-for-actions-and-constraints" class="md-nav__link">
+    Control for actions and constraints
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Rules: 40X, Extensible</h1>
+
+<p>Logic addresses backend <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> constraint and derivation logic.  It's expressed in Python as rules, extensible with Python events as required.</p>
+<h3 id="problem-code-explosion">Problem: Code Explosion</h3>
+<p>In conventional approaches, such logic is <strong>nearly half the system,</strong> due to code explosion.  A typical design specification of 5 lines explodes into <a href="https://github.com/valhuber/LogicBank/wiki/by-code" rel="noopener" target="_blank">200 lines of legacy code</a>).</p>
+<details>
+<summary>5 Line Spec Explodes into 200 Lines of Legacy Code... </summary>
+<p>Let's imagine we have a "cocktail napkin spec" for checking credit, shown (in blue) in the diagram below.  How might we enforce such logic?</p>
+<ul>
+<li>
+<p>In UI controllers - this is the most common choice.  It's actually the worst choice, since it offers little re-use, and does not apply to non-UI cases such as API-based application integration.</p>
+</li>
+<li>
+<p>Centralized in the server - in the past, we might have written triggers, but a modern software architecture centralizes such logic in an App Server tier.  If you are using an <abbr title="Object Relational Manager - dev-friendly sql access, such as row objects (e.g., SQLAlchemy)">ORM</abbr> such as SQLAlchemy, you can <em>ensure sharing</em> with <code>before_flush</code> events as shown below.</p>
+</li>
+</ul>
+<p>After we've determined <em>where</em> to put the code, we then have to <em>write</em> it.  Our simple 5 line cocktail napkin specification explodes into <a href="https://github.com/valhuber/LogicBank/wiki/by-code" rel="noopener" target="_blank">200 lines of legacy code</a>):</p>
+<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/overview/rules-vs-code.png"></figure>
+<p>It's also incredibly repetitive - you often get the feeling you're doing the same thing over and over.</p>
+<p>And you're right.  It's because backend logic follows patterns of "what" is supposed to happen.
+And your code is the "how". </p>
+</details>
+<h3 id="solution-rules-are-an-executable-design">Solution: Rules are an Executable Design</h3>
+<p>API Logic -- unique to API Logic Server -- consists of <strong>Rules, extensible with Python.</strong>  </p>
+<blockquote>
+<p>Rules typically automate over <strong>95% of such logic,</strong> and are <strong>40X more concise</strong>.  Rules are conceptually similar to <a href="../Logic-Operation/#basic-idea-like-a-spreadsheet">spreadsheet cell formulas</a>.</p>
+</blockquote>
+<p>For this typical check credit design (in blue), the <strong>5 rules shown below (lines 64-79) represent the same logic as <a href="https://github.com/valhuber/LogicBank/wiki/by-code" rel="noopener" target="_blank">200 lines of code</a></strong>:</p>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/logic/5-rules-cocktail.png?raw=true"></figure>
+
+<details>
+<summary>See the code here</summary>
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Logic Design (&quot;Cocktail Napkin Design&quot;) for User Story Check Credit</span>
+<span class="sd">    Customer.Balance &lt;= CreditLimit</span>
+<span class="sd">    Customer.Balance = Sum(Order.AmountTotal where unshipped)</span>
+<span class="sd">    Order.AmountTotal = Sum(OrderDetail.Amount)</span>
+<span class="sd">    OrderDetail.Amount = Quantity * UnitPrice</span>
+<span class="sd">    OrderDetail.UnitPrice = copy from Product</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">Rule</span><span class="o">.</span><span class="n">constraint</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Customer</span><span class="p">,</span>       <span class="c1"># logic design translates directly into rules</span>
+    <span class="n">as_condition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">Balance</span> <span class="o">&lt;=</span> <span class="n">row</span><span class="o">.</span><span class="n">CreditLimit</span><span class="p">,</span>
+    <span class="n">error_msg</span><span class="o">=</span><span class="s2">&quot;balance (</span><span class="si">{row.Balance}</span><span class="s2">) exceeds credit (</span><span class="si">{row.CreditLimit}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+<span class="n">Rule</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">derive</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Customer</span><span class="o">.</span><span class="n">Balance</span><span class="p">,</span>        <span class="c1"># adjust iff AmountTotal or ShippedDate or CustomerID changes</span>
+    <span class="n">as_sum_of</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Order</span><span class="o">.</span><span class="n">AmountTotal</span><span class="p">,</span>
+    <span class="n">where</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">ShippedDate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># adjusts - *not* a sql select sum...</span>
+
+<span class="n">Rule</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">derive</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Order</span><span class="o">.</span><span class="n">AmountTotal</span><span class="p">,</span>       <span class="c1"># adjust iff Amount or OrderID changes</span>
+    <span class="n">as_sum_of</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OrderDetail</span><span class="o">.</span><span class="n">Amount</span><span class="p">)</span>
+
+<span class="n">Rule</span><span class="o">.</span><span class="n">formula</span><span class="p">(</span><span class="n">derive</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OrderDetail</span><span class="o">.</span><span class="n">Amount</span><span class="p">,</span>  <span class="c1"># compute price * qty</span>
+    <span class="n">as_expression</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">UnitPrice</span> <span class="o">*</span> <span class="n">row</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)</span>
+
+<span class="n">Rule</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">derive</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OrderDetail</span><span class="o">.</span><span class="n">UnitPrice</span><span class="p">,</span>  <span class="c1"># get Product Price (e,g., on insert, or ProductId change)</span>
+    <span class="n">from_parent</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">UnitPrice</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Demonstrate that logic == Rules + Python (for extensibility)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">congratulate_sales_rep</span><span class="p">(</span><span class="n">row</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Order</span><span class="p">,</span> <span class="n">old_row</span><span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Order</span><span class="p">,</span> <span class="n">logic_row</span><span class="p">:</span> <span class="n">LogicRow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; use events for sending email, messages, etc. &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">logic_row</span><span class="o">.</span><span class="n">ins_upd_dlt</span> <span class="o">==</span> <span class="s2">&quot;ins&quot;</span><span class="p">:</span>  <span class="c1"># logic engine fills parents for insert</span>
+        <span class="n">sales_rep</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">Employee</span>
+        <span class="k">if</span> <span class="n">sales_rep</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logic_row</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;no salesrep for this order&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">sales_rep</span><span class="o">.</span><span class="n">Manager</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logic_row</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;no manager for this order&#39;s salesrep&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logic_row</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Hi, </span><span class="si">{</span><span class="n">sales_rep</span><span class="o">.</span><span class="n">Manager</span><span class="o">.</span><span class="n">FirstName</span><span class="si">}</span><span class="s1"> - &#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;Congratulate </span><span class="si">{</span><span class="n">sales_rep</span><span class="o">.</span><span class="n">FirstName</span><span class="si">}</span><span class="s1"> on their new order&#39;</span><span class="p">)</span>
+
+<span class="n">Rule</span><span class="o">.</span><span class="n">commit_row_event</span><span class="p">(</span><span class="n">on_class</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Order</span><span class="p">,</span> <span class="n">calling</span><span class="o">=</span><span class="n">congratulate_sales_rep</span><span class="p">)</span>
+</code></pre></div>
+</details>
+<p>&nbsp;</p>
+<h3 id="declare-extend-manage">Declare, Extend, Manage</h3>
+<p>Use standard tools - standard language (Python), IDEs, and tools as described below.</p>
+<h4 id="declare-python">Declare: Python</h4>
+<p>Rules are declared in Python, using your IDE as shown above.</p>
+<h5 id="code-completion">Code Completion</h5>
+<p>Your IDE code completion services can aid in discovering logic services.  There are 2 key elements:</p>
+<ol>
+<li>Discover <em>rules</em> by <code>Rule.</code></li>
+<li>Discovery <em>logic services</em> made available through <code>logic_row</code></li>
+</ol>
+<blockquote>
+<p>If these aren't working, ensure your <code>venv</code> setup is correct - consult the <a href="../Troubleshooting#code-completion-fails">Trouble Shooting</a> Guide.</p>
+</blockquote>
+<p>You can find examples of these services in the sample <code>ApiLogicProject</code>.</p>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/vscode/venv.png?raw=true"></figure>
+
+<h4 id="extend-python">Extend: Python</h4>
+<p>While 95% is certainly remarkable, it's not 100%.  Automating most of the logic is of no value unless there are provisions to address the remainder.</p>
+<p>That provision is standard Python, provided as standard events (lines 84-100 in the first screen shot above).  This will be typically be used for non-database oriented logic such as files and messages, and for extremely complex database logic.</p>
+<h4 id="manage-your-ide-sccs">Manage: Your IDE, SCCS</h4>
+<p>The screen shot above illustrates you use your IDE (e.g., VSCode, PyCharm) to declare logic using Python, with all the familiar features of code completion and syntax high-lighting.  You can also use the debugger, and familiar Source Code Control tools such as <code>git</code>.</p>
+<h5 id="debugging">Debugging</h5>
+<p>As shown on the <a href="https://github.com/valhuber/ApiLogicServer/blob/main/README.md">readme video</a>, you can:</p>
+<ol>
+<li>
+<p>Use your IDE to set breakpoints in rules, then examine <code>row</code> variables</p>
+</li>
+<li>
+<p>Visualize logic execution with the <em>logic log.</em> Shown below, the console shows a line for each rule that fires, with the full row content (old/new values), indented to show <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> logic chaining.</p>
+</li>
+</ol>
+<blockquote>
+<p>Note: the logic log creates long lines.  You will generally therefore want to suppress word wrap.  Most IDEs and text editors have mechanisms to do this; if you are using the console, you may want to copy/paste the log into a text editor that can suppress word wrap.  This is defaulted in <code>api_logic_server_run.py</code> for sqlite databases.</p>
+</blockquote>
+<figure><img src="https://github.com/valhuber/LogicBank/raw/main/images/overview/log.png"></figure>
+
+<h6 id="vscode-debugging">VSCode debugging</h6>
+<p>In VSCode, set <code>"redirectOutput": true</code> in your <strong>Launch Configuration.</strong>  This directs logging output to the Debug Console, where it is not word-wrapped (word-wrap obscures the <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> chaining).</p>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/docker/VSCode/no-line-wrap.png"></figure>
+
+<p>&nbsp;</p>
+<h3 id="key-aspects-of-logic">Key Aspects of Logic</h3>
+<p>While conciseness is the most immediately obvious aspect of logic, rules provide deeper value as summarized below.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Concept</th>
+<th align="left">Rule Automation</th>
+<th align="left">Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Re-use</td>
+<td align="left">Automatic re-use over all resources and actions</td>
+<td align="left"><strong>Velocity / Conciseness:</strong> Eliminates logic replication over multiple UI controllers or services.</td>
+</tr>
+<tr>
+<td align="left">Invocation</td>
+<td align="left">Automatic logic execution, on referenced data changes</td>
+<td align="left"><strong>Quality:</strong> Eliminates the <em>"code was there but not called"</em> problem.<br><br>Rules are <em>active,</em> transforming ‘dumb’ database objects into <em>smart</em> business objects</td>
+</tr>
+<tr>
+<td align="left">Execution Order</td>
+<td align="left">Automatic ordering based on dependencies</td>
+<td align="left"><strong>Maintenance:</strong> Eliminates the <em>"where do I insert this code"</em> problem - the bulk of maintenance effort.</td>
+</tr>
+<tr>
+<td align="left">Dependency Management</td>
+<td align="left">Automatic chaining</td>
+<td align="left"><strong>Conciseness:</strong> Eliminates the code that tests <em>"what's changed"</em> to invoke relevant logic</td>
+</tr>
+<tr>
+<td align="left">Persistence</td>
+<td align="left">Automatic optimization</td>
+<td align="left"><strong>Performance:</strong> Unlike Rete engines which have no concept of old values, transaction logic can prune rules for unchanged data, and optimize for adjustment logic based on the difference between old/new values.  This can literally result in sub-second performance instead of multiple minutes, and can be tuned without recoding..</td>
+</tr>
+</tbody>
+</table>
+<p>See also the <a href="../FAQ-RETE">FAQs</a>.</p>
+<h4 id="automatic-reuse">Automatic Reuse</h4>
+<p>Just as a spreadsheet reacts
+to inserts, updates and deletes to a summed column,
+rules automate <em>adding</em>, <em>deleting</em> and <em>updating</em> orders.
+This is how 5 rules represent the same logic as 200 lines of code.</p>
+<p>Our cocktail napkin spec is really nothing more than a set of spreadsheet-like rules that govern how to derive and constrain our data.  And by conceiving of the rules as associated with the <em>data</em> (instead of a UI button), rules conceived for Place Order <em>automatically</em> address these related transactions:</p>
+<ul>
+<li>add order</li>
+<li><a href="https://github.com/valhuber/LogicBank/wiki/Ship-Order"><strong>Ship Order</strong></a> illustrates <em>cascade</em>, another form of <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> logic</li>
+<li>delete order</li>
+<li>assign order to different customer</li>
+<li>re-assign an Order Detail to a different Product, with a different quantity</li>
+<li>add/delete Order Detail</li>
+</ul>
+<h4 id="scalability-prune-and-optimize">Scalability: Prune and Optimize</h4>
+<p>Scalability requires more than clustering - SQLs must be pruned
+and optimized.  For example, the balance rule:</p>
+<ul>
+<li>is <strong>pruned</strong> if only a non-referenced column is altered (e.g., Shipping Address)</li>
+<li>is <strong>optimized</strong> into a 1-row <em>adjustment</em> update instead of an
+expensive SQL aggregate</li>
+</ul>
+<p>For more on how logic automates and optimizes <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> transactions,
+<a href="https://github.com/valhuber/LogicBank/wiki#scalability-automatic-pruning-and-optimization">click here</a>.</p>
+<h4 id="automatic-ordering">Automatic Ordering</h4>
+<p>The system parses your <em>derivation rules</em> to determine dependencies, and uses this to order execution.  This occurs once per session on activation, so rule declaration changes automatically determine a new order.  </p>
+<p>This is significant for iterative development and maintenance, eliminating the bulk of time spent determining <em>where do I insert this new logic</em>.</p>
+<h5 id="control-for-actions-and-constraints">Control for actions and constraints</h5>
+<p>Constraint and action rules are executed in their declaration order.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "kramdown", "content.tooltips"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.fac441b0.min.js"></script>
+      
+    
+  </body>
+</html>

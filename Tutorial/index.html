@@ -1,0 +1,2402 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../Execute/">
+      
+      
+        <link rel="next" href="../Sample-Database/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+    
+    
+      
+        <title>Tutorial - API Logic Server</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.85bb2934.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#about-this-detailed-tutorial" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="API Logic Server" class="md-header__button md-logo" aria-label="API Logic Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            API Logic Server
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tutorial
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="API Logic Server" class="md-nav__button md-logo" aria-label="API Logic Server" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    API Logic Server
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+         
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Quick Start
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Quick Start
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Eval-x/" class="md-nav__link">
+        Express Eval x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Eval/" class="md-nav__link">
+        Express Eval
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Express-x/" class="md-nav__link">
+        Express Install-x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-Express/" class="md-nav__link">
+        Express Install
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Detailed Install
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Detailed Install
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install/" class="md-nav__link">
+        Install API Logic Server
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Create-ApiLogicProject/" class="md-nav__link">
+        Create an API Logic Project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5_3" id="__nav_2_5_3_label" tabindex="0">
+          Execute an API Logic Project
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Execute an API Logic Project
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IDE-Execute/" class="md-nav__link">
+        Execute in your IDE
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Execute/" class="md-nav__link">
+        Execute From Terminal
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorial
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tutorial-x.md" class="md-nav__link">
+        Tutorial-x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Tutorial
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this Page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this Page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about-this-detailed-tutorial" class="md-nav__link">
+    About this Detailed Tutorial
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-underlying-concepts" class="md-nav__link">
+    Key Underlying Concepts
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Underlying Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declarative-models-not-code" class="md-nav__link">
+    Declarative Models, not code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preserve-customizations" class="md-nav__link">
+    Preserve Customizations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-automation" class="md-nav__link">
+    Logic Automation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    Create
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-and-establish-python-environment" class="md-nav__link">
+    Create and establish Python Environment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-the-server-and-admin-app" class="md-nav__link">
+    Start the Server and Admin App
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run" class="md-nav__link">
+    Run
+  </a>
+  
+    <nav class="md-nav" aria-label="Run">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-app-multi-page-multi-table-automatic-joins" class="md-nav__link">
+    Admin App: Multi-Page, Multi-Table, Automatic Joins
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonapi-related-data-filtering-sorting-pagination-swagger" class="md-nav__link">
+    JSON:API - Related Data, Filtering, Sorting, Pagination, Swagger
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customize-and-debug" class="md-nav__link">
+    Customize and Debug
+  </a>
+  
+    <nav class="md-nav" aria-label="Customize and Debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    Project Structure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-app-customization" class="md-nav__link">
+    Admin App Customization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-customization" class="md-nav__link">
+    API Customization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic" class="md-nav__link">
+    Logic
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-logic" class="md-nav__link">
+    Security Logic
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test" class="md-nav__link">
+    Test
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wrap-up" class="md-nav__link">
+    Wrap up
+  </a>
+  
+    <nav class="md-nav" aria-label="Wrap up">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    Next Steps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-cleanup" class="md-nav__link">
+    Docker cleanup
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sample-Database/" class="md-nav__link">
+        Sample Database
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          1. Admin Web App
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          1. Admin Web App
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Admin-Tour/" class="md-nav__link">
+        Admin App Features
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Admin-Customization/" class="md-nav__link">
+        Admin Customization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          2. API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          2. API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/" class="md-nav__link">
+        JSON:API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API-Customize/" class="md-nav__link">
+        API Customization
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          3. Logic
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          3. Logic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Logic-Why/" class="md-nav__link">
+        Rules: 40X, Extensible
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Logic/" class="md-nav__link">
+        Rules
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Logic-Operation/" class="md-nav__link">
+        Logic Operation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Logic-Tutorial/" class="md-nav__link">
+        TDD-based Approach
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          4. Security
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          4. Security
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Authorization/" class="md-nav__link">
+        Authorization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Authentication/" class="md-nav__link">
+        Authentication
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Authentication-Provider/" class="md-nav__link">
+        Authentication Provider
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Security-Activation/" class="md-nav__link">
+        Activation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IDE-Customize/" class="md-nav__link">
+        Using Your IDE
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Managing API Logic Projects
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Managing API Logic Projects
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-DevOps/" class="md-nav__link">
+        DevOps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Structure/" class="md-nav__link">
+        Structure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Rebuild/" class="md-nav__link">
+        Rebuild
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Working-With-Docker/" class="md-nav__link">
+        Working With Docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Manage-GitHub/" class="md-nav__link">
+        GitHub and Codespaces
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Env/" class="md-nav__link">
+        Virtual Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Execution/" class="md-nav__link">
+        Execution - Hosts and Ports
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Project-Builders/" class="md-nav__link">
+        Builders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          Database
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Database
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Examples/" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Classes/" class="md-nav__link">
+        Data Model Classes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Keys/" class="md-nav__link">
+        Data Model Keys
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Customization/" class="md-nav__link">
+        Data Model Customization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database-Connectivity/" class="md-nav__link">
+        Connection Examples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Data-Model-Multi/" class="md-nav__link">
+        Multiple Databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-pyodbc/" class="md-nav__link">
+        Install pyodbc: SqlServer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Install-psycopg2/" class="md-nav__link">
+        Install psycopg2: Postgres
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+          Testing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Testing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Behave/" class="md-nav__link">
+        Testing With Behave
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Behave-Logic-Report/" class="md-nav__link">
+        Behave Logic Report
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+          Architecture
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_12">
+          <span class="md-nav__icon md-icon"></span>
+          Architecture
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Architecture-What-Is/" class="md-nav__link">
+        What is API Logic Server
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Architecture/" class="md-nav__link">
+        Architectural Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Working-with-Flask-AppBuilder/" class="md-nav__link">
+        Working with Flask AppBuilder
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Internals/" class="md-nav__link">
+        API Logic Server Development
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Internals-CLI/" class="md-nav__link">
+        Internals - CLI
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Troubleshooting/" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+          FAQs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          FAQs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ-Low-Code/" class="md-nav__link">
+        Is this a Low Code approach?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ-Frameworks/" class="md-nav__link">
+        Is this a Framework?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ-RETE/" class="md-nav__link">
+        Is this a RETE Engine?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-4GL/" class="md-nav__link">
+        Is this a 4GL?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Proven/" class="md-nav__link">
+        Is this a Proven Technology?
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+          Tech Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          Tech Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech--Notes/" class="md-nav__link">
+        About Tech Notes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Docker/" class="md-nav__link">
+        Docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Python/" class="md-nav__link">
+        Python for a Java developer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Install-Python/" class="md-nav__link">
+        Python Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Python-311/" class="md-nav__link">
+        Python 3.11
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-mkdocs-material/" class="md-nav__link">
+        Mkdocs Material
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-CodeSpaces/" class="md-nav__link">
+        CodeSpaces
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-m1/" class="md-nav__link">
+        M1 Mac
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_15_9" id="__nav_15_9_label" tabindex="0">
+          Personal
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_15_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_15_9">
+          <span class="md-nav__icon md-icon"></span>
+          Personal
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Conference-PyCon23-Talk/" class="md-nav__link">
+        PyCon23 Talk
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Conference-PyCon23-Tutorial/" class="md-nav__link">
+        PyCon23 Tutorial
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tech-Conference/" class="md-nav__link">
+        Conference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this Page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this Page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about-this-detailed-tutorial" class="md-nav__link">
+    About this Detailed Tutorial
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-underlying-concepts" class="md-nav__link">
+    Key Underlying Concepts
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Underlying Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declarative-models-not-code" class="md-nav__link">
+    Declarative Models, not code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preserve-customizations" class="md-nav__link">
+    Preserve Customizations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-automation" class="md-nav__link">
+    Logic Automation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    Create
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-and-establish-python-environment" class="md-nav__link">
+    Create and establish Python Environment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-the-server-and-admin-app" class="md-nav__link">
+    Start the Server and Admin App
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run" class="md-nav__link">
+    Run
+  </a>
+  
+    <nav class="md-nav" aria-label="Run">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admin-app-multi-page-multi-table-automatic-joins" class="md-nav__link">
+    Admin App: Multi-Page, Multi-Table, Automatic Joins
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonapi-related-data-filtering-sorting-pagination-swagger" class="md-nav__link">
+    JSON:API - Related Data, Filtering, Sorting, Pagination, Swagger
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customize-and-debug" class="md-nav__link">
+    Customize and Debug
+  </a>
+  
+    <nav class="md-nav" aria-label="Customize and Debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    Project Structure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-app-customization" class="md-nav__link">
+    Admin App Customization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-customization" class="md-nav__link">
+    API Customization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic" class="md-nav__link">
+    Logic
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-logic" class="md-nav__link">
+    Security Logic
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test" class="md-nav__link">
+    Test
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wrap-up" class="md-nav__link">
+    Wrap up
+  </a>
+  
+    <nav class="md-nav" aria-label="Wrap up">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    Next Steps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-cleanup" class="md-nav__link">
+    Docker cleanup
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Tutorial</h1>
+
+<h3 id="about-this-detailed-tutorial">About this Detailed Tutorial</h3>
+<p>This Detailed Tutorial is designed for these scenarios:</p>
+<ul>
+<li>
+<p>You are using <strong>codespaces</strong> / VSCode, open to either the <a href="https://github.com/codespaces/new?hide_repo_select=true&amp;ref=main&amp;repo=593459232">tutorial project</a>, or <a href="https://github.com/codespaces/new?hide_repo_select=true&amp;ref=main&amp;repo=594296622">app_fiddle</a>.</p>
+</li>
+<li>
+<p>You are using a <strong>local install</strong> (pip install) version of API Logic Server, and have reviewed the <a href="https://github.com/ApiLogicServer/tutorial#readme">tutorial readme</a>.</p>
+</li>
+<li>
+<p>You are using a <strong>docker version</strong> of API Logic Server, and have reviewed the <a href="https://github.com/ApiLogicServer/tutorial#readme">tutorial readme</a>.</p>
+</li>
+<li>
+<p>Projects are pre-configured for VS Code with <code>.devcontainer</code> and <code>launch configurations,</code> so these instructions are oriented around VS Code.</p>
+</li>
+<li>
+<p>You are reviewing the docs, and want to get a sense of the software</p>
+</li>
+</ul>
+<p>In this tutorial, we will explore:</p>
+<ul>
+<li>
+<p><strong>create</strong> - we will briefly review what actually happens during the create process</p>
+</li>
+<li>
+<p><strong>run</strong> - we will first run the Admin App and the JSON:API.  These will illustrate how automation creates an app and API from a data model.  You can then infer what you'd get for one of your databases.</p>
+</li>
+<li>
+<p><strong>customize</strong> - we will then explore some customizations already done for the API and logic, and how to debug them.</p>
+</li>
+</ul>
+<p>&nbsp;&nbsp;</p>
+<hr />
+<h3 id="key-underlying-concepts">Key Underlying Concepts</h3>
+<p>This tutorial illustrates some key concepts:</p>
+<h4 id="declarative-models-not-code"><em><abbr title="specifications that dictate _what_ should be done, instead of detailed that is _how_ the feature is provided.  Declarative specifications are much more concise, automatically ordered, automamatically optimized and automatically invoked (re-used).  Declarative specifications can be used for client, API and logic behavior">Declarative</abbr> Models</em>, not code</h4>
+<p>Observe that the files for the Admin App and API are models that describe <em>what, not how</em>.  This makes it much easier to understand than large amounts of generated code.</p>
+<h4 id="preserve-customizations">Preserve Customizations</h4>
+<p>The system is designed to enable <code>rebuild</code>, so you can iterate the data model - <em>without losing your customizations.</em>  In general, such customizations are kept in separate files from the model files.  So, the model files can be rebuilt without affecting customization files.</p>
+<h4 id="logic-automation">Logic Automation</h4>
+<p>A unique feature of API Logic Server is provision for spreadsheet-like rules, customizable with Python.  Rules address update logic (<abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> derivations and constraints), and security (authorization).</p>
+<p>&nbsp;&nbsp;</p>
+<hr />
+<h3 id="create">Create</h3>
+<p><a href="https://youtu.be/tOojjEAct4M" title="Using VS Code with the ApiLogicServer container - click for video"><img alt="Using VS Code" src="https://github.com/valhuber/apilogicserver/wiki/images//creates-and-runs-video.jpg?raw=true?raw=true" /></a></p>
+<p>The diagram above summarizes the create / run / customize process.  When you issue the <code>ApiLogicServer create</code> CLI command, the system reads your schema and creates a customizable API Logic Project.</p>
+<blockquote>
+<p>It's a video - click to view.</p>
+</blockquote>
+<p>&nbsp;</p>
+<h3 id="create-and-establish-python-environment">Create and establish Python Environment</h3>
+<p>After creation, you must establish your Python environment:</p>
+<ul>
+<li>This is already complete for Codespace users</li>
+<li>Other users - please  see <a href="https://valhuber.github.io/ApiLogicServer/IDE-Execute/">Quick Start &gt; Express Install</a>.  Note there are different instructions, depending on how your install / IDE.</li>
+</ul>
+<p>&nbsp;&nbsp;</p>
+<h3 id="start-the-server-and-admin-app">Start the Server and Admin App</h3>
+<blockquote>
+<p>Stop any running servers that might still be running from the readme - &nbsp;&nbsp;(square red button at top in "Show me how", below).</p>
+</blockquote>
+<p>Now (see <em>Show me how</em>, below, for details):</p>
+<ol>
+<li>Start the server with <strong>Run and Debug &gt;&gt; <em>2. API Logic Project: Instant, Open</em></strong>, and then </li>
+<li>Start the Browser at localhost:5656 by <strong>clicking the url shown in the console log.</strong></li>
+</ol>
+<details>
+<summary> Show me how </summary>
+<p>&nbsp;</p>
+<p>To run the ApiLogicProject app:</p>
+<ol>
+<li>
+<p>Start the Server:</p>
+<ol>
+<li>Click <strong>Run and Debug</strong></li>
+<li>Use the dropdown to select <strong>3. API Logic Project: Logic</strong>, and</li>
+<li>Click the green button to start the server
+<br><br></li>
+</ol>
+</li>
+<li>
+<p>Start the Browser at localhost:5656 by <strong>clicking the url shown in the console log.</strong></p>
+</li>
+</ol>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject.png?raw=true"></figure>
+</details>
+<p>&nbsp;</p>
+<hr />
+<h3 id="run">Run</h3>
+<p>With the server started and the Admin App open in your Browser, we are ready to explore the Admin App and the API.</p>
+<p>&nbsp;</p>
+<h4 id="admin-app-multi-page-multi-table-automatic-joins">Admin App: <abbr title="Applications providing multiple pages, e.g. a Customer Page and an Order Page">Multi-Page</abbr>, <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">Multi-Table</abbr>, <abbr title="Automatically joined parent data, e.g., the ProductName (instead of the ProductId) for OrderDetails; these defaults can be overridden in the Admin.yaml file">Automatic Joins</abbr></h4>
+<p>After starting the server and browser, explore the Admin App in your browser:</p>
+<ol>
+<li>Navigate to <code>Customer</code><ul>
+<li>Depending on your screen size, you may need to hit the "hamburger menu" (top left) to see the left menu<br/><br/></li>
+</ul>
+</li>
+<li>Click the first Customer row  to see Customer Details</li>
+<li>Observe the <code>Placed Order List</code> tab at the bottom</li>
+<li>Click the first Order row</li>
+<li>Observe the <code>Order Detail List</code> tab at the bottom</li>
+<li>
+<p>Observe the elements shown in the diagram</p>
+<ul>
+<li><abbr title="Applications providing multiple pages, e.g. a Customer Page and an Order Page">Multi-Page</abbr> - 2 pages for each table (list, with search, and display)</li>
+<li><abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">Multi-Table</abbr> - database relationships (typically from foreign keys) used to build master/detail pages</li>
+<li><abbr title="Automatically joined parent data, e.g., the ProductName (instead of the ProductId) for OrderDetails; these defaults can be overridden in the Admin.yaml file">Automatic Joins</abbr> - the Order Detail table contains <code>ProductId</code>, but the system has joined in the <code>Product Name</code>.  You can edit the <code>admin.yaml</code> file to control such behavior.</li>
+</ul>
+</li>
+<li>
+<p><strong>Leave the server and browser running</strong></p>
+</li>
+</ol>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/run-admin-app.png?raw=true"></figure>
+
+<p>&nbsp;&nbsp;</p>
+<blockquote>
+<p><strong>Key Take-away:</strong> instant <abbr title="Applications providing multiple pages, e.g. a Customer Page and an Order Page">multi-page</abbr> / <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> admin apps, suitable for <strong>back office, and instant agile collaboration.</strong></p>
+</blockquote>
+<p>&nbsp;</p>
+<h4 id="jsonapi-related-data-filtering-sorting-pagination-swagger">JSON:API - Related Data, Filtering, Sorting, <abbr title="support to show large lists of rows in page-size sets, to reduce database overhead and unwieldly pages">Pagination</abbr>, Swagger</h4>
+<p>Your API is instantly ready to support ui and integration
+development, available in swagger, as shown below.  JSON:APIs are interesting because they
+are client configurable to <strong>reduce network traffic</strong> and <strong>minimize organizational dependencies.</strong></p>
+<p>The creation process builds not only the API, but also swagger so you can explore it.  The Admin App Home page provides a link to the swagger.  In the browser:</p>
+<ol>
+<li>Click <strong>Home</strong> to open the Home Page</li>
+<li>Click "2. API with <strong>oas/Swagger</strong>" to see the swagger</li>
+<li>(Leave the swagger and server running)</li>
+</ol>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/ui-admin/swagger.png?raw=true"></figure>
+<p>&nbsp;&nbsp;&nbsp;</p>
+<blockquote>
+<p><strong>Key Take-away:</strong> instant <em>rich</em> APIs, with filtering, sorting, <abbr title="support to show large lists of rows in page-size sets, to reduce database overhead and unwieldly pages">pagination</abbr> and swagger.  <strong>Custom App Dev is unblocked.</strong></p>
+</blockquote>
+<p>&nbsp;&nbsp;</p>
+<hr />
+<h3 id="customize-and-debug">Customize and Debug</h3>
+<p>That's quite a good start on a project.  But we've all seen generators that get close, but fail because the results cannot be extended, debugged, or managed with tools such as git and diff.</p>
+<p>Let's examine how API Logic Server projects can be customized for both APIs and logic.  We'll first have a quick look at the created project structure, then some typical customizations.</p>
+<p>To run the customized app:</p>
+<ol>
+<li>Stop the server</li>
+<li>Restart the server with <strong>Run and Debug &gt;&gt; <em>3. API Logic Project: Logic</em></strong>, and then</li>
+<li>Start the Browser at localhost:5656 by <strong>clicking the url shown in the console log.</strong></li>
+<li>Re-access the swagger, and authorize (see below):</li>
+<li>Click "2. API with <strong>oas/Swagger</strong>" to see the swagger (as you did above)</li>
+<li>Get an <strong>access_token</strong> and <strong>authorize</strong> (see Show me how, below)</li>
+</ol>
+<details>
+<summary> Show me how </summary>
+<p>&nbsp;</p>
+<p><strong>Get <code>access_token</code>:</strong></p>
+<ul>
+<li>Click the <code>auth/Post</code> endpoint (at the end of the swagger)</li>
+<li>Click <strong>Try it out</strong></li>
+<li>Click <strong>Execute</strong> (you'll need to scroll down a bit)</li>
+<li>Copy the <code>access_token</code> to your clipboard</li>
+</ul>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/security/token-get.png?raw=true"></figure>
+<p>&nbsp;
+<strong>Authenticate with your <code>access_token</code></strong></p>
+<ul>
+<li>Scroll up to the top of the swagger, and click <strong>Authorize</strong></li>
+<li>Enter <strong>Bearer</strong>, add a space, <strong>paste</strong> your <code>access_token</code>, click <strong>Authorize</strong>, and <strong>Close</strong> the dialog </li>
+</ul>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/security/token-auth.png?raw=true"></figure>
+</details>
+<p>&nbsp;</p>
+<h4 id="project-structure">Project Structure</h4>
+<p>Use VS Code's <strong>Project Explorer</strong> to see the project structure under <em>3. ApiLogicProject_Logic</em>:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Directory</th>
+<th align="left">Usage</th>
+<th align="left">Key Customization File</th>
+<th align="left">Typical Customization</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>api</code></td>
+<td align="left">JSON:API</td>
+<td align="left"><code>api/customize_api.py</code></td>
+<td align="left">Add new end points / services</td>
+</tr>
+<tr>
+<td align="left"><code>database</code></td>
+<td align="left">SQLAlchemy Data Model Classes</td>
+<td align="left"><code>database/customize_models.py</code></td>
+<td align="left">Add derived attributes, and relationships missing in the schema</td>
+</tr>
+<tr>
+<td align="left"><code>logic</code></td>
+<td align="left">Transactional Logic</td>
+<td align="left"><code>logic/declare_logic.py</code></td>
+<td align="left">Declare <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> derivations, constraints, and events such as send mail / messages</td>
+</tr>
+<tr>
+<td align="left"><code>security</code></td>
+<td align="left">Admin App</td>
+<td align="left"><code>security/declare_security.py</code></td>
+<td align="left">Control role-based access to data rows</td>
+</tr>
+<tr>
+<td align="left"><code>ui</code></td>
+<td align="left">Admin App</td>
+<td align="left"><code>ui/admin/admin.yaml</code></td>
+<td align="left">Control field display, ordering, etc.</td>
+</tr>
+</tbody>
+</table>
+<figure><img src="https://raw.githubusercontent.com/valhuber/ApiLogicServer/main/images/generated-project.png"></figure>
+
+<p>Let's now explore some examples.</p>
+<h4 id="admin-app-customization">Admin App Customization</h4>
+<p>There is no code for the Admin app - it's behavior is declared in the <code>admin.yaml</code> model file.  Alter this file to control labels, hide fields, change display order, etc:</p>
+<ol>
+<li>In your IDE, open <strong>Explorer &gt; 3. ApiLogicProject_Logic/ui/admin/admin.yaml</strong></li>
+<li>Find and alter the string <code>- label: 'Placed Order List'</code> (e.g, make it plural)</li>
+<li>Click Save</li>
+<li>Load the updated configuration: in the running Admin App, click <strong>Configuration &gt; Reset</strong> and <strong>Apply</strong></li>
+<li>Revisit <strong>Customer &gt; Order</strong> to observe the new label</li>
+</ol>
+<p>&nbsp;&nbsp;&nbsp;</p>
+<blockquote>
+<p><strong>Key Take-away:</strong> you can alter labels, which fields are displayed and their order, etc -- via a simple model.  No need to learn a new framework, or deal with low-level code or html.</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;</p>
+<h4 id="api-customization">API Customization</h4>
+<p>While a standards-based API is a great start, sometimes you need custom endpoints tailored exactly to your business requirement.  You can create these as shown below, where we create an additional endpoint for <code>add_order</code>.</p>
+<p>To review the implementation: </p>
+<ol>
+<li>In your IDE, open <strong>Explorer &gt; 3. ApiLogicProject_Logic/api/customize_api.py</strong>:</li>
+<li>Set the breakpoint as shown in <code>add_order</code></li>
+<li>Use the swagger to access the <code>ServicesEndPoint &gt; add_order</code>, and</li>
+<li><strong>Try it out</strong>, then </li>
+<li><strong>execute</strong></li>
+<li>Your breakpoint will be hit</li>
+<li>You can examine the variables, step, etc.</li>
+<li>Click <strong>Continue</strong> on the floating debug menu (upper right in screen shot below)</li>
+</ol>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/customize-api.png?raw=true"></figure>
+
+<p>&nbsp;</p>
+<h4 id="logic">Logic</h4>
+<p>API and UI automation are impressive answers to <em>familiar</em> challenges.  Logic automation is a <em>unique</em> answer to a significant and unaddressed problem:</p>
+<blockquote>
+<p>For transaction systems, backend constraint and derivation logic is often nearly <em>half</em> the system.  This is not addressed by conventional approaches of "your code goes here".</p>
+</blockquote>
+<p>The <em>logic</em> portion of API <em>Logic</em> server is a <abbr title="specifications that dictate _what_ should be done, instead of detailed that is _how_ the feature is provided.  Declarative specifications are much more concise, automatically ordered, automamatically optimized and automatically invoked (re-used).  Declarative specifications can be used for client, API and logic behavior">declarative</abbr> approach - you declare spreadsheet-like rules for <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> constraints and derivations.  The 5 rules shown below represent the same logic as 200 lines of Python - a remarkable <strong>40X.</strong></p>
+<blockquote>
+<p>Since they automate all the re-use and dependency management, rules are <a href="https://github.com/valhuber/LogicBank/wiki/by-code">40X more concise</a> than code.  Like a spreadsheet, rules <strong>watch</strong> for changes, <strong>react</strong> by automatically executing relevant rules, which can <strong>chain</strong> to activate other rules; you can <a href="https://valhuber.github.io/ApiLogicServer/Logic-Operation/#watch-react-chain">visualize the process here</a>.</p>
+</blockquote>
+<p><a href="https://valhuber.github.io/ApiLogicServer/Logic-Why/">Logic</a> consists of rules <strong>and</strong> conventional Python code.  Explore it like this:</p>
+<ol>
+<li>Open <strong>Explorer &gt; 3. ApiLogicProject_Logic/logic/declare_logic.py</strong>:</li>
+<li>Observe the 5 rules highlighted in the diagram below.  These are built with code completion.</li>
+<li>Set a breakpoint as shown in <code>congratulate_sales_rep</code></li>
+<li>This event illustrates that logic is mainly <em>rules,</em> customizable with standard <em>Python code</em></li>
+<li>Using swagger, re-execute the <code>add_order</code> endpoint</li>
+<li>When you hit the breakpoint, expand <code>row</code> VARIABLES list (top left)</li>
+</ol>
+<figure><img src="https://github.com/valhuber/apilogicserver/wiki/images/tutorial/debug-logic.png?raw=true"></figure>
+
+<p>Internally, rules execute by listening to SQLAlchemy <code>before_flush</code> events, as <a href="https://valhuber.github.io/ApiLogicServer/Logic-Operation/#how-usage-and-operation-overview">described here</a>.</p>
+<blockquote>
+<p>This rule architecture ensures that rules are always re-used across all client applications and integrations.  This avoids common "fat client" approaches that embed logic in user interface controllers, which leads to replication and inconsistency.</p>
+</blockquote>
+<p>&nbsp;</p>
+<h4 id="security-logic">Security Logic</h4>
+<p>The <abbr title="specifications that dictate _what_ should be done, instead of detailed that is _how_ the feature is provided.  Declarative specifications are much more concise, automatically ordered, automamatically optimized and automatically invoked (re-used).  Declarative specifications can be used for client, API and logic behavior">declarative</abbr> approach addresses not only <abbr title="An Application form displaying multiple table, e.g., an Order with a (Parent) Sales Rep, and (children) OrderDetails">multi-table</abbr> derivation and constraint logic, it addresses security.  This controls who can login, and what data they see.  </p>
+<p>The overview Tutorial noted how grants on the <code>Category</code> table controlled what rows users like <em>u1</em> and <em>u2</em> were able to see.  The grant logic is in <code>security/declare_security.py</code>.  For more on security, <a href="https://apilogicserver.github.io/Docs/Security-Overview/">see here</a>.</p>
+<p>&nbsp;&nbsp;</p>
+<hr />
+<h3 id="test">Test</h3>
+<p>You can test using standard api and ui test tools.  We recommend exploring the <a href="https://valhuber.github.io/ApiLogicServer/Behave/">Behave framework</a>.  This can be used as part of an overall agile approach as described in the <a href="https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/">Logic Tutorial</a>.</p>
+<p>TL;DR - features and test scripts are predefined in the sample; to run them (with the server running):</p>
+<ol>
+<li>Run Launch Configuration <code>Behave Run Behave</code> </li>
+<li>Run Launch Configuration <code>Behave Logic Report</code> </li>
+<li>Open <code>test/api_logic_server_behave/reports/Behave Logic Report.md</code></li>
+</ol>
+<p>&nbsp;&nbsp;</p>
+<blockquote>
+<p>The sample Scenarios below were chosen to illustrate the basic patterns of using rules. Open the disclosure box ("Tests - and their logic...") to see the implementation and notes.   </p>
+</blockquote>
+<p>For more information, see <a href="https://valhuber.github.io/ApiLogicServer/Behave/">Testing with Behave</a>.</p>
+<p>&nbsp;&nbsp;</p>
+<hr />
+<h3 id="wrap-up">Wrap up</h3>
+<p>Let's recap what you've seen:</p>
+<ul>
+<li>
+<p><strong>ApiLogicProject Creation and Execution</strong> - a database API and an Admin App - created automatically from a database, in moments instead of weeks or months</p>
+</li>
+<li>
+<p><strong>Customizable</strong> - the UI, API and Logic - using Visual Studio code, for both editing and debugging</p>
+</li>
+</ul>
+<h4 id="next-steps">Next Steps</h4>
+<p>After the Tutorial, these are excellent next steps:</p>
+<ul>
+<li>Try other databases - here are <a href="https://valhuber.github.io/ApiLogicServer/Data-Model-Examples/">some installed samples</a>, and try your own</li>
+<li>Explore the <a href="https://valhuber.github.io/ApiLogicServer/Logic-Tutorial/">Logic Tutorial</a>.</li>
+</ul>
+<h4 id="docker-cleanup">Docker cleanup</h4>
+<p>VS Code leaves the container and image definitions intact, so you can quickly resume your session.  You may wish to delete this. It will look something like <code>vsc-ApiLogicProject...</code>.</p>
+<p>&nbsp;&nbsp;&nbsp;</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "kramdown", "content.tooltips"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.fac441b0.min.js"></script>
+      
+    
+  </body>
+</html>
