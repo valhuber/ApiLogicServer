@@ -118,7 +118,7 @@ To execute (see *Show me how*, below, for details): **start the server** with **
 
 <summary>&nbsp;&nbsp;&nbsp;Show me how </summary>
 
-![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject.png?raw=true)
+![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial.png?raw=true)
 
 &nbsp;
 
@@ -432,6 +432,44 @@ Click here for the [docs](https://apilogicserver.github.io/Docs/).
 **Project Structure**
 
 This tutorial is actually 3 independent projects.  When you create a project using `ApiLogicServer create --project_name=my_project`, the system will create a free-standing project.  The project will include your container settings, IDE settings etc, so you can just open it your IDE to run and debug.
+
+&nbsp;
+
+**Guided Demo**
+
+Demonstrations of API Logic Server often follow this script, provided as take-away notes.
+
+<details markdown>
+
+<summary> Guided Demo Summary </summary>
+
+&nbsp;
+
+1. **Start the Server**
+
+2. Explore the automatic **Admin App, and Swagger**
+
+    * To run Swagger: **Home page >> 2. API, with oas/Swagger**<br><br>
+
+3. Explore the API
+    * **Automatic API:** `api/expose_api_models.py`
+    * **Custom Endpoint:** `api/customize_api.py` - see `add_order()`<br><br>
+
+
+4. Review `logic/declare_logic.py`
+    * Set a breakpoint at **breakpoint here**<br><br>
+
+5. Explore **Custom APIs and Logic Execution / Debugging**
+    * In swagger: **POST ServicesEndPoint/add_order > Try it out**
+    * At the breakpoint, observe the 
+        * **Debugger State** -- row attributes, etc
+        * **Logic Log** -- line for each rule fire, showing row, with indents for chaining
+
+</details markdown>
+
+&nbsp;
+
+</details markdown>
 
 </details>
 
