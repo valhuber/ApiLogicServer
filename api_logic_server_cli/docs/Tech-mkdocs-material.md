@@ -7,7 +7,7 @@ But what really made it work was the addition of [mkdocs-material](https://squid
 
 It was not to hard to set up, since my pages were all markdown.  Hightlights, to perhaps save you some time:
 
-1. Create a [docs folder](https://github.com/valhuber/ApiLogicServer/tree/main/api_logic_server_cli/docs)
+1. Create a [docs folder](https://github.com/ApiLogicServer/Docs/tree/main/docs)
 
     * If you have wiki docs, you can get all the pages using the link in the lower right
 
