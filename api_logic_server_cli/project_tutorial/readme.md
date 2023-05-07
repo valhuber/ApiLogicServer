@@ -445,21 +445,20 @@ Demonstrations of API Logic Server often follow this script, provided as take-aw
 
 &nbsp;
 
-1. **Start the Server**
+1. Run the automatic **Admin App, and Swagger**<br><br>
 
-2. Explore the automatic **Admin App, and Swagger**
-
-    * To run Swagger: **Home page >> 2. API, with oas/Swagger**<br><br>
+2. Explore the Admin App (no html, js): `ui/admin/admin.yaml`<br><br>
 
 3. Explore the API
     * **Automatic API:** `api/expose_api_models.py`
+      * `database/models.py` - from schema
     * **Custom Endpoint:** `api/customize_api.py` - see `add_order()`<br><br>
 
+4. Explore `logic/declare_logic.py`
+    * **Executable Design** - declarative
+    * **Breakpoint here**<br><br>
 
-4. Review `logic/declare_logic.py`
-    * Set a breakpoint at **breakpoint here**<br><br>
-
-5. Explore **Custom APIs and Logic Execution / Debugging**
+5. Run **Custom APIs and Logic Execution / Debugging**
     * In swagger: **POST ServicesEndPoint/add_order > Try it out**
     * At the breakpoint, observe the 
         * **Debugger State** -- row attributes, etc
