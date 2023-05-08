@@ -78,6 +78,43 @@
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
+            "name": "Execute nw",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/nw",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Execute nw - No Security",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/nw",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "env": {"SECURITY_ENABLED": "False"},
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Execute nw-",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/chinnw-ook",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
             "name": "Execute Classic Models",
             "type": "python",
             "request": "launch",
