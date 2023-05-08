@@ -242,7 +242,7 @@ There are a few articles that provide some orientation to API Logic Server:
 
 ### Change Log
 
-05/07/2023 - 08.03.12: safrs 3.0.4, tutorial demo notes, rm cli/docs, move pythonanywhere
+05/07/2023 - 08.04.00: safrs 3.0.4, tutorial demo notes, rm cli/docs, move pythonanywhere
 
 05/01/2023 - 08.03.06: allocation sample
 
