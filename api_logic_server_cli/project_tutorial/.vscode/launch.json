@@ -106,7 +106,7 @@
             "name": "Execute nw-",
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/chinnw-ook",
+            "cwd": "${workspaceFolder}/nw-",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,
