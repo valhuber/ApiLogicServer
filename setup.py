@@ -73,7 +73,7 @@ setup(
         "itsdangerous==2.1.2",
         "Jinja2==3.1.2",
         "MarkupSafe==2.1.1",
-        "safrs>=3.0.2",
+        "safrs>=3.0.4",
         "Flask-Admin==1.5.7",
         "Flask-Cors==3.0.0",
         "Flask==2.2.2",
