@@ -12,9 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.00"
+__version__ = "08.04.01"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
+    "\t05/08/2023 - 08.04.01: column alias example \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\
@@ -422,10 +423,13 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
                                     at="(typically via --db_types)",
                                     file_name=models_file_name)
     if nw_db_status in ["nw", "nw+", "nw-"]:
-        log.debug(f'.. .. ..Setting cascade delete for sample database database/models.py')
+        log.debug(f'.. .. ..Setting cascade delete and column alias for sample database database/models.py')
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
             replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
+        create_utils.replace_string_in_file(in_file=models_file_name,
+            search_for="ShipPostalCode = Column(String(8000))",
+            replace_with="ShipZip = Column('ShipPostalCode', String(8000))  # manual fix - alias")
 """         if not "include_exclude" in project_directory and False:  #
             log.debug(f'.. .. ..And Employee Virtual Attributes')
             nw_virtuals_attrs_file_name = Path(get_api_logic_server_dir()).\

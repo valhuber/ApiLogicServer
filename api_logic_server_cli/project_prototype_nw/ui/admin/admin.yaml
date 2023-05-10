@@ -390,7 +390,7 @@ resources:
       - name: ShipAddress
       - name: ShipCity
       - name: ShipRegion
-      - name: ShipPostalCode
+      - name: ShipZip
       - name: ShipCountry
     tab_groups:
       - direction: tomany
