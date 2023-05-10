@@ -30,6 +30,14 @@ Please see the `nw` sample for examples of typical customizations.  You can open
 
 &nbsp;
 
+# Project Requirements
+
+Optionally, the Behave Logic Report can document requirements as part of an executable test plan.
+
+Optionally, you can document requirements as part of an executable test plan; test plan execution creates documentation, including requirements traceability into implementation.  [See example here](test/api_logic_server_behave/reports/Behave%20Logic%20Report%20Sample.md).
+
+&nbsp;
+
 # Project Information
 
 This API Logic Project was created with the `ApiLogicServer create` command.
