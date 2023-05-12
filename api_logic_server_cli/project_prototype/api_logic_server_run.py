@@ -305,6 +305,8 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
         if do_hide_chatty_logging and app_logger.getEffectiveLevel() <= logging.INFO:
             safrs.log.setLevel(logging.WARN)  # debug is 10, warn is 20, info 30
             db_logger.setLevel(logging.WARN)
+            safrs_init_logger = logging.getLogger("safrs.safrs_init")
+            safrs_init_logger.setLevel(logging.WARN)
         flask_app.config.from_object("config.Config")
 
         # https://stackoverflow.com/questions/34674029/sqlalchemy-query-raises-unnecessary-warning-about-sqlite-and-decimal-how-to-spe
@@ -358,6 +360,7 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
                 + f' -- {len(database.models.metadata.tables)} tables loaded\n')  # db opened 1st access
             
             method_decorators : list = []
+            safrs_init_logger.setLevel(logging.WARN)
             expose_api_models.expose_models(safrs_api, method_decorators)
             app_logger.info(f'Declare   API - api/expose_api_models, endpoint for each table on {swagger_host}:{swagger_port}, customizing...')
             customize_api.expose_services(flask_app, safrs_api, project_dir, swagger_host=swagger_host, PORT=port)  # custom services
