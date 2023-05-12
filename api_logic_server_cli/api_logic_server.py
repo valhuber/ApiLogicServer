@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.02"
+__version__ = "08.04.03"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/10/2023 - 08.04.02: column alias example, readme link to rules report \n"\
+    "\t05/10/2023 - 08.04.03: column alias example, readme link to rules report, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\
