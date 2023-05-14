@@ -57,9 +57,11 @@ To run, use the Run Configuration, and test with `cURL`.
 
 To run the basic app:
 
-1. Click **Run and Debug** (you should see *0. App Fiddle), and the green button to start the server
+1. Click **Run and Debug** (you should see **1. Learn APIs using Flask SqlAlchemy**), and the green button to start the server
 
-2. Copy the `cURL` text, and paste it into the `bash`/`zsh` window
+2. Copy the `cURL` text
+
+3. Create a new `bash`/`zsh` window, and paste the `cURL` text
 
 ![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app-tutorial.png?raw=true)
 
@@ -67,9 +69,9 @@ To run the basic app:
 
 &nbsp;
 
-You can review the code ([here's the readme](./1.%20App_Fiddle/readme.md)).
+[Open the readme](./1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/readme.md) for background APIs, Flask, SQLAlchemy, and a walk-through of the code.
 
-When you are done, **stop** the server.
+When you are done, **stop** the server (Step 3).
 
 &nbsp;
 
@@ -115,9 +117,11 @@ You might want to close _1. Learn APIs using Flask SqlAlchemy..._, above.
 
 <br>
 
-This project implements a **JSON:API** that enforces multi-table constraints and derivations, and an Admin App.  It was built using API Logic Server (discussed below).
+This project implements a **JSON:API -- a API standard definition** for filtering, sorting, pagination, and multi-table retrieval.  It also provides Swagger, for exploring the API.
 
-Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) Explore API Logic Server.
+The project was built using **API Logic Server**.  A single command creates the project from the database structure.  It provides not only the **JSON:API / Swagger**, but also an **Admin App**, and a **logic engine** for multi-table constraints and derivations.
+
+Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) Explore JSON:API Update Logic Using API Logic Server.
 
 &nbsp;
 
@@ -128,18 +132,19 @@ Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) 
 
 &nbsp;
 
-1. Restart the Server:
+1. Start the Server:
 
     1. Click **Run and Debug**
-    2. Use the dropdown to select **3. API Logic Project: Logic**, and
+    2. Use the dropdown to select **2. Learn JSON_API using API Logic Server**, and
     3. Click the green button to start the server
 <br><br>
 
-2. Start the Browser at localhost:5656, using the **url shown in the console log**
+2. Start the Browser at localhost:5656, using the **url shown in the console log**.
+  * This opens the Admin App, which provides access to Swagger.
 
 ![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject-tutorial.png)
 
-</details run project 2>
+</details run project>
 
 &nbsp;
 
@@ -149,7 +154,7 @@ Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) 
 
 &nbsp;
 
-Unlike SQL which defines a predictable syntax, RESTful API elments are programmer-defined -- what arguments, response formats etc.  This means you need to design the API style, a time-consuming and complex task.
+Unlike SQL which defines a predictable syntax, RESTful API elments are programmer-defined --  arguments for filtering and sorting, multi-table response formats etc.  It is **complex and time-consuimg to design** such an API.
 
 JSON:API addresses by defining a **standard API style**.  This saves design time and provides predictablilty.
 
@@ -157,11 +162,11 @@ JSON:API also answers a key design challenge of APIs by making them *consumer-de
 
 This project implements the JSON:API style, providing:
 
-* an endpoint for each table, with CRUD support - create, read, update and delete
+* An endpoint for each table, with CRUD support - create, read, update and delete
 
-* Get requests provide filtering, sorting, pagination, including related data access, based on relationships in the models file (typically derived from foreign keys)
+* Get requests provide filtering, sorting, and pagination.  APIs include related data access, based on relationships in the models file (typically derived from foreign keys).
 
-* Automatic Swagger: from the **Home** page of the Admin App
+* Automatic Swagger: from the **Home** page of the Admin App, execute it like this:
 
   1. Click **2. API, with oas/Swagger**
   2. Click **Customer**
@@ -190,11 +195,18 @@ Enforces logic and security - automatic partitioning of logic from (each) client
 &nbsp;
 <details markdown>
 
-<summary>&nbsp;&nbsp;&nbsp;c) Explore API Logic Server </summary>
+<summary>&nbsp;&nbsp;&nbsp;c) Explore JSON:API Update Logic </summary>
 
 &nbsp;
 
-**Explore info here**
+APIs must ensure that updates adhere to business rules: **multi-table derivations and constraints**.  Such logic is critical, and often constitutes **nearly half the code**.
+
+API Logic Server enables you to declare **spreadsheet-like rules** for multi-table derivations and constraints, extensible with Python.  Just as a spreadsheet simplifies financial analysis, these **rules are 40X more concise than code.**
+
+* Rules are declared in `2. Learn JSON_API using API Logic Server/logic/declare_logic.py`
+  * Note the use of Python as a DSL (Domain Specific Language)
+  * This leverages IDE support for type-checking, code completion, logging and debugging
+* For more on rules, see `2. Learn JSON_API using API Logic Server/logic/readme_declare_logic.py`
 
 <details markdown>
 
@@ -244,48 +256,30 @@ It operates as shown below:
 
 &nbsp;
 
-In addition to standard Flask/SQLAlchemy use, you can declare rules for multi-table derivations and constraints.  Declare rules using Python as a DSL, leveraging IDE support for type-checking, code completion, logging and debugging.
+ 
+**Patch to test logic**
 
-Rules are extensible using standard Python.  This enables you to address non-database oriented logic such as sending mail or messages.<br><br>
-
-**Rules operate like a spreadsheet**
-
-Rules plug into SQLAlchemy events, and execute as follows:
-
-| Logic Phase | Why It Matters |
-|:-----------------------------|:---------------------|
-| **Watch** for changes at the attribute level | Performance - Automatic Attribute-level Pruning |
-| **React** if referenced data is changed | Ensures Reuse - Invocation is automatic<br>Derivations are optimized (e.g. *adjustment updates* - not aggregate queries) |
-| **Chain** to other referencing data | Simplifies Maintenance - ordering is automatic |
-
-&nbsp;
-
-Customizations are illustrated in the project [`3. Logic`](3.%20Logic/).  To see the effect of the changes, run the app like this:
-
-1. **Stop the server** using the red "stop" button.
-2. **Restart the server** with the same procedure as Step 2, above, but choose Run Configuration ***3. Logic***.<br>
-
-<details markdown>
-
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remind me how</summary>
+```bash
+curl -X 'PATCH' \
+  'http://localhost:5656/api/OrderDetail/1040/' \
+  -H 'accept: application/vnd.api+json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "data": {
+    "attributes": {
+      "Quantity": 160
+    },
+    "type": "OrderDetail",
+    "id": "1040"
+  }
+}'
+```
 
 &nbsp;
 
-1. Restart the Server:
+If set the breakpoint as shown, and then `Patch` this data, we see the log of logic execution, and the system state at our breakpoint:
 
-    1. Click **Run and Debug**
-    2. Use the dropdown to select **3. API Logic Project: Logic**, and
-    3. Click the green button to start the server
-<br><br>
-
-2. Start the Browser at localhost:5656, using the **url shown in the console log**
-
-![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject-tutorial.png)
-
-</details remind me how>
-
-&nbsp;
-
+![API Logic Server Intro](https://apilogicserver.github.io/Docs/images/tutorial/patch-orderdetail.png)
 
 Use the [```Detailed Tutorial```](3.%20Logic/Tutorial.md) to further explore this app.  
 

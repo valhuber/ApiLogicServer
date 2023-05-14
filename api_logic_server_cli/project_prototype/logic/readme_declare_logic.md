@@ -155,9 +155,10 @@ In addition, the system logs all rules that fire, to aid in debugging.  Referrin
 
 This installs the rule engine as a SQLAlchemy event listener (`before_flush`).  So, Logic *runs* automatically, in response to transaction commits (typically via the API).
 
-Rules operate much like a spreadsheet:
+Rules plug into SQLAlchemy events, and execute as follows:
 
-* **Watch**, for changes in referenced values
-* **React**, by recomputing value
-* **Chain**, to any referencing rules, including other tables (multi-table logic)
-    * SQL is automated, and optimized (e.g., adjust vs. select sum)
+| Logic Phase | Why It Matters |
+|:-----------------------------|:---------------------|
+| **Watch** for changes at the attribute level | Performance - Automatic Attribute-level Pruning |
+| **React** by recomputing value | Ensures Reuse - Invocation is automatic<br>Derivations are optimized (e.g. *adjustment updates* - not aggregate queries) |
+| **Chain** to other referencing data | Simplifies Maintenance - ordering is automatic<br>Multi-table logic automation |

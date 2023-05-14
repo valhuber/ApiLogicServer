@@ -1032,10 +1032,7 @@ class ProjectRun(Project):
             # remove projects 1 and 2
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/1. Instant_Creation")))
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized")))
-            shutil.rmtree(str(target_project_path.joinpath(f"{create}/1. Learn APIs using Flask SqlAlchemy")))
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")))
-            shutil.move(src = str(target_project_path.joinpath(f"{create}/0. App_Fiddle")),
-                        dst = str(target_project_path.joinpath(f"{create}/1. Learn APIs using Flask SqlAlchemy")))
             shutil.move(src = str(target_project_path.joinpath(f"{create}/3. Logic")),
                         dst = str(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")))
             pass

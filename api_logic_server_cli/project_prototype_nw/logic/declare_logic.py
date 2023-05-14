@@ -84,7 +84,7 @@ def declare_logic():
     if preferred_approach:
         Rule.constraint(validate=models.Customer,       # logic design translates directly into rules
             as_condition=lambda row: row.Balance <= row.CreditLimit,
-            error_msg="balance ({row.Balance}) exceeds credit ({row.CreditLimit})")
+            error_msg="balance ({round(row.Balance, 2)}) exceeds credit ({round(row.CreditLimit, 2)})")
 
         Rule.sum(derive=models.Customer.Balance,        # adjust iff AmountTotal or ShippedDate or CustomerID changes
             as_sum_of=models.Order.AmountTotal,
