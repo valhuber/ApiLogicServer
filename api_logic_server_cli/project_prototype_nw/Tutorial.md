@@ -86,7 +86,7 @@ To run the ApiLogicProject app:
 
 2. Start the Browser at localhost:5656 by **clicking the url shown in the console log.**
 
-<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject.png?raw=true"></figure>
+<figure><img src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/2-apilogicproject-tutorial.png?raw=true"></figure>
 
 </details>
 

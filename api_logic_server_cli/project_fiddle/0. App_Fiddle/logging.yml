@@ -1,0 +1,70 @@
+version: 1
+
+formatters:
+    simple:
+        format: "%(name)s - %(lineno)d -  %(message)s"
+        format: "%(message)s"
+
+    complex:
+        format: "%(asctime)s - %(name)s - %(lineno)d -  %(message)s"
+
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+
+    file:
+        class: logging.handlers.TimedRotatingFileHandler
+        when: midnight
+        backupCount: 5
+        level: DEBUG
+        formatter: simple
+        filename : Thrift.log
+
+root:
+  level: INFO
+  handlers: [console]
+
+loggers:
+
+    api.expose_api_models:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    api.customize_api:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    database.customize_models:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    logic.declare_logic:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    security.declare_security:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    security.system.authentication:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    security.system.authorization:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    ui.admin.admin_loader:   
+#        level: DEBUG
+        handlers: [console]
+        propagate: no

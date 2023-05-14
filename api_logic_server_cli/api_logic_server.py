@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.03"
+__version__ = "08.04.04"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/10/2023 - 08.04.03: column alias example, readme link to rules report, codespaces log fix \n"\
+    "\t05/10/2023 - 08.04.04: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\
@@ -987,12 +987,13 @@ class ProjectRun(Project):
         # if not self.project_directory_path.exists():
         #    os.mkdir(self.project_directory_path, mode = 0o777)
         
-        log.info(f"\nCreating Basic_app")
+        log.info(f"\nCreating {create}")
+        workspace_name = 'project_tutorial' if create == "tutorial" else "project_fiddle"
         shutil.copytree(dirs_exist_ok=True,
-            src=self.api_logic_server_dir_path.joinpath('project_tutorial'),
+            src=self.api_logic_server_dir_path.joinpath(workspace_name),
             dst=target_project_path.joinpath(create))
         
-        create_readme()
+        # create_readme()
 
         self.command = "create"
         self.project_name = str(target_project_path.joinpath(f"{create}/1. Instant_Creation"))
@@ -1027,20 +1028,32 @@ class ProjectRun(Project):
         self.add_nw_customizations(do_show_messages=False)
         self.run = save_run
 
-        # remove logic and database customizations from "2. Customized"
-        shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized/logic")))
-        shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized/database")))
-        shutil.copytree(dirs_exist_ok=True,
-            src=str(target_project_path.joinpath(f"{create}/1. Instant_Creation/logic")),
-            dst=str(target_project_path.joinpath(f"{create}/2. Customized/logic")))
-        shutil.copytree(dirs_exist_ok=True,
-            src=str(target_project_path.joinpath(f"{create}/1. Instant_Creation/database")),
-            dst=str(target_project_path.joinpath(f"{create}/2. Customized/database")))
-        create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = True",
-                replace_with='SECURITY_ENABLED = False',
-                in_file=str(target_project_path.joinpath(f"{create}/2. Customized/config.py")))
-        shutil.copyfile(src=self.api_logic_server_dir_path.joinpath('templates/admin.yaml'),
-                        dst=str(target_project_path.joinpath(f"{create}/2. Customized/ui/admin/admin.yaml")))
+        if create == "app_fiddle":
+            # remove projects 1 and 2
+            shutil.rmtree(str(target_project_path.joinpath(f"{create}/1. Instant_Creation")))
+            shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized")))
+            shutil.rmtree(str(target_project_path.joinpath(f"{create}/1. Learn APIs using Flask SqlAlchemy")))
+            shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")))
+            shutil.move(src = str(target_project_path.joinpath(f"{create}/0. App_Fiddle")),
+                        dst = str(target_project_path.joinpath(f"{create}/1. Learn APIs using Flask SqlAlchemy")))
+            shutil.move(src = str(target_project_path.joinpath(f"{create}/3. Logic")),
+                        dst = str(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")))
+            pass
+        else:
+            # remove logic and database customizations from "2. Customized"
+            shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized/logic")))
+            shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized/database")))
+            shutil.copytree(dirs_exist_ok=True,
+                src=str(target_project_path.joinpath(f"{create}/1. Instant_Creation/logic")),
+                dst=str(target_project_path.joinpath(f"{create}/2. Customized/logic")))
+            shutil.copytree(dirs_exist_ok=True,
+                src=str(target_project_path.joinpath(f"{create}/1. Instant_Creation/database")),
+                dst=str(target_project_path.joinpath(f"{create}/2. Customized/database")))
+            create_utils.replace_string_in_file(search_for="SECURITY_ENABLED = True",
+                    replace_with='SECURITY_ENABLED = False',
+                    in_file=str(target_project_path.joinpath(f"{create}/2. Customized/config.py")))
+            shutil.copyfile(src=self.api_logic_server_dir_path.joinpath('templates/admin.yaml'),
+                            dst=str(target_project_path.joinpath(f"{create}/2. Customized/ui/admin/admin.yaml")))
 
         log.info(f"Tutorial project successfully created.  Next steps:\n")
         log.info(f'  Open the tutorial project in your VSCode\n')

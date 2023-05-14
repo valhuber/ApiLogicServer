@@ -1,0 +1,163 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "1. Learn APIs using Flask SqlAlchemy",
+            "type": "python",
+            "env": {"APILOGICPROJECT": "False"},
+            "request": "launch",
+            "cwd": "${workspaceFolder}/1. Learn APIs using Flask SqlAlchemy",
+            "program": "flask_basic.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "2. Learn JSON_API using API Logic Server",
+            "type": "python",
+            "env": {"APILOGICPROJECT": "False"},
+            "request": "launch",
+            "cwd": "${workspaceFolder}/2. Learn JSON_API using API Logic Server",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "env": {"SECURITY_ENABLED": "False"},
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "2a. JSON_API With Security",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/2. Learn JSON_API using API Logic Server",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Execute Chinook",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/chinook",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Execute nw",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/nw",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Execute nw - No Security",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/nw",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "env": {"SECURITY_ENABLED": "False"},
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Execute nw-",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/nw-",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Execute Classic Models",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/classicmodels",
+            "program": "api_logic_server_run.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Behave Run",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/3. ApiLogicProject_Logic/test/api_logic_server_behave",
+            "program": "behave_run.py",
+            "redirectOutput": true,
+            "args": [ "--outfile=logs/behave.log"],
+            "justMyCode": false,            
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Behave Scenario",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/3. ApiLogicProject_Logic/test/api_logic_server_behave",
+            "program": "behave_run.py",
+            "redirectOutput": true,
+            "args": [ "--outfile=logs/behave.log",
+                "--name=Clone Existing Order"],
+            "justMyCode": false,            
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Behave Logic Report",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/3. ApiLogicProject_Logic/test/api_logic_server_behave",
+            "program": "behave_logic_report.py",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "args": ["run"
+                ,"--prepend_wiki=reports/Behave Logic Report Intro.md"
+                ,"--wiki=reports/Behave Logic Report.md"
+            ],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Python: Module",
+            "type": "python",
+            "request": "launch",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "module": "enter-your-module-name"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "console": "internalConsole"
+        }
+    ]
+}
