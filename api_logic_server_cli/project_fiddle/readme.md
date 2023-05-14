@@ -199,14 +199,13 @@ Enforces logic and security - automatic partitioning of logic from (each) client
 
 &nbsp;
 
-APIs must ensure that updates adhere to business rules: **multi-table derivations and constraints**.  Such logic is critical, and often constitutes **nearly half the code**.
+APIs must ensure that updates adhere to business rules: **multi-table derivations and constraints**.  Such business logic is critical, and often constitutes **nearly half the code**.
 
 API Logic Server enables you to declare **spreadsheet-like rules** for multi-table derivations and constraints, extensible with Python.  Just as a spreadsheet simplifies financial analysis, these **rules are 40X more concise than code.**
 
-* Rules are declared in `2. Learn JSON_API using API Logic Server/logic/declare_logic.py`
-  * Note the use of Python as a DSL (Domain Specific Language)
-  * This leverages IDE support for type-checking, code completion, logging and debugging
-* For more on rules, see `2. Learn JSON_API using API Logic Server/logic/readme_declare_logic.py`
+* Rules are declared in `logic/declare_logic.py` (IDE provides *code completion*)
+
+* For more on rules, see `logic/readme_declare_logic.py`
 
 <details markdown>
 
@@ -256,8 +255,12 @@ It operates as shown below:
 
 &nbsp;
 
- 
 **Patch to test logic**
+
+If we:
+
+1. Set the breakpoint as shown in the screenshot below, and then 
+2. `Patch` the data below
 
 ```bash
 curl -X 'PATCH' \
@@ -275,11 +278,12 @@ curl -X 'PATCH' \
 }'
 ```
 
-&nbsp;
-
-If set the breakpoint as shown, and then `Patch` this data, we see the log of logic execution, and the system state at our breakpoint:
+We see the log of logic execution (note the **rule chaining**), and the system state at our breakpoint:
 
 ![API Logic Server Intro](https://apilogicserver.github.io/Docs/images/tutorial/patch-orderdetail.png)
+
+
+&nbsp;
 
 Use the [```Detailed Tutorial```](3.%20Logic/Tutorial.md) to further explore this app.  
 
