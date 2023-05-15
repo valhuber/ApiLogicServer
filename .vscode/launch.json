@@ -26,14 +26,14 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Create app_fiddle",
+            "name": "Create Learning Center",
             "type": "python",
             "request": "launch",
             "env": {"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"},
             "cwd": "${workspaceFolder}/api_logic_server_cli",
             "program": "cli.py",
             "redirectOutput": true,
-            "args": ["tutorial", "--create=app_fiddle"],
+            "args": ["tutorial", "--create=LearningCenter"],
             "stopOnEntry": false,
             "justMyCode": false,
             "console": "integratedTerminal"

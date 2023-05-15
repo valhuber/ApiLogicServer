@@ -4,32 +4,21 @@
 
 <br>
 
-<summary>Welcome to this Tutorial -- APIs, using Flask and SQLAlchemy</summary>
+<summary>Welcome to this Learning Center -- APIs, using Flask and SQLAlchemy</summary>
 
-Problem: network database access (B2B, App Integration, mobile apps).
+Most database applications require **networked database access**. You simply cannot call database access libraries (e.g., ODBC, JDBC) from a mobile app or a remote computer for B2B or application integration.
 
-Solution: RESTful API
+**RESTful APIs** have become a common element of a modern software architecture to provide such access.  Microservice concepts stress that **APIs should enforce the *business logic*** for integrity and security.
 
-http (url <svr, verb, args>, request, response, header)
+| Project | What it is | Use it to... | Notes |
+|:---- |:------|:-----------|:-----------|
+| 1. Learn APIs using Flask SqlAlchemy | Northwind Database<br>- Single Endpoint | Explore **Flask / SQLAlchemy** basics | Brief background on HTTP, REST |
+| 2. Learn JSON_API using API Logic Server | Northwind Database<br> - All Endpoints<br>- With Logic | Explore **JSON:API**<br>Rule-based business logic | You can start here if only interested in JSON:API |
+| Next Steps | Create other sample databases | More examples - initial project creation from Database |
 
-conceptual framework, not a spec ==> Design Work, Communications (==> Swagger)
-
-
-Flask and SQLAlchemy (or Django, FASTApi, ...)
-
-Use this Tutorial to learn: 
-
-- Learn APIs, using Flask and SQLAlchemy
-- JSON_API, using API Logic Server
+&nbsp;
 
 These projects use the [Northwind Sample Database](https://apilogicserver.github.io/Docs/Sample-Database/) (customers, orders, products).
-
-
-| Project | What it is | Use it to... |
-|:---- |:------|:-----------|
-| 1. Learn APIs using Flask SqlAlchemy | Northwind Database - Single Endpoint | Explore **Flask / SQLAlchemy** basics |
-| 2. Learn JSON_API With API Logic Server | Northwind Database - Customized, with Logic | Explore **customizing** with code, and rule-based logic |
-| Next Steps | Create other sample databases | More examples - initial project creation from Database |
 
 &nbsp;
 
@@ -113,7 +102,7 @@ You might want to close _1. Learn APIs using Flask SqlAlchemy..._, above.
 
 <details markdown>
 
-<summary>2. Learn JSON_API using API Logic Server -- Declarative API, Admin App, Logic</summary>
+<summary>2. Learn JSON_API using API Logic Server -- Standard API, Logic Enabled, Declarative</summary>
 
 <br>
 
@@ -121,7 +110,7 @@ This project implements a **JSON:API -- a API standard definition** for filterin
 
 The project was built using **API Logic Server**.  A single command creates the project from the database structure.  It provides not only the **JSON:API / Swagger**, but also an **Admin App**, and a **logic engine** for multi-table constraints and derivations.
 
-Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) Explore JSON:API Update Logic Using API Logic Server.
+Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) Explore JSON:API Update Logic.
 
 &nbsp;
 
@@ -150,23 +139,31 @@ Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) 
 
 <details markdown>
 
-<summary>&nbsp;&nbsp;&nbsp;b) Explore JSON:API </summary>
+<summary>&nbsp;&nbsp;&nbsp;b) Explore JSON:API Get</summary>
 
 &nbsp;
 
-Unlike SQL which defines a predictable syntax, RESTful API elments are programmer-defined --  arguments for filtering and sorting, multi-table response formats etc.  It is **complex and time-consuimg to design** such an API.
+JSON:API is:
 
-JSON:API addresses by defining a **standard API style**.  This saves design time and provides predictablilty.
+* a **Standardized API** definition, eliminating **complex and time-consuming design**
+* **Self-service**, with *consumer-defined* response inclusion
+  * Similar to GraphQL, this enables clients to travserse the exact set of related data they need, rather than making do with a set of resources pre-defined by the server team
 
-JSON:API also answers a key design challenge of APIs by making them *consumer-defined*.  This enables other organizations and business partners to  **self-service** their own API needs.
+This project implements the JSON:API style, providing an enterprise-class API:
 
-This project implements the JSON:API style, providing:
+* An endpoint for each table, with CRUD support - create, read, update and delete.
+* Get requests provide filtering, sorting, and pagination.
+* APIs include related data access, based on relationships in the models file (typically derived from foreign keys).
 
-* An endpoint for each table, with CRUD support - create, read, update and delete
+&nbsp;
 
-* Get requests provide filtering, sorting, and pagination.  APIs include related data access, based on relationships in the models file (typically derived from foreign keys).
+<details markdown>
 
-* Automatic Swagger: from the **Home** page of the Admin App, execute it like this:
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.1) Explore with Swagger </summary>
+
+&nbsp;
+
+Automatic Swagger: from the **Home** page of the Admin App, execute it like this:
 
   1. Click **2. API, with oas/Swagger**
   2. Click **Customer**
@@ -175,6 +172,16 @@ This project implements the JSON:API style, providing:
   5. Click **Execute**:
 
 ![](https://apilogicserver.github.io/Docs/images/tutorial/explore-api.png)  
+
+</details swagger>
+
+&nbsp;
+
+<details markdown>
+
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.2) Consumer-defined response inclusion</summary>
+
+&nbsp;
 
 Note the `include` argument; you can specify:
 
@@ -186,9 +193,23 @@ You can paste the `Customer` response into tools like [jsongrid](https://jsongri
 
 ![](https://apilogicserver.github.io/Docs/images/tutorial/jsongrid.png)
 
-Impl: models.py, expose_models (Python as DSL)
+</details consumer>
 
-Enforces logic and security - automatic partitioning of logic from (each) client app
+&nbsp;
+
+<details markdown>
+
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.3) Extensible: Python, Flask, SQLAlchemy </summary>
+
+&nbsp;
+
+All the API functions so far were completely created by API Logic Server.  As required, you extend the API using standard Python, Flask and SQLAlchemy.
+
+See the code in `api/customize_api.py`, and find the code `order()`.  Test it with the cURL string provided in the comments.
+
+You can also make the endpoint **visible in swagger**.  Find the code `ServicesEndPoint(safrs.JABase)`.
+
+</details extensible>
 
 </details what is json:api>
 
@@ -207,6 +228,8 @@ API Logic Server enables you to declare **spreadsheet-like rules** for multi-tab
 
 * For more on rules, see `logic/readme_declare_logic.py`
 
+&nbsp;
+
 <details markdown>
 
 <summary>&nbsp;&nbsp;&nbsp;What is API Logic Server </summary>
@@ -219,7 +242,6 @@ API Logic server installs with `pip`, in a docker container, or in codespaces.  
 
 * **CLI:** the `ApiLogicServer create` command you saw above
 * **Runtime Packages:** for API, UI and Logic execution<br>
-
 
 ![](https://apilogicserver.github.io/Docs/images/Architecture-What-Is.png)
 
@@ -285,7 +307,7 @@ We see the log of logic execution (note the **rule chaining**), and the system s
 
 &nbsp;
 
-Use the [```Detailed Tutorial```](3.%20Logic/Tutorial.md) to further explore this app.  
+Use the [```Detailed Tutorial```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/tutorial.md) to further explore this app.  
 
 &nbsp;
 
@@ -295,7 +317,7 @@ Use the [```Detailed Tutorial```](3.%20Logic/Tutorial.md) to further explore thi
 
 <summary>Key Takeaways: Instant App/API, Fully Flexible, Unique Declarative Rules</summary>
 
-You have seen the **fastest and simplest** way to create **modern, scalable API-based database systems:**
+This has been a quick look at the *fastest and simplest** way to create **modern, scalable API-based database systems:**
 
 1. Use the `ApiLogicServer create` command to create a Flask/SQLAlchemy project from your database. Zero learning curve. Projects are **instantly executable**, providing:
 
@@ -408,19 +430,19 @@ Click here for the [docs](https://apilogicserver.github.io/Docs/).
 
 | Tech Area | Skill | App_Fiddle Example | APILogicProject Logic Example | Notes   |
 |:---- |:------|:-----------|:--------|:--------|
-| __Flask__ | Setup | [```flask_basic.py```](0.%20App_Fiddle/flask_basic.py) |  [```api_logic_server_run.py```](3.%20Logic/api_logic_server_run.py) |  |
-|  | Events | |  [```ui/admin/admin_loader.py```](3.%20Logic/ui/admin/admin_loader.py) |  |
-| __API__ | Create End Point | [```api/end_points.py```](0.%20App_Fiddle/api/end_points.py) | [```api/customize_api.py```](3.%20Logic/api/customize_api.py) |  see `def order():` |
-|  | Call endpoint |  | [```test/.../place_order.py```](3.%20Logic/test/api_logic_server_behave/features/steps/place_order.py) | |
-| __Config__ | Config | [```config.py```](3.%20Logic/config.py) | | |
-|  | Env variables |  | [```config.py```](3.%20Logic/config.py) | os.getenv(...)  |
-| __SQLAlchemy__ | Data Model Classes | [```database/models.py```](3.%20Logic/database/models.py) |  |  |
-|  | Read / Write | [```api/end_points.py```](3.%20Basic_App/api/end_points.py) | [```api/customize_api.py```](3.%20Logic/api/customize_api.py) | see `def order():`  |
-|  | Multiple Databases |  | [```database/bind_databases.py```](3.%20Logic/database/bind_databases.py) |   |
-|  | Events |  | [```security/system/security_manager.py```](3.%20Logic/security/system/security_manager.py) |  |
-| __Logic__ | Business Rules | n/a | [```logic/declare_logic.py```](3.%20Logic/logic/declare_logic.py) | ***Unique*** to API Logic Server  |
-| __Security__ | Multi-tenant | n/a | [```security/declare_security.py```](3.%20Logic/security/declare_security.py) |   |
-| __Behave__ | Testing |  | [```test/.../place_order.py```](3.%20Logic/test/api_logic_server_behave/features/steps/place_order.py) |  |
-| __Alembic__ | Schema Changes |  | [```database/alembic/readme.md```](3.%20Logic/database/alembic/readme.md) |   |
+| __Flask__ | Setup | [```flask_basic.py```](1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/flask_basic.py) |  [```api_logic_server_run.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/api_logic_server_run.py) |  |
+|  | Events | |  [```ui/admin/admin_loader.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/ui/admin/admin_loader.py) |  |
+| __API__ | Create End Point | [```api/end_points.py```](1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/api/end_points.py) | [```api/customize_api.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/api/customize_api.py) |  see `def order():` |
+|  | Call endpoint |  | [```test/.../place_order.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/test/api_logic_server_behave/features/steps/place_order.py) | |
+| __Config__ | Config | [```config.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/config.py) | | |
+|  | Env variables |  | [```config.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/config.py) | os.getenv(...)  |
+| __SQLAlchemy__ | Data Model Classes | [```database/models.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/database/models.py) |  |  |
+|  | Read / Write | [```api/end_points.py```](3.%20Basic_App/api/end_points.py) | [```api/customize_api.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/api/customize_api.py) | see `def order():`  |
+|  | Multiple Databases |  | [```database/bind_databases.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/database/bind_databases.py) |   |
+|  | Events |  | [```security/system/security_manager.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/security/system/security_manager.py) |  |
+| __Logic__ | Business Rules | n/a | [```logic/declare_logic.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/logic/declare_logic.py) | ***Unique*** to API Logic Server  |
+| __Security__ | Multi-tenant | n/a | [```security/declare_security.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/security/declare_security.py) |   |
+| __Behave__ | Testing |  | [```test/.../place_order.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/test/api_logic_server_behave/features/steps/place_order.py) |  |
+| __Alembic__ | Schema Changes |  | [```database/alembic/readme.md```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/database/alembic/readme.md) |   |
 | __Docker__ | Dev Env | | [```.devcontainer/devcontainer.json```](.devcontainer/devcontainer.json) | See also "For_VS_Code.dockerFile" |
-|  | Containerize Project |  | [```devops/docker/build-container.dockerfile```](3.%20Logic/devops/docker/build-container.dockerfile) |  |
+|  | Containerize Project |  | [```devops/docker/build-container.dockerfile```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/devops/docker/build-container.dockerfile) |  |

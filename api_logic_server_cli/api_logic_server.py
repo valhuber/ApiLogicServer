@@ -936,48 +936,11 @@ class ProjectRun(Project):
 \b    
         cd ApiLogicProject  # any empty folder, perhaps where ApiLogicServer is installed
 \b
-        ApiLogicServer tutorial
-
-            * use existing readme.md for tutorial
-            * if fiddle, delete and replace welcome section with templates/app_fiddle.md
 
         Args:
             msg (str): eg: ApiLogicProject customizable project created.  Adding Security:")
-            create: 'fiddle', or 'tutorial'
+            create: 'LearningCenter', or 'tutorial'
         """
-
-        def create_project(directory: str):
-            pass
-
-
-        def create_readme():
-            """
-            Creates the readme file for either tutorial or fiddle:
-            - use existing for tutorial
-            - if fiddle, delete and replace welcome section with templates/app_fiddle.md
-            """
-
-            read_me_target = target_project_path.joinpath(f'{create}/readme.md')
-            if create == "app_fiddle":  # starting browser via port mappings
-                fiddle_header_path = self.api_logic_server_dir_path.joinpath(f'templates/{create}.md')
-                fiddle_header_file = open(fiddle_header_path, "r")
-                fiddle_header_data = fiddle_header_file.read()
-                fiddle_header_file.close()
-                readme_file = open(read_me_target)
-                readme_data = readme_file.read()
-                end_of_tutorial_header = readme_data.find('<summary>0.')
-                readme_fiddle_data = fiddle_header_data + readme_data[end_of_tutorial_header:]
-                readme_file = open(read_me_target, "w")  # write the fiddle over the readme
-                readme_file.write(readme_fiddle_data)
-                readme_file.close()
-                create_utils.replace_string_in_file(search_for="cd tutorial",
-                        replace_with='cd /workspaces/app_fiddle',
-                        in_file=read_me_target)
-            else:
-                create_utils.replace_string_in_file(search_for="2-apilogicproject.png",
-                        replace_with='2-apilogicproject-tutorial.png',
-                        in_file=read_me_target)
-        
 
         log.info(f'\n{msg} {create}')
         target_project = self.project_name  # eg, /Users/val/dev/Org-ApiLogicServer
@@ -988,12 +951,10 @@ class ProjectRun(Project):
         #    os.mkdir(self.project_directory_path, mode = 0o777)
         
         log.info(f"\nCreating {create}")
-        workspace_name = 'project_tutorial' if create == "tutorial" else "project_fiddle"
+        workspace_name = 'project_tutorial' if create == "tutorial" else "project_learning_center"
         shutil.copytree(dirs_exist_ok=True,
             src=self.api_logic_server_dir_path.joinpath(workspace_name),
-            dst=target_project_path.joinpath(create))
-        
-        # create_readme()
+            dst=target_project_path.joinpath(create))  # project named from arg create
 
         self.command = "create"
         self.project_name = str(target_project_path.joinpath(f"{create}/1. Instant_Creation"))
@@ -1028,14 +989,14 @@ class ProjectRun(Project):
         self.add_nw_customizations(do_show_messages=False)
         self.run = save_run
 
-        if create == "app_fiddle":
+        if create == "LearningCenter":
             # remove projects 1 and 2
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/1. Instant_Creation")))
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized")))
-            shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")))
+            if os.path.isdir(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")):
+                shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")))
             shutil.move(src = str(target_project_path.joinpath(f"{create}/3. Logic")),
                         dst = str(target_project_path.joinpath(f"{create}/2. Learn JSON_API using API Logic Server")))
-            pass
         else:
             # remove logic and database customizations from "2. Customized"
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized/logic")))
