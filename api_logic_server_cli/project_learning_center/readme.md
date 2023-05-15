@@ -6,9 +6,15 @@
 
 <summary>Welcome to this Learning Center -- APIs, using Flask and SQLAlchemy</summary>
 
-Most database applications require **networked database access**. You simply cannot call database access libraries (e.g., ODBC, JDBC) from a mobile app or a remote computer for B2B or application integration.
+This Learning Center is designed to help you learn about creating APIs, specifically JSON:APIs, using Python Flask and SQLAlchemy.  
+
+> You [run this under Codespaces](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=640987487).  Akin to a JSFiddle, Codespaces creates a complete executable environment with **zero install or configuration**.  The environment includes sample projects and databases, running in **VSCode *in your Browser***, so you can test, debug and experiment with no risk.
+
+Most database applications require **networked database access**. You simply cannot call database access libraries (e.g., ODBC, JDBC) from a mobile app or a remote computer (B2B or application integration).
 
 **RESTful APIs** have become a common element of a modern software architecture to provide such access.  Microservice concepts stress that **APIs should enforce the *business logic*** for integrity and security.
+
+This contains 2 ready-to-run projects:<br>
 
 | Project | What it is | Use it to... | Notes |
 |:---- |:------|:-----------|:-----------|
