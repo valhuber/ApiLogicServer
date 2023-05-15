@@ -1,5 +1,24 @@
 # Learning Center
 
+Run this Learning Center under Codespaces -- [click here](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=640987487).
+
+
+<details markdown>
+
+<br>
+
+<summary>Codespaces provides an API Project "fiddle"</summary>
+
+Akin to a JSFiddle, Codespaces creates a complete executable environment with **zero install or configuration**.  The environment includes sample projects and databases - running in **VSCode *in your Browser*** - so you can test, debug and experiment with no risk.
+
+</details fiddle>
+
+&nbsp;
+
+----
+
+&nbsp;
+
 <details markdown>
 
 <br>
@@ -8,7 +27,7 @@
 
 This Learning Center is designed to help you learn about creating APIs, specifically JSON:APIs, using Python Flask and SQLAlchemy.  
 
-> You [run this under Codespaces](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=640987487).  Akin to a JSFiddle, Codespaces creates a complete executable environment with **zero install or configuration**.  The environment includes sample projects and databases, running in **VSCode *in your Browser***, so you can test, debug and experiment with no risk.
+
 
 Most database applications require **networked database access**. You simply cannot call database access libraries (e.g., ODBC, JDBC) from a mobile app or a remote computer (B2B or application integration).
 
@@ -16,16 +35,19 @@ Most database applications require **networked database access**. You simply can
 
 This contains 2 ready-to-run projects:<br>
 
-| Project | What it is | Use it to... | Notes |
+| Project | What it is | Use it to explore... | Notes |
 |:---- |:------|:-----------|:-----------|
-| 1. Learn APIs using Flask SqlAlchemy | Northwind Database<br>- Single Endpoint | Explore **Flask / SQLAlchemy** basics | Brief background on HTTP, REST |
-| 2. Learn JSON_API using API Logic Server | Northwind Database<br> - All Endpoints<br>- With Logic | Explore **JSON:API**<br>Rule-based business logic | You can start here if only interested in JSON:API |
+| 1. Learn APIs using Flask SqlAlchemy | Northwind Database<br>- Single Endpoint | **Flask / SQLAlchemy** basics | With HTTP, REST background |
+| 2. Learn JSON_API using API Logic Server | Northwind Database<br> - All Endpoints<br>- With Logic | **JSON:API**, and<br>Rule-based business logic | You can start here if only interested in JSON:API |
 | Next Steps | Create other sample databases | More examples - initial project creation from Database |
 
 &nbsp;
 
 These projects use the [Northwind Sample Database](https://apilogicserver.github.io/Docs/Sample-Database/) (customers, orders, products).
 
+> Suggestion: close *Welcome to this Learning Center*, above, to proceed.
+
+&nbsp;
 &nbsp;
 
 ---
@@ -94,7 +116,9 @@ Below, we'll see an approach that combines the ***flexibility of a framework wit
 
 &nbsp;
 
-You might want to close _1. Learn APIs using Flask SqlAlchemy..._, above.
+> You might want to close _1. Learn APIs using Flask SqlAlchemy..._, above.
+
+&nbsp;
 
 &nbsp;
 
@@ -112,9 +136,14 @@ You might want to close _1. Learn APIs using Flask SqlAlchemy..._, above.
 
 <br>
 
-This project implements a **JSON:API -- a API standard definition** for filtering, sorting, pagination, and multi-table retrieval.  It also provides Swagger, for exploring the API.
+This project:
 
-The project was built using **API Logic Server**.  A single command creates the project from the database structure.  It provides not only the **JSON:API / Swagger**, but also an **Admin App**, and a **logic engine** for multi-table constraints and derivations.
+* Implements a **JSON:API -- a API standard definition** for filtering, sorting, pagination, and multi-table retrieval.  It also provides Swagger, for exploring the API.
+
+* Was **built using API Logic Server** --  an open source project providing:
+
+  * **Automatic Creation:** a single command creates the project from your database (including an Admin App)
+  * **Customize with your IDE:** declare spreadsheet-like rules for business logic, and code extra API endpoints
 
 Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) Explore JSON:API Update Logic.
 
