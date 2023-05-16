@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.04"
+__version__ = "08.04.05"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/10/2023 - 08.04.04: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
+    "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
     "\t04/29/2023 - 08.03.03: connect error reporting, startup logging \n"\
@@ -951,7 +951,7 @@ class ProjectRun(Project):
         #    os.mkdir(self.project_directory_path, mode = 0o777)
         
         log.info(f"\nCreating {create}")
-        workspace_name = 'project_tutorial' if create == "tutorial" else "project_learning_center"
+        workspace_name = 'project_tutorial' if create == "tutorial" else "project_api_fiddle"
         shutil.copytree(dirs_exist_ok=True,
             src=self.api_logic_server_dir_path.joinpath(workspace_name),
             dst=target_project_path.joinpath(create))  # project named from arg create
@@ -989,7 +989,7 @@ class ProjectRun(Project):
         self.add_nw_customizations(do_show_messages=False)
         self.run = save_run
 
-        if create == "LearningCenter":
+        if create != "tutorial":
             # remove projects 1 and 2
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/1. Instant_Creation")))
             shutil.rmtree(str(target_project_path.joinpath(f"{create}/2. Customized")))
