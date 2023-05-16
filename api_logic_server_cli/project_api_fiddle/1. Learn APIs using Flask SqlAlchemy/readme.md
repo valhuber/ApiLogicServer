@@ -188,7 +188,7 @@ There are 2 common aspects for using an ORM:
 
 ## App Structure
 
-Long before you use the Flask/SQLAlchemy tools, you need to create project structure.  You can explore [```1. Basic_App```](../1.%20Basic_App/):
+Long before you use the Flask/SQLAlchemy tools, you need to create project structure.  You can explore [```1. Learn APIs using Flask SqlAlchemy```](../1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/):
 
 * `api` - a directory for api code
 
@@ -204,13 +204,14 @@ There are also important devops artifacts:
 
 ## Server
 
-See [```flask_basic.py```](../1.%20Basic_App/flask_basic.py) to see how to establish a Flask server.  It's this program you ran to start the server.
+See [```flask_basic.py```](/1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/flask_basic.py) to see how to establish a Flask server.  It's this program you ran to start the server.
+
 
 &nbsp;
 
 ## API
 
-Explore [```api/end_points.py```](../1.%20Basic_App/api/end_points.py) for examples of handling api calls.  See `def order():`.
+Explore [```api/end_points.py```](/1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/api/end_points.py) for examples of handling api calls.  See `def order():`.
 
 &nbsp;
 
@@ -218,7 +219,7 @@ Explore [```api/end_points.py```](../1.%20Basic_App/api/end_points.py) for examp
 
 There are 2 aspects to explore for SQLAlchemy:
 
-* See [```database/models.py```](../1.%20Basic_App/database/models.py) for examples of defining objects (models) for database rows.  These correspond to the tables in your database.
+* See [```database/models.py```](/1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/database/models.py) for examples of defining objects (models) for database rows.  These correspond to the tables in your database.
 
-* See [```api/end_points.py```](../1.%20Basic_App/api/end_points.py) for examples of SQLAlchemy calls.  See `def order():`.
+* See [```api/end_points.py```](/1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/api/end_points.py) for examples of SQLAlchemy calls.  See `def order():`.
 

@@ -78,13 +78,13 @@ To run the basic app:
 
 3. Create a new `bash`/`zsh` window, and paste the `cURL` text
 
-![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app-tutorial.png?raw=true)
+![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app?raw=true)
 
 </details>
 
 &nbsp;
 
-[Open the readme](./1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/readme.md) for background APIs, Flask, SQLAlchemy, and a walk-through of the code.
+[Open the readme](./1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/readme.md) for background on APIs, Flask, SQLAlchemy, and a walk-through of the code.
 
 When you are done, **stop** the server (Step 3).
 
@@ -161,10 +161,10 @@ Let's &nbsp;  a) Run the project, &nbsp; b) Explore the JSON:API, &nbsp; and c) 
     3. Click the green button to start the server
 <br><br>
 
-2. Start the Browser at localhost:5656, using the **url shown in the console log**.
+2. **Open in Browser** as shown below.
   * This opens the Admin App, which provides access to Swagger.
 
-![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject-tutorial.png)
+![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject.png)
 
 </details run project>
 
@@ -288,9 +288,12 @@ It operates as shown below:
 
 * B) Use the CLI to generate an executable project
 
-  * The system reads your database to create an executable API Logic Project
+  * The system reads your database to create an executable API Logic Project<br>
+&nbsp;
 
 * C) Customize and debug it in VSCode, PyCharm, etc.
+
+  * Declare logic, code new endpoints, customize the data model
 
 
 ![](https://apilogicserver.github.io/Docs/images/creates-and-runs.png)
@@ -461,7 +464,7 @@ Click here for the [docs](https://apilogicserver.github.io/Docs/).
 &nbsp;
 
 
-| Tech Area | Skill | App_Fiddle Example | APILogicProject Logic Example | Notes   |
+| Tech Area | Skill | 1. Learn APIs Example | 2. Learn JSON:API Example | Notes   |
 |:---- |:------|:-----------|:--------|:--------|
 | __Flask__ | Setup | [```flask_basic.py```](1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/flask_basic.py) |  [```api_logic_server_run.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/api_logic_server_run.py) |  |
 |  | Events | |  [```ui/admin/admin_loader.py```](./2.%20Learn%20JSON_API%20using%20API%20Logic%20Server/ui/admin/admin_loader.py) |  |
