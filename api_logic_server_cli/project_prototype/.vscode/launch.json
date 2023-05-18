@@ -30,7 +30,6 @@
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
             "console": "internalConsole",
-            "internalConsoleOptions": "openOnSessionStart",
             "internalConsoleOptions": "openOnSessionStart"
         },
         {

@@ -18,6 +18,8 @@ About this site:
     * Akin to a **JS Fiddle** - but here for a *complete environment:* running sample projects with live, updatable databases.
 
     * **Test the JSON:API** on the live database, with Swagger, cURL and an Admin App. 
+
+      * **Discover instant creation** and **logic enforcement**, using API Logic Server<br><br>
     
     * **Explore the project code** -- use the debugger, experiment with it.
 

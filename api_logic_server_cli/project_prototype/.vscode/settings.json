@@ -1,10 +1,4 @@
 {
-    "workbench.editorAssociations": [
-        {
-            "viewType": "vscode.markdown.preview.editor",
-            "filenamePattern": "*.md"
-        }
-    ],
     "cSpell.words": [
         "APILOGICSERVER",
         "sqlalchemy",
@@ -18,5 +12,8 @@
     ],
     "[Log]": {
         "editor.wordWrap": "off"
-      }
+    },
+    "workbench.editorAssociations": {
+        "*.md": "vscode.markdown.preview.editor"
+    }
 }
