@@ -3,8 +3,4 @@
     "python.terminal.activateEnvInCurrentTerminal": true,
     "terminal.integrated.env.osx": 
         { "PYTHONPATH": "/Users/val/dev/safrx" }
-        , // don't forget the comma
-        "workbench.editorAssociations": {   
-            "*.md": "vscode.markdown.preview.editor",
-        }
 }

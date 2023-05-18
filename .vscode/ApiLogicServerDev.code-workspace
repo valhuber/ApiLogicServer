@@ -105,6 +105,9 @@
 			"**api_logic_server_cli/ApiLogicProject/": true,
 			"**api_logic_server_cli/create_from_model/safrs-react-admin-npm-build": true
 		},
-		"window.autoDetectColorScheme": true
+		"window.autoDetectColorScheme": true,
+		"workbench.editorAssociations": {
+			"*.md": "vscode.markdown.preview.editor"
+		}
 	}
 }
