@@ -1,15 +1,27 @@
 # API Fiddle
 
-Run this Learning Center under Codespaces -- [click here](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=641207071).
+Run under Codespaces -- [click here](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=641207071).
 
 
 <details markdown>
 
 <br>
 
-<summary>Codespaces provides an API "fiddle"</summary>
+<summary>An "API Fiddle" - courtesy Codespaces</summary>
 
-Akin to a JSFiddle, Codespaces creates a complete executable environment with **zero install or configuration**.  The environment includes sample projects and databases - running in **VSCode *in your Browser*** - so you can test, debug and experiment with no risk.
+About this site:
+
+* *What:*  **Learn about JSON:API, Flask, and SQLAlchemy**
+
+* *Why:* a complement to conventional tutorials and docs, learn using a **complete executable environment**:
+
+    * Akin to a **JS Fiddle** - but here for a *complete environment:* running sample projects with live, updatable databases.
+
+    * **Test the JSON:API** on the live database, with Swagger, cURL and an Admin App. 
+    
+    * **Explore the project code** -- use the debugger, experiment with it.
+
+* *How:* the enabling technology is Codespaces.  It creates a cloud machine for these projects, and **starts VSCode in your Browser.**  This eliminates install, configuration, and risk to your local machine.
 
 </details fiddle>
 
@@ -27,9 +39,7 @@ Akin to a JSFiddle, Codespaces creates a complete executable environment with **
 
 This Learning Center is designed to help you learn about creating APIs, specifically JSON:APIs, using Python Flask and SQLAlchemy.  
 
-Most database applications require **networked database access**. You simply cannot call database access libraries (e.g., ODBC, JDBC) from a mobile app or a remote computer (B2B or application integration).
-
-**RESTful APIs** have become a common element of a modern software architecture to provide such access.  Microservice concepts stress that **APIs should enforce the *business logic*** for integrity and security.
+**RESTful APIs** have become a common element of a modern software architecture to provide **networked database access**s.  Microservice concepts stress that **APIs should enforce the *business logic*** for integrity and security.
 
 This contains 2 ready-to-run projects:<br>
 
@@ -74,22 +84,21 @@ To run the basic app:
 
 1. Click **Run and Debug** (you should see **1. Learn APIs using Flask SqlAlchemy**), and the green button to start the server
 
-  * Do ***Not*** click `Open in Browser`
+    * Do ***Not*** click `Open in Browser`<br><br>
 
 2. Copy the `cURL` text
 
-3. Create a new `bash`/`zsh` window, and paste the `cURL` text
+3. Open the `bash` window, and paste the `cURL` text
+
+    * Observe the resulting response text<br><br>
+
+4. [**Open the readme**](./1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/readme.md) to understand Flask / SQLAlchemy usage
+
+    * The readme also provides brief background on APIs, Flask, and SQLAlchemy
 
 ![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app.png?raw=true)
 
 </details>
-
-&nbsp;
-
-To understand how we used Flask / SQLAlchemy to create the resulting response text, 
-[open the readme](./1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/readme.md).  Before walking you through the code, it provides brief background on APIs, Flask, and SQLAlchemy.
-
-When you are done, **stop** the server (Step 3).
 
 &nbsp;
 
@@ -99,7 +108,7 @@ When you are done, **stop** the server (Step 3).
 
 &nbsp;
 
-Frameworks are flexible, and leverage your existing dev environment (IDE, git, etc).  But the manual effort is time-consuming, and complex.  This minimal project **does not provide:**
+Frameworks like Flask are flexible, and leverage your existing dev environment (IDE, git, etc).  But the manual effort is time-consuming, and complex.  This minimal project **does not provide:**
 
 <img align="right" width="150" height="150" src="https://github.com/ApiLogicServer/Docs/blob/main/docs/images/vscode/app-fiddle/horse-feathers.jpg?raw=true" alt="Horse Feathers">
 
@@ -114,6 +123,10 @@ Frameworks are flexible, and leverage your existing dev environment (IDE, git, e
 Below, we'll see an approach that combines the ***flexibility of a framework with the speed of low-code.***
 
 </details>
+
+&nbsp;
+
+When you are done, **stop** the server (Step 3).
 
 &nbsp;
 
@@ -168,7 +181,7 @@ Project 2 is much more like a real server.  It:
 
 **What is Installed**
 
-API Logic server installs with `pip`, in a docker container, or in codespaces.  As shown below, it consists of a:
+API Logic server installs with `pip`, in a docker container, or (here) in codespaces.  As shown below, it consists of a:
 
 * **CLI:** the `ApiLogicServer create` command you saw above
 * **Runtime Packages:** for API, UI and Logic execution<br>
@@ -185,6 +198,8 @@ It operates as shown below:
 
 * B) Use the CLI to generate an executable project
 
+  * E.g.: `ApiLogicServer create --project_name=nw --db_url=nw-`
+
   * The system reads your database to create an executable API Logic Project<br>
 &nbsp;
 
@@ -200,7 +215,8 @@ It operates as shown below:
 **Standard, Scalable Modern Architecture**
 
 * A modern 3-tiered architecture, accessed by **APIs**
-* Logic is **automatically reused**, factored out of web apps and custom services
+* Logic is **automatically invoked**, operating as a SQLAlchemy event listener
+  * Observe logic is *automatic re-used* by web apps and custom services
 * **Containerized** for scalable cloud deployment - the project includes a dockerfile to containerize it to DockerHub.
 
 
@@ -237,8 +253,8 @@ Let's &nbsp;  2.a) Start the Server, &nbsp; 2.b) Explore the JSON:API, &nbsp; an
     3. Click the green button to start the server
 <br><br>
 
-2. **Open in Browser** as shown below (you might to wait a moment while the server restarts for debug).
-  * This opens the Admin App, which provides access to Swagger.
+2. **Open in Browser** as shown below (you'll need to wait a moment for the server to restart for debug support).
+    * This opens the Admin App, which provides access to Swagger.
 
 ![](https://apilogicserver.github.io/Docs/images/tutorial/2-apilogicproject.png)
 
@@ -278,7 +294,7 @@ Automatic Swagger: from the **Home** page of the Admin App, execute it like this
 
 <details markdown>
 
-<summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.2) Consumer-defined response inclusion</summary>
+<summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.2) Consumer-defined response: the include argument</summary>
 
 &nbsp;
 
@@ -326,7 +342,7 @@ You can also make the endpoint **visible in swagger**.  Find the code `ServicesE
 
 &nbsp;
 
-APIs must ensure that updates adhere to business rules: **multi-table derivations and constraints**.  Such business logic is critical, and often constitutes **nearly half the code**.
+APIs must ensure that updates adhere to business rules: **multi-table derivations and constraints**.  Such business logic is not only critical, it's extensive: it often constitutes **nearly half the code**.
 
 API Logic Server enables you to declare **spreadsheet-like rules** for multi-table derivations and constraints, extensible with Python.  Just as a spreadsheet simplifies financial analysis, these **rules are 40X more concise than code.**
 
@@ -359,7 +375,7 @@ curl -X 'PATCH' \
 }'
 ```
 
-We see the log of logic execution (note the **rule chaining**), and the system state at our breakpoint:
+We see the log of logic execution (note the **multi-table rule chaining**), and the system state at our breakpoint:
 
 ![API Logic Server Intro](https://apilogicserver.github.io/Docs/images/tutorial/patch-orderdetail.png)
 
@@ -374,16 +390,21 @@ Use the [```Detailed Tutorial```](./2.%20Learn%20JSON_API%20using%20API%20Logic%
 
 &nbsp;
 
-<summary>Key Takeaways: Instant JSON:API and Admin App, Fully Flexible, Unique Declarative Rules</summary>
+<summary>Key Takeaways: JSON:APIs -- Instantly, With Logic and Admin App; Standard Tools </summary>
 
-This has been a quick look at the *fastest and simplest** way to create **modern, scalable API-based database systems:**
+**JSON:APIs** are worth a look:
 
-1. Use the `ApiLogicServer create` command to create a Flask/SQLAlchemy project from your database. Zero learning curve. Projects are **instantly executable**, providing:
+* **Eliminate design complexity and delays** with standards
+* **Eliminate bottlenecks** in backend development with Self-service APIs 
 
-    * **an Admin App:** multi-page, multi-table apps -- ready for business user agile collaboration
-    * **a JSON:API:** end points for each table, with filtering, sorting, pagination and related data access -- ready for custom app dev<br><br>
+**API Logic Server** creates JSON:API systems instantly:
 
-2. **Open Flexibility:** leverage standards for development and deployment:
+1.  **Instantly executable projects** with the `ApiLogicServer create` command, providing:
+
+    * **a JSON:API:** end point for each table -- multi-table, filtering, sorting, pagination... ready for custom app dev
+    * **an Admin App:** multi-page, multi-table apps... ready for business user agile collaboration<br><br>
+
+2. **Leverage Standard Tools** for development and deployment:
 
     * Dev: customize and debug with **<span style="background-color:Azure;">standard dev tools</span>**.  Use *your IDE (e.g. <span style="background-color:Azure;">VSCode, PyCharm</span>)*, <span style="background-color:Azure;">Python</span>, and Flask/SQLAlchemy to create new services.  Manage projects with <span style="background-color:Azure;">GitHub</span>.
 
@@ -403,32 +424,18 @@ This has been a quick look at the *fastest and simplest** way to create **modern
 
 &nbsp;
 
-<summary>Notes, Next Steps: New Projects</summary>
-
-**Project Structure**
-
-<details markdown>
-
-&nbsp;
-
-<summary>Project Structure</summary>
-
-This tutorial is actually 3 independent projects.  When you create a project using `ApiLogicServer create --project_name=my_project`, the system will create a free-standing project.  The project will include your container settings, IDE settings etc, so you can just open it your IDE to run and debug.
-
-</details project structure>
-
-&nbsp;
-
-**Creating New Projects**
+**Try Creating New Projects**
 
 <details markdown>
 
 <summary>Creating New Projects</summary>
 
-As shown above, it's easy to create projects with a single command.  To help you explore, ApiLogicServer provides several pre-installed sqlite sample databases:
+&nbsp;
+
+As described above, you can create projects with a single command.  To help you explore, ApiLogicServer provides several pre-installed sqlite sample databases:
 
 ```bash
-cd tutorial
+cd API_Fiddle
 
 ApiLogicServer create --db_url=sqlite:///sample_db.sqlite --project_name=nw
 
@@ -453,11 +460,26 @@ Then, **restart** the server as above, using the pre-created Run Configuration f
 
 The system provides shorthand notations for the pre-installed sample databases above.  For your own databases, you will need to provide a SQLAlchemy URI for the `db_url` parameter.  These can be tricky - try `ApiLogicServer examples`, or, when all else fails, [try the docs](https://apilogicserver.github.io/Docs/Database-Connectivity/).
 
-Click here for the [docs](https://apilogicserver.github.io/Docs/).
-
 </details url>
 
 </details new projects>
+
+&nbsp;
+
+<summary>Notes, Next Steps: New Projects</summary>
+
+**Project Structure**
+
+<details markdown>
+
+&nbsp;
+
+<summary>Project Structure</summary>
+
+This tutorial is actually 2 independent projects.  When you create a project using `ApiLogicServer create --project_name=my_project`, the system will create a free-standing project.  The project will include your container settings, IDE settings etc, so you can just open it your IDE to run and debug.
+
+</details project structure>
+
 
 </details notes next steps>
 
