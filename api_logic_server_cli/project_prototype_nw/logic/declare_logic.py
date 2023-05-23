@@ -161,9 +161,6 @@ def declare_logic():
     
     def valid_category_description(row: models.Category, old_row: models.Category, logic_row: LogicRow):
         if logic_row.ins_upd_dlt == "upd":
-            chk_CheckSum = row.CheckSum     # inline
-            current_checksum = opt_locking.checksum_old_row(old_row)
-            assert chk_CheckSum == current_checksum, "optimistic lock failure"
             return row.Description != 'x'
         else:
             return True

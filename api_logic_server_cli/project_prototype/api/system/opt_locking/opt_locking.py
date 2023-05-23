@@ -44,7 +44,7 @@ def checksum_row(row: object) -> int:
     return_value = checksum(attr_list)
     inspector_class = inspector.mapper.class_ 
     logger.debug(f'checksum_row (get) [{return_value}], inspector: {inspector}')
-    return return_value  # eg. 6785985870086950264
+    return return_value
 
 
 def checksum_old_row(logic_row_old: object) -> int:
@@ -55,7 +55,7 @@ def checksum_old_row(logic_row_old: object) -> int:
             attr_list.append(getattr(logic_row_old, each_property))
     return_value = checksum(attr_list)
     logger.debug(f'checksum_old_row [{return_value}] -- seeing -4130312969102546939 (vs. get: -4130312969102546939-4130312969102546939)')
-    return return_value  # eg. -4130312969102546939 (get: -4130312969102546939)
+    return return_value
 
 
 def opt_locking_setup(session):
@@ -65,7 +65,6 @@ def opt_locking_setup(session):
 
     @event.listens_for(session, 'loaded_as_persistent')
     def receive_loaded_as_persistent(session, instance):
-        "listen for the 'loaded_as_persistent' (get) event - set CheckSum"
         "listen for the 'loaded_as_persistent' (get) event - set CheckSum"
         checksum_value = checksum_row(instance)
         logger.debug(f'checksum_value: {checksum_value}')
@@ -77,8 +76,9 @@ def opt_lock_patch(logic_row: LogicRow):
     if hasattr(logic_row.row, "CheckSum"):
         as_read_checksum = logic_row.row.CheckSum
         current_checksum = checksum_old_row(logic_row.old_row)
-        assert as_read_checksum == current_checksum,\
-            f"optimistic lock failure - as-read vs current: {as_read_checksum} vs {current_checksum}"
+        if as_read_checksum != current_checksum:
+            logger.info(f"optimistic lock failure - as-read vs current: {as_read_checksum} vs {current_checksum}")
+            raise Exception("Sorry, row altered by another user - please note changes, cancel and retry")
     else:
         if Config.OPT_LOCKING == OptLocking.OPTIONAL.value:
             logger.debug(f'No CheckSum -- ok, configured as optional')
