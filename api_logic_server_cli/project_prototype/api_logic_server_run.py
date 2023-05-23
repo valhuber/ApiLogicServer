@@ -80,7 +80,7 @@ with open(f'{current_path}/logging.yml','rt') as f:  # see also logic/declare_lo
         config=yaml.safe_load(f.read())
         f.close()
 logging.config.dictConfig(config)  # log levels: critical < error < warning(20) < info(30) < debug
-app_logger = logging.getLogger(__name__)
+app_logger = logging.getLogger("api_logic_server_app")
 debug_value = os.getenv('APILOGICPROJECT_DEBUG')
 if debug_value is not None:  # > export APILOGICPROJECT_DEBUG=True
     debug_value = debug_value.upper()
@@ -375,6 +375,13 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
                 from security import declare_security  # activate security
                 app_logger.info("..declare security - security/declare_security.py"
                     + f' -- {len(database.authentication_models.metadata.tables)} authentication tables loaded')
+
+            from api.system.opt_locking import opt_locking
+            from config import OptLocking
+            if Config.OPT_LOCKING == OptLocking.IGNORED.value:
+                app_logger.info("\nOptimistic Locking: ignored")
+            else:
+                opt_locking.opt_locking_setup(session)
 
             SAFRSBase._s_auto_commit = False
             session.close()

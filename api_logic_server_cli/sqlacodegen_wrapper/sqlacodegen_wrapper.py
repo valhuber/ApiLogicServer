@@ -211,6 +211,10 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
         codegen_args.outfile = project_directory + '/database/models.py'
         codegen_args.version = False
         codegen_args.model_creation_services = model_creation_services
+        opt_locking_file_name = f'{model_creation_services.project.api_logic_server_dir_path.joinpath("templates/opt_locking.txt")}'
+        with open(opt_locking_file_name, 'r') as file:
+            opt_locking_data = file.read()
+        model_creation_services.opt_locking = opt_locking_data
         return codegen_args
 
     num_models = 0

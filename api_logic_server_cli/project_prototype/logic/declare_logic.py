@@ -16,6 +16,27 @@ def declare_logic():
     Use code completion (Rule.) to declare rules here:
     '''
 
+    import api.system.opt_locking.opt_locking as opt_locking
+    def handle_all(logic_row: LogicRow):  # OPTIMISTIC LOCKING, [TIME / DATE STAMPING]
+        """
+        This is generic - executed for all classes.
+
+        Invokes optimistic locking.
+
+        You can optionally do time and date stamping here, as shown below.
+
+        Args:
+            logic_row (LogicRow): from LogicBank - old/new row, state
+        """
+        opt_locking.opt_lock_patch(logic_row=logic_row)
+        enable_creation_stamping = False  # CreatedOn time stamping
+        if enable_creation_stamping:
+            row = logic_row.row
+            if logic_row.ins_upd_dlt == "ins" and hasattr(row, "CreatedOn"):
+                row.CreatedOn = datetime.datetime.now()
+                logic_row.log("early_row_event_all_classes - handle_all sets 'Created_on"'')
+    Rule.early_row_event_all_classes(early_row_event_all_classes=handle_all)
+
 
     app_logger.debug("..logic/declare_logic.py (logic == rules + code)")
 

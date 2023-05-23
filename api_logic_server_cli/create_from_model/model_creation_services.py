@@ -189,7 +189,8 @@ class ModelCreationServices(object):
         self.session = None
         self.connection = None
         self.app = None
-        # kat create models
+        self.opt_locking = ""
+        """ optimistic locking virtuals (jsonattrs) appended to each class """
         model_file_name, msg = sqlacodegen_wrapper.create_models_py(
             model_creation_services = self,
             abs_db_url= self.project.abs_db_url,

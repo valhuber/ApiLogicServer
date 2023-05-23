@@ -41,6 +41,11 @@ loggers:
         handlers: [console]
         propagate: no
 
+    api.system.opt_locking:
+        level: DEBUG
+        handlers: [console]
+        propagate: no
+
     api.customize_api:   
 #        level: DEBUG
         handlers: [console]

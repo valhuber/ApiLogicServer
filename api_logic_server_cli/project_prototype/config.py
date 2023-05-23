@@ -5,6 +5,7 @@ import os
 import typing
 from dotenv import load_dotenv
 import logging
+from enum import Enum
 
 #  for complete flask_sqlachemy config parameters and session handling,
 #  read: file flask_sqlalchemy/__init__.py AND flask/config.py
@@ -20,6 +21,23 @@ app.config.setdefault('SQLALCHEMY_POOL_RECYCLE', None)
 app.config.setdefault('SQLALCHEMY_MAX_OVERFLOW', None)
 app.config.setdefault('SQLALCHEMY_COMMIT_ON_TEARDOWN', False)
 '''
+
+class ExtendedEnum(Enum):
+    """
+    enum that supports list() to print allowed values
+
+    Thanks: https://stackoverflow.com/questions/29503339/how-to-get-all-values-from-python-enum-class
+    """
+
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
+
+class OptLocking(ExtendedEnum):
+    IGNORED = "ignored"
+    OPTIONAL = "optional"
+    REQUIRED = "required"
+
 
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, "default.env"))
@@ -73,4 +91,15 @@ class Config:
     # SQLALCHEMY_ECHO = environ.get("SQLALCHEMY_ECHO")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = False
+
+    OPT_LOCKING = OptLocking.OPTIONAL
+    if os.getenv('OPT_LOCKING'):  # e.g. export OPT_LOCKING=required
+        opt_locking_export = os.getenv('OPT_LOCKING')  # type: ignore # type: str
+        opt_locking = opt_locking_export.lower()  # type: ignore
+        if opt_locking in OptLocking.list():
+            OPT_LOCKING = opt_locking
+        else:
+            print(f'\n{__name__}: Invalid OPT_LOCKING.\n..Valid values are {OptLocking.list()}')
+            exit(1)
+        app_logger.debug(f'Opt Locking .. overridden from env variable: {OPT_LOCKING}')
 

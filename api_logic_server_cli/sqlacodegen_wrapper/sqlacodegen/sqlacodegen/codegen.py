@@ -673,6 +673,7 @@ class CodeGenerator(object):
 from safrs import SAFRSBase
 from flask_login import UserMixin
 import safrs, flask_sqlalchemy
+from safrs import jsonapi_attr
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy() 
@@ -1161,6 +1162,7 @@ from sqlalchemy.dialects.mysql import *
                 if model.rendered_model_relationships != "":  # child relns (OrderDetailList etc)
                     model.rendered_model_relationships = "\n" + model.rendered_model_relationships
                 rendered_models.append(model.rendered_model + model.rendered_model_relationships)
+                rendered_models.append(self.model_creation_services.opt_locking)
             elif isinstance(model, self.table_model):  # eg, views, database id generators, etc
                 rendered_models.append(self.render_table(model))
 
