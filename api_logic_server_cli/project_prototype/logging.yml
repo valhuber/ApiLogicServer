@@ -42,7 +42,7 @@ loggers:
         propagate: no
 
     api.system.opt_locking:
-        level: DEBUG
+        level: INFO
         handlers: [console]
         propagate: no
 
