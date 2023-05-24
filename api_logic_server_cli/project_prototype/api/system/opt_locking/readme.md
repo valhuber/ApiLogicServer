@@ -68,6 +68,19 @@ The approach is summarized in the table below.  See the the code in [`api/system
 
 &nbsp;
 
+### Status: working, but...
+
+
+TODO failing, since **patch retrieves the row**, which sets (bad) CheckSum (reflects upd, eg, setShipped).
+
+We expected to overwrite it with client as-read, but that's missing in behave tests
+
+Also show on Admin App updates....
+
+How does get event know it's patch (don't set cs) vs get (set cs)
+
+&nbsp;
+
 ## Samples
 
 You can explore this using the sample database with the cURL commands below.
