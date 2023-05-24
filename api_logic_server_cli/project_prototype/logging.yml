@@ -36,6 +36,11 @@ loggers:
         handlers: [console]
         propagate: no
 
+    api_logic_server_app:
+        level: INFO
+        handlers: [console]
+        propagate: no
+
     safrs:
         level: DEBUG
         handlers: [console]
