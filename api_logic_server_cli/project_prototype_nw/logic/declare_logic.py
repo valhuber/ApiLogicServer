@@ -252,7 +252,8 @@ def declare_logic():
         Args:
             logic_row (LogicRow): from LogicBank - old/new row, state
         """
-        opt_locking.opt_lock_patch(logic_row=logic_row)
+        if logic_row.is_updated() and logic_row.old_row is not None:
+            opt_locking.opt_lock_patch(logic_row=logic_row)
         enable_creation_stamping = True  # CreatedOn time stamping
         if enable_creation_stamping:
             row = logic_row.row

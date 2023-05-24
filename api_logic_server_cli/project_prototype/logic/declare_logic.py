@@ -28,7 +28,13 @@ def declare_logic():
         Args:
             logic_row (LogicRow): from LogicBank - old/new row, state
         """
-        opt_locking.opt_lock_patch(logic_row=logic_row)
+        if logic_row.is_updated() and logic_row.old_row is not None and logic_row.nest_level == 0:
+            """
+                TODO failing, since patch retrieves row and sets (bad) CheckSum (reflects upd, eg, setShipped)
+                We expected to overwrite it with client as-read, but that's missing in behave tests
+                How does get event know it's patch (don't set cs) vs get (set cs)
+            """
+            opt_locking.opt_lock_patch(logic_row=logic_row)
         enable_creation_stamping = False  # CreatedOn time stamping
         if enable_creation_stamping:
             row = logic_row.row
