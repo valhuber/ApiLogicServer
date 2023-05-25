@@ -43,12 +43,12 @@ def create_expose_api_models(model_creation_services: create_from_model.ModelCre
     # result_apis += '    if HOST == "0.0.0.0":\n'
     # result_apis += '        my_host = "localhost"  # override default HOST for pc"\n'
     result_apis += '    """\n'
-    result_apis += '        Declare API - on existing SAFRSAPI \n'
-    result_apis += '            This exposes each model - API automation\n'
-    result_apis += '            Including get (filtering, pagination, related data access) \n'
-    result_apis += '            And post/patch/update (including logic enforcement) \n'
+    result_apis += '        Declare API - on existing SAFRSAPI to expose each model - API automation \n'
+    result_apis += '        - Including get (filtering, pagination, related data access) \n'
+    result_apis += '        - And post/patch/update (including logic enforcement) \n\n'
+    result_apis += '        Invoked at server startup (api_logic_server_run) \n\n'
     result_apis += '        You typically do not customize this file \n'
-    result_apis += '            See https://apilogicserver.github.io/Docs/Tutorial/#customize-and-debug \n'
+    result_apis += '        - See https://apilogicserver.github.io/Docs/Tutorial/#customize-and-debug \n'
     result_apis += '    """\n'
 
     sys.path.append(model_creation_services.project.os_cwd)
