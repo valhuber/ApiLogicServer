@@ -6,7 +6,6 @@ from os import path
 import logging
 import sys
 from typing import Any, Optional, Tuple
-import safrs
 import sqlalchemy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper

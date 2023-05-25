@@ -17,7 +17,7 @@
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
-            "name": "No Security ApiLogicServer (e.g., for behave tests)",
+            "name": "No Security ApiLogicServer (e.g., simpler swagger)",
             "type": "python",
             "request": "launch",
             "program": "api_logic_server_run.py",
