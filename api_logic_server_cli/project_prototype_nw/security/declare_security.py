@@ -9,7 +9,7 @@ Illustrates declarative security - role-based authorization to database rows.
 
 * See [documentation](https://apilogicserver.github.io/Docs/Security-Overview/)
 
-* Security is activate in `config.py`
+* Security is invoked on server start (api_logic_server_run), per activation in `config.py`
 """
 
 app_logger = logging.getLogger(__name__)

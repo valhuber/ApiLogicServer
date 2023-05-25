@@ -4,6 +4,7 @@ from logic_bank.exec_row_logic.logic_row import LogicRow
 from logic_bank.extensions.rule_extensions import RuleExtension
 from logic_bank.logic_bank import Rule
 from database import models
+import api.system.opt_locking.opt_locking as opt_locking
 import logging
 
 app_logger = logging.getLogger(__name__)
@@ -16,7 +17,6 @@ def declare_logic():
     Use code completion (Rule.) to declare rules here:
     '''
 
-    import api.system.opt_locking.opt_locking as opt_locking
     def handle_all(logic_row: LogicRow):  # OPTIMISTIC LOCKING, [TIME / DATE STAMPING]
         """
         This is generic - executed for all classes.
@@ -29,11 +29,6 @@ def declare_logic():
             logic_row (LogicRow): from LogicBank - old/new row, state
         """
         if logic_row.is_updated() and logic_row.old_row is not None and logic_row.nest_level == 0:
-            """
-                TODO failing, since patch retrieves row and sets (bad) CheckSum (reflects upd, eg, setShipped)
-                We expected to overwrite it with client as-read, but that's missing in behave tests
-                How does get event know it's patch (don't set cs) vs get (set cs)
-            """
             opt_locking.opt_lock_patch(logic_row=logic_row)
         enable_creation_stamping = False  # CreatedOn time stamping
         if enable_creation_stamping:

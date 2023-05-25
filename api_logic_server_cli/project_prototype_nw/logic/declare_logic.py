@@ -4,8 +4,8 @@ from logic_bank.exec_row_logic.logic_row import LogicRow
 from logic_bank.extensions.rule_extensions import RuleExtension
 from logic_bank.logic_bank import Rule
 from database import models
+import api.system.opt_locking.opt_locking as opt_locking
 import logging
-from api.system.opt_locking import opt_locking as opt_locking
 
 
 preferred_approach = True
@@ -149,7 +149,7 @@ def declare_logic():
 
 
     """
-        Simple constraint for error testing 
+        Simple constraints for error testing 
     """
     Rule.constraint(validate=models.Customer,
         as_condition=lambda row: row.CompanyName != 'x',
@@ -167,7 +167,6 @@ def declare_logic():
     Rule.constraint(validate=models.Category,
                     calling=valid_category_description,
                     error_msg="{row.Description} cannot be 'x'")
-
 
 
     """
@@ -198,6 +197,7 @@ def declare_logic():
 
     Rule.count(derive=models.Order.OrderDetailCount, as_count_of=models.OrderDetail)
 
+
     """
         STATE TRANSITION LOGIC, using old_row
     """
@@ -209,6 +209,7 @@ def declare_logic():
     Rule.constraint(validate=models.Employee,
                     calling=raise_over_20_percent,
                     error_msg="{row.LastName} needs a more meaningful raise")
+
 
     """
         EXTEND RULE TYPES 
@@ -240,7 +241,7 @@ def declare_logic():
                                     which_children=which)
     Rule.row_event(on_class=models.Order, calling=clone_order)
 
-    import api.system.opt_locking.opt_locking as opt_locking
+
     def handle_all(logic_row: LogicRow):  # OPTIMISTIC LOCKING, [TIME / DATE STAMPING]
         """
         This is generic - executed for all classes.
@@ -252,7 +253,7 @@ def declare_logic():
         Args:
             logic_row (LogicRow): from LogicBank - old/new row, state
         """
-        if logic_row.is_updated() and logic_row.old_row is not None:
+        if logic_row.is_updated() and logic_row.old_row is not None and logic_row.nest_level == 0:
             opt_locking.opt_lock_patch(logic_row=logic_row)
         enable_creation_stamping = True  # CreatedOn time stamping
         if enable_creation_stamping:

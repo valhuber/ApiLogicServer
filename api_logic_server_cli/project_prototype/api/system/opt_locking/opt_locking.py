@@ -94,9 +94,9 @@ def opt_lock_patch(logic_row: LogicRow):
     Called by logic/declare_logic in early (before logic) event for updates (patch)
 
     Compares as_read_checksum to old_row_checksum, to determine whether row changed since read
-    
+
     - as_read_checksum is submitted in patch by client, from initial get (see receive_loaded_as_persistent)
-    - old_row_checksum is provided by Logicbank - it's the current row on disk
+    - old_row_checksum is provided by LogicBank - it's the current row on disk
 
     Args:
         logic_row (LogicRow): LogicBank row being updated

@@ -283,7 +283,9 @@ def get_args():
 
 
 # ==========================================================
-# Creates flask_app, Opens Database, Activates API and Logic 
+# Creates flask_app, starts server after setup:
+#   - Opens Database(s)
+#   - Setup API, Logic, Security, Optimistic Locking 
 # ==========================================================
 
 def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
