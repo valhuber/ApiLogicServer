@@ -1,10 +1,10 @@
 import api_logic_server_cli.create_from_model.uri_info as uri_info
-from api_logic_server_cli.cli_args_base import ProjectArgs
+from api_logic_server_cli.cli_args_base import CliArgsBase
 from os.path import abspath
 from pathlib import Path
 import os
 
-class Project(ProjectArgs):  # extend user-visible args with internal values
+class Project(CliArgsBase):  # extend user-visible args with internal values
     
     def __init__(self):
         

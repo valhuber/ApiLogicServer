@@ -92,7 +92,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = False
 
-    OPT_LOCKING = OptLocking.OPTIONAL
+    OPT_LOCKING = "replace_opt_locking"
     if os.getenv('OPT_LOCKING'):  # e.g. export OPT_LOCKING=required
         opt_locking_export = os.getenv('OPT_LOCKING')  # type: ignore # type: str
         opt_locking = opt_locking_export.lower()  # type: ignore

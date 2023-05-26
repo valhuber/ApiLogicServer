@@ -22,6 +22,7 @@ import shutil
 import importlib.util
 
 from flask import Flask
+from cli_args_base import OptLocking
 
 import logging
 import datetime
@@ -236,6 +237,9 @@ def tutorial(ctx, create):
 @click.option('--api_name',
               default=f'api',
               help="Last node of API Logic Server url\n")
+@click.option('--opt_locking',
+              default=OptLocking.OPTIONAL.value,
+              help="Optimistic Locking [ignore, optional, required]")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -304,6 +308,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            extended_builder: str,
            include_tables: str,
            multi_api: click.BOOL,
+           opt_locking: str,
            infer_primary_key: click.BOOL):
     """
         Creates new customizable project (overwrites).
@@ -317,7 +322,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
                     react_admin=react_admin, admin_app=admin_app,
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                     extended_builder=extended_builder, include_tables=include_tables,
-                    multi_api=multi_api, infer_primary_key=infer_primary_key)
+                    multi_api=multi_api, infer_primary_key=infer_primary_key, opt_locking=opt_locking)
 
 
 @main.command("create-and-run")
@@ -332,6 +337,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
 @click.option('--api_name',
               default=f'api',
               help="Last node of API Logic Server url\n")
+@click.option('--opt_locking',
+              default=OptLocking.OPTIONAL.value,
+              help="Optimistic Locking [ignore, optional, required]")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -377,6 +385,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
 @click.option('--extended_builder',
               default=f'',
               help="your_code.py for additional build automation")
+@click.option('--include_tables',
+              default=f'',
+              help="yml for include: exclude:")
 @click.option('--infer_primary_key/--no_infer_primary_key',
               default=False, is_flag=True,
               help="Infer primary_key for unique cols")
@@ -395,7 +406,9 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
         swagger_host: str,
         favorites: str, non_favorites: str,
         extended_builder: str,
+        include_tables: str,
         multi_api: click.BOOL,
+        opt_locking: str,
         infer_primary_key: click.BOOL):
     """
         Creates new project and runs it (overwrites).
@@ -408,7 +421,8 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                     react_admin=react_admin, admin_app=admin_app,
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                    extended_builder=extended_builder, multi_api=multi_api, infer_primary_key=infer_primary_key)
+                    extended_builder=extended_builder, include_tables=include_tables,
+                    multi_api=multi_api, infer_primary_key=infer_primary_key, opt_locking=opt_locking)
 
 
 @main.command("rebuild-from-database")
