@@ -22,7 +22,6 @@ import shutil
 import importlib.util
 
 from flask import Flask
-from cli_args_base import OptLocking
 
 import logging
 import datetime
@@ -49,6 +48,7 @@ from create_from_model.model_creation_services import ModelCreationServices
 import create_from_model.api_logic_server_utils as create_utils
 import api_logic_server_cli.create_from_model.uri_info as uri_info
 import api_logic_server_cli.api_logic_server as PR  # ProjectRun (main class)
+from api_logic_server_cli.cli_args_base import OptLocking
 
 api_logic_server_info_file_name = get_api_logic_server_dir() + "/api_logic_server_info.yaml"
 

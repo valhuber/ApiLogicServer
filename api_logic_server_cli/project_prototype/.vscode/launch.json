@@ -7,7 +7,7 @@
         {
             "name": "ApiLogicServer",
             "type": "python",
-            "env": {"APILOGICPROJECT_DEBUG": "False"},
+            "env": {"PYTHONPATH": "", "APILOGICPROJECT_DEBUG": "False"},
             "request": "launch",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
@@ -22,7 +22,7 @@
             "request": "launch",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
-            "env": {"SECURITY_ENABLED": "False", "PYTHONHASHSEED": "0", "OPT_LOCKING": "optional"},
+            "env": {"PYTHONPATH": "", "SECURITY_ENABLED": "False", "PYTHONHASHSEED": "0", "OPT_LOCKING": "optional"},
             "justMyCode": false,
             "args": ["--flask_host=localhost", "--port=5656", "--swagger_host=localhost", "--verbose=False"],
             "console": "internalConsole",

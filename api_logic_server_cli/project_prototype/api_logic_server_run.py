@@ -79,7 +79,7 @@ current_path = os.path.abspath(os.path.dirname(__file__))
 with open(f'{current_path}/logging.yml','rt') as f:  # see also logic/declare_logic.py
         config=yaml.safe_load(f.read())
         f.close()
-logging.config.dictConfig(config)  # log levels: critical < error < warning(20) < info(30) < debug
+logging.config.dictConfig(config)  # log levels: notset 0, debug 10, info 20, warn 30, error 40, critical 50
 app_logger = logging.getLogger("api_logic_server_app")
 debug_value = os.getenv('APILOGICPROJECT_DEBUG')
 if debug_value is not None:  # > export APILOGICPROJECT_DEBUG=True
@@ -305,7 +305,7 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
         db_log_level = db_logger.getEffectiveLevel()
         do_hide_chatty_logging = True
         if do_hide_chatty_logging and app_logger.getEffectiveLevel() <= logging.INFO:
-            safrs.log.setLevel(logging.WARN)  # debug is 10, warn is 20, info 30
+            safrs.log.setLevel(logging.WARN)  # notset 0, debug 10, info 20, warn 30, error 40, critical 50
             db_logger.setLevel(logging.WARN)
             safrs_init_logger = logging.getLogger("safrs.safrs_init")
             safrs_init_logger.setLevel(logging.WARN)
@@ -405,7 +405,7 @@ if os.getenv('VERBOSE'):
 
 if verbose:
     app_logger.setLevel(logging.DEBUG)
-    safrs.log.setLevel(logging.DEBUG)  # debug is 10, warn is 20, info 30
+    safrs.log.setLevel(logging.DEBUG)  # notset 0, debug 10, info 20, warn 30, error 40, critical 50
 if app_logger.getEffectiveLevel() == logging.DEBUG:
     util.sys_info()
 
