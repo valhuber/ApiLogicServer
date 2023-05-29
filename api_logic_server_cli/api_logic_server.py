@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.09"
+__version__ = "08.04.10"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/28/2023 - 08.04.09: introducing optimistic locking w/ CLI options, std safrs \n"\
+    "\t05/28/2023 - 08.04.10: Optimistic locking w/ 2 CLI options, std safrs \n"\
     "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
@@ -343,6 +343,9 @@ def create_project_with_nw_samples(project, msg: str) -> str:
         create_utils.replace_string_in_file(search_for="replace_opt_locking",
                             replace_with=f'{project.opt_locking}',
                             in_file=f'{project.project_directory}/config.py')
+        create_utils.replace_string_in_file(search_for="replace_opt_locking_attr",
+                            replace_with=f'{project.opt_locking_attr}',
+                            in_file=f'{project.project_directory}/api/system/opt_locking/opt_locking.py')
 
         do_fix_docker_for_vscode_dockerfile = True
         """
@@ -636,7 +639,8 @@ class ProjectRun(Project):
                      bind_key_url_separator: str=default_bind_key_url_separator,
                      bind_key: str="",
                      execute: bool=True,
-                     opt_locking: str=OptLocking.OPTIONAL.value):
+                     opt_locking: str=OptLocking.OPTIONAL.value,
+                     opt_locking_attr: str="S_CheckSum"):
         super(ProjectRun, self).__init__()
         self.project_name = project_name
         self.db_url = db_url
@@ -663,6 +667,7 @@ class ProjectRun(Project):
         self.bind_key_url_separator = bind_key_url_separator
         self.command = command
         self.opt_locking = opt_locking
+        self.opt_locking_attr = opt_locking_attr
 
         name_nodes = self.project_name.split("/") # type: str
         self.project_name_last_node = name_nodes[len(name_nodes) - 1]
@@ -706,6 +711,7 @@ class ProjectRun(Project):
             log.debug(f'  --multi_api={self.multi_api}')
             log.debug(f'  --infer_primary_key={self.infer_primary_key}')
             log.debug(f'  --opt_locking={self.opt_locking}')
+            log.debug(f'  --opt_locking_attr={self.opt_locking_attr}')
 
     def update_config_and_copy_sqlite_db(self, msg: str) -> str:
         """
