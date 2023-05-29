@@ -79,3 +79,5 @@ class Project(CliArgsBase):  # extend user-visible args with internal values
             print(f'  --extended_builder={self.extended_builder}')
             print(f'  --multi_api={self.multi_api}')
             print(f'  --infer_primary_key={self.infer_primary_key}')
+            print(f'  --opt_locking={self.opt_locking}')
+            print(f'  --opt_locking={self.opt_locking_attr}')

@@ -240,6 +240,9 @@ def tutorial(ctx, create):
 @click.option('--opt_locking',
               default=OptLocking.OPTIONAL.value,
               help="Optimistic Locking [ignore, optional, required]")
+@click.option('--opt_locking_attr',
+              default="S_CheckSum",
+              help="Attribute Name for Optimistic Locking CheckSum")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -308,7 +311,7 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            extended_builder: str,
            include_tables: str,
            multi_api: click.BOOL,
-           opt_locking: str,
+           opt_locking: str, opt_locking_attr: str,
            infer_primary_key: click.BOOL):
     """
         Creates new customizable project (overwrites).
@@ -322,7 +325,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
                     react_admin=react_admin, admin_app=admin_app,
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                     extended_builder=extended_builder, include_tables=include_tables,
-                    multi_api=multi_api, infer_primary_key=infer_primary_key, opt_locking=opt_locking)
+                    multi_api=multi_api, infer_primary_key=infer_primary_key, 
+                    opt_locking=opt_locking, opt_locking_attr=opt_locking_attr)
 
 
 @main.command("create-and-run")
@@ -340,6 +344,9 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
 @click.option('--opt_locking',
               default=OptLocking.OPTIONAL.value,
               help="Optimistic Locking [ignore, optional, required]")
+@click.option('--opt_locking_attr',
+              default="S_CheckSum",
+              help="Attribute Name for Optimistic Locking CheckSum")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -408,7 +415,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
         extended_builder: str,
         include_tables: str,
         multi_api: click.BOOL,
-        opt_locking: str,
+        opt_locking: str, opt_locking_attr: str,
         infer_primary_key: click.BOOL):
     """
         Creates new project and runs it (overwrites).
@@ -422,7 +429,8 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
                     react_admin=react_admin, admin_app=admin_app,
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                     extended_builder=extended_builder, include_tables=include_tables,
-                    multi_api=multi_api, infer_primary_key=infer_primary_key, opt_locking=opt_locking)
+                    multi_api=multi_api, infer_primary_key=infer_primary_key,
+                    opt_locking=opt_locking, opt_locking_attr=opt_locking_attr)
 
 
 @main.command("rebuild-from-database")

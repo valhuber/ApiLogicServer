@@ -13,4 +13,4 @@
     def _check_sum_(self, value):  # type: ignore [no-redef]
         self._check_sum_property = value
 
-    CheckSum = _check_sum_
+    replace_opt_locking_attr = _check_sum_

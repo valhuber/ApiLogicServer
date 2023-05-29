@@ -11,6 +11,10 @@ from sqlalchemy import inspect
 from sqlalchemy import event
 from safrs import SAFRSBase
 
+from safrs.util import classproperty
+from safrs.errors import JsonapiError
+from http import HTTPStatus
+
 from config import OptLocking
 from config import Config
 
@@ -67,11 +71,10 @@ def checksum_row(row: object) -> str:
         if each_property.key == "CheckSum":
             logger.debug(f'checksum_row (CheckSum) - good place for breakpoint')
         if isinstance(each_property, sqlalchemy.orm.properties.ColumnProperty):
-            logger.debug(f'row.property: {each_property} [{getattr(row, each_property.key)}] <{type(each_property)}>')
+            # logger.debug(f'row.property: {each_property} [{getattr(row, each_property.key)}] <{type(each_property)}>')
             attr_list.append(getattr(row, each_property.class_attribute.key))
     return_value = checksum(attr_list)
-    inspector_class = inspector.mapper.class_ 
-    logger.debug(f'checksum_row (get) [{return_value}], inspector: {inspector}')
+    # logger.debug(f'checksum_row (get) [{return_value}], inspector: {inspector}')
     return return_value
 
 def checksum_old_row(logic_row: object) -> str:
@@ -91,29 +94,12 @@ def checksum_old_row(logic_row: object) -> str:
         if each_property.key == "CheckSum":
             logger.debug(f'checksum_row (CheckSum) - good place for breakpoint')
         if isinstance(each_property, sqlalchemy.orm.properties.ColumnProperty):
-            logger.debug(f'old_row.property: {each_property} [{getattr(logic_row.old_row, each_property.key)}] <{type(each_property)}>')
-            # logger.debug(f'old_row.property: {each_property} [{getattr(logic_row_old, each_property)}] <{type(each_property)}>')
+            # logger.debug(f'old_row.property: {each_property} [{getattr(logic_row.old_row, each_property.key)}] <{type(each_property)}>')
             attr_list.append(getattr(logic_row.old_row, each_property.class_attribute.key))
     return_value = checksum(attr_list)
-    inspector_class = inspector.mapper.class_ 
-    logger.debug(f'checksum_row (get) [{return_value}], inspector: {inspector}')
+    # logger.debug(f'checksum_row (get) [{return_value}], inspector: {inspector}')
     return return_value
 
-    """
-    attr_list = []
-    for each_property in logic_row_old.keys():
-        logger.debug(f'old_row.property: {each_property} [{getattr(logic_row_old, each_property)}] <{type(each_property)}>')
-        if True:  # isinstance(each_property, sqlalchemy.orm.properties.ColumnProperty):
-            attr_list.append(getattr(logic_row_old, each_property))
-    return_value = checksum(attr_list)
-    logger.debug(f'checksum_old_row [{return_value}]')
-    return return_value
-    """
-
-
-from safrs.util import classproperty
-from safrs.errors import JsonapiError
-from http import HTTPStatus
 
 class ALSError(JsonapiError):
     
@@ -140,13 +126,12 @@ def opt_lock_patch(logic_row: LogicRow):
         ALSError: "Optimistic Locking error - required CheckSum not present"
     """
     logger.debug(f'Opt Lock Patch')
-    if hasattr(logic_row.row, "CheckSum"):
-        as_read_checksum = logic_row.row.CheckSum
-        if as_read_checksum != "!opt_locking_is_patch":
-            old_row_checksum = checksum_old_row(logic_row)
-            if as_read_checksum != old_row_checksum:
-                logger.info(f"optimistic lock failure - as-read vs current: {as_read_checksum} vs {old_row_checksum}")
-                raise ALSError(message="Sorry, row altered by another user - please note changes, cancel and retry")
+    if hasattr(logic_row.row, "replace_opt_locking_attr"):
+        as_read_checksum = logic_row.row.replace_opt_locking_attr
+        old_row_checksum = checksum_old_row(logic_row)
+        if as_read_checksum != old_row_checksum:
+            logger.info(f"optimistic lock failure - as-read vs current: {as_read_checksum} vs {old_row_checksum}")
+            raise ALSError(message="Sorry, row altered by another user - please note changes, cancel and retry")
     else:
         if Config.OPT_LOCKING == OptLocking.OPTIONAL.value:
             logger.debug(f'No CheckSum -- ok, configured as optional')

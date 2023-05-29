@@ -56,3 +56,4 @@ class CliArgsBase():
         self.infer_primary_key = None
         self.opt_locking = None # type: str
         """ <str> in OptLocking.list() """
+        self.opt_locking_attr = None # type: str

@@ -214,7 +214,7 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
         opt_locking_file_name = f'{model_creation_services.project.api_logic_server_dir_path.joinpath("templates/opt_locking.txt")}'
         with open(opt_locking_file_name, 'r') as file:
             opt_locking_data = file.read()
-        model_creation_services.opt_locking = opt_locking_data
+        model_creation_services.opt_locking = opt_locking_data.replace('replace_opt_locking_attr', model_creation_services.project.opt_locking_attr)
         return codegen_args
 
     num_models = 0
