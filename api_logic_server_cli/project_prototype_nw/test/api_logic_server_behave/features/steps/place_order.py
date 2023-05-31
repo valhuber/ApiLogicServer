@@ -161,6 +161,7 @@ def step_impl(context):
     for each_order in orders:
         order_id = each_order.id
         delete_uri = "http://localhost:5656/api/Order/" + str(order_id) + "/"
+        # TODO - fails in SQLAlchemy 2 - stacktrace after commit on flush
         r = requests.delete(delete_uri, headers= test_utils.login())
 
     before = context.alfki_before

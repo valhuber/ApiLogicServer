@@ -203,6 +203,7 @@ def start_api_logic_server(project_name: str, env_list = None):
         if env_list is not None:
             for each_env_name, env_value in env_list:
                 my_env[each_env_name] = env_value
+        my_env['PYTHONHASHSEED'] = '0'
         pipe = subprocess.Popen(start_cmd, cwd=install_api_logic_server_path, env=my_env)  #, stderr=subprocess.PIPE)
     except:
         print(f"\nsubprocess.Popen failed trying to start server.. with command: \n {start_cmd}")
@@ -477,6 +478,71 @@ def validate_nw():
     print("\nBehave tests & report - Success...\n")
 
 
+def validate_opt_locking():
+    """
+    Verify optimistic locking
+
+    1. Missing CheckSum
+    2. Improper Checksum
+    3. Proper Checksum
+    4. Place_Order tests critical case - attribute order correct with aliased attrs
+
+    Does not work, presumably due to see.  Tests moved to behave
+    """
+    dup_behave_tests = False  # they don't really work...
+    if dup_behave_tests:
+        patch_uri = "http://localhost:5656/api/Category/1/"
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "Description": "x"
+                    },
+                    "type": "Category",
+                    "id": "1"
+                }
+            }
+        r = requests.patch(url=patch_uri, json=patch_args, headers=login())
+        response_text = r.text
+        result_data = json.loads(response_text) 
+        assert "x cannot be" in response_text, "Opt Locking Failed: Missing Checksum test"
+
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "Description": "x",
+                        "S_CheckSum": "Mismatch Checksum test"
+                    },
+                    "type": "Category",
+                    "id": "1"
+                }
+            }
+        r = requests.patch(url=patch_uri, json=patch_args, headers=login())
+        response_text = r.text
+        result_data = json.loads(response_text) 
+        assert "Sorry, row altered by another" in response_text, "Opt Locking Failed: Mismatch Checksum test"
+
+        patch_uri = "http://localhost:5656/api/Category/1/"
+        patch_args = \
+            {
+                "data": {
+                    "attributes": {
+                        "Description": "x",
+                        "S_CheckSum": "-2378822108675121962"
+                    },
+                    "type": "Category",
+                    "id": "1"
+                }
+            }
+        r = requests.patch(url=patch_uri, json=patch_args, headers=login())
+        response_text = r.text
+        result_data = json.loads(response_text) 
+        assert "x cannot be" in response_text, "Opt Locking Failed: Matching Checksum test"
+
+    return
+
+
 def validate_sql_server_types():
     """
     Verify sql server types and extended builder
@@ -599,6 +665,7 @@ if Config.do_run_api_logic_project:  # so you can start and set breakpoint, then
     start_api_logic_server(project_name="ApiLogicProject")
     
 if Config.do_test_api_logic_project:
+    validate_opt_locking()
     validate_nw()
     stop_server(msg="*** NW TESTS COMPLETE ***\n")
 

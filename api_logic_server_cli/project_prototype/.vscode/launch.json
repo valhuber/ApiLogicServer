@@ -7,8 +7,7 @@
         {
             "name": "ApiLogicServer",
             "type": "python",
-            "env": {"PYTHONPATH": "", "APILOGICPROJECT_DEBUG": "False"},
-            "request": "launch",
+            "env": {"PYTHONPATH": "", "PYTHONHASHSEED": "0", "APILOGICPROJECT_DEBUG": "False"},            "request": "launch",
             "program": "api_logic_server_run.py",
             "redirectOutput": true,
             "justMyCode": false,

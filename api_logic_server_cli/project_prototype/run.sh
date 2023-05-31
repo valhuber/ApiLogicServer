@@ -40,4 +40,5 @@ if [ $# -eq 1 ]
   fi
 
 cd "$(dirname "$0")"
+PYTHONHASHSEED=0
 python3 api_logic_server_run.py
