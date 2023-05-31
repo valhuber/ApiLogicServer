@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.12"
+__version__ = "08.04.14"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/30/2023 - 08.04.12: OptLocking w/ 2 CLI options & bh tests, std safrs, behave cascade_backrefs warning \n"\
+    "\t05/31/2023 - 08.04.14: OptLocking w/ 2 CLI options & bh tests no sec, std safrs, behave cascade_backrefs warning \n"\
     "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
@@ -101,13 +101,12 @@ if debug_value is not None:
         logging.getLogger('create_from_model.model_creation_services').setLevel(logging.DEBUG)
         
 
-
-# log.debug("sys.path.append(get_api_logic_server_dir())\n",get_api_logic_server_dir())
+log.debug("Patch to enable import of outer directories")
 sys.path.append(get_api_logic_server_dir())  # e.g, on Docker: export PATH="/home/api_logic_server/api_logic_server_cli"
 api_logic_server_path = os.path.dirname(get_api_logic_server_dir())  # e.g: export PATH="/home/api_logic_server"
 sys.path.append(api_logic_server_path)
-from create_from_model.model_creation_services import ModelCreationServices
 
+from create_from_model.model_creation_services import ModelCreationServices
 import sqlacodegen_wrapper.sqlacodegen_wrapper as expose_existing_callable
 import create_from_model.api_logic_server_utils as create_utils
 import api_logic_server_cli.create_from_model.uri_info as uri_info
