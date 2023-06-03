@@ -108,10 +108,10 @@ The approach is summarized in the table below.  See the the code in [`api/system
 
 | Phase | Responsibility | Action | Notes |
 |:-----|:-------|:-------|:----|
-| Design Time | API Logic Server CLI | Declare <`opt_locking_attr`> as a `@jsonapi_attr` | `models.py` - json_attr |
-| Runtime - Read | System | Compute Checksum | `opt_locking#loaded_as` (setup from from api_logic_server_run.py) |
-| Runtime - Call Patch | Custom App Code<br>Admin App | Return as-read-Checksum | See examples below |
-| Runtime - Process Patch | System | Compare CheckSums: as-read vs. current | `opt_locking#opt_locking_patch`, via `logic/declare_logic.py`: generic before event |
+| Design Time | **System** | Declare <`opt_locking_attr`> as a `@jsonapi_attr` | Project creation (CLI) builds `models.py` with @json_attr |
+| Runtime - Read | **System** | Compute Checksum | `opt_locking#loaded_as` (setup from from api_logic_server_run.py) |
+| Runtime - Call Patch | **User** App Code,<br>Admin App | Return as-read-Checksum | See examples below |
+| Runtime - Process Patch | **System** | Compare CheckSums: as-read vs. current | `opt_locking#opt_locking_patch`, via `logic/declare_logic.py`: generic before event |
 
 &nbsp;
 
@@ -126,7 +126,7 @@ Use the `No Security` run config.
 
 &nbsp;
 
-### Category `Patch` missing S_Checksum lock passes (pre-update checksum, no Null)
+### Category `Patch` - missing S_Checksum allowed (pre-update checksum, no Null)
 
 This should bypass optlock check and report "can't be x"
 
@@ -148,7 +148,7 @@ curl -X 'PATCH' \
 
 &nbsp;
 
-### Category `Patch` S_Checksum mismmatch lock caught (No Null)
+### Category `Patch` Invalid S_Checksum raises exception
 
 This should fail "Sorry, row altered by another user..."
 
@@ -161,7 +161,7 @@ curl -X 'PATCH' \
   "data": {
     "attributes": {
       "Description": "x",
-      "S_CheckSum": "should fail"
+      "S_CheckSum": "Invalid S_Checksum raises exception"
     },
     "type": "Category",
     "id": "1"
@@ -171,9 +171,7 @@ curl -X 'PATCH' \
 
 &nbsp;
 
-### Category 9 `Patch` valid S_CheckSum passes (Null -> value)
-
-Category 9 has null Description...
+### Category 9 `Patch` valid S_CheckSum passes
 
 This should bypass optlock check and report "can't be x"
 
@@ -198,11 +196,9 @@ curl -X 'PATCH' \
 
 ### Order 10643 Set Shipped (from null)
 
-This case tests different attr ordering (per alias attribute), resulting in different checksums.  This is fixed in current versions by using same source for attr-list.
+This case tests different attribute ordering (per alias attribute), resulting in different checksums.
 
-This works, result shows the order.
-
-Be sure to replace the db.sqlite, since this changes it.
+Be sure to replace the db.sqlite after the test, since this changes it.
 
 ```
 curl -X 'PATCH' \
