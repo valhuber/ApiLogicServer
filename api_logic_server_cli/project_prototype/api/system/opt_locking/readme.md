@@ -1,25 +1,25 @@
 ## Problem Statement
 
-Optimistic locking is a valuable feature for interactive systems.  
+Optimistic locking is a valuable feature for interactive systems, to **avoid update overwrites** and **maximize concurrency**, **without requiring special database columns**.
 
 &nbsp;
 
 ### Constraints
 
-Such systems typically operate under the following constraints:
+Most systems operate under the following constraints:
 
-1. Rows cannot be locked (pessimistically) on read, _in case_ they are updated
-   * This would drastically decrease performance by making users wait on locks, so undesirable
-2. Database design cannot tolerate new `VersionNumber` columns
+1. **Maximize concurrency** by be eliminating long-duration locks
+   * Rows cannot be locked (pessimistically) on read, _in case_ they are updated
+2. **No special columns**, such as  `VersionNumber`
    * Database design is often constrained by other applications, or by internal standards
-3. Minimize network traffic and keep client coding simple
+3. **Minimize network traffic** and keep client coding simple
    * E.g., unwieldy to send all "old" values back  
 
 &nbsp;
 
-### Sample Scenario
+### Avoid Update Overwrites
 
-Consider the scenario:
+Within these constraints, the key objective is avoid overwriting updates.  Consider the following scenario:
 
 | Time | User | Action |
 |:----- |:-------|:----|
@@ -36,12 +36,12 @@ The objective, then, is to ***avoid overwriting U1's update***.
 
 A widely accepted solution is **optimistic locking:** 
 
-1. No read locks
+1. On reads, no database locks are acquired
 2. On update, ensure the row has not changed since the user read it
 
 &nbsp;
 
-## Approach: `CheckSum` to detect changes
+## Approach: virtual `CheckSum` to detect changes
 
 Before summarizing the approach, we note some key elements provided by architectural components.
 
@@ -53,7 +53,7 @@ Before summarizing the approach, we note some key elements provided by architect
 
 #### 1. SAFRS `@jsonapi_attr`
 
-SAFRS API provides adding derived attributes: [`@jsonapi_attr`](https://github.com/thomaxxl/safrs/blob/master/examples/demo_pythonanywhere_com.py)
+SAFRS API provides adding derived virtual (non-stored) attributes: [`@jsonapi_attr`](https://github.com/thomaxxl/safrs/blob/master/examples/demo_pythonanywhere_com.py)
    * This enables the server to compute unstored values, here, `S_CheckSum`
    * SAFRS supports sending such values on client `patch` operations, so it is visible in logic
 
@@ -67,17 +67,17 @@ SQLAlchemy provides the `loaded_as_persistent` [event](https://docs.sqlalchemy.o
 
 #### 3. The rules engine supports generic `before_logic`
 
-This enables us to check the row compare `CheckSum` values before updates; see [`logic/declare_logic](/logic/declare_logic.py).  Note such logic has access to the about-to-be-updated row, and the old-row.
+This enables us to check the row compare `CheckSum` values before updates; see [`logic/declare_logic](https://github.com/ApiLogicServer/demo/blob/main/logic/declare_logic.py).  Note such logic has access to the about-to-be-updated row, and the old-row.
 
 &nbsp;
 
 ### Creation options
 
-You can configure optimistic locking when you create projects, with the following 2 arguments:
+You can configure optimistic locking when you create projects, with the following 2 CLI arguments:
 
-1. `opt_locking_attr` - this is the name of the attribute that contains the CheckSum.  It defaults to `S_CheckSum`
+1. `--opt_locking_attr` - this is the name of the attribute that contains the CheckSum.  It defaults to `S_CheckSum`
 
-2. `opt_locking` - select one of the following (default is *optional*):
+2. `--opt_locking` - select one of the following (default is *optional*):
 
 | Option | Included on `Get` | Checked on `Patch` |
 |:----- |:-------|:----|
@@ -89,15 +89,20 @@ You can configure optimistic locking when you create projects, with the followin
 
 ### Configuration options
 
-You can override the created `opt_locking` on server startup, by updating the Config file, and with Env `OPT_LOCKING` variable. The options are the same as shown in the table above.
+You can override the created `opt_locking` on server startup:
+
+* by updating the Config file, and
+* by using the `OPT_LOCKING` Env variable.
+
+The options are the same as shown in the table above.
 
 Note the env variables can be set on your IDE Run Configurations.
 
 &nbsp;
 
-### Approach
+### Processing Overview
 
-The approach is summarized in the table below.  See the the code in [`api/system/opt_locking/opt_locking.py`](/api/system/opt_locking/opt_locking.py) for details.
+The approach is summarized in the table below.  See the the code in [`api/system/opt_locking/opt_locking.py`](https://github.com/ApiLogicServer/demo/blob/main/api/system/opt_locking/opt_locking.py) for details.
 
 &nbsp;
 
