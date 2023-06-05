@@ -126,7 +126,7 @@ Use the `No Security` run config.
 
 &nbsp;
 
-### Category `Patch` - missing S_Checksum allowed (pre-update checksum, no Null)
+### Category `Patch` - Missing S_Checksum passes
 
 This should bypass optlock check and report "can't be x"
 
@@ -148,7 +148,7 @@ curl -X 'PATCH' \
 
 &nbsp;
 
-### Category `Patch` Invalid S_Checksum raises exception
+### Category `Patch` - Invalid S_Checksum raises exception
 
 This should fail "Sorry, row altered by another user..."
 
