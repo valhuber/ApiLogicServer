@@ -26,6 +26,10 @@ from api_logic_server_cli.create_from_model.model_creation_services import Resou
 from api_logic_server_cli.create_from_model.model_creation_services import ModelCreationServices
 
 log = logging.getLogger(__name__)
+
+sqlalchemy_2_hack = True
+""" exploring migration failures """
+
 """
 handler = logging.StreamHandler(sys.stderr)
 formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
@@ -93,7 +97,10 @@ class ImportCollector(OrderedDict):
             if type_.__name__ in dialect_pkg.__all__:
                 pkgname = dialect_pkgname
         else:
-            pkgname = 'sqlalchemy' if type_.__name__ in sqlalchemy.__all__ else type_.__module__
+            if sqlalchemy_2_hack:
+                pkgname = 'sqlalchemy'
+            else:
+                pkgname = 'sqlalchemy' if type_.__name__ in sqlalchemy.__all__ else type_.__module__
         self.add_literal_import(pkgname, type_.__name__)
 
     def add_literal_import(self, pkgname, name):
@@ -701,9 +708,9 @@ from sqlalchemy.dialects.mysql import *
             return rtn_api_logic_server_imports
         return "metadata = MetaData()"  # (stand-alone sql1codegen - never used in API Logic Server)
 
-    def _get_compiled_expression(self, statement):
+    def _get_compiled_expression(self, statement: sqlalchemy.sql.elements.TextClause): 
         """Return the statement in a form where any placeholders have been filled in."""
-        return str(statement.compile(
+        return str(statement.compile(  # 'MetaData' object has no attribute 'bind'
             self.metadata.bind, compile_kwargs={"literal_binds": True}))
 
     @staticmethod
@@ -1060,7 +1067,7 @@ from sqlalchemy.dialects.mysql import *
                 unique_name = relationship.target_cls + '.' + backref_name
                 if unique_name in backrefs:  # disambiguate
                     backref_name += "_" + attr
-                back_ref = f', cascade_backrefs=True, backref=\'{backref_name}\''
+                back_ref = f', cascade_backrefs=False, backref=\'{backref_name}\''
                 rel_render_with_backref = rel_parts[0] + \
                                           back_ref + \
                                           ")" + rel_parts[1]
@@ -1085,14 +1092,14 @@ from sqlalchemy.dialects.mysql import *
                 if unique_name in backrefs:  # disambiguate
                     child_role_name += '1'  # FIXME - fails for 3 relns
                 if model.name != parent_model.name:
-                    parent_relationship = f'{child_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{parent_role_name}\')'
+                    parent_relationship = f'{child_role_name} = {parent_relationship_def}, cascade_backrefs=False, backref=\'{parent_role_name}\')'
                 else:  # work-around for self relns
                     """
                     special case self relns:
                         not DepartmentList = relationship('Department', remote_side=[Id], cascade_backrefs=True, backref='Department')
                         but Department     = relationship('Department', remote_side=[Id], cascade_backrefs=True, backref='DepartmentList')
                     """
-                    parent_relationship = f'{parent_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{child_role_name}\')'
+                    parent_relationship = f'{parent_role_name} = {parent_relationship_def}, cascade_backrefs=False, backref=\'{child_role_name}\')'
                     parent_relationship += "  # special handling for self-relationships"
                 if self.generate_relationships_on != "parent":  # relns not created on parent; comment out
                     parent_relationship = "# see backref on child: " + parent_relationship

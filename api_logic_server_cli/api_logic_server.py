@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.14"
+__version__ = "08.04.15"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/31/2023 - 08.04.14: OptLocking w/ 2 CLI options & bh tests no sec, std safrs, behave cascade_backrefs warning \n"\
+    "\t06/05/2023 - 08.04.15: OptLocking w/ 2 CLI options & bh tests no sec, std safrs, bind rework for safrs upgrade \n"\
     "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
@@ -719,7 +719,7 @@ class ProjectRun(Project):
 
         2. Add project.db_url to config 
 
-        3. Update database/bind_databases.py
+        3. Update database/multi_db.py - bind & expose APIs
 
         Parameters:
 
@@ -732,9 +732,9 @@ class ProjectRun(Project):
         config_uri_value = "'" + return_abs_db_url + "'"
 
 
-        """ **********************
-        sqlite? copy to database/
-        **************************  """
+        # **************************
+        # sqlite? copy to database/
+        # **************************
         if "sqlite" in self.abs_db_url:
             """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
             """
@@ -754,9 +754,9 @@ class ProjectRun(Project):
             log.debug(f'.. .. ..From {db_loc}')
 
 
-        """ **********************
-        add url to config
-        **************************  """
+        # **********************
+        # add url to config
+        # **********************
         # db_uri = config_uri  # return_abs_db_url
         if os.name == "nt":  # windows
             # 'C:\\\\Users\\\\val\\\\dev\\\\servers\\\\api_logic_server\\\\database\\\\db.sqlite'
@@ -785,49 +785,56 @@ class ProjectRun(Project):
             log.debug(f'.. ..Not updating config.py file with {CONFIG_URI}... (already present)')
 
 
-        """ **********************
-        update bind_databases.py
-        **************************  """
+        # **************************
+        # update multi_db.py
+        # **************************
         # NB: must do all binds in 1 call (not 1 call / db): https://www.youtube.com/watch?v=SB5BfYYpXjE
 
-        bind_insert_urls = """
-    from api import <project.bind_key>_expose_api_models
-    from database import <project.bind_key>_models
-
-    # flask_app.config.update(SQLALCHEMY_BINDS = \\
-    #     {'<project.bind_key>': flask_app.config['SQLALCHEMY_DATABASE_URI_<bind_key_upper>']})
-    
+        bind_insert_urls = """    
     app_logger.debug(f"\\n<project.bind_key> Config complete - database/<project.bind_key>_models.py"
         + f'\\n -- with bind: <project.bind_key>'
         + f'\\n -- len(database.<project.bind_key>_models.<project.bind_key>.metadata.tables) tables loaded')
-    
+
+    """ # not f-string since it contains {}    
+        expose_apis = """
     <project.bind_key>_expose_api_models.expose_models(safrs_api, method_decorators= method_decorators)
+        """
 
-    """ # not f-string since it contains {}
+        imports = """
+from api import <project.bind_key>_expose_api_models
+from database import <project.bind_key>_models
+        """
 
-        flask_app_config__update = \
+        flask_app_config__bind_update = \
             f"\t\t'{self.bind_key}': flask_app.config['SQLALCHEMY_DATABASE_URI_{bind_key_upper}']\n"
 
-        bind_insert_urls = bind_insert_urls.replace('<project.bind_key>', f'{self.bind_key}')
-        bind_insert_urls = bind_insert_urls.replace('<bind_key_upper>', f'{bind_key_upper}')
-        binds_databases_file = f'{self.project_directory}/database/bind_databases.py'
+        expose_apis = expose_apis.replace('<project.bind_key>', f'{self.bind_key}')
+
+        imports = imports.replace('<project.bind_key>', f'{self.bind_key}')
+        imports = imports.replace('<bind_key_upper>', f'{bind_key_upper}')
+
+        binds_databases_file = f'{self.project_directory}/database/multi_db.py'
         binds_built = create_utils.does_file_contain( \
             search_for=bind_key_upper, in_file=binds_databases_file)
         some_configs_built = create_utils.does_file_contain( \
             search_for='flask_app.config[', in_file=binds_databases_file)
         if some_configs_built:
-            flask_app_config__update = ', ' + flask_app_config__update
+            flask_app_config__bind_update = ', ' + flask_app_config__bind_update
         if not binds_built:
-            create_utils.insert_lines_at(lines=bind_insert_urls,
-                                        at="# End Bind URLs",
-                                        file_name=binds_databases_file)
-            # 'Todo': flask_app.config['SQLALCHEMY_DATABASE_URI_TODO'],
-            create_utils.insert_lines_at(lines=flask_app_config__update,
+            create_utils.insert_lines_at(lines=flask_app_config__bind_update,
                                         at="# make multiple databases available",
                                         file_name=binds_databases_file)
-            log.debug(f'.. ..Updating database/bind_databases.py with {CONFIG_URI}...')
+            
+            create_utils.insert_lines_at(lines=expose_apis,
+                                        at="# Begin Expose APIs", after=True,
+                                        file_name=binds_databases_file)
+            
+            create_utils.insert_lines_at(lines=imports,
+                                        at="# additional per-database imports", after=True,
+                                        file_name=binds_databases_file)
+            log.debug(f'.. ..Updated database/multi_db.py with {CONFIG_URI}...')
         else:
-            log.debug(f'.. ..Not updating database/bind_databases.py with {CONFIG_URI} (already present)')
+            log.debug(f'.. ..Not updating database/multi_db.py with {CONFIG_URI} (already present)')
 
         return return_abs_db_url
 
