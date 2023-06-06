@@ -38,7 +38,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, redirect
 from flask_swagger_ui import get_swaggerui_blueprint
-from safrs import SAFRSBase, jsonapi_rpc, SAFRSJSONEncoder
+from safrs import SAFRSBase, jsonapi_rpc
 from safrs import search, SAFRSAPI
 from io import StringIO
 from sqlalchemy.engine import create_engine
@@ -250,17 +250,29 @@ def create_models_py(model_creation_services: ModelCreationServices, abs_db_url:
 
 
 def create_models_memstring(args) -> str:
-    """ called by ApiLogicServer CLI > ModelCreationServices > create_models_py
+    """ Get models as string, using codegen & SQLAlchemy metadata
 
-    returns str to be written to models.py
+    Args:
+        args (_type_): dict of codegen args (url etc)
+
+    Called by ApiLogicServer CLI > ModelCreationServices > create_models_py
+
+    Uses: https://docs.sqlalchemy.org/en/20/core/reflection.html
+
+        metadata_obj = MetaData()
+
+        metadata_obj.reflect(bind=someengine)
+
+    Returns:
+        str: to be written to models.py
     """
-    engine = create_engine(args.url)
 
-    metadata = MetaData(engine)
-    tables = args.tables.split(",") if args.tables else None
+    engine = create_engine(args.url)  # type _engine.Engine
+    metadata = MetaData()  # SQLAlchemy 1.4: metadata = MetaData(engine)
+
     try:
         # metadata.reflect(engine, args.schema, not args.noviews, tables)  # load metadata - this opens the db
-        metadata.reflect(engine)
+        metadata.reflect(bind=engine)
     except:
         track = traceback.format_exc()
         log.info(track)
@@ -270,9 +282,28 @@ def create_models_memstring(args) -> str:
         log.info(f'\n...see https://apilogicserver.github.io/Docs/Troubleshooting/#database-failed-to-open \n\n')
         # log.info(f'\n***** Database failed to open: {args.url} -- see examples above *****\n')
         exit(1)
-    if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME review
+
+    if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME
         # dirty hack for sqlite
-        engine.execute("""PRAGMA journal_mode = OFF""")
+        # engine.execute("""PRAGMA journal_mode = OFF""")  # SQLAlchemy 1.4 code fails in 2.x
+        # 'Engine' object has no attribute 'execute' - moved to connection (where is that?)
+
+        # engine.update_execution_options("""PRAGMA journal_mode = OFF""")
+        # takes 1 positional argument but 2 were given
+
+        # engine.update_execution_options({"journal_mode": "OFF"})
+        # takes 1 positional argument but 2 were given
+
+        connection = engine.connect()
+        # connection.execute("""PRAGMA journal_mode = OFF""")
+        # ==> Not an executable object: 'PRAGMA journal_mode = OFF'
+        # ==> AttributeError: 'str' object has no attribute '_execute_on_connection'
+
+        # connection.execution_options({"journal_mode": "OFF"})
+        # ==> Connection.execution_options() takes 1 positional argument but 2 were given
+
+        connection.execute(text("PRAGMA journal_mode = OFF"))
+
 
     capture = StringIO()  # generate and return the model
     # outfile = io.open(args.outfile, 'w', encoding='utf-8') if args.outfile else capture # sys.stdout
