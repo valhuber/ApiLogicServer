@@ -1188,6 +1188,7 @@ def check_ports():
 def key_module_map():
     """ not called - just index of key code - use this for hover, goto etc 
         ctl-l (^l) for last edit
+        Also, CmdP: Comments: Toggle Editor Commenting
     """
     import create_from_model.ui_admin_creator as ui_admin_creator
     import create_from_model.api_expose_api_models_creator as api_expose_api_models_creator
