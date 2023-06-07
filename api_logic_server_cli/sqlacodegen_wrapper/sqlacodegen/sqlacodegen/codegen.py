@@ -793,7 +793,16 @@ from sqlalchemy.dialects.mysql import *
             extra_args.append('unique=True')
         return 'Index({0!r}, {1})'.format(index.name, ', '.join(extra_args))
 
-    def render_column(self, column, show_name):
+    def render_column(self, column: Column, show_name: bool):
+        """_summary_
+
+        Args:
+            column (Column): column attributes
+            show_name (bool): True means embed col name into render_result
+
+        Returns:
+            str: eg. Column(Integer, primary_key=True), Column(String(8000))
+        """        
         global code_generator
         kwarg = []
         is_sole_pk = column.primary_key and len(column.table.primary_key) == 1
@@ -863,8 +872,11 @@ from sqlalchemy.dialects.mysql import *
                     server_default = 'server_default=text("{0}")'.format(default_expr)
 
         comment = getattr(column, 'comment', None)
-        if (column.name + "") == "debug_column_name":
-            db = 'Column({0})'.format(', '.join(
+        if (column.name + "") == "xx_id":
+            print(f"render_column target: {column.table.name}.{column.name}")  # ApiLogicServer fix for putting this at end:  index=True
+        if show_name and column.table.name != 'sqlite_sequence':
+            log.isEnabledFor(f"render_column show name is true: {column.table.name}.{column.name}")  # researching why
+        render_result = 'Column({0})'.format(', '.join(
             ([repr(column.name)] if show_name else []) +
             ([self.render_column_type(column.type)] if render_coltype else []) +
             [self.render_constraint(x) for x in dedicated_fks] +
@@ -873,16 +885,19 @@ from sqlalchemy.dialects.mysql import *
             ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
             (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
             ))
-            print("Debug Stop")  # ApiLogicServer fix for putting this at end:  index=True
-        return 'Column({0})'.format(', '.join(
-            ([repr(column.name)] if show_name else []) +
-            ([self.render_column_type(column.type)] if render_coltype else []) +
-            [self.render_constraint(x) for x in dedicated_fks] +
-            [repr(x) for x in column.constraints] +
-            ([server_default] if server_default else []) +
-            ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
-            (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
-        ))
+        
+        """
+                return 'Column({0})'.format(', '.join(
+                    ([repr(column.name)] if show_name else []) +
+                    ([self.render_column_type(column.type)] if render_coltype else []) +
+                    [self.render_constraint(x) for x in dedicated_fks] +
+                    [repr(x) for x in column.constraints] +
+                    ([server_default] if server_default else []) +
+                    ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
+                    (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
+                ))
+        """
+        return render_result
 
     def render_relationship(self, relationship) -> str:
         ''' returns string like: Department = relationship(\'Department\', remote_side=[Id])
@@ -1030,12 +1045,24 @@ from sqlalchemy.dialects.mysql import *
                 self.indentation, table_args_joined)
 
         # Render columns
+        # special case id: https://github.com/valhuber/ApiLogicServer/issues/69#issuecomment-1579731936
         rendered += '\n'
         for attr, column in model.attributes.items():
             if isinstance(column, Column):
                 show_name = attr != column.name
-                rendered += '{0}{1} = {2}\n'.format(
+                rendered_column = '{0}{1} = {2}\n'.format(
                     self.indentation, attr, self.render_column(column, show_name))
+                if column.name == "id":  # add name to Column(Integer, primary_key=True)
+                    """ add name to Column(Integer, primary_key=True) - but makes system fail
+                    rendered_column = rendered_column.replace(
+                        'id = Column(', 'Id = Column("id", ')
+                    log.debug(f' id = Column(Integer, primary_key=True) -->'\
+                              f' Id = Column("id", Integer, primary_key=True)')
+                    """
+                    if model.name not in["User", "Api"]:
+                        log.info(f'** Warning: id columns will not be included in API response - '
+                                f'{model.name}.id\n')
+                rendered += rendered_column
         if not autonum_col:
             rendered += '{0}{1}'.format(self.indentation, "allow_client_generated_ids = True\n")
 
@@ -1148,7 +1175,10 @@ from sqlalchemy.dialects.mysql import *
 
     def render(self, outfile=sys.stdout):
         """ create model from db, and write models.py file to in-memory buffer (outfile)
-            relns created from not-yet-seen children, so save *all* class info, then append rendered_model_relationships
+
+            relns created from not-yet-seen children, so
+            * save *all* class info,
+            * then append rendered_model_relationships
         """
         for model in self.models:  # class, with __tablename__ & __collection_name__ cls variables, attrs
             if isinstance(model, self.class_model):

@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.14"
+__version__ = "08.04.15"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t05/31/2023 - 08.04.14: OptLocking w/ 2 CLI options & bh tests no sec, std safrs, behave cascade_backrefs warning \n"\
+    "\t06/06/2023 - 08.04.15: OptLocking w/ 2 CLI options & bh tests no sec, std safrs, id warning \n"\
     "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
@@ -365,6 +365,9 @@ def create_project_with_nw_samples(project, msg: str) -> str:
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=db_uri,
                                 in_file=f'{project.project_directory}/database/alembic.ini')
+            create_utils.replace_string_in_file(search_for="replace_db_url",
+                                replace_with=db_uri,
+                                in_file=f'{project.project_directory}/database/db_debug.py')
         else:
             """ sqlite - copy the db (relative fails, since cli-dir != project-dir)
             """
@@ -387,6 +390,9 @@ def create_project_with_nw_samples(project, msg: str) -> str:
             create_utils.replace_string_in_file(search_for="replace_db_url",
                                 replace_with=return_abs_db_url,
                                 in_file=f'{project.project_directory}/database/alembic.ini')
+            create_utils.replace_string_in_file(search_for="replace_db_url",
+                                replace_with=return_abs_db_url,
+                                in_file=f'{project.project_directory}/database/db_debug.py')
 
             log.debug(f'.. ..Sqlite database setup {target_db_loc_actual}...')
             log.debug(f'.. .. ..From {db_loc}')
@@ -639,7 +645,8 @@ class ProjectRun(Project):
                      bind_key: str="",
                      execute: bool=True,
                      opt_locking: str=OptLocking.OPTIONAL.value,
-                     opt_locking_attr: str="S_CheckSum"):
+                     opt_locking_attr: str="S_CheckSum",
+                     id_column_alias: str="Id"):
         super(ProjectRun, self).__init__()
         self.project_name = project_name
         self.db_url = db_url
@@ -667,6 +674,7 @@ class ProjectRun(Project):
         self.command = command
         self.opt_locking = opt_locking
         self.opt_locking_attr = opt_locking_attr
+        self.id_column_alias = id_column_alias
 
         name_nodes = self.project_name.split("/") # type: str
         self.project_name_last_node = name_nodes[len(name_nodes) - 1]
@@ -694,6 +702,7 @@ class ProjectRun(Project):
             log.debug(f'  --admin_app={self.admin_app}')
             log.debug(f'  --react_admin={self.react_admin}')
             log.debug(f'  --flask_appbuilder={self.flask_appbuilder}')
+            log.debug(f'  --id_column_alias={self.id_column_alias}')
             log.debug(f'  --from_git={self.from_git}')
             #        log.debug(f'  --db_types={self.db_types}')
             log.debug(f'  --run={self.run}')
