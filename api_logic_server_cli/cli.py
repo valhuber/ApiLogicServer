@@ -242,7 +242,10 @@ def tutorial(ctx, create):
               help="Optimistic Locking [ignore, optional, required]")
 @click.option('--opt_locking_attr',
               default="S_CheckSum",
-              help="Attribute Name for Optimistic Locking CheckSum")
+              help="Attribute Name for Optimistic Locking CheckSum (unused)")
+@click.option('--id_column_alias',
+              default="Id",
+              help="Attribute Name for db cols named 'id'")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -312,7 +315,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
            include_tables: str,
            multi_api: click.BOOL,
            opt_locking: str, opt_locking_attr: str,
-           infer_primary_key: click.BOOL):
+           infer_primary_key: click.BOOL,
+           id_column_alias: str):
     """
         Creates new customizable project (overwrites).
     """
@@ -326,7 +330,8 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                     extended_builder=extended_builder, include_tables=include_tables,
                     multi_api=multi_api, infer_primary_key=infer_primary_key, 
-                    opt_locking=opt_locking, opt_locking_attr=opt_locking_attr)
+                    opt_locking=opt_locking, opt_locking_attr=opt_locking_attr,
+                    id_column_alias=id_column_alias)
 
 
 @main.command("create-and-run")
@@ -346,7 +351,10 @@ def create(ctx, project_name: str, db_url: str, not_exposed: str, api_name: str,
               help="Optimistic Locking [ignore, optional, required]")
 @click.option('--opt_locking_attr',
               default="S_CheckSum",
-              help="Attribute Name for Optimistic Locking CheckSum")
+              help="Attribute Name for Optimistic Locking CheckSum (unused)")
+@click.option('--id_column_alias',
+              default="Id",
+              help="Attribute Name for db cols named 'id'")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -416,6 +424,7 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
         include_tables: str,
         multi_api: click.BOOL,
         opt_locking: str, opt_locking_attr: str,
+        id_column_alias: str,
         infer_primary_key: click.BOOL):
     """
         Creates new project and runs it (overwrites).
@@ -430,7 +439,8 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
                     extended_builder=extended_builder, include_tables=include_tables,
                     multi_api=multi_api, infer_primary_key=infer_primary_key,
-                    opt_locking=opt_locking, opt_locking_attr=opt_locking_attr)
+                    opt_locking=opt_locking, opt_locking_attr=opt_locking_attr,
+                    id_column_alias=id_column_alias)
 
 
 @main.command("rebuild-from-database")
@@ -445,6 +455,9 @@ def create_and_run(ctx, project_name: str, db_url: str, not_exposed: str, api_na
 @click.option('--api_name',
               default=f'api',
               help="Last node of API Logic Server url\n")
+@click.option('--id_column_alias',
+              default="Id",
+              help="Attribute Name for db cols named 'id'")
 @click.option('--from_git',
               default="",
               help="Template clone-from project (or directory)")
@@ -505,7 +518,8 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
            swagger_host: str,
            favorites: str, non_favorites: str,
            extended_builder: str,
-           infer_primary_key: click.BOOL):
+           infer_primary_key: click.BOOL,
+           id_column_alias: str):
     """
         Updates database, api, and ui from changed db.
 
@@ -522,7 +536,8 @@ def rebuild_from_database(ctx, project_name: str, db_url: str, api_name: str, no
                     flask_appbuilder=flask_appbuilder,  host=host, port=port, swagger_host=swagger_host,
                     react_admin=react_admin, admin_app=admin_app,
                     favorites=favorites, non_favorites=non_favorites, open_with=open_with,
-                    extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key)
+                    extended_builder=extended_builder, multi_api=False, infer_primary_key=infer_primary_key,
+                    id_column_alias=id_column_alias)
 
 
 @main.command("add-db") 

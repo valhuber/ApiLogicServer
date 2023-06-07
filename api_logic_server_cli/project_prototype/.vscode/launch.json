@@ -163,6 +163,17 @@
             "redirectOutput": true,
             "justMyCode": false,            
             "console": "internalConsole"
+        },
+        {
+            "name": "db-debug",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/test/api_logic_server_behave",
+            "program": "${workspaceFolder}/database/db_debug.py",
+            "redirectOutput": true,
+            "justMyCode": false,            
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

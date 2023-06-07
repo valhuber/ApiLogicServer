@@ -305,11 +305,11 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
         safrs_log_level = safrs.log.getEffectiveLevel()
         db_logger = logging.getLogger('sqlalchemy')
         db_log_level = db_logger.getEffectiveLevel()
-        do_hide_chatty_logging = True
+        safrs_init_logger = logging.getLogger("safrs.safrs_init")
+        do_hide_chatty_logging = True and not verbose
         if do_hide_chatty_logging and app_logger.getEffectiveLevel() <= logging.INFO:
             safrs.log.setLevel(logging.WARN)  # notset 0, debug 10, info 20, warn 30, error 40, critical 50
             db_logger.setLevel(logging.WARN)
-            safrs_init_logger = logging.getLogger("safrs.safrs_init")
             safrs_init_logger.setLevel(logging.WARN)
         flask_app.config.from_object("config.Config")
 
