@@ -5,6 +5,7 @@
 **/__pycache__
 *.egg-info
 venv/
+venv_x/
 venv_z/
 /tests/models.yaml
 /tests/build_and_test/env.py

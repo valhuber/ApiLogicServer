@@ -693,13 +693,16 @@ metadata = Base.metadata
 from sqlalchemy.dialects.mysql import *
 ########################################################################################################################
 """
+        
         if self.model_creation_services.project.bind_key != "":
             api_logic_server_imports = api_logic_server_imports.replace('Base = declarative_base()',
                             f'Base{self.model_creation_services.project.bind_key} = declarative_base()')
             api_logic_server_imports = api_logic_server_imports.replace('metadata = Base.metadata',
                             f'metadata = Base{self.model_creation_services.project.bind_key}.metadata')
         if "sqlalchemy.ext.declarative" in self.collector:  # Manually Added for safrs (ApiLogicServer)
-            dialect_name = self.metadata.bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
+            # SQLAlchemy2: 'MetaData' object has no attribute 'bind'
+            bind = self.model_creation_services.session.bind  # SQLAlchemy2
+            dialect_name = bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
             if dialect_name in ["firebird", "mssql", "oracle", "postgresql", "sqlite", "sybase"]:
                 rtn_api_logic_server_imports = api_logic_server_imports.replace("mysql", dialect_name)
             else:
@@ -708,10 +711,12 @@ from sqlalchemy.dialects.mysql import *
             return rtn_api_logic_server_imports
         return "metadata = MetaData()"  # (stand-alone sql1codegen - never used in API Logic Server)
 
-    def _get_compiled_expression(self, statement: sqlalchemy.sql.elements.TextClause): 
+    def _get_compiled_expression(self, statement: sqlalchemy.sql.expression.TextClause): 
         """Return the statement in a form where any placeholders have been filled in."""
-        return str(statement.compile(  # 'MetaData' object has no attribute 'bind'
-            self.metadata.bind, compile_kwargs={"literal_binds": True}))
+        bind = self.model_creation_services.session.bind  # SQLAlchemy2
+        # https://docs.sqlalchemy.org/en/20/errors.html#a-bind-was-located-via-legacy-bound-metadata-but-since-future-true-is-set-on-this-session-this-bind-is-ignored
+        return str(statement.compile(  # 'MetaData' object has no attribute 'bind' (unlike SQLAlchemy 1.4)
+            bind = bind, compile_kwargs={"literal_binds": True}))
 
     @staticmethod
     def _getargspec_init(method):

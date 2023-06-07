@@ -272,7 +272,7 @@ def create_models_memstring(args) -> str:
 
     try:
         # metadata.reflect(engine, args.schema, not args.noviews, tables)  # load metadata - this opens the db
-        metadata.reflect(bind=engine)
+        metadata.reflect(bind=engine)  # loads metadata.tables
     except:
         track = traceback.format_exc()
         log.info(track)
@@ -284,6 +284,9 @@ def create_models_memstring(args) -> str:
         exit(1)
 
     if "sqlite" in args.url: # db.session.bind.dialect.name == "sqlite":   FIXME
+        connection = engine.connect()
+        connection.execute(text("PRAGMA journal_mode = OFF"))
+        '''
         # dirty hack for sqlite
         # engine.execute("""PRAGMA journal_mode = OFF""")  # SQLAlchemy 1.4 code fails in 2.x
         # 'Engine' object has no attribute 'execute' - moved to connection (where is that?)
@@ -294,17 +297,17 @@ def create_models_memstring(args) -> str:
         # engine.update_execution_options({"journal_mode": "OFF"})
         # takes 1 positional argument but 2 were given
 
-        connection = engine.connect()
         # connection.execute("""PRAGMA journal_mode = OFF""")
         # ==> Not an executable object: 'PRAGMA journal_mode = OFF'
         # ==> AttributeError: 'str' object has no attribute '_execute_on_connection'
 
         # connection.execution_options({"journal_mode": "OFF"})
         # ==> Connection.execution_options() takes 1 positional argument but 2 were given
+        '''
 
-        connection.execute(text("PRAGMA journal_mode = OFF"))
-
-
+    from sqlalchemy.orm import sessionmaker
+    Session = sessionmaker(engine)  # SQLAlchemy2
+    args.model_creation_services.session = Session()
     capture = StringIO()  # generate and return the model
     # outfile = io.open(args.outfile, 'w', encoding='utf-8') if args.outfile else capture # sys.stdout
     generator = CodeGenerator(metadata, args.noindexes, args.noconstraints,

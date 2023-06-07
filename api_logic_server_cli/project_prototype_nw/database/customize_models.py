@@ -30,7 +30,7 @@ def add_method(cls):
   return decorator
 
 # add relationship: https://docs.sqlalchemy.org/en/13/orm/join_conditions.html#specifying-alternate-join-conditions
-models.Employee.Manager = relationship('Employee', cascade_backrefs=True, backref='Manages',
+models.Employee.Manager = relationship('Employee', cascade_backrefs=False, backref='Manages',
                                        primaryjoin=remote(models.Employee.Id) == foreign(models.Employee.ReportsTo))
 """
 added relationships appear in your api / swagger, automatically.
