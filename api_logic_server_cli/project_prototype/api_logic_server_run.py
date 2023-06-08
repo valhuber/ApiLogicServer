@@ -152,7 +152,7 @@ def setup_logging(flask_app):
         engine_logger.setLevel(logging.DEBUG)
 
     do_safrs_logging = False
-    if do_safrs_logging:
+    if verbose or do_safrs_logging:
         safrs_init_logger = logging.getLogger('safrs.safrs_init')
         safrs_init_logger.setLevel(logging.DEBUG)
         safrs_logger = logging.getLogger('safrs')
