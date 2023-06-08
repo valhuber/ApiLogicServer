@@ -19,6 +19,7 @@ from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.types import Boolean, String
 from sqlalchemy.util import OrderedDict
 import yaml
+import datetime
 
 # The generic ARRAY type was introduced in SQLAlchemy 1.1
 from api_logic_server_cli.create_from_model.model_creation_services import Resource, ResourceRelationship, \
@@ -675,6 +676,10 @@ class CodeGenerator(object):
 # Alter this file per your database maintenance policy
 #    See https://apilogicserver.github.io/Docs/Project-Rebuild/#rebuilding
 #
+# Created:
+# Database:
+# Dialect:
+#
 # mypy: ignore-errors
 
 from safrs import SAFRSBase
@@ -708,6 +713,12 @@ from sqlalchemy.dialects.mysql import *
             else:
                 rtn_api_logic_server_imports = api_logic_server_imports
                 print(".. .. ..Warning - unknown sql dialect, defaulting to msql - check database/models.py")
+            rtn_api_logic_server_imports = rtn_api_logic_server_imports.replace(
+                "Created:", "Created:  " + str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")))
+            rtn_api_logic_server_imports = rtn_api_logic_server_imports.replace(
+                "Database:", "Database: " + self.model_creation_services.project.abs_db_url)
+            rtn_api_logic_server_imports = rtn_api_logic_server_imports.replace(
+                "Dialect:", "Dialect:  " + dialect_name)
             return rtn_api_logic_server_imports
         return "metadata = MetaData()"  # (stand-alone sql1codegen - never used in API Logic Server)
 
