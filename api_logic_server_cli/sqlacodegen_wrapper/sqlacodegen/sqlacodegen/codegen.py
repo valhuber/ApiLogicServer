@@ -99,7 +99,7 @@ class ImportCollector(OrderedDict):
                 pkgname = dialect_pkgname
         else:
             if sqlalchemy_2_hack:
-                pkgname = 'sqlalchemy'
+                pkgname = 'sqlalchemy'  # SQLAlchemy2
             else:
                 pkgname = 'sqlalchemy' if type_.__name__ in sqlalchemy.__all__ else type_.__module__
         self.add_literal_import(pkgname, type_.__name__)
@@ -114,12 +114,15 @@ class Model(object):
         super(Model, self).__init__()
         self.table = table
         self.schema = table.schema
+        global code_generator
+
+        bind = code_generator.model_creation_services.session.bind
 
         # Adapt column types to the most reasonable generic types (ie. VARCHAR -> String)
         for column in table.columns:
             try:
-                column.type = self._get_adapted_type(column.type, column.table.bind)
-            except:
+                column.type = self._get_adapted_type(column.type, bind)  # SQLAlchemy2 (was column.table.bind)
+            except Exception as e:
                 # print('Failed to get col type for {}, {}'.format(column, column.type))
                 if "sqlite_sequence" not in format(column):
                     print("#Failed to get col type for {}".format(column))
@@ -128,6 +131,17 @@ class Model(object):
         return f'Model for table: {self.table} (in schema: {self.schema})'
 
     def _get_adapted_type(self, coltype, bind):
+        """
+
+        Uses dialect to compute SQLAlchemy type (e.g, String, not VARCHAR, for sqlite)
+
+        Args:
+            coltype (_type_): database type
+            bind (_type_): e.g, code_generator.model_creation_services.session.bind
+
+        Returns:
+            _type_: SQLAlchemy type
+        """
         compiled_type = coltype.compile(bind.dialect)
         for supercls in coltype.__class__.__mro__:
             if not supercls.__name__.startswith('_') and hasattr(supercls, '__visit_name__'):
@@ -442,6 +456,7 @@ class CodeGenerator(object):
         Returns:
             bool: True means included
         """
+        table_inclusion_db = False
         if self.include_tables is None:  # first time initialization
             include_tables_dict = {"include": [], "exclude": []}
             if self.model_creation_services.project.include_tables != "":
@@ -465,33 +480,42 @@ class CodeGenerator(object):
                 self.exclude_tables = ['a^']
             self.exclude_regex = "(" + ")|(".join(self.exclude_tables) + ")"
             if self.model_creation_services.project.include_tables != "":
-                log.debug(f"include_regex: {self.include_regex}")
-                log.debug(f"exclude_regex: {self.exclude_regex}\n")
-                log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
+                if table_inclusion_db:
+                    log.debug(f"include_regex: {self.include_regex}")
+                    log.debug(f"exclude_regex: {self.exclude_regex}\n")
+                    log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
 
         table_included = True
         if self.model_creation_services.project.bind_key == "authentication":
-            log.debug(f".. authentication always included")
+            if table_inclusion_db:
+                log.debug(f".. authentication always included")
         else:
             if len(self.include_tables) == 0:
-                log.debug(f"All tables included: {table_name}")
+                if table_inclusion_db:
+                    log.debug(f"All tables included: {table_name}")
             else:
                 if re.match(self.include_regex, table_name):
-                    log.debug(f"table included: {table_name}")
+                    if table_inclusion_db:
+                        log.debug(f"table included: {table_name}")
                 else:
-                    log.debug(f"table excluded: {table_name}")
+                    if table_inclusion_db:
+                        log.debug(f"table excluded: {table_name}")
                     table_included = False
             if not table_included:
-                log.debug(f".. skipping exlusions")
+                if table_inclusion_db:
+                    log.debug(f".. skipping exclusions")
             else:
                 if len(self.exclude_tables) == 0:
-                    log.debug(f"No tables excluded: {table_name}")
+                    if table_inclusion_db:
+                        log.debug(f"No tables excluded: {table_name}")
                 else:
                     if re.match(self.exclude_regex, table_name):
-                        log.debug(f"table excluded: {table_name}")
+                        if table_inclusion_db:
+                            log.debug(f"table excluded: {table_name}")
                         table_included = False
                     else:
-                        log.debug(f"table not excluded: {table_name}")
+                        if table_inclusion_db:
+                            log.debug(f"table not excluded: {table_name}")
         return table_included
     
 
@@ -516,6 +540,7 @@ class CodeGenerator(object):
         """
         super(CodeGenerator, self).__init__()
         global code_generator
+        """ instance of CodeGenerator - access to model_creation_services, meta etc """
         code_generator = self
         self.metadata = metadata
         self.noindexes = noindexes
@@ -827,13 +852,15 @@ from sqlalchemy.dialects.mysql import *
             str: eg. Column(Integer, primary_key=True), Column(String(8000))
         """        
         global code_generator
+        fk_debug = False
         kwarg = []
         is_sole_pk = column.primary_key and len(column.table.primary_key) == 1
         dedicated_fks_old = [c for c in column.foreign_keys if len(c.constraint.columns) == 1]
         dedicated_fks = []  # c for c in column.foreign_keys if len(c.constraint.columns) == 1
         for each_foreign_key in column.foreign_keys:
-            log.debug(f'FK: {each_foreign_key}')  # 
-            log.debug(f'render_column - is fk: {dedicated_fks}')
+            if fk_debug:
+                log.debug(f'FK: {each_foreign_key}')  # 
+                log.debug(f'render_column - is fk: {dedicated_fks}')
             if code_generator.is_table_included(each_foreign_key.column.table.name) \
                                 and len(each_foreign_key.constraint.columns) == 1:
                 dedicated_fks.append(each_foreign_key)
