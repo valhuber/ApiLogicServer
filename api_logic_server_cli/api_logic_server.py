@@ -438,8 +438,8 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
     if nw_db_status in ["nw", "nw+", "nw-"]:
         log.debug(f'.. .. ..Setting cascade delete and column alias for sample database database/models.py')
         create_utils.replace_string_in_file(in_file=models_file_name,
-            search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=True, backref='Order')",
-            replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=True, backref='Order')  # manual fix")
+            search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=False, backref='Order')",
+            replace_with="OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=False, backref='Order')  # manual fix")
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="ShipPostalCode = Column(String(8000))",
             replace_with="ShipZip = Column('ShipPostalCode', String(8000))  # manual fix - alias")

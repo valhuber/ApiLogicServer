@@ -31,6 +31,10 @@ log = logging.getLogger(__name__)
 sqlalchemy_2_hack = True
 """ exploring migration failures """
 
+sqlalchemy_2_db = False
+""" prints / debug stops """
+
+
 """
 handler = logging.StreamHandler(sys.stderr)
 formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
@@ -109,7 +113,8 @@ class ImportCollector(OrderedDict):
                 pkgname = 'sqlalchemy' if type_.__name__ in sqlalchemy.__all__ else type_.__module__
         type_name = type_.__name__
         if type_name == "Double":
-            print('Debug Stop: ImportCollector - target type_name')
+            if sqlalchemy_2_db == True:
+                print('Debug Stop: ImportCollector - target type_name')
         self.add_literal_import(pkgname, type_name)  # (sqlalchemy, Column | Integer | String...)
 
     def add_literal_import(self, pkgname, name):
@@ -156,7 +161,8 @@ class Model(object):
         """
         compiled_type = coltype.compile(bind.dialect)  # OrderDetai.Discount: FLOAT (not DOUBLE); coltype is DOUBLE
         if compiled_type == "DOUBLE":
-            print("Debug stop - _get_adapted_type, target compiled_type")
+            if sqlalchemy_2_db == True:
+                print("Debug stop - _get_adapted_type, target compiled_type")
         for supercls in coltype.__class__.__mro__:
             if not supercls.__name__.startswith('_') and hasattr(supercls, '__visit_name__'):
                 # Hack to fix adaptation of the Enum class which is broken since SQLAlchemy 1.2
@@ -196,7 +202,8 @@ class Model(object):
                 if supercls.__name__ != supercls.__name__.upper():
                     break
         if coltype == "Double()":
-            print("Debug stop - _get_adapted_type, target returned coltype")
+            if sqlalchemy_2_db == True:
+                print("Debug stop - _get_adapted_type, target returned coltype")
         return coltype
 
     def add_imports(self, collector):
@@ -446,7 +453,7 @@ class ManyToManyRelationship(Relationship):
                 if len(sec_joins) > 1 else repr(sec_joins[0]))
 
 code_generator = None  # type: CodeGenerator
-""" Model needs to access state here, eg, included/excluded tables """
+""" Model needs to access state via this global, eg, included/excluded tables """
 
 class CodeGenerator(object):
     template = """\
@@ -714,6 +721,8 @@ class CodeGenerator(object):
 
         render_imports_result = '\n'.join('from {0} import {1}'.format(package, ', '.join(sorted(names)))
                          for package, names in self.collector.items())
+        if sqlalchemy_2_db == True:
+            print("render_imports - result")
         return render_imports_result
 
 
