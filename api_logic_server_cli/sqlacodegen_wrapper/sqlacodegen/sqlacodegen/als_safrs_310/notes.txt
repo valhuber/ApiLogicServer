@@ -11,14 +11,26 @@ Observations:
         import NullType
 
         OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=False, backref='Order')  # manual fix
-            ==> this is the only issue - fixing it makes Behave run (with Security)
+            ==> this is the only issue - fixing it makes Behave run (with Security).  Same for GA.
+            sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: OrderDetail.OrderId
             Gen: OrderDetailList = relationship('OrderDetail', cascade_backrefs=False, backref='Order')
             Schema col defined as: OrderId INTEGER not null references "Order" on delete cascade,
+            https://docs.sqlalchemy.org/en/20/orm/cascades.html#cascades
+            https://esmithy.net/2020/06/20/sqlalchemy-cascade-delete/  (seems to be 1.4)
+            DB Cascade
+                Sqlite
+                    Cascade Delete is set (!)
+                    disabled by default https://www.sqlite.org/foreignkeys.html
+                Other DBs: no cascasdes declared on other DBs
+            Reason: fix_database_models() does string replace using "cascade_backrefs=True"
+                And cascade_backrefs was changed False for SQLAlchemy2
 
-        from sqlalchemy import Boolean, Column, DECIMAL, Date, Float, Double, ForeignKey, ForeignKeyConstraint, Integer, String, Table, Text, text
+        imports differ
+            Gen:
+                from sqlalchemy import Boolean, Column, DECIMAL, Date, Float, Double, ForeignKey, ForeignKeyConstraint, Integer, String, Table, Text, text
             GA:
-                Order.Discount has no Double...  was Float in GA/RC2, Double in Gen
                 from sqlalchemy import Boolean, Column, DECIMAL, Date, Float, ForeignKey, ForeignKeyConstraint, Integer, String, Table, Text, text
+                Order.Discount has no Double...  was Float in GA/RC2, Double in Gen
                 It's DOUBLE in the database, but reported differently in _get_adapted_type - wrong coltype class
                     GA meta reporting it FLOAT, Gen reporting in DOUBLE
                     Gen was seeing SQLiteDialect...
