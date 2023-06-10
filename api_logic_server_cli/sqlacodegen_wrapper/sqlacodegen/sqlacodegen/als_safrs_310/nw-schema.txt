@@ -1,0 +1,224 @@
+CREATE TABLE IF NOT EXISTS "CategoryTableNameTest" 
+(
+  "Id" INTEGER PRIMARY KEY, 
+  "CategoryName" VARCHAR(8000) NULL, 
+  "Description" VARCHAR(8000) NULL 
+, Client_id Integer);
+CREATE TABLE IF NOT EXISTS "Customer" 
+(
+  "Id" VARCHAR(8000) PRIMARY KEY, 
+  "CompanyName" VARCHAR(8000) NULL, 
+  "ContactName" VARCHAR(8000) NULL, 
+  "ContactTitle" VARCHAR(8000) NULL, 
+  "Address" VARCHAR(8000) NULL, 
+  "City" VARCHAR(8000) NULL, 
+  "Region" VARCHAR(8000) NULL, 
+  "PostalCode" VARCHAR(8000) NULL, 
+  "Country" VARCHAR(8000) NULL, 
+  "Phone" VARCHAR(8000) NULL, 
+  "Fax" VARCHAR(8000) NULL 
+, Balance Decimal, CreditLimit Decimal, OrderCount int default 0, UnpaidOrderCount int default 0, Client_id integer);
+CREATE TABLE IF NOT EXISTS "Shipper" 
+(
+  "Id" INTEGER PRIMARY KEY, 
+  "CompanyName" VARCHAR(8000) NULL, 
+  "Phone" VARCHAR(8000) NULL 
+);
+CREATE TABLE IF NOT EXISTS "Supplier" 
+(
+  "Id" INTEGER PRIMARY KEY, 
+  "CompanyName" VARCHAR(8000) NULL, 
+  "ContactName" VARCHAR(8000) NULL, 
+  "ContactTitle" VARCHAR(8000) NULL, 
+  "Address" VARCHAR(8000) NULL, 
+  "City" VARCHAR(8000) NULL, 
+  "Region" VARCHAR(8000) NULL, 
+  "PostalCode" VARCHAR(8000) NULL, 
+  "Country" VARCHAR(8000) NULL, 
+  "Phone" VARCHAR(8000) NULL, 
+  "Fax" VARCHAR(8000) NULL, 
+  "HomePage" VARCHAR(8000) NULL 
+);
+CREATE TABLE IF NOT EXISTS "Product" 
+(
+  "Id" INTEGER PRIMARY KEY, 
+  "ProductName" VARCHAR(8000) NULL, 
+  "SupplierId" INTEGER NOT NULL, 
+  "CategoryId" INTEGER NOT NULL, 
+  "QuantityPerUnit" VARCHAR(8000) NULL, 
+  "UnitPrice" DECIMAL NOT NULL, 
+  "UnitsInStock" INTEGER NOT NULL, 
+  "UnitsOnOrder" INTEGER NOT NULL, 
+  "ReorderLevel" INTEGER NOT NULL, 
+  "Discontinued" INTEGER NOT NULL 
+, UnitsShipped Integer);
+CREATE TABLE IF NOT EXISTS "CustomerDemographic" 
+(
+  "Id" VARCHAR(8000) PRIMARY KEY, 
+  "CustomerDesc" VARCHAR(8000) NULL 
+);
+CREATE TABLE IF NOT EXISTS "Region" 
+(
+  "Id" INTEGER PRIMARY KEY, 
+  "RegionDescription" VARCHAR(8000) NULL 
+);
+CREATE TABLE IF NOT EXISTS "Territory" 
+(
+  "Id" VARCHAR(8000) PRIMARY KEY, 
+  "TerritoryDescription" VARCHAR(8000) NULL, 
+  "RegionId" INTEGER NOT NULL 
+);
+CREATE VIEW [ProductDetails_V] as
+select 
+p.*, 
+c.CategoryName, c.Description as [CategoryDescription],
+s.CompanyName as [SupplierName], s.Region as [SupplierRegion]
+from [Product] p
+join "CategoryTableNameTest" c on p.CategoryId = c.id
+join [Supplier] s on s.id = p.SupplierId
+/* ProductDetails_V(Id,ProductName,SupplierId,CategoryId,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder,ReorderLevel,Discontinued,UnitsShipped,CategoryName,CategoryDescription,SupplierName,SupplierRegion) */;
+CREATE TABLE IF NOT EXISTS "EmployeeTerritory" 
+(
+  "Id" VARCHAR(8000) PRIMARY KEY, 
+  "EmployeeId" INTEGER NOT NULL, 
+  "TerritoryId" VARCHAR(8000) NULL,
+
+  FOREIGN KEY (EmployeeId) REFERENCES Employee(Id)
+  FOREIGN KEY (TerritoryId) REFERENCES Territory(Id)
+);
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE IF NOT EXISTS "EmployeeAudit"
+(
+        Id INTEGER
+                constraint Employee_Audit_pk
+                        primary key autoincrement,
+        Title varchar,
+        Salary Decimal,
+        LastName Varchar,
+        FirstName varchar,
+        EmployeeId INTEGER
+                constraint EmployeeAudit_Employee_Id_fk
+                        references Employee,
+        CreatedOn TEXT
+);
+CREATE TABLE IF NOT EXISTS "Department"
+(
+        Id integer
+                constraint Department_pk
+                        primary key autoincrement,
+        DepartmentId integer
+                constraint HeadDepartment
+                        references Department
+                                on update cascade on delete cascade,
+        DepartmentName varchar(100)
+);
+CREATE TABLE Location
+(
+        country varchar(50),
+        city varchar(50),
+        notes varchar(256),
+        constraint City_pk
+                primary key (country, city)
+);
+CREATE TABLE IF NOT EXISTS "Union"
+(
+    Id   integer
+        constraint Union_pk
+            primary key autoincrement,
+    Name varchar(80)
+);
+CREATE TABLE IF NOT EXISTS "SampleDBVersion"
+(
+    Id    integer
+        constraint SampleDBVersion_pk
+            primary key autoincrement,
+    Notes varchar(800)
+);
+CREATE TABLE IF NOT EXISTS "Order"
+(
+    Id               INTEGER
+        primary key autoincrement,
+    CustomerId       VARCHAR(8000) not null
+        references Customer,
+    EmployeeId       INTEGER       not null
+        references Employee,
+    OrderDate        VARCHAR(8000),
+    RequiredDate     date,
+    ShippedDate      VARCHAR(8000),
+    ShipVia          INTEGER,
+    Freight          DECIMAL default 0,
+    ShipName         VARCHAR(8000),
+    ShipAddress      VARCHAR(8000),
+    ShipCity         VARCHAR(8000),
+    ShipRegion       VARCHAR(8000),
+    ShipPostalCode   VARCHAR(8000),
+    ShipCountry      VARCHAR(8000),
+    AmountTotal      Decimal(10, 2),
+    Country          varchar(50),
+    City             varchar(50),
+    Ready            BOOLEAN default TRUE,
+    OrderDetailCount INTEGER default 0,
+    CloneFromOrder   INTEGER
+        constraint Order_Order_Id_fk
+            references "Order",
+    foreign key (Country, City) references Location
+        on update cascade on delete set null
+);
+CREATE INDEX Order_CustomerId_index
+    on "Order" (CustomerId);
+CREATE INDEX Order_EmployeeId_index
+    on "Order" (EmployeeId);
+CREATE TABLE IF NOT EXISTS "OrderDetail"
+(
+    Id          INTEGER
+        primary key autoincrement,
+    OrderId     INTEGER           not null
+        references "Order"
+            on delete cascade,
+    ProductId   INTEGER           not null
+        references Product,
+    UnitPrice   DECIMAL,
+    Quantity    INTEGER default 1 not null,
+    Discount    DOUBLE  default 0,
+    Amount      Decimal,
+    ShippedDate VARCHAR(8000)
+);
+CREATE INDEX OrderDetail_OrderId_index
+    on OrderDetail (OrderId);
+CREATE INDEX OrderDetail_ProductId_index
+    on OrderDetail (ProductId);
+CREATE TABLE IF NOT EXISTS "Employee"
+(
+    Id                   INTEGER
+        primary key,
+    LastName             VARCHAR(8000),
+    FirstName            VARCHAR(8000),
+    Title                VARCHAR(8000),
+    TitleOfCourtesy      VARCHAR(8000),
+    BirthDate            VARCHAR(8000),
+    HireDate             VARCHAR(8000),
+    Address              VARCHAR(8000),
+    City                 VARCHAR(8000),
+    Region               VARCHAR(8000),
+    PostalCode           VARCHAR(8000),
+    Country              VARCHAR(8000),
+    HomePhone            VARCHAR(8000),
+    Extension            VARCHAR(8000),
+    Notes                VARCHAR(8000),
+    ReportsTo            INTEGER,
+    PhotoPath            VARCHAR(8000),
+    EmployeeType         varchar(16) default Salaried,
+    Salary               Decimal,
+    WorksForDepartmentId INTEGER
+        references Department
+            on update cascade on delete set null,
+    OnLoanDepartmentId   INTEGER
+        references Department
+            on update cascade on delete set null,
+    UnionId              INTEGER
+        constraint Employee_Union_Id_fk
+            references "Union",
+    Dues                 Decimal
+);
+CREATE INDEX Employee_ReportsTo_index
+    on Employee (ReportsTo);
