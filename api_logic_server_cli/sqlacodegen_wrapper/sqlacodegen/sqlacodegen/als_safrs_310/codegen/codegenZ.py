@@ -19,7 +19,6 @@ from sqlalchemy.sql.sqltypes import NullType
 from sqlalchemy.types import Boolean, String
 from sqlalchemy.util import OrderedDict
 import yaml
-import datetime
 
 # The generic ARRAY type was introduced in SQLAlchemy 1.1
 from api_logic_server_cli.create_from_model.model_creation_services import Resource, ResourceRelationship, \
@@ -27,10 +26,6 @@ from api_logic_server_cli.create_from_model.model_creation_services import Resou
 from api_logic_server_cli.create_from_model.model_creation_services import ModelCreationServices
 
 log = logging.getLogger(__name__)
-
-sqlalchemy_2_hack = True
-""" exploring migration failures """
-
 """
 handler = logging.StreamHandler(sys.stderr)
 formatter = logging.Formatter('%(message)s')  # lead tag - '%(name)s: %(message)s')
@@ -84,14 +79,9 @@ def _get_constraint_sort_key(constraint):
 
 
 class ImportCollector(OrderedDict):
-    """ called for each col to collect all the imports """
-
     def add_import(self, obj):
         type_ = type(obj) if not isinstance(obj, type) else obj
-        """ eg., column.type, or sqlalchemy.sql.schema.Column """
-
         pkgname = type_.__module__
-        """ eg, sqlalchemy.sql.schema, then set to sqlalchemy """
 
         # The column types have already been adapted towards generic types if possible, so if this
         # is still a vendor specific type (e.g., MySQL INTEGER) be sure to use that rather than the
@@ -103,14 +93,8 @@ class ImportCollector(OrderedDict):
             if type_.__name__ in dialect_pkg.__all__:
                 pkgname = dialect_pkgname
         else:
-            if sqlalchemy_2_hack:  # FIXME no such: sqlalchemy.__all__
-                pkgname = "sqlalchemy"
-            else:
-                pkgname = 'sqlalchemy' if type_.__name__ in sqlalchemy.__all__ else type_.__module__
-        type_name = type_.__name__
-        if type_name == "Double":
-            print('Debug Stop: ImportCollector - target type_name')
-        self.add_literal_import(pkgname, type_name)  # (sqlalchemy, Column | Integer | String...)
+            pkgname = 'sqlalchemy' if type_.__name__ in sqlalchemy.__all__ else type_.__module__
+        self.add_literal_import(pkgname, type_.__name__)
 
     def add_literal_import(self, pkgname, name):
         names = self.setdefault(pkgname, set())
@@ -118,22 +102,16 @@ class ImportCollector(OrderedDict):
 
 
 class Model(object):
-
     def __init__(self, table):
         super(Model, self).__init__()
         self.table = table
         self.schema = table.schema
-        global code_generator
-
-        bind = code_generator.model_creation_services.session.bind
 
         # Adapt column types to the most reasonable generic types (ie. VARCHAR -> String)
         for column in table.columns:
             try:
-                if table.name == "OrderDetail" and column.name == "Discount":
-                    print(f'Model.__init__ target column -- Float in GA/RC2, Double in Gen')
-                column.type = self._get_adapted_type(column.type, bind)  # SQLAlchemy2 (was column.table.bind)
-            except Exception as e:
+                column.type = self._get_adapted_type(column.type, column.table.bind)
+            except:
                 # print('Failed to get col type for {}, {}'.format(column, column.type))
                 if "sqlite_sequence" not in format(column):
                     print("#Failed to get col type for {}".format(column))
@@ -141,22 +119,8 @@ class Model(object):
     def __str__(self):
         return f'Model for table: {self.table} (in schema: {self.schema})'
 
-
     def _get_adapted_type(self, coltype, bind):
-        """
-
-        Uses dialect to compute SQLAlchemy type (e.g, String, not VARCHAR, for sqlite)
-
-        Args:
-            coltype (_type_): database type
-            bind (_type_): e.g, code_generator.model_creation_services.session.bind
-
-        Returns:
-            _type_: SQLAlchemy type
-        """
-        compiled_type = coltype.compile(bind.dialect)  # OrderDetai.Discount: FLOAT (not DOUBLE); coltype is DOUBLE
-        if compiled_type == "DOUBLE":
-            print("Debug stop - _get_adapted_type, target compiled_type")
+        compiled_type = coltype.compile(bind.dialect)
         for supercls in coltype.__class__.__mro__:
             if not supercls.__name__.startswith('_') and hasattr(supercls, '__visit_name__'):
                 # Hack to fix adaptation of the Enum class which is broken since SQLAlchemy 1.2
@@ -195,8 +159,7 @@ class Model(object):
                 coltype = new_coltype
                 if supercls.__name__ != supercls.__name__.upper():
                     break
-        if coltype == "Double()":
-            print("Debug stop - _get_adapted_type, target returned coltype")
+
         return coltype
 
     def add_imports(self, collector):
@@ -471,7 +434,6 @@ class CodeGenerator(object):
         Returns:
             bool: True means included
         """
-        table_inclusion_db = False
         if self.include_tables is None:  # first time initialization
             include_tables_dict = {"include": [], "exclude": []}
             if self.model_creation_services.project.include_tables != "":
@@ -495,42 +457,33 @@ class CodeGenerator(object):
                 self.exclude_tables = ['a^']
             self.exclude_regex = "(" + ")|(".join(self.exclude_tables) + ")"
             if self.model_creation_services.project.include_tables != "":
-                if table_inclusion_db:
-                    log.debug(f"include_regex: {self.include_regex}")
-                    log.debug(f"exclude_regex: {self.exclude_regex}\n")
-                    log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
+                log.debug(f"include_regex: {self.include_regex}")
+                log.debug(f"exclude_regex: {self.exclude_regex}\n")
+                log.debug(f"Test Tables: I, I1, J, X, X1, Y\n")
 
         table_included = True
         if self.model_creation_services.project.bind_key == "authentication":
-            if table_inclusion_db:
-                log.debug(f".. authentication always included")
+            log.debug(f".. authentication always included")
         else:
             if len(self.include_tables) == 0:
-                if table_inclusion_db:
-                    log.debug(f"All tables included: {table_name}")
+                log.debug(f"All tables included: {table_name}")
             else:
                 if re.match(self.include_regex, table_name):
-                    if table_inclusion_db:
-                        log.debug(f"table included: {table_name}")
+                    log.debug(f"table included: {table_name}")
                 else:
-                    if table_inclusion_db:
-                        log.debug(f"table excluded: {table_name}")
+                    log.debug(f"table excluded: {table_name}")
                     table_included = False
             if not table_included:
-                if table_inclusion_db:
-                    log.debug(f".. skipping exclusions")
+                log.debug(f".. skipping exlusions")
             else:
                 if len(self.exclude_tables) == 0:
-                    if table_inclusion_db:
-                        log.debug(f"No tables excluded: {table_name}")
+                    log.debug(f"No tables excluded: {table_name}")
                 else:
                     if re.match(self.exclude_regex, table_name):
-                        if table_inclusion_db:
-                            log.debug(f"table excluded: {table_name}")
+                        log.debug(f"table excluded: {table_name}")
                         table_included = False
                     else:
-                        if table_inclusion_db:
-                            log.debug(f"table not excluded: {table_name}")
+                        log.debug(f"table not excluded: {table_name}")
         return table_included
     
 
@@ -555,7 +508,6 @@ class CodeGenerator(object):
         """
         super(CodeGenerator, self).__init__()
         global code_generator
-        """ instance of CodeGenerator - access to model_creation_services, meta etc """
         code_generator = self
         self.metadata = metadata
         self.noindexes = noindexes
@@ -704,18 +656,9 @@ class CodeGenerator(object):
             import inflect
             return inflect.engine()
 
-
     def render_imports(self):
-        """
-
-        Returns:
-            str: data type imports, from ImportCollector
-        """
-
-        render_imports_result = '\n'.join('from {0} import {1}'.format(package, ', '.join(sorted(names)))
+        return '\n'.join('from {0} import {1}'.format(package, ', '.join(sorted(names)))
                          for package, names in self.collector.items())
-        return render_imports_result
-
 
     def render_metadata_declarations(self):
         api_logic_server_imports = """
@@ -724,10 +667,6 @@ class CodeGenerator(object):
 #
 # Alter this file per your database maintenance policy
 #    See https://apilogicserver.github.io/Docs/Project-Rebuild/#rebuilding
-#
-# Created:
-# Database:
-# Dialect:
 #
 # mypy: ignore-errors
 
@@ -747,36 +686,25 @@ metadata = Base.metadata
 from sqlalchemy.dialects.mysql import *
 ########################################################################################################################
 """
-        
         if self.model_creation_services.project.bind_key != "":
             api_logic_server_imports = api_logic_server_imports.replace('Base = declarative_base()',
                             f'Base{self.model_creation_services.project.bind_key} = declarative_base()')
             api_logic_server_imports = api_logic_server_imports.replace('metadata = Base.metadata',
                             f'metadata = Base{self.model_creation_services.project.bind_key}.metadata')
         if "sqlalchemy.ext.declarative" in self.collector:  # Manually Added for safrs (ApiLogicServer)
-            # SQLAlchemy2: 'MetaData' object has no attribute 'bind'
-            bind = self.model_creation_services.session.bind  # SQLAlchemy2
-            dialect_name = bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
+            dialect_name = self.metadata.bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
             if dialect_name in ["firebird", "mssql", "oracle", "postgresql", "sqlite", "sybase"]:
                 rtn_api_logic_server_imports = api_logic_server_imports.replace("mysql", dialect_name)
             else:
                 rtn_api_logic_server_imports = api_logic_server_imports
                 print(".. .. ..Warning - unknown sql dialect, defaulting to msql - check database/models.py")
-            rtn_api_logic_server_imports = rtn_api_logic_server_imports.replace(
-                "Created:", "Created:  " + str(datetime.datetime.now().strftime("%B %d, %Y %H:%M:%S")))
-            rtn_api_logic_server_imports = rtn_api_logic_server_imports.replace(
-                "Database:", "Database: " + self.model_creation_services.project.abs_db_url)
-            rtn_api_logic_server_imports = rtn_api_logic_server_imports.replace(
-                "Dialect:", "Dialect:  " + dialect_name)
             return rtn_api_logic_server_imports
         return "metadata = MetaData()"  # (stand-alone sql1codegen - never used in API Logic Server)
 
-    def _get_compiled_expression(self, statement: sqlalchemy.sql.expression.TextClause): 
+    def _get_compiled_expression(self, statement):
         """Return the statement in a form where any placeholders have been filled in."""
-        bind = self.model_creation_services.session.bind  # SQLAlchemy2
-        # https://docs.sqlalchemy.org/en/20/errors.html#a-bind-was-located-via-legacy-bound-metadata-but-since-future-true-is-set-on-this-session-this-bind-is-ignored
-        return str(statement.compile(  # 'MetaData' object has no attribute 'bind' (unlike SQLAlchemy 1.4)
-            bind = bind, compile_kwargs={"literal_binds": True}))
+        return str(statement.compile(
+            self.metadata.bind, compile_kwargs={"literal_binds": True}))
 
     @staticmethod
     def _getargspec_init(method):
@@ -865,26 +793,15 @@ from sqlalchemy.dialects.mysql import *
             extra_args.append('unique=True')
         return 'Index({0!r}, {1})'.format(index.name, ', '.join(extra_args))
 
-    def render_column(self, column: Column, show_name: bool):
-        """_summary_
-
-        Args:
-            column (Column): column attributes
-            show_name (bool): True means embed col name into render_result
-
-        Returns:
-            str: eg. Column(Integer, primary_key=True), Column(String(8000))
-        """        
+    def render_column(self, column, show_name):
         global code_generator
-        fk_debug = False
         kwarg = []
         is_sole_pk = column.primary_key and len(column.table.primary_key) == 1
         dedicated_fks_old = [c for c in column.foreign_keys if len(c.constraint.columns) == 1]
         dedicated_fks = []  # c for c in column.foreign_keys if len(c.constraint.columns) == 1
         for each_foreign_key in column.foreign_keys:
-            if fk_debug:
-                log.debug(f'FK: {each_foreign_key}')  # 
-                log.debug(f'render_column - is fk: {dedicated_fks}')
+            log.debug(f'FK: {each_foreign_key}')  # 
+            log.debug(f'render_column - is fk: {dedicated_fks}')
             if code_generator.is_table_included(each_foreign_key.column.table.name) \
                                 and len(each_foreign_key.constraint.columns) == 1:
                 dedicated_fks.append(each_foreign_key)
@@ -946,11 +863,8 @@ from sqlalchemy.dialects.mysql import *
                     server_default = 'server_default=text("{0}")'.format(default_expr)
 
         comment = getattr(column, 'comment', None)
-        if (column.name + "") == "xx_id":
-            print(f"render_column target: {column.table.name}.{column.name}")  # ApiLogicServer fix for putting this at end:  index=True
-        if show_name and column.table.name != 'sqlite_sequence':
-            log.isEnabledFor(f"render_column show name is true: {column.table.name}.{column.name}")  # researching why
-        render_result = 'Column({0})'.format(', '.join(
+        if (column.name + "") == "debug_column_name":
+            db = 'Column({0})'.format(', '.join(
             ([repr(column.name)] if show_name else []) +
             ([self.render_column_type(column.type)] if render_coltype else []) +
             [self.render_constraint(x) for x in dedicated_fks] +
@@ -959,19 +873,16 @@ from sqlalchemy.dialects.mysql import *
             ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
             (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
             ))
-        
-        """
-                return 'Column({0})'.format(', '.join(
-                    ([repr(column.name)] if show_name else []) +
-                    ([self.render_column_type(column.type)] if render_coltype else []) +
-                    [self.render_constraint(x) for x in dedicated_fks] +
-                    [repr(x) for x in column.constraints] +
-                    ([server_default] if server_default else []) +
-                    ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
-                    (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
-                ))
-        """
-        return render_result
+            print("Debug Stop")  # ApiLogicServer fix for putting this at end:  index=True
+        return 'Column({0})'.format(', '.join(
+            ([repr(column.name)] if show_name else []) +
+            ([self.render_column_type(column.type)] if render_coltype else []) +
+            [self.render_constraint(x) for x in dedicated_fks] +
+            [repr(x) for x in column.constraints] +
+            ([server_default] if server_default else []) +
+            ['{0}={1}'.format(k, repr(getattr(column, k))) for k in kwarg] +
+            (['comment={!r}'.format(comment)] if comment and not self.nocomments else [])
+        ))
 
     def render_relationship(self, relationship) -> str:
         ''' returns string like: Department = relationship(\'Department\', remote_side=[Id])
@@ -1119,24 +1030,12 @@ from sqlalchemy.dialects.mysql import *
                 self.indentation, table_args_joined)
 
         # Render columns
-        # special case id: https://github.com/valhuber/ApiLogicServer/issues/69#issuecomment-1579731936
         rendered += '\n'
         for attr, column in model.attributes.items():
             if isinstance(column, Column):
                 show_name = attr != column.name
-                rendered_column = '{0}{1} = {2}\n'.format(
+                rendered += '{0}{1} = {2}\n'.format(
                     self.indentation, attr, self.render_column(column, show_name))
-                if column.name == "id":  # add name to Column(Integer, primary_key=True)
-                    """ add name to Column(Integer, primary_key=True) - but makes system fail
-                    rendered_column = rendered_column.replace(
-                        'id = Column(', 'Id = Column("id", ')
-                    log.debug(f' id = Column(Integer, primary_key=True) -->'\
-                              f' Id = Column("id", Integer, primary_key=True)')
-                    """
-                    if model.name not in["User", "Api"]:
-                        log.info(f'** Warning: id columns will not be included in API response - '
-                                f'{model.name}.id\n')
-                rendered += rendered_column
         if not autonum_col:
             rendered += '{0}{1}'.format(self.indentation, "allow_client_generated_ids = True\n")
 
@@ -1161,7 +1060,7 @@ from sqlalchemy.dialects.mysql import *
                 unique_name = relationship.target_cls + '.' + backref_name
                 if unique_name in backrefs:  # disambiguate
                     backref_name += "_" + attr
-                back_ref = f', cascade_backrefs=False, backref=\'{backref_name}\''
+                back_ref = f', cascade_backrefs=True, backref=\'{backref_name}\''
                 rel_render_with_backref = rel_parts[0] + \
                                           back_ref + \
                                           ")" + rel_parts[1]
@@ -1186,14 +1085,14 @@ from sqlalchemy.dialects.mysql import *
                 if unique_name in backrefs:  # disambiguate
                     child_role_name += '1'  # FIXME - fails for 3 relns
                 if model.name != parent_model.name:
-                    parent_relationship = f'{child_role_name} = {parent_relationship_def}, cascade_backrefs=False, backref=\'{parent_role_name}\')'
+                    parent_relationship = f'{child_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{parent_role_name}\')'
                 else:  # work-around for self relns
                     """
                     special case self relns:
                         not DepartmentList = relationship('Department', remote_side=[Id], cascade_backrefs=True, backref='Department')
                         but Department     = relationship('Department', remote_side=[Id], cascade_backrefs=True, backref='DepartmentList')
                     """
-                    parent_relationship = f'{parent_role_name} = {parent_relationship_def}, cascade_backrefs=False, backref=\'{child_role_name}\')'
+                    parent_relationship = f'{parent_role_name} = {parent_relationship_def}, cascade_backrefs=True, backref=\'{child_role_name}\')'
                     parent_relationship += "  # special handling for self-relationships"
                 if self.generate_relationships_on != "parent":  # relns not created on parent; comment out
                     parent_relationship = "# see backref on child: " + parent_relationship
@@ -1249,10 +1148,7 @@ from sqlalchemy.dialects.mysql import *
 
     def render(self, outfile=sys.stdout):
         """ create model from db, and write models.py file to in-memory buffer (outfile)
-
-            relns created from not-yet-seen children, so
-            * save *all* class info,
-            * then append rendered_model_relationships
+            relns created from not-yet-seen children, so save *all* class info, then append rendered_model_relationships
         """
         for model in self.models:  # class, with __tablename__ & __collection_name__ cls variables, attrs
             if isinstance(model, self.class_model):

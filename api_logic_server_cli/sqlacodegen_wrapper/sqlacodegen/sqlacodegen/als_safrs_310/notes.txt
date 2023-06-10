@@ -1,0 +1,25 @@
+This project is hand-edited, for models & venv.  It runs.
+
+Same *generated* project runs, many creation errors.  This is to analyze why.  Dialects are a likely factor.
+
+Observations:
+
+    Gen models missing:
+        t_sqlite_sequence table
+        import NullType
+        OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=False, backref='Order')  # manual fix
+        from sqlalchemy import Boolean, Column, DECIMAL, Date, Float, Double, ForeignKey, ForeignKeyConstraint, Integer, String, Table, Text, text
+            GA:
+                Order.Discount has no Double...  was Float in GA/RC2, Double in Gen
+                from sqlalchemy import Boolean, Column, DECIMAL, Date, Float, ForeignKey, ForeignKeyConstraint, Integer, String, Table, Text, text
+                It's DOUBLE in the database, but reported differently in _get_adapted_type - wrong coltype class
+
+        Manually apply these, and Behave runs
+
+    Gen creating VARCHAR instead of String - fixed
+
+    Creation log: Excluded single field fl on Order.Country
+
+    Several pip freeze differences
+    
+        gen is newer -- safrs using "latest" versions?

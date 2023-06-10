@@ -1,0 +1,204 @@
+
+Logic Phase:		BEFORE COMMIT(session=0x1050e5b10)
+Logic Phase:		ROW LOGIC(session=0x1050e5b10) (sqlalchemy before_flush)
+..Order[11078] {Delete - client} Id: 11078, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipZip: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2, CloneFromOrder: None  row: 0x1050c00d0  session: 0x1050e5b10  ins_upd_dlt: dlt
+....Customer[ALFKI] {Update - Adjusting Customer: Balance, UnpaidOrderCount, OrderCount} Id: ALFKI, CompanyName: Alfreds Futterkiste, ContactName: Maria Anders, ContactTitle: Sales Representative, Address: Obere Str. 57A, City: Berlin, Region: Western Europe, PostalCode: 12209, Country: Germany, Phone: 030-0074321, Fax: 030-0076545, Balance:  [2158.0000000000-->] 2102.0000000000, CreditLimit: 2300.0000000000, OrderCount:  [16-->] 15, UnpaidOrderCount:  [11-->] 10, Client_id: 1  row: 0x105214590  session: 0x1050e5b10  ins_upd_dlt: upd
+Logic Phase:		COMMIT(session=0x1050e5b10)
+..Order[11078] {Commit Event} Id: 11078, CustomerId: ALFKI, EmployeeId: 1, OrderDate: None, RequiredDate: None, ShippedDate: None, ShipVia: None, Freight: 11.0000000000, ShipName: None, ShipAddress: None, ShipCity: None, ShipRegion: None, ShipZip: None, ShipCountry: None, AmountTotal: 56.00, Country: None, City: None, Ready: True, OrderDetailCount: 2, CloneFromOrder: None  row: 0x1050c00d0  session: 0x1050e5b10  ins_upd_dlt: dlt
+
+Rules Fired:		##
+  Customer		##
+    1. Derive Customer.UnpaidOrderCount as Count(<class 'database.models.Order'> Where <function declare_logic.<locals>.<lambda> at 0x104ac2b60>)		##
+    2. Derive Customer.Balance as Sum(Order.AmountTotal Where <function declare_logic.<locals>.<lambda> at 0x1049ac540>)		##
+    3. Derive Customer.OrderCount as Count(<class 'database.models.Order'> Where None)		##
+    4. RowEvent Customer.customer_defaults() 		##
+  Order		##
+    5. RowEvent Order.congratulate_sales_rep() 		##
+    6. RowEvent Order.order_defaults() 		##
+
+Logic Phase:		FLUSH(session=0x1050e5b10)   (sqlalchemy flush processing)
+[2023-06-08 20:04:26,501] ERROR: (sqlite3.IntegrityError) NOT NULL constraint failed: OrderDetail.OrderId
+[SQL: UPDATE "OrderDetail" SET "OrderId"=? WHERE "OrderDetail"."Id" = ?]
+[parameters: [(None, 2157), (None, 2158)]]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Traceback (most recent call last):
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1937, in _exec_single_context
+    self.dialect.do_executemany(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 917, in do_executemany
+    cursor.executemany(statement, parameters)
+sqlite3.IntegrityError: NOT NULL constraint failed: OrderDetail.OrderId
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/safrs/safrs_api.py", line 668, in method_wrapper
+    safrs.DB.session.commit()
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py", line 553, in commit
+    return self._proxied.commit()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1906, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1221, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1196, in _prepare_impl
+    self.session.flush()
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4154, in flush
+    self._flush(objects)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4290, in _flush
+    with util.safe_reraise():
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4251, in _flush
+    flush_context.execute()
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 464, in execute
+    n.execute_aggregate(self, set_)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 569, in execute_aggregate
+    self.execute(uow)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 644, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py", line 85, in save_obj
+    _emit_update_statements(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py", line 904, in _emit_update_statements
+    c = connection.execute(
+        ^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1413, in execute
+    return meth(
+           ^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/sql/elements.py", line 483, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1987, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2344, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1937, in _exec_single_context
+    self.dialect.do_executemany(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 917, in do_executemany
+    cursor.executemany(statement, parameters)
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: OrderDetail.OrderId
+[SQL: UPDATE "OrderDetail" SET "OrderId"=? WHERE "OrderDetail"."Id" = ?]
+[parameters: [(None, 2157), (None, 2158)]]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+(sqlite3.IntegrityError) NOT NULL constraint failed: OrderDetail.OrderId
+[SQL: UPDATE "OrderDetail" SET "OrderId"=? WHERE "OrderDetail"."Id" = ?]
+[parameters: [(None, 2157), (None, 2158)]]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Traceback (most recent call last):
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1937, in _exec_single_context
+    self.dialect.do_executemany(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 917, in do_executemany
+    cursor.executemany(statement, parameters)
+sqlite3.IntegrityError: NOT NULL constraint failed: OrderDetail.OrderId
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/safrs/safrs_api.py", line 668, in method_wrapper
+    safrs.DB.session.commit()
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py", line 553, in commit
+    return self._proxied.commit()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1906, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1221, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 1196, in _prepare_impl
+    self.session.flush()
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4154, in flush
+    self._flush(objects)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4290, in _flush
+    with util.safe_reraise():
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py", line 147, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 4251, in _flush
+    flush_context.execute()
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 464, in execute
+    n.execute_aggregate(self, set_)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 569, in execute_aggregate
+    self.execute(uow)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py", line 644, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py", line 85, in save_obj
+    _emit_update_statements(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py", line 904, in _emit_update_statements
+    c = connection.execute(
+        ^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1413, in execute
+    return meth(
+           ^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/sql/elements.py", line 483, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1637, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1987, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2344, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1937, in _exec_single_context
+    self.dialect.do_executemany(
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 917, in do_executemany
+    cursor.executemany(statement, parameters)
+sqlalchemy.exc.IntegrityError: (sqlite3.IntegrityError) NOT NULL constraint failed: OrderDetail.OrderId
+[SQL: UPDATE "OrderDetail" SET "OrderId"=? WHERE "OrderDetail"."Id" = ?]
+[parameters: [(None, 2157), (None, 2158)]]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+Exception on /api/Order/11078/ [DELETE]
+Traceback (most recent call last):
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask/app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask/app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask_restful/__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask_restful_swagger_2/__init__.py", line 39, in decorator
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask/views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask_restful/__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask_restful_swagger_2/swagger.py", line 219, in inner
+    return f(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/safrs/safrs_api.py", line 701, in method_wrapper
+    abort(status_code, errors=[errors])
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask_restful/__init__.py", line 32, in abort
+    original_flask_abort(http_status_code)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/flask/helpers.py", line 277, in abort
+    current_app.aborter(code, *args, **kwargs)
+  File "/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/werkzeug/exceptions.py", line 861, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.InternalServerError: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+127.0.0.1 - - [08/Jun/2023 20:04:26] "DELETE /api/Order/11078/ HTTP/1.1" 500 -
