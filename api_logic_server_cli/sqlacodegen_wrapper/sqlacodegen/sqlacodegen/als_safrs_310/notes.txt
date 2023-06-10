@@ -5,14 +5,25 @@ Same *generated* project runs, many creation errors.  This is to analyze why.  D
 Observations:
 
     Gen models missing:
+
         t_sqlite_sequence table
+
         import NullType
+
         OrderDetailList = relationship('OrderDetail', cascade='all, delete', cascade_backrefs=False, backref='Order')  # manual fix
+            ==> this is the only issue - fixing it makes Behave run (with Security)
+            Gen: OrderDetailList = relationship('OrderDetail', cascade_backrefs=False, backref='Order')
+            Schema col defined as: OrderId INTEGER not null references "Order" on delete cascade,
+
         from sqlalchemy import Boolean, Column, DECIMAL, Date, Float, Double, ForeignKey, ForeignKeyConstraint, Integer, String, Table, Text, text
             GA:
                 Order.Discount has no Double...  was Float in GA/RC2, Double in Gen
                 from sqlalchemy import Boolean, Column, DECIMAL, Date, Float, ForeignKey, ForeignKeyConstraint, Integer, String, Table, Text, text
                 It's DOUBLE in the database, but reported differently in _get_adapted_type - wrong coltype class
+                    GA meta reporting it FLOAT, Gen reporting in DOUBLE
+                    Gen was seeing SQLiteDialect...
+                    Gen actually seems right, maybe its innocuous
+                        FIXME - ignore for now
 
         Manually apply these, and Behave runs
 
