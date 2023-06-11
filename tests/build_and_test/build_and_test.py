@@ -301,6 +301,7 @@ def rebuild_tests():
     api_logic_project_path = install_api_logic_server_path.joinpath('Rebuild')
     admin_merge_yaml_path = api_logic_project_path.joinpath('ui').joinpath('admin').joinpath('admin-merge.yaml')
     new_model_path = current_path.parent.parent.joinpath('rebuild_tests').joinpath('models.py')
+    """ same as models, but adds class: CategoryNew """
     models_py_path = api_logic_project_path.joinpath('database').joinpath('models.py')
 
     result_create = run_command(f'{set_venv} && ApiLogicServer create --project_name=Rebuild --db_url=',
