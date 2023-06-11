@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 sqlalchemy_2_hack = True
 """ exploring migration failures """
 
-sqlalchemy_2_db = False
+sqlalchemy_2_db = True
 """ prints / debug stops """
 
 
@@ -107,14 +107,27 @@ class ImportCollector(OrderedDict):
             if type_.__name__ in dialect_pkg.__all__:
                 pkgname = dialect_pkgname
         else:
-            if sqlalchemy_2_hack:  # FIXME no such: sqlalchemy.__all__
+            if sqlalchemy_2_hack:
                 pkgname = "sqlalchemy"
-            else:
+                if type_.__name__.startswith("Null"):
+                    pkgname = 'sqlalchemy.sql.sqltypes'
+                if type_.__name__.startswith("Null"):  # troublemakes: Double, NullType
+                    if sqlalchemy_2_db == True:
+                        print(f'Debug Stop: ImportCollector - target type_name: {type_.__name__}')
+            else:  # FIXME HORRID HACK commented out: sqlalchemy.__all__ not in SQLAlchemy2
+                """
+                in SQLAlchemy 1.4, sqlalchemy.__all__ contained: 
+                    ['ARRAY', 'BIGINT', 'BINARY', 'BLANK_SCHEMA', 'BLOB', 'BOOLEAN', 
+                    'BigInteger', 'Boolean', 'CHAR', 'CLOB', 'CheckConstraint', 
+                    'Column', 'ColumnDefault', 'Computed', 'Constraint', 
+                    'DATE', 'DATETIME', 'DDL', 'DECIMAL', 'Date', 'DateTime', 
+                    'DefaultClause', 'Enum', 'FLOAT', 'FetchedValue', 'Float', 
+                    'ForeignKey', 'ForeignKeyConstraint', 'INT', 'INTEGER', 
+                    'Identity', 'Index', 'Integer', 'Interval'...]
+                type_.__module__ is sqlalchemy.sql.sqltypes
+                """
                 pkgname = 'sqlalchemy' if type_.__name__ in sqlalchemy.__all__ else type_.__module__
         type_name = type_.__name__
-        if type_name == "Double":
-            if sqlalchemy_2_db == True:
-                print('Debug Stop: ImportCollector - target type_name')
         self.add_literal_import(pkgname, type_name)  # (sqlalchemy, Column | Integer | String...)
 
     def add_literal_import(self, pkgname, name):
@@ -139,9 +152,9 @@ class Model(object):
                     print(f'Model.__init__ target column -- Float in GA/RC2, Double in Gen')
                 column.type = self._get_adapted_type(column.type, bind)  # SQLAlchemy2 (was column.table.bind)
             except Exception as e:
-                # print('Failed to get col type for {}, {}'.format(column, column.type))
+                # remains unchanged, eg. NullType()
                 if "sqlite_sequence" not in format(column):
-                    print("#Failed to get col type for {}".format(column))
+                    print(f"#Failed to get col type for {format(column)} - {column.type}")
 
     def __str__(self):
         return f'Model for table: {self.table} (in schema: {self.schema})'
@@ -201,7 +214,7 @@ class Model(object):
                 coltype = new_coltype
                 if supercls.__name__ != supercls.__name__.upper():
                     break
-        if coltype == "Double()":
+        if coltype == "NullType":  # troublemakers: Double(), NullType
             if sqlalchemy_2_db == True:
                 print("Debug stop - _get_adapted_type, target returned coltype")
         return coltype
@@ -211,6 +224,9 @@ class Model(object):
             collector.add_import(Column)
 
         for column in self.table.columns:
+            if self.table.name == "productlines" and column.name == "image":
+                if sqlalchemy_2_db:
+                    print(f'add_imports - target column stop - {column.type}')
             collector.add_import(column.type)
             if column.server_default:
                 if Computed and isinstance(column.server_default, Computed):
@@ -745,6 +761,7 @@ from flask_login import UserMixin
 import safrs, flask_sqlalchemy
 from safrs import jsonapi_attr
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.sqltypes import NullType
 
 db = SQLAlchemy() 
 Base = declarative_base()  # type: flask_sqlalchemy.model.DefaultMeta

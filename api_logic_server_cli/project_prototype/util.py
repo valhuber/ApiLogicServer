@@ -14,6 +14,8 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 
 app_logger = logging.getLogger("api_logic_server_app")
 
+sqlalchemy2 = True
+
 def log(msg: object) -> None:
     app_logger.info(msg)
     # print("TIL==> " + msg)
@@ -216,10 +218,13 @@ def rows_to_dict(result: flask_sqlalchemy.BaseQuery) -> list:
     for each_row in result:
         row_as_dict = None
         print(f'type(each_row): {type(each_row)}')
-        if isinstance (each_row, sqlalchemy.engine.row.LegacyRow):  # sqlalchemy.engine.row
-            row_as_dict = each_row._asdict()
-        else:
+        if sqlalchemy2:
             row_as_dict = each_row.to_dict()
+        else:  # AttributeError: module 'sqlalchemy.engine.row' has no attribute 'LegacyRow'
+            if isinstance (each_row, sqlalchemy.engine.row.LegacyRow):  # sqlalchemy.engine.row
+                row_as_dict = each_row._asdict()
+            else:
+                row_as_dict = each_row.to_dict()
         rows.append(row_as_dict)
     return rows
 

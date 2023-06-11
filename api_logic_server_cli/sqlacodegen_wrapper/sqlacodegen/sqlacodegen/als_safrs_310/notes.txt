@@ -2,6 +2,9 @@ This project is hand-edited, for models & venv.  It runs.
 
 Same *generated* project runs, many creation errors.  This is to analyze why.  Dialects are a likely factor.
 
+All issues so far have been SQLAlchemy2
+    https://docs.sqlalchemy.org/en/20/changelog/migration_20.html
+
 Observations:
 
     Gen models missing:
@@ -24,6 +27,24 @@ Observations:
                 Other DBs: no cascasdes declared on other DBs
             Reason: fix_database_models() does string replace using "cascade_backrefs=True"
                 And cascade_backrefs was changed False for SQLAlchemy2
+                Fixed fix_database_models()
+
+        CategoriesSvc/getCats fails
+            util.py @ 219: attributeError: module 'sqlalchemy.engine.row' has no attribute 'LegacyRow'
+            fixed with patch to util.py (needs review)
+
+        Rebuild test fails
+            Since rebuild_test/models.py had cascade_backrefs=True
+            fixed
+
+        sqlite classicmodels failed
+            How...
+                #Failed to get col type for productlines.image
+                ImportError: cannot import name 'NullType' from 'sqlalchemy' (/Users/val/dev/servers/install/ApiLogicServer/venv/lib/python3.11/site-packages/sqlalchemy/__init__.py)
+                Bug in ImportCollector.add_import
+                    sqlalchemy.__all__ not in SQLAlchemy2
+                    risky work-around to compute package
+
 
         imports differ
             Gen:
