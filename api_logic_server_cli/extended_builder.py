@@ -3,6 +3,7 @@ import sys
 from sqlalchemy.sql import text
 from typing import List
 import sqlalchemy
+from dotmap import DotMap
 
 
 def log(msg: any) -> None:
@@ -11,6 +12,7 @@ def log(msg: any) -> None:
 
 log("Extended builder 1.2")
 
+sqlalchemy2 = True
 
 class DotDict(dict):
     """ dot.notation access to dictionary attributes """
@@ -178,10 +180,13 @@ metadata = Base.metadata
         engine = sqlalchemy.create_engine(self.db_url, echo=False)  # sqlalchemy sqls...
         cols = []
         current_table_name = ""
+
         with engine.connect() as connection:                # first, get all the TVF cols & build class
             result = connection.execute(text(cols_sql))
-            for row_dict in result:
-                row = DotDict(row_dict)
+            for row in result:
+                # row eg: ('SampleDB', 'dbo', 'fn_Data_u_CDM_BusinessProcess_yyyy', 'Document', 'char', 10)
+                # print(f'TVF cols - fields: {row._fields}')
+                # print(f'TVF cols - values: {row}')
                 log(f'col row: {row}, database: {row.Database}')
                 function_name = row.Function
                 if function_name != current_table_name:
@@ -192,8 +197,12 @@ metadata = Base.metadata
                     cols = []
                 cols.append(row)
 
-        # connection.close()
-        engine.dispose()  # fixed some no-result errors
+        if sqlalchemy2:
+            connection.commit()
+            connection.close()
+            print("\n\n now process args")
+        else:
+            engine.dispose()  # fixed some no-result errors
 
         if len(cols) > 0:
             self.number_of_services += 1
@@ -221,9 +230,10 @@ metadata = Base.metadata
 
         with engine.connect() as connection:                # next, get all the TVF args
             result = connection.execute(text(args_sql))
-            for row_dict in result:
-                row = DotDict(row_dict)
-                log(f'arg row: {row}, database: {row.Database}')
+            for row in result:
+                # print(f'TVF args - fields: {row._fields}')
+                # print(f'TVF args - values: {row}')
+                log(f'arg row: {row})') #  , database: {row.Database}')
                 object_name = row.ObjectName
                 if object_name != current_object_name:
                     if len(args) > 0:

@@ -45,6 +45,13 @@ Observations:
                     sqlalchemy.__all__ not in SQLAlchemy2
                     risky work-around to compute package
 
+        tvf tests fail /api_logic_server_cli/extended_builder.py", line 184
+            ValueError: dictionary update sequence element #0 has length 8; 2 is required
+            drowning - tvf run config does not run on big mac, so cannot compare
+            it appears the result is no longer a dict??? 
+                Gasp - it is sqlalchemy.engine.row.Row
+                You cannot be serious.
+
 
         imports differ
             Gen:
