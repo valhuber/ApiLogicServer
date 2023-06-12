@@ -196,7 +196,7 @@ class ServicesEndPoint(safrs.JABase):
         session.add(new_order)
 
         util.json_to_entities(kwargs, new_order)  # generic function - any db object
-        return {}  # automatic commit, which executes transaction logic
+        return {"Thankyou For Your Order"}  # automatic commit, which executes transaction logic
 
 
 class CategoriesEndPoint(safrs.JABase):
