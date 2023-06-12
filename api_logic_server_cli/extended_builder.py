@@ -10,7 +10,18 @@ def log(msg: any) -> None:
     print(msg, file=sys.stderr)
 
 
-log("Extended builder 1.2")
+log("Extended builder 2.0")  # using SQLAlchemy 2
+
+""" test
+
+curl -X 'POST' \
+  'http://localhost:5656/api/udfEmployeeInLocation/udfEmployeeInLocation' \
+  -H 'accept: application/vnd.api+json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "location": "Sweden"
+}'
+"""
 
 sqlalchemy2 = True
 
@@ -126,7 +137,8 @@ metadata = Base.metadata
             self.tvf_contents += ')")\n'
 
             # query_result = db.engine.execute(sql_query, location=location, Name=Name)
-            self.tvf_contents += f'\t\tquery_result = DB.engine.execute(sql_query, '  # arg=arg)\n'
+            self.tvf_contents += f"\t\twith DB.engine.begin() as connection:\n"          
+            self.tvf_contents +=f'\t\t\tquery_result = connection.execute(sql_query, dict('
             arg_number = 0
             if has_args:
                 for each_arg in args:
@@ -134,13 +146,8 @@ metadata = Base.metadata
                     arg_number += 1
                     if arg_number < len(args):
                         self.tvf_contents += ", "
-            self.tvf_contents += ")\n"
-            self.tvf_contents += f'\t\tresult = query_result.fetchall()\n'
-            self.tvf_contents += f'\t\tdont_rely_on_safrs_debug = True\n'
-            self.tvf_contents += '\t\tresponse = {"result" : list(result)}\n'
-            self.tvf_contents += f'\t\tif dont_rely_on_safrs_debug:\n'
-            self.tvf_contents += '\t\t\trows = util.rows_to_dict(result)\n'
-            self.tvf_contents += '\t\t\tresponse = {"result": rows}\n'
+            self.tvf_contents += ")).all()\n" 
+            self.tvf_contents += '\t\t\tresponse = {"result": query_result}\n'
             self.tvf_contents += f'\t\treturn response\n'
             self.tvf_contents += f'\n\n'
 
@@ -264,6 +271,8 @@ metadata = Base.metadata
 def extended_builder(db_url: str, project_directory: str):
     """
     Illustrate Extended Builder -- CLI calls EB to create / update project files.
+
+    See: https://apilogicserver.github.io/Docs/Project-Builders/
     
     Expose TVFs (Sql Server Table Valued Functions) as apis
    
