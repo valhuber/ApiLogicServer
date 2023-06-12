@@ -71,26 +71,6 @@ logic_logger_activate_debug = False
 
 
 
-# ==================================
-#       LOGGING SETUP
-# ================================== 
-
-current_path = os.path.abspath(os.path.dirname(__file__))
-with open(f'{current_path}/logging.yml','rt') as f:  # see also logic/declare_logic.py
-        config=yaml.safe_load(f.read())
-        f.close()
-logging.config.dictConfig(config)  # log levels: notset 0, debug 10, info 20, warn 30, error 40, critical 50
-app_logger = logging.getLogger("api_logic_server_app")
-debug_value = os.getenv('APILOGICPROJECT_DEBUG')
-if debug_value is not None:  # > export APILOGICPROJECT_DEBUG=True
-    debug_value = debug_value.upper()
-    if debug_value.startswith("F") or debug_value.startswith("N"):
-        app_logger.setLevel(logging.INFO)
-    else:
-        app_logger.setLevel(logging.DEBUG)
-        app_logger.debug(f'\nDEBUG level set from env\n')
-
-
 args = ""
 arg_num = 0
 for each_arg in sys.argv:
@@ -99,8 +79,6 @@ for each_arg in sys.argv:
     if arg_num < len(sys.argv):
         args += ", "
 project_name = os.path.basename(os.path.normpath(current_path))
-app_logger.info(f'\nAPI Logic Project ({project_name}) Starting with args: \n.. {args}\n')
-app_logger.info(f'Created api_logic_server_created_on at {str(current_path)}\n')
 
 from typing import TypedDict
 import safrs  # fails without venv - see https://apilogicserver.github.io/Docs/Project-Env/
@@ -119,49 +97,27 @@ from security.system.authentication import configure_auth
 import database.multi_db as multi_db
 
 
-def setup_logging(flask_app):
-    setup_logic_logger = False
-    if setup_logic_logger:
-        logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
-        handler = logging.StreamHandler(sys.stderr)
-        handler.setLevel(logging.DEBUG)
-        truncate_log = False  # useful for non-IDE run (e.g. console) to see logic indenting
-        if truncate_log and flask_app.config['SQLALCHEMY_DATABASE_URI'].endswith("db.sqlite"):
-            formatter = logging.Formatter('%(message).160s')  # lead tag - '%(name)s: %(message)s')
-            handler.setFormatter(formatter)
-            logic_logger = logging.getLogger("logic_logger")
-            logic_logger.handlers = []
-            logic_logger.addHandler(handler)
-            app_logger.warning("\nLog width truncated for readability -- "
-                               "see api_logic_server_run.py in your API Logic Project\n")
-        else:
-            formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
-        handler.setFormatter(formatter)
-        logic_logger.addHandler(handler)
-        logic_logger.setLevel(logging.INFO)
-        logic_logger.propagate = True
 
-    do_engine_logging = False
-    engine_logger = logging.getLogger('engine_logger')  # for internals
-    if do_engine_logging:
-        engine_logger.setLevel(logging.DEBUG)
-        handler = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter('%(message)s - %(asctime)s - %(name)s - %(levelname)s')
-        handler.setFormatter(formatter)
-        engine_logger.addHandler(handler)
-        engine_logger.setLevel(logging.DEBUG)
+# ==================================
+#       LOGGING SETUP
+# ================================== 
 
-    do_safrs_logging = False
-    if verbose or do_safrs_logging:
-        safrs_init_logger = logging.getLogger('safrs.safrs_init')
-        safrs_init_logger.setLevel(logging.DEBUG)
-        safrs_logger = logging.getLogger('safrs')
-        safrs_logger.setLevel(logging.DEBUG)
-
-    do_sqlalchemy_info = False  # True will log SQLAlchemy SQLs
-    if do_sqlalchemy_info:
-        logging.basicConfig()
-        logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+current_path = os.path.abspath(os.path.dirname(__file__))
+with open(f'{current_path}/logging.yml','rt') as f:  # see also logic/declare_logic.py
+        config=yaml.safe_load(f.read())
+        f.close()
+logging.config.dictConfig(config)  # log levels: notset 0, debug 10, info 20, warn 30, error 40, critical 50
+app_logger = logging.getLogger("api_logic_server_app")
+debug_value = os.getenv('APILOGICPROJECT_DEBUG')
+if debug_value is not None:  # > export APILOGICPROJECT_DEBUG=True
+    debug_value = debug_value.upper()
+    if debug_value.startswith("F") or debug_value.startswith("N"):
+        app_logger.setLevel(logging.INFO)
+    else:
+        app_logger.setLevel(logging.DEBUG)
+        app_logger.debug(f'\nDEBUG level set from env\n')
+app_logger.info(f'\nAPI Logic Project ({project_name}) Starting with args: \n.. {args}\n')
+app_logger.info(f'Created api_logic_server_created_on at {str(current_path)}\n')
 
 
 class ValidationErrorExt(ValidationError):
@@ -181,7 +137,9 @@ class ValidationErrorExt(ValidationError):
 
 def get_args():
     """
-    returns tuple: (flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run)
+    returns tuple of start args:
+    
+    (flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run)
     """
 
     global flask_host, swagger_host, port, swagger_port, http_type, verbose, create_and_run
@@ -301,7 +259,6 @@ def create_app(swagger_host: str = "localhost", swagger_port: str = "5656"):
 
         flask_app = Flask("API Logic Server", template_folder='ui/templates')  # templates to load ui/admin/admin.yaml
 
-        setup_logging(flask_app)        
         safrs_log_level = safrs.log.getEffectiveLevel()
         db_logger = logging.getLogger('sqlalchemy')
         db_log_level = db_logger.getEffectiveLevel()

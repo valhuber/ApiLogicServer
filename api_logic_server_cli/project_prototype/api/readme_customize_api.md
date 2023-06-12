@@ -13,7 +13,7 @@ Examples from tutorial project:
 
 ### New Endpoint: Standard Flask, not exposed in Swagger
 
-Use standard Flask / SQLAlchemy:
+Use standard Flask / SQLAlchemy (background [here](https://docs.sqlalchemy.org/en/20/core/connections.html)):
 
 ```python
 

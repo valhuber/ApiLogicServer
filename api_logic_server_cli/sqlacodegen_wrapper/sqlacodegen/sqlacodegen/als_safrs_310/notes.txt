@@ -51,6 +51,12 @@ Observations:
             it appears the result is no longer a dict??? 
                 Gasp - it is sqlalchemy.engine.row.Row
                 You cannot be serious.
+            so fixed extended_builder.py
+
+            now it fails on execution
+                even recoding to engine.connection fails:
+                    Connection.execute() got an unexpected keyword argument 'location'
+                
 
 
         imports differ

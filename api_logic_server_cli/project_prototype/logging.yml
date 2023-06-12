@@ -36,6 +36,11 @@ loggers:
         handlers: [console]
         propagate: no
 
+    engine_logger:
+#        level: DEBUG
+        handlers: [console]
+        propagate: no
+
     api_logic_server_app:
         level: INFO
         handlers: [console]
@@ -43,6 +48,11 @@ loggers:
 
     safrs:
         level: DEBUG
+        handlers: [console]
+        propagate: no
+
+    sqlalchemy.engine:
+#        level: DEBUG
         handlers: [console]
         propagate: no
 
