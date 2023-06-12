@@ -21,6 +21,12 @@ curl -X 'POST' \
   -d '{
   "location": "Sweden"
 }'
+
+returning this:
+{'result': ["(1, 'Nikita', 'Sweden')", "(4, 'John', 'Sweden')"]}
+
+expected this:
+{'result': [(1, 'Nikita', 'Sweden')", "(4, 'John', 'Sweden')]}
 """
 
 sqlalchemy2 = True
