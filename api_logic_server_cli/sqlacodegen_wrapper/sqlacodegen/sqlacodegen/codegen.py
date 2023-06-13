@@ -975,7 +975,7 @@ from sqlalchemy.dialects.mysql import *
         if (column.name + "") == "xx_id":
             print(f"render_column target: {column.table.name}.{column.name}")  # ApiLogicServer fix for putting this at end:  index=True
         if show_name and column.table.name != 'sqlite_sequence':
-            log.isEnabledFor(f"render_column show name is true: {column.table.name}.{column.name}")  # researching why
+            log.debug(f"render_column show name is true: {column.table.name}.{column.name}")  # researching why
         render_result = 'Column({0})'.format(', '.join(
             ([repr(column.name)] if show_name else []) +
             ([self.render_column_type(column.type)] if render_coltype else []) +

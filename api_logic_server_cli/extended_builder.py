@@ -143,8 +143,9 @@ metadata = Base.metadata
             self.tvf_contents += ')")\n'
 
             # query_result = db.engine.execute(sql_query, location=location, Name=Name)
+            self.tvf_contents += f"\t\tmapping_rows = []\n"          
             self.tvf_contents += f"\t\twith DB.engine.begin() as connection:\n"          
-            self.tvf_contents +=f'\t\t\tquery_result = connection.execute(sql_query, dict('
+            self.tvf_contents +=f'\t\t\tfor dict_row in connection.execute(sql_query, dict('
             arg_number = 0
             if has_args:
                 for each_arg in args:
@@ -152,8 +153,9 @@ metadata = Base.metadata
                     arg_number += 1
                     if arg_number < len(args):
                         self.tvf_contents += ", "
-            self.tvf_contents += ")).all()\n" 
-            self.tvf_contents += '\t\t\tresponse = {"result": query_result}\n'
+            self.tvf_contents += ")):\n" 
+            self.tvf_contents += "\t\t\t\tmapping_rows.append(dict_row._data)\n" 
+            self.tvf_contents += '\t\t\tresponse = {"result": mapping_rows}\n'
             self.tvf_contents += f'\t\treturn response\n'
             self.tvf_contents += f'\n\n'
 
