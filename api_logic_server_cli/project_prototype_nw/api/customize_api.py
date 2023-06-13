@@ -142,6 +142,8 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
             sa_tuple_rows = []
             python_rows = []
             object_rows = []
+            rows_to_dict_rows = util.rows_to_dict(query_result)
+            print(f'\nPreferred approach: row_as_dict_rows: {rows_to_dict_rows}')
 
             for dict_row in connection.execute(sql_query).mappings():
                 mapping_rows.append(dict_row._data)
@@ -161,11 +163,12 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
                 row_sa_tuple = each_result_row.tuple()   # sqlalchemy.engine.row.Row
                 sa_tuple_rows.append(row_sa_tuple)
             
-            response = {"result": query_result}  # array of strings
-            response = {"result": sa_tuple_rows} # array of strings
-            response = {"result": mapping_rows}  # array of arrays
-            response = {"result": python_rows}   # array of arrays
-            response = {"result": object_rows}   # array of json name/values
+            response = {"result": query_result}         # array of strings
+            response = {"result": sa_tuple_rows}        # array of strings
+            response = {"result": mapping_rows}         # array of arrays
+            response = {"result": python_rows}          # array of arrays
+            response = {"result": object_rows}          # array of json name/values
+            response = {"result": rows_to_dict_rows}    # array of strings
 
         return response
 
