@@ -124,6 +124,52 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         return jsonify({ "success": True, "results":  return_result})
 
 
+    @app.route('/catsql')
+    @admin_required()
+    def catsql():
+        """
+        Explore SQLAlchemy table queries (non-mapped objects)
+        
+        curl -X GET "http://localhost:5656/catsql"
+        """
+        # import json
+        DB = safrs.DB 
+        sql_query = DB.text("SELECT * FROM CategoryTableNameTest")
+        with DB.engine.begin() as connection:
+            query_result = connection.execute(sql_query).all()
+
+            mapping_rows = []
+            sa_tuple_rows = []
+            python_rows = []
+            object_rows = []
+
+            for dict_row in connection.execute(sql_query).mappings():
+                mapping_rows.append(dict_row._data)
+
+            for each_result_row in query_result:       # sqlalchemy.engine.row.Row
+                python_row = []
+                for i, value in enumerate(each_result_row):
+                    python_row.append(each_result_row[i])
+                python_rows.append(python_row)
+                
+                dict = {}
+                key_to_index = each_result_row._key_to_index
+                for name, value in key_to_index.items():
+                    dict[name] = each_result_row[value]
+                object_rows.append(dict)
+
+                row_sa_tuple = each_result_row.tuple()   # sqlalchemy.engine.row.Row
+                sa_tuple_rows.append(row_sa_tuple)
+            
+            response = {"result": query_result}  # array of strings
+            response = {"result": sa_tuple_rows} # array of strings
+            response = {"result": mapping_rows}  # array of arrays
+            response = {"result": python_rows}   # array of arrays
+            response = {"result": object_rows}   # array of json name/values
+
+        return response
+
+
     @app.route('/order')
     def order():
         """
