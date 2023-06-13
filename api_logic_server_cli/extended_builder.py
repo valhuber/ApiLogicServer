@@ -22,11 +22,11 @@ curl -X 'POST' \
   "location": "Sweden"
 }'
 
-returning this:
+returning this (array of strings, not json):
 {'result': ["(1, 'Nikita', 'Sweden')", "(4, 'John', 'Sweden')"]}
 
-expected this:
-{'result': [(1, 'Nikita', 'Sweden')", "(4, 'John', 'Sweden')]}
+expected this (verified for GA):
+{"result":[{"Id":1,"Location":"Sweden","Name":"Nikita"},{"Id":4,"Location":"Sweden","Name":"John"}]}
 """
 
 sqlalchemy2 = True
@@ -103,6 +103,29 @@ metadata = Base.metadata
         return url.replace('\\', '\\\\')
 
     def build_tvf_service(self, args: List[DotDict]):
+        ''' sample service
+            @staticmethod
+            @jsonapi_rpc(http_methods=['POST'], valid_jsonapi=False)
+            def udfEmployeeInLocation(location):
+                """
+                description: expose TVF - udfEmployeeInLocation
+                args:
+                    location : value
+                """
+                sql_query = DB.text("SELECT * FROM udfEmployeeInLocation(:location)")
+                use_mapping_rows = False
+                if use_mapping_rows:
+                    mapping_rows = []
+                    with DB.engine.begin() as connection:
+                        for dict_row in connection.execute(sql_query, dict(location=location)):
+                            mapping_rows.append(dict_row._data)
+                        response = {"result": mapping_rows}
+                    return response
+                with DB.engine.begin() as connection:
+                    query_result = connection.execute(sql_query, dict(location=location)).all()
+                    rows = util.rows_to_dict(query_result)
+                    return {"result": rows}
+        '''
         if args[0].ObjectName not in self.tvf_services:
             log(f'.. Skipping Scalar Value Function: {args[0].ObjectName}')
         else:
@@ -142,10 +165,9 @@ metadata = Base.metadata
                         self.tvf_contents += ", "
             self.tvf_contents += ')")\n'
 
-            # query_result = db.engine.execute(sql_query, location=location, Name=Name)
-            self.tvf_contents += f"\t\tmapping_rows = []\n"          
+            # query_result = connection.execute(sql_query, dict(location=location)).all()
             self.tvf_contents += f"\t\twith DB.engine.begin() as connection:\n"          
-            self.tvf_contents +=f'\t\t\tfor dict_row in connection.execute(sql_query, dict('
+            self.tvf_contents +=f'\t\t\tquery_result = connection.execute(sql_query, dict('
             arg_number = 0
             if has_args:
                 for each_arg in args:
@@ -153,9 +175,9 @@ metadata = Base.metadata
                     arg_number += 1
                     if arg_number < len(args):
                         self.tvf_contents += ", "
-            self.tvf_contents += ")):\n" 
-            self.tvf_contents += "\t\t\t\tmapping_rows.append(dict_row._data)\n" 
-            self.tvf_contents += '\t\t\tresponse = {"result": mapping_rows}\n'
+            self.tvf_contents += ")).all()\n" 
+            self.tvf_contents += "\t\t\trows = util.rows_to_dict(query_result)\n" 
+            self.tvf_contents += '\t\t\tresponse = {"result": rows}\n'
             self.tvf_contents += f'\t\treturn response\n'
             self.tvf_contents += f'\n\n'
 

@@ -421,7 +421,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "SQL Server Types",
+            "name": "SQL Server Types [TVF]",
             "type": "python",
             "request": "launch",
             "cwd": "${workspaceFolder}/api_logic_server_cli",

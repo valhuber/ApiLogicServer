@@ -219,7 +219,10 @@ def rows_to_dict(result: flask_sqlalchemy.BaseQuery) -> list:
         row_as_dict = None
         print(f'type(each_row): {type(each_row)}')
         if sqlalchemy2:
-            row_as_dict = each_row.to_dict()
+            if isinstance (each_row, sqlalchemy.engine.row.Row):
+                row_as_dict = each_row._mapping
+            else:
+                row_as_dict = each_row.to_dict()
         else:  # AttributeError: module 'sqlalchemy.engine.row' has no attribute 'LegacyRow'
             if isinstance (each_row, sqlalchemy.engine.row.LegacyRow):  # sqlalchemy.engine.row
                 row_as_dict = each_row._asdict()
