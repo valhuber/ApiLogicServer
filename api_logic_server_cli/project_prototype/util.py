@@ -182,16 +182,16 @@ def row_to_dict(row
                 , replace_attribute_tag: str = ""
                 , remove_links_relationships: bool = False) -> dict:
     """
-    c
     Args:
-        row (safrs.DB.Model): models instance, or sqlalchemy.engine.row.Row
+        row (safrs.DB.Model): models instance (object + related objects)
         replace_attribute_tag (str): replace _attribute_ tag with this name
         remove_links_relationships (bool): remove these tags
+
+    Example: in sample nw project, see customize_api: order()
 
     Returns:
         _type_: row suitable for safrs response (a dict)
     """
-    logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
 
     row_as_dict = jsonify(row).json
     log(f'row_to_dict: {row_as_dict}')
