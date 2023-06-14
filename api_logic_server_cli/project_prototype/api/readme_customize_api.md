@@ -11,31 +11,43 @@ Examples from tutorial project:
 
 &nbsp;
 
-### New Endpoint: Standard Flask, not exposed in Swagger
+### New Endpoint: Standard Flask with Security, not exposed in Swagger
 
 Use standard Flask / SQLAlchemy (background [here](https://docs.sqlalchemy.org/en/20/core/connections.html)):
 
 ```python
-
-    @app.route('/categories')
+    @app.route('/filters_cats')
     @admin_required()
-    def categories():
+    def filters_cats():
         """
-        Basic Flask / SQLAlchemy endpoint.
+        Illustrates:
+        * Explore SQLAlchemy and/or filters.
         
-        Test (returns rows 2-5):
-            curl -X GET "http://localhost:5656/categories"
+        Test (returns rows 2-5) (no auth):
+            curl -X GET "http://localhost:5656/filters_cats [no-filter | simple-filter]"
         """
 
         from sqlalchemy import and_, or_
-
+        filter_type = request.args.get('filter')
+        if filter_type is None:
+            filter_type = "multiple filters"
         db = safrs.DB           # Use the safrs.DB, not db!
         session = db.session    # sqlalchemy.orm.scoping.scoped_session
         Security.set_user_sa()  # an endpoint that requires no auth header (see also @admin_required)
 
-        results = session.query(models.Category) \
-            .filter(models.Category.Id > 1) \
-            .filter(or_((models.Category.Client_id == 2), (models.Category.Id == 5)))
+        if filter_type.startswith("n"):
+            results = session.query(models.Category)    # .filter(models.Category.Id > 1)
+        elif filter_type.startswith("s"):               # normally coded like this
+            results = session.query(models.Category) \
+                .filter(models.Category.Id > 1) \
+                .filter(or_((models.Category.Client_id == 2), (models.Category.Id == 5)))
+        else:                                           # simulate grant logic (multiple filters)
+            client_grant = models.Category.Client_id == 2
+            id_grant = models.Category.Id == 5
+            grant_filter = or_( client_grant, id_grant)
+            results = session.query(models.Category) \
+                .filter(models.Category.Id > 1)  \
+                .filter(grant_filter)
         return_result = []
         for each_result in results:
             row = { 'id': each_result.Id, 'name': each_result.CategoryName}
@@ -50,12 +62,13 @@ Use standard Flask / SQLAlchemy (background [here](https://docs.sqlalchemy.org/e
 ```python
 class CategoriesEndPoint(safrs.JABase):
     """
-    Illustrates swagger-visible RPC that requires authentication (@jwt_required()).
+    Illustrates
+    * Swagger-visible RPC that requires authentication (@jwt_required()).
 
-    Observe authorization is thus enforced.  Test in swagger --
+    Test in swagger (auth required)
     * Post to endpoint auth to obtain <access_token> value - copy it to clipboard
     * Authorize (top of swagger), using Bearer <access_token>
-    * Post to CategoriesEndPoint/getcats, observe only rows 2-5 returned
+    * Post to CategoriesEndPoint/get_cats, observe only row 1 returned
 
     """
 
@@ -69,12 +82,9 @@ class CategoriesEndPoint(safrs.JABase):
 
         result = session.query(models.Category)
         for each_row in result:
-            print(f'each_row: {each_row}')
-        dont_rely_on_safrs_debug = True
-        # response = {"result" : list(result)}
-        if dont_rely_on_safrs_debug:
-            rows = util.rows_to_dict(result)
-            response = {"result": rows}
+            app_logger.debug(f'each_row: {each_row}')
+        rows = util.rows_to_dict(result)
+        response = {"result": rows}
         return response
 ```
 
@@ -86,9 +96,9 @@ The samples also illustrate several forms of data access, summarized in the tabl
 
 | Function | Auth required                         | Illustrates             | Util Usage  |
 |:-------------- |:------------------------------|:-----------------------------------|:--------------------------------------------------------------------------------------|
-| ```order()``` |    | Nested Model Objects         | util.row_to_dict() jsoniify(row).json   |
+| ```order_nested_objects()``` |    | Nested Model Objects         | util.format_nested_objects() jsoniify(row).json   |
 | ```get_cats()``` |  Y  | Model query      |Util.rows_to_dict<br>..row.to_dict   |
-| ```cats()``` |  Y  | Model query, security         | No: No  - Manual {} creation   |
-| ```catsql()``` |    | Raw sql        | Util.rows_to_dict<br>..fields iterator   |
+| ```filters_cats()``` |  Y  | Model query, filters         | No: No  - Manual {} creation   |
+| ```raw_sql_cats()``` |    | Raw sql        | Util.rows_to_dict<br>..fields iterator   |
 
 

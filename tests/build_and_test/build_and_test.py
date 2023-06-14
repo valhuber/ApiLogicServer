@@ -430,7 +430,7 @@ def validate_nw():
     * get_cats RPC
     """
 
-    get_uri = "http://localhost:5656/order?Id=10643"
+    get_uri = "http://localhost:5656/order_nested_objects?Id=10643"
     r = requests.get(url=get_uri, headers=login())
     response_text = r.text
     result_data = json.loads(response_text) 
@@ -438,6 +438,14 @@ def validate_nw():
         "order endpoint failed to find 10643"
     assert result_data['data']['OrderDetailListAsDicts'][1]['data']['ProductName'] == 'Chartreuse verte', \
         "OrderDetail does not contain 'Chartreuse verte'"
+
+
+    get_uri = "http://localhost:5656/filters_cats"
+    r = requests.get(url=get_uri, headers=login())
+    response_text = r.text
+    result_data = json.loads(response_text) 
+    assert len(result_data['result']) == 4, \
+        "Failed to get 4 filters_cats rows"
 
     post_uri = "http://localhost:5656/api/CategoriesEndPoint/get_cats"
     post_data = {}
@@ -476,6 +484,8 @@ def validate_nw():
         print (file_contents)
         f.close()
         exit(result_behave.returncode)
+
+    
     print("\nBehave tests & report - Success...\n")
 
 
