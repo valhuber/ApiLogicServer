@@ -558,7 +558,7 @@ def validate_sql_server_types():
     result_data = json.loads(response_text) 
     assert len(result_data["result"]) == 2, "TVF/udfEmployeeInLocation: Did not find 2 expected result rows"
     # TODO - why once assert "Sweden" == result_data["result"][0]["Location"], "TVF/udfEmployeeInLocation: Result row 1 does not contain Sweden"
-    bad_response = True
+    bad_response = False
     if bad_response:
         print(f'\nTODO - TVF: why once assert "Sweden" == result_data["result"][0]["Location"], "TVF/udfEmployeeInLocation: Result row 1 does not contain Sweden"\n')
     else:

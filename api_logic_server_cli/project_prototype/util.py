@@ -12,12 +12,10 @@ from sqlalchemy.orm import object_mapper
 import flask_sqlalchemy
 from logic_bank.rule_bank.rule_bank import RuleBank
 
-app_logger = logging.getLogger("api_logic_server_app")
-
-sqlalchemy2 = True
+app_logger = logging.getLogger(__name__)
 
 def log(msg: object) -> None:
-    app_logger.info(msg)
+    app_logger.debug(msg)
     # print("TIL==> " + msg)
 
 
@@ -86,7 +84,7 @@ def json_to_entities(from_row: str or object, to_row):
                             child_list.append(child_to)
                             pass
                     elif mapped_attr_type == "object":
-                        print("a parent object - skip (future - lookups here?)")
+                        log("a parent object - skip (future - lookups here?)")
                     break
 
 rule_count = 0
@@ -184,18 +182,19 @@ def row_to_dict(row
                 , replace_attribute_tag: str = ""
                 , remove_links_relationships: bool = False) -> dict:
     """
-    returns dict suitable for safrs response
-
+    c
     Args:
-        row (safrs.DB.Model): a SQLAlchemy row
+        row (safrs.DB.Model): models instance, or sqlalchemy.engine.row.Row
         replace_attribute_tag (str): replace _attribute_ tag with this name
         remove_links_relationships (bool): remove these tags
+
     Returns:
-        _type_: dict (suitable for flask response)
+        _type_: row suitable for safrs response (a dict)
     """
     logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
+
     row_as_dict = jsonify(row).json
-    logic_logger.debug(f'Row: {row_as_dict}')
+    log(f'row_to_dict: {row_as_dict}')
     if replace_attribute_tag != "":
         row_as_dict[replace_attribute_tag] = row_as_dict.pop('attributes')
     if remove_links_relationships:
@@ -206,28 +205,24 @@ def row_to_dict(row
 
 def rows_to_dict(result: flask_sqlalchemy.BaseQuery) -> list:
     """
-    Converts SQLAlchemy result to dict array
+    Converts SQLAlchemy result (mapped or raw) to dict array of un-nested rows
 
     Args:
-        result (object): SQLAlchemy result
+        result (object): list of serializable objects (e.g., dict)
 
     Returns:
-        dict: dict array
+        list of rows as dicts
     """
     rows = []
     for each_row in result:
-        row_as_dict = None
-        print(f'type(each_row): {type(each_row)}')
-        if sqlalchemy2:
-            if isinstance (each_row, sqlalchemy.engine.row.Row):
-                row_as_dict = each_row._mapping
-            else:
-                row_as_dict = each_row.to_dict()
-        else:  # AttributeError: module 'sqlalchemy.engine.row' has no attribute 'LegacyRow'
-            if isinstance (each_row, sqlalchemy.engine.row.LegacyRow):  # sqlalchemy.engine.row
-                row_as_dict = each_row._asdict()
-            else:
-                row_as_dict = each_row.to_dict()
+        row_as_dict = {}
+        log(f'type(each_row): {type(each_row)}')
+        if isinstance (each_row, sqlalchemy.engine.row.Row):  # raw sql, eg, sample catsql
+            key_to_index = each_row._key_to_index  # note: SQLAlchemy 2 specific
+            for name, value in key_to_index.items():
+                row_as_dict[name] = each_row[value]
+        else:
+            row_as_dict = each_row.to_dict()
         rows.append(row_as_dict)
     return rows
 
