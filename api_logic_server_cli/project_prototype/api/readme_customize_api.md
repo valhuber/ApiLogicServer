@@ -77,3 +77,18 @@ class CategoriesEndPoint(safrs.JABase):
             response = {"result": rows}
         return response
 ```
+
+&nbsp;
+
+## Data Access
+
+The samples also illustrate several forms of data access, summarized in the table below.  Note the use of `util.py`, included with all projects.
+
+| Function | Auth required                         | Illustrates             | Util Usage  |
+|:-------------- |:------------------------------|:-----------------------------------|:--------------------------------------------------------------------------------------|
+| ```order()``` |    | Nested Model Objects         | util.row_to_dict() jsoniify(row).json   |
+| ```get_cats()``` |  Y  | Model query      |Util.rows_to_dict<br>..row.to_dict   |
+| ```cats()``` |  Y  | Model query, security         | No: No  - Manual {} creation   |
+| ```catsql()``` |    | Raw sql        | Util.rows_to_dict<br>..fields iterator   |
+
+
