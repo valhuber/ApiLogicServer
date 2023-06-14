@@ -18,6 +18,8 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 # Separate from expose_api_models.py, to simplify merge if project rebuilt
 
 
+app_logger = logging.getLogger("api_logic_server_app")  # only for create-and-run, no?
+
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ Customize API - new end points for services
 
@@ -27,8 +29,6 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     * and some endpoints illustrating SQLAlchemy usage (cats, order).
 
      """
-
-    app_logger = logging.getLogger("api_logic_server_app")  # only for create-and-run, no?
 
     
     app_logger.info("..api/expose_service.py, exposing custom services: hello_world, add_order")
@@ -90,9 +90,10 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     @admin_required()
     def cats():
         """
-        Explore SQLAlchemy and/or filters.
+        Illustrates
+        * Explore SQLAlchemy and/or filters.
         
-        Test (returns rows 2-5):
+        Test (returns rows 2-5) (auth required):
             curl -X GET "http://localhost:5656/cats [no-filter | simple-filter]"
         """
 
@@ -128,48 +129,19 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     @admin_required()
     def catsql():
         """
-        Explore SQLAlchemy table queries (non-mapped objects)
+        Illustrates:
+        * "Raw" SQLAlchemy table queries (non-mapped objects)
         
-        curl -X GET "http://localhost:5656/catsql"
+        Test (auth optional):
+            curl -X GET "http://localhost:5656/catsql"
+
         """
-        # import json
         DB = safrs.DB 
         sql_query = DB.text("SELECT * FROM CategoryTableNameTest")
         with DB.engine.begin() as connection:
             query_result = connection.execute(sql_query).all()
-
-            mapping_rows = []
-            sa_tuple_rows = []
-            python_rows = []
-            object_rows = []
             rows_to_dict_rows = util.rows_to_dict(query_result)
-            print(f'\nPreferred approach: row_as_dict_rows: {rows_to_dict_rows}')
-
-            for dict_row in connection.execute(sql_query).mappings():
-                mapping_rows.append(dict_row._data)
-
-            for each_result_row in query_result:       # sqlalchemy.engine.row.Row
-                python_row = []
-                for i, value in enumerate(each_result_row):
-                    python_row.append(each_result_row[i])
-                python_rows.append(python_row)
-                
-                dict = {}
-                key_to_index = each_result_row._key_to_index
-                for name, value in key_to_index.items():
-                    dict[name] = each_result_row[value]
-                object_rows.append(dict)
-
-                row_sa_tuple = each_result_row.tuple()   # sqlalchemy.engine.row.Row
-                sa_tuple_rows.append(row_sa_tuple)
-            
-            response = {"result": query_result}         # array of strings
-            response = {"result": sa_tuple_rows}        # array of strings
-            response = {"result": mapping_rows}         # array of arrays
-            response = {"result": python_rows}          # array of arrays
-            response = {"result": object_rows}          # array of json name/values
-            response = {"result": rows_to_dict_rows}    # array of strings
-
+        response = {"result": rows_to_dict_rows} 
         return response
 
 
@@ -178,10 +150,10 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         """
         Illustrates:
         * Returning a nested result set response
-        * Using SQLAlchemy to obtain data
+        * Using SQLAlchemy to obtain data, and related data
         * Restructuring row results to desired json (e.g., for tool such as Sencha)
 
-        Test:
+        Test (auth optional):
             http://localhost:5656/order?Id=10643
             curl -X GET "http://localhost:5656/order?Id=10643"
 
@@ -215,9 +187,9 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
 
 class ServicesEndPoint(safrs.JABase):
     """
-    Illustrate custom service - visible in swagger
-    
-    Quite small, since transaction logic comes from shared logic
+    Illustrates
+    * Custom service - visible in swagger
+    * Quite small, since leverages logic/declare_logic rules
     """
 
     @classmethod
@@ -250,9 +222,10 @@ class ServicesEndPoint(safrs.JABase):
 
 class CategoriesEndPoint(safrs.JABase):
     """
-    Illustrates swagger-visible RPC that requires authentication (@jwt_required()).
+    Illustrates
+    * swagger-visible RPC that requires authentication (@jwt_required()).
 
-    Observe authorization is thus enforced.  Test in swagger --
+    Test in swagger (auth required)
     * Post to endpoint auth to obtain <access_token> value - copy it to clipboard
     * Authorize (top of swagger), using Bearer <access_token>
     * Post to CategoriesEndPoint/getcats, observe only rows 2-5 returned
@@ -269,10 +242,7 @@ class CategoriesEndPoint(safrs.JABase):
 
         result = session.query(models.Category)
         for each_row in result:
-            print(f'each_row: {each_row}')
-        dont_rely_on_safrs_debug = True
-        # response = {"result" : list(result)}
-        if dont_rely_on_safrs_debug:
-            rows = util.rows_to_dict(result)
-            response = {"result": rows}
+            app_logger.debug(f'each_row: {each_row}')
+        rows = util.rows_to_dict(result)
+        response = {"result": rows}
         return response

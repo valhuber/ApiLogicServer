@@ -95,3 +95,8 @@ loggers:
 #        level: DEBUG
         handlers: [console]
         propagate: no
+
+    util:   
+        level: INFO
+        handlers: [console]
+        propagate: no

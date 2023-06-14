@@ -25,7 +25,7 @@ curl -X 'POST' \
 returning this (array of strings, not json):
 {'result': ["(1, 'Nikita', 'Sweden')", "(4, 'John', 'Sweden')"]}
 
-expected this (verified for GA):
+expected this (verified for GA; alert: arrays of strings instead of objects):
 {"result":[{"Id":1,"Location":"Sweden","Name":"Nikita"},{"Id":4,"Location":"Sweden","Name":"John"}]}
 """
 
