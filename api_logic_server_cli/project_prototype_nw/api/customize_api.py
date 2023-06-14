@@ -17,22 +17,29 @@ from logic_bank.rule_bank.rule_bank import RuleBank
 # Called by api_logic_server_run.py, to customize api (new end points, services -- see add_order).
 # Separate from expose_api_models.py, to simplify merge if project rebuilt
 
-
 app_logger = logging.getLogger("api_logic_server_app")  # only for create-and-run, no?
 
 def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
-    """ Customize API - new end points for services
+    """ 
+    Illustrates Customized APIs, Data Access.
 
-    This sample illustrates
-    * classic hello world,
-    * a more interesting add_order,
-    * and some endpoints illustrating SQLAlchemy usage (cats, order).
+    * order_nested_objects() - 
+            * uses util.format_nested_objects() -> jsonify(row).json)
 
-     """
+    * CategoriesEndPoint get_cats() - swagger, row security
+            * Uses util.rows_to_dict
 
+    * filters_cats() - model query with filters
+            * Uses manual result creation (not util)
+
+    * raw_sql_cats() - raw sql (non-modeled objects)
+            * Uses util.rows_to_dict
     
+    """
+
     app_logger.info("..api/expose_service.py, exposing custom services: hello_world, add_order")
-    api.expose_object(ServicesEndPoint)
+
+    api.expose_object(ServicesEndPoint)  # Swagger-visible services
     api.expose_object(CategoriesEndPoint)
 
     @app.route('/hello_world')
@@ -86,15 +93,15 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         return wrapper
 
 
-    @app.route('/cats')
+    @app.route('/filters_cats')
     @admin_required()
-    def cats():
+    def filters_cats():
         """
-        Illustrates
+        Illustrates:
         * Explore SQLAlchemy and/or filters.
         
-        Test (returns rows 2-5) (auth required):
-            curl -X GET "http://localhost:5656/cats [no-filter | simple-filter]"
+        Test (returns rows 2-5) (no auth):
+            curl -X GET "http://localhost:5656/filters_cats [no-filter | simple-filter]"
         """
 
         from sqlalchemy import and_, or_
@@ -122,18 +129,18 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         for each_result in results:
             row = { 'id': each_result.Id, 'name': each_result.CategoryName}
             return_result.append(row)
-        return jsonify({ "success": True, "results":  return_result})
+        return jsonify({ "success": True, "result":  return_result})
 
 
-    @app.route('/catsql')
+    @app.route('/raw_sql_cats')
     @admin_required()
-    def catsql():
+    def raw_sql_cats():
         """
         Illustrates:
         * "Raw" SQLAlchemy table queries (non-mapped objects)
         
         Test (auth optional):
-            curl -X GET "http://localhost:5656/catsql"
+            curl -X GET "http://localhost:5656/raw_sql_cats"
 
         """
         DB = safrs.DB 
@@ -145,8 +152,8 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         return response
 
 
-    @app.route('/order')
-    def order():
+    @app.route('/order_nested_objects')
+    def order_nested_objects():
         """
         Illustrates:
         * Returning a nested result set response
@@ -154,8 +161,8 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         * Restructuring row results to desired json (e.g., for tool such as Sencha)
 
         Test (auth optional):
-            http://localhost:5656/order?Id=10643
-            curl -X GET "http://localhost:5656/order?Id=10643"
+            http://localhost:5656/order_nested_objects?Id=10643
+            curl -X GET "http://localhost:5656/order_nested_objects?Id=10643"
 
         """
         order_id = request.args.get('Id')
@@ -163,13 +170,13 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         session = db.session  # sqlalchemy.orm.scoping.scoped_session
         order = session.query(models.Order).filter(models.Order.Id == order_id).one()
 
-        result_std_dict = util.row_to_dict(order
+        result_std_dict = util.format_nested_object(order
                                         , replace_attribute_tag='data'
                                         , remove_links_relationships=True)
         result_std_dict['data']['Customer_Name'] = order.Customer.CompanyName # eager fetch
         result_std_dict['data']['OrderDetailListAsDicts'] = []
         for each_order_detail in order.OrderDetailList:       # lazy fetch
-            each_order_detail_dict = util.row_to_dict(row=each_order_detail
+            each_order_detail_dict = util.format_nested_object(row=each_order_detail
                                                     , replace_attribute_tag='data'
                                                     , remove_links_relationships=True)
             each_order_detail_dict['data']['ProductName'] = each_order_detail.Product.ProductName
@@ -223,12 +230,15 @@ class ServicesEndPoint(safrs.JABase):
 class CategoriesEndPoint(safrs.JABase):
     """
     Illustrates
-    * swagger-visible RPC that requires authentication (@jwt_required()).
+    * Swagger-visible RPC that requires authentication (@jwt_required()).
+    * Row Security
 
     Test in swagger (auth required)
-    * Post to endpoint auth to obtain <access_token> value - copy it to clipboard
+    * Post to endpoint auth to obtain <access_token> value - copy to clipboard
+            * Row Security: Users determines results
+            * u1: 1 row, u2: 4 rows, admin: 9 rows
     * Authorize (top of swagger), using Bearer <access_token>
-    * Post to CategoriesEndPoint/getcats, observe only rows 2-5 returned
+    * Post to CategoriesEndPoint/get_cats, observe results depend on login
 
     """
 

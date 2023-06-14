@@ -178,7 +178,7 @@ def server_log(request, jsonify):
     return jsonify({"result": f'ok'})
 
 
-def row_to_dict(row
+def format_nested_object(row
                 , replace_attribute_tag: str = ""
                 , remove_links_relationships: bool = False) -> dict:
     """
