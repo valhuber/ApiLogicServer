@@ -245,8 +245,8 @@ class CategoriesEndPoint(safrs.JABase):
 
     Test in swagger (auth required)
     * Post to endpoint auth to obtain <access_token> value - copy to clipboard
-            * Row Security: Users determines results
-            * u1: 1 row, u2: 4 rows, admin: 9 rows
+            * Row Security - Users determines results
+            * u1 - 1 row, u2 - 4 rows, admin - 9 rows
     * Authorize (top of swagger), using Bearer <access_token>
     * Post to CategoriesEndPoint/get_cats, observe results depend on login
 
