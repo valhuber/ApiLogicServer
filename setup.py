@@ -78,7 +78,7 @@ setup(
          "itsdangerous==2.1.2",
          "Jinja2==3.1.2",
          "MarkupSafe==2.1.3",
-         "pyodbc==4.0.34",
+        #  "pyodbc==4.0.34",
          "six==1.16.0",
          "SQLAlchemy==2.0.15",
          "Werkzeug==2.3.3",
