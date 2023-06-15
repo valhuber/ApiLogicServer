@@ -14,8 +14,9 @@ from sqlalchemy.orm import object_mapper
 from database import models
 from logic_bank.rule_bank.rule_bank import RuleBank
 
-# Called by api_logic_server_run.py, to customize api (new end points, services -- see add_order).
-# Separate from expose_api_models.py, to simplify merge if project rebuilt
+# Customize this file to add endpoints/services, using SQLAlchemy as required
+#     Separate from expose_api_models.py, to simplify merge if project rebuilt
+# Called by api_logic_server_run.py
 
 app_logger = logging.getLogger("api_logic_server_app")  # only for create-and-run, no?
 
@@ -23,17 +24,23 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     """ 
     Illustrates Customized APIs, Data Access.
 
+    * Observe that APIs not limited to database objects, but are extensible.
+    * See: https://apilogicserver.github.io/Docs/API-Customize/
+    * See: https://github.com/thomaxxl/safrs/wiki/Customization
+
+    Examples
+
     * order_nested_objects() - 
-            * uses util.format_nested_objects() -> jsonify(row).json)
+            * Uses util.format_nested_objects() (-> jsonify(row).json)
 
     * CategoriesEndPoint get_cats() - swagger, row security
-            * Uses util.rows_to_dict
+            * Uses util.rows_to_dict            (-> row.to_dict())
 
     * filters_cats() - model query with filters
             * Uses manual result creation (not util)
 
     * raw_sql_cats() - raw sql (non-modeled objects)
-            * Uses util.rows_to_dict
+            * Uses util.rows_to_dict            (-> iterate attributes)
     
     """
 
@@ -43,13 +50,14 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
     api.expose_object(CategoriesEndPoint)
 
     @app.route('/hello_world')
-    def hello_world():  # test it with: http://localhost:5656/hello_world?user=ApiLogicServer
-        """
-        This is inserted to illustrate that APIs not limited to database objects, but are extensible.
+    def hello_world():
+        """        
+        Illustrates:
+        * Use standard Flask, here for non-database endpoints.
 
-        See: https://github.com/valhuber/ApiLogicServer/blob/main/README.md#api-customization
-
-        See: https://github.com/thomaxxl/safrs/wiki/Customization
+        Test it with:
+        
+                http://localhost:5656/hello_world?user=ApiLogicServer
         """
         user = request.args.get('user')
         # app_logger.info(f'hello_world returning:  hello, {user}')
@@ -58,13 +66,15 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
 
 
     @app.route('/stop')
-    def stop():  # test it with: http://localhost:5656/stop?msg=API stop - Stop API Logic Server
+    def stop():
         """
         Use this to stop the server from the Browser.
+        * See: https://stackoverflow.com/questions/15562446/how-to-stop-flask-application-without-using-ctrl-c
+        * See: https://github.com/thomaxxl/safrs/wiki/Customization
 
-        See: https://stackoverflow.com/questions/15562446/how-to-stop-flask-application-without-using-ctrl-c
+        Usage:
 
-        See: https://github.com/thomaxxl/safrs/wiki/Customization
+                http://localhost:5656/stop?msg=API stop - Stop API Logic Server
         """
 
         import os, signal
@@ -78,9 +88,9 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
 
     def admin_required():
         """
-        support option to bypass security (see cats, below).
+        Support option to bypass security (see cats, below).
 
-        see https://flask-jwt-extended.readthedocs.io/en/stable/custom_decorators/
+        See: https://flask-jwt-extended.readthedocs.io/en/stable/custom_decorators/
         """
         def wrapper(fn):
             @wraps(fn)
