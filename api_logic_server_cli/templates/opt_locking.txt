@@ -1,13 +1,8 @@
     @jsonapi_attr
     def _check_sum_(self):  # type: ignore [no-redef]
-        if isinstance(self, flask_sqlalchemy.model.DefaultMeta):
-            #  print("class")
-            return None
-        else:
-            if hasattr(self,"_check_sum_property"):
-              return self._check_sum_property
-            else:
-              return None  # property does not exist during initialization
+        return None if isinstance(self, flask_sqlalchemy.model.DefaultMeta) \
+            else self._check_sum_property if hasattr(self,"_check_sum_property") \
+                else None  # property does not exist during initialization
 
     @_check_sum_.setter
     def _check_sum_(self, value):  # type: ignore [no-redef]
