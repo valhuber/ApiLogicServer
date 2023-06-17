@@ -34,13 +34,16 @@ def flask_events(app, db):
         return jsonify({"result": f'hello, {user}'})  # the api response (in json)
 
 
-    @app.route('/order')
+    @app.route('/order')  # cause Flask to call this function when request occurs
     def order():
         """
+        End point to return a nested result set response
+
         Illustrates:
-        * End point to return a nested result set response
-        * Using SQLAlchemy to obtain data, and related data (via foreign keys)
-        * Restructuring row results to desired json (e.g., for tool such as Sencha)
+        1. Obtain URL argument from Flask
+        2. Read data from SQLAlchemy, and related data (via foreign keys)
+        3. Restructure row results to desired json (e.g., for tool such as Sencha)
+        4. Use Flask to return response json
 
         Test:
             http://localhost:8080/order?Id=10643
@@ -48,17 +51,15 @@ def flask_events(app, db):
 
         """
 
-        order_id = request.args.get('Id')  # obtain URL argument from Flask
+        # 1. Obtain URL argument from Flask
+        order_id = request.args.get('Id')
 
-        order = db.session.query(models.Order).filter(models.Order.Id == order_id).one()  # SQLAlchemy query
-        
-        # *************************************
-        # Order retrieved - examine in debugger
-        # *************************************
-
+        # 2. Read data from SQLAlchemy
+        order = db.session.query(models.Order).\
+            filter(models.Order.Id == order_id).one()
         app_logger.info(f'\n Breakpoint - examine order in debugger \n')
 
-        # format the response as you like (significant design issue)
+        # 3. Restructure row results - format as dict
         result_std_dict = util.format_nested_object(row2dict(order)
                                         , remove_links_relationships=False)
         result_std_dict['Customer_Name'] = order.Customer.CompanyName # eager fetch
@@ -69,6 +70,7 @@ def flask_events(app, db):
             each_order_detail_dict['ProductName'] = each_order_detail.Product.ProductName
             result_std_dict['OrderDetailListAsDicts'].append(each_order_detail_dict)
 
+        # 4. Return nested result (Flask jsonifies dict)
         return result_std_dict  # rest response
     
 
