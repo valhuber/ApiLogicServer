@@ -16,6 +16,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "1a. Test Flask SqlAlchemy endpoint",
+            "type": "python",
+            "env": {"APILOGICPROJECT": "False"},
+            "request": "launch",
+            "cwd": "${workspaceFolder}/1. Learn APIs using Flask SqlAlchemy/test",
+            "program": "server_test.py",
+            "redirectOutput": true,
+            "justMyCode": false,
+            "console": "integratedTerminal"
+        },
+        {
             "name": "2. Learn JSON_API using API Logic Server",
             "type": "python",
             "env": {"APILOGICPROJECT": "False"},
