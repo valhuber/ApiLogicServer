@@ -1,6 +1,6 @@
 # 1. Learn APIs using Flask / SQLAlchemy
 
-This is a manually coded server providing a few APIs for [this database]().
+This is a manually coded server providing a few APIs for [this database](https://apilogicserver.github.io/Docs/Sample-Database/).
 
 It is the smallest example of a typical project for a modern database API server.
 
@@ -131,7 +131,7 @@ There is ***considerable*** variation with RESTful servers:
 * how the arguments are specified
 * how exactly are request/response objects structured, etc.
 
-Resolving these is a substantial design task, requiring considerable time and experience.  Standard such as **JSON:API** can therefore save time and improve quality.
+Resolving these is a substantial design task, requiring considerable time and experience.  Standards such as **JSON:API** can therefore save time and improve quality.
 
 
 &nbsp;
@@ -150,7 +150,7 @@ There are several libraries for creating Web Servers in Python, including Django
 
 ## Framework - Flask
 
-A framework is a "your code goes here" library, provding backend functions to handle api calls, html calls, etc.  The framework provides key basic functions such as:
+A framework is a "your code goes here" library, providing backend functions to handle api calls, html calls, etc.  The framework provides key basic functions such as:
 
 * listening for incoming calls, and **invoking your code** (your 'handler')
 

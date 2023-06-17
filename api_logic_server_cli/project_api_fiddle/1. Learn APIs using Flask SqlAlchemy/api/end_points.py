@@ -47,19 +47,29 @@ def flask_events(app, db):
             curl -X GET "http://localhost:8080/order?Id=10643"
 
         """
-        order_id = request.args.get('Id')  # obtain URL argument from Flask
-        order = db.session.query(models.Order).filter(models.Order.Id == order_id).one()  # SQLAlchemy query
 
-        result_std_dict = util.row_to_dict(row2dict(order)
+        order_id = request.args.get('Id')  # obtain URL argument from Flask
+
+        order = db.session.query(models.Order).filter(models.Order.Id == order_id).one()  # SQLAlchemy query
+        
+        # *************************************
+        # Order retrieved - examine in debugger
+        # *************************************
+
+        app_logger.info(f'\n Breakpoint - examine order in debugger \n')
+
+        # format the response as you like (significant design issue)
+        result_std_dict = util.format_nested_object(row2dict(order)
                                         , remove_links_relationships=False)
         result_std_dict['Customer_Name'] = order.Customer.CompanyName # eager fetch
         result_std_dict['OrderDetailListAsDicts'] = []
         for each_order_detail in order.OrderDetailList:  # SQLAlchemy related data access
-            each_order_detail_dict = util.row_to_dict(row=row2dict(each_order_detail)
+            each_order_detail_dict = util.format_nested_object(row=row2dict(each_order_detail)
                                                     , remove_links_relationships=False)
             each_order_detail_dict['ProductName'] = each_order_detail.Product.ProductName
             result_std_dict['OrderDetailListAsDicts'].append(each_order_detail_dict)
-        return result_std_dict
+
+        return result_std_dict  # rest response
     
 
     @app.route('/stop')

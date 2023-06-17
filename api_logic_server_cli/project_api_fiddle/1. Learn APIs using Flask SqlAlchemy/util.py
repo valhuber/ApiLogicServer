@@ -4,15 +4,18 @@ Utilities for API Logic Server Projects (1.0)
 import sqlite3
 from os import path
 import logging
-import safrs
+import sys
+from typing import Any, Optional, Tuple
 import sqlalchemy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import object_mapper
+import flask_sqlalchemy
+from logic_bank.rule_bank.rule_bank import RuleBank
 
-app_logger = logging.getLogger("api_logic_server_app")
+app_logger = logging.getLogger(__name__)
 
-def log(msg: any) -> None:
-    app_logger.info(msg)
+def log(msg: object) -> None:
+    app_logger.debug(msg)
     # print("TIL==> " + msg)
 
 
@@ -31,7 +34,7 @@ def dbpath(dbname: str) -> str:
     return PATH
 
 
-def json_to_entities(from_row: object, to_row):
+def json_to_entities(from_row: str or object, to_row):
     """
     transform json object to SQLAlchemy rows, for save & logic
 
@@ -40,7 +43,7 @@ def json_to_entities(from_row: object, to_row):
     :return: updates to_row with contents of from_row (recursively for lists)
     """
 
-    def get_attr_name(mapper, attr)-> str:
+    def get_attr_name(mapper, attr)-> Tuple[Optional[Any], str]:
         """ returns name, type of SQLAlchemy attr metadata object """
         attr_name = None
         attr_type = "attr"
@@ -81,7 +84,7 @@ def json_to_entities(from_row: object, to_row):
                             child_list.append(child_to)
                             pass
                     elif mapped_attr_type == "object":
-                        print("a parent object - skip (future - lookups here?)")
+                        log("a parent object - skip (future - lookups here?)")
                     break
 
 rule_count = 0
@@ -141,11 +144,9 @@ def server_log(request, jsonify):
             try:
                 os.makedirs(log_dir)
             except:
-                print('{}: Cannot create directory {}. '.format(
-                    self.__class__.__name__, log_dir),
-                    end='', file=sys.stderr)
+                app_logger.info(f'util.add_file_handler unable to create dir {log_dir}')
                 log_dir = '/tmp' if sys.platform.startswith('linux') else '.'
-                print(f'Defaulting to {log_dir}.', file=sys.stderr)
+                app_logger.info(f'Defaulting to {log_dir}.')
 
         log_file = os.path.join(log_dir, log_name) + '.log'
         if os.path.exists(log_file):
@@ -177,25 +178,78 @@ def server_log(request, jsonify):
     return jsonify({"result": f'ok'})
 
 
-def row_to_dict(row
-                , replace_attribute_tag: str = None
+def format_nested_object(row
+                , replace_attribute_tag: str = ""
                 , remove_links_relationships: bool = False) -> dict:
     """
-    returns dict suitable for safrs response
-
     Args:
-        row (safrs.DB.Model): a SQLAlchemy row
+        row (safrs.DB.Model): models instance (object + related objects)
         replace_attribute_tag (str): replace _attribute_ tag with this name
         remove_links_relationships (bool): remove these tags
+
+    Example: in sample nw project, see customize_api: order()
+
     Returns:
-        _type_: dict (suitable for flask response)
+        _type_: row suitable for safrs response (a dict)
     """
-    logic_logger = logging.getLogger('logic_logger')  # for debugging user logic
+
     row_as_dict = jsonify(row).json
-    logic_logger.debug(f'Row: {row_as_dict}')
-    if replace_attribute_tag:
+    log(f'row_to_dict: {row_as_dict}')
+    if replace_attribute_tag != "":
         row_as_dict[replace_attribute_tag] = row_as_dict.pop('attributes')
     if remove_links_relationships:
         row_as_dict.pop('links')
         row_as_dict.pop('relationships')
     return row_as_dict
+
+
+def rows_to_dict(result: flask_sqlalchemy.BaseQuery) -> list:
+    """
+    Converts SQLAlchemy result (mapped or raw) to dict array of un-nested rows
+
+    Args:
+        result (object): list of serializable objects (e.g., dict)
+
+    Returns:
+        list of rows as dicts
+    """
+    rows = []
+    for each_row in result:
+        row_as_dict = {}
+        log(f'type(each_row): {type(each_row)}')
+        if isinstance (each_row, sqlalchemy.engine.row.Row):  # raw sql, eg, sample catsql
+            key_to_index = each_row._key_to_index  # note: SQLAlchemy 2 specific
+            for name, value in key_to_index.items():
+                row_as_dict[name] = each_row[value]
+        else:
+            row_as_dict = each_row.to_dict()
+        rows.append(row_as_dict)
+    return rows
+
+
+def sys_info():  
+    """
+    Print env and path
+    """  
+    import os, socket
+    print("\n\nsys_info here")
+    print("\nEnvironment Variables...")
+    env = os.environ
+    for each_variable in os.environ:
+            print(f'.. {each_variable} = {env[each_variable]}')
+
+    print("\nPYTHONPATH..")
+    for p in sys.path:
+        print(".." + p)
+        
+    print("")
+    print(f'sys.prefix (venv): {sys.prefix}\n')
+
+    print("")
+    hostname = socket.gethostname()
+    try:
+        local_ip = socket.gethostbyname(hostname)
+    except:
+        local_ip = f"Warning - Failed local_ip = socket.gethostbyname(hostname) with hostname: {hostname}"
+
+    print(f"hostname={hostname} on local_ip={local_ip}\n\n")

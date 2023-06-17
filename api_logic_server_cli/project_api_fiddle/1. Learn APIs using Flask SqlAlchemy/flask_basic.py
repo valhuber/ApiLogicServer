@@ -42,5 +42,5 @@ logging.info('  curl -X GET "http://localhost:8080/hello_world"')
 logging.info('  curl -X GET "http://localhost:8080/order?Id=10643"')
 logging.info('')
 
-app.run(host="localhost", port=8080, debug=True)  # start the server
+app.run(host="localhost", port=8080, debug=True)  # start the server (does not return)
 
