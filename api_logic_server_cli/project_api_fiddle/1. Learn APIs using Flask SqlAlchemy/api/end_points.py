@@ -46,13 +46,13 @@ def flask_events(app, db):
         4. Use Flask to return nested response json
 
         Test:
-            http://localhost:8080/order?id=10643
-            curl -X GET "http://localhost:8080/order?id=10643"
+            http://localhost:8080/order?Id=10643
+            curl -X GET "http://localhost:8080/order?Id=10643"
 
         """
 
         # 1. Obtain URL argument from Flask
-        order_id = request.args.get('id')  
+        order_id = request.args.get('Id')  
 
         # 2. Read data from SQLAlchemy
         order = db.session.query(models.Order).\
