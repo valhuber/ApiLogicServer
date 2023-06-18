@@ -159,7 +159,7 @@ class Supplier(Base):
     Address = Column(String(8000))
     City = Column(String(8000))
     Region = Column(String(8000))
-    PostalCode = Column(String(8000))
+    ShipZip = Column('ShipPostalCode', String(8000))  # manual fix - alias
     Country = Column(String(8000))
     Phone = Column(String(8000))
     Fax = Column(String(8000))
@@ -286,7 +286,7 @@ class Order(Base):
     ShipAddress = Column(String(8000))
     ShipCity = Column(String(8000))
     ShipRegion = Column(String(8000))
-    ShipPostalCode = Column(String(8000))
+    ShipZip = Column('ShipPostalCode', String(8000))  # manual fix - alias
     ShipCountry = Column(String(8000))
     AmountTotal = Column(DECIMAL(10, 2))
     Country = Column(String(50))

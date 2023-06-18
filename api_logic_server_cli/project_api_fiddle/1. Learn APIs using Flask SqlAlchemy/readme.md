@@ -114,7 +114,7 @@ curl -X GET "http://localhost:8080/order?Id=10643"
   "ShipCity": "Berlin",
   "ShipCountry": "Germany",
   "ShipName": "Alfreds Futterkiste",
-  "ShipPostalCode": "12209",
+  "ShipZip": "12209",
   "ShipRegion": "Western Europe",
   "ShipVia": "1",
   "ShippedDate": "None"
@@ -169,6 +169,9 @@ In your handler, you may need to read or write database data.  You can use raw S
 * **use Objects** (instead of dictionaries), which provide IDE services such as code completion to simplify coding and reduce errors
 
 * simplified **access to related data** (e.g., a simple way to get the OrderDetails for an Order)
+
+* **custom naming** - independent of database table/columns
+    * See `Category`, `Order.ShipZip`<br><br>
 
 * other services, such as support for type hierarchies
 
