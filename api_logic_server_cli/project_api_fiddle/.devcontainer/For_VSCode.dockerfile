@@ -5,6 +5,6 @@
 #
 # https://apilogicserver.github.io/Docs/Working-With-Docker/
 #
-FROM apilogicserver/api_logic_server
+FROM apilogicserver/api_logic_server_x
 USER api_logic_server
 CMD ["bash"]
