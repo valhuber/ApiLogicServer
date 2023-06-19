@@ -111,7 +111,7 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         * Explore SQLAlchemy and/or filters.
         
         Test (returns rows 2-5) (no auth):
-            curl -X GET "http://localhost:5656/filters_cats [no-filter | simple-filter]"
+            curl -X GET "http://localhost:5656/filters_cats" [no-filter | simple-filter]"
         """
 
         from sqlalchemy import and_, or_
@@ -148,6 +148,8 @@ def expose_services(app, api, project_dir, swagger_host: str, PORT: str):
         """
         Illustrates:
         * "Raw" SQLAlchemy table queries (non-mapped objects)
+        * Observe phyical column name: CategoryName_ColumnName
+              * Constrast to models.py, get_cats()
         
         Test (auth optional):
             curl -X GET "http://localhost:5656/raw_sql_cats"

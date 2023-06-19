@@ -29,7 +29,7 @@ class Category(Base):
     __bind_key__ = 'None'
 
     Id = Column(Integer, primary_key=True)
-    CategoryName = Column(String(8000))
+    CategoryName = Column('CategoryName_ColumnName', String(8000))  # logical name
     Description = Column(String(8000))
     Client_id = Column(Integer)
 
@@ -216,7 +216,6 @@ class Employee(Base):
     Country = Column(String(8000))
     HomePhone = Column(String(8000))
     Extension = Column(String(8000))
-    Photo = Column(LargeBinary)
     Notes = Column(String(8000))
     ReportsTo = Column(Integer, index=True)
     PhotoPath = Column(String(8000))
