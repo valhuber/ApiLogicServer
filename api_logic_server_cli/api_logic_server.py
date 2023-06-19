@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.28"
+__version__ = "08.04.29"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/13/2023 - 08.04.28: OptLocking w/ 2 CLI options & bh tests no sec, safrs 301 / Behave \n"\
+    "\t06/18/2023 - 08.04.29: OptLocking w/ 2 CLI options & bh tests no sec, safrs 301 / Behave \n"\
     "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
@@ -443,6 +443,9 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="ShipPostalCode = Column(String(8000))",
             replace_with="ShipZip = Column('ShipPostalCode', String(8000))  # manual fix - alias")
+        create_utils.replace_string_in_file(in_file=models_file_name,
+            search_for="CategoryName_ColumnName = Column(String(8000))",
+            replace_with="CategoryName = Column('CategoryName_ColumnName', String(8000))  # manual fix - alias")
 """         if not "include_exclude" in project_directory and False:  #
             log.debug(f'.. .. ..And Employee Virtual Attributes')
             nw_virtuals_attrs_file_name = Path(get_api_logic_server_dir()).\

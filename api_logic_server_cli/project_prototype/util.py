@@ -218,11 +218,11 @@ def rows_to_dict(result: flask_sqlalchemy.BaseQuery) -> list:
         row_as_dict = {}
         log(f'type(each_row): {type(each_row)}')
         if isinstance (each_row, sqlalchemy.engine.row.Row):  # raw sql, eg, sample catsql
-            key_to_index = each_row._key_to_index  # note: SQLAlchemy 2 specific
+            key_to_index = each_row._key_to_index             # note: SQLAlchemy 2 specific
             for name, value in key_to_index.items():
                 row_as_dict[name] = each_row[value]
         else:
-            row_as_dict = each_row.to_dict()
+            row_as_dict = each_row.to_dict()                  # safrs helper
         rows.append(row_as_dict)
     return rows
 
