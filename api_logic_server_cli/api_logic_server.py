@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.29"
+__version__ = "08.04.30"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/18/2023 - 08.04.29: OptLocking w/ 2 CLI options & bh tests no sec, safrs 301 / Behave \n"\
+    "\t06/19/2023 - 08.04.30: OptLocking w/ 2 CLI options & bh tests no sec, safrs 301 / Behave \n"\
     "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
@@ -435,7 +435,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
         create_utils.insert_lines_at(lines=db_types_data,
                                     at="(typically via --db_types)",
                                     file_name=models_file_name)
-    if nw_db_status in ["nw", "nw+", "nw-"]:
+    if nw_db_status in ["nw", "nw+"]:  # no manual fixups for nw-
         log.debug(f'.. .. ..Setting cascade delete and column alias for sample database database/models.py')
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=False, backref='Order')",

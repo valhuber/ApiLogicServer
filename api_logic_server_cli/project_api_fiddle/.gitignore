@@ -13,5 +13,6 @@ classicmodels/
 todo/
 chinook/
 nw/
+nw-/
 Thrift.log
 *.pyc
