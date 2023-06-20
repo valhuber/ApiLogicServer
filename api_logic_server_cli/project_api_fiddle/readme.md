@@ -380,7 +380,8 @@ cd API_Fiddle
 ApiLogicServer create --db_url=sqlite:///sample_db.sqlite --project_name=nw
 
 # that's a bit of a mouthful, so abbreviations are provided for pre-included samples
-ApiLogicServer create --project_name=nw --db_url=nw-                       # same sample as 2, above
+ApiLogicServer create --project_name=nw --db_url=nw                        # same sample as 2, above
+ApiLogicServer create --project_name=nw- --db_url=nw-                      # no customization
 ApiLogicServer create --project_name=chinook --db_url=chinook              # artists and albums
 ApiLogicServer create --project_name=classicmodels --db_url=classicmodels  # customers, orders
 ApiLogicServer create --project_name=todo --db_url=todo                    # 1 table database

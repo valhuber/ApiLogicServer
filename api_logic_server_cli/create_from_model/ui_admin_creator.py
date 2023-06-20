@@ -160,6 +160,10 @@ class AdminCreator(object):
     def create_attributes_in_owner(self, owner: DotMap, resource: Resource, owner_resource) -> Dict[None, Resource]:
         """ create attributes in owner (owner is a DotMap -- of resource, or tab)
 
+            Class created, nw- has CategoryName = Column('CategoryName_ColumnName'...
+
+            Caution: fix_database_models() occurs after model in memory...
+
             Order:
                 attributes:  1 Favorite,  2 Joins,  3 Others / not favs,  4 Not Favs
                 - label: ShipName*
@@ -173,6 +177,8 @@ class AdminCreator(object):
         owner.attributes = []
         attributes_dict = []  # DotMap()
         processed_attributes = set()
+        if resource.name == "Categoryxx":
+            log.debug(f'ui_admin_creator.create_attributes_in_owner: {resource.name}')
 
         # Step 1 - favorite attribute
         favorite_attribute = resource.get_favorite_attribute()
