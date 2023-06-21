@@ -427,12 +427,15 @@ def resolve_home(name: str) -> str:
 
 def fix_database_models(project_directory: str, db_types: str, nw_db_status: str, is_tutorial: bool=False):
     """
-    injecting <db_types file> into database/models.py, fix nw cascade delete, jsonapi_attr
+    Alters models.py
+    * Injects <db_types file> into database/models.py, fix nw cascade delete, jsonapi_attr
+    * Provides for column alias examples (Category.CategoryName, etc)
+    * Cascade Delete for OrderDetails
 
     Args:
         project_directory (str): /Users/val/dev/Org-ApiLogicServer/API_Fiddle/1. Instant_Creation
         db_types (str): _description_
-        nw_db_status (str): whether this is nw, nw- or nw+
+        nw_db_status (str): whether this is nw, nw- or nw+ (or none of the above)
         is_tutorial (bool, optional): creating tutorial or api_fiddle. Defaults to False.
     """
 

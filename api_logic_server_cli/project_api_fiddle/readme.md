@@ -46,7 +46,7 @@ This contains 2 ready-to-run projects:<br>
 | Project | What it is | Use it to explore... | Notes |
 |:---- |:------|:-----------|:-----------|
 | 1. Learn APIs using Flask SqlAlchemy | Northwind Database<br>- Single Endpoint | **Flask / SQLAlchemy** basics | With HTTP, REST background |
-| 2. Learn JSON_API using API Logic Server | Northwind Database<br> - All Endpoints<br>- With Logic | **JSON:API**, and<br>Rule-based business logic | You can start here if only interested in JSON:API |
+| 2. Learn JSON_API using API Logic Server | Northwind Database<br> - All Endpoints<br>- With Logic<br>- With Admin App | **JSON:API**, and<br>Rule-based business logic | You can start here if only interested in JSON:API |
 | Next Steps | Create other sample databases | More examples - initial project creation from Database |
 
 &nbsp;
@@ -78,13 +78,11 @@ These projects use the [Northwind Sample Database](https://apilogicserver.github
 
 This first app (_1. Learn Flask / SQLAlchemy_) illustrates a typical framework-based approach for creating projects - a minimal project for seeing core Flask and SQLAlchemy services in action.  Let's run/test it, then explore the code.
 
-To run, use the Run Configuration, and test with `cURL`.  
-
 &nbsp;
 
 <details markdown>
 
-<summary>&nbsp;&nbsp;&nbsp;Show me how </summary>
+<summary>&nbsp;&nbsp;&nbsp;Run / Test </summary>
 
 &nbsp;
 
@@ -94,15 +92,9 @@ To run the basic app:
 
     * Do ***Not*** click `Open in Browser`<br><br>
 
-2. Copy the `cURL` text
-
-3. Open the `bash` window, and paste the `cURL` text
+2. Copy the `cURL` text,<br>Open the `bash` window, and <br>Paste the `cURL` text
 
     * Observe the resulting response text<br><br>
-
-4. [**Open the readme**](./1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/readme.md) to understand Flask / SQLAlchemy usage
-
-    * The readme also provides brief background on APIs, Flask, and SQLAlchemy
 
 ![](https://github.com/ApiLogicServer/Docs/blob/main/docs/images/tutorial/1-basic-app.png?raw=true)
 
@@ -118,7 +110,7 @@ To run the basic app:
 
 [**Open the readme**](./1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/readme.md) to understand Flask / SQLAlchemy usage
 
-    * The readme also provides brief background on APIs, Flask, and SQLAlchemy
+* The readme also provides brief background on APIs, Flask, and SQLAlchemy
 </details>
 
 &nbsp;
