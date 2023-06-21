@@ -169,13 +169,19 @@ When you are done, **stop** the server (Step 3).
 
 <br>
 
-Project 2 is much more like a real server.  It implements a **JSON:API -- a *standard* definition** for filtering, sorting, pagination, and multi-table retrieval.
+Project 2 is much more like a real server:
 
-* Such **standards eliminate complex and time-consuming design**
-    * (*Rest*, unlike SQL, does not dictate syntax)<br><br>
+1.  It implements a **JSON:API -- a *standard* definition** for filtering, sorting, pagination, and multi-table retrieval.
 
-*  JSON:APIs are **self-service**, with *consumer-defined* response inclusion
-    * Similar to GraphQL, clients declare what data to include, rather than relying on pre-defined resources.<br><br>
+    * Such **standards eliminate complex and time-consuming design**
+        * (*Rest*, unlike SQL, does not dictate syntax)<br><br>
+
+    *  JSON:APIs are **self-service**, with *consumer-defined* response inclusion
+        * Similar to GraphQL, clients declare what data to include, rather than relying on pre-defined resources.<br><br>
+
+2.  It implements an **Admin App** (ReactAdmin)
+
+3.  It implements **business logic**
 
 First, let's explore the service: &nbsp;  2.a) Start the Server, &nbsp; 2.b) Explore the JSON:API, &nbsp; and 2.c) Explore JSON:API Update Logic.
 
