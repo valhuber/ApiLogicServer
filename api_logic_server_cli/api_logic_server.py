@@ -12,10 +12,10 @@ ApiLogicServer CLI: given a database url, create [and run] customizable ApiLogic
 Called from api_logic_server_cli.py, by instantiating the ProjectRun object.
 '''
 
-__version__ = "08.04.30"
+__version__ = "08.04.31"
 recent_changes = \
     f'\n\nRecent Changes:\n' +\
-    "\t06/19/2023 - 08.04.30: OptLocking w/ 2 CLI options & bh tests no sec, safrs 301 / Behave \n"\
+    "\t06/20/2023 - 08.04.31: OptLocking w/ 2 CLI options & bh tests no sec, safrs 301 / Behave \n"\
     "\t05/15/2023 - 08.04.05: column alias example, readme link to rules report, fiddle, codespaces log fix \n"\
     "\t05/07/2023 - 08.04.00: safrs 3.0.4, tutorial nutshell demo, rm cli/docs, move pythonanywhere \n"\
     "\t05/01/2023 - 08.03.06: allocation sample \n"\
@@ -425,8 +425,17 @@ def resolve_home(name: str) -> str:
     return result
 
 
-def fix_database_models(project_directory: str, db_types: str, nw_db_status: str):
-    """ injecting <db_types file> into database/models.py, fix nw cascade delete, jsonapi_attr """
+def fix_database_models(project_directory: str, db_types: str, nw_db_status: str, is_tutorial: bool=False):
+    """
+    injecting <db_types file> into database/models.py, fix nw cascade delete, jsonapi_attr
+
+    Args:
+        project_directory (str): /Users/val/dev/Org-ApiLogicServer/API_Fiddle/1. Instant_Creation
+        db_types (str): _description_
+        nw_db_status (str): whether this is nw, nw- or nw+
+        is_tutorial (bool, optional): creating tutorial or api_fiddle. Defaults to False.
+    """
+
     models_file_name = f'{project_directory}/database/models.py'
     if db_types is not None and db_types != "":
         log.debug(f'.. .. ..Injecting file {db_types} into database/models.py')
@@ -435,7 +444,7 @@ def fix_database_models(project_directory: str, db_types: str, nw_db_status: str
         create_utils.insert_lines_at(lines=db_types_data,
                                     at="(typically via --db_types)",
                                     file_name=models_file_name)
-    if nw_db_status in ["nw", "nw+"]:  # no manual fixups for nw-
+    if nw_db_status in ["nw", "nw+"] or (is_tutorial and nw_db_status == "nw-"):  # no manual fixups for nw-
         log.debug(f'.. .. ..Setting cascade delete and column alias for sample database database/models.py')
         create_utils.replace_string_in_file(in_file=models_file_name,
             search_for="OrderDetailList = relationship('OrderDetail', cascade_backrefs=False, backref='Order')",
@@ -1094,7 +1103,7 @@ from database import <project.bind_key>_models
         log.debug(f'3. Create/verify database/{self.model_file_name}, then use that to create api/ and ui/ models')
         model_creation_services = ModelCreationServices(project = self,   # Create database/models.py from db
             project_directory=self.project_directory)
-        fix_database_models(self.project_directory, self.db_types, self.nw_db_status)
+        fix_database_models(self.project_directory, self.db_types, self.nw_db_status, self.is_tutorial)
         invoke_creators(model_creation_services)  # MAJOR! creates api/expose_api_models, ui/admin & basic_web_app
         if self.extended_builder is not None and self.extended_builder != "":
             log.debug(f'4. Invoke extended_builder: {self.extended_builder}, ({self.db_url}, {self.project_directory})')
