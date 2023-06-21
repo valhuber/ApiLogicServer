@@ -20,7 +20,7 @@ Most database applications require networked database access.  You simply cannot
 
 ## RESTful APIs: Leverage HTTP, JSON
 
-REST has emerged as a loose standard for APIs, by leveraging 2 key elements:
+REST has emerged as a loose standard for APIs, by leveraging 2 key technology elements:
 
 * **HTTP protocol:**  Web Browsers utilize this, invoking `Get` commands to obtain `html` responses, but HTTP is far more extensive as shown in the table below.
 
@@ -43,7 +43,7 @@ curl -X GET "http://localhost:8080/order?Id=10643"
 | HTTP Component |  Designates   | Notes | Example |
 |:----|:--------|:--------|:--------|
 | **Verb** | `Post`, `Get`, `Patch`, `Delete`  | Maps well to ***crud*** | `Get` |
-| Server/port | Identifies server | | http://localhost:8080 | 
+| Server:port | Identifies server | | http://localhost:8080 | 
 | **Endpoint** | Can be series of nodes | Analogous to **table/view** name | `Order` |
 | **Arguments** | Key/values Start with `?`, separate by `&` | E.g., **filter/sort**.  Caution: special characters | `?Id=10643` |
 | Return Code | Success/failure | a number | 200 means success |
@@ -158,7 +158,13 @@ A framework is a "your code goes here" library, providing backend functions to h
 
 * enabling you to **return a response** in a designated format, such as html or json
 
-A popular framework in Python is ***Flask***, illustrated in this application.
+A popular framework in Python is ***Flask***, illustrated in this application.  Basically:
+
+```python
+    @app.route('/order', methods=['GET'])  # Tell Flask: call this on order request
+    def order():
+        order_id = request.args.get('Id')  # Obtain URL argument from Flask
+```
 
 &nbsp;
 
@@ -171,15 +177,34 @@ In your handler, you may need to read or write database data.  You can use raw S
 * simplified **access to related data** (e.g., a simple way to get the OrderDetails for an Order)
 
 * **custom naming** - independent of database table/columns
-    * See `Category`, `Order.ShipZip`<br><br>
+    * See `Category.CategoryName`, `Order.ShipZip`<br><br>
 
 * other services, such as support for type hierarchies
 
-There are 2 common aspects for using an ORM:
+There are 2 basic elements for using an ORM:
 
-* provide **data model classes** - these are used to read/write data, and can also be used to create / update the database structure (add tables and columns)
+* provide **data model classes** - these are used to read/write data, and can also be used to create / update the database structure (add tables and columns).  See `database/models.py`:
 
-* use **data access** - verbs to read/write data
+
+```python
+class Customer(Base):
+  __tablename__ = 'Customer'
+  _s_collection_name = 'Customer'
+  __bind_key__ = 'None'
+
+  Id = Column(String(8000), primary_key=True)
+  CompanyName = Column(String(8000))
+
+  OrderList = relationship('Order', cascade_backrefs=False, backref='Customer')
+```
+
+
+* use **data access** - verbs to read/write data.  See `api/end_points.py`:
+
+```python
+  order = db.session.query(models.Order).filter(models.Order.Id == order_id).one()
+  for each_order_detail in order.OrderDetailList:  # SQLAlchemy related data access
+```
 
 ---
 
@@ -199,7 +224,7 @@ Long before you use the Flask/SQLAlchemy tools, you need to create project struc
 
 There are also important devops artifacts:
 
-* `.devcontainer/` - files here enable your project to be run in docker images, and to package your application as an image
+* `.devcontainer/` - files here enable your project to be run in docker images (including Codespaces), and to package your application as an image for production deployment
 
 * `config.py` - use this to set up key configuration parameters, including code to override them with environment variables
 
@@ -220,9 +245,8 @@ Explore [```api/end_points.py```](/1.%20Learn%20APIs%20using%20Flask%20SqlAlchem
 
 ## Data Access
 
-There are 2 aspects to explore for SQLAlchemy:
+There are 2 files to explore for SQLAlchemy:
 
 * See [```database/models.py```](/1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/database/models.py) for examples of defining objects (models) for database rows.  These correspond to the tables in your database.
 
 * See [```api/end_points.py```](/1.%20Learn%20APIs%20using%20Flask%20SqlAlchemy/api/end_points.py) for examples of SQLAlchemy calls.  See `def order():`.
-
