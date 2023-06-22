@@ -783,7 +783,7 @@ from sqlalchemy.dialects.mysql import *
             # SQLAlchemy2: 'MetaData' object has no attribute 'bind'
             bind = self.model_creation_services.session.bind  # SQLAlchemy2
             dialect_name = bind.engine.dialect.name  # sqlite , mysql , postgresql , oracle , or mssql
-            if dialect_name in ["firebird", "mssql", "oracle", "postgresql", "sqlite", "sybase"]:
+            if dialect_name in ["firebird", "mssql", "oracle", "postgresql", "sqlite", "sybase", "mysql"]:
                 rtn_api_logic_server_imports = api_logic_server_imports.replace("mysql", dialect_name)
             else:
                 rtn_api_logic_server_imports = api_logic_server_imports
