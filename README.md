@@ -6,6 +6,16 @@ title:
 [![Latest Version](https://img.shields.io/pypi/v/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/apilogicserver.svg)](https://pypi.python.org/pypi/apilogicserver/)
 
+# Announcement
+
+This project has been moved [to here](https://github.com/ApiLogicServer/ApiLogicServer-src).  Please do not use this site.
+
+&nbsp;
+&nbsp;
+-----
+
+&nbsp;
+
 [![API Logic Server Intro](https://github.com/valhuber/apilogicserver/wiki/images/hero-banner.png?raw=true)](https://apilogicserver.github.io/Docs/ "Single command creates executable, customizable projects")
 
 &nbsp;
